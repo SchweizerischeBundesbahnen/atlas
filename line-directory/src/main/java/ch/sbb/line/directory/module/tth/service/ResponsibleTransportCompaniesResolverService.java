@@ -1,13 +1,13 @@
 package ch.sbb.line.directory.module.tth.service;
 
-import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.exception.NoValidVersionAtDateException;
-import ch.sbb.line.directory.module.tth.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
+import ch.sbb.line.directory.module.tth.exception.NoValidVersionAtDateException;
+import ch.sbb.line.directory.module.tth.mapper.ResponsibleTransportCompanyMapper;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
