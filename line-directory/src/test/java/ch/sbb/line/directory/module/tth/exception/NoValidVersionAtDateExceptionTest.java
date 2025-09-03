@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.exception;
+package ch.sbb.line.directory.module.tth.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
