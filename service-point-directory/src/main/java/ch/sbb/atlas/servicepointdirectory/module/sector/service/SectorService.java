@@ -1,11 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.module.sector.service;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.MissingTrainStopPointException;
@@ -20,14 +22,17 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SectorService {
 
   private final SectorVersionRepository sectorVersionRepository;
@@ -35,19 +40,16 @@ public class SectorService {
   private final VersionableService versionableService;
   private final LocationService locationService;
 
-  public SectorService(SectorVersionRepository sectorVersionRepository, TrafficPointElementService trafficPointElementService,
-      VersionableService versionableService, LocationService locationService) {
-    this.sectorVersionRepository = sectorVersionRepository;
-    this.trafficPointElementService = trafficPointElementService;
-    this.versionableService = versionableService;
-    this.locationService = locationService;
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
+      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  @Transactional
+  public SectorVersion create(SectorVersion sectorVersion,
+      List<ServicePointVersion> servicePointVersions) {
+    return createSector(sectorVersion, servicePointVersions);
   }
 
-  public List<SectorVersionModel> getSectors() {
-    return sectorVersionRepository.findAll().stream().map(SectorMapper::toModel).toList();
-  }
-
-  public SectorVersionModel createSector(SectorVersion sectorVersion,
+  SectorVersion createSector(SectorVersion sectorVersion,
       List<ServicePointVersion> servicePointVersions) {
     trafficPointElementService.doesTrafficPointExist(sectorVersion.getTrafficPointSloid());
 
@@ -56,17 +58,7 @@ public class SectorService {
 
     sectorVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, sectorVersion.getTrafficPointSloid()));
 
-    SectorVersion saved = save(sectorVersion);
-    return SectorMapper.toModel(saved);
-  }
-
-  @PreAuthorize("""
-      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
-      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  @Transactional
-  public SectorVersionModel create(SectorVersion sectorVersion,
-      List<ServicePointVersion> servicePointVersions) {
-    return createSector(sectorVersion, servicePointVersions);
+    return save(sectorVersion);
   }
 
   @PreAuthorize("""
@@ -77,19 +69,18 @@ public class SectorService {
     updateSector(currentVersion, editedVersion);
   }
 
-  public void updateSector(SectorVersion currentVersion, SectorVersion editedVersion) {
+  void updateSector(SectorVersion currentVersion, SectorVersion editedVersion) {
     sectorVersionRepository.incrementVersion(currentVersion.getSloid());
 
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
-
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointSloid(currentVersion.getTrafficPointSloid());
 
     validateSectorValidity(editedVersion);
 
-    List<SectorVersion> currentVersions = findAllBySloidOrderByValidFrom(currentVersion.getSloid());
+    List<SectorVersion> currentVersions = getSector(currentVersion.getSloid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion,
@@ -99,16 +90,21 @@ public class SectorService {
         new ApplyVersioningDeleteByIdLongConsumer(sectorVersionRepository));
   }
 
+  public Container<SectorVersionModel> getSectorsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
+    List<SectorVersion> sectors = sectorVersionRepository.findAllByTrafficPointSloid(trafficPointSloid,
+        pageable.getSort());
+
+    List<SectorVersionModel> overviewModels = sectors.stream().map(SectorMapper::toModel).toList();
+    List<SectorVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
+        SectorVersionModel::getSloid);
+    return OverviewDisplayBuilder.toPagedContainer(displayableModels, pageable);
+  }
+
   public SectorVersion getSectorVersionById(Long id) {
     return sectorVersionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  public List<SectorVersionModel> getSector(String sectorSloid) {
-    List<SectorVersion> sectorVersions = findAllBySloidOrderByValidFrom(sectorSloid);
-    return sectorVersions.stream().map(SectorMapper::toModel).toList();
-  }
-
-  public List<SectorVersion> findAllBySloidOrderByValidFrom(String sectorSloid) {
+  public List<SectorVersion> getSector(String sectorSloid) {
     return sectorVersionRepository.findAllBySloidOrderByValidFrom(sectorSloid);
   }
 
