@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.module.subline.model;
 
-import ch.sbb.line.directory.model.LineVersionRange;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import java.util.ArrayList;
