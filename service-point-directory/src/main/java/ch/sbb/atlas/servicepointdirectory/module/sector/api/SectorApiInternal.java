@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Sectors")
 @RequestMapping("internal/sectors")
 @Validated
-@Hidden
+@Hidden // ATLAS-3130 To Remove once public, add link to sector restdoc in SePoDi
 public interface SectorApiInternal {
 
   @GetMapping("{trafficPointSloid}/overview")
