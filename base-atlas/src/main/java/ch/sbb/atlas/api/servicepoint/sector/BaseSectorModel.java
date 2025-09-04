@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.servicepoint.sector;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Digits;
@@ -23,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class BaseSectorModel extends BaseVersionModel {
+public abstract class BaseSectorModel extends BaseVersionModel implements Versionable {
 
   @Schema(description = """
       This ID helps identify versions of a traffic point element in the use case front end and/or update.
