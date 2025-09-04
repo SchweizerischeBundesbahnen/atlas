@@ -1,0 +1,25 @@
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Sectors API Guide
+
+link:rest-api.html[*< Back to main*]
+
+== Read Sector by SLOID - Successfully
+
+include::{snippets}/sector-api-v1-controller-test/should-get-sectors-by-sloid/atlas-doc.adoc[]
+
+== Read Sector Version by ID - Successfully
+
+include::{snippets}/sector-api-v1-controller-test/should-get-sector-version-by-id/atlas-doc.adoc[]
+
+== Create Sector - Successfully
+
+include::{snippets}/sector-api-v1-controller-test/should-create-sector/atlas-doc.adoc[]
+
+== Update Sector - Successfully
+
+include::{snippets}/sector-api-v1-controller-test/should-update-sector-and-return-two-versions/atlas-doc.adoc[]
+
+
+link:rest-api.html[*< Back to main*]
