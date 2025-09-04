@@ -190,6 +190,8 @@ public class SectorGroupService {
 
     List<SectorGroupVersion> currentVersions = findAllBySloidOrderByValidFrom(currentVersion.getSloid());
 
+    sharedSectorService.validateValidity(editedVersion);
+
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion,
         currentVersions);

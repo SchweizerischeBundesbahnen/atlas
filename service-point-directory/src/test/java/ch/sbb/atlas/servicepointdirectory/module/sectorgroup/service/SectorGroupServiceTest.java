@@ -69,12 +69,16 @@ class SectorGroupServiceTest {
   @Test
   @Transactional
   void shouldMergeSectorGroup() {
+    TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
+        TrafficPointTestData.getBasicTrafficPoint());
+
     SectorGroupVersion sectorGroupVersion = SectorTestData.getBasicSectorGroupVersion();
+    sectorGroupVersion.setTrafficPointSloid(trafficPointElementVersion.getSloid());
     sectorGroupVersion = sectorGroupVersionRepository.save(sectorGroupVersion);
 
     SectorGroupVersion edited = SectorTestData.getBasicSectorGroupVersion();
-    edited.setValidFrom(LocalDate.of(2020, 1, 2));
-    edited.setValidTo(LocalDate.of(2025, 12, 31));
+    edited.setValidFrom(LocalDate.of(2023, 1, 2));
+    edited.setValidTo(LocalDate.of(2023, 12, 31));
     edited.setVersion(sectorGroupVersion.getVersion());
 
     // when
