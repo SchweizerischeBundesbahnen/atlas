@@ -105,12 +105,8 @@ public class SectorGroupService {
     double length = versions.stream()
         .mapToDouble(version -> version.getLength() != null ? version.getLength() : 0.0)
         .sum();
-    
-    double roundedLength = java.math.BigDecimal.valueOf(length)
-        .setScale(3, java.math.RoundingMode.HALF_UP)
-        .doubleValue();
 
-    sectorGroupVersion.setLength(roundedLength);
+    sectorGroupVersion.setLength(length);
   }
 
   private List<SectorVersion> fetchLatestSectorVersions(List<String> sloids) {
