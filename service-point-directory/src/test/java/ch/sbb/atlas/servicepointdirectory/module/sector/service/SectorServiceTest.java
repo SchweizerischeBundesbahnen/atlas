@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -28,6 +29,8 @@ import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
@@ -72,15 +75,24 @@ class SectorServiceTest {
     sectorService.updateSector(sectorVersion, edited);
 
     // then
-    assertThat(sectorService.findAllBySloidOrderByValidFrom("ch:1:sloid:sector:1")).hasSize(1);
+    assertThat(sectorService.getSector("ch:1:sloid:sector:1")).hasSize(1);
   }
 
   @Test
-  void shouldGetSectors() {
+  void shouldGetSectorsOfTrafficPointSortedAndPaged() {
     SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
+    sectorVersion.setSloid("ch:1:sloid:sector:1");
+    sectorVersion.setDesignation("D");
     sectorVersionRepository.save(sectorVersion);
 
-    assertThat(sectorService.getSectors()).hasSize(1);
+    sectorVersion.setSloid("ch:1:sloid:sector:2");
+    sectorVersion.setDesignation("A");
+    sectorVersionRepository.save(sectorVersion);
+
+    Container<SectorVersionModel> overview = sectorService.getSectorsOfTrafficPoint(sectorVersion.getTrafficPointSloid(),
+        PageRequest.of(0, 1, Sort.by("designation").ascending()));
+    assertThat(overview.getTotalCount()).isEqualTo(1);
+    assertThat(overview.getObjects().getFirst().getDesignation()).isEqualTo("A");
   }
 
   @Test
@@ -127,7 +139,7 @@ class SectorServiceTest {
         sectorVersionModel.getTrafficPointSloid());
 
     //when
-    SectorVersionModel saved = sectorService.createSector(sectorVersionModel, List.of(ServicePointTestData.getBern()));
+    SectorVersion saved = sectorService.createSector(sectorVersionModel, List.of(ServicePointTestData.getBern()));
 
     //Then
     assertThat(sectorVersionRepository.findById(saved.getId())).isNotNull();
@@ -257,13 +269,9 @@ class SectorServiceTest {
     sectorVersionRepository.saveAll(List.of(v2, v1));
 
     // When
-    List<SectorVersion> entities = sectorService.findAllBySloidOrderByValidFrom(sloid);
-    List<SectorVersionModel> models = sectorService.getSector(sloid);
+    List<SectorVersion> entities = sectorService.getSector(sloid);
     // Then
     assertThat(entities).extracting(SectorVersion::getDesignation)
-        .containsExactly("v1", "v2");
-
-    assertThat(models).extracting(SectorVersionModel::getDesignation)
         .containsExactly("v1", "v2");
   }
 
