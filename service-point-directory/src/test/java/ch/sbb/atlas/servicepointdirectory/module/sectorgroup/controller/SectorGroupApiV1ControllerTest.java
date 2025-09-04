@@ -30,6 +30,7 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestDa
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
+import ch.sbb.atlas.servicepointdirectory.service.SharedSectorService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 
-class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
+class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
 
   private final SectorGroupRelationRepository sectorGroupRelationRepository;
   private final SectorVersionRepository sectorVersionRepository;
@@ -54,8 +55,11 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
   @MockitoBean
   private LocationService locationService;
 
+  @MockitoBean
+  private SharedSectorService sharedSectorService;
+
   @Autowired
-  public SectorGroupApiInternalControllerTest(SectorVersionRepository sectorVersionRepository,
+  public SectorGroupApiV1ControllerTest(SectorVersionRepository sectorVersionRepository,
       SectorGroupRelationRepository sectorGroupRelationRepository, SectorGroupVersionRepository sectorGroupVersionRepository) {
     this.sectorVersionRepository = sectorVersionRepository;
     this.sectorGroupRelationRepository = sectorGroupRelationRepository;
@@ -80,7 +84,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
     groupVersion2.setSloid("new:sloid");
     sectorGroupVersionRepository.save(groupVersion2);
 
-    mvc.perform(get("/internal/sector-groups"))
+    mvc.perform(get("/v1/sector-groups"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0].id", is(groupVersion1.getId().intValue())))
@@ -108,7 +112,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
 
     sectorGroupVersionRepository.save(groupVersion2);
 
-    mvc.perform(get("/internal/sector-groups/{sloid}", sloid))
+    mvc.perform(get("/v1/sector-groups/{sloid}", sloid))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0].etagVersion", is(1)))
@@ -121,7 +125,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
 
     SectorGroupVersion sectorGroupVersion = sectorGroupVersionRepository.save(SectorTestData.getBasicSectorGroupVersion());
 
-    mvc.perform(get("/internal/sector-groups/versions/{id}", sectorGroupVersion.getId()))
+    mvc.perform(get("/v1/sector-groups/versions/{id}", sectorGroupVersion.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(sectorGroupVersion.getId().intValue())))
         .andExpect(jsonPath("$.sloid", is(sectorGroupVersion.getSloid())))
@@ -145,7 +149,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
         .validTo(LocalDate.of(2030, 1, 1))
         .designation("hihi")
         .length(17.00)
-        .sectorSloids(List.of("ch:1:sloid:sector:1", "new:sloid"))
+        .sectorSloids(Set.of("ch:1:sloid:sector:1", "new:sloid"))
         .build();
 
     doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
@@ -157,10 +161,13 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
     when(servicePointService.findAllByNumberOrderByValidFrom(any()))
         .thenReturn(List.of(ServicePointTestData.getBern()));
 
-    MvcResult mvcResult = mvc.perform(post("/internal/sector-groups")
+    MvcResult mvcResult = mvc.perform(post("/v1/sector-groups")
             .contentType(contentType)
             .content(mapper.writeValueAsString(create)))
         .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.length", is(36.0)))
+        .andExpect(jsonPath("$.designation", is("hihi")))
+        .andExpect(jsonPath("$.sloid", is("ch:1:sloid:sector:1:0:1")))
         .andReturn();
 
     String responseContent = mvcResult.getResponse().getContentAsString();
@@ -188,7 +195,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
         .validTo(LocalDate.of(2030, 1, 1))
         .designation("hihi")
         .length(17.00)
-        .sectorSloids(List.of("ch:1:sloid:sector:1", "new:sloid"))
+        .sectorSloids(Set.of("ch:1:sloid:sector:1", "new:sloid"))
         .build();
 
     doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
@@ -200,7 +207,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
     when(servicePointService.findAllByNumberOrderByValidFrom(any()))
         .thenReturn(List.of(ServicePointTestData.getBern()));
 
-    mvc.perform(post("/internal/sector-groups")
+    mvc.perform(post("/v1/sector-groups")
             .contentType(contentType)
             .content(mapper.writeValueAsString(create)))
         .andExpect(status().isBadRequest())
@@ -256,7 +263,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
         .length(sectorGroupVersion.getLength() + 1)
         .build();
 
-    mvc.perform(put("/internal/sector-groups/{id}", sectorGroupVersion.getId())
+    mvc.perform(put("/v1/sector-groups/{id}", sectorGroupVersion.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateDto)))
         .andExpect(status().isOk())

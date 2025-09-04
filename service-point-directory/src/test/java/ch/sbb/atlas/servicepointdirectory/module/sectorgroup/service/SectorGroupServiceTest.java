@@ -14,15 +14,18 @@ import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorNotExistingException;
+import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupRelation;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.model.SectorGroupRelationId;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository.SectorGroupRelationRepository;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository.SectorGroupVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.SharedSectorService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -47,7 +50,7 @@ class SectorGroupServiceTest {
   @Autowired
   public SectorGroupServiceTest(SectorGroupService sectorGroupService, SectorGroupVersionRepository sectorGroupVersionRepository,
       SectorGroupRelationRepository sectorGroupRelationRepository, SectorVersionRepository sectorVersionRepository,
-      TrafficPointElementVersionRepository trafficPointElementVersionRepository) {
+      TrafficPointElementVersionRepository trafficPointElementVersionRepository, SharedSectorService sharedSectorService) {
     this.sectorGroupService = sectorGroupService;
     this.sectorGroupVersionRepository = sectorGroupVersionRepository;
     this.sectorGroupRelationRepository = sectorGroupRelationRepository;
@@ -177,6 +180,7 @@ class SectorGroupServiceTest {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
         TrafficPointTestData.getBasicTrafficPoint());
     List<String> sloids = List.of("sector:A", "sector:B");
+
     sectorVersionRepository.save(SectorTestData.getBasicSectorVersion().toBuilder()
         .sloid("sector:A")
         .trafficPointSloid(trafficPointElementVersion.getSloid())
@@ -205,10 +209,11 @@ class SectorGroupServiceTest {
         toCreate.getTrafficPointSloid());
 
     ReadSectorGroupVersionModel result =
-        sectorGroupService.createSectorGroup(toCreate, sloids, List.of());
+        sectorGroupService.createSectorGroup(toCreate, sloids, List.of(ServicePointTestData.getBern()));
 
     assertThat(sectorGroupVersionRepository.findById(result.getId())).isPresent();
     assertThat(result.getSloid()).isEqualTo("ch:1:sloid:sector:1:0:1");
+    assertThat(result.getLength()).isEqualTo(36.0);
     assertThat(sectorGroupRelationRepository.findAll()).hasSize(2);
     assertThat(sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(toCreate.getSloid()))
         .extracting(r -> r.getSectorGroupRelationId().getSectorSloid())
@@ -240,6 +245,44 @@ class SectorGroupServiceTest {
     assertThatThrownBy(() ->
         sectorGroupService.createSectorGroup(toCreate, sloids, List.of())
     ).isInstanceOf(SectorNotExistingException.class);
+  }
+
+  @Test
+  void shouldThrowWhenValidityIsNotInRangeOfTrafficPoint() {
+    TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
+        TrafficPointTestData.getBasicTrafficPoint());
+    List<String> sloids = List.of("sector:A", "sector:B");
+
+    sectorVersionRepository.save(SectorTestData.getBasicSectorVersion().toBuilder()
+        .sloid("sector:A")
+        .trafficPointSloid(trafficPointElementVersion.getSloid())
+        .validFrom(LocalDate.of(2005, 1, 1))
+        .validTo(LocalDate.of(2008, 1, 1))
+        .designation("hehe")
+        .build());
+
+    sectorVersionRepository.save(SectorTestData.getBasicSectorVersion().toBuilder()
+        .sloid("sector:B")
+        .trafficPointSloid(trafficPointElementVersion.getSloid())
+        .validFrom(LocalDate.of(2005, 1, 1))
+        .validTo(LocalDate.of(2008, 1, 1))
+        .designation("huhu")
+        .build());
+
+    SectorGroupVersion toCreate = SectorTestData.getBasicSectorGroupVersion()
+        .toBuilder()
+        .trafficPointSloid(trafficPointElementVersion.getSloid())
+        .validFrom(LocalDate.of(2005, 1, 1))
+        .validTo(LocalDate.of(2009, 1, 1))
+        .designation("hehe")
+        .build();
+
+    doReturn("ch:1:sloid:sector:1:0:2").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
+        toCreate.getTrafficPointSloid());
+
+    assertThatThrownBy(() ->
+        sectorGroupService.createSectorGroup(toCreate, sloids, List.of(ServicePointTestData.getBern()))
+    ).isInstanceOf(SectorValidityException.class);
   }
 
   @Test
