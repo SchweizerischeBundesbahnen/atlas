@@ -4,16 +4,21 @@ import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineApiV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
+import ch.sbb.atlas.api.lidi.SublineVersionRequestParams;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.module.subline.mapper.SublineMapper;
+import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.subline.entity.SublineVersion;
+import ch.sbb.line.directory.module.subline.mapper.SublineMapper;
+import ch.sbb.line.directory.module.subline.search.SublineVersionSearchRestrictions;
 import ch.sbb.line.directory.module.subline.service.SublineService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,6 +27,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class SublineControllerV2 implements SublineApiV2 {
 
   private final SublineService sublineService;
+
+  @Override
+  public Container<ReadSublineVersionModelV2> getSublineVersions(Pageable pageable,
+      SublineVersionRequestParams sublineVersionRequestParams) {
+    Page<SublineVersion> sublineVersions = sublineService.findAllVersions(SublineVersionSearchRestrictions.builder()
+        .pageable(pageable)
+        .sublineVersionRequestParams(sublineVersionRequestParams)
+        .build());
+    List<ReadSublineVersionModelV2> sublineModels = sublineVersions.stream().map(this::toModel).toList();
+    return Container.<ReadSublineVersionModelV2>builder()
+        .objects(sublineModels)
+        .totalCount(sublineVersions.getTotalElements()).build();
+  }
+
+  private ReadSublineVersionModelV2 toModel(SublineVersion sublineVersion) {
+    LineVersion lineVersion = sublineService.getMainLineVersion(sublineVersion.getMainlineSlnid());
+    return SublineMapper.toModel(sublineVersion, lineVersion);
+  }
 
   @Override
   public List<ReadSublineVersionModelV2> getSublineVersionV2(String slnid) {
