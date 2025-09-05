@@ -13,6 +13,7 @@ import ch.sbb.line.directory.module.line.repository.LineVersionRepository;
 import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import ch.sbb.line.directory.module.subline.exception.DateRangeConflictException;
 import ch.sbb.line.directory.module.subline.repository.SublineVersionRepository;
+import ch.sbb.line.directory.module.subline.search.SublineVersionSearchRestrictions;
 import ch.sbb.line.directory.module.subline.validation.SublineValidationService;
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +47,11 @@ public class SublineService {
       @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
   public void update(SublineVersion currentVersion, SublineVersion editedVersion, List<SublineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
+  }
+
+  public Page<SublineVersion> findAllVersions(SublineVersionSearchRestrictions searchRestrictions) {
+    return sublineVersionRepository.findAll(searchRestrictions.getSpecification(),
+        searchRestrictions.getPageable());
   }
 
   public List<SublineVersion> findSubline(String slnid) {

@@ -3,6 +3,7 @@ package ch.sbb.atlas.searching.specification;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -31,7 +32,7 @@ class ValidOrEditionTimerangeSpecificationTest {
   }
 
   @Test
-  void testToPredicateWithDates() {
+  void shouldCreateSpecificationWithDates() {
     LocalDate fromDate = LocalDate.of(2023, 1, 1);
     LocalDate toDate = LocalDate.of(2023, 12, 31);
     LocalDate validToFromDate = LocalDate.of(2023, 6, 1);
@@ -52,7 +53,7 @@ class ValidOrEditionTimerangeSpecificationTest {
   }
 
   @Test
-  void testToPredicateWithNullDates() {
+  void shouldCreateSpecificationWithNullDates() {
     ValidOrEditionTimerangeSpecification<Object> specification = new ValidOrEditionTimerangeSpecification<>(
         null, null, null, null, null
     );
@@ -61,4 +62,22 @@ class ValidOrEditionTimerangeSpecificationTest {
     assertThat(predicate).isNull();
   }
 
+  @Test
+  void shouldInitializeSpecificationViaVersionedObjectDateRequestParams() {
+    VersionedObjectDateRequestParams params = VersionedObjectDateRequestParams.builder()
+        .toDate(LocalDate.of(2023, 12, 31))
+        .createdAfter(LocalDateTime.of(2023, 2, 1, 0, 0))
+        .modifiedAfter(LocalDateTime.of(2023, 3, 1, 0, 0))
+        .fromDate(LocalDate.of(2023, 6, 1))
+        .validToFromDate(LocalDate.of(2023, 1, 1))
+        .build();
+    ValidOrEditionTimerangeSpecification<Object> specification = new ValidOrEditionTimerangeSpecification<>(params);
+
+    assertThat(specification).isNotNull();
+    assertThat(specification.getFromDate()).isNotNull();
+    assertThat(specification.getToDate()).isNotNull();
+    assertThat(specification.getCreatedAfter()).isNotNull();
+    assertThat(specification.getModifiedAfter()).isNotNull();
+    assertThat(specification.getValidToFromDate()).isNotNull();
+  }
 }
