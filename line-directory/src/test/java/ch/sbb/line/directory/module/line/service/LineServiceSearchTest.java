@@ -3,6 +3,7 @@ package ch.sbb.line.directory.module.line.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.LineRequestParams;
+import ch.sbb.atlas.api.lidi.LineVersionRequestParams;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
@@ -12,7 +13,9 @@ import ch.sbb.line.directory.module.line.entity.Line;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.repository.LineVersionRepository;
 import ch.sbb.line.directory.module.line.search.LineSearchRestrictions;
+import ch.sbb.line.directory.module.line.search.LineVersionSearchRestrictions;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -411,5 +414,37 @@ class LineServiceSearchTest {
 
     // Then
     assertThat(result.getContent()).isEmpty();
+  }
+
+  @Test
+  void shouldFindAllVersionsWithCreatedAfter() {
+    // Given
+    lineVersionRepository.saveAndFlush(version1);
+    // When
+    Page<LineVersion> result = lineService.findAllVersions(
+        LineVersionSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .lineVersionRequestParams(LineVersionRequestParams.builder()
+                .createdAfter(LocalDateTime.now().minusDays(1)).build())
+            .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindAllVersionsWithModifiedAfter() {
+    // Given
+    lineVersionRepository.saveAndFlush(version1);
+    // When
+    Page<LineVersion> result = lineService.findAllVersions(
+        LineVersionSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .lineVersionRequestParams(LineVersionRequestParams.builder()
+                .modifiedAfter(LocalDateTime.now().minusDays(7)).build())
+            .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
   }
 }

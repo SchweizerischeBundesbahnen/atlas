@@ -1,5 +1,6 @@
 package ch.sbb.atlas.searching.specification;
 
+import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -9,9 +10,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
+@Getter
 @RequiredArgsConstructor
 public class ValidOrEditionTimerangeSpecification<T> implements Specification<T> {
 
@@ -23,6 +26,14 @@ public class ValidOrEditionTimerangeSpecification<T> implements Specification<T>
   private final LocalDate validToFromDate;
   private final LocalDateTime createdAfter;
   private final LocalDateTime modifiedAfter;
+
+  public ValidOrEditionTimerangeSpecification(VersionedObjectDateRequestParams versionedObjectValidityRequestParams) {
+    fromDate = versionedObjectValidityRequestParams.getFromDate();
+    toDate = versionedObjectValidityRequestParams.getToDate();
+    validToFromDate = versionedObjectValidityRequestParams.getValidToFromDate();
+    createdAfter = versionedObjectValidityRequestParams.getCreatedAfter();
+    modifiedAfter = versionedObjectValidityRequestParams.getModifiedAfter();
+  }
 
   @Override
   public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
