@@ -21,7 +21,7 @@ import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository.SectorGr
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.SectorGroupRelationMapper;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
-import ch.sbb.atlas.servicepointdirectory.service.SharedSectorService;
+import ch.sbb.atlas.servicepointdirectory.service.SectorValidationService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -44,7 +44,7 @@ public class SectorGroupService {
   private final SectorGroupRelationRepository sectorGroupRelationRepository;
   private final SectorVersionRepository sectorVersionRepository;
   private final LocationService locationService;
-  private final SharedSectorService sharedSectorService;
+  private final SectorValidationService sharedSectorService;
 
   public List<SectorGroupVersionModel> getSectorGroups() {
     return sectorGroupVersionRepository.findAll().stream().map(SectorGroupMapper::toModel).toList();

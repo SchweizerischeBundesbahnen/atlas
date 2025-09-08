@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class SharedSectorService {
+public class SectorValidationService {
 
   private final TrafficPointElementService trafficPointElementService;
 
