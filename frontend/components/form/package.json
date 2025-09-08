@@ -5,7 +5,5 @@
   "scripts": {
     "test": "ng test components -c ci"
   },
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "description": "Reusable form components for atlas"
 }
