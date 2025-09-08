@@ -21,10 +21,12 @@ import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository.SectorGr
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.SectorGroupRelationMapper;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
+import ch.sbb.atlas.servicepointdirectory.service.SectorValidationService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SectorGroupService {
 
   private final SectorGroupVersionRepository sectorGroupVersionRepository;
@@ -41,18 +44,7 @@ public class SectorGroupService {
   private final SectorGroupRelationRepository sectorGroupRelationRepository;
   private final SectorVersionRepository sectorVersionRepository;
   private final LocationService locationService;
-
-  public SectorGroupService(SectorGroupVersionRepository sectorGroupVersionRepository,
-      TrafficPointElementService trafficPointElementService,
-      VersionableService versionableService, SectorGroupRelationRepository sectorGroupRelationRepository,
-      SectorVersionRepository sectorVersionRepository, LocationService locationService) {
-    this.sectorGroupVersionRepository = sectorGroupVersionRepository;
-    this.trafficPointElementService = trafficPointElementService;
-    this.versionableService = versionableService;
-    this.sectorGroupRelationRepository = sectorGroupRelationRepository;
-    this.sectorVersionRepository = sectorVersionRepository;
-    this.locationService = locationService;
-  }
+  private final SectorValidationService sectorValidationService;
 
   public List<SectorGroupVersionModel> getSectorGroups() {
     return sectorGroupVersionRepository.findAll().stream().map(SectorGroupMapper::toModel).toList();
@@ -83,23 +75,38 @@ public class SectorGroupService {
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public ReadSectorGroupVersionModel create(SectorGroupVersion sectorGroupVersion,
       List<String> sloids, List<ServicePointVersion> servicePointVersions) {
-    return createSectorGroup(sectorGroupVersion, sloids);
+    return createSectorGroup(sectorGroupVersion, sloids, servicePointVersions);
   }
 
-  public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion,
-      List<String> sloids
-  ) {
+  public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion, List<String> sloids,
+      List<ServicePointVersion> servicePointVersions) {
+
     trafficPointElementService.doesTrafficPointExist(sectorGroupVersion.getTrafficPointSloid());
     List<SectorVersion> versions = fetchLatestSectorVersions(sloids);
+
     validateSectorVersions(versions);
     validateTrafficPoint(sectorGroupVersion.getTrafficPointSloid(), versions);
+
+    sectorValidationService.validateValidity(sectorGroupVersion);
+    sectorValidationService.validateMeanOfTransportOfServicePoint(servicePointVersions);
+
     sectorGroupVersion.setSloid(locationService.generateSloid(SloidType.SECTOR_GROUP, sectorGroupVersion.getTrafficPointSloid()));
+
+    calculateAndSetLength(sectorGroupVersion, versions);
 
     createRelation(sloids, sectorGroupVersion.getSloid());
     SectorGroupVersion saved = save(sectorGroupVersion);
 
     List<SectorVersionModel> models = mapToModels(versions);
     return SectorGroupMapper.toReadModel(saved, models);
+  }
+
+  private void calculateAndSetLength(SectorGroupVersion sectorGroupVersion, List<SectorVersion> versions) {
+    double length = versions.stream()
+        .mapToDouble(version -> version.getLength() != null ? version.getLength() : 0.0)
+        .sum();
+
+    sectorGroupVersion.setLength(length);
   }
 
   private List<SectorVersion> fetchLatestSectorVersions(List<String> sloids) {
@@ -179,8 +186,11 @@ public class SectorGroupService {
 
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointSloid(currentVersion.getTrafficPointSloid());
+    editedVersion.setLength(currentVersion.getLength());
 
     List<SectorGroupVersion> currentVersions = findAllBySloidOrderByValidFrom(currentVersion.getSloid());
+
+    sectorValidationService.validateValidity(editedVersion);
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion,

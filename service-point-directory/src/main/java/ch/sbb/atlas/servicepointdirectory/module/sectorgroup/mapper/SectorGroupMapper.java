@@ -56,7 +56,6 @@ public class SectorGroupMapper {
         .validFrom(createSectorGroupVersionModel.getValidFrom())
         .validTo(createSectorGroupVersionModel.getValidTo())
         .designation(createSectorGroupVersionModel.getDesignation())
-        .length(createSectorGroupVersionModel.getLength())
         .creator(createSectorGroupVersionModel.getCreator())
         .creationDate(createSectorGroupVersionModel.getCreationDate())
         .editor(createSectorGroupVersionModel.getEditor())
@@ -72,7 +71,6 @@ public class SectorGroupMapper {
         .validFrom(updateSectorGroupVersionModel.getValidFrom())
         .validTo(updateSectorGroupVersionModel.getValidTo())
         .designation(updateSectorGroupVersionModel.getDesignation())
-        .length(updateSectorGroupVersionModel.getLength())
         .version(updateSectorGroupVersionModel.getEtagVersion())
         .status(updateSectorGroupVersionModel.getStatus())
         .build();

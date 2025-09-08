@@ -4,24 +4,19 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
-import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
-import ch.sbb.atlas.servicepointdirectory.module.sector.exception.MissingTrainStopPointException;
-import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
+import ch.sbb.atlas.servicepointdirectory.service.SectorValidationService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
@@ -39,6 +34,7 @@ public class SectorService {
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
   private final LocationService locationService;
+  private final SectorValidationService sectorValidationService;
 
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
@@ -53,8 +49,8 @@ public class SectorService {
       List<ServicePointVersion> servicePointVersions) {
     trafficPointElementService.doesTrafficPointExist(sectorVersion.getTrafficPointSloid());
 
-    validateSectorValidity(sectorVersion);
-    validateMeanOfTransportOfServicePoint(servicePointVersions);
+    sectorValidationService.validateValidity(sectorVersion);
+    sectorValidationService.validateMeanOfTransportOfServicePoint(servicePointVersions);
 
     sectorVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, sectorVersion.getTrafficPointSloid()));
 
@@ -78,7 +74,7 @@ public class SectorService {
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointSloid(currentVersion.getTrafficPointSloid());
 
-    validateSectorValidity(editedVersion);
+    sectorValidationService.validateValidity(editedVersion);
 
     List<SectorVersion> currentVersions = getSector(currentVersion.getSloid());
 
@@ -113,40 +109,4 @@ public class SectorService {
     return sectorVersionRepository.saveAndFlush(sectorVersion);
   }
 
-  private void validateMeanOfTransportOfServicePoint(List<ServicePointVersion> servicePointVersions) {
-    boolean isServicePointValid = servicePointVersions.stream()
-        .anyMatch(servicePoint -> servicePoint.isStopPoint() && isMeanOfTransportOnlyTrain(servicePoint.getMeansOfTransport()));
-
-    if (!isServicePointValid) {
-      throw new MissingTrainStopPointException();
-    }
-  }
-
-  private boolean isMeanOfTransportOnlyTrain(Set<MeanOfTransport> meansOfTransport) {
-    return meansOfTransport != null
-        && !meansOfTransport.isEmpty()
-        && meansOfTransport.stream().allMatch(m -> m == MeanOfTransport.TRAIN);
-  }
-
-  private void validateSectorValidity(SectorVersion sectorVersion) {
-    List<TrafficPointElementVersion> trafficPointElementVersions =
-        trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion.getTrafficPointSloid());
-
-    TrafficPointElementVersion oldestVersion = trafficPointElementVersions.getFirst();
-    TrafficPointElementVersion latestVersion = trafficPointElementVersions.getLast();
-
-    DateRange validityTrafficPoint = DateRange.builder()
-        .from(oldestVersion.getValidFrom())
-        .to(latestVersion.getValidTo())
-        .build();
-
-    DateRange validitySector = DateRange.builder()
-        .from(sectorVersion.getValidFrom())
-        .to(sectorVersion.getValidTo())
-        .build();
-
-    if (!validitySector.isDateRangeContainedIn(validityTrafficPoint)) {
-      throw new SectorValidityException();
-    }
-  }
 }
