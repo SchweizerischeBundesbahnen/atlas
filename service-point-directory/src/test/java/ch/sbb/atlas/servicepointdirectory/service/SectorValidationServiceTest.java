@@ -19,9 +19,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class SharedSectorServiceTest {
+class SectorValidationServiceTest {
 
-  private SharedSectorService sharedSectorService;
+  private SectorValidationService sharedSectorService;
 
   @Mock
   private TrafficPointElementService trafficPointElementService;
@@ -29,7 +29,7 @@ class SharedSectorServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sharedSectorService = new SharedSectorService(trafficPointElementService);
+    sharedSectorService = new SectorValidationService(trafficPointElementService);
   }
 
   @Test

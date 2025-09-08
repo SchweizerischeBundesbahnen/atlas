@@ -25,7 +25,7 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestDa
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.repository.TrafficPointElementVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.SharedSectorService;
+import ch.sbb.atlas.servicepointdirectory.service.SectorValidationService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -50,7 +50,7 @@ class SectorGroupServiceTest {
   @Autowired
   public SectorGroupServiceTest(SectorGroupService sectorGroupService, SectorGroupVersionRepository sectorGroupVersionRepository,
       SectorGroupRelationRepository sectorGroupRelationRepository, SectorVersionRepository sectorVersionRepository,
-      TrafficPointElementVersionRepository trafficPointElementVersionRepository, SharedSectorService sharedSectorService) {
+      TrafficPointElementVersionRepository trafficPointElementVersionRepository, SectorValidationService sharedSectorService) {
     this.sectorGroupService = sectorGroupService;
     this.sectorGroupVersionRepository = sectorGroupVersionRepository;
     this.sectorGroupRelationRepository = sectorGroupRelationRepository;

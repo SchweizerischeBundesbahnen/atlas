@@ -7,19 +7,16 @@ import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
-import ch.sbb.atlas.servicepointdirectory.service.SharedSectorService;
-import ch.sbb.atlas.servicepointdirectory.service.SharedSectorService;
+import ch.sbb.atlas.servicepointdirectory.service.SectorValidationService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
@@ -37,7 +34,7 @@ public class SectorService {
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
   private final LocationService locationService;
-  private final SharedSectorService sharedSectorService;
+  private final SectorValidationService sharedSectorService;
 
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
