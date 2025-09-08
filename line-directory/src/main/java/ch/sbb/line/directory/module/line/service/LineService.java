@@ -8,6 +8,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.module.line.entity.Line;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
+import ch.sbb.line.directory.module.line.search.LineVersionSearchRestrictions;
 import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import ch.sbb.line.directory.module.line.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
@@ -46,6 +47,11 @@ public class LineService {
 
   public Page<Line> findAll(LineSearchRestrictions searchRestrictions) {
     return lineRepository.findAll(searchRestrictions.getSpecification(),
+        searchRestrictions.getPageable());
+  }
+
+  public Page<LineVersion> findAllVersions(LineVersionSearchRestrictions searchRestrictions) {
+    return lineVersionRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
   }
 

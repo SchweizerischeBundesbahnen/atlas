@@ -5,6 +5,7 @@ import ch.sbb.line.directory.module.line.entity.LineVersion;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface LineVersionRepository extends JpaRepository<LineVersion, Long> {
+public interface LineVersionRepository extends JpaRepository<LineVersion, Long>, JpaSpecificationExecutor<LineVersion> {
 
   default List<LineVersion> findSwissLineNumberOverlaps(LineVersion lineVersion) {
     return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
