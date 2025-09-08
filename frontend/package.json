@@ -61,7 +61,6 @@
     "angular-oauth2-oidc": "^20.0.0",
     "angular-server-side-configuration": "^20.0.0",
     "bootstrap": "^5.3",
-    "form": "^0.2.5",
     "jwt-decode": "^4.0.0",
     "maplibre-gl": "^5.0.0",
     "moment": "^2.30",
