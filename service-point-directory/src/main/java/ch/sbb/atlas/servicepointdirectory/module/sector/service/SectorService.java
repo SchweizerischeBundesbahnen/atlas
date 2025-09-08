@@ -34,7 +34,7 @@ public class SectorService {
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
   private final LocationService locationService;
-  private final SectorValidationService sharedSectorService;
+  private final SectorValidationService sectorValidationService;
 
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
@@ -49,8 +49,8 @@ public class SectorService {
       List<ServicePointVersion> servicePointVersions) {
     trafficPointElementService.doesTrafficPointExist(sectorVersion.getTrafficPointSloid());
 
-    sharedSectorService.validateValidity(sectorVersion);
-    sharedSectorService.validateMeanOfTransportOfServicePoint(servicePointVersions);
+    sectorValidationService.validateValidity(sectorVersion);
+    sectorValidationService.validateMeanOfTransportOfServicePoint(servicePointVersions);
 
     sectorVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, sectorVersion.getTrafficPointSloid()));
 
@@ -74,7 +74,7 @@ public class SectorService {
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointSloid(currentVersion.getTrafficPointSloid());
 
-    sharedSectorService.validateValidity(editedVersion);
+    sectorValidationService.validateValidity(editedVersion);
 
     List<SectorVersion> currentVersions = getSector(currentVersion.getSloid());
 
