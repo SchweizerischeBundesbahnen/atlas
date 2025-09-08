@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
@@ -21,6 +22,8 @@ import ch.sbb.line.directory.module.subline.SublineTestData;
 import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import ch.sbb.line.directory.module.subline.repository.SublineVersionRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -156,5 +159,22 @@ class SublineControllerV2ApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(updateModel)))
         .andExpect(status().isPreconditionFailed()).andReturn();
 
+  }
+
+  @Test
+  void shouldGetSublineVersions() throws Exception {
+    //given
+    SublineVersion sublineVersion = SublineTestData.sublineVersionV2Builder()
+        .mainlineSlnid(mainLineVersion.getSlnid())
+        .build();
+    sublineVersionRepository.saveAndFlush(sublineVersion);
+
+    //when
+    String yesterday =
+        LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
+    mvc.perform(get("/v2/sublines/versions?createdAfter=" + yesterday + "&modifiedAfter=" + yesterday + "&mainlineSlnid="
+            + mainLineVersion.getSlnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 }

@@ -4,8 +4,10 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.validation.CreateIdCheck;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,6 +15,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +32,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("v2/sublines")
 @Validated
 public interface SublineApiV2 {
+
+  @GetMapping("versions")
+  @PageableAsQueryParam
+  Container<ReadSublineVersionModelV2> getSublineVersions(@Parameter(hidden = true) Pageable pageable,
+      @Valid @ParameterObject SublineVersionRequestParams sublineVersionRequestParams);
 
   @GetMapping("versions/{slnid}")
   List<ReadSublineVersionModelV2> getSublineVersionV2(@PathVariable String slnid);
