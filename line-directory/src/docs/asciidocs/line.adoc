@@ -13,11 +13,15 @@ include::{snippets}/line-controller-v1-api-test/should-get-line-overview/atlas-d
 
 include::{snippets}/line-controller-v1-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
 
-== Get LineVersion Get Line V2
+== Get LineVersions V2
+
+include::{snippets}/line-controller-v2-api-test/should-get-line-versions/atlas-doc.adoc[]
+
+== Get LineVersion V2
 
 include::{snippets}/line-controller-v2-api-test/should-get-line-version/atlas-doc.adoc[]
 
-== Get LineVersion V2 Get Line Not Found
+== Get LineVersion V2 Not Found
 
 include::{snippets}/line-controller-v2-api-test/should-get-line-versions-not-found/atlas-doc.adoc[]
 

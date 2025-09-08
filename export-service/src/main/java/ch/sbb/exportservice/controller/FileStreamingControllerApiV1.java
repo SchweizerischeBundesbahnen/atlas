@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Export File Streaming V1")
+@Tag(name = "Export File Streaming V1", description = "Use Export File Streaming V2 instead. Will be removed by 09.10.2025")
 @RequestMapping(value = {"v1/export", "v1/export/prm"})
 @RestController
 @RequiredArgsConstructor

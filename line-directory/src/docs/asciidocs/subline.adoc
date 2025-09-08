@@ -9,11 +9,15 @@ link:rest-api.html[*< Back to main*]
 
 include::{snippets}/subline-controller-v1-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
 
-== Get Subline Version Get Subline V2
+== Get Subline Versions V2
+
+include::{snippets}/subline-controller-v2-api-test/should-get-subline-versions/atlas-doc.adoc[]
+
+== Get Subline Version V2
 
 include::{snippets}/subline-controller-v2-api-test/should-get-subline-version/atlas-doc.adoc[]
 
-== Get Subline Version Get Subline V2 Not Found
+== Get Subline Version V2 Not Found
 
 include::{snippets}/subline-controller-v2-api-test/should-return-not-found/atlas-doc.adoc[]
 

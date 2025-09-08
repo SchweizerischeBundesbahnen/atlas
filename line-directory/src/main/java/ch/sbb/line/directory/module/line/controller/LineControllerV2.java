@@ -4,17 +4,22 @@ import static java.util.stream.Collectors.toSet;
 
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
+import ch.sbb.atlas.api.lidi.LineVersionRequestParams;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.mapper.LineMapper;
 import ch.sbb.line.directory.module.line.mapper.LineVersionWorkflowMapper;
-import ch.sbb.line.directory.module.line.entity.LineVersion;
+import ch.sbb.line.directory.module.line.search.LineVersionSearchRestrictions;
 import ch.sbb.line.directory.module.line.service.LineService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,6 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineControllerV2 implements LineApiV2 {
 
   private final LineService lineService;
+
+  @Override
+  public Container<LineVersionModelV2> getLineVersions(Pageable pageable, LineVersionRequestParams lineVersionRequestParams) {
+    Page<LineVersion> lines = lineService.findAllVersions(LineVersionSearchRestrictions.builder()
+        .pageable(pageable)
+        .lineVersionRequestParams(lineVersionRequestParams)
+        .build());
+    List<LineVersionModelV2> lineModels = lines.stream().map(this::toModel).toList();
+    return Container.<LineVersionModelV2>builder()
+        .objects(lineModels)
+        .totalCount(lines.getTotalElements()).build();
+  }
 
   @Override
   public List<LineVersionModelV2> getLineVersionsV2(String slnid) {
