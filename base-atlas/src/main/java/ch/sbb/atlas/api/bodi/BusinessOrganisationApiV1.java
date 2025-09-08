@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("v1/business-organisations")
 public interface BusinessOrganisationApiV1 {
 
-  @Operation(deprecated = true, summary = "Use GET /versions instead")
+  @Operation(deprecated = true, summary = "Use /v1/business-organisations/versions instead. Will be removed by 01.03.2026.")
   @GetMapping
   @PageableAsQueryParam
   Container<BusinessOrganisationModel> getAllBusinessOrganisations(
@@ -54,24 +54,23 @@ public interface BusinessOrganisationApiV1 {
   List<BusinessOrganisationVersionModel> getVersions(@PathVariable String sboid);
 
   @Deprecated(forRemoval = true)
-  @Operation(description = "Export all Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 Bucket")
+  @Operation(deprecated = true, summary = "Will be removed by 09.10.2025.")
   @PostMapping(value = "/export/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullBusinessOrganisationVersions();
 
   @Deprecated(forRemoval = true)
-  @Operation(description = "Export all actual Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 "
-      + "Bucket")
+  @Operation(deprecated = true, summary = "Will be removed by 09.10.2025.")
   @PostMapping(value = "/export/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualBusinessOrganisationVersions();
 
   @Deprecated(forRemoval = true)
-  @Operation(description = "Export all Business Organisations versions for the current timetable year change as csv, zip and gz "
-      + "file to the ATLAS Amazon S3 Bucket")
+  @Operation(deprecated = true, summary = "Will be removed by 09.10.2025.")
   @PostMapping(value = "/export/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableBusinessOrganisationVersions();
 
   @Deprecated(forRemoval = true)
   @GetMapping(value = "/export/download-gz-json/{exportType}")
+  @Operation(deprecated = true, summary = "Use Export File Streaming V2 instead. Will be removed by 09.10.2025.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
@@ -81,6 +80,7 @@ public interface BusinessOrganisationApiV1 {
 
   @Deprecated(forRemoval = true)
   @GetMapping(value = "/export/download-json/{exportType}")
+  @Operation(deprecated = true, summary = "Use Export File Streaming V2 instead. Will be removed by 09.10.2025.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =

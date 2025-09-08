@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.lidi;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ public interface SublineApiV1 {
    */
   @Deprecated(forRemoval = true, since = "2.328.0")
   @GetMapping("versions/{slnid}")
+  @Operation(deprecated = true, summary = "Use /v2/sublines/versions/{slnid} instead. Will be removed by 09.10.2025.")
   List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
 
 }

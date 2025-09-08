@@ -29,8 +29,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Import({UserAdministrationConfig.class, RedactConfig.class})
 @EnableWebSecurity
@@ -44,8 +42,7 @@ public class SecurityConfig {
   private String serviceName;
 
   @Bean
-  protected SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
-    MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
+  protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         // CORS: by default Spring uses a bean with the name of corsConfigurationSource: @see ch.sbb.esta.config.CorsConfig
         .cors(withDefaults())
@@ -65,7 +62,7 @@ public class SecurityConfig {
                 // Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using
                 // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
-                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/**")).hasRole(Role.ATLAS_ADMIN)
+                .requestMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
                 .requestMatchers(HttpMethod.GET, "/static/**").permitAll()
                 .anyRequest().authenticated()
         )
