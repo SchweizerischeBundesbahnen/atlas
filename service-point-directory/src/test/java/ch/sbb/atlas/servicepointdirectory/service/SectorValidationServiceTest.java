@@ -21,7 +21,7 @@ import org.mockito.MockitoAnnotations;
 
 class SectorValidationServiceTest {
 
-  private SectorValidationService sharedSectorService;
+  private SectorValidationService sectorValidationService;
 
   @Mock
   private TrafficPointElementService trafficPointElementService;
@@ -29,7 +29,7 @@ class SectorValidationServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sharedSectorService = new SectorValidationService(trafficPointElementService);
+    sectorValidationService = new SectorValidationService(trafficPointElementService);
   }
 
   @Test
@@ -37,7 +37,7 @@ class SectorValidationServiceTest {
     List<ServicePointVersion> servicePointVersions = List.of(ServicePointTestData.getBern(),
         ServicePointTestData.getBernWyleregg());
 
-    assertDoesNotThrow(() -> sharedSectorService.validateMeanOfTransportOfServicePoint(servicePointVersions));
+    assertDoesNotThrow(() -> sectorValidationService.validateMeanOfTransportOfServicePoint(servicePointVersions));
   }
 
   @Test
@@ -45,7 +45,7 @@ class SectorValidationServiceTest {
     List<ServicePointVersion> servicePointVersions = List.of(ServicePointTestData.getBernOst());
 
     assertThrows(MissingTrainStopPointException.class,
-        () -> sharedSectorService.validateMeanOfTransportOfServicePoint(servicePointVersions));
+        () -> sectorValidationService.validateMeanOfTransportOfServicePoint(servicePointVersions));
   }
 
   @Test
@@ -60,7 +60,7 @@ class SectorValidationServiceTest {
     when(trafficPointElementService.findBySloidOrderByValidFrom(any())).thenReturn(
         List.of(TrafficPointTestData.getBasicTrafficPoint()));
 
-    assertDoesNotThrow(() -> sharedSectorService.validateValidity(sectorGroupVersion));
+    assertDoesNotThrow(() -> sectorValidationService.validateValidity(sectorGroupVersion));
   }
 
   @Test
@@ -75,6 +75,6 @@ class SectorValidationServiceTest {
     when(trafficPointElementService.findBySloidOrderByValidFrom(any())).thenReturn(
         List.of(TrafficPointTestData.getBasicTrafficPoint()));
 
-    assertThrows(SectorValidityException.class, () -> sharedSectorService.validateValidity(sectorGroupVersion));
+    assertThrows(SectorValidityException.class, () -> sectorValidationService.validateValidity(sectorGroupVersion));
   }
 }
