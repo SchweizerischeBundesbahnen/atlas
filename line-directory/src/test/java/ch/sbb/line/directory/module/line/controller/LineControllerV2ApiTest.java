@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2.Fields;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
@@ -20,6 +21,8 @@ import ch.sbb.line.directory.module.line.LineTestData;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.repository.LineVersionRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,4 +144,17 @@ class LineControllerV2ApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
 
+  @Test
+  void shouldGetLineVersions() throws Exception {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionV2Builder().build();
+    lineVersionRepository.saveAndFlush(lineVersion);
+
+    //when
+    String yesterday =
+        LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
+    mvc.perform(get("/v2/lines/versions?createdAfter=" + yesterday + "&modifiedAfter=" + yesterday))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
 }
