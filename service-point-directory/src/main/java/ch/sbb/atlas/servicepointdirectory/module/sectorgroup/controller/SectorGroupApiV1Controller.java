@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
-import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api.SectorGroupApiInternal;
+import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api.SectorGroupApiV1;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.mapper.SectorGroupMapper;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.service.SectorGroupService;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class SectorGroupApiInternalController implements SectorGroupApiInternal {
+public class SectorGroupApiV1Controller implements SectorGroupApiV1 {
 
   private final SectorGroupService sectorGroupService;
   private final TrafficPointElementService trafficPointElementService;

@@ -3,9 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -18,6 +16,7 @@ import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.module.sector.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
@@ -27,46 +26,57 @@ import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.model.SectorGroupRe
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository.SectorGroupRelationRepository;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
-import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePointService;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.TrafficPointTestData;
-import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
+import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.repository.TrafficPointElementVersionRepository;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 
-class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
+class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
 
   private final SectorGroupRelationRepository sectorGroupRelationRepository;
   private final SectorVersionRepository sectorVersionRepository;
   private final SectorGroupVersionRepository sectorGroupVersionRepository;
-
-  @MockitoBean
-  private TrafficPointElementService trafficPointElementService;
-
-  @MockitoBean
-  private ServicePointService servicePointService;
+  private final TrafficPointElementVersionRepository trafficPointRepository;
+  private final ServicePointVersionRepository servicePointVersionRepository;
 
   @MockitoBean
   private LocationService locationService;
 
   @Autowired
-  public SectorGroupApiInternalControllerTest(SectorVersionRepository sectorVersionRepository,
-      SectorGroupRelationRepository sectorGroupRelationRepository, SectorGroupVersionRepository sectorGroupVersionRepository) {
+  public SectorGroupApiV1ControllerTest(SectorVersionRepository sectorVersionRepository,
+      SectorGroupRelationRepository sectorGroupRelationRepository, SectorGroupVersionRepository sectorGroupVersionRepository,
+      TrafficPointElementVersionRepository trafficPointRepository, ServicePointVersionRepository servicePointVersionRepository) {
     this.sectorVersionRepository = sectorVersionRepository;
     this.sectorGroupRelationRepository = sectorGroupRelationRepository;
     this.sectorGroupVersionRepository = sectorGroupVersionRepository;
+    this.trafficPointRepository = trafficPointRepository;
+    this.servicePointVersionRepository = servicePointVersionRepository;
   }
 
   @BeforeEach
+  void setUp() {
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getBasicTrafficPoint();
+    trafficPointElementVersion.setServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
+    
+    trafficPointRepository.saveAndFlush(trafficPointElementVersion);
+    servicePointVersionRepository.saveAndFlush(ServicePointTestData.getBern());
+  }
+
+  @AfterEach
   void cleanDb() {
     sectorVersionRepository.deleteAll();
     sectorGroupRelationRepository.deleteAll();
     sectorGroupVersionRepository.deleteAll();
+    trafficPointRepository.deleteAll();
+    servicePointVersionRepository.deleteAll();
   }
 
   @Test
@@ -80,7 +90,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
     groupVersion2.setSloid("new:sloid");
     sectorGroupVersionRepository.save(groupVersion2);
 
-    mvc.perform(get("/internal/sector-groups"))
+    mvc.perform(get("/v1/sector-groups"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0].id", is(groupVersion1.getId().intValue())))
@@ -108,7 +118,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
 
     sectorGroupVersionRepository.save(groupVersion2);
 
-    mvc.perform(get("/internal/sector-groups/{sloid}", sloid))
+    mvc.perform(get("/v1/sector-groups/{sloid}", sloid))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0].etagVersion", is(1)))
@@ -121,7 +131,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
 
     SectorGroupVersion sectorGroupVersion = sectorGroupVersionRepository.save(SectorTestData.getBasicSectorGroupVersion());
 
-    mvc.perform(get("/internal/sector-groups/versions/{id}", sectorGroupVersion.getId()))
+    mvc.perform(get("/v1/sector-groups/versions/{id}", sectorGroupVersion.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(sectorGroupVersion.getId().intValue())))
         .andExpect(jsonPath("$.sloid", is(sectorGroupVersion.getSloid())))
@@ -141,26 +151,23 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
 
     CreateSectorGroupVersionModel create = CreateSectorGroupVersionModel.builder()
         .trafficPointSloid(sectorVersion.getTrafficPointSloid())
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2030, 1, 1))
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
         .designation("hihi")
         .length(17.00)
-        .sectorSloids(List.of("ch:1:sloid:sector:1", "new:sloid"))
+        .sectorSloids(Set.of("ch:1:sloid:sector:1", "new:sloid"))
         .build();
 
     doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
         create.getTrafficPointSloid());
 
-    when(trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion1.getTrafficPointSloid()))
-        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
-
-    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
-        .thenReturn(List.of(ServicePointTestData.getBern()));
-
-    MvcResult mvcResult = mvc.perform(post("/internal/sector-groups")
+    MvcResult mvcResult = mvc.perform(post("/v1/sector-groups")
             .contentType(contentType)
             .content(mapper.writeValueAsString(create)))
         .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.length", is(36.0)))
+        .andExpect(jsonPath("$.designation", is("hihi")))
+        .andExpect(jsonPath("$.sloid", is("ch:1:sloid:sector:1:0:1")))
         .andReturn();
 
     String responseContent = mvcResult.getResponse().getContentAsString();
@@ -188,19 +195,13 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
         .validTo(LocalDate.of(2030, 1, 1))
         .designation("hihi")
         .length(17.00)
-        .sectorSloids(List.of("ch:1:sloid:sector:1", "new:sloid"))
+        .sectorSloids(Set.of("ch:1:sloid:sector:1", "new:sloid"))
         .build();
 
     doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
         create.getTrafficPointSloid());
 
-    when(trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion1.getTrafficPointSloid()))
-        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
-
-    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
-        .thenReturn(List.of(ServicePointTestData.getBern()));
-
-    mvc.perform(post("/internal/sector-groups")
+    mvc.perform(post("/v1/sector-groups")
             .contentType(contentType)
             .content(mapper.writeValueAsString(create)))
         .andExpect(status().isBadRequest())
@@ -240,12 +241,6 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
     sectorGroupRelationRepository.saveAndFlush(
         SectorGroupRelation.builder().sectorGroupRelationId(sectorGroupRelationId2).build());
 
-    when(trafficPointElementService.findBySloidOrderByValidFrom(any()))
-        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
-
-    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
-        .thenReturn(List.of(ServicePointTestData.getBern()));
-
     SectorGroupVersionModel updateDto = SectorGroupVersionModel.builder()
         .etagVersion(sectorGroupVersion.getVersion())
         .sloid(sectorVersion.getSloid())
@@ -256,7 +251,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
         .length(sectorGroupVersion.getLength() + 1)
         .build();
 
-    mvc.perform(put("/internal/sector-groups/{id}", sectorGroupVersion.getId())
+    mvc.perform(put("/v1/sector-groups/{id}", sectorGroupVersion.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateDto)))
         .andExpect(status().isOk())
