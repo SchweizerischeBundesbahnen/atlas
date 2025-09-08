@@ -44,7 +44,7 @@ public class SectorGroupService {
   private final SectorGroupRelationRepository sectorGroupRelationRepository;
   private final SectorVersionRepository sectorVersionRepository;
   private final LocationService locationService;
-  private final SectorValidationService sharedSectorService;
+  private final SectorValidationService sectorValidationService;
 
   public List<SectorGroupVersionModel> getSectorGroups() {
     return sectorGroupVersionRepository.findAll().stream().map(SectorGroupMapper::toModel).toList();
@@ -87,8 +87,8 @@ public class SectorGroupService {
     validateSectorVersions(versions);
     validateTrafficPoint(sectorGroupVersion.getTrafficPointSloid(), versions);
 
-    sharedSectorService.validateValidity(sectorGroupVersion);
-    sharedSectorService.validateMeanOfTransportOfServicePoint(servicePointVersions);
+    sectorValidationService.validateValidity(sectorGroupVersion);
+    sectorValidationService.validateMeanOfTransportOfServicePoint(servicePointVersions);
 
     sectorGroupVersion.setSloid(locationService.generateSloid(SloidType.SECTOR_GROUP, sectorGroupVersion.getTrafficPointSloid()));
 
@@ -190,7 +190,7 @@ public class SectorGroupService {
 
     List<SectorGroupVersion> currentVersions = findAllBySloidOrderByValidFrom(currentVersion.getSloid());
 
-    sharedSectorService.validateValidity(editedVersion);
+    sectorValidationService.validateValidity(editedVersion);
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion,
