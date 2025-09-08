@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
@@ -19,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Sector Groups")
-@RequestMapping("internal/sector-groups")
+@Tag(name = "Sector Groups")
+@RequestMapping("v1/sector-groups")
 @Validated
 @Hidden // ATLAS-3130 To Remove once public, add link to sector restdoc in SePoDi
-public interface SectorGroupApiInternal {
+public interface SectorGroupApiV1 {
 
   @GetMapping
   List<SectorGroupVersionModel> getSectorGroups();
