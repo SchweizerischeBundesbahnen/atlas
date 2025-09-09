@@ -55,4 +55,6 @@ public class JobDescriptionConstant {
   public static final String EXPORT_TTFN_CSV_JOB_NAME = "exportTtfnCsvJob";
   public static final String EXPORT_TTFN_JSON_JOB_NAME = "exportTtfnJsonJob";
 
+  public static final String EXPORT_SECTOR_JSON_JOB_NAME = "exportSectorJsonJob";
+
 }
