@@ -1,12 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.service;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorNotExistingException;
@@ -29,6 +31,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,29 +48,6 @@ public class SectorGroupService {
   private final SectorVersionRepository sectorVersionRepository;
   private final LocationService locationService;
   private final SectorValidationService sectorValidationService;
-
-  public List<SectorGroupVersionModel> getSectorGroups() {
-    return sectorGroupVersionRepository.findAll().stream().map(SectorGroupMapper::toModel).toList();
-  }
-
-  public List<SectorGroupVersionModel> getSectorGroup(String sectorGroupSloid) {
-    List<SectorGroupVersion> sectorGroupVersions = findAllBySloidOrderByValidFrom(sectorGroupSloid);
-    return sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
-  }
-
-  public ReadSectorGroupVersionModel getSectorGroupVersion(Long id) {
-    SectorGroupVersion sectorGroupVersion = getSectorGroupVersionById(id);
-    List<String> sectorSloids = findAllSectorsRelatedToGroup(sectorGroupVersion.getSloid());
-    List<SectorVersionModel> sectorVersionModels = mapToModels(fetchLatestSectorVersions(sectorSloids));
-
-    return SectorGroupMapper.toReadModel(sectorGroupVersion, sectorVersionModels);
-  }
-
-  private List<String> findAllSectorsRelatedToGroup(String sectorGroupSloid) {
-    return sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(sectorGroupSloid)
-        .stream()
-        .map(r -> r.getSectorGroupRelationId().getSectorSloid()).toList();
-  }
 
   @Transactional
   @PreAuthorize("""
@@ -206,6 +186,34 @@ public class SectorGroupService {
 
   public List<SectorGroupVersion> findAllBySloidOrderByValidFrom(String sectorGroupSloid) {
     return sectorGroupVersionRepository.findAllBySloidOrderByValidFrom(sectorGroupSloid);
+  }
+
+  public Container<SectorGroupVersionModel> getSectorGroupsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
+    List<SectorGroupVersion> sectorGroupVersions = sectorGroupVersionRepository.findAllByTrafficPointSloid(trafficPointSloid,
+        pageable.getSort());
+
+    List<SectorGroupVersionModel> overviewModels = sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
+    List<SectorGroupVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
+        SectorGroupVersionModel::getSloid);
+    return OverviewDisplayBuilder.toPagedContainer(displayableModels, pageable);
+  }
+
+  public List<SectorGroupVersionModel> getSectorGroups() {
+    return sectorGroupVersionRepository.findAll().stream().map(SectorGroupMapper::toModel).toList();
+  }
+
+  public ReadSectorGroupVersionModel getSectorGroupVersion(Long id) {
+    SectorGroupVersion sectorGroupVersion = getSectorGroupVersionById(id);
+    List<String> sectorSloids = findAllSectorsRelatedToGroup(sectorGroupVersion.getSloid());
+    List<SectorVersionModel> sectorVersionModels = mapToModels(fetchLatestSectorVersions(sectorSloids));
+
+    return SectorGroupMapper.toReadModel(sectorGroupVersion, sectorVersionModels);
+  }
+
+  private List<String> findAllSectorsRelatedToGroup(String sectorGroupSloid) {
+    return sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(sectorGroupSloid)
+        .stream()
+        .map(r -> r.getSectorGroupRelationId().getSectorSloid()).toList();
   }
 
 }

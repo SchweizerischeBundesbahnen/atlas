@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
@@ -33,6 +34,8 @@ import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
@@ -119,13 +122,31 @@ class SectorGroupServiceTest {
     sectorGroupVersion.setSloid(sloid);
     sectorGroupVersionRepository.save(sectorGroupVersion);
 
-    List<SectorGroupVersionModel> models = sectorGroupService.getSectorGroup(sloid);
+    List<SectorGroupVersion> versions = sectorGroupService.findAllBySloidOrderByValidFrom(sloid);
 
-    assertThat(models)
-        .extracting(SectorGroupVersionModel::getSloid)
+    assertThat(versions)
+        .extracting(SectorGroupVersion::getSloid)
         .containsExactly(
             "grp:42"
         );
+  }
+
+  @Test
+  void shouldGetSectorsOfTrafficPointSortedAndPaged() {
+    SectorGroupVersion sectorGroupVersion = SectorTestData.getBasicSectorGroupVersion();
+    sectorGroupVersion.setSloid("ch:1:sloid:group:777");
+    sectorGroupVersion.setDesignation("D");
+    sectorGroupVersionRepository.save(sectorGroupVersion);
+
+    sectorGroupVersion.setSloid("ch:1:sloid:group:333");
+    sectorGroupVersion.setDesignation("A");
+    sectorGroupVersionRepository.save(sectorGroupVersion);
+
+    Container<SectorGroupVersionModel> overview = sectorGroupService.getSectorGroupsOfTrafficPoint(
+        sectorGroupVersion.getTrafficPointSloid(),
+        PageRequest.of(0, 1, Sort.by("designation").ascending()));
+    assertThat(overview.getTotalCount()).isEqualTo(1);
+    assertThat(overview.getObjects().getFirst().getDesignation()).isEqualTo("A");
   }
 
   @Test
