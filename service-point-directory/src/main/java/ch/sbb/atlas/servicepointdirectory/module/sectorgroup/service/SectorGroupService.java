@@ -202,12 +202,25 @@ public class SectorGroupService {
     return sectorGroupVersionRepository.findAll().stream().map(SectorGroupMapper::toModel).toList();
   }
 
-  public ReadSectorGroupVersionModel getSectorGroupVersion(Long id) {
-    SectorGroupVersion sectorGroupVersion = getSectorGroupVersionById(id);
-    List<String> sectorSloids = findAllSectorsRelatedToGroup(sectorGroupVersion.getSloid());
-    List<SectorVersionModel> sectorVersionModels = mapToModels(fetchLatestSectorVersions(sectorSloids));
+  public List<SectorVersionModel> getSectorsBySectorGroupSloid(String sectorGroupSloid) {
+    List<String> sectorSloids = findAllSectorsRelatedToGroup(sectorGroupSloid);
 
-    return SectorGroupMapper.toReadModel(sectorGroupVersion, sectorVersionModels);
+    List<SectorVersion> merged = sectorSloids.stream()
+        .map(sectorSloid -> {
+          List<SectorVersion> sectorVersions =
+              sectorVersionRepository.findAllBySloidOrderByValidFrom(sectorSloid);
+          if (sectorVersions.isEmpty()) {
+            throw new SectorNotExistingException(sectorSloid);
+          }
+          return OverviewDisplayBuilder.mergeVersionsForDisplay(
+              sectorVersions,
+              SectorVersion::getSloid
+          );
+        })
+        .flatMap(List::stream)
+        .toList();
+
+    return mapToModels(merged);
   }
 
   private List<String> findAllSectorsRelatedToGroup(String sectorGroupSloid) {
