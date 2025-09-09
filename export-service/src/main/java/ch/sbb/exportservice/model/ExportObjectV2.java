@@ -25,6 +25,7 @@ public enum ExportObjectV2 {
   SERVICE_POINT(ExportTypes.SWISS_WORLD, "service-point", "service-point-batch"),
   TRAFFIC_POINT(ExportTypes.SWISS_WORLD, "traffic-point", "traffic-point-batch"),
   LOADING_POINT(ExportTypes.SWISS_WORLD, "loading-point", "loading-point-batch"),
+  SECTOR(ExportTypes.DEFAULT, "sector", "sector-batch"),
   ;
 
   private final List<ExportTypeV2> supportedExportTypes;
