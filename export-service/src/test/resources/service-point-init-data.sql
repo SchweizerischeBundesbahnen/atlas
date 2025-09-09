@@ -470,3 +470,20 @@ insert into loading_point_version (id,
                                    version)
 values (1002, 70, 'Ladestelle 3', 'Ladestelle Lang', true, 8509333, '2040-01-01', '2050-12-31', '2020-05-18 12:43:34.000000',
         'fs45117', '2020-05-18 12:43:34.000000', 'fs45117', 0);
+
+
+-- Sector
+
+INSERT INTO sector_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, north,
+                                                    east, height, spatial_reference, length, edge_height, status, creation_date,
+                                                    creator, edition_date, editor, version)
+VALUES (1000, 'ch:1:sloid:13:0:1:1', 'ch:1:sloid:6602:0:7110', '2021-12-12', '2023-04-25', 'test1', 225738.00000000000,
+        681821.00000000000, 540.20000, 'LV95', 150.000, 120, 'VALIDATED', '2025-09-09 11:06:36.541447',
+        'abab81fb-6ba0-4153-af93-8fb3dc910210', '2025-09-09 11:06:36.541447', 'abab81fb-6ba0-4153-af93-8fb3dc910210', 0);
+
+INSERT INTO sector_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, north,
+                                                    east, height, spatial_reference, length, edge_height, status, creation_date,
+                                                    creator, edition_date, editor, version)
+VALUES (1002, 'ch:1:sloid:13:0:6:10', 'ch:1:sloid:6602:0:7110', '2021-12-12', '2023-04-25', 'test1', 225738.00000000000,
+        681821.00000000000, 540.20000, 'LV95', 150.000, 120, 'VALIDATED', '2025-09-09 14:09:31.890306',
+        'abab81fb-6ba0-4153-af93-8fb3dc910210', '2025-09-09 14:09:31.890306', 'abab81fb-6ba0-4153-af93-8fb3dc910210', 0);
