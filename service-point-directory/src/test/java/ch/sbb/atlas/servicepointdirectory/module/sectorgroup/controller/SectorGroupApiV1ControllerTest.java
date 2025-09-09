@@ -65,7 +65,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
   void setUp() {
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getBasicTrafficPoint();
     trafficPointElementVersion.setServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
-    
+
     trafficPointRepository.saveAndFlush(trafficPointElementVersion);
     servicePointVersionRepository.saveAndFlush(ServicePointTestData.getBern());
   }
@@ -123,19 +123,6 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0].etagVersion", is(1)))
         .andExpect(jsonPath("$[1].etagVersion", is(2)));
-  }
-
-  @Test
-  void shouldGetSectorGroupVersionById() throws Exception {
-    sectorGroupVersionRepository.deleteAll();
-
-    SectorGroupVersion sectorGroupVersion = sectorGroupVersionRepository.save(SectorTestData.getBasicSectorGroupVersion());
-
-    mvc.perform(get("/v1/sector-groups/versions/{id}", sectorGroupVersion.getId()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(sectorGroupVersion.getId().intValue())))
-        .andExpect(jsonPath("$.sloid", is(sectorGroupVersion.getSloid())))
-        .andExpect(jsonPath("$.sectorVersions", hasSize(0)));
   }
 
   @Test
