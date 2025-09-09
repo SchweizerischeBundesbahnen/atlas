@@ -18,6 +18,7 @@ import ch.sbb.exportservice.job.prm.relation.service.ExportRelationJobService;
 import ch.sbb.exportservice.job.prm.stoppoint.service.ExportStopPointJobService;
 import ch.sbb.exportservice.job.prm.toilet.service.ExportToiletJobService;
 import ch.sbb.exportservice.job.sepodi.loadingpoint.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.job.sepodi.sector.service.ExportSectorJobService;
 import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.service.ExportTrafficPointElementJobService;
 import java.util.stream.Stream;
@@ -43,6 +44,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
     ExportServicePointJobService.class,
     ExportTrafficPointElementJobService.class,
     ExportLoadingPointJobService.class,
+    ExportSectorJobService.class,
 
     ExportLineJobService.class,
     ExportSublineJobService.class,
@@ -66,6 +68,7 @@ class ExportControllerApiV2InternalTest extends BaseControllerApiTest {
         Arguments.of("sepodi/service-point-batch", ExportServicePointJobService.class),
         Arguments.of("sepodi/traffic-point-batch", ExportTrafficPointElementJobService.class),
         Arguments.of("sepodi/loading-point-batch", ExportLoadingPointJobService.class),
+        Arguments.of("sepodi/sector-batch", ExportSectorJobService.class),
 
         Arguments.of("lidi/line-batch", ExportLineJobService.class),
         Arguments.of("lidi/subline-batch", ExportSublineJobService.class),
