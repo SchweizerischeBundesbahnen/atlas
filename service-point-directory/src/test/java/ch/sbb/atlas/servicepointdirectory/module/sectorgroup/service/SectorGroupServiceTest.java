@@ -150,7 +150,7 @@ class SectorGroupServiceTest {
   }
 
   @Test
-  void shouldGetReadModelWithRelatedSectors() {
+  void shouldGetSectorsBySectorGroupSloid() {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
         TrafficPointTestData.getBasicTrafficPoint());
     String sector1 = "sector:1:abc";
@@ -188,13 +188,13 @@ class SectorGroupServiceTest {
         new SectorGroupRelationId(savedGroup.getSloid(), sector2)));
 
     // When
-    ReadSectorGroupVersionModel read = sectorGroupService.getSectorGroupVersion(savedGroup.getId());
+    List<SectorVersionModel> result = sectorGroupService.getSectorsBySectorGroupSloid(savedGroup.getSloid());
 
     // Then
-    assertThat(read.getSloid()).isEqualTo(savedGroup.getSloid());
-    assertThat(read.getSectorVersions())
+    assertThat(result).hasSize(2)
         .extracting(SectorVersionModel::getSloid)
         .containsExactlyInAnyOrder(sector1, sector2);
+    assertThat(result).extracting(SectorVersionModel::getDesignation).containsExactlyInAnyOrder("hehe", "dese");
   }
 
   @Test

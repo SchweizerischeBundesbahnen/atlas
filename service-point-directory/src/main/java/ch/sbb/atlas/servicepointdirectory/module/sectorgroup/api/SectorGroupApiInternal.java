@@ -3,9 +3,11 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
@@ -23,4 +25,7 @@ public interface SectorGroupApiInternal {
   @PageableAsQueryParam
   Container<SectorGroupVersionModel> getSectorGroupsOfTrafficPoint(@PathVariable String trafficPointSloid,
       @Parameter(hidden = true) Pageable pageable);
+
+  @GetMapping("{sloid}/sectors")
+  List<SectorVersionModel> getSectorsBySectorGroupSloid(@PathVariable String sloid);
 }
