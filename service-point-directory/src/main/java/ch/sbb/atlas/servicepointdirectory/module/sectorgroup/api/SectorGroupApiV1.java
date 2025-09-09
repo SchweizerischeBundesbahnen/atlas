@@ -30,9 +30,6 @@ public interface SectorGroupApiV1 {
   @GetMapping("{sloid}")
   List<SectorGroupVersionModel> getSectorGroup(@PathVariable String sloid);
 
-  @GetMapping("versions/{id}")
-  ReadSectorGroupVersionModel getSectorGroupVersion(@PathVariable Long id);
-
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadSectorGroupVersionModel createSectorGroupVersion(

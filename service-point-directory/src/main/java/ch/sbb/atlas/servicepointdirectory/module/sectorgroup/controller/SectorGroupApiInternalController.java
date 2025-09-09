@@ -2,8 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api.SectorGroupApiInternal;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.service.SectorGroupService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +23,8 @@ public class SectorGroupApiInternalController implements SectorGroupApiInternal 
     return sectorGroupService.getSectorGroupsOfTrafficPoint(trafficPointSloid, pageable);
   }
 
+  @Override
+  public List<SectorVersionModel> getSectorsBySectorGroupSloid(String sloid) {
+    return sectorGroupService.getSectorsBySectorGroupSloid(sloid);
+  }
 }
