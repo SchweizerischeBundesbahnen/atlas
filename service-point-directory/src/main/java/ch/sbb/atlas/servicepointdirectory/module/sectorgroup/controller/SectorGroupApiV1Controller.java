@@ -32,7 +32,8 @@ public class SectorGroupApiV1Controller implements SectorGroupApiV1 {
 
   @Override
   public List<SectorGroupVersionModel> getSectorGroup(String sloid) {
-    return sectorGroupService.getSectorGroup(sloid);
+    List<SectorGroupVersion> sectorGroupVersions = sectorGroupService.findAllBySloidOrderByValidFrom(sloid);
+    return sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
   }
 
   @Override
