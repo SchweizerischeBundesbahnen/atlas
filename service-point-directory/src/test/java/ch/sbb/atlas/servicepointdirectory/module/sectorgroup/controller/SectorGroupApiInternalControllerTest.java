@@ -66,7 +66,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetSectorGroupVersionById() throws Exception {
+  void shouldGetSectorBySectorGroupId() throws Exception {
     sectorGroupVersionRepository.deleteAll();
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
         TrafficPointTestData.getBasicTrafficPoint());

@@ -27,7 +27,7 @@ include::{snippets}/sector-group-api-v1-controller-test/should-get-sector-group-
 
 == Read Sector Group Version by ID - Successfully
 
-include::{snippets}/sector-group-api-v1-controller-test/should-get-sector-group-version-by-id/atlas-doc.adoc[]
+include::{snippets}/sector-group-api-internal-controller-test/should-get-sector-by-sector-group-id/atlas-doc.adoc[]
 
 == Create Sector Group - Successfully
 
