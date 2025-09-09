@@ -205,13 +205,10 @@ public class SectorGroupService {
   public List<SectorVersionModel> getSectorsBySectorGroupSloid(String sectorGroupSloid) {
     List<String> sectorSloids = findAllSectorsRelatedToGroup(sectorGroupSloid);
 
-    List<SectorVersion> merged = sectorSloids.stream()
+    List<SectorVersion> sectors = sectorSloids.stream()
         .map(sectorSloid -> {
-          List<SectorVersion> sectorVersions =
-              sectorVersionRepository.findAllBySloidOrderByValidFrom(sectorSloid);
-          if (sectorVersions.isEmpty()) {
-            throw new SectorNotExistingException(sectorSloid);
-          }
+          List<SectorVersion> sectorVersions = sectorVersionRepository.findAllBySloidOrderByValidFrom(sectorSloid);
+
           return OverviewDisplayBuilder.mergeVersionsForDisplay(
               sectorVersions,
               SectorVersion::getSloid
@@ -220,7 +217,7 @@ public class SectorGroupService {
         .flatMap(List::stream)
         .toList();
 
-    return mapToModels(merged);
+    return mapToModels(sectors);
   }
 
   private List<String> findAllSectorsRelatedToGroup(String sectorGroupSloid) {
