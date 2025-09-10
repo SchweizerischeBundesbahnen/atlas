@@ -192,10 +192,6 @@ public class SectorGroupService {
     List<SectorGroupVersion> sectorGroupVersions = sectorGroupVersionRepository.findAllByTrafficPointSloid(trafficPointSloid,
         pageable.getSort());
 
-    if (sectorGroupVersions.isEmpty()) {
-      throw new SloidNotFoundException(trafficPointSloid);
-    }
-
     List<SectorGroupVersionModel> overviewModels = sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
     List<SectorGroupVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
         SectorGroupVersionModel::getSloid);
