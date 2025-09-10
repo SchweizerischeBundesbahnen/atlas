@@ -1,5 +1,7 @@
 package ch.sbb.exportservice;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
@@ -15,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ class AmazonServiceIntegrationTest {
     File file = getMinimalServicePointCsvFile();
 
     URL url = amazonService.putFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
-    assertThat(url.toString()).isEqualTo(
+    assertThat(url).hasToString(
         "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE);
 
     // Download
@@ -53,7 +54,7 @@ class AmazonServiceIntegrationTest {
     File file = getMinimalServicePointCsvFile();
 
     URL url = amazonService.putFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
-    assertThat(url.toString()).isEqualTo(
+    assertThat(url).hasToString(
         "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE);
 
     // Stream
@@ -72,7 +73,7 @@ class AmazonServiceIntegrationTest {
     //check is a zip file
     assertThat(new ZipInputStream(inputStreamResource.getInputStream()).getNextEntry()).isNotNull();
 
-    assertThat(url.toString()).isEqualTo(
+    assertThat(url).hasToString(
         "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE +
             ".zip");
   }
@@ -90,7 +91,7 @@ class AmazonServiceIntegrationTest {
     InputStreamResource inputStreamResource = amazonService.pullFileAsStream(AmazonBucket.EXPORT,
         INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
     assertThat(new GZIPInputStream(inputStreamResource.getInputStream()).readAllBytes()).isNotNull();
-    assertThat(url.toString()).isEqualTo(
+    assertThat(url).hasToString(
         "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
   }
 
