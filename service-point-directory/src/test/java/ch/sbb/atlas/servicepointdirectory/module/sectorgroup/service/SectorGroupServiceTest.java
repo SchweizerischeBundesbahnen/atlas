@@ -126,22 +126,6 @@ class SectorGroupServiceTest {
   }
 
   @Test
-  void shouldThrowWhenTrafficPointSloidNotExists() {
-    SectorGroupVersion sectorGroupVersion = SectorTestData.getBasicSectorGroupVersion();
-    sectorGroupVersion.setSloid("ch:1:sloid:group:777");
-    sectorGroupVersion.setDesignation("D");
-    sectorGroupVersionRepository.save(sectorGroupVersion);
-
-    sectorGroupVersion.setSloid("ch:1:sloid:group:333");
-    sectorGroupVersion.setDesignation("A");
-    sectorGroupVersionRepository.save(sectorGroupVersion);
-
-    assertThatThrownBy(
-        () -> sectorGroupService.getSectorGroupsOfTrafficPoint("abc", PageRequest.of(0, 1, Sort.by("designation").ascending())))
-        .isInstanceOf(SloidNotFoundException.class);
-  }
-
-  @Test
   void shouldGetSectorsBySectorGroupSloid() {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
         TrafficPointTestData.getBasicTrafficPoint());

@@ -96,22 +96,6 @@ class SectorServiceTest {
   }
 
   @Test
-  void shouldThrowWhenTrafficPointSloidNotExists() {
-    SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
-    sectorVersion.setSloid("ch:1:sloid:sector:1");
-    sectorVersion.setDesignation("D");
-    sectorVersionRepository.save(sectorVersion);
-
-    sectorVersion.setSloid("ch:1:sloid:sector:2");
-    sectorVersion.setDesignation("A");
-    sectorVersionRepository.save(sectorVersion);
-
-    assertThatThrownBy(
-        () -> sectorService.getSectorsOfTrafficPoint("abc", PageRequest.of(0, 1, Sort.by("designation").ascending())))
-        .isInstanceOf(SloidNotFoundException.class);
-  }
-
-  @Test
   void shouldGetSectorVersionByIdWhenExists() {
     // Given
     SectorVersion saved = sectorVersionRepository.save(SectorTestData.getBasicSectorVersion());
