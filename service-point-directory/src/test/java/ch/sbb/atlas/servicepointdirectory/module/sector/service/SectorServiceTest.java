@@ -276,6 +276,29 @@ class SectorServiceTest {
   }
 
   @Test
+  void shouldThrowWhenSloidNotFound() {
+    String sloid = "ch:1:sector:multi";
+
+    SectorVersion v1 = SectorTestData.getBasicSectorVersion().toBuilder()
+        .sloid(sloid)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .designation("v1")
+        .build();
+
+    SectorVersion v2 = SectorTestData.getBasicSectorVersion().toBuilder()
+        .sloid(sloid)
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .designation("v2")
+        .build();
+    sectorVersionRepository.saveAll(List.of(v2, v1));
+
+    // When
+    // Then
+    assertThatThrownBy(() -> sectorService.getSector("abc"))
+        .isInstanceOf(SloidNotFoundException.class);
+  }
+
+  @Test
   @Transactional
   void shouldUpdateSectorAndCreateNewVersion() {
     trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());

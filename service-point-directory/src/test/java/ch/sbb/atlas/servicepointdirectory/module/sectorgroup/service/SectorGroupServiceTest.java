@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -33,6 +33,8 @@ import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
@@ -89,29 +91,6 @@ class SectorGroupServiceTest {
   }
 
   @Test
-  void shouldReturnEmptyListWhenNoGroups() {
-    assertThat(sectorGroupService.getSectorGroups()).isEmpty();
-  }
-
-  @Test
-  void shouldReturnAllSectorGroups() {
-    sectorGroupVersionRepository.save(SectorTestData.getBasicSectorGroupVersion());
-
-    SectorGroupVersion sectorGroupVersion = SectorTestData.getBasicSectorGroupVersion();
-    sectorGroupVersion.setSloid("ch:1:sloid:group:2");
-    sectorGroupVersionRepository.save(sectorGroupVersion);
-
-    List<SectorGroupVersionModel> all = sectorGroupService.getSectorGroups();
-
-    assertThat(all).hasSize(2)
-        .extracting(SectorGroupVersionModel::getSloid)
-        .containsExactlyInAnyOrder(
-            "ch:1:sloid:group:1",
-            "ch:1:sloid:group:2"
-        );
-  }
-
-  @Test
   void shouldGetSectorGroupModelsBySloid() {
     String sloid = "grp:42";
 
@@ -119,17 +98,35 @@ class SectorGroupServiceTest {
     sectorGroupVersion.setSloid(sloid);
     sectorGroupVersionRepository.save(sectorGroupVersion);
 
-    List<SectorGroupVersionModel> models = sectorGroupService.getSectorGroup(sloid);
+    List<SectorGroupVersion> versions = sectorGroupService.findAllBySloidOrderByValidFrom(sloid);
 
-    assertThat(models)
-        .extracting(SectorGroupVersionModel::getSloid)
+    assertThat(versions)
+        .extracting(SectorGroupVersion::getSloid)
         .containsExactly(
             "grp:42"
         );
   }
 
   @Test
-  void shouldGetReadModelWithRelatedSectors() {
+  void shouldGetSectorsOfTrafficPointSortedAndPaged() {
+    SectorGroupVersion sectorGroupVersion = SectorTestData.getBasicSectorGroupVersion();
+    sectorGroupVersion.setSloid("ch:1:sloid:group:777");
+    sectorGroupVersion.setDesignation("D");
+    sectorGroupVersionRepository.save(sectorGroupVersion);
+
+    sectorGroupVersion.setSloid("ch:1:sloid:group:333");
+    sectorGroupVersion.setDesignation("A");
+    sectorGroupVersionRepository.save(sectorGroupVersion);
+
+    Container<SectorGroupVersionModel> overview = sectorGroupService.getSectorGroupsOfTrafficPoint(
+        sectorGroupVersion.getTrafficPointSloid(),
+        PageRequest.of(0, 1, Sort.by("designation").ascending()));
+    assertThat(overview.getTotalCount()).isEqualTo(1);
+    assertThat(overview.getObjects().getFirst().getDesignation()).isEqualTo("A");
+  }
+
+  @Test
+  void shouldGetSectorsBySectorGroupSloid() {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
         TrafficPointTestData.getBasicTrafficPoint());
     String sector1 = "sector:1:abc";
@@ -167,13 +164,13 @@ class SectorGroupServiceTest {
         new SectorGroupRelationId(savedGroup.getSloid(), sector2)));
 
     // When
-    ReadSectorGroupVersionModel read = sectorGroupService.getSectorGroupVersion(savedGroup.getId());
+    List<SectorVersionModel> result = sectorGroupService.getSectorsBySectorGroupSloid(savedGroup.getSloid());
 
     // Then
-    assertThat(read.getSloid()).isEqualTo(savedGroup.getSloid());
-    assertThat(read.getSectorVersions())
+    assertThat(result).hasSize(2)
         .extracting(SectorVersionModel::getSloid)
         .containsExactlyInAnyOrder(sector1, sector2);
+    assertThat(result).extracting(SectorVersionModel::getDesignation).containsExactlyInAnyOrder("hehe", "dese");
   }
 
   @Test
@@ -212,7 +209,7 @@ class SectorGroupServiceTest {
     doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
         toCreate.getTrafficPointSloid());
 
-    ReadSectorGroupVersionModel result =
+    SectorGroupVersionModel result =
         sectorGroupService.createSectorGroup(toCreate, sloids, List.of(ServicePointTestData.getBern()));
 
     assertThat(sectorGroupVersionRepository.findById(result.getId())).isPresent();
@@ -249,6 +246,12 @@ class SectorGroupServiceTest {
     assertThatThrownBy(() ->
         sectorGroupService.createSectorGroup(toCreate, sloids, List.of())
     ).isInstanceOf(SectorNotExistingException.class);
+  }
+
+  @Test
+  void shouldThrowWhenSloidNotFound() {
+    assertThatThrownBy(() -> sectorGroupService.findAllBySloidOrderByValidFrom("abc"))
+        .isInstanceOf(SloidNotFoundException.class);
   }
 
   @Test

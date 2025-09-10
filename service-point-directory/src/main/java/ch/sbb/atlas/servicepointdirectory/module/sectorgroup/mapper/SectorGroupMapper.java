@@ -1,11 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.mapper;
 
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
-import java.util.List;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -25,26 +22,6 @@ public class SectorGroupMapper {
         .editor(sectorGroupVersion.getEditor())
         .editionDate(sectorGroupVersion.getEditionDate())
         .etagVersion(sectorGroupVersion.getVersion())
-        .status(sectorGroupVersion.getStatus())
-        .build();
-  }
-
-  public static ReadSectorGroupVersionModel toReadModel(SectorGroupVersion sectorGroupVersion,
-      List<SectorVersionModel> sectors) {
-    return ReadSectorGroupVersionModel.builder()
-        .id(sectorGroupVersion.getId())
-        .sloid(sectorGroupVersion.getSloid())
-        .trafficPointSloid(sectorGroupVersion.getTrafficPointSloid())
-        .designation(sectorGroupVersion.getDesignation())
-        .validFrom(sectorGroupVersion.getValidFrom())
-        .validTo(sectorGroupVersion.getValidTo())
-        .length(sectorGroupVersion.getLength())
-        .creator(sectorGroupVersion.getCreator())
-        .creationDate(sectorGroupVersion.getCreationDate())
-        .editor(sectorGroupVersion.getEditor())
-        .editionDate(sectorGroupVersion.getEditionDate())
-        .etagVersion(sectorGroupVersion.getVersion())
-        .sectorVersions(sectors)
         .status(sectorGroupVersion.getStatus())
         .build();
   }
