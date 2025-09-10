@@ -36,12 +36,12 @@ class BusinessOrganisationSqlntegrationTest {
     String sqlQuery = BusinessOrganisationSqlQueryUtil.getSqlQuery(ExportTypeV2.FULL);
 
     // when
-    List<BusinessOrganisation> businessOrganisations = executeQuery(sqlQuery);
+    List<BusinessOrganisation> result = executeQuery(sqlQuery);
 
     // then
-    assertThat(businessOrganisations.size()).isEqualTo(1);
-    assertThat(businessOrganisations.getFirst().getBusinessTypes()).containsExactly(BusinessType.STREET);
-    assertThat(businessOrganisations.getFirst().getBusinessRegisterName()).isEqualTo("Alcosuisse");
+    assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getBusinessTypes()).containsExactly(BusinessType.STREET);
+    assertThat(result.getFirst().getBusinessRegisterName()).isEqualTo("Alcosuisse");
   }
 
   @Test
