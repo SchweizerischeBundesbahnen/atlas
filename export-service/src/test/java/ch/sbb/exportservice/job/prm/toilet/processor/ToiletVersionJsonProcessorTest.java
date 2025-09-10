@@ -12,10 +12,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-public class ToiletVersionJsonProcessorTest {
+class ToiletVersionJsonProcessorTest {
 
   @Test
-  public void shouldMapToReadModel() {
+  void shouldMapToReadModel() {
     ToiletVersion entity = ToiletVersion.builder()
         .id(1L)
         .parentServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))

@@ -17,8 +17,10 @@ class SectorVersionTest {
     Arrays.stream(SectorVersion.class.getClasses()).forEach(c -> result.addAndGet(c.getDeclaredFields().length));
 
     //then
-    String errorDescription = String.format("\nThe %s is used in ServicePointDirectory project. " +
-            "If this test fail please make sure the entire ATLAS application works properly: import, export, ...\n",
+    String errorDescription = String.format("""
+            The %s is used in ServicePointDirectory project
+            If this test fail please make sure the entire ATLAS application works properly: import, export, ...
+            """,
         SectorVersion.class);
     assertThat(result.get()).as(errorDescription).isEqualTo(34);
   }

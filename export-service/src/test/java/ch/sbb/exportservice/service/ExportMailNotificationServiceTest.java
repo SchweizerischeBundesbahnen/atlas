@@ -1,10 +1,12 @@
 package ch.sbb.exportservice.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import java.util.HashMap;
 import java.util.Map;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
@@ -15,25 +17,16 @@ class ExportMailNotificationServiceTest {
   private MailNotificationService notificationService;
 
   @BeforeEach
-   void setUp() {
+  void setUp() {
     notificationService = new MailNotificationService();
   }
 
   @Test
-   void shouldBuildMailNotification() {
+  void shouldBuildMailNotification() {
     //given
-    Map<String, Object> expectedMailContent = new HashMap<>();
-    expectedMailContent.put("jobName", "export");
-    expectedMailContent.put("cause", "");
-    expectedMailContent.put("correlationId", "abc123");
-    expectedMailContent.put("exception", "");
-    expectedMailContent.put("jobParameter", "{}");
-    expectedMailContent.put("stepName", "myStep");
-    expectedMailContent.put("stepExecutionInformation", "Step [myStep with id 123] executed in ");
-    JobExecution jobExecution = new JobExecution(1L);
-    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
-    stepExecution.getExecutionContext().put("traceId", "abc123");
-    stepExecution.setId(123L);
+    Map<String, Object> expectedMailContent = getMailContent();
+    StepExecution stepExecution = getStepExecution();
+
     //when
     MailNotification result = notificationService.buildMailErrorNotification("export", stepExecution);
 
@@ -46,20 +39,10 @@ class ExportMailNotificationServiceTest {
   }
 
   @Test
-   void shouldBuildMailNotificationWhenThrowableIsNull() {
+  void shouldBuildMailNotificationWhenThrowableIsNull() {
     //given
-    Map<String, Object> expectedMailContent = new HashMap<>();
-    expectedMailContent.put("jobName", "export");
-    expectedMailContent.put("cause", "");
-    expectedMailContent.put("correlationId", "abc123");
-    expectedMailContent.put("exception", "");
-    expectedMailContent.put("jobParameter", "{}");
-    expectedMailContent.put("stepName", "myStep");
-    expectedMailContent.put("stepExecutionInformation", "Step [myStep with id 123] executed in ");
-    JobExecution jobExecution = new JobExecution(1L);
-    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
-    stepExecution.getExecutionContext().put("traceId", "abc123");
-    stepExecution.setId(123L);
+    Map<String, Object> expectedMailContent = getMailContent();
+    StepExecution stepExecution = getStepExecution();
     //when
     MailNotification result = notificationService.buildMailErrorNotification("export", stepExecution);
 
@@ -71,4 +54,23 @@ class ExportMailNotificationServiceTest {
     assertThat(result.getTemplateProperties()).containsOnly(expectedMailContent);
   }
 
+  private static @NotNull StepExecution getStepExecution() {
+    JobExecution jobExecution = new JobExecution(1L);
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.getExecutionContext().put("traceId", "abc123");
+    stepExecution.setId(123L);
+    return stepExecution;
+  }
+
+  private static @NotNull Map<String, Object> getMailContent() {
+    Map<String, Object> expectedMailContent = new HashMap<>();
+    expectedMailContent.put("jobName", "export");
+    expectedMailContent.put("cause", "");
+    expectedMailContent.put("correlationId", "abc123");
+    expectedMailContent.put("exception", "");
+    expectedMailContent.put("jobParameter", "{}");
+    expectedMailContent.put("stepName", "myStep");
+    expectedMailContent.put("stepExecutionInformation", "Step [myStep with id 123] executed in ");
+    return expectedMailContent;
+  }
 }

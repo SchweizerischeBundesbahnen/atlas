@@ -22,7 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportSectorIntegrationTest {
+class ExportSectorIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;

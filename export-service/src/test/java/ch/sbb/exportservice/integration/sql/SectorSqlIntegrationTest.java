@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class SectorSqlIntegrationTest extends BaseSqlIntegrationTest {
+class SectorSqlIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
   void shouldReturnFullSectors() throws SQLException {
