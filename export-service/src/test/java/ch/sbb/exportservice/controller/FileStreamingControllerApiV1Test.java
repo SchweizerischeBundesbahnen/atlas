@@ -37,10 +37,7 @@ class FileStreamingControllerApiV1Test {
 
   @BeforeEach
   void setUp() {
-    try (var ignored = MockitoAnnotations.openMocks(this)) {
-      log.info("Mocks are open");
-    } catch (Exception ignored) {
-    }
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test

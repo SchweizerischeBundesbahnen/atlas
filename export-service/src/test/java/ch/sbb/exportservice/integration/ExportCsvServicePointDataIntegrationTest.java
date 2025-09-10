@@ -8,7 +8,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.Files;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,8 @@ class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrat
 
   @Test
   void shouldExportServicePointToCsvWithCorrectData() throws Exception {
-    when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
+    when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any()))
+        .thenReturn(URI.create("https://sbb.ch").toURL());
     when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     // when

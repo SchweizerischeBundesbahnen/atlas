@@ -36,10 +36,7 @@ class FileStreamingControllerApiV2Test {
 
   @BeforeEach
   void setUp() {
-    try (var ignored = MockitoAnnotations.openMocks(this)) {
-      log.info("Mocks are open");
-    } catch (Exception ignored) {
-    }
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
@@ -93,7 +90,8 @@ class FileStreamingControllerApiV2Test {
     // Then
     assertThat(response.get().getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.get().getBody()).isEqualTo(resource);
-    assertThat(Objects.requireNonNull(response.get().getHeaders().getContentType()).toString()).isEqualTo("application/gzip");
+    assertThat(Objects.requireNonNull(response.get().getHeaders().getContentType())).hasToString("application"
+        + "/gzip");
   }
 
   @Test
@@ -112,7 +110,7 @@ class FileStreamingControllerApiV2Test {
     // Then
     assertThat(response.get().getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.get().getBody()).isEqualTo(resource);
-    assertThat(Objects.requireNonNull(response.get().getHeaders().getContentType()).toString()).isEqualTo("application/gzip");
+    assertThat(Objects.requireNonNull(response.get().getHeaders().getContentType())).hasToString("application/gzip");
   }
 
   @Test

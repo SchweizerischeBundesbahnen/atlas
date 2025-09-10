@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
-public class PlatformVersionCsvProcessorTest {
+class PlatformVersionCsvProcessorTest {
 
   private final PlatformVersionCsvProcessor processor = new PlatformVersionCsvProcessor();
 
