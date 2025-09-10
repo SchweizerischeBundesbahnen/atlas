@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { ReadTrafficPointElementVersion } from '../../../api';
-import { Pages } from '../../pages';
-import { TrafficPointElementService } from '../../../api/service/sepodi/traffic-point-element.service';
+import { ReadTrafficPointElementVersion } from '../../../../api';
+import { Pages } from '../../../pages';
+import { TrafficPointElementService } from '../../../../api/service/sepodi/traffic-point-element.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrafficPointElementsDetailResolver {
@@ -15,7 +15,7 @@ export class TrafficPointElementsDetailResolver {
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<Array<ReadTrafficPointElementVersion>> {
-    const idParameter = route.paramMap.get('id') || '';
+    const idParameter = route.paramMap.get('trafficPointSloid') || '';
     return idParameter === 'add'
       ? of([])
       : this.trafficPointElementService

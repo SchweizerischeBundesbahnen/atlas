@@ -1,11 +1,15 @@
 @use 'src/styles/variables' as variables;
 
 nav[mat-tab-nav-bar].tabs {
+  .mat-mdc-tab-link-container {
+    border-bottom: none;
+  }
   .mat-mdc-tab-link {
     opacity: unset;
     display: unset;
     background-color: variables.$gray-100;
-    border-radius: variables.$border-radius-small variables.$border-radius-small 0 0;
+    border-radius: variables.$border-radius-small variables.$border-radius-small
+      0 0;
     margin-right: 5px;
     flex-grow: 0;
     overflow: hidden;
