@@ -13,6 +13,7 @@ public class SectorJsonProcessor implements ItemProcessor<SectorVersion, SectorV
         .designation(version.getDesignation())
         .east(version.getEast())
         .north(version.getNorth())
+        .status(version.getStatus())
         .edgeHeight(version.getEdgeHeight())
         .height(version.getHeight())
         .length(version.getLength())
