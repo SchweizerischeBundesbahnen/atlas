@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.mapper.SectorMapper;
@@ -90,6 +91,10 @@ public class SectorService {
     List<SectorVersion> sectors = sectorVersionRepository.findAllByTrafficPointSloid(trafficPointSloid,
         pageable.getSort());
 
+    if (sectors.isEmpty()) {
+      throw new SloidNotFoundException(trafficPointSloid);
+    }
+
     List<SectorVersionModel> overviewModels = sectors.stream().map(SectorMapper::toModel).toList();
     List<SectorVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
         SectorVersionModel::getSloid);
@@ -101,7 +106,13 @@ public class SectorService {
   }
 
   public List<SectorVersion> getSector(String sectorSloid) {
-    return sectorVersionRepository.findAllBySloidOrderByValidFrom(sectorSloid);
+    List<SectorVersion> sectorVersions = sectorVersionRepository.findAllBySloidOrderByValidFrom(sectorSloid);
+
+    if (sectorVersions.isEmpty()) {
+      throw new SloidNotFoundException(sectorSloid);
+    }
+    
+    return sectorVersions;
   }
 
   private SectorVersion save(SectorVersion sectorVersion) {

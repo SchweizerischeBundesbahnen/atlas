@@ -96,6 +96,22 @@ class SectorServiceTest {
   }
 
   @Test
+  void shouldThrowWhenTrafficPointSloidNotExists() {
+    SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
+    sectorVersion.setSloid("ch:1:sloid:sector:1");
+    sectorVersion.setDesignation("D");
+    sectorVersionRepository.save(sectorVersion);
+
+    sectorVersion.setSloid("ch:1:sloid:sector:2");
+    sectorVersion.setDesignation("A");
+    sectorVersionRepository.save(sectorVersion);
+
+    assertThatThrownBy(
+        () -> sectorService.getSectorsOfTrafficPoint("abc", PageRequest.of(0, 1, Sort.by("designation").ascending())))
+        .isInstanceOf(SloidNotFoundException.class);
+  }
+
+  @Test
   void shouldGetSectorVersionByIdWhenExists() {
     // Given
     SectorVersion saved = sectorVersionRepository.save(SectorTestData.getBasicSectorVersion());
@@ -273,6 +289,29 @@ class SectorServiceTest {
     // Then
     assertThat(entities).extracting(SectorVersion::getDesignation)
         .containsExactly("v1", "v2");
+  }
+
+  @Test
+  void shouldThrowWhenSloidNotFound() {
+    String sloid = "ch:1:sector:multi";
+
+    SectorVersion v1 = SectorTestData.getBasicSectorVersion().toBuilder()
+        .sloid(sloid)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .designation("v1")
+        .build();
+
+    SectorVersion v2 = SectorTestData.getBasicSectorVersion().toBuilder()
+        .sloid(sloid)
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .designation("v2")
+        .build();
+    sectorVersionRepository.saveAll(List.of(v2, v1));
+
+    // When
+    // Then
+    assertThatThrownBy(() -> sectorService.getSector("abc"))
+        .isInstanceOf(SloidNotFoundException.class);
   }
 
   @Test

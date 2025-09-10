@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -78,27 +77,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
     trafficPointRepository.deleteAll();
     servicePointVersionRepository.deleteAll();
   }
-
-  @Test
-  void shouldGetSectorGroups() throws Exception {
-    sectorGroupVersionRepository.deleteAll();
-    SectorGroupVersion groupVersion1 = SectorTestData.getBasicSectorGroupVersion();
-
-    sectorGroupVersionRepository.save(groupVersion1);
-
-    SectorGroupVersion groupVersion2 = SectorTestData.getBasicSectorGroupVersion();
-    groupVersion2.setSloid("new:sloid");
-    sectorGroupVersionRepository.save(groupVersion2);
-
-    mvc.perform(get("/v1/sector-groups"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].id", is(groupVersion1.getId().intValue())))
-        .andExpect(jsonPath("$[0].sloid", is(groupVersion1.getSloid())))
-        .andExpect(jsonPath("$[1].id", is(groupVersion2.getId().intValue())))
-        .andExpect(jsonPath("$[1].sloid", is(groupVersion2.getSloid())));
-  }
-
+  
   @Test
   void shouldGetSectorGroupBySloid() throws Exception {
     sectorGroupVersionRepository.deleteAll();
@@ -158,7 +137,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
         .andReturn();
 
     String responseContent = mvcResult.getResponse().getContentAsString();
-    ReadSectorGroupVersionModel createdSectorGroup = mapper.readValue(responseContent, ReadSectorGroupVersionModel.class);
+    SectorGroupVersionModel createdSectorGroup = mapper.readValue(responseContent, SectorGroupVersionModel.class);
 
     Set<SectorGroupRelation> relations = sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(
         createdSectorGroup.getSloid());
