@@ -6,7 +6,6 @@ import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -92,29 +91,6 @@ class SectorGroupServiceTest {
   }
 
   @Test
-  void shouldReturnEmptyListWhenNoGroups() {
-    assertThat(sectorGroupService.getSectorGroups()).isEmpty();
-  }
-
-  @Test
-  void shouldReturnAllSectorGroups() {
-    sectorGroupVersionRepository.save(SectorTestData.getBasicSectorGroupVersion());
-
-    SectorGroupVersion sectorGroupVersion = SectorTestData.getBasicSectorGroupVersion();
-    sectorGroupVersion.setSloid("ch:1:sloid:group:2");
-    sectorGroupVersionRepository.save(sectorGroupVersion);
-
-    List<SectorGroupVersionModel> all = sectorGroupService.getSectorGroups();
-
-    assertThat(all).hasSize(2)
-        .extracting(SectorGroupVersionModel::getSloid)
-        .containsExactlyInAnyOrder(
-            "ch:1:sloid:group:1",
-            "ch:1:sloid:group:2"
-        );
-  }
-
-  @Test
   void shouldGetSectorGroupModelsBySloid() {
     String sloid = "grp:42";
 
@@ -147,6 +123,22 @@ class SectorGroupServiceTest {
         PageRequest.of(0, 1, Sort.by("designation").ascending()));
     assertThat(overview.getTotalCount()).isEqualTo(1);
     assertThat(overview.getObjects().getFirst().getDesignation()).isEqualTo("A");
+  }
+
+  @Test
+  void shouldThrowWhenTrafficPointSloidNotExists() {
+    SectorGroupVersion sectorGroupVersion = SectorTestData.getBasicSectorGroupVersion();
+    sectorGroupVersion.setSloid("ch:1:sloid:group:777");
+    sectorGroupVersion.setDesignation("D");
+    sectorGroupVersionRepository.save(sectorGroupVersion);
+
+    sectorGroupVersion.setSloid("ch:1:sloid:group:333");
+    sectorGroupVersion.setDesignation("A");
+    sectorGroupVersionRepository.save(sectorGroupVersion);
+
+    assertThatThrownBy(
+        () -> sectorGroupService.getSectorGroupsOfTrafficPoint("abc", PageRequest.of(0, 1, Sort.by("designation").ascending())))
+        .isInstanceOf(SloidNotFoundException.class);
   }
 
   @Test
@@ -233,7 +225,7 @@ class SectorGroupServiceTest {
     doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
         toCreate.getTrafficPointSloid());
 
-    ReadSectorGroupVersionModel result =
+    SectorGroupVersionModel result =
         sectorGroupService.createSectorGroup(toCreate, sloids, List.of(ServicePointTestData.getBern()));
 
     assertThat(sectorGroupVersionRepository.findById(result.getId())).isPresent();
@@ -270,6 +262,12 @@ class SectorGroupServiceTest {
     assertThatThrownBy(() ->
         sectorGroupService.createSectorGroup(toCreate, sloids, List.of())
     ).isInstanceOf(SectorNotExistingException.class);
+  }
+
+  @Test
+  void shouldThrowWhenSloidNotFound() {
+    assertThatThrownBy(() -> sectorGroupService.findAllBySloidOrderByValidFrom("abc"))
+        .isInstanceOf(SloidNotFoundException.class);
   }
 
   @Test
