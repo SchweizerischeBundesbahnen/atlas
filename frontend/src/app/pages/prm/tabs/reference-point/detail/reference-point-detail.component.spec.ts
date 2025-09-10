@@ -10,9 +10,9 @@ import {
 } from '../../../../../app.testing.mocks';
 import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
-import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { SelectComponent } from '../../../../../core/form-components/select/select.component';
 import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
 import { DateRangeTextComponent } from '../../../../../core/versioning/date-range-text/date-range-text.component';

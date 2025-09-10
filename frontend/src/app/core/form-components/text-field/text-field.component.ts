@@ -2,7 +2,7 @@ import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FieldExample } from './field-example';
 import { AtlasFieldCustomError } from '../atlas-field-error/atlas-field-custom-error';
-import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import { EmptyToNullDirective } from '../../text-input/empty-to-null';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';

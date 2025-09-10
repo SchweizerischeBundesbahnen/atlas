@@ -4,7 +4,7 @@ import { TextFieldComponent } from './text-field.component';
 import { FormModule } from '../../module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { InfoIconComponent } from '../info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 

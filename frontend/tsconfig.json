@@ -21,7 +21,11 @@
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "paths": {
+      "@atlas/form": ["components/form/index.ts"],
+      "@atlas/form/*": ["components/form/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -30,5 +34,8 @@
     "strictTemplates": true
   },
   // without this inclusion jasmine expect does not work correctly with intellij
-  "include": ["src/**/*.spec.ts", "src/**/*.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.ts",
+    "components/**/*.spec.ts",
+    "components/**/*.ts"
+  ]
 }

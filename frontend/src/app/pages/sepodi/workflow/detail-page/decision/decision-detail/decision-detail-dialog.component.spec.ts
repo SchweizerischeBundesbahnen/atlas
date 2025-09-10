@@ -17,7 +17,7 @@ import { DecisionFormComponent } from '../decision-form/decision-form.component'
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { LoadingSpinnerComponent } from '../../../../../../core/components/loading-spinner/loading-spinner.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';

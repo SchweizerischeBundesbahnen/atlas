@@ -6,8 +6,9 @@
     "docker": "sh ./prepare-docker.sh",
     "publish-frontend": "sh ./npm_publish.sh",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
-    "test-dir": "ng test --include src/app/pages/prm --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
+    "test": "ng test --configuration ci",
+    "test:components": "ng test components -c ci",
+    "test:atlas": "ng test atlas-frontend -c ci",
     "test-debug": "ng test --watch true --browsers=Chrome",
     "test-dir-debug": "ng test --watch true --include src/app/pages/user-profile --browsers=Chrome",
     "lint": "ng lint",
@@ -107,7 +108,10 @@
     "karma-sonarqube-reporter": "^1.4.0",
     "lint-staged": "^16.0.0",
     "prettier": "^3.5.3",
-    "typescript": "^5.8.2",
-    "puppeteer": "^24.0.0"
-  }
+    "puppeteer": "^24.0.0",
+    "typescript": "^5.8.2"
+  },
+  "workspaces": [
+    "components/form"
+  ]
 }
