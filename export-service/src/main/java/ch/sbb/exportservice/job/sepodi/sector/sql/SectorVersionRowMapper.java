@@ -25,12 +25,10 @@ public class SectorVersionRowMapper implements RowMapper<SectorVersion> {
         .spatialReference(SpatialReference.valueOf(rs.getString("spatial_reference")))
         .trafficPointSloid(rs.getString("traffic_point_sloid"))
         .designation(rs.getString("designation"))
-        .length(rs.getDouble("length"))
         .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
         .creator(rs.getString("creator"))
         .editionDate(rs.getTimestamp("edition_date").toLocalDateTime())
         .editor(rs.getString("editor"))
-        .version(rs.getInt("version"))
         .version(rs.getInt("version"))
         .build();
   }
