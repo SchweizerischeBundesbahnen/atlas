@@ -13,7 +13,7 @@ import { NotificationService } from '../../../../../../../core/notification/noti
 import { CommentComponent } from '../../../../../../../core/form-components/comment/comment.component';
 import { AtlasFieldErrorComponent } from '../../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 
 const stopPointWorkflowService = jasmine.createSpyObj(
   'stopPointWorkflowService',

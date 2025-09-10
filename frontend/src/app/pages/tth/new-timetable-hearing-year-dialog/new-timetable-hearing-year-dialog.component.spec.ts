@@ -10,10 +10,10 @@ import { SelectComponent } from '../../../core/form-components/select/select.com
 import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
-import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { DateIconComponent } from '../../../core/form-components/date-icon/date-icon.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 
 const mockTimetableHearingYearsService = jasmine.createSpyObj(

@@ -6,7 +6,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { LineVersionWorkflow, Status } from '../../api';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { TextFieldComponent } from '../form-components/text-field/text-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { adminPermissionServiceMock } from '../../app.testing.mocks';

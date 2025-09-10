@@ -15,7 +15,7 @@ import { UserDetailInfoComponent } from '../../../../../core/components/base-det
 import { StopPointCompleteFormComponent } from '../form/stop-point-complete-form/stop-point-complete-form.component';
 import { StopPointReducedFormComponent } from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { MeansOfTransportPickerComponent } from '../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
@@ -27,7 +27,7 @@ import {
   STOP_POINT_COMPLETE,
 } from '../../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
-import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { PrmVariantInfoService } from '../prm-variant-info.service';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';

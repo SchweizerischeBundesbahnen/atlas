@@ -26,7 +26,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NewHearingYearValidator } from './new-hearing-year-validator';
 import { TthUtils } from '../util/tth-utils';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
-import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
 import { TranslatePipe } from '@ngx-translate/core';

@@ -38,11 +38,11 @@ module.exports = function (config) {
     },
     sonarqubeReporter: {
       basePath: require('path').join(__dirname, '.'),
-      outputFolder: require('path').join(__dirname, './coverage/atlas-frontend'),
+      outputFolder: require('path').join(__dirname, './coverage/atlas-workspaces'),
       reportName: (_metadata) => 'sonarqube.xml',
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/atlas-frontend'),
+      dir: require('path').join(__dirname, './coverage/atlas-workspaces'),
       subdir: '.',
       reporters: [
         {type: 'html'},
