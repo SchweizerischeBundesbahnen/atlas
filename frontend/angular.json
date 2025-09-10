@@ -3,6 +3,55 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "components": {
+      "projectType": "library",
+      "sourceRoot": "components",
+      "root": "",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "components/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "styles": [
+              "src/styles/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "ci": {
+              "karmaConfig": "components/karma.conf.js",
+              "browsers": "ChromeHeadlessNoSandbox",
+              "codeCoverage": true,
+              "sourceMap": true,
+              "progress": true,
+              "watch": false,
+              "codeCoverageExclude": [
+                "src/app/api/**",
+                "charts/**",
+                "src/polyfills.ts"
+              ],
+              "reporters": [
+                "progress",
+                "sonarqube"
+              ]
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "components/**/*.ts",
+              "components/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "atlas-frontend": {
       "projectType": "application",
       "schematics": {
@@ -100,6 +149,9 @@
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
+            "include": [
+              "src/**/*.spec.ts"
+            ],
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -114,9 +166,9 @@
           "configurations": {
             "ci": {
               "karmaConfig": "karma.conf.js",
-              "browsers": "ChromeHeadless",
+              "browsers": "ChromeHeadlessNoSandbox",
               "codeCoverage": true,
-              "sourceMap": false,
+              "sourceMap": true,
               "progress": false,
               "watch": false,
               "codeCoverageExclude": [
@@ -125,7 +177,7 @@
                 "src/polyfills.ts"
               ],
               "reporters": [
-                "dots",
+                "progress",
                 "sonarqube"
               ]
             }

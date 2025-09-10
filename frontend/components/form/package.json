@@ -1,0 +1,9 @@
+{
+  "name": "@atlas/form",
+  "version": "1.0.0",
+  "devDependencies": {},
+  "scripts": {
+    "test": "ng test components -c ci"
+  },
+  "description": "Reusable form components for atlas"
+}

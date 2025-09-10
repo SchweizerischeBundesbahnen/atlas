@@ -13,7 +13,7 @@ import { DateRangeTextComponent } from '../../../core/versioning/date-range-text
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
-import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
@@ -21,7 +21,7 @@ import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spac
 import { GeographyComponent } from '../geography/geography.component';
 import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { CoordinatePairWGS84, MapService } from '../map/map.service';
