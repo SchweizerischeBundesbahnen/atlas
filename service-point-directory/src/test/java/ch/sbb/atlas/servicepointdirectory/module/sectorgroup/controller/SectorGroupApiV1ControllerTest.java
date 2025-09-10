@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -65,7 +64,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
   void setUp() {
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getBasicTrafficPoint();
     trafficPointElementVersion.setServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
-    
+
     trafficPointRepository.saveAndFlush(trafficPointElementVersion);
     servicePointVersionRepository.saveAndFlush(ServicePointTestData.getBern());
   }
@@ -78,27 +77,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
     trafficPointRepository.deleteAll();
     servicePointVersionRepository.deleteAll();
   }
-
-  @Test
-  void shouldGetSectorGroups() throws Exception {
-    sectorGroupVersionRepository.deleteAll();
-    SectorGroupVersion groupVersion1 = SectorTestData.getBasicSectorGroupVersion();
-
-    sectorGroupVersionRepository.save(groupVersion1);
-
-    SectorGroupVersion groupVersion2 = SectorTestData.getBasicSectorGroupVersion();
-    groupVersion2.setSloid("new:sloid");
-    sectorGroupVersionRepository.save(groupVersion2);
-
-    mvc.perform(get("/v1/sector-groups"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].id", is(groupVersion1.getId().intValue())))
-        .andExpect(jsonPath("$[0].sloid", is(groupVersion1.getSloid())))
-        .andExpect(jsonPath("$[1].id", is(groupVersion2.getId().intValue())))
-        .andExpect(jsonPath("$[1].sloid", is(groupVersion2.getSloid())));
-  }
-
+  
   @Test
   void shouldGetSectorGroupBySloid() throws Exception {
     sectorGroupVersionRepository.deleteAll();
@@ -123,19 +102,6 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0].etagVersion", is(1)))
         .andExpect(jsonPath("$[1].etagVersion", is(2)));
-  }
-
-  @Test
-  void shouldGetSectorGroupVersionById() throws Exception {
-    sectorGroupVersionRepository.deleteAll();
-
-    SectorGroupVersion sectorGroupVersion = sectorGroupVersionRepository.save(SectorTestData.getBasicSectorGroupVersion());
-
-    mvc.perform(get("/v1/sector-groups/versions/{id}", sectorGroupVersion.getId()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(sectorGroupVersion.getId().intValue())))
-        .andExpect(jsonPath("$.sloid", is(sectorGroupVersion.getSloid())))
-        .andExpect(jsonPath("$.sectorVersions", hasSize(0)));
   }
 
   @Test
@@ -171,7 +137,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
         .andReturn();
 
     String responseContent = mvcResult.getResponse().getContentAsString();
-    ReadSectorGroupVersionModel createdSectorGroup = mapper.readValue(responseContent, ReadSectorGroupVersionModel.class);
+    SectorGroupVersionModel createdSectorGroup = mapper.readValue(responseContent, SectorGroupVersionModel.class);
 
     Set<SectorGroupRelation> relations = sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(
         createdSectorGroup.getSloid());
