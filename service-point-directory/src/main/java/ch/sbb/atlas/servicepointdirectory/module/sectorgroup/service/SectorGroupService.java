@@ -2,12 +2,12 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.service;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
@@ -53,12 +53,12 @@ public class SectorGroupService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  public ReadSectorGroupVersionModel create(SectorGroupVersion sectorGroupVersion,
+  public SectorGroupVersionModel create(SectorGroupVersion sectorGroupVersion,
       List<String> sloids, List<ServicePointVersion> servicePointVersions) {
     return createSectorGroup(sectorGroupVersion, sloids, servicePointVersions);
   }
 
-  public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion, List<String> sloids,
+  public SectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion, List<String> sloids,
       List<ServicePointVersion> servicePointVersions) {
 
     trafficPointElementService.doesTrafficPointExist(sectorGroupVersion.getTrafficPointSloid());
@@ -77,8 +77,7 @@ public class SectorGroupService {
     createRelation(sloids, sectorGroupVersion.getSloid());
     SectorGroupVersion saved = save(sectorGroupVersion);
 
-    List<SectorVersionModel> models = mapToModels(versions);
-    return SectorGroupMapper.toReadModel(saved, models);
+    return SectorGroupMapper.toModel(saved);
   }
 
   private void calculateAndSetLength(SectorGroupVersion sectorGroupVersion, List<SectorVersion> versions) {
@@ -108,10 +107,7 @@ public class SectorGroupService {
     }
   }
 
-  private void validateTrafficPoint(
-      String trafficPointSloid,
-      List<SectorVersion> sectorVersions
-  ) {
+  private void validateTrafficPoint(String trafficPointSloid, List<SectorVersion> sectorVersions) {
     trafficPointElementService.doesTrafficPointExist(trafficPointSloid);
     isTrafficPointSloidMatchingOverAllObjects(sectorVersions, trafficPointSloid);
   }
@@ -185,21 +181,25 @@ public class SectorGroupService {
   }
 
   public List<SectorGroupVersion> findAllBySloidOrderByValidFrom(String sectorGroupSloid) {
-    return sectorGroupVersionRepository.findAllBySloidOrderByValidFrom(sectorGroupSloid);
+    List<SectorGroupVersion> sectorGroupVersions = sectorGroupVersionRepository.findAllBySloidOrderByValidFrom(sectorGroupSloid);
+    if (sectorGroupVersions.isEmpty()) {
+      throw new SloidNotFoundException(sectorGroupSloid);
+    }
+    return sectorGroupVersions;
   }
 
   public Container<SectorGroupVersionModel> getSectorGroupsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
     List<SectorGroupVersion> sectorGroupVersions = sectorGroupVersionRepository.findAllByTrafficPointSloid(trafficPointSloid,
         pageable.getSort());
 
+    if (sectorGroupVersions.isEmpty()) {
+      throw new SloidNotFoundException(trafficPointSloid);
+    }
+
     List<SectorGroupVersionModel> overviewModels = sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
     List<SectorGroupVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
         SectorGroupVersionModel::getSloid);
     return OverviewDisplayBuilder.toPagedContainer(displayableModels, pageable);
-  }
-
-  public List<SectorGroupVersionModel> getSectorGroups() {
-    return sectorGroupVersionRepository.findAll().stream().map(SectorGroupMapper::toModel).toList();
   }
 
   public List<SectorVersionModel> getSectorsBySectorGroupSloid(String sectorGroupSloid) {

@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api;
 
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -24,15 +23,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Hidden // ATLAS-3130 To Remove once public, add link to sector restdoc in SePoDi
 public interface SectorGroupApiV1 {
 
-  @GetMapping
-  List<SectorGroupVersionModel> getSectorGroups();
-
   @GetMapping("{sloid}")
   List<SectorGroupVersionModel> getSectorGroup(@PathVariable String sloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadSectorGroupVersionModel createSectorGroupVersion(
+  SectorGroupVersionModel createSectorGroupVersion(
       @Valid @RequestBody @CreateIdCheck CreateSectorGroupVersionModel createSectorGroupVersionModel);
 
   @ResponseStatus(HttpStatus.OK)

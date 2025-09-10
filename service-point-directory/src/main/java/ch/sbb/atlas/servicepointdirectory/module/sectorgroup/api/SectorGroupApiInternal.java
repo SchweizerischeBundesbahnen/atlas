@@ -26,6 +26,6 @@ public interface SectorGroupApiInternal {
   Container<SectorGroupVersionModel> getSectorGroupsOfTrafficPoint(@PathVariable String trafficPointSloid,
       @Parameter(hidden = true) Pageable pageable);
 
-  @GetMapping("{sloid}/sectors")
-  List<SectorVersionModel> getSectorsBySectorGroupSloid(@PathVariable String sloid);
+  @GetMapping("{sectorGroupSloid}/sectors")
+  List<SectorVersionModel> getSectorsBySectorGroupSloid(@PathVariable String sectorGroupSloid);
 }

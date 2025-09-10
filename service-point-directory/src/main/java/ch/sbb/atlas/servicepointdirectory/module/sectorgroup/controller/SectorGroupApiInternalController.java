@@ -24,7 +24,7 @@ public class SectorGroupApiInternalController implements SectorGroupApiInternal 
   }
 
   @Override
-  public List<SectorVersionModel> getSectorsBySectorGroupSloid(String sloid) {
-    return sectorGroupService.getSectorsBySectorGroupSloid(sloid);
+  public List<SectorVersionModel> getSectorsBySectorGroupSloid(String sectorGroupSloid) {
+    return sectorGroupService.getSectorsBySectorGroupSloid(sectorGroupSloid);
   }
 }
