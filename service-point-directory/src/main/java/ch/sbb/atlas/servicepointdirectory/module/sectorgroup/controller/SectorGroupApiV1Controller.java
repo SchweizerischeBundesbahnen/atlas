@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api.SectorGroupApiV1;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
@@ -26,22 +25,13 @@ public class SectorGroupApiV1Controller implements SectorGroupApiV1 {
   private final ServicePointService servicePointService;
 
   @Override
-  public List<SectorGroupVersionModel> getSectorGroups() {
-    return sectorGroupService.getSectorGroups();
-  }
-
-  @Override
   public List<SectorGroupVersionModel> getSectorGroup(String sloid) {
-    return sectorGroupService.getSectorGroup(sloid);
+    List<SectorGroupVersion> sectorGroupVersions = sectorGroupService.findAllBySloidOrderByValidFrom(sloid);
+    return sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
   }
 
   @Override
-  public ReadSectorGroupVersionModel getSectorGroupVersion(Long id) {
-    return sectorGroupService.getSectorGroupVersion(id);
-  }
-
-  @Override
-  public ReadSectorGroupVersionModel createSectorGroupVersion(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
+  public SectorGroupVersionModel createSectorGroupVersion(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
     SectorGroupVersion sectorGroupVersionToCreate = SectorGroupMapper.toEntity(createSectorGroupVersionModel);
     List<String> sectorSloidsToAdd = createSectorGroupVersionModel.getSectorSloids().stream().toList();
 
