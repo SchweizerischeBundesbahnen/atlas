@@ -9,7 +9,7 @@ import { TableFilter } from './config/table-filter';
 import { TableFilterSingleSearch } from './config/table-filter-single-search';
 import { TableFilterBoolean } from './config/table-filter-boolean';
 import { NgClass } from '@angular/common';
-import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import {
   MatChipGrid,
   MatChipInput,

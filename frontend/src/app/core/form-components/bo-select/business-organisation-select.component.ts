@@ -14,7 +14,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BusinessOrganisation } from '../../../api';
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
-import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 
