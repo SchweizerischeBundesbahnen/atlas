@@ -91,10 +91,6 @@ public class SectorService {
     List<SectorVersion> sectors = sectorVersionRepository.findAllByTrafficPointSloid(trafficPointSloid,
         pageable.getSort());
 
-    if (sectors.isEmpty()) {
-      throw new SloidNotFoundException(trafficPointSloid);
-    }
-
     List<SectorVersionModel> overviewModels = sectors.stream().map(SectorMapper::toModel).toList();
     List<SectorVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
         SectorVersionModel::getSloid);
@@ -111,7 +107,7 @@ public class SectorService {
     if (sectorVersions.isEmpty()) {
       throw new SloidNotFoundException(sectorSloid);
     }
-    
+
     return sectorVersions;
   }
 
