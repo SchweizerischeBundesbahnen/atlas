@@ -32,7 +32,7 @@ class ExportSectorIntegrationTest {
   private Job exportSectorJsonJob;
 
   @Test
-  void shouldExecuteExportServicePointJsonJob() throws Exception {
+  void shouldExecuteExportSectorJsonJob() throws Exception {
     // given
 
     JobParameters jobParameters = BaseExportJobService.buildJobParameters(

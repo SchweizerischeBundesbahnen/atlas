@@ -17,7 +17,6 @@ public class SectorJsonProcessor implements ItemProcessor<SectorVersion, SectorV
         .edgeHeight(version.getEdgeHeight())
         .height(version.getHeight())
         .length(version.getLength())
-        .sloid(version.getSloid())
         .spatialReference(version.getSpatialReference())
         .sloid(version.getSloid())
         .trafficPointSloid(version.getTrafficPointSloid())

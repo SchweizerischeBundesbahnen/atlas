@@ -70,7 +70,7 @@ public class SectorExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportSectorJsonStep(itemReader))
-        .next(uploadLoadingPointJsonFileStep())
+        .next(uploadSectorJsonFileStep())
         .next(deleteSectorJsonFileStepV2())
         .end()
         .build();
@@ -104,7 +104,7 @@ public class SectorExportBatchConfig {
   }
 
   @Bean
-  public Step uploadLoadingPointJsonFileStep() {
+  public Step uploadSectorJsonFileStep() {
     return new StepBuilder("uploadSectorJsonFile", jobRepository)
         .tasklet(uploadSectorJsonFileTasklet(null), transactionManager)
         .listener(stepTracerListener)
