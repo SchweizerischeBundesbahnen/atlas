@@ -1259,6 +1259,9 @@
         "EDIT_SUCCESS": "Der Haltebereich wurde erfolgreich gespeichert."
       }
     },
+    "SECTORS": {
+      "SECTORS": "Sektoren"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen",
       "LOADING_POINT": "Ladestelle",

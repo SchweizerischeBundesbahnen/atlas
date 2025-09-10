@@ -1,14 +1,14 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReadTrafficPointElementVersion } from '../../../api';
+import { ReadTrafficPointElementVersion } from '../../../../api';
 import moment from 'moment';
-import { BaseDetailFormGroup } from '../../../core/components/base-detail/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   GeographyFormGroup,
   GeographyFormGroupBuilder,
-} from '../geography/geography-form-group';
-import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
-import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
+} from '../../geography/geography-form-group';
+import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
+import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
+import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 
 export interface TrafficPointElementDetailFormGroup
   extends BaseDetailFormGroup {
