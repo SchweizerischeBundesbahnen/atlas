@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { Pages } from '../pages';
 import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
-import { trafficPointResolver } from './traffic-point-elements/traffic-point-elements-detail-resolver.service';
+import { trafficPointResolver } from './traffic-point-elements/form/traffic-point-elements-detail-resolver.service';
 import { loadingPointResolver } from './loading-points/loading-points-detail-resolver.service';
 import { canCreateServicePoint } from './service-point-creation-guard';
 import { stopPointWorkflowDetailResolver } from './workflow/detail-page/stop-point-workflow-detail-resolver.service';
@@ -10,7 +10,7 @@ import { permissionsLoaded } from '../../core/auth/guards/permissions-loaded.gua
 import { featureToggleGuard } from '../feature-toggle.guard';
 import { stopPointTerminationWorkflowResolver } from './termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-resolver';
 
-export const routes: Routes = [
+const workflowRoutes: Routes = [
   {
     path: Pages.SERVICE_POINT_WORKFLOWS.path + '/:id',
     loadComponent: () =>
@@ -28,6 +28,9 @@ export const routes: Routes = [
         (m) => m.StopPointWorkflowOverviewComponent
       ),
   },
+];
+
+const terminationWorkflowRoutes: Routes = [
   {
     path: Pages.TERMINATION_STOP_POINT_WORKFLOWS.path + '/:id',
     loadComponent: () =>
@@ -46,6 +49,127 @@ export const routes: Routes = [
       ).then((m) => m.StopPointTerminationWorkflowOverviewComponent),
     canActivate: [featureToggleGuard],
   },
+];
+
+const servicePointTabRoutes: Routes = [
+  {
+    path: Pages.SERVICE_POINT_TAB.path,
+    loadComponent: () =>
+      import(
+        './service-point-side-panel/service-point/service-point-detail.component'
+      ).then((m) => m.ServicePointDetailComponent),
+    canDeactivate: [canLeaveDirtyForm],
+  },
+  {
+    path: Pages.TRAFFIC_POINT_ELEMENTS_AREA.path,
+    loadComponent: () =>
+      import(
+        './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component'
+      ).then((m) => m.TrafficPointElementsTableComponent),
+    data: { isTrafficPointArea: true },
+  },
+  {
+    path: Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
+    loadComponent: () =>
+      import(
+        './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component'
+      ).then((m) => m.TrafficPointElementsTableComponent),
+    data: { isTrafficPointArea: false },
+  },
+  {
+    path: 'loading-points',
+    loadComponent: () =>
+      import(
+        './service-point-side-panel/loading-points/loading-points-table.component'
+      ).then((m) => m.LoadingPointsTableComponent),
+  },
+  {
+    path: 'comment',
+    loadComponent: () =>
+      import(
+        './service-point-side-panel/comment/fot-comment-detail.component'
+      ).then((m) => m.FotCommentDetailComponent),
+    canDeactivate: [canLeaveDirtyForm],
+  },
+];
+
+const trafficPointElementDetailRoutes: Routes = [
+  {
+    path:
+      Pages.SERVICE_POINTS.path +
+      '/:servicePointNumber/' +
+      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path +
+      '/:trafficPointSloid',
+    loadComponent: () =>
+      import(
+        './traffic-point-elements/platform/platform-side-panel.component'
+      ).then((m) => m.PlatformSidePanelComponent),
+    resolve: { trafficPoint: trafficPointResolver },
+    data: { isTrafficPointArea: false },
+    runGuardsAndResolvers: 'always',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import(
+            './traffic-point-elements/form/traffic-point-elements-detail.component'
+          ).then((m) => m.TrafficPointElementsDetailComponent),
+        runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
+        pathMatch: 'full',
+      },
+      {
+        path: Pages.SECTORS.path,
+        loadComponent: () =>
+          import('./sectors/sector-overview/sector-overview').then(
+            (m) => m.SectorOverview
+          ),
+        runGuardsAndResolvers: 'always',
+      },
+      {
+        path: '**',
+        redirectTo: '',
+      },
+    ],
+  },
+];
+
+const trafficPointAreaDetailRoutes: Routes = [
+  {
+    path:
+      Pages.SERVICE_POINTS.path +
+      '/:servicePointNumber/' +
+      Pages.TRAFFIC_POINT_ELEMENTS_AREA.path +
+      '/:trafficPointSloid',
+    loadComponent: () =>
+      import(
+        './traffic-point-elements/platform/platform-side-panel.component'
+      ).then((m) => m.PlatformSidePanelComponent),
+    resolve: { trafficPoint: trafficPointResolver },
+    data: { isTrafficPointArea: true },
+    runGuardsAndResolvers: 'always',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import(
+            './traffic-point-elements/form/traffic-point-elements-detail.component'
+          ).then((m) => m.TrafficPointElementsDetailComponent),
+        runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
+        pathMatch: 'full',
+      },
+      {
+        path: '**',
+        redirectTo: '',
+      },
+    ],
+  },
+];
+
+export const routes: Routes = [
+  ...workflowRoutes,
+  ...terminationWorkflowRoutes,
   {
     path: '',
     loadComponent: () =>
@@ -53,6 +177,8 @@ export const routes: Routes = [
         (m) => m.SepodiMapviewComponent
       ),
     children: [
+      ...trafficPointElementDetailRoutes,
+      ...trafficPointAreaDetailRoutes,
       {
         path: Pages.SERVICE_POINTS.path,
         loadComponent: () =>
@@ -63,7 +189,7 @@ export const routes: Routes = [
         canDeactivate: [canLeaveDirtyForm],
       },
       {
-        path: Pages.SERVICE_POINTS.path + '/:id',
+        path: Pages.SERVICE_POINTS.path + '/:servicePointNumber',
         loadComponent: () =>
           import(
             './service-point-side-panel/service-point-side-panel.component'
@@ -71,60 +197,12 @@ export const routes: Routes = [
         resolve: { servicePoint: servicePointResolver },
         runGuardsAndResolvers: 'always',
         children: [
-          {
-            path: Pages.SEPODI_TAB.path,
-            loadComponent: () =>
-              import(
-                './service-point-side-panel/service-point/service-point-detail.component'
-              ).then((m) => m.ServicePointDetailComponent),
-            canDeactivate: [canLeaveDirtyForm],
-          },
-          {
-            path: Pages.TRAFFIC_POINT_ELEMENTS_AREA.path,
-            loadComponent: () =>
-              import(
-                './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component'
-              ).then((m) => m.TrafficPointElementsTableComponent),
-            data: { isTrafficPointArea: true },
-          },
-          {
-            path: Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
-            loadComponent: () =>
-              import(
-                './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component'
-              ).then((m) => m.TrafficPointElementsTableComponent),
-            data: { isTrafficPointArea: false },
-          },
-          {
-            path: 'loading-points',
-            loadComponent: () =>
-              import(
-                './service-point-side-panel/loading-points/loading-points-table.component'
-              ).then((m) => m.LoadingPointsTableComponent),
-          },
-          {
-            path: 'comment',
-            loadComponent: () =>
-              import(
-                './service-point-side-panel/comment/fot-comment-detail.component'
-              ).then((m) => m.FotCommentDetailComponent),
-            canDeactivate: [canLeaveDirtyForm],
-          },
+          ...servicePointTabRoutes,
           {
             path: '**',
-            redirectTo: Pages.SEPODI_TAB.path,
+            redirectTo: Pages.SERVICE_POINT_TAB.path,
           },
         ],
-      },
-      {
-        path: Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path + '/:id',
-        loadComponent: () =>
-          import(
-            './traffic-point-elements/traffic-point-elements-detail.component'
-          ).then((m) => m.TrafficPointElementsDetailComponent),
-        resolve: { trafficPoint: trafficPointResolver },
-        runGuardsAndResolvers: 'always',
-        canDeactivate: [canLeaveDirtyForm],
       },
       {
         path: Pages.LOADING_POINTS.path + '/:servicePointNumber/:number',
