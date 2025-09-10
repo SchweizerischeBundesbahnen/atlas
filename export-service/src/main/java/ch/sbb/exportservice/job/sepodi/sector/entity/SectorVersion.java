@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.job.sepodi.sector.entity;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.BaseEntity;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -43,5 +44,7 @@ public class SectorVersion extends BaseEntity {
   private String designation;
 
   private Double length;
+
+  private Status status;
 
 }

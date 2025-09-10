@@ -22,7 +22,7 @@ class SectorVersionTest {
             If this test fail please make sure the entire ATLAS application works properly: import, export, ...
             """,
         SectorVersion.class);
-    assertThat(result.get()).as(errorDescription).isEqualTo(34);
+    assertThat(result.get()).as(errorDescription).isEqualTo(36);
   }
 
 }
