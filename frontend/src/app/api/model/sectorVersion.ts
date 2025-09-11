@@ -46,9 +46,9 @@ export interface SectorVersion {
     /**
      * Designation used in the customer information systems.
      */
-    designation?: string;
+    designation: string;
     /**
-     * Length of a Sector
+     * Length of a Sector in m
      */
     length?: number;
     /**
@@ -69,7 +69,7 @@ export interface SectorVersion {
     height?: number;
     spatialReference: SpatialReference;
     /**
-     * Height of edge
+     * Height of edge in cm
      */
     edgeHeight?: number;
 }

@@ -45,9 +45,9 @@ export interface CreateSectorGroupVersion {
     /**
      * Designation used in the customer information systems.
      */
-    designation?: string;
+    designation: string;
     /**
-     * Length of a Sector
+     * Length of a Sector in m
      */
     length?: number;
     /**
@@ -57,7 +57,7 @@ export interface CreateSectorGroupVersion {
     /**
      * Sector sloid\'s related to the sector group
      */
-    sectorSloids?: Array<string>;
+    sectorSloids?: Set<string>;
 }
 export namespace CreateSectorGroupVersion {
 }
