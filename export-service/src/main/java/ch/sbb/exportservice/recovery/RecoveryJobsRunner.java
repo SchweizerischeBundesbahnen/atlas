@@ -16,6 +16,7 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_JSON_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_STOP_POINT_CSV_JOB_NAME;
@@ -46,6 +47,7 @@ import ch.sbb.exportservice.job.prm.relation.service.ExportRelationJobService;
 import ch.sbb.exportservice.job.prm.stoppoint.service.ExportStopPointJobService;
 import ch.sbb.exportservice.job.prm.toilet.service.ExportToiletJobService;
 import ch.sbb.exportservice.job.sepodi.loadingpoint.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.job.sepodi.sector.service.ExportSectorJobService;
 import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.service.ExportTrafficPointElementJobService;
 import jakarta.validation.constraints.NotNull;
@@ -92,6 +94,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       EXPORT_PARKING_LOT_JSON_JOB_NAME);
   private static final List<String> EXPORT_RELATION_JOB_NAME = List.of(EXPORT_RELATION_CSV_JOB_NAME,
       EXPORT_RELATION_JSON_JOB_NAME);
+
   static final int TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE = 16;
   public static final String ATLAS_BATCH_STATUS_RECOVERED = "RECOVERED";
 
@@ -113,6 +116,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private final ExportBusinessOrganisationJobService exportBusinessOrganisationJobService;
   private final ExportTransportCompanyJobService exportTransportCompanyJobService;
   private final ExportSublineJobService exportSublineJobService;
+  private final ExportSectorJobService exportSectorJobService;
 
   @Override
   @Async
@@ -134,6 +138,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     checkExportLineJobToRecover();
     checkExportSublineJobToRecover();
     checkExportTimetableFieldNumberJobToRecover();
+    checkExportSectorJobToRecover();
   }
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
@@ -245,6 +250,10 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void checkExportSublineJobToRecover() {
     checkJobToRecover(exportSublineJobService, List.of(EXPORT_SUBLINE_CSV_JOB_NAME, EXPORT_SUBLINE_JSON_JOB_NAME));
+  }
+
+  private void checkExportSectorJobToRecover() {
+    checkJobToRecover(exportSectorJobService, List.of(EXPORT_SECTOR_JSON_JOB_NAME));
   }
 
   private void checkExportTimetableFieldNumberJobToRecover() {
