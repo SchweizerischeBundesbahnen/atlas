@@ -1259,6 +1259,9 @@
         "EDIT_SUCCESS": "La zona di fermata è stata salvata con successo."
       }
     },
+    "SECTORS": {
+      "SECTORS": "Settore"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Posti di carico",
       "LOADING_POINT": "Posto di carico",

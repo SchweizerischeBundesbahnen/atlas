@@ -91,13 +91,14 @@ describe('NavigationSepodiPrmComponent', () => {
   it('should navigate to the correct URL when targetPage is traffic point detail', () => {
     stopPointServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
     component.sloid = 'ch:1:sloid:89008';
+    component.number = 8589008;
     component.targetPage = 'traffic-point-detail';
 
     component.init();
     component.navigate();
     expect(component.isTargetViewSepodi).toBeTrue();
     expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(
-      `/service-point-directory/traffic-point-elements/${component.sloid}`
+      `/service-point-directory/service-points/${component.number}/traffic-point-elements/${component.sloid}`
     );
   });
 
