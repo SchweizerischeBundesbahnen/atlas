@@ -21,7 +21,7 @@
         ></app-switch-version>
       }
     </div>
-    @if (!isNew) {
+    @if (!isNew && !isTrafficPointArea) {
       <app-navigation-sepodi-prm
         targetPage="platform-detail"
         [number]="selectedVersion.servicePointNumber!.number"
@@ -208,7 +208,7 @@
     wrapperStyleClass="ms-3"
   ></atlas-button>
   <atlas-button
-    (click)="save()"
+    (buttonClicked)="save()"
     [disabled]="!form.dirty"
     [footerEdit]="form.enabled"
     [submitButton]="true"

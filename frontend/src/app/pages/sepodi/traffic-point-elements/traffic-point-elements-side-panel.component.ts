@@ -5,22 +5,22 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { ReadTrafficPointElementVersion } from '../../../../api';
-import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
-import { DateRange } from '../../../../core/versioning/date-range';
-import { Pages } from '../../../pages';
+import { ReadTrafficPointElementVersion } from '../../../api';
+import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
+import { DateRange } from '../../../core/versioning/date-range';
+import { Pages } from '../../pages';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ValidityService } from '../../validity/validity.service';
-import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { ValidityService } from '../validity/validity.service';
+import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
+import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
-import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 
 @Component({
-  selector: 'app-traffic-point-elements',
-  templateUrl: './platform-side-panel.component.html',
-  styleUrls: ['./platform-side-panel.component.scss'],
+  selector: 'app-traffic-point-elements-side-panel',
+  templateUrl: './traffic-point-elements-side-panel.component.html',
+  styleUrls: ['./traffic-point-elements-side-panel.component.scss'],
   providers: [ValidityService],
   imports: [
     DetailPageContainerComponent,
@@ -35,7 +35,7 @@ import { ServicePointService } from '../../../../api/service/sepodi/service-poin
     RouterLink,
   ],
 })
-export class PlatformSidePanelComponent implements OnInit {
+export class TrafficPointElementsSidePanelComponent implements OnInit {
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
