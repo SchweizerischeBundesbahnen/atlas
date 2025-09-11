@@ -7,15 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { ReadSublineVersionV2 } from './readSublineVersionV2';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: SortObject;
-    pageNumber?: number;
-    unpaged?: boolean;
-    paged?: boolean;
-    pageSize?: number;
+export interface ContainerReadSublineVersionV2 { 
+    objects?: Array<ReadSublineVersionV2>;
+    totalCount?: number;
 }
 
