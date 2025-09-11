@@ -1259,6 +1259,9 @@
         "EDIT_SUCCESS": "La zone d'arrêt a été enregistrée avec succès."
       }
     },
+    "SECTORS": {
+      "SECTORS": "Secteur"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",
       "LOADING_POINT": "Placs de chargement",
