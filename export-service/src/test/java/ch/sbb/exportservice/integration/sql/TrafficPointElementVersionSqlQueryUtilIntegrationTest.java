@@ -34,8 +34,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
-    assertThat(result).hasSize(3);
+    assertThat(result).isNotEmpty().hasSize(3);
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> "ch:1:sloid:2".equals(t.getSloid()))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();
@@ -58,8 +57,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
-    assertThat(result).hasSize(1);
+    assertThat(result).isNotEmpty().hasSize(1);
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> t.getSloid().equals(sloid))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();
@@ -83,8 +81,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
-    assertThat(result).hasSize(1);
+    assertThat(result).isNotEmpty().hasSize(1);
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> t.getSloid().equals(sloid))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();

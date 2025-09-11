@@ -13,10 +13,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-public class RelationVersionJsonProcessorTest {
+class RelationVersionJsonProcessorTest {
 
   @Test
-  public void shouldMapToReadModel() {
+  void shouldMapToReadModel() {
     RelationVersion entity = RelationVersion.builder()
         .id(1L)
         .parentServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))

@@ -1,8 +1,22 @@
 package ch.sbb.exportservice.job.prm.contactpoint.writer;
 
+import static ch.sbb.exportservice.job.prm.BasePrmCsvModel.Fields.creationDate;
+import static ch.sbb.exportservice.job.prm.BasePrmCsvModel.Fields.editionDate;
+import static ch.sbb.exportservice.job.prm.BasePrmCsvModel.Fields.status;
+import static ch.sbb.exportservice.job.prm.BasePrmCsvModel.Fields.validFrom;
+import static ch.sbb.exportservice.job.prm.BasePrmCsvModel.Fields.validTo;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.additionalInformation;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.designation;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.inductionLoop;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.openingHours;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.parentNumberServicePoint;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.parentSloidServicePoint;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.sloid;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.type;
+import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.wheelchairAccess;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
-import ch.sbb.exportservice.job.prm.BasePrmCsvModel;
 import ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel;
 import org.springframework.stereotype.Component;
 
@@ -16,14 +30,8 @@ public class CsvContactPointVersionWriter extends BaseCsvWriter<ContactPointVers
   @Override
   protected String[] getCsvHeader() {
     return new String[]{
-        ContactPointVersionCsvModel.Fields.sloid, ContactPointVersionCsvModel.Fields.parentSloidServicePoint,
-        ContactPointVersionCsvModel.Fields.parentNumberServicePoint,
-        ContactPointVersionCsvModel.Fields.type, ContactPointVersionCsvModel.Fields.designation,
-        ContactPointVersionCsvModel.Fields.additionalInformation,
-        ContactPointVersionCsvModel.Fields.inductionLoop, ContactPointVersionCsvModel.Fields.openingHours,
-        ContactPointVersionCsvModel.Fields.wheelchairAccess,
-        BasePrmCsvModel.Fields.validFrom, BasePrmCsvModel.Fields.validTo, BasePrmCsvModel.Fields.creationDate,
-        BasePrmCsvModel.Fields.editionDate, BasePrmCsvModel.Fields.status
+        sloid, parentSloidServicePoint, parentNumberServicePoint, type, designation, additionalInformation, inductionLoop,
+        openingHours, wheelchairAccess, validFrom, validTo, creationDate, editionDate, status
     };
   }
 
