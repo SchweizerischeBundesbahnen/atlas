@@ -102,8 +102,8 @@ const trafficPointElementDetailRoutes: Routes = [
       '/:trafficPointSloid',
     loadComponent: () =>
       import(
-        './traffic-point-elements/platform/platform-side-panel.component'
-      ).then((m) => m.PlatformSidePanelComponent),
+        './traffic-point-elements/traffic-point-elements-side-panel.component'
+      ).then((m) => m.TrafficPointElementsSidePanelComponent),
     resolve: { trafficPoint: trafficPointResolver },
     data: { isTrafficPointArea: false },
     runGuardsAndResolvers: 'always',
@@ -143,8 +143,8 @@ const trafficPointAreaDetailRoutes: Routes = [
       '/:trafficPointSloid',
     loadComponent: () =>
       import(
-        './traffic-point-elements/platform/platform-side-panel.component'
-      ).then((m) => m.PlatformSidePanelComponent),
+        './traffic-point-elements/traffic-point-elements-side-panel.component'
+      ).then((m) => m.TrafficPointElementsSidePanelComponent),
     resolve: { trafficPoint: trafficPointResolver },
     data: { isTrafficPointArea: true },
     runGuardsAndResolvers: 'always',

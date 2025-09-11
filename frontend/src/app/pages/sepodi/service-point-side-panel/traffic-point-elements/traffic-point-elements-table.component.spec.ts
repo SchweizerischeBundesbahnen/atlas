@@ -4,7 +4,10 @@ import { AuthService } from '../../../../core/auth/auth.service';
 import { MockAtlasButtonComponent, MockNavigationSepodiPrmComponent, MockTableComponent, } from '../../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../../../../test/data/traffic-point-element';
+import {
+  BERN_WYLEREGG_TRAFFIC_POINTS,
+  BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER,
+} from '../../../../../test/data/traffic-point-element';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -32,7 +35,7 @@ describe('TrafficPointElementsTableComponent', () => {
     parent: {
       snapshot: {
         params: {
-          id: 8507000,
+          servicePointNumber: 8507000,
         },
         data: {
           servicePoint: [BERN_WYLEREGG],
@@ -46,6 +49,7 @@ describe('TrafficPointElementsTableComponent', () => {
 
   beforeEach(async () => {
     routerSpy = jasmine.createSpyObj(['navigate']);
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
       imports: [TrafficPointElementsTableComponent, TranslateModule.forRoot()],
@@ -97,5 +101,21 @@ describe('TrafficPointElementsTableComponent', () => {
     expect(
       trafficPointElementInternalService.getPlatformsOfServicePoint
     ).toHaveBeenCalledOnceWith(8507000, 0, 10, ['designation,asc']);
+  });
+
+  it('should navigate to add trafficpoint', () => {
+    component.addNewTrafficPointElement();
+    expect(routerSpy.navigate).toHaveBeenCalledOnceWith(
+      ['add'],
+      jasmine.any(Object)
+    );
+  });
+
+  it('should navigate to edit trafficpoint', () => {
+    component.editVersion(BERN_WYLEREGG_TRAFFIC_POINTS[0]);
+    expect(routerSpy.navigate).toHaveBeenCalledOnceWith(
+      ['ch:1:sloid:89008:0:1'],
+      jasmine.any(Object)
+    );
   });
 });

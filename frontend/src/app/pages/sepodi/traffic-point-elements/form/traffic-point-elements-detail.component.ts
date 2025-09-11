@@ -7,7 +7,6 @@ import {
   TrafficPointElementType,
 } from '../../../../api';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
-import { DateRange } from '../../../../core/versioning/date-range';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -52,7 +51,7 @@ const NUMBER_COLONS_PLATFORM = 1;
 const NUMBER_COLONS_AREA = 0;
 
 @Component({
-  selector: 'app-traffic-point-elements',
+  selector: 'app-traffic-point-elements-detail',
   templateUrl: './traffic-point-elements-detail.component.html',
   styleUrls: ['./traffic-point-elements-detail.component.scss'],
   providers: [ValidityService],
@@ -82,9 +81,6 @@ export class TrafficPointElementsDetailComponent
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
 
-  maxValidity!: DateRange;
-  servicePointName!: string;
-
   showVersionSwitch = false;
   selectedVersionIndex!: number;
 
@@ -98,7 +94,6 @@ export class TrafficPointElementsDetailComponent
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
   numberColons!: number;
-  trafficPointElementVersion!: CreateTrafficPointElementVersion;
 
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
@@ -146,9 +141,6 @@ export class TrafficPointElementsDetailComponent
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(
-        this.trafficPointVersions
-      );
       this.selectedVersion =
         VersionsHandlingService.determineDefaultVersionByValidity(
           this.trafficPointVersions
@@ -178,7 +170,6 @@ export class TrafficPointElementsDetailComponent
             VersionsHandlingService.determineDefaultVersionByValidity(
               servicePoint
             );
-          this.servicePointName = versionToDisplay.designationOfficial;
           this.servicePointSloid = versionToDisplay.sloid!;
           this.servicePointBusinessOrganisations = this.servicePoint.map(
             (i) => {
@@ -284,21 +275,21 @@ export class TrafficPointElementsDetailComponent
     if (this.form.valid) {
       this.confirmValidityOverServicePoint().subscribe((confirmed) => {
         if (confirmed) {
-          this.trafficPointElementVersion = this.form
+          const trafficPointElementVersion = this.form
             .value as unknown as CreateTrafficPointElementVersion;
 
           if (this.isTrafficPointArea) {
-            this.trafficPointElementVersion.trafficPointElementType =
+            trafficPointElementVersion.trafficPointElementType =
               TrafficPointElementType.BoardingArea;
           } else {
-            this.trafficPointElementVersion.trafficPointElementType =
+            trafficPointElementVersion.trafficPointElementType =
               TrafficPointElementType.BoardingPlatform;
           }
 
-          this.trafficPointElementVersion.numberWithoutCheckDigit =
+          trafficPointElementVersion.numberWithoutCheckDigit =
             this.servicePointNumber;
           if (this.isNew) {
-            this.create(this.trafficPointElementVersion);
+            this.create(trafficPointElementVersion);
             this.disableForm();
           } else {
             this.validityService.updateValidity(this.form);
@@ -306,7 +297,7 @@ export class TrafficPointElementsDetailComponent
               () =>
                 this.update(
                   this.selectedVersion.id!,
-                  this.trafficPointElementVersion
+                  trafficPointElementVersion
                 ),
               () => this.disableForm()
             );
