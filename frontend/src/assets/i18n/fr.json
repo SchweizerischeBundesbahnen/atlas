@@ -1260,7 +1260,9 @@
       }
     },
     "SECTORS": {
-      "SECTORS": "Secteur"
+      "SECTORS": "Secteur",
+      "SECTOR_GROUPS": "Groupe sectoriel",
+      "DESIGNATION": "Désignation"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",
