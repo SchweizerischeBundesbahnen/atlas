@@ -7,15 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { LineVersionV2 } from './lineVersionV2';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: SortObject;
-    pageNumber?: number;
-    unpaged?: boolean;
-    paged?: boolean;
-    pageSize?: number;
+export interface ContainerLineVersionV2 { 
+    objects?: Array<LineVersionV2>;
+    totalCount?: number;
 }
 
