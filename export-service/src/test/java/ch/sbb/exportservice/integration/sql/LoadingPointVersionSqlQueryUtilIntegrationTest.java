@@ -37,11 +37,10 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
 
     // then
-    assertThat(result).isNotEmpty();
-    assertThat(result).hasSize(3);
+    assertThat(result).isNotEmpty().hasSize(3);
     result.sort(Comparator.comparing(LoadingPointVersion::getNumber));
-    assertThat(result.get(0).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.get(0).getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
+    assertThat(result.getFirst().getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
+    assertThat(result.getFirst().getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
     assertThat(result.get(1).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
     assertThat(result.get(1).getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
     assertThat(result.get(2).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
@@ -64,11 +63,10 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
 
     // then
-    assertThat(result).isNotEmpty();
-    assertThat(result).hasSize(1);
-    assertThat(isDateInRange(now, result.get(0).getValidFrom(), result.get(0).getValidTo())).isTrue();
-    assertThat(result.get(0).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.get(0).getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
+    assertThat(result).isNotEmpty().hasSize(1);
+    assertThat(isDateInRange(now, result.getFirst().getValidFrom(), result.getFirst().getValidTo())).isTrue();
+    assertThat(result.getFirst().getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
+    assertThat(result.getFirst().getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
   }
 
   @Test
@@ -87,11 +85,10 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
 
     // then
-    assertThat(result).isNotEmpty();
-    assertThat(result).hasSize(1);
-    assertThat(isDateInRange(futureDate, result.get(0).getValidFrom(), result.get(0).getValidTo())).isTrue();
-    assertThat(result.get(0).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.get(0).getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
+    assertThat(result).isNotEmpty().hasSize(1);
+    assertThat(isDateInRange(futureDate, result.getFirst().getValidFrom(), result.getFirst().getValidTo())).isTrue();
+    assertThat(result.getFirst().getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
+    assertThat(result.getFirst().getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
   }
 
   @Test
@@ -110,11 +107,10 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
 
     // then
-    assertThat(result).isNotEmpty();
-    assertThat(result).hasSize(1);
-    assertThat(isDateInRange(futureDate, result.get(0).getValidFrom(), result.get(0).getValidTo())).isTrue();
-    assertThat(result.get(0).getParentSloidServicePoint()).isEqualTo(null);
-    assertThat(result.get(0).getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(null);
+    assertThat(result).isNotEmpty().hasSize(1);
+    assertThat(isDateInRange(futureDate, result.getFirst().getValidFrom(), result.getFirst().getValidTo())).isTrue();
+    assertThat(result.getFirst().getParentSloidServicePoint()).isNull();
+    assertThat(result.getFirst().getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isNull();
   }
 
   @Test
