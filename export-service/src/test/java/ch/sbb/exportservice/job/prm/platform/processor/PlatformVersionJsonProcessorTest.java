@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-public class PlatformVersionJsonProcessorTest {
+class PlatformVersionJsonProcessorTest {
 
   @Test
-  public void shouldMapToReadModel() throws Exception {
+  void shouldMapToReadModel() throws Exception {
     PlatformVersion entity = PlatformVersion.builder()
         .id(1L)
         .parentNumberServicePoint(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))

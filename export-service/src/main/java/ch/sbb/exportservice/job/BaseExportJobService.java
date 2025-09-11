@@ -27,12 +27,17 @@ public abstract class BaseExportJobService {
 
   private final JobLauncher jobLauncher;
   @Getter
-  private final Job exportCsvJob;
+  private Job exportCsvJob;
   private final Job exportJsonJob;
 
   protected BaseExportJobService(JobLauncher jobLauncher, Job exportCsvJob, Job exportJsonJob) {
     this.jobLauncher = jobLauncher;
     this.exportCsvJob = exportCsvJob;
+    this.exportJsonJob = exportJsonJob;
+  }
+
+  protected BaseExportJobService(JobLauncher jobLauncher, Job exportJsonJob) {
+    this.jobLauncher = jobLauncher;
     this.exportJsonJob = exportJsonJob;
   }
 
@@ -55,7 +60,9 @@ public abstract class BaseExportJobService {
   public void startExportJobs() {
     log.info("CSV and JSON export execution started...");
     for (JobParams jobParams : getExportTypes()) {
-      startExportJob(jobParams, exportCsvJob);
+      if (exportCsvJob != null) {
+        startExportJob(jobParams, exportCsvJob);
+      }
       startExportJob(jobParams, exportJsonJob);
     }
     log.info("CSV and JSON export execution finished");

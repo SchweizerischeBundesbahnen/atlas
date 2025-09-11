@@ -72,7 +72,7 @@ class SqlQueryUtilTest {
     final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(ExportTypeV2.WORLD_FULL, WHERE_CLAUSE);
 
     // then
-    assertThat(query).isEqualTo("");
+    assertThat(query).isEmpty();
   }
 
   @Test
