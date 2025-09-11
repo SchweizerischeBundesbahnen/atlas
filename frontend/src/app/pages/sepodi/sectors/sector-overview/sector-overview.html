@@ -1,1 +1,29 @@
-<p>sector-overview works!</p>
+<atlas-detail-page-content>
+  <div class="font-bold-2xl mb-3">{{'SEPODI.SECTORS.SECTORS'|translate }}</div>
+
+  <app-table
+    data-cy="sectors-table"
+    [tableData]="sectors"
+    [totalCount]="totalSectors"
+    [tableColumns]="tableColumnsSectors"
+    [tableFilterConfig]="tableFilterConfig"
+    (editElementEvent)="editSector($event)"
+    (tableChanged)="getSectorOverview($event)"
+    (tableInitialized)="getSectorOverview($event)"
+  ></app-table>
+
+  <div class="font-bold-2xl mt-5 mb-3">
+    {{'SEPODI.SECTORS.SECTOR_GROUPS'|translate }}
+  </div>
+
+  <app-table
+    data-cy="sector-groups-table"
+    [tableData]="sectorGroups"
+    [totalCount]="totalSectorGroups"
+    [tableColumns]="tableColumnsSectorGroups"
+    [tableFilterConfig]="tableFilterConfig"
+    (editElementEvent)="editSectorGroup($event)"
+    (tableChanged)="getSectorGroupOverview($event)"
+    (tableInitialized)="getSectorGroupOverview($event)"
+  ></app-table>
+</atlas-detail-page-content>

@@ -9,7 +9,7 @@
     "test": "ng test --configuration ci",
     "test:components": "ng test components -c ci",
     "test:atlas": "ng test atlas-frontend -c ci",
-    "test-debug": "ng test --watch true --browsers=Chrome",
+    "test-debug": "ng test atlas-frontend --watch true --browsers=Chrome",
     "test-dir-debug": "ng test --watch true --include src/app/pages/user-profile --browsers=Chrome",
     "lint": "ng lint",
     "format": "prettier --write src/**/*.ts",
