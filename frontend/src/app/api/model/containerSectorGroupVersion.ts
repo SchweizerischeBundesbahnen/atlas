@@ -7,15 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { SectorGroupVersion } from './sectorGroupVersion';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: SortObject;
-    pageNumber?: number;
-    unpaged?: boolean;
-    paged?: boolean;
-    pageSize?: number;
+export interface ContainerSectorGroupVersion { 
+    objects?: Array<SectorGroupVersion>;
+    totalCount?: number;
 }
 
