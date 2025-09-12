@@ -24,7 +24,9 @@ describe('LoadingPointsTableComponent', () => {
   loadingPointInternalService.getLoadingPointOverview.and.returnValue(
     of(LOADING_POINT)
   );
-  const route = { parent: { snapshot: { params: { id: 8504414 } } } };
+  const route = {
+    parent: { snapshot: { params: { servicePointNumber: 8504414 } } },
+  };
   let router: Router;
 
   beforeEach(async () => {

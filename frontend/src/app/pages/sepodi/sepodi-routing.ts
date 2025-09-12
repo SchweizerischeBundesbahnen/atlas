@@ -104,7 +104,10 @@ const trafficPointElementDetailRoutes: Routes = [
       import(
         './traffic-point-elements/traffic-point-elements-side-panel.component'
       ).then((m) => m.TrafficPointElementsSidePanelComponent),
-    resolve: { trafficPoint: trafficPointResolver },
+    resolve: {
+      trafficPoint: trafficPointResolver,
+      servicePoint: servicePointResolver,
+    },
     data: { isTrafficPointArea: false },
     runGuardsAndResolvers: 'always',
     children: [
@@ -121,8 +124,8 @@ const trafficPointElementDetailRoutes: Routes = [
       {
         path: Pages.SECTORS.path,
         loadComponent: () =>
-          import('./sectors/sector-overview/sector-overview').then(
-            (m) => m.SectorOverview
+          import('./sectors/sector-overview/sector-overview.component').then(
+            (m) => m.SectorOverviewComponent
           ),
         runGuardsAndResolvers: 'always',
       },
