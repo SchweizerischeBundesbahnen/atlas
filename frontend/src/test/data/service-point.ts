@@ -1,5 +1,6 @@
 import {
   Country,
+  MeanOfTransport,
   ReadServicePointVersion,
   SpatialReference,
 } from '../../app/api';
@@ -502,7 +503,7 @@ export const BERN: ReadServicePointVersion[] = [
     operatingPointTechnicalTimetableType: undefined,
     operatingPointTrafficPointType: undefined,
     operatingPointRouteNetwork: true,
-    meansOfTransport: [],
+    meansOfTransport: [MeanOfTransport.Train],
     stopPointType: 'ORDERLY',
     servicePointGeolocation: {
       spatialReference: 'LV95',

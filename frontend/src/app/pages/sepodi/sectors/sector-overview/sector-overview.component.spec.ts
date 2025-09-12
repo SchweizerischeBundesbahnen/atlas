@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SectorOverview } from './sector-overview';
+import { SectorOverviewComponent } from './sector-overview.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,14 +11,20 @@ import { of } from 'rxjs';
 import { ContainerSectorVersion } from '../../../../api/model/containerSectorVersion';
 import { ContainerSectorGroupVersion } from '../../../../api/model/containerSectorGroupVersion';
 import { SpatialReference } from '../../../../api';
+import { BERN } from '../../../../../test/data/service-point';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
 
 describe('SectorOverview', () => {
-  let component: SectorOverview;
-  let fixture: ComponentFixture<SectorOverview>;
+  let component: SectorOverviewComponent;
+  let fixture: ComponentFixture<SectorOverviewComponent>;
 
   const activatedRouteMock = {
     parent: {
       snapshot: {
+        data: {
+          servicePoint: BERN,
+        },
         params: {
           trafficPointSloid: 'ch:1:sloid:7000:1',
         },
@@ -52,7 +58,7 @@ describe('SectorOverview', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SectorOverview, TranslateModule.forRoot()],
+      imports: [SectorOverviewComponent, TranslateModule.forRoot()],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -65,17 +71,19 @@ describe('SectorOverview', () => {
           useValue: sectorGroupInternalService,
         },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: Router, useValue: routerSpy },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SectorOverview);
+    fixture = TestBed.createComponent(SectorOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.showCreateButtons).toBeTrue();
   });
 
   it('should display sector data', () => {
@@ -104,7 +112,10 @@ describe('SectorOverview', () => {
       sloid: 'ch:1:sloid:7000:1:1',
     });
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['ch:1:sloid:7000:1:1']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(
+      ['ch:1:sloid:7000:1:1'],
+      jasmine.any(Object)
+    );
   });
 
   it('should display sector group data', () => {
@@ -130,9 +141,9 @@ describe('SectorOverview', () => {
       sloid: 'ch:1:sloid:7000:1:1',
     });
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
-      '../sector-groups',
-      'ch:1:sloid:7000:1:1',
-    ]);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(
+      ['../sector-groups', 'ch:1:sloid:7000:1:1'],
+      jasmine.any(Object)
+    );
   });
 });
