@@ -1261,8 +1261,12 @@
     },
     "SECTORS": {
       "SECTORS": "Settore",
+      "DESIGNATION": "Denominazione",
+      "NEW": "Registrare settore"
+    },
+    "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Gruppo settoriale",
-      "DESIGNATION": "Denominazione"
+      "NEW": "Registrare gruppo settoriale"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Posti di carico",
