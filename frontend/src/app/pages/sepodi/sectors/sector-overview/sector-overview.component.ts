@@ -12,18 +12,35 @@ import { Pages } from '../../../pages';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { Countries } from '../../../../core/country/Countries';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import {
+  ApplicationType,
+  MeanOfTransport,
+  ReadServicePointVersion,
+} from '../../../../api';
 
 @Component({
   selector: 'app-sector-overview',
-  imports: [TranslatePipe, DetailPageContentComponent, TableComponent],
-  templateUrl: './sector-overview.html',
+  imports: [
+    TranslatePipe,
+    DetailPageContentComponent,
+    TableComponent,
+    AtlasButtonComponent,
+    DetailFooterComponent,
+  ],
+  templateUrl: './sector-overview.component.html',
+  styleUrls: ['./sector-overview.component.scss'],
 })
-export class SectorOverview implements OnInit {
+export class SectorOverviewComponent implements OnInit {
   sectorInternalService = inject(SectorInternalService);
   sectorGroupInternalService = inject(SectorGroupInternalService);
   tableService = inject(TableService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  permissionService = inject(PermissionService);
 
   trafficPointSloid!: string;
 
@@ -61,6 +78,8 @@ export class SectorOverview implements OnInit {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
+  showCreateButtons = false;
+
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(
       {},
@@ -68,10 +87,12 @@ export class SectorOverview implements OnInit {
     );
     this.trafficPointSloid =
       this.route.parent!.snapshot.params['trafficPointSloid']!;
+
+    this.initCreateButtons();
   }
 
   editSector(clickedRow: SectorVersion) {
-    this.router.navigate([clickedRow.sloid]).then();
+    this.router.navigate([clickedRow.sloid], { relativeTo: this.route }).then();
   }
 
   getSectorOverview(pagination: TablePagination) {
@@ -86,7 +107,11 @@ export class SectorOverview implements OnInit {
   }
 
   editSectorGroup(clickedRow: SectorGroupVersion) {
-    this.router.navigate(['../sector-groups', clickedRow.sloid]).then();
+    this.router
+      .navigate(['../sector-groups', clickedRow.sloid], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 
   getSectorGroupOverview(pagination: TablePagination) {
@@ -101,5 +126,34 @@ export class SectorOverview implements OnInit {
         this.sectorGroups = sectorGroups.objects!;
         this.totalSectorGroups = sectorGroups.totalCount!;
       });
+  }
+
+  backToServicePoint() {
+    this.router.navigate(['..', '..'], { relativeTo: this.route }).then();
+  }
+
+  private initCreateButtons() {
+    const servicePoint: ReadServicePointVersion[] =
+      this.route.parent!.snapshot.data.servicePoint;
+
+    const hasVersionWithMotTrain = servicePoint.some((i) =>
+      i.meansOfTransport?.includes(MeanOfTransport.Train)
+    );
+
+    const hasPermissionsForOneVersion = servicePoint.some((i) => {
+      return (
+        this.permissionService.hasPermissionsToWrite(
+          ApplicationType.Sepodi,
+          i.businessOrganisation
+        ) &&
+        this.permissionService.hasPermissionsToWrite(
+          ApplicationType.Sepodi,
+          Countries.fromUicCode(i.number.uicCountryCode!).enumCountry
+        )
+      );
+    });
+
+    this.showCreateButtons =
+      hasVersionWithMotTrain && hasPermissionsForOneVersion;
   }
 }
