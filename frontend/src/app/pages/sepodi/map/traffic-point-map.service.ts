@@ -13,6 +13,7 @@ export interface DisplayableTrafficPoint {
   type: TrafficPointElementType;
   sloid: string;
   designation: string;
+  servicePointNumber: number;
   coordinates: CoordinatePair;
 }
 
@@ -35,7 +36,7 @@ export class TrafficPointMapService implements OnDestroy {
         ? `${point.properties.designation} - ${point.properties.sloid}`
         : point.properties.sloid;
       popupHtml +=
-        `<a href="${Pages.SEPODI.path}/${Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path}/${point.properties.sloid}">` +
+        `<a href="${Pages.SEPODI.path}/${Pages.SERVICE_POINTS.path}/${point.properties.servicePointNumber}/${Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path}/${point.properties.sloid}">` +
         `${description}</a> <br/>`;
     });
 
@@ -66,6 +67,7 @@ export class TrafficPointMapService implements OnDestroy {
                   designation: point.designation!,
                   type: point.trafficPointElementType,
                   coordinates: point.trafficPointElementGeolocation!.wgs84!,
+                  servicePointNumber: servicePointNumber,
                 };
               });
             this.setDisplayedTrafficPoints(trafficPoints);
@@ -88,6 +90,7 @@ export class TrafficPointMapService implements OnDestroy {
           type: point.type,
           sloid: point.sloid,
           designation: point.designation,
+          servicePointNumber: point.servicePointNumber,
         },
       };
     });
