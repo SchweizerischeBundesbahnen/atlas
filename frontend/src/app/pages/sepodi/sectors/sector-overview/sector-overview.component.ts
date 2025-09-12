@@ -148,7 +148,7 @@ export class SectorOverviewComponent implements OnInit {
         ) &&
         this.permissionService.hasPermissionsToWrite(
           ApplicationType.Sepodi,
-          Countries.fromUicCode(i.number.uicCountryCode!).enumCountry
+          Countries.fromUicCode(i.number.uicCountryCode).enumCountry
         )
       );
     });
