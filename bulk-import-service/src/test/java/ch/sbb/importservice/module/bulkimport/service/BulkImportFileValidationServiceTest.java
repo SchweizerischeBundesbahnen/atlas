@@ -12,7 +12,7 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.module.bulkimport.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.module.bulkimport.exception.FileHeaderValidationException;
-import ch.sbb.importservice.module.bulkimport.job.prm.platform.update.PlatformUpdate;
+import ch.sbb.importservice.module.bulkimport.job.prm.platform.update.reduced.PlatformReducedUpdate;
 import ch.sbb.importservice.module.bulkimport.job.sepodi.servicepoint.update.ServicePointUpdate;
 import ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.update.TrafficPointUpdate;
 import ch.sbb.importservice.module.bulkimport.model.BulkImportConfig;
@@ -74,7 +74,7 @@ class BulkImportFileValidationServiceTest {
     MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-reduced-update.csv", CSV_CONTENT_TYPE,
         Files.readAllBytes(file.toPath()));
 
-    File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, PlatformUpdate.CONFIG);
+    File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, PlatformReducedUpdate.CONFIG);
     assertThat(result).hasSize(file.length());
   }
 
