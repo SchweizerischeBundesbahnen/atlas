@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.841.0"
+version = "2.842.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
