@@ -53,6 +53,10 @@ export class TrafficPointElementsSidePanelComponent implements OnInit {
       link: Pages.SECTORS.path,
       title: Pages.SECTORS.title,
     },
+    {
+      link: Pages.SECTOR_GROUPS.path,
+      title: Pages.SECTOR_GROUPS.title,
+    },
   ];
   showTabs = true;
 
