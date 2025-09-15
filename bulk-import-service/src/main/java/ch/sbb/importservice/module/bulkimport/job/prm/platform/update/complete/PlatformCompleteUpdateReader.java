@@ -1,7 +1,7 @@
-package ch.sbb.importservice.module.bulkimport.job.prm.platform.update;
+package ch.sbb.importservice.module.bulkimport.job.prm.platform.update.complete;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.importservice.module.bulkimport.reader.BulkImportItemReader;
 import ch.sbb.importservice.module.bulkimport.reader.ReaderUtil;
 import java.io.File;
@@ -14,12 +14,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PlatformUpdateReader extends PlatformUpdate implements BulkImportItemReader {
+public class PlatformCompleteUpdateReader extends PlatformCompleteUpdate implements BulkImportItemReader {
 
   @Override
   public List<BulkImportUpdateContainer<?>> apply(File file) {
-    List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> platformUpdateCsvModels = ReaderUtil.readAndValidate(file,
-        PlatformReducedUpdateCsvModel.class);
+    List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> platformUpdateCsvModels =
+        ReaderUtil.readAndValidate(file,
+            PlatformCompleteUpdateCsvModel.class);
 
     log.info("Read {} lines to import", platformUpdateCsvModels.size());
     return new ArrayList<>(platformUpdateCsvModels);
@@ -27,7 +28,7 @@ public class PlatformUpdateReader extends PlatformUpdate implements BulkImportIt
 
   @Override
   public Class<?> getCsvModelClass() {
-    return PlatformReducedUpdateCsvModel.class;
+    return PlatformCompleteUpdateCsvModel.class;
   }
 
 }
