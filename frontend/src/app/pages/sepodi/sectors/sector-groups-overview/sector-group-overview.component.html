@@ -2,8 +2,8 @@
   <div class="overview-tables">
     @if (showCreateButtons) {
       <atlas-button
-        buttonDataCy="new-sector"
-        buttonText="SEPODI.SECTORS.NEW"
+        buttonDataCy="new-sector-group"
+        buttonText="SEPODI.SECTOR_GROUPS.NEW"
         buttonType="whiteFooterNonEdit"
         buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
         (buttonClicked)="backToServicePoint()"
@@ -12,19 +12,19 @@
       </atlas-button>
     }
 
-    <div class="font-bold-2xl mb-3">
-      {{ 'SEPODI.SECTORS.SECTORS' | translate }}
+    <div class="font-bold-2xl mt-5 mb-3">
+      {{ 'SEPODI.SECTOR_GROUPS.SECTOR_GROUPS' | translate }}
     </div>
 
     <app-table
-      data-cy="sectors-table"
-      [tableData]="sectors"
-      [totalCount]="totalSectors"
-      [tableColumns]="tableColumnsSectors"
+      data-cy="sector-groups-table"
+      [tableData]="sectorGroups"
+      [totalCount]="totalSectorGroups"
+      [tableColumns]="tableColumnsSectorGroups"
       [tableFilterConfig]="tableFilterConfig"
-      (editElementEvent)="editSector($event)"
-      (tableChanged)="getSectorOverview($event)"
-      (tableInitialized)="getSectorOverview($event)"
+      (editElementEvent)="editSectorGroup($event)"
+      (tableChanged)="getSectorGroupOverview($event)"
+      (tableInitialized)="getSectorGroupOverview($event)"
     ></app-table>
   </div>
 </atlas-detail-page-content>
