@@ -1,15 +1,16 @@
-import { AuthConfig } from 'angular-oauth2-oidc';
+import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
 export interface Environment {
   production: boolean;
-  sepodiWorkflowBavActionEnabled: boolean;
-  bulkImportEnabled: boolean;
-  terminationWorkflowEnabled: boolean;
   label: string;
   appVersion: string;
   atlasApiUrl: string;
   atlasUnauthApiUrl: string;
-  authConfig: AuthConfig;
+  authConfig: PassedInitialConfig;
   atlasReleaseNotes: string;
   journeyMapsApiKey: string;
+  // feature toggles
+  sepodiWorkflowBavActionEnabled: boolean;
+  bulkImportEnabled: boolean;
+  terminationWorkflowEnabled: boolean;
 }
