@@ -1,8 +1,8 @@
-package ch.sbb.importservice.module.bulkimport.job.prm.platform.update;
+package ch.sbb.importservice.module.bulkimport.job.prm.platform.update.complete;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.importservice.module.bulkimport.client.PlatformBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.writer.BulkImportItemWriter;
 import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 @StepScope
 @RequiredArgsConstructor
-public class PlatformUpdateWriter extends PlatformUpdate implements BulkImportItemWriter {
+public class PlatformCompleteUpdateWriter extends PlatformCompleteUpdate implements BulkImportItemWriter {
 
   @Value("#{stepExecution}")
   private StepExecution stepExecution;
@@ -28,13 +28,14 @@ public class PlatformUpdateWriter extends PlatformUpdate implements BulkImportIt
 
   @Override
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> updateContainers =
+    List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
     WriterUtil.addInNameOfTo(stepExecution, updateContainers);
 
     log.info("Writing {} containers to prm", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformReducedUpdate(updateContainers);
+    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformCompletedUpdate(
+        updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }
