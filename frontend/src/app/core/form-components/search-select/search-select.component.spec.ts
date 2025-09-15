@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchSelectComponent } from './search-select.component';
-import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
+import { signal } from '@angular/core';
 
 describe('SearchSelectComponent', () => {
   let component: SearchSelectComponent<unknown>;
@@ -33,15 +34,15 @@ describe('SearchSelectComponent', () => {
   });
 
   it('isDropdownOpen should return false', () => {
-    component.ngSelect = jasmine.createSpyObj<NgSelectComponent>([], {
-      isOpen: undefined,
+    component.ngSelect = jasmine.createSpyObj('NgSelectComponent', [], {
+      isOpen: signal(undefined),
     });
     expect(component.isDropdownOpen()).toBeFalse();
   });
 
   it('isDropdownOpen should return true', () => {
-    component.ngSelect = jasmine.createSpyObj<NgSelectComponent>([], {
-      isOpen: true,
+    component.ngSelect = jasmine.createSpyObj('NgSelectComponent', [], {
+      isOpen: signal(true),
     });
     expect(component.isDropdownOpen()).toBeTrue();
   });
