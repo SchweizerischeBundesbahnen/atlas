@@ -1,8 +1,7 @@
 package ch.sbb.atlas.imports.model;
 
+import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion;
 import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion.Mapping;
@@ -11,13 +10,12 @@ import ch.sbb.atlas.imports.annotation.Nulling;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.Validatable;
-import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,16 +31,17 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @EqualsAndHashCode
-@JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.additionalInformation, Fields.shuttle, Fields.height,
-    Fields.inclinationLongitudinal, Fields.infoOpportunities, Fields.partialElevation, Fields.tactileSystem,
-    Fields.attentionField,
-    Fields.vehicleAccess, Fields.wheelchairAreaLength, Fields.wheelchairAreaWidth})
+@JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.additionalInformation, Fields.shuttle,
+    Fields.adviceAccessInfo,
+    Fields.contrastingAreas, Fields.dynamicAudio, Fields.dynamicVisual, Fields.inclination,
+    Fields.inclinationWidth,
+    Fields.levelAccessWheelchair, Fields.superelevation})
 @CopyFromCurrentVersion({
     @Mapping(target = "id", current = "id"),
     @Mapping(target = "etagVersion", current = "version"),
     @Mapping(target = "parentServicePointSloid", current = "parentServicePointSloid")
 })
-public class PlatformReducedUpdateCsvModel implements Validatable<PlatformReducedUpdateCsvModel> {
+public class PlatformCompleteUpdateCsvModel implements Validatable<PlatformCompleteUpdateCsvModel> {
 
   private String sloid;
 
@@ -64,38 +63,31 @@ public class PlatformReducedUpdateCsvModel implements Validatable<PlatformReduce
 
   @DefaultMapping
   @Nulling
-  private Double height;
+  private String adviceAccessInfo;
+
+  @DefaultMapping
+  private BooleanOptionalAttributeType contrastingAreas;
+
+  @DefaultMapping
+  private BasicAttributeType dynamicAudio;
+
+  @DefaultMapping
+  private BasicAttributeType dynamicVisual;
 
   @DefaultMapping
   @Nulling
-  private Double inclinationLongitudinal;
+  private Double inclination;
 
   @DefaultMapping
   @Nulling
-  private Set<InfoOpportunityAttributeType> infoOpportunities;
+  private Double inclinationWidth;
+
+  @DefaultMapping
+  private BasicAttributeType levelAccessWheelchair;
 
   @DefaultMapping
   @Nulling
-  private Boolean partialElevation;
-
-  @DefaultMapping
-  private BooleanOptionalAttributeType tactileSystem;
-
-  @DefaultMapping
-  @Nulling
-  private BooleanOptionalAttributeType attentionField;
-
-  @DefaultMapping
-  @Nulling
-  private VehicleAccessAttributeType vehicleAccess;
-
-  @DefaultMapping
-  @Nulling
-  private Double wheelchairAreaLength;
-
-  @DefaultMapping
-  @Nulling
-  private Double wheelchairAreaWidth;
+  private Double superelevation;
 
   @Override
   public List<BulkImportError> validate() {
@@ -113,8 +105,8 @@ public class PlatformReducedUpdateCsvModel implements Validatable<PlatformReduce
   }
 
   @Override
-  public List<UniqueField<PlatformReducedUpdateCsvModel>> uniqueFields() {
-    return List.of(new UniqueField<>(Fields.sloid, PlatformReducedUpdateCsvModel::getSloid));
+  public List<UniqueField<PlatformCompleteUpdateCsvModel>> uniqueFields() {
+    return List.of(new UniqueField<>(Fields.sloid, PlatformCompleteUpdateCsvModel::getSloid));
   }
 
 }

@@ -2,13 +2,15 @@ package ch.sbb.prm.directory.module.bulkimport.service;
 
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUserParameter;
-import ch.sbb.prm.directory.module.bulkimport.mapper.PlatformBulkImportUpdate;
 import ch.sbb.prm.directory.module.bulkimport.client.PlatformApiClient;
+import ch.sbb.prm.directory.module.bulkimport.mapper.PlatformBulkImportCompleteUpdate;
+import ch.sbb.prm.directory.module.bulkimport.mapper.PlatformBulkImportReducedUpdate;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.service.PlatformService;
 import java.util.List;
@@ -38,19 +40,49 @@ public class PlatformBulkImportService {
   public void updatePlatformReduced(BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> bulkImportUpdateContainer) {
     PlatformReducedUpdateCsvModel platformReducedUpdateCsvModel = bulkImportUpdateContainer.getObject();
 
-    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersions(platformReducedUpdateCsvModel);
+    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersionsReduced(platformReducedUpdateCsvModel);
     PlatformVersion currentVersion = ImportUtils.getCurrentVersion(currentPlatformVersions,
         platformReducedUpdateCsvModel.getValidFrom(), platformReducedUpdateCsvModel.getValidTo());
-    PlatformVersionModel updateModel = PlatformBulkImportUpdate.apply(bulkImportUpdateContainer, currentVersion);
+    PlatformVersionModel updateModel = PlatformBulkImportReducedUpdate.apply(bulkImportUpdateContainer, currentVersion);
 
     platformApiClient.updatePlatform(currentVersion.getId(), updateModel);
   }
 
-  private List<PlatformVersion> getCurrentPlatformVersions(PlatformReducedUpdateCsvModel platformReducedUpdateCsvModel) {
+  @RunAsUser
+  public void updatePlatformCompleteByUsername(@RunAsUserParameter String username,
+      BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> bulkImportContainer) {
+    log.info("Update versions in name of the user: {}", username);
+    updatePlatformComplete(bulkImportContainer);
+  }
+
+  public void updatePlatformComplete(BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> bulkImportUpdateContainer) {
+    PlatformCompleteUpdateCsvModel platformCompleteUpdateCsvModel = bulkImportUpdateContainer.getObject();
+
+    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersionsComplete(platformCompleteUpdateCsvModel);
+    PlatformVersion currentVersion = ImportUtils.getCurrentVersion(currentPlatformVersions,
+        platformCompleteUpdateCsvModel.getValidFrom(), platformCompleteUpdateCsvModel.getValidTo());
+    PlatformVersionModel updateModel = PlatformBulkImportCompleteUpdate.apply(bulkImportUpdateContainer, currentVersion);
+
+    platformApiClient.updatePlatform(currentVersion.getId(), updateModel);
+  }
+
+  private List<PlatformVersion> getCurrentPlatformVersionsReduced(PlatformReducedUpdateCsvModel platformReducedUpdateCsvModel) {
     if (platformReducedUpdateCsvModel.getSloid() != null) {
       List<PlatformVersion> platformVersions = platformService.getAllVersions(platformReducedUpdateCsvModel.getSloid());
       if (platformVersions.isEmpty()) {
         throw new SloidNotFoundException(platformReducedUpdateCsvModel.getSloid());
+      }
+      return platformVersions;
+    }
+    throw new IllegalStateException("Sloid should be given");
+  }
+
+  private List<PlatformVersion> getCurrentPlatformVersionsComplete(
+      PlatformCompleteUpdateCsvModel platformCompleteUpdateCsvModel) {
+    if (platformCompleteUpdateCsvModel.getSloid() != null) {
+      List<PlatformVersion> platformVersions = platformService.getAllVersions(platformCompleteUpdateCsvModel.getSloid());
+      if (platformVersions.isEmpty()) {
+        throw new SloidNotFoundException(platformCompleteUpdateCsvModel.getSloid());
       }
       return platformVersions;
     }
