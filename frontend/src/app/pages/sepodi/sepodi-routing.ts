@@ -130,6 +130,14 @@ const trafficPointElementDetailRoutes: Routes = [
         runGuardsAndResolvers: 'always',
       },
       {
+        path: Pages.SECTOR_GROUPS.path,
+        loadComponent: () =>
+          import(
+            './sectors/sector-groups-overview/sector-group-overview.component'
+          ).then((m) => m.SectorGroupOverviewComponent),
+        runGuardsAndResolvers: 'always',
+      },
+      {
         path: '**',
         redirectTo: '',
       },

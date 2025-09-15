@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
-import { SectorVersion } from '../../../../api/model/sectorVersion';
+import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
+import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -23,11 +23,11 @@ import { SectorPermissionService } from '../sector-permission.service';
     AtlasButtonComponent,
     DetailFooterComponent,
   ],
-  templateUrl: './sector-overview.component.html',
-  styleUrls: ['./sector-overview.component.scss'],
+  templateUrl: './sector-group-overview.component.html',
+  styleUrls: ['./sector-group-overview.component.scss'],
 })
-export class SectorOverviewComponent implements OnInit {
-  sectorInternalService = inject(SectorInternalService);
+export class SectorGroupOverviewComponent implements OnInit {
+  sectorGroupInternalService = inject(SectorGroupInternalService);
   tableService = inject(TableService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -35,11 +35,12 @@ export class SectorOverviewComponent implements OnInit {
 
   trafficPointSloid!: string;
 
-  sectors: SectorVersion[] = [];
-  totalSectors = 0;
+  sectorGroups: SectorGroupVersion[] = [];
+  totalSectorGroups = 0;
 
   tableFilterConfig!: TableFilter<unknown>[][];
-  tableColumnsSectors: TableColumn<SectorVersion>[] = [
+
+  tableColumnsSectorGroups: TableColumn<SectorGroupVersion>[] = [
     {
       headerTitle: 'SEPODI.SECTORS.DESIGNATION',
       value: 'designation',
@@ -58,27 +59,35 @@ export class SectorOverviewComponent implements OnInit {
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(
       {},
-      Pages.SECTORS
+      Pages.SECTOR_GROUPS
     );
     this.trafficPointSloid =
       this.route.parent!.snapshot.params['trafficPointSloid']!;
+
     this.showCreateButtons = this.sectorPermissionService.showCreateButton(
       this.route.parent!.snapshot.data.servicePoint
     );
   }
 
-  editSector(clickedRow: SectorVersion) {
-    this.router.navigate([clickedRow.sloid], { relativeTo: this.route }).then();
+  editSectorGroup(clickedRow: SectorGroupVersion) {
+    this.router
+      .navigate([clickedRow.sloid], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 
-  getSectorOverview(pagination: TablePagination) {
-    this.sectorInternalService
-      .getSectors(this.trafficPointSloid, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
-      .subscribe((sectors) => {
-        this.sectors = sectors.objects!;
-        this.totalSectors = sectors.totalCount!;
+  getSectorGroupOverview(pagination: TablePagination) {
+    this.sectorGroupInternalService
+      .getSectorGroups(
+        this.trafficPointSloid,
+        pagination.page,
+        pagination.size,
+        [pagination.sort ?? 'designation,asc']
+      )
+      .subscribe((sectorGroups) => {
+        this.sectorGroups = sectorGroups.objects!;
+        this.totalSectorGroups = sectorGroups.totalCount!;
       });
   }
 

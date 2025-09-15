@@ -1,21 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SectorOverviewComponent } from './sector-overview.component';
+import { SectorGroupOverviewComponent } from './sector-group-overview.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
+import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ContainerSectorVersion } from '../../../../api/model/containerSectorVersion';
-import { SpatialReference } from '../../../../api';
+import { ContainerSectorGroupVersion } from '../../../../api/model/containerSectorGroupVersion';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
 
-describe('SectorOverviewComponent', () => {
-  let component: SectorOverviewComponent;
-  let fixture: ComponentFixture<SectorOverviewComponent>;
+describe('SectorGroupOverviewComponent', () => {
+  let component: SectorGroupOverviewComponent;
+  let fixture: ComponentFixture<SectorGroupOverviewComponent>;
 
   const activatedRouteMock = {
     parent: {
@@ -30,27 +29,30 @@ describe('SectorOverviewComponent', () => {
     },
   };
 
-  const sectorInternalService = jasmine.createSpyObj('SectorInternalService', [
-    'getSectors',
-  ]);
-  const sectorOverview: ContainerSectorVersion = {
+  const sectorGroupInternalService = jasmine.createSpyObj(
+    'SectorGroupInternalService',
+    ['getSectorGroups']
+  );
+  const sectorGroupOverview: ContainerSectorGroupVersion = {
     objects: [],
     totalCount: 0,
   };
-  sectorInternalService.getSectors.and.returnValue(of(sectorOverview));
+  sectorGroupInternalService.getSectorGroups.and.returnValue(
+    of(sectorGroupOverview)
+  );
 
   const routerSpy = jasmine.createSpyObj(['navigate']);
   routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SectorOverviewComponent, TranslateModule.forRoot()],
+      imports: [SectorGroupOverviewComponent, TranslateModule.forRoot()],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         {
-          provide: SectorInternalService,
-          useValue: sectorInternalService,
+          provide: SectorGroupInternalService,
+          useValue: sectorGroupInternalService,
         },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
@@ -58,7 +60,7 @@ describe('SectorOverviewComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SectorOverviewComponent);
+    fixture = TestBed.createComponent(SectorGroupOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -68,13 +70,13 @@ describe('SectorOverviewComponent', () => {
     expect(component.showCreateButtons).toBeTrue();
   });
 
-  it('should display sector data', () => {
-    component.getSectorOverview({
+  it('should display sector group data', () => {
+    component.getSectorGroupOverview({
       page: 0,
       size: 10,
     });
 
-    expect(sectorInternalService.getSectors).toHaveBeenCalledWith(
+    expect(sectorGroupInternalService.getSectorGroups).toHaveBeenCalledWith(
       'ch:1:sloid:7000:1',
       0,
       10,
@@ -82,15 +84,12 @@ describe('SectorOverviewComponent', () => {
     );
   });
 
-  it('should navigate to sector detail', () => {
-    component.editSector({
+  it('should navigate to sector group detail', () => {
+    component.editSectorGroup({
       trafficPointSloid: 'ch:1:sloid:7000:1',
       validFrom: new Date('2014-12-14'),
       validTo: new Date('2014-12-14'),
       designation: 'A',
-      north: 0,
-      east: 0,
-      spatialReference: SpatialReference.Lv95,
       sloid: 'ch:1:sloid:7000:1:1',
     });
 
