@@ -202,6 +202,11 @@ export class Pages {
     title: 'SEPODI.SECTORS.SECTORS',
   };
 
+  public static readonly SECTOR_GROUPS: Page = {
+    path: 'sector-groups',
+    title: 'SEPODI.SECTOR_GROUPS.SECTOR_GROUPS',
+  };
+
   public static readonly LOADING_POINTS: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
