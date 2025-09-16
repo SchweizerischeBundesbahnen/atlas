@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   ActivatedRoute,
   RouterLink,
@@ -16,6 +16,7 @@ import { DateRangeTextComponent } from '../../../core/versioning/date-range-text
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
+import { SectorMapService } from '../map/sector-map.service';
 
 @Component({
   selector: 'app-traffic-point-elements-side-panel',
@@ -35,7 +36,9 @@ import { ServicePointService } from '../../../api/service/sepodi/service-point.s
     RouterLink,
   ],
 })
-export class TrafficPointElementsSidePanelComponent implements OnInit {
+export class TrafficPointElementsSidePanelComponent
+  implements OnInit, OnDestroy
+{
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
@@ -62,6 +65,7 @@ export class TrafficPointElementsSidePanelComponent implements OnInit {
 
   route = inject(ActivatedRoute);
   servicePointService = inject(ServicePointService);
+  sectorMapService = inject(SectorMapService);
 
   ngOnInit() {
     this.route.data.subscribe((next) => {
@@ -70,6 +74,11 @@ export class TrafficPointElementsSidePanelComponent implements OnInit {
       this.initTrafficPoint();
       this.showTabs = !this.isTrafficPointArea && !this.isNew;
       this.initStopPointName();
+
+      if (!this.isTrafficPointArea) {
+        console.log('try display sector on map');
+        this.sectorMapService.displaySectorsOnMap(this.selectedVersion.sloid!);
+      }
     });
   }
 
@@ -99,5 +108,9 @@ export class TrafficPointElementsSidePanelComponent implements OnInit {
           );
         this.servicePointName = versionToDisplay.designationOfficial;
       });
+  }
+
+  ngOnDestroy() {
+    this.sectorMapService.clearDisplayedSectors();
   }
 }
