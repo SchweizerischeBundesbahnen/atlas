@@ -7,12 +7,12 @@ export interface MapIcon {
 }
 
 export class MapIconsService {
-  private static IMAGES_BASE_PATH = '../../../../assets/images/';
-  private static SERVICE_POINT_ICONS_BASE_PATH =
+  private static readonly IMAGES_BASE_PATH = '../../../../assets/images/';
+  private static readonly SERVICE_POINT_ICONS_BASE_PATH =
     this.IMAGES_BASE_PATH + 'service-point-symbols/';
-  private static TRAFFIC_POINT_ICONS_BASE_PATH =
+  private static readonly TRAFFIC_POINT_ICONS_BASE_PATH =
     this.IMAGES_BASE_PATH + 'traffic-point-symbols/';
-  private static SECTOR_ICONS_BASE_PATH =
+  private static readonly SECTOR_ICONS_BASE_PATH =
     this.IMAGES_BASE_PATH + 'sector-symbols/';
 
   static addTrafficPointIconToMap(map: Map) {
