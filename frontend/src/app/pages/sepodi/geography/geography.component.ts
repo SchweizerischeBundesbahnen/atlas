@@ -170,12 +170,13 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   get currentCoordinates(): CoordinatePair | undefined {
-    if (!this._form) return;
-    return {
-      east: Number(this._form.value.east),
-      north: Number(this._form.value.north),
-      spatialReference: this.currentSpatialReference!,
-    };
+    return this._form
+      ? {
+          east: Number(this._form.value.east),
+          north: Number(this._form.value.north),
+          spatialReference: this.currentSpatialReference!,
+        }
+      : undefined;
   }
 
   switchSpatialReference($event: MatRadioChange) {

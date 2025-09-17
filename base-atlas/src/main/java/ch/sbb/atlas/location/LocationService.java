@@ -11,7 +11,9 @@ import ch.sbb.atlas.servicepoint.SloidValidation;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import feign.FeignException.Conflict;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class LocationService {
 
@@ -21,6 +23,7 @@ public class LocationService {
     try {
       locationClient.claimSloid(request);
     } catch (Conflict e) {
+      log.info("Conflict occurred during claim sloid request", e);
       throw new SloidAlreadyExistsException(request.sloid());
     }
   }

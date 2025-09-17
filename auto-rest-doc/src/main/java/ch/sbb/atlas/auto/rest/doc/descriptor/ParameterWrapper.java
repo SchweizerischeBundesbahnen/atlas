@@ -9,8 +9,10 @@ import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 
+@Slf4j
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -88,6 +90,7 @@ public class ParameterWrapper {
     try {
       return Class.forName(className);
     } catch (ClassNotFoundException e) {
+      log.debug("Class not found", e);
       return Object.class;
     }
   }

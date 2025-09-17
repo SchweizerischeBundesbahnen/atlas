@@ -64,6 +64,7 @@ public class ErrorResponse {
     try {
       return Optional.ofNullable(UserService.getUserIdentifier());
     } catch (Exception e) {
+      log.error("Following Exception occurred", e);
       return Optional.empty();
     }
   }
