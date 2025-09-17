@@ -1,8 +1,7 @@
 package ch.sbb.exportservice.job.sepodi.sector.entity;
 
-import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.job.BaseEntity;
+import ch.sbb.exportservice.job.sepodi.GeolocationBaseEntity;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,17 +18,9 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class SectorVersion extends BaseEntity {
+public class SectorVersion extends GeolocationBaseEntity {
 
   private Long id;
-
-  private Double north;
-
-  private Double east;
-
-  private Double height;
-
-  private SpatialReference spatialReference;
 
   private Double edgeHeight;
 

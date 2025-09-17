@@ -1,23 +1,22 @@
 package ch.sbb.exportservice.job.sepodi.sector.processor;
 
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.exportservice.job.sepodi.BaseSepodiProcessor;
 import ch.sbb.exportservice.job.sepodi.sector.entity.SectorVersion;
 import org.springframework.batch.item.ItemProcessor;
 
-public class SectorJsonProcessor implements ItemProcessor<SectorVersion, SectorVersionModel> {
+public class SectorJsonProcessor extends BaseSepodiProcessor implements ItemProcessor<SectorVersion, SectorVersionModel> {
 
   @Override
-  public SectorVersionModel process(SectorVersion version) throws Exception {
-    return SectorVersionModel.builder()
+  public ReadSectorVersionModel process(SectorVersion version) throws Exception {
+    return ReadSectorVersionModel.builder()
         .id(version.getId())
         .designation(version.getDesignation())
-        .east(version.getEast())
-        .north(version.getNorth())
+        .sectorGeolocation(toModel(version))
         .status(version.getStatus())
         .edgeHeight(version.getEdgeHeight())
-        .height(version.getHeight())
         .length(version.getLength())
-        .spatialReference(version.getSpatialReference())
         .sloid(version.getSloid())
         .trafficPointSloid(version.getTrafficPointSloid())
         .validFrom(version.getValidFrom())

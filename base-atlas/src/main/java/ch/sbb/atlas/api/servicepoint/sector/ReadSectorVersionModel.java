@@ -1,13 +1,7 @@
 package ch.sbb.atlas.api.servicepoint.sector;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
-import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.model.IdCheckable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
