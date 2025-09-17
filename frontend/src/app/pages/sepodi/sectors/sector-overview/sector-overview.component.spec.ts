@@ -114,4 +114,13 @@ describe('SectorOverviewComponent', () => {
       jasmine.any(Object)
     );
   });
+
+  it('should navigate back to service point', () => {
+    component.backToServicePoint();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(
+      ['..', '..'],
+      jasmine.any(Object)
+    );
+  });
 });
