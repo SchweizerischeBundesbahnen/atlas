@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { Map, MapGeoJSONFeature } from 'maplibre-gl';
-import { TrafficPointMapService } from './traffic-point-map.service';
 import { MapService } from './map.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { MAP_SECTOR_LAYER_NAME } from './map-style';
@@ -43,17 +42,18 @@ describe('SectorMapService', () => {
           coordinates: [7.439133524894714, 46.94883407094761],
         },
         properties: {
-          sloid: 'ch:1:sloid:0:245',
+          sloid: 'ch:1:sloid:7000:0:2:1',
+          trafficPointSloid: 'ch:1:sloid:7000:0:2',
           designation: 'A',
-          servicePointNumber: 857000,
         },
       },
     ] as unknown as MapGeoJSONFeature[];
 
-    const result =
-      TrafficPointMapService.buildTrafficPointPopupInformation(features);
+    const result = SectorMapService.buildSectorPopupInformation(features);
     expect(result).toEqual(
-      '<a href="service-point-directory/service-points/857000/traffic-point-elements/ch:1:sloid:0:245">A - ch:1:sloid:0:245</a> <br/>'
+      '<a' +
+        ' href="service-point-directory/service-points/8507000/traffic-point-elements/ch:1:sloid:7000:0:2/sectors/ch:1:sloid:7000:0:2:1">A -' +
+        ' ch:1:sloid:7000:0:2:1</a> <br/>'
     );
   });
 
@@ -115,5 +115,14 @@ describe('SectorMapService', () => {
     expect(sourceSpy.setData).toHaveBeenCalled();
     const data = sourceSpy.setData.calls.mostRecent().args[0];
     expect(data.geometry.coordinates).toEqual([7.44908190053, 46.96102079646]);
+  });
+
+  it('should clear current SectorVersion on map', () => {
+    service.clearCurrentSector();
+
+    expect(mapSpy.getSource).toHaveBeenCalledWith('current_sector');
+    expect(sourceSpy.setData).toHaveBeenCalled();
+    const data = sourceSpy.setData.calls.mostRecent().args[0];
+    expect(data.geometry.coordinates).toEqual([0, 0]);
   });
 });
