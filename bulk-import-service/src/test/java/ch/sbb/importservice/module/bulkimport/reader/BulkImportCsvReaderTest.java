@@ -33,7 +33,7 @@ class BulkImportCsvReaderTest {
       """;
 
   private static final String PLATFORM_COMPLETE_UPDATE_HEADER = """
-      sloid;validFrom;validTo;additionalInformation;shuttle;adviceAccessInfo;contrastingAreas;dynamicAudio;dynamicVisual;inclination;inclinationWidth;levelAccessWheelchair;superelevation
+      sloid;validFrom;validTo;boardingDevice;additionalInformation;shuttle;adviceAccessInfo;contrastingAreas;dynamicAudio;dynamicVisual;inclination;inclinationWidth;levelAccessWheelchair;superelevation
       """;
 
   @Test
@@ -152,7 +152,7 @@ class BulkImportCsvReaderTest {
   @Test
   void shouldReportAllDataMappingErrorsForPlatformReducedUpdate() throws IOException {
     String csvLine = """
-        ch:1:sloid:88253:0:1;num;tomorrow;5.000;Bern;STOP;idk;aaa;east;north;fake;height
+        ch:1:sloid:88253:0:1;num;tomorrow;atläs;5.000;Bern;STOP;idk;aaa;east;north;fake;height
         """;
     BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> result = BulkImportCsvReader.readObject(
         PlatformReducedUpdateCsvModel.class, PLATFORM_REDUCED_UPDATE_HEADER, csvLine, 1);
@@ -165,7 +165,7 @@ class BulkImportCsvReaderTest {
     assertThat(errorMessages).containsExactlyInAnyOrder(
         "Expected DATE but got num in column validFrom",
         "Expected DATE but got tomorrow in column validTo",
-        "Expected DOUBLE but got Bern in column height",
+        "Expected ENUM but got Bern in column boardingDevice",
         "Expected DOUBLE but got STOP in column inclinationLongitudinal",
         "Expected ENUM but got idk in column infoOpportunities",
         "Expected BOOLEAN but got aaa in column partialElevation",
@@ -173,6 +173,28 @@ class BulkImportCsvReaderTest {
         "Expected ENUM but got north in column vehicleAccess",
         "Expected DOUBLE but got fake in column wheelchairAreaLength",
         "Expected DOUBLE but got height in column wheelchairAreaWidth"
+    );
+  }
+
+  @Test
+  void shouldReportAllDataMappingErrorsForPlatformCompleteUpdate() throws IOException {
+    String csvLine = """
+        ch:1:sloid:1:0:1;num;tomorrow;TO_BE_COMPLETED;Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen Dorf bedienen diese Haltekante.;test;Achtung, Stufe von 16 cm.;sonne;TO_BE_COMPLETED;TO_BE_COMPLETED;12.0;12.0;TO_BE_COMPLETED;string
+        """;
+    BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        PlatformCompleteUpdateCsvModel.class, PLATFORM_COMPLETE_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.getBulkImportLogEntry().getErrors()).hasSize(5);
+
+    List<String> errorMessages = result.getBulkImportLogEntry().getErrors().stream()
+        .map(BulkImportError::getErrorMessage)
+        .toList();
+    assertThat(errorMessages).containsExactlyInAnyOrder(
+        "Expected DATE but got num in column validFrom",
+        "Expected DATE but got tomorrow in column validTo",
+        "Expected ENUM but got test in column shuttle",
+        "Expected DOUBLE but got string in column superelevation",
+        "Expected ENUM but got sonne in column contrastingAreas"
     );
   }
 
