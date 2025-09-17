@@ -152,7 +152,7 @@ class BulkImportCsvReaderTest {
   @Test
   void shouldReportAllDataMappingErrorsForPlatformReducedUpdate() throws IOException {
     String csvLine = """
-        ch:1:sloid:88253:0:1;num;tomorrow;atläs;5.000;Bern;STOP;idk;aaa;east;north;fake;height
+        ch:1:sloid:88253:0:1;num;tomorrow;5.000;Bern;STOP;idk;aaa;east;north;fake;height
         """;
     BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> result = BulkImportCsvReader.readObject(
         PlatformReducedUpdateCsvModel.class, PLATFORM_REDUCED_UPDATE_HEADER, csvLine, 1);
@@ -165,7 +165,7 @@ class BulkImportCsvReaderTest {
     assertThat(errorMessages).containsExactlyInAnyOrder(
         "Expected DATE but got num in column validFrom",
         "Expected DATE but got tomorrow in column validTo",
-        "Expected ENUM but got Bern in column boardingDevice",
+        "Expected DOUBLE but got Bern in column height",
         "Expected DOUBLE but got STOP in column inclinationLongitudinal",
         "Expected ENUM but got idk in column infoOpportunities",
         "Expected BOOLEAN but got aaa in column partialElevation",
