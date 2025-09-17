@@ -12,6 +12,7 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.module.bulkimport.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.module.bulkimport.exception.FileHeaderValidationException;
+import ch.sbb.importservice.module.bulkimport.job.prm.platform.update.complete.PlatformCompleteUpdate;
 import ch.sbb.importservice.module.bulkimport.job.prm.platform.update.reduced.PlatformReducedUpdate;
 import ch.sbb.importservice.module.bulkimport.job.sepodi.servicepoint.update.ServicePointUpdate;
 import ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.update.TrafficPointUpdate;
@@ -129,7 +130,19 @@ class BulkImportFileValidationServiceTest {
 
     assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
         () -> bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile,
-            TrafficPointUpdate.CONFIG));
+            PlatformReducedUpdate.CONFIG));
+  }
+
+  @Test
+  void shouldReportInvalidFileHeaderOnPlatformCompleteUpdateInvalidHeaderCsvFile() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/invalid/update_platform_complete_invalid.csv");
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "update_platform_complete_invalid.csv",
+        CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
+        () -> bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile,
+            PlatformCompleteUpdate.CONFIG));
   }
 
   @Test
