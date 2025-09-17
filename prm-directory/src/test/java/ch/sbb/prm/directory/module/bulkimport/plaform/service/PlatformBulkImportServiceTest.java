@@ -10,6 +10,7 @@ import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
+import ch.sbb.prm.directory.exception.BulkPlatformUpdateValidationException;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
 import ch.sbb.prm.directory.module.platform.PlatformTestData;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,6 +201,40 @@ class PlatformBulkImportServiceTest {
     PlatformVersion platform =
         platformRepository.findById(platformVersionComplete.getId()).orElseThrow();
     assertThat(platform.getAdditionalInformation()).isEqualTo(ADDITIONAL_INFORMATION);
+  }
+
+  @Test
+  void shouldThrowWhenAttemptingToUpdateReduceObjectWithCompleteProperties() {
+    BulkPlatformUpdateValidationException exception = Assertions.assertThrows(BulkPlatformUpdateValidationException.class,
+        () -> platformBulkImportService.updatePlatformComplete(BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder()
+                .sloid(platformVersionReduced.getSloid())
+                .validFrom(platformVersionComplete.getValidFrom())
+                .validTo(platformVersionComplete.getValidTo())
+                .additionalInformation(ADDITIONAL_INFORMATION)
+                .build())
+            .build()));
+
+    assertThat(exception.getErrorResponse().getStatus()).isEqualTo(400);
+    assertThat(exception.getErrorResponse().getMessage()).contains(
+        "Attempting to save a Reduced object with wrong properties population!");
+  }
+
+  @Test
+  void shouldThrowWhenAttemptingToUpdateCompleteObjectWithReducedProperties() {
+    BulkPlatformUpdateValidationException exception = Assertions.assertThrows(BulkPlatformUpdateValidationException.class,
+        () -> platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .object(PlatformReducedUpdateCsvModel.builder()
+                .sloid(platformVersionComplete.getSloid())
+                .validFrom(platformVersionReduced.getValidFrom())
+                .validTo(platformVersionReduced.getValidTo())
+                .additionalInformation(ADDITIONAL_INFORMATION)
+                .build())
+            .build()));
+
+    assertThat(exception.getErrorResponse().getStatus()).isEqualTo(400);
+    assertThat(exception.getErrorResponse().getMessage()).contains(
+        "Attempting to save a Complete object with wrong properties population!");
   }
 
   @Test
