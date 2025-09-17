@@ -344,7 +344,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
         .emails(List.of("test-cc@atlas.ch"))
         .build();
 
-    when(platformBulkImportClient.bulkImportPlatformCompletedUpdate(any())).thenReturn(
+    when(platformBulkImportClient.bulkImportPlatformCompleteUpdate(any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
             .lineNumber(2)
             .build()));
@@ -357,6 +357,6 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
     assertThat(bulkImport.getId()).isNotNull();
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/update_platform_complete.csv");
 
-    verify(platformBulkImportClient, atLeastOnce()).bulkImportPlatformCompletedUpdate(any());
+    verify(platformBulkImportClient, atLeastOnce()).bulkImportPlatformCompleteUpdate(any());
   }
 }
