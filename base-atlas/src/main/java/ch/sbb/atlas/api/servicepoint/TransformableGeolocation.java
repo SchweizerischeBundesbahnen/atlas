@@ -1,5 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
+import ch.sbb.atlas.servicepoint.CoordinatePair;
+
 public interface TransformableGeolocation {
 
   SpatialReference getSpatialReference();
@@ -13,5 +15,13 @@ public interface TransformableGeolocation {
   Double getEast();
 
   void setEast(Double east);
+
+  default CoordinatePair asCoordinatePair() {
+    return CoordinatePair.builder()
+        .east(getEast())
+        .north(getNorth())
+        .spatialReference(getSpatialReference())
+        .build();
+  }
 
 }

@@ -1,8 +1,13 @@
 package ch.sbb.atlas.api.servicepoint.sector;
 
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.IdCheckable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,11 +21,9 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "SectorVersion")
-public abstract class SectorVersionModel extends BaseSectorModel implements IdCheckable {
+@Schema(name = "ReadSectorVersion")
+public class ReadSectorVersionModel extends SectorVersionModel {
 
-  @Schema(description = "Height of edge in cm", example = "180")
-  @Digits(integer = 3, fraction = 0)
-  private Double edgeHeight;
+  private GeolocationBaseReadModel sectorGeolocation;
 
 }

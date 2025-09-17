@@ -59,7 +59,7 @@ public class GeolocationMapper {
         .build();
   }
 
-  static public Map<SpatialReference, CoordinatePair> getTransformedCoordinates(GeolocationBaseEntity entity) {
+  public static Map<SpatialReference, CoordinatePair> getTransformedCoordinates(TransformableGeolocation entity) {
     Map<SpatialReference, CoordinatePair> coordinates = new EnumMap<>(SpatialReference.class);
 
     Stream.of(SpatialReference.values()).forEach(spatialReference -> {
