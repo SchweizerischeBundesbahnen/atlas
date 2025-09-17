@@ -36,7 +36,7 @@ public class PlatformTemplateGenerator {
 
   public static PlatformCompleteUpdateCsvModel getPlatformCompleteUpdateCsvModelExample() {
     return PlatformCompleteUpdateCsvModel.builder()
-        .sloid("ch:1:sloid:88253:0:1")
+        .sloid("ch:1:sloid:1:0:1")
         .validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2099, 12, 31))
         .shuttle(BooleanOptionalAttributeType.NO)

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.bulkimport.controller.PlatformBulkImportController;
@@ -83,6 +84,62 @@ class PlatformBulkImportControllerTest {
         platformBulkImportController.bulkImportPlatformReducedUpdate(List.of(updateContainer));
 
     verify(platformBulkImportService).updatePlatformReduced(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first()
+        .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(false);
+  }
+
+  @Test
+  void shouldDoBulkImportViaServicePlatformComplete() {
+    BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder()
+                .sloid("ch:1:sloid:12345:1")
+                .build())
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        platformBulkImportController.bulkImportPlatformCompletedUpdate(List.of(updateContainer));
+
+    verify(platformBulkImportService, never()).updatePlatformCompleteByUsername("username", updateContainer);
+    verify(platformBulkImportService).updatePlatformComplete(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first()
+        .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(true);
+  }
+
+  @Test
+  void shouldDoBulkUpdateViaServiceWithUsernamePlatformComplete() {
+    String username = "e123456";
+    BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder()
+                .sloid("ch:1:sloid:12345:1")
+                .build())
+            .inNameOf(username)
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        platformBulkImportController.bulkImportPlatformCompletedUpdate(List.of(updateContainer));
+
+    verify(platformBulkImportService).updatePlatformCompleteByUsername(username, updateContainer);
+    verify(platformBulkImportService, never()).updatePlatformComplete(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first()
+        .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(true);
+  }
+
+  @Test
+  void shouldReturnExecutionResultWithErrorResponsePlatformComplete() {
+    doThrow(new SloidNotFoundException("ch:1:sloid:12345:1")).when(platformBulkImportService).updatePlatformComplete(any());
+    BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder()
+                .sloid("ch:1:sloid:12345:1")
+                .build())
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        platformBulkImportController.bulkImportPlatformCompletedUpdate(List.of(updateContainer));
+
+    verify(platformBulkImportService).updatePlatformComplete(updateContainer);
     assertThat(bulkImportItemExecutionResults).hasSize(1).first()
         .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(false);
   }
