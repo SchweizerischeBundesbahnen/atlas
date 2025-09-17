@@ -5,6 +5,7 @@ import static ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType.TO_BE_
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -95,9 +96,10 @@ public class ImportFiles {
   public static PlatformCompleteUpdateCsvModel getExpectedPlatformCompleteUpdateCsvModel() {
     return PlatformCompleteUpdateCsvModel.builder()
         .sloid("ch:1:sloid:1:0:1")
-        .validFrom(LocalDate.of(2021, 4, 1))
-        .validTo(LocalDate.of(9999, 12, 31))
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
         .shuttle(BooleanOptionalAttributeType.NO)
+        .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
         .additionalInformation("Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen Dorf bedienen diese Haltekante.")
         .adviceAccessInfo("Achtung, Stufe von 16 cm.")
         .contrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED)
