@@ -61,13 +61,12 @@ public class PlatformTestData {
   public static PlatformVersion getCompletePlatformVersion() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
-        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .parentServicePointSloid("ch:1:sloid:12345")
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1:sloid:12345")
-        .shuttle(BooleanOptionalAttributeType.NO)
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
+        .shuttle(BooleanOptionalAttributeType.NO)
         .adviceAccessInfo("Access Information Advice")
         .contrastingAreas(BooleanOptionalAttributeType.YES)
         .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
@@ -75,6 +74,7 @@ public class PlatformTestData {
         .inclination(123.12)
         .inclinationWidth(123.12)
         .levelAccessWheelchair(BasicAttributeType.NO)
+        .status(Status.VALIDATED)
         .superelevation(321.123)
         .build();
 

@@ -1,6 +1,7 @@
 package ch.sbb.atlas.imports.model;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion;
@@ -31,7 +32,8 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @EqualsAndHashCode
-@JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.additionalInformation, Fields.shuttle,
+@JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.boardingDevice, Fields.additionalInformation,
+    Fields.shuttle,
     Fields.adviceAccessInfo,
     Fields.contrastingAreas, Fields.dynamicAudio, Fields.dynamicVisual, Fields.inclination,
     Fields.inclinationWidth,
@@ -52,6 +54,9 @@ public class PlatformCompleteUpdateCsvModel implements Validatable<PlatformCompl
   @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
+
+  @DefaultMapping
+  private BoardingDeviceAttributeType boardingDevice;
 
   @DefaultMapping
   @Nulling
