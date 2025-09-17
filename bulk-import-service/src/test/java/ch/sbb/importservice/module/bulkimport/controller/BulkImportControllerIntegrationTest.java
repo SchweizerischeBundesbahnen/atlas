@@ -23,6 +23,7 @@ import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.module.bulkimport.client.LineBulkImportClient;
+import ch.sbb.importservice.module.bulkimport.client.PlatformBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
@@ -68,6 +69,9 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @MockitoBean
   private BulkImportJobCompletionListener bulkImportJobCompletionListener;
+
+  @MockitoBean
+  private PlatformBulkImportClient platformBulkImportClient;
 
   @MockitoBean
   private BulkImporterMailService bulkImporterMailService;
@@ -290,5 +294,69 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/line-update.csv");
 
     verify(lineBulkImportClient, atLeastOnce()).lineUpdate(any());
+  }
+
+  @Test
+  void shouldImportPlatformReduced() throws IOException {
+    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+        + "/PRM/PLATFORM_REDUCED/UPDATE";
+    File file = ImportFiles.getFileByPath("import-files/valid/platform-reduced-update.csv");
+
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-reduced-update.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+        .applicationType(ApplicationType.PRM)
+        .objectType(BusinessObjectType.PLATFORM_REDUCED)
+        .importType(ImportType.UPDATE)
+        .emails(List.of("test-cc@atlas.ch"))
+        .build();
+
+    when(platformBulkImportClient.bulkImportPlatformReducedUpdate(any())).thenReturn(
+        List.of(BulkImportItemExecutionResult.builder()
+            .lineNumber(2)
+            .build()));
+    bulkImportController.startBulkImport(bulkImportRequest, multipartFile);
+
+    List<BulkImport> bulkImports = bulkImportRepository.findAll();
+    assertThat(bulkImports).hasSize(1);
+
+    BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
+    assertThat(bulkImport.getId()).isNotNull();
+    assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/platform-reduced-update.csv");
+
+    verify(platformBulkImportClient, atLeastOnce()).bulkImportPlatformReducedUpdate(any());
+  }
+
+  @Test
+  void shouldImportPlatformComplete() throws IOException {
+    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+        + "/PRM/PLATFORM_COMPLETE/UPDATE";
+    File file = ImportFiles.getFileByPath("import-files/valid/update_platform_complete.csv");
+
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "update_platform_complete.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+        .applicationType(ApplicationType.PRM)
+        .objectType(BusinessObjectType.PLATFORM_COMPLETE)
+        .importType(ImportType.UPDATE)
+        .emails(List.of("test-cc@atlas.ch"))
+        .build();
+
+    when(platformBulkImportClient.bulkImportPlatformCompletedUpdate(any())).thenReturn(
+        List.of(BulkImportItemExecutionResult.builder()
+            .lineNumber(2)
+            .build()));
+    bulkImportController.startBulkImport(bulkImportRequest, multipartFile);
+
+    List<BulkImport> bulkImports = bulkImportRepository.findAll();
+    assertThat(bulkImports).hasSize(1);
+
+    BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
+    assertThat(bulkImport.getId()).isNotNull();
+    assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/update_platform_complete.csv");
+
+    verify(platformBulkImportClient, atLeastOnce()).bulkImportPlatformCompletedUpdate(any());
   }
 }
