@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.service;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -112,7 +112,7 @@ public class SectorGroupService {
     isTrafficPointSloidMatchingOverAllObjects(sectorVersions, trafficPointSloid);
   }
 
-  private List<SectorVersionModel> mapToModels(List<SectorVersion> versions) {
+  private List<ReadSectorVersionModel> mapToModels(List<SectorVersion> versions) {
     return versions.stream()
         .map(SectorMapper::toModel)
         .toList();
@@ -198,7 +198,7 @@ public class SectorGroupService {
     return OverviewDisplayBuilder.toPagedContainer(displayableModels, pageable);
   }
 
-  public List<SectorVersionModel> getSectorsBySectorGroupSloid(String sectorGroupSloid) {
+  public List<ReadSectorVersionModel> getSectorsBySectorGroupSloid(String sectorGroupSloid) {
     List<String> sectorSloids = findAllSectorsRelatedToGroup(sectorGroupSloid);
 
     List<SectorVersion> sectors = sectorSloids.stream()

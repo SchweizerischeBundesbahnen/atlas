@@ -63,9 +63,9 @@ export class MapIconsService {
     ].map((type) =>
       this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type)
     );
-    const allLegendIcons = servicePointIconsForLegend.concat(
-      trafficPointIconsForLegend
-    );
+    const allLegendIcons = servicePointIconsForLegend
+      .concat(trafficPointIconsForLegend)
+      .concat(this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, 'SECTOR'));
     return Promise.all(allLegendIcons);
   }
 

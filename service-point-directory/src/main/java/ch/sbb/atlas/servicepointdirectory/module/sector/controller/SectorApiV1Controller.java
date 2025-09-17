@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.sector.controller;
 
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sector.api.SectorApiV1;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.mapper.SectorMapper;
@@ -24,17 +25,17 @@ public class SectorApiV1Controller implements SectorApiV1 {
   private final ServicePointService servicePointService;
 
   @Override
-  public List<SectorVersionModel> getSector(String sloid) {
+  public List<ReadSectorVersionModel> getSector(String sloid) {
     return sectorService.getSector(sloid).stream().map(SectorMapper::toModel).toList();
   }
 
   @Override
-  public SectorVersionModel getSectorVersion(Long id) {
+  public ReadSectorVersionModel getSectorVersion(Long id) {
     return SectorMapper.toModel(sectorService.getSectorVersionById(id));
   }
 
   @Override
-  public SectorVersionModel createSectorVersion(SectorVersionModel createSectorVersionModel) {
+  public ReadSectorVersionModel createSectorVersion(CreateSectorVersionModel createSectorVersionModel) {
     SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
     trafficPointElementService.doesTrafficPointExist(sectorVersion.getTrafficPointSloid());
     TrafficPointElementVersion trafficPointElementVersion =
@@ -47,7 +48,7 @@ public class SectorApiV1Controller implements SectorApiV1 {
   }
 
   @Override
-  public List<SectorVersionModel> updateSectorVersion(Long id, SectorVersionModel updateSectorVersionModel) {
+  public List<ReadSectorVersionModel> updateSectorVersion(Long id, CreateSectorVersionModel updateSectorVersionModel) {
     SectorVersion sectorVersionToUpdate = sectorService.getSectorVersionById(id);
     SectorVersion editedVersion = SectorMapper.toEntity(updateSectorVersionModel);
 

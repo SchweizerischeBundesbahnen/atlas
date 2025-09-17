@@ -280,7 +280,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       type: 'symbol',
       layout: {
         'icon-allow-overlap': true,
-        'icon-image': ['get', 'type'],
+        'icon-image': 'SECTOR',
         'icon-size': [
           'interpolate',
           ['linear'],

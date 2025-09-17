@@ -18,6 +18,8 @@ public interface SectorVersionRepository extends
 
   List<SectorVersion> findAllByTrafficPointSloid(String trafficPointSloid, Sort sort);
 
+  List<SectorVersion> findAllByTrafficPointSloid(String trafficPointSloid);
+
   @Modifying(clearAutomatically = true)
   @Query("update sector_version v set v.version = (v.version + 1) where v.sloid = :sloid")
   void incrementVersion(@Param("sloid") String sloid);
