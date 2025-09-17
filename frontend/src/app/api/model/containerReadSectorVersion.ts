@@ -7,11 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SectorVersion } from './sectorVersion';
+import { ReadSectorVersion } from './readSectorVersion';
 
 
-export interface ContainerSectorVersion { 
-    objects?: Array<SectorVersion>;
+export interface ContainerReadSectorVersion { 
+    objects?: Array<ReadSectorVersion>;
     totalCount?: number;
 }
 

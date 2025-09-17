@@ -9,4 +9,8 @@ export class SloidHelper {
     }
     return Number(lastPart);
   }
+
+  static trafficPointSloidToServicePointSloid(trafficPointSloid: string) {
+    return trafficPointSloid.split(':').slice(0, 4).join(':');
+  }
 }

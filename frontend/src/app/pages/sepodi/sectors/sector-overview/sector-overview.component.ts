@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
-import { SectorVersion } from '../../../../api/model/sectorVersion';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -13,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { SectorPermissionService } from '../sector-permission.service';
+import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
 
 @Component({
   selector: 'app-sector-overview',
@@ -35,11 +35,11 @@ export class SectorOverviewComponent implements OnInit {
 
   trafficPointSloid!: string;
 
-  sectors: SectorVersion[] = [];
+  sectors: ReadSectorVersion[] = [];
   totalSectors = 0;
 
   tableFilterConfig!: TableFilter<unknown>[][];
-  tableColumnsSectors: TableColumn<SectorVersion>[] = [
+  tableColumnsSectors: TableColumn<ReadSectorVersion>[] = [
     {
       headerTitle: 'SEPODI.SECTORS.DESIGNATION',
       value: 'designation',
@@ -67,7 +67,7 @@ export class SectorOverviewComponent implements OnInit {
     );
   }
 
-  editSector(clickedRow: SectorVersion) {
+  editSector(clickedRow: ReadSectorVersion) {
     this.router.navigate([clickedRow.sloid], { relativeTo: this.route }).then();
   }
 

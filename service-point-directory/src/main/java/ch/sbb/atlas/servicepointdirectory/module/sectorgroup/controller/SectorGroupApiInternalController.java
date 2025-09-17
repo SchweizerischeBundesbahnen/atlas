@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api.SectorGroupApiInternal;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.service.SectorGroupService;
 import java.util.List;
@@ -24,7 +24,7 @@ public class SectorGroupApiInternalController implements SectorGroupApiInternal 
   }
 
   @Override
-  public List<SectorVersionModel> getSectorsBySectorGroupSloid(String sectorGroupSloid) {
+  public List<ReadSectorVersionModel> getSectorsBySectorGroupSloid(String sectorGroupSloid) {
     return sectorGroupService.getSectorsBySectorGroupSloid(sectorGroupSloid);
   }
 }

@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.module.geodata.entity;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.TransformableGeolocation;
 import ch.sbb.atlas.model.entity.BaseEntity;
-import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import jakarta.persistence.EnumType;
@@ -44,13 +43,5 @@ public abstract class GeolocationBaseEntity extends BaseEntity implements Transf
 
   @AtlasVersionableProperty
   private Double height;
-
-  public CoordinatePair asCoordinatePair() {
-    return CoordinatePair.builder()
-        .east(east)
-        .north(north)
-        .spatialReference(spatialReference)
-        .build();
-  }
 
 }

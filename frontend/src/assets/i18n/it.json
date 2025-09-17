@@ -1326,7 +1326,8 @@
       "OPERATING_POINT_TECHNICAL": "Punto d'orario",
       "SERVICE_POINT": "Posto di servizio",
       "BOARDING_PLATFORM": "Bordo fermata",
-      "BOARDING_AREA": "Zona di fermata"
+      "BOARDING_AREA": "Zona di fermata",
+      "SECTOR": "Settore"
     },
     "BACK_TO_MAP": "Chiudere",
     "ZOOM_IN_HINT": "Ingrandire l'immagine per visualizzare i posti di servizi.",
