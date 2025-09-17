@@ -8,11 +8,11 @@ import { MapService } from './map.service';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
 import { SectorInternalService } from '../../../api/service/sepodi/sector-internal.service';
+import { SloidHelper } from '../../../core/util/sloidHelper';
 
 export interface DisplayableSector {
   sloid: string;
   designation: string;
-  servicePointNumber: number;
   trafficPointSloid: string;
   coordinates: CoordinatePair;
 }
@@ -32,8 +32,13 @@ export class SectorMapService implements OnDestroy {
       const description = point.properties.designation
         ? `${point.properties.designation} - ${point.properties.sloid}`
         : point.properties.sloid;
+
+      const trafficPointSloid: string = point.properties.trafficPointSloid;
+      const servicePointNumber = SloidHelper.servicePointSloidToNumber(
+        SloidHelper.trafficPointSloidToServicePointSloid(trafficPointSloid)
+      );
       popupHtml +=
-        `<a href="${Pages.SEPODI.path}/${Pages.SERVICE_POINTS.path}/${point.properties.servicePointNumber}/${Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path}/${point.properties.sloid}">` +
+        `<a href="${Pages.SEPODI.path}/${Pages.SERVICE_POINTS.path}/${servicePointNumber}/${Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path}/${trafficPointSloid}/${Pages.SECTORS.path}/${point.properties.sloid}">` +
         `${description}</a> <br/>`;
     });
 
@@ -46,7 +51,6 @@ export class SectorMapService implements OnDestroy {
   }
 
   displaySectorsOnMap(trafficPointSloid: string) {
-    console.log('displaySectorsOnMap', trafficPointSloid);
     this.mapService.mapInitialized
       .pipe(
         filter((initialized) => initialized),
@@ -55,19 +59,16 @@ export class SectorMapService implements OnDestroy {
       )
       .subscribe(() => {
         this.sectorInternalService
-          .getSectors(trafficPointSloid)
+          .getSectorsValidToday(trafficPointSloid)
           .subscribe((points) => {
-            const sectors: DisplayableSector[] = points.objects!.map(
-              (point) => {
-                return {
-                  sloid: point.sloid!,
-                  designation: point.designation,
-                  coordinates: point,
-                  trafficPointSloid: point.trafficPointSloid,
-                  servicePointNumber: 0,
-                };
-              }
-            );
+            const sectors: DisplayableSector[] = points.map((point) => {
+              return {
+                sloid: point.sloid!,
+                designation: point.designation,
+                coordinates: point.sectorGeolocation!.wgs84!,
+                trafficPointSloid: point.trafficPointSloid,
+              };
+            });
             this.setDisplayedSectors(sectors);
           });
       });
@@ -87,7 +88,6 @@ export class SectorMapService implements OnDestroy {
         properties: {
           sloid: point.sloid,
           designation: point.designation,
-          servicePointNumber: point.servicePointNumber,
           trafficPointSloid: point.trafficPointSloid,
         },
       };

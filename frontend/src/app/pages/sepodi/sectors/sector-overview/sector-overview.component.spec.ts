@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ContainerSectorVersion } from '../../../../api/model/containerSectorVersion';
+import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 import { SpatialReference } from '../../../../api';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
@@ -33,7 +33,7 @@ describe('SectorOverviewComponent', () => {
   const sectorInternalService = jasmine.createSpyObj('SectorInternalService', [
     'getSectors',
   ]);
-  const sectorOverview: ContainerSectorVersion = {
+  const sectorOverview: ContainerReadSectorVersion = {
     objects: [],
     totalCount: 0,
   };
@@ -88,9 +88,24 @@ describe('SectorOverviewComponent', () => {
       validFrom: new Date('2014-12-14'),
       validTo: new Date('2014-12-14'),
       designation: 'A',
-      north: 0,
-      east: 0,
-      spatialReference: SpatialReference.Lv95,
+      sectorGeolocation: {
+        lv95: {
+          north: 0,
+          east: 0,
+          spatialReference: SpatialReference.Lv95,
+        },
+        spatialReference: 'WGS84WEB',
+        wgs84: {
+          north: 0,
+          east: 0,
+          spatialReference: SpatialReference.Wgs84,
+        },
+        lv03: {
+          north: 0,
+          east: 0,
+          spatialReference: SpatialReference.Lv03,
+        },
+      },
       sloid: 'ch:1:sloid:7000:1:1',
     });
 

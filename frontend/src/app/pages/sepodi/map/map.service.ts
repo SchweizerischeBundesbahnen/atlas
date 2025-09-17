@@ -59,7 +59,6 @@ export class MapService {
 
   initMap(mapContainer: HTMLElement) {
     this.map = this.createMap(mapContainer);
-    console.log('map created');
     MapIconsService.addTrafficPointIconToMap(this.map);
     MapIconsService.addSectorIconToMap(this.map);
     this.initMapEvents();
@@ -69,12 +68,10 @@ export class MapService {
     this.map.setMinZoom(5);
     this.map.scrollZoom.setWheelZoomRate(1 / 950);
     this.map.scrollZoom.setZoomRate(1 / 150);
-    console.log('init map done');
     return this.map;
   }
 
   createMap(mapContainer: HTMLElement) {
-    console.log('creating map');
     return new Map({
       container: mapContainer,
       style: MAP_STYLE_SPEC,

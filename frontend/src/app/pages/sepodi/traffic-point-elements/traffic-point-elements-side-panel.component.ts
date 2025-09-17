@@ -76,7 +76,6 @@ export class TrafficPointElementsSidePanelComponent
       this.initStopPointName();
 
       if (!this.isTrafficPointArea) {
-        console.log('try display sector on map');
         this.sectorMapService.displaySectorsOnMap(this.selectedVersion.sloid!);
       }
     });
