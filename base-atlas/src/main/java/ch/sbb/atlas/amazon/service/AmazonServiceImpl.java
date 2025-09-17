@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -116,6 +117,7 @@ public class AmazonServiceImpl implements AmazonService {
           .bucket(getAmazonBucketConfig(bucket).getBucketName())
           .key(filePath).build());
     } catch (S3Exception amazonS3Exception) {
+      log.debug("Following S3Exception occurred", amazonS3Exception);
       throw new FileNotFoundOnS3Exception(filePath);
     }
   }
@@ -192,11 +194,11 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   String getFilePathName(File file, String dir) {
-    return dir + "/" + file.getName();
+    return Paths.get(dir, file.getName()).toString();
   }
 
   String getFilePathName(String dirPath, String fileName) {
-    return "%s/%s".formatted(dirPath, fileName);
+    return Paths.get(dirPath, fileName).toString();
   }
 
 }

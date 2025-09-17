@@ -2,6 +2,7 @@ package ch.sbb.exportservice.model;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import java.io.Serializable;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.Builder;
@@ -10,7 +11,6 @@ import lombok.Getter;
 @Builder
 public final class ExportFilePathV2 implements Serializable {
 
-  private static final String PATH_DELIMITER = "/";
   private static final String FILENAME_DELIMITER = "-";
 
   private final LocalDate actualDate;
@@ -34,7 +34,7 @@ public final class ExportFilePathV2 implements Serializable {
   }
 
   public String fileToStream() {
-    return s3BucketDirPath() + PATH_DELIMITER + fileName() + ".json.gz";
+    return Paths.get(s3BucketDirPath(), fileName() + ".json.gz").toString();
   }
 
   /**
@@ -45,7 +45,7 @@ public final class ExportFilePathV2 implements Serializable {
   }
 
   public String s3BucketDirPath() {
-    return baseDir + PATH_DELIMITER + dir;
+    return Paths.get(baseDir, dir).toString();
   }
 
   private String actualDateString() {
@@ -59,7 +59,7 @@ public final class ExportFilePathV2 implements Serializable {
   public static ExportFilePathV2Builder getV2Builder(ExportObjectV2 type, ExportTypeV2 subtype) {
     final ExportFilePathV2Builder exportFilePathBuilder = new ExportFilePathV2Builder();
     exportFilePathBuilder.actualDate(LocalDate.now());
-    exportFilePathBuilder.baseDir("v2" + PATH_DELIMITER + type.getName());
+    exportFilePathBuilder.baseDir(Paths.get("v2", type.getName()).toString());
     exportFilePathBuilder.dir(subtype.dir);
     exportFilePathBuilder.prefix(subtype.prefix);
     exportFilePathBuilder.fileName(type.getName());

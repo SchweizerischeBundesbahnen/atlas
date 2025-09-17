@@ -5,6 +5,7 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
 import java.io.File;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class BulkImportS3BucketService {
   public String uploadImportFile(File file, BulkImport bulkImport) {
     String dir = createImportFilePath(bulkImport);
     amazonService.putFile(AmazonBucket.BULK_IMPORT, file, dir);
-    return dir + "/" + file.getName();
+    return Paths.get(dir, file.getName()).toString();
   }
 
   public File downloadImportFile(String filePath) {

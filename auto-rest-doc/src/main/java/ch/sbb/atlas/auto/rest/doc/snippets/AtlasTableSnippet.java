@@ -13,7 +13,7 @@ public abstract class AtlasTableSnippet extends TemplatedSnippet {
 
   private final String tableTitle;
 
-  public AtlasTableSnippet(String snippetName, String tableTitle) {
+  protected AtlasTableSnippet(String snippetName, String tableTitle) {
     super(snippetName, null);
     this.tableTitle = tableTitle;
   }

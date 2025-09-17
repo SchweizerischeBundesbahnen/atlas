@@ -8,7 +8,9 @@ import ch.sbb.atlas.servicepoint.SloidNotValidException;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @UtilityClass
 public class SloidHelper {
 
@@ -25,6 +27,7 @@ public class SloidHelper {
         return ServicePointNumber.of(Country.SWITZERLAND, number);
       }
     } catch (Exception e) {
+      log.debug("Error parsing sloid to service point number", e);
       throw new SloidNotValidException(sloid, "Could not get service point number from sloid: " + sloid);
     }
   }

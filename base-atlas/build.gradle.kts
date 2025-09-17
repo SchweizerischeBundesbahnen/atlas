@@ -35,8 +35,8 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-core:${property("swaggerCoreVersion")}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
-    implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
-    implementation("org.apache.pdfbox:pdfbox:3.0.5")
+    implementation("javax.xml.bind:jaxb-api:${property("jaxbApiVersion")}")
+    implementation("org.apache.pdfbox:pdfbox:${property("pdfboxVersion")}")
 
     implementation("org.springframework.kafka:spring-kafka")//get this dependency from :kafka use as api does not work
     implementation(project(":kafka"))
@@ -57,16 +57,17 @@ dependencies {
 
 }
 
-//used to create the base-atlas-test jar
+// used to create the base-atlas-test jar
 tasks.getByName("assemble").dependsOn("testJar")
 
-//used to create the base-atlas-test jar
 tasks.register<Jar>("testJar") {
+    description = "Create the base-atlas-test jar"
+    group = "verification"
     archiveFileName.set("base-atlas-$version-tests.jar")//use submodule name
     from(project.the<SourceSetContainer>()["test"].output)
 }
 
-//used to create the base-atlas-test jar
+// used to create the base-atlas-test jar
 artifacts {
     add("test", tasks["testJar"])
 }

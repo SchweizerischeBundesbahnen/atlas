@@ -6,7 +6,9 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @UtilityClass
 public class BulkImportValidationHelper {
 
@@ -17,6 +19,7 @@ public class BulkImportValidationHelper {
       try {
         ServicePointNumber.ofNumberWithoutCheckDigit(number);
       } catch (Exception e) {
+        log.info("Encountered invalid service point number", e);
         errors.add(BulkImportErrors.invalidServicePointNumber());
       }
     }

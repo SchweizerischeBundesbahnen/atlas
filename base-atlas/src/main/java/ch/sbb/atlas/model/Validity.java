@@ -37,7 +37,8 @@ public class Validity {
       return true;
     }
     Iterator<LocalDate> iter = markesOfRanges.iterator();
-    LocalDate current, previous = iter.next();
+    LocalDate current = iter.next();
+    LocalDate previous = current;
     while (iter.hasNext()) {
       current = iter.next();
       if (!previous.isBefore(current)) {
@@ -63,7 +64,8 @@ public class Validity {
     minifiedRanges.add(dateRanges.getFirst());
 
     Iterator<DateRange> iter = dateRanges.iterator();
-    DateRange current, previous = iter.next();
+    DateRange current = iter.next();
+    DateRange previous = current;
     while (iter.hasNext()) {
       current = iter.next();
       if (previous.canMergeWith(current)) {
