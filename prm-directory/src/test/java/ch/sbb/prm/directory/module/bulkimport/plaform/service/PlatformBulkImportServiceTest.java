@@ -8,7 +8,6 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel.Fields;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
@@ -54,10 +53,14 @@ class PlatformBulkImportServiceTest {
     doReturn(true).when(prmUserAdministrationService).hasUserRightsToCreateOrEditPrmObject(any());
     platformVersionReduced = PlatformTestData.getReducedPlatformVersion();
     platformVersionComplete = PlatformTestData.getCompletePlatformVersion();
+    platformVersionComplete.setSloid("ch:1:sloid:54321:2");
+    platformVersionComplete.setParentServicePointSloid("ch:1:sloid:54321");
     platformRepository.save(platformVersionReduced);
     platformRepository.save(platformVersionComplete);
     StopPointVersion stopPointVersion = StopPointTestData.builderVersionReduced().build();
+    StopPointVersion stopPointVersionComplete = StopPointTestData.builderVersionComplete().build();
     stopPointRepository.save(stopPointVersion);
+    stopPointRepository.save(stopPointVersionComplete);
   }
 
   @AfterEach
@@ -110,7 +113,10 @@ class PlatformBulkImportServiceTest {
             .validFrom(platformVersionReduced.getValidFrom())
             .validTo(platformVersionReduced.getValidTo())
             .build())
-        .attributesToNull(List.of(Fields.height, Fields.additionalInformation, Fields.inclinationLongitudinal))
+        .attributesToNull(List.of(
+            PlatformReducedUpdateCsvModel.Fields.height,
+            PlatformReducedUpdateCsvModel.Fields.additionalInformation,
+            PlatformReducedUpdateCsvModel.Fields.inclinationLongitudinal))
         .build());
 
     PlatformVersion platformVersion1 =
@@ -191,7 +197,7 @@ class PlatformBulkImportServiceTest {
             .build())
         .build());
     PlatformVersion platform =
-        platformRepository.findById(platformVersionReduced.getId()).orElseThrow();
+        platformRepository.findById(platformVersionComplete.getId()).orElseThrow();
     assertThat(platform.getAdditionalInformation()).isEqualTo(ADDITIONAL_INFORMATION);
   }
 
@@ -208,7 +214,7 @@ class PlatformBulkImportServiceTest {
             .build());
 
     PlatformVersion platformVersion1 =
-        platformRepository.findById(platformVersionReduced.getId()).orElseThrow();
+        platformRepository.findById(platformVersionComplete.getId()).orElseThrow();
     assertThat(platformVersion1.getAdditionalInformation()).isEqualTo(ADDITIONAL_INFORMATION);
   }
 
@@ -222,7 +228,10 @@ class PlatformBulkImportServiceTest {
             .validFrom(platformVersionComplete.getValidFrom())
             .validTo(platformVersionComplete.getValidTo())
             .build())
-        .attributesToNull(List.of(Fields.height, Fields.additionalInformation, Fields.inclinationLongitudinal))
+        .attributesToNull(List.of(
+            PlatformCompleteUpdateCsvModel.Fields.adviceAccessInfo,
+            PlatformCompleteUpdateCsvModel.Fields.additionalInformation,
+            PlatformCompleteUpdateCsvModel.Fields.inclination))
         .build());
 
     PlatformVersion platformVersion1 =

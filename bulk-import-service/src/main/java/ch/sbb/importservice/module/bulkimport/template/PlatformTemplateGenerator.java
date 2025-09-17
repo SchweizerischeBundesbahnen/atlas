@@ -1,8 +1,7 @@
 package ch.sbb.importservice.module.bulkimport.template;
 
-import static ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType.TO_BE_COMPLETED;
-
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
@@ -40,9 +39,10 @@ public class PlatformTemplateGenerator {
         .validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2099, 12, 31))
         .shuttle(BooleanOptionalAttributeType.NO)
+        .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
         .additionalInformation("Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen Dorf bedienen diese Haltekante.")
         .adviceAccessInfo("Achtung, Stufe von 16 cm.")
-        .contrastingAreas(TO_BE_COMPLETED)
+        .contrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .dynamicAudio(BasicAttributeType.TO_BE_COMPLETED)
         .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
         .inclination(12.00)
