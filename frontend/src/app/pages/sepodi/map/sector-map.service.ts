@@ -23,7 +23,7 @@ export interface DisplayableSector {
 export class SectorMapService implements OnDestroy {
   private readonly mapService = inject(MapService);
   private readonly sectorInternalService = inject(SectorInternalService);
-  private onDestroy$ = new Subject<boolean>();
+  private readonly onDestroy$ = new Subject<boolean>();
 
   static buildSectorPopupInformation(features: MapGeoJSONFeature[]) {
     let popupHtml = '';
@@ -65,7 +65,7 @@ export class SectorMapService implements OnDestroy {
               return {
                 sloid: point.sloid!,
                 designation: point.designation,
-                coordinates: point.sectorGeolocation!.wgs84!,
+                coordinates: point.sectorGeolocation!.wgs84,
                 trafficPointSloid: point.trafficPointSloid,
               };
             });
@@ -75,9 +75,9 @@ export class SectorMapService implements OnDestroy {
   }
 
   private setDisplayedSectors(sectors: DisplayableSector[]) {
-    const source = this.mapService.map.getSource(MAP_SECTOR_LAYER_NAME) as
-      | GeoJSONSource
-      | undefined;
+    const source = this.mapService.map.getSource(
+      MAP_SECTOR_LAYER_NAME
+    ) as GeoJSONSource;
     const sectorGeoInformation: Feature[] = sectors.map((point) => {
       return {
         type: 'Feature',
