@@ -34,7 +34,7 @@ public class PlatformCompleteUpdateWriter extends PlatformCompleteUpdate impleme
 
     log.info("Writing {} containers to prm", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformCompletedUpdate(
+    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformCompleteUpdate(
         updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);

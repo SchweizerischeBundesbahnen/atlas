@@ -19,8 +19,8 @@ public interface PlatformBulkImportApiV1 {
   List<BulkImportItemExecutionResult> bulkImportPlatformReducedUpdate(
       @RequestBody List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> bulkImportUpdateContainers);
 
-  @PostMapping(value = BASEPATH + "/update-platform-completed")
-  List<BulkImportItemExecutionResult> bulkImportPlatformCompletedUpdate(
+  @PostMapping(value = BASEPATH + "/update-platform-complete")
+  List<BulkImportItemExecutionResult> bulkImportPlatformCompleteUpdate(
       @RequestBody List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> bulkImportUpdateContainers);
 
 }

@@ -98,7 +98,7 @@ class PlatformBulkImportControllerTest {
             .build();
 
     List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
-        platformBulkImportController.bulkImportPlatformCompletedUpdate(List.of(updateContainer));
+        platformBulkImportController.bulkImportPlatformCompleteUpdate(List.of(updateContainer));
 
     verify(platformBulkImportService, never()).updatePlatformCompleteByUsername("username", updateContainer);
     verify(platformBulkImportService).updatePlatformComplete(updateContainer);
@@ -118,7 +118,7 @@ class PlatformBulkImportControllerTest {
             .build();
 
     List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
-        platformBulkImportController.bulkImportPlatformCompletedUpdate(List.of(updateContainer));
+        platformBulkImportController.bulkImportPlatformCompleteUpdate(List.of(updateContainer));
 
     verify(platformBulkImportService).updatePlatformCompleteByUsername(username, updateContainer);
     verify(platformBulkImportService, never()).updatePlatformComplete(updateContainer);
@@ -137,7 +137,7 @@ class PlatformBulkImportControllerTest {
             .build();
 
     List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
-        platformBulkImportController.bulkImportPlatformCompletedUpdate(List.of(updateContainer));
+        platformBulkImportController.bulkImportPlatformCompleteUpdate(List.of(updateContainer));
 
     verify(platformBulkImportService).updatePlatformComplete(updateContainer);
     assertThat(bulkImportItemExecutionResults).hasSize(1).first()
