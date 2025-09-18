@@ -1262,7 +1262,8 @@
     "SECTORS": {
       "SECTORS": "Secteur",
       "DESIGNATION": "Désignation",
-      "NEW": "Saisir le secteur"
+      "NEW": "Saisir le secteur",
+      "MOT_CHANGE_WARNING": "Cette modification pourrait rendre invalides les secteurs attribués, car ils ne sont valables que pour les haltes ferroviaires."
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Groupe sectoriel",
