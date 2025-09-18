@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import maplibregl, {
   GeoJSONSource,
   LngLat,
@@ -38,6 +38,8 @@ export interface CoordinatePairWGS84 {
   providedIn: 'root',
 })
 export class MapService {
+  private readonly router = inject(Router);
+
   map!: Map;
   mapInitialized = new BehaviorSubject(false);
   selectedElement = new Subject<GeoJsonProperties>();
@@ -54,8 +56,6 @@ export class MapService {
     closeOnMove: false,
   });
   private _keepPopup = false;
-
-  constructor(private router: Router) {}
 
   initMap(mapContainer: HTMLElement) {
     this.map = this.createMap(mapContainer);
