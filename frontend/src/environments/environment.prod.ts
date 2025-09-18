@@ -62,4 +62,5 @@ export const environment: Environment = {
   bulkImportEnabled: process.env.BULK_IMPORT_ENABLED !== 'false',
   terminationWorkflowEnabled:
     process.env.TERMINTAION_WORKFLOW_ENABLED !== 'false',
+  sectorsEnabled: process.env.SECTORS_ENABLED !== 'false',
 };
