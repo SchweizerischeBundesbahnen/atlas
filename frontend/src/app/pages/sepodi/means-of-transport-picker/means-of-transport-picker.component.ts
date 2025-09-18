@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
 import { NgClass, NgFor, NgIf } from '@angular/common';
@@ -23,18 +29,26 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
   providers: [TranslatePipe],
 })
-export class MeansOfTransportPickerComponent implements OnInit {
+export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   @Input() controlName!: string;
   @Input() disabled = false;
   @Input() formGroup!: FormGroup;
   @Input() label!: string;
   @Input() showInfo = false;
   @Input() meansOfTransportToShow: MeanOfTransport[] | undefined;
+  @Input() showSectorWarning = false;
 
   means!: MeanOfTransport[];
+  sectorWarning = false;
 
   ngOnInit(): void {
     this.getMeansOfTransportToShow();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.formGroup) {
+      this.sectorWarning = false;
+    }
   }
 
   private getMeansOfTransportToShow() {
@@ -56,6 +70,9 @@ export class MeansOfTransportPickerComponent implements OnInit {
       return;
     }
     if (this.currentlySelectedMeans.includes(meanOfTransport)) {
+      if (meanOfTransport === MeanOfTransport.Train) {
+        this.sectorWarning = true;
+      }
       this.formControl.setValue(
         this.currentlySelectedMeans.filter((i) => i != meanOfTransport)
       );
