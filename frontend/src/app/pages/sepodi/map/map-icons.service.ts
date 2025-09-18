@@ -1,5 +1,6 @@
 import { Map } from 'maplibre-gl';
 import { ServicePointIconType } from './service-point-icon-type';
+import { environment } from '../../../../environments/environment';
 
 export interface MapIcon {
   id: string;
@@ -63,9 +64,14 @@ export class MapIconsService {
     ].map((type) =>
       this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type)
     );
-    const allLegendIcons = servicePointIconsForLegend
-      .concat(trafficPointIconsForLegend)
-      .concat(this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, 'SECTOR'));
+    let allLegendIcons = servicePointIconsForLegend.concat(
+      trafficPointIconsForLegend
+    );
+    if (environment.sectorsEnabled) {
+      allLegendIcons = allLegendIcons.concat(
+        this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, 'SECTOR')
+      );
+    }
     return Promise.all(allLegendIcons);
   }
 
