@@ -12,6 +12,7 @@ import {
 } from 'maplibre-gl';
 import { SpatialReference } from '../../../api';
 import { MAP_STYLES } from './map-options';
+import { Router } from '@angular/router';
 
 const authService: Partial<AuthService> = {};
 
@@ -40,12 +41,14 @@ mapSpy.getSource = jasmine.createSpy('getSource').and.returnValue({
 
 describe('MapService', () => {
   let service: MapService;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [{ provide: AuthService, useValue: authService }],
     });
     service = TestBed.inject(MapService);
+    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {
@@ -60,6 +63,11 @@ describe('MapService', () => {
       'once',
       'hasImage',
       'addImage',
+      'setZoom',
+      'on',
+      'setCenter',
+      'setLayoutProperty',
+      'getSource',
     ]);
     mapSpy.dragRotate = jasmine.createSpyObj<DragRotateHandler>(['disable']);
     mapSpy.touchZoomRotate =
@@ -72,9 +80,18 @@ describe('MapService', () => {
     ]);
 
     spyOn(service, 'createMap').and.returnValue(mapSpy);
+    spyOn(service, 'deselectServicePoint').and.stub();
 
     const htmlDivElement = document.createElement('div');
     const map = service.initMap(htmlDivElement);
+
+    // call all listeners for coverage
+    mapSpy.once.calls.all().forEach((call) => {
+      const listener = call.args[1];
+      if (listener) {
+        listener(undefined);
+      }
+    });
 
     expect(map).toBeTruthy();
   });
@@ -267,5 +284,64 @@ describe('MapService', () => {
     expect(markerSpy.setLngLat).toHaveBeenCalledWith(latLngCoordinates);
     expect(markerSpy.addTo).toHaveBeenCalledWith(service.map);
     expect(mapSpy.flyTo).toHaveBeenCalled();
+  });
+
+  it('should show popup on sector features coordinates', () => {
+    const mouseEvent = {
+      features: [
+        {
+          geometry: {
+            coordinates: [7.439133524894714, 46.94883407094761],
+          },
+          properties: {
+            sloid: 'ch:1:sloid:7000:0:2:1',
+            trafficPointSloid: 'ch:1:sloid:7000:0:2',
+            designation: 'A',
+          },
+        },
+      ],
+    } as unknown as MapMouseEvent & { features?: MapGeoJSONFeature[] };
+
+    spyOn(service.popup, 'addTo');
+    service.showSectorPopup(mouseEvent);
+
+    expect(service.popup.getLngLat().lat).toEqual(46.94883407094761);
+    expect(service.popup.getLngLat().lng).toEqual(7.439133524894714);
+  });
+
+  it('should navigate to sector detail on click', () => {
+    // Given
+    const mapSpy = jasmine.createSpyObj<Map>(['getZoom']);
+    mapSpy.getZoom.and.returnValue(12);
+    service.map = mapSpy;
+
+    const mouseEvent = {
+      features: [
+        {
+          geometry: {
+            coordinates: [7.439133524894714, 46.94883407094761],
+          },
+          properties: {
+            servicePointNumber: 8507000,
+            sloid: 'ch:1:sloid:7000:0:2:1',
+            trafficPointSloid: 'ch:1:sloid:7000:0:2',
+            designation: 'A',
+          },
+        },
+      ],
+    } as unknown as MapMouseEvent & { features?: MapGeoJSONFeature[] };
+
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    service.onSectorClicked(mouseEvent);
+
+    expect(router.navigate).toHaveBeenCalledWith([
+      'service-point-directory',
+      'service-points',
+      8507000,
+      'traffic-point-elements',
+      'ch:1:sloid:7000:0:2',
+      'sectors',
+      'ch:1:sloid:7000:0:2:1',
+    ]);
   });
 });
