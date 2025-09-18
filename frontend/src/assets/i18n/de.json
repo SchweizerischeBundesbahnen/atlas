@@ -1262,7 +1262,8 @@
     "SECTORS": {
       "SECTORS": "Sektoren",
       "DESIGNATION": "Bezeichnung",
-      "NEW": "Sektor erfassen"
+      "NEW": "Sektor erfassen",
+      "MOT_CHANGE_WARNING": "Durch diese Änderung könnten zugewiesene Sektoren/Sektorgruppen ungültig werden, da diese nur für Eisenbahnhaltestellen gültig sind."
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Sektorgruppen",

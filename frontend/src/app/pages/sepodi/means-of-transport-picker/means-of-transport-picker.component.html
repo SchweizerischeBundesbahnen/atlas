@@ -3,7 +3,9 @@
     <app-atlas-label-field
       [required]="true"
       fieldLabel="SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT"
-      infoIconTitle="{{ showInfo ? 'PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL' : '' }}"
+      infoIconTitle="{{
+        showInfo ? 'PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL' : ''
+      }}"
       *ngIf="label"
     >
     </app-atlas-label-field>
@@ -12,8 +14,12 @@
       <ng-container *ngFor="let mean of means">
         <img
           [ngClass]="{ 'icon-image': !disabled }"
-          [title]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
-          src="../../../../assets/images/means-of-transport/{{ getIcon(mean) }}.svg"
+          [title]="
+            'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate
+          "
+          src="../../../../assets/images/means-of-transport/{{
+            getIcon(mean)
+          }}.svg"
           (click)="clicked(mean)"
           [attr.data-cy]="mean"
           [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
@@ -24,5 +30,10 @@
       [form]="formGroup"
       controlName="{{ controlName }}"
     ></app-atlas-field-error>
+    @if (showSectorWarning && sectorWarning) {
+      <div class="sector-warning font-regular-sm mt-1">
+        {{ 'SEPODI.SECTORS.MOT_CHANGE_WARNING' | translate }}
+      </div>
+    }
   </div>
 </form>
