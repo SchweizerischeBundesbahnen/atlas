@@ -17,6 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 import { SectorMapService } from '../map/sector-map.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-traffic-point-elements-side-panel',
@@ -72,10 +73,11 @@ export class TrafficPointElementsSidePanelComponent
       this.trafficPointVersions = next.trafficPoint;
       this.isTrafficPointArea = next.isTrafficPointArea;
       this.initTrafficPoint();
-      this.showTabs = !this.isTrafficPointArea && !this.isNew;
+      this.showTabs =
+        environment.sectorsEnabled && !this.isTrafficPointArea && !this.isNew;
       this.initStopPointName();
 
-      if (!this.isTrafficPointArea) {
+      if (environment.sectorsEnabled && !this.isTrafficPointArea) {
         this.sectorMapService.displaySectorsOnMap(this.selectedVersion.sloid!);
       }
     });
