@@ -7,7 +7,7 @@ import {
   RouterLink,
 } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { merge, Observable, of } from 'rxjs';
 import { NON_PROD_STAGES, Stages } from '../../constants/stages';
 import { MatToolbar } from '@angular/material/toolbar';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
@@ -44,11 +44,14 @@ export class HeaderComponent implements OnInit {
 
   isItWednesday = false;
 
-  constructor(router: Router) {
-    this.headerTitle$ = router.events.pipe(
-      filter((e) => e instanceof NavigationEnd),
-      map(() =>
-        this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root)
+  constructor(private readonly router: Router) {
+    this.headerTitle$ = merge(
+      of(this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root)),
+      router.events.pipe(
+        filter((e) => e instanceof NavigationEnd),
+        map(() =>
+          this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root)
+        )
       )
     );
   }
