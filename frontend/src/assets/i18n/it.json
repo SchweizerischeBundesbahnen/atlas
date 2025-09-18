@@ -1262,7 +1262,8 @@
     "SECTORS": {
       "SECTORS": "Settore",
       "DESIGNATION": "Denominazione",
-      "NEW": "Registrare settore"
+      "NEW": "Registrare settore",
+      "MOT_CHANGE_WARNING": "Questa modifica potrebbe invalidare i settori assegnati, in quanto validi solo per le fermate ferroviarie."
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Gruppo settoriale",
