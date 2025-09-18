@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, ReplaySubject, Subject, take } from 'rxjs';
+import { Observable, ReplaySubject, take } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Permission } from '../../../api';
 import { User } from './user';
@@ -13,7 +13,7 @@ import { environment } from '../../../../environments/environment';
 export class UserService {
   currentUser?: User = undefined;
 
-  readonly userChanged = new Subject<void>();
+  readonly userChanged = new ReplaySubject<void>(1);
 
   private readonly permissionsLoaded = new ReplaySubject<void>(1);
   private readonly httpClient = inject(HttpClient);
