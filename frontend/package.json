@@ -61,7 +61,7 @@
     "angular-server-side-configuration": "^20.0.0",
     "bootstrap": "^5.3",
     "jwt-decode": "^4.0.0",
-    "maplibre-gl": "5.7.1",
+    "maplibre-gl": "5.7.3",
     "moment": "^2.30",
     "ngx-color-picker": "^20.0.0",
     "ngx-cookie-service": "^20.0.0",
