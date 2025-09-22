@@ -42,9 +42,11 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   private BoardingDeviceAttributeType boardingDevice;
 
   @Schema(description = "Information on access to transport")
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String adviceAccessInfo;
 
   @Schema(description = "Additional Information")
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String additionalInformation;
 
   @Schema(description = "Shuttle")

@@ -1662,7 +1662,11 @@
       "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attribut {{field}} ne doit pas être supprimé.",
       "LOGFILE_NOT_FOUND": "Le log souhaité pour l'importation n'a pas pu être trouvé.",
       "IMPORTER_MAIL_NOT_FOUND": "Votre utilisateur n’a pas enregistré d’adresse e-mail.",
-      "TERMINATE_FORBIDDEN": "Vous n'avez pas les droits nécessaires pour effectuer une importation en masse de terminaisons."
+      "TERMINATE_FORBIDDEN": "Vous n'avez pas les droits nécessaires pour effectuer une importation en masse de terminaisons.",
+      "PRM": {
+        "BAD_REQUEST_REDUCED": "L'objet dont le sloid est '{{sloid}}' est une arête de maintien réduite et ne peut donc pas être mis à jour.",
+        "BAD_REQUEST_COMPLETE": "L'objet dont le sloid est '{{sloid}}' est une arête de maintien complète et ne peut donc pas être mis à jour."
+      }
     }
   }
 }

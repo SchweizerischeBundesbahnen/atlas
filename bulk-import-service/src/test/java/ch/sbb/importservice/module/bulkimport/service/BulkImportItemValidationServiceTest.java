@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
@@ -48,6 +49,21 @@ class BulkImportItemValidationServiceTest {
     BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> container =
         BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
             .object(PlatformReducedUpdateCsvModel.builder().build())
+            .build();
+    BulkImportItemValidationService.validateAll(List.of(container));
+
+    assertThat(container.getBulkImportLogEntry().getErrors()).hasSize(3);
+    List<String> errorMessages = container.getBulkImportLogEntry().getErrors().stream().map(BulkImportError::getErrorMessage)
+        .toList();
+    assertThat(errorMessages).containsExactlyInAnyOrder("Field sloid must not be null",
+        "Field validFrom must not be null", "Field validTo must not be null");
+  }
+
+  @Test
+  void shouldValidateAndStoreBulkImportLogEntryForPlatformCompleteUpdateCsvModel() {
+    BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> container =
+        BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder().build())
             .build();
     BulkImportItemValidationService.validateAll(List.of(container));
 

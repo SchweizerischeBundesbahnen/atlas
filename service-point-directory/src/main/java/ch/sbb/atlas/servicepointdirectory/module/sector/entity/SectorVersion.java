@@ -57,7 +57,7 @@ public class SectorVersion extends BaseSectorEntity implements Versionable, Date
   @AtlasVersionableProperty
   private SpatialReference spatialReference;
 
-  @Schema(description = "Edge Height of the Sector", example = "TODO")
+  @Schema(description = "Edge Height of the Sector", example = "20.000")
   @AtlasVersionableProperty
   private Double edgeHeight;
 }
