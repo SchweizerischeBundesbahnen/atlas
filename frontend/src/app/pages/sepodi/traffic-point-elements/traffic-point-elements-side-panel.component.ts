@@ -5,7 +5,11 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { ReadTrafficPointElementVersion } from '../../../api';
+import {
+  MeanOfTransport,
+  ReadServicePointVersion,
+  ReadTrafficPointElementVersion,
+} from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { Pages } from '../../pages';
@@ -15,7 +19,6 @@ import { DetailPageContainerComponent } from '../../../core/components/detail-pa
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
-import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 import { SectorMapService } from '../map/sector-map.service';
 import { environment } from '../../../../environments/environment';
 
@@ -65,7 +68,6 @@ export class TrafficPointElementsSidePanelComponent
   showTabs = true;
 
   route = inject(ActivatedRoute);
-  servicePointService = inject(ServicePointService);
   sectorMapService = inject(SectorMapService);
 
   ngOnInit() {
@@ -73,11 +75,22 @@ export class TrafficPointElementsSidePanelComponent
       this.trafficPointVersions = next.trafficPoint;
       this.isTrafficPointArea = next.isTrafficPointArea;
       this.initTrafficPoint();
-      this.showTabs =
-        environment.sectorsEnabled && !this.isTrafficPointArea && !this.isNew;
-      this.initStopPointName();
 
-      if (environment.sectorsEnabled && !this.isTrafficPointArea) {
+      const servicePoint: ReadServicePointVersion[] = next.servicePoint;
+      const servicePointHasOneMotTrain = servicePoint.some((i) =>
+        i.meansOfTransport?.includes(MeanOfTransport.Train)
+      );
+      this.showTabs =
+        environment.sectorsEnabled &&
+        !this.isTrafficPointArea &&
+        !this.isNew &&
+        servicePointHasOneMotTrain;
+
+      const versionToDisplay =
+        VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
+      this.servicePointName = versionToDisplay.designationOfficial;
+
+      if (this.showTabs) {
         this.sectorMapService.displaySectorsOnMap(this.selectedVersion.sloid!);
       }
     });
@@ -97,18 +110,6 @@ export class TrafficPointElementsSidePanelComponent
           this.trafficPointVersions
         );
     }
-  }
-
-  private initStopPointName() {
-    this.servicePointService
-      .getServicePointVersions(this.route.snapshot.params['servicePointNumber'])
-      .subscribe((servicePoint) => {
-        const versionToDisplay =
-          VersionsHandlingService.determineDefaultVersionByValidity(
-            servicePoint
-          );
-        this.servicePointName = versionToDisplay.designationOfficial;
-      });
   }
 
   ngOnDestroy() {
