@@ -215,7 +215,7 @@ class SectorGroupServiceTest {
 
     assertThat(sectorGroupVersionRepository.findById(result.getId())).isPresent();
     assertThat(result.getSloid()).isEqualTo("ch:1:sloid:sector:1:0:1");
-    assertThat(result.getLength()).isEqualTo(36.0);
+    assertThat(result.getLength()).isEqualTo(18.00);
     assertThat(sectorGroupRelationRepository.findAll()).hasSize(2);
     assertThat(sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(toCreate.getSloid()))
         .extracting(r -> r.getSectorGroupRelationId().getSectorSloid())

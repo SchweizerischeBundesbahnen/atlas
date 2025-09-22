@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.job.sepodi.sector.entity;
 
-import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.sepodi.GeolocationBaseEntity;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -35,7 +34,5 @@ public class SectorVersion extends GeolocationBaseEntity {
   private String designation;
 
   private Double length;
-
-  private Status status;
 
 }
