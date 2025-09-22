@@ -201,7 +201,7 @@ export class MockPrmRecordingObligationComponent {
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-export type ActivatedRouteMockType = { data: any };
+export type ActivatedRouteMockType = {  parent?: any; data?: any;};
 
 export const adminUserServiceMock: Partial<UserService> = {
   currentUser: {

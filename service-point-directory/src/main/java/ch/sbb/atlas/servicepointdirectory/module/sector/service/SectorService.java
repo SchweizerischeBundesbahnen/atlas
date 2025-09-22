@@ -2,8 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.module.sector.service;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -87,14 +88,19 @@ public class SectorService {
         new ApplyVersioningDeleteByIdLongConsumer(sectorVersionRepository));
   }
 
-  public Container<SectorVersionModel> getSectorsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
+  public Container<ReadSectorVersionModel> getSectorsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
     List<SectorVersion> sectors = sectorVersionRepository.findAllByTrafficPointSloid(trafficPointSloid,
         pageable.getSort());
 
-    List<SectorVersionModel> overviewModels = sectors.stream().map(SectorMapper::toModel).toList();
-    List<SectorVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
-        SectorVersionModel::getSloid);
+    List<ReadSectorVersionModel> overviewModels = sectors.stream().map(SectorMapper::toModel).toList();
+    List<ReadSectorVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
+        ReadSectorVersionModel::getSloid);
     return OverviewDisplayBuilder.toPagedContainer(displayableModels, pageable);
+  }
+
+  public List<SectorVersion> getSectorsOfTrafficPointValidToday(String trafficPointSloid) {
+    List<SectorVersion> sectors = sectorVersionRepository.findAllByTrafficPointSloid(trafficPointSloid);
+    return sectors.stream().filter(sectorVersion -> DateRange.fromVersionable(sectorVersion).containsToday()).toList();
   }
 
   public SectorVersion getSectorVersionById(Long id) {

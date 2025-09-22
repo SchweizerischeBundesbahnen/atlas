@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import maplibregl, {
   GeoJSONSource,
   LngLat,
@@ -9,6 +9,7 @@ import maplibregl, {
   Popup,
 } from 'maplibre-gl';
 import {
+  MAP_SECTOR_LAYER_NAME,
   MAP_SOURCE_NAME,
   MAP_STYLE_SPEC,
   MAP_TRAFFIC_POINT_LAYER_NAME,
@@ -22,6 +23,7 @@ import { Pages } from '../../pages';
 import { MapIconsService } from './map-icons.service';
 import { Router } from '@angular/router';
 import { TrafficPointMapService } from './traffic-point-map.service';
+import { SectorMapService } from './sector-map.service';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -36,6 +38,8 @@ export interface CoordinatePairWGS84 {
   providedIn: 'root',
 })
 export class MapService {
+  private readonly router = inject(Router);
+
   map!: Map;
   mapInitialized = new BehaviorSubject(false);
   selectedElement = new Subject<GeoJsonProperties>();
@@ -53,11 +57,10 @@ export class MapService {
   });
   private _keepPopup = false;
 
-  constructor(private router: Router) {}
-
   initMap(mapContainer: HTMLElement) {
     this.map = this.createMap(mapContainer);
     MapIconsService.addTrafficPointIconToMap(this.map);
+    MapIconsService.addSectorIconToMap(this.map);
     this.initMapEvents();
     this.map.resize();
     this.map.dragRotate.disable();
@@ -150,26 +153,48 @@ export class MapService {
         }
       });
 
-      this.map.on('mouseenter', MAP_TRAFFIC_POINT_LAYER_NAME, () => {
-        if (this.showDetails() && !this.coordinateSelectionMode) {
-          this.map.getCanvas().style.cursor = 'pointer';
-        }
-      });
-      this.map.on('mouseleave', MAP_TRAFFIC_POINT_LAYER_NAME, () => {
-        this.map.getCanvas().style.cursor = '';
-      });
-      this.map.on('mousemove', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => {
-        if (this.showDetails()) {
-          this.showTrafficPointPopup(e);
-        }
-      });
-      this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) =>
-        this.onTrafficPointClicked(e)
-      );
+      this.initTrafficPointMouseEvents();
+      this.initSectorMouseEvents();
     });
     this.map.once('load', () => {
       this.mapInitialized.next(true);
     });
+  }
+
+  private initTrafficPointMouseEvents() {
+    this.map.on('mouseenter', MAP_TRAFFIC_POINT_LAYER_NAME, () => {
+      if (this.showDetails() && !this.coordinateSelectionMode) {
+        this.map.getCanvas().style.cursor = 'pointer';
+      }
+    });
+    this.map.on('mouseleave', MAP_TRAFFIC_POINT_LAYER_NAME, () => {
+      this.map.getCanvas().style.cursor = '';
+    });
+    this.map.on('mousemove', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => {
+      if (this.showDetails()) {
+        this.showTrafficPointPopup(e);
+      }
+    });
+    this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) =>
+      this.onTrafficPointClicked(e)
+    );
+  }
+
+  private initSectorMouseEvents() {
+    this.map.on('mouseenter', MAP_SECTOR_LAYER_NAME, () => {
+      if (this.showDetails() && !this.coordinateSelectionMode) {
+        this.map.getCanvas().style.cursor = 'pointer';
+      }
+    });
+    this.map.on('mouseleave', MAP_SECTOR_LAYER_NAME, () => {
+      this.map.getCanvas().style.cursor = '';
+    });
+    this.map.on('mousemove', MAP_SECTOR_LAYER_NAME, (e) => {
+      if (this.showDetails()) {
+        this.showSectorPopup(e);
+      }
+    });
+    this.map.on('click', MAP_SECTOR_LAYER_NAME, (e) => this.onSectorClicked(e));
   }
 
   showDetails(): boolean {
@@ -197,7 +222,31 @@ export class MapService {
       this.router
         .navigate([
           Pages.SEPODI.path,
+          Pages.SERVICE_POINTS.path,
+          e.features[0].properties!.servicePointNumber,
           Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
+          e.features[0].properties!.sloid,
+        ])
+        .then();
+    } else {
+      this.keepPopup = true;
+    }
+  }
+
+  onSectorClicked(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
+    if (!this.showDetails() || !e.features || this.coordinateSelectionMode) {
+      return;
+    }
+    if (e.features.length == 1) {
+      this.popup.remove();
+      this.router
+        .navigate([
+          Pages.SEPODI.path,
+          Pages.SERVICE_POINTS.path,
+          e.features[0].properties!.servicePointNumber,
+          Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
+          e.features[0].properties!.trafficPointSloid,
+          Pages.SECTORS.path,
           e.features[0].properties!.sloid,
         ])
         .then();
@@ -262,6 +311,10 @@ export class MapService {
       event,
       TrafficPointMapService.buildTrafficPointPopupInformation
     );
+  }
+
+  showSectorPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+    this.showPopup(event, SectorMapService.buildSectorPopupInformation);
   }
 
   private showPopup(

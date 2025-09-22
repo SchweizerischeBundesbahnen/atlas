@@ -7,7 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -89,7 +89,7 @@ class SectorServiceTest {
     sectorVersion.setDesignation("A");
     sectorVersionRepository.save(sectorVersion);
 
-    Container<SectorVersionModel> overview = sectorService.getSectorsOfTrafficPoint(sectorVersion.getTrafficPointSloid(),
+    Container<ReadSectorVersionModel> overview = sectorService.getSectorsOfTrafficPoint(sectorVersion.getTrafficPointSloid(),
         PageRequest.of(0, 1, Sort.by("designation").ascending()));
     assertThat(overview.getTotalCount()).isEqualTo(1);
     assertThat(overview.getObjects().getFirst().getDesignation()).isEqualTo("A");

@@ -1,0 +1,17 @@
+@use 'src/styles/variables' as variables;
+
+:host {
+  width: 100%;
+}
+
+.tab-content {
+  background-color: white;
+  margin-right: 5px;
+
+  width: 100%;
+  border-top-right-radius: variables.$border-radius;
+
+  min-height: calc(
+    100vh - #{variables.$footerHeight} - #{variables.$headerHeight} - 300px
+  );
+}

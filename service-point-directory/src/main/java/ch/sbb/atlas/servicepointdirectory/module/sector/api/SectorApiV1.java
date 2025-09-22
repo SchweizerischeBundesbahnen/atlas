@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.sector.api;
 
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,19 +24,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface SectorApiV1 {
 
   @GetMapping("{sloid}")
-  List<SectorVersionModel> getSector(@PathVariable String sloid);
+  List<ReadSectorVersionModel> getSector(@PathVariable String sloid);
 
   @GetMapping("versions/{id}")
-  SectorVersionModel getSectorVersion(@PathVariable Long id);
+  ReadSectorVersionModel getSectorVersion(@PathVariable Long id);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  SectorVersionModel createSectorVersion(@Valid @RequestBody @CreateIdCheck SectorVersionModel sectorVersion);
+  ReadSectorVersionModel createSectorVersion(@Valid @RequestBody @CreateIdCheck CreateSectorVersionModel sectorVersion);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
-  List<SectorVersionModel> updateSectorVersion(
+  List<ReadSectorVersionModel> updateSectorVersion(
       @PathVariable Long id,
-      @Valid @RequestBody SectorVersionModel updateSectorVersionModel
+      @Valid @RequestBody CreateSectorVersionModel updateSectorVersionModel
   );
 }
