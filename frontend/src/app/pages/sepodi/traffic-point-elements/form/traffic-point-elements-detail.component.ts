@@ -5,46 +5,42 @@ import {
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
   TrafficPointElementType,
-} from '../../../api';
-import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
-import { DateRange } from '../../../core/versioning/date-range';
+} from '../../../../api';
+import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
-import { Pages } from '../../pages';
+import { Pages } from '../../../pages';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   TrafficPointElementDetailFormGroup,
   TrafficPointElementFormGroupBuilder,
 } from './traffic-point-detail-form-group';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../core/validation/validation.service';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { TrafficPointMapService } from '../map/traffic-point-map.service';
-import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
-import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { ValidationService } from '../../../../core/validation/validation.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { TrafficPointMapService } from '../../map/traffic-point-map.service';
+import { ValidityConfirmationService } from '../../validity/validity-confirmation.service';
+import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {
   GeographyFormGroup,
   GeographyFormGroupBuilder,
-} from '../geography/geography-form-group';
-import { ValidityService } from '../validity/validity.service';
-import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
-import { NgIf } from '@angular/common';
-import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
-import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
-import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
-import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
-import { NavigationSepodiPrmComponent } from '../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
-import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
-import { SelectComponent } from '../../../core/form-components/select/select.component';
-import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
-import { GeographyComponent } from '../geography/geography.component';
+} from '../../geography/geography-form-group';
+import { ValidityService } from '../../validity/validity.service';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { SloidComponent } from '../../../../core/form-components/sloid/sloid.component';
+import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
+import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
+import { GeographyComponent } from '../../geography/geography.component';
 import { MatDivider } from '@angular/material/divider';
-import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
-import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
-import { TrafficPointElementService } from '../../../api/service/sepodi/traffic-point-element.service';
-import { TrafficPointElementInternalService } from '../../../api/service/sepodi/traffic-point-element-internal.service';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
+import { TrafficPointElementService } from '../../../../api/service/sepodi/traffic-point-element.service';
+import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -55,14 +51,11 @@ const NUMBER_COLONS_PLATFORM = 1;
 const NUMBER_COLONS_AREA = 0;
 
 @Component({
-  selector: 'app-traffic-point-elements',
+  selector: 'app-traffic-point-elements-detail',
   templateUrl: './traffic-point-elements-detail.component.html',
   styleUrls: ['./traffic-point-elements-detail.component.scss'],
   providers: [ValidityService],
   imports: [
-    DetailPageContainerComponent,
-    NgIf,
-    DateRangeTextComponent,
     DetailPageContentComponent,
     SloidComponent,
     ReactiveFormsModule,
@@ -88,9 +81,6 @@ export class TrafficPointElementsDetailComponent
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
 
-  maxValidity!: DateRange;
-  servicePointName!: string;
-
   showVersionSwitch = false;
   selectedVersionIndex!: number;
 
@@ -104,7 +94,6 @@ export class TrafficPointElementsDetailComponent
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
   numberColons!: number;
-  trafficPointElementVersion!: CreateTrafficPointElementVersion;
 
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
@@ -122,13 +111,15 @@ export class TrafficPointElementsDetailComponent
   ) {}
 
   ngOnInit() {
-    this.isTrafficPointArea = history.state.isTrafficPointArea;
     this.numberColons = this.isTrafficPointArea
       ? NUMBER_COLONS_AREA
       : NUMBER_COLONS_PLATFORM;
 
-    this.route.data.subscribe((next) => {
+    this.route.parent!.data.subscribe((next) => {
+      this.isTrafficPointArea = next.isTrafficPointArea;
       this.trafficPointVersions = next.trafficPoint;
+      this.servicePointNumber =
+        this.route.parent!.snapshot.params['servicePointNumber'];
       this.initTrafficPoint();
     });
   }
@@ -150,9 +141,6 @@ export class TrafficPointElementsDetailComponent
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(
-        this.trafficPointVersions
-      );
       this.selectedVersion =
         VersionsHandlingService.determineDefaultVersionByValidity(
           this.trafficPointVersions
@@ -167,10 +155,6 @@ export class TrafficPointElementsDetailComponent
   }
 
   private initServicePointInformation() {
-    this.servicePointNumber =
-      history.state?.servicePointNumber ??
-      this.selectedVersion?.servicePointNumber?.number;
-
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
     } else {
@@ -186,7 +170,6 @@ export class TrafficPointElementsDetailComponent
             VersionsHandlingService.determineDefaultVersionByValidity(
               servicePoint
             );
-          this.servicePointName = versionToDisplay.designationOfficial;
           this.servicePointSloid = versionToDisplay.sloid!;
           this.servicePointBusinessOrganisations = this.servicePoint.map(
             (i) => {
@@ -292,21 +275,21 @@ export class TrafficPointElementsDetailComponent
     if (this.form.valid) {
       this.confirmValidityOverServicePoint().subscribe((confirmed) => {
         if (confirmed) {
-          this.trafficPointElementVersion = this.form
+          const trafficPointElementVersion = this.form
             .value as unknown as CreateTrafficPointElementVersion;
 
           if (this.isTrafficPointArea) {
-            this.trafficPointElementVersion.trafficPointElementType =
+            trafficPointElementVersion.trafficPointElementType =
               TrafficPointElementType.BoardingArea;
           } else {
-            this.trafficPointElementVersion.trafficPointElementType =
+            trafficPointElementVersion.trafficPointElementType =
               TrafficPointElementType.BoardingPlatform;
           }
 
-          this.trafficPointElementVersion.numberWithoutCheckDigit =
+          trafficPointElementVersion.numberWithoutCheckDigit =
             this.servicePointNumber;
           if (this.isNew) {
-            this.create(this.trafficPointElementVersion);
+            this.create(trafficPointElementVersion);
             this.disableForm();
           } else {
             this.validityService.updateValidity(this.form);
@@ -314,7 +297,7 @@ export class TrafficPointElementsDetailComponent
               () =>
                 this.update(
                   this.selectedVersion.id!,
-                  this.trafficPointElementVersion
+                  trafficPointElementVersion
                 ),
               () => this.disableForm()
             );

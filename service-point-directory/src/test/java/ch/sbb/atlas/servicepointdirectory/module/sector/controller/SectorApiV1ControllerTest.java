@@ -12,6 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
@@ -142,7 +144,7 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
     );
     Long id = initial.getId();
 
-    SectorVersionModel update = SectorVersionModel.builder()
+    CreateSectorVersionModel update = CreateSectorVersionModel.builder()
         .etagVersion(initial.getVersion())
         .sloid(initial.getSloid())
         .trafficPointSloid(initial.getTrafficPointSloid())
@@ -150,10 +152,12 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
         .validTo(LocalDate.of(2024, 1, 1))
         .designation("jaja")
         .length(initial.getLength())
-        .north(initial.getNorth())
-        .east(initial.getEast())
-        .spatialReference(initial.getSpatialReference())
-        .height(initial.getHeight())
+        .sectorGeolocation(GeolocationBaseCreateModel.builder()
+            .north(initial.getNorth())
+            .east(initial.getEast())
+            .spatialReference(initial.getSpatialReference())
+            .height(initial.getHeight())
+            .build())
         .edgeHeight(initial.getEdgeHeight())
         .build();
 

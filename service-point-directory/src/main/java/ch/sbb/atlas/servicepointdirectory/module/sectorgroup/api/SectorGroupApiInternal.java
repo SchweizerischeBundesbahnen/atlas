@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,5 +27,5 @@ public interface SectorGroupApiInternal {
       @Parameter(hidden = true) Pageable pageable);
 
   @GetMapping("{sectorGroupSloid}/sectors")
-  List<SectorVersionModel> getSectorsBySectorGroupSloid(@PathVariable String sectorGroupSloid);
+  List<ReadSectorVersionModel> getSectorsBySectorGroupSloid(@PathVariable String sectorGroupSloid);
 }

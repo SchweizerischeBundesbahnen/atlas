@@ -197,6 +197,16 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
+  public static readonly SECTORS: Page = {
+    path: 'sectors',
+    title: 'SEPODI.SECTORS.SECTORS',
+  };
+
+  public static readonly SECTOR_GROUPS: Page = {
+    path: 'sector-groups',
+    title: 'SEPODI.SECTOR_GROUPS.SECTOR_GROUPS',
+  };
+
   public static readonly LOADING_POINTS: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
@@ -274,7 +284,7 @@ export class Pages {
     path: 'stop-point',
   };
 
-  public static readonly SEPODI_TAB: Page = {
+  public static readonly SERVICE_POINT_TAB: Page = {
     title: 'SEPODI.SERVICE_POINTS.SERVICE_POINT',
     path: 'service-point',
   };

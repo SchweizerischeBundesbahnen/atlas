@@ -63,7 +63,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
   }
 
   get servicePointNumber() {
-    return this.route.parent!.snapshot.params['id'];
+    return this.route.parent!.snapshot.params['servicePointNumber'];
   }
 
   initFormGroup(fotComment?: ServicePointFotComment) {

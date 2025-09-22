@@ -1259,6 +1259,16 @@
         "EDIT_SUCCESS": "Der Haltebereich wurde erfolgreich gespeichert."
       }
     },
+    "SECTORS": {
+      "SECTORS": "Sektoren",
+      "DESIGNATION": "Bezeichnung",
+      "NEW": "Sektor erfassen",
+      "MOT_CHANGE_WARNING": "Durch diese Änderung könnten zugewiesene Sektoren/Sektorgruppen ungültig werden, da diese nur für Eisenbahnhaltestellen gültig sind."
+    },
+    "SECTOR_GROUPS": {
+      "SECTOR_GROUPS": "Sektorgruppen",
+      "NEW": "Sektorengruppe erfassen"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen",
       "LOADING_POINT": "Ladestelle",
@@ -1317,7 +1327,8 @@
       "OPERATING_POINT_TECHNICAL": "Fahrplanpunkt",
       "SERVICE_POINT": "Dienststelle",
       "BOARDING_PLATFORM": "Haltekante",
-      "BOARDING_AREA": "Haltestellenbereich"
+      "BOARDING_AREA": "Haltestellenbereich",
+      "SECTOR": "Sektor"
     },
     "BACK_TO_MAP": "Schliessen",
     "ZOOM_IN_HINT": "Zum Anzeigen von Dienststellen, zoomen Sie näher heran.",

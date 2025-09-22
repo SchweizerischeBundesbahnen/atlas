@@ -1,24 +1,27 @@
 package ch.sbb.atlas.servicepointdirectory.module.sector.mapper;
 
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
+import java.util.Map;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class SectorMapper {
 
-  public static SectorVersionModel toModel(SectorVersion sectorVersion) {
-    return SectorVersionModel.builder()
+  public static ReadSectorVersionModel toModel(SectorVersion sectorVersion) {
+    return ReadSectorVersionModel.builder()
         .id(sectorVersion.getId())
         .sloid(sectorVersion.getSloid())
         .trafficPointSloid(sectorVersion.getTrafficPointSloid())
         .designation(sectorVersion.getDesignation())
         .validFrom(sectorVersion.getValidFrom())
         .validTo(sectorVersion.getValidTo())
-        .north(sectorVersion.getNorth())
-        .east(sectorVersion.getEast())
-        .height(sectorVersion.getHeight())
-        .spatialReference(sectorVersion.getSpatialReference())
+        .sectorGeolocation(toGeolocation(sectorVersion))
         .length(sectorVersion.getLength())
         .edgeHeight(sectorVersion.getEdgeHeight())
         .creator(sectorVersion.getCreator())
@@ -30,7 +33,21 @@ public class SectorMapper {
         .build();
   }
 
-  public static SectorVersion toEntity(SectorVersionModel createSectorVersionModel) {
+  private static GeolocationBaseReadModel toGeolocation(SectorVersion sectorVersion) {
+    if (sectorVersion == null) {
+      return null;
+    }
+    Map<SpatialReference, CoordinatePair> coordinates = GeolocationMapper.getTransformedCoordinates(sectorVersion);
+    return GeolocationBaseReadModel.builder()
+        .spatialReference(sectorVersion.getSpatialReference())
+        .lv95(coordinates.get(SpatialReference.LV95))
+        .wgs84(coordinates.get(SpatialReference.WGS84))
+        .lv03(coordinates.get(SpatialReference.LV03))
+        .height(sectorVersion.getHeight())
+        .build();
+  }
+
+  public static SectorVersion toEntity(CreateSectorVersionModel createSectorVersionModel) {
     return SectorVersion.builder()
         .id(createSectorVersionModel.getId())
         .trafficPointSloid(createSectorVersionModel.getTrafficPointSloid())
@@ -38,10 +55,10 @@ public class SectorMapper {
         .validFrom(createSectorVersionModel.getValidFrom())
         .validTo(createSectorVersionModel.getValidTo())
         .designation(createSectorVersionModel.getDesignation())
-        .north(createSectorVersionModel.getNorth())
-        .east(createSectorVersionModel.getEast())
-        .height(createSectorVersionModel.getHeight())
-        .spatialReference(createSectorVersionModel.getSpatialReference())
+        .north(createSectorVersionModel.getSectorGeolocation().getNorth())
+        .east(createSectorVersionModel.getSectorGeolocation().getEast())
+        .height(createSectorVersionModel.getSectorGeolocation().getHeight())
+        .spatialReference(createSectorVersionModel.getSectorGeolocation().getSpatialReference())
         .length(createSectorVersionModel.getLength())
         .edgeHeight(createSectorVersionModel.getEdgeHeight())
         .creator(createSectorVersionModel.getCreator())

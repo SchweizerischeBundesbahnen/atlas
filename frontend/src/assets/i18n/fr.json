@@ -1259,6 +1259,16 @@
         "EDIT_SUCCESS": "La zone d'arrêt a été enregistrée avec succès."
       }
     },
+    "SECTORS": {
+      "SECTORS": "Secteur",
+      "DESIGNATION": "Désignation",
+      "NEW": "Saisir le secteur",
+      "MOT_CHANGE_WARNING": "Cette modification pourrait rendre invalides les secteurs attribués, car ils ne sont valables que pour les haltes ferroviaires."
+    },
+    "SECTOR_GROUPS": {
+      "SECTOR_GROUPS": "Groupe sectoriel",
+      "NEW": "Saisir un groupe de secteurs"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",
       "LOADING_POINT": "Placs de chargement",
@@ -1317,7 +1327,8 @@
       "OPERATING_POINT_TECHNICAL": "Point horaire",
       "SERVICE_POINT": "Service",
       "BOARDING_PLATFORM": "Bordure d'arrêt",
-      "BOARDING_AREA": "Zone d’arrêt"
+      "BOARDING_AREA": "Zone d’arrêt",
+      "SECTOR": "Secteur"
     },
     "BACK_TO_MAP": "Fermer",
     "ZOOM_IN_HINT": "Pour afficher les services, zoomez plus près.",

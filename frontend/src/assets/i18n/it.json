@@ -1259,6 +1259,16 @@
         "EDIT_SUCCESS": "La zona di fermata è stata salvata con successo."
       }
     },
+    "SECTORS": {
+      "SECTORS": "Settore",
+      "DESIGNATION": "Denominazione",
+      "NEW": "Registrare settore",
+      "MOT_CHANGE_WARNING": "Questa modifica potrebbe invalidare i settori assegnati, in quanto validi solo per le fermate ferroviarie."
+    },
+    "SECTOR_GROUPS": {
+      "SECTOR_GROUPS": "Gruppo settoriale",
+      "NEW": "Registrare gruppo settoriale"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Posti di carico",
       "LOADING_POINT": "Posto di carico",
@@ -1317,7 +1327,8 @@
       "OPERATING_POINT_TECHNICAL": "Punto d'orario",
       "SERVICE_POINT": "Posto di servizio",
       "BOARDING_PLATFORM": "Bordo fermata",
-      "BOARDING_AREA": "Zona di fermata"
+      "BOARDING_AREA": "Zona di fermata",
+      "SECTOR": "Settore"
     },
     "BACK_TO_MAP": "Chiudere",
     "ZOOM_IN_HINT": "Ingrandire l'immagine per visualizzare i posti di servizi.",

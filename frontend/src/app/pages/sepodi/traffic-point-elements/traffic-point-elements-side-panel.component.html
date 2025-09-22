@@ -1,0 +1,57 @@
+<atlas-detail-page-container>
+  <div class="font-bold-4xl detail-title mb-3" data-cy="traffic-point-header">
+    {{
+      isTrafficPointArea
+        ? ('SEPODI.BOARDING_AREAS.BOARDING_AREA' | translate)
+        : ('SEPODI.TRAFFIC_POINT_ELEMENTS.HEADER' | translate)
+    }}
+    {{ isNew ? '' : selectedVersion.designation }}
+  </div>
+  @if (!isNew) {
+    <div class="font-xl mb-2">
+      <span data-cy="total-range">
+        <date-range-text [dateRange]="maxValidity"></date-range-text>
+      </span>
+    </div>
+  }
+  <div class="d-flex flex-row mb-5" data-cy="traffic-point-header-title">
+    @if (!isNew) {
+      <div class="d-flex flex-column me-5">
+        <div class="font-bold-base">
+          {{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}
+        </div>
+        <div>{{ selectedVersion.sloid }}</div>
+      </div>
+    }
+    <div class="d-flex flex-column">
+      <div class="font-bold-base">
+        {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.SERVICE_POINT_NAME' | translate }}
+      </div>
+      <div>{{ servicePointName }}</div>
+    </div>
+  </div>
+
+  @if (showTabs) {
+    <nav mat-tab-nav-bar class="tabs mt-5" data-cy="tabs" [tabPanel]="tabPanel">
+      @for (tab of tabs; track tab) {
+        <a
+          mat-tab-link
+          class="font-bold-xl"
+          [routerLink]="tab.link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active-tab"
+          [attr.data-cy]="'tab-' + tab.link"
+        >
+          {{ tab.title | translate }}
+        </a>
+      }
+    </nav>
+    <div class="tab-content">
+      <mat-tab-nav-panel #tabPanel>
+        <router-outlet></router-outlet>
+      </mat-tab-nav-panel>
+    </div>
+  } @else {
+    <router-outlet></router-outlet>
+  }
+</atlas-detail-page-container>

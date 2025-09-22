@@ -15,7 +15,7 @@ export class ServicePointDetailResolver {
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<Array<ReadServicePointVersion>> {
-    const idParameter = route.paramMap.get('id') || '';
+    const idParameter = route.paramMap.get('servicePointNumber') ?? '';
     return idParameter === 'add'
       ? of([])
       : this.servicePointService

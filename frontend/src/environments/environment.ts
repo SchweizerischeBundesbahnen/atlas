@@ -50,4 +50,5 @@ export const environment: Environment = {
   sepodiWorkflowBavActionEnabled: true,
   bulkImportEnabled: true,
   terminationWorkflowEnabled: true,
+  sectorsEnabled: true,
 };
