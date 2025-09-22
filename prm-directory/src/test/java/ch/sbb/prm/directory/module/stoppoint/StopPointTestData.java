@@ -286,4 +286,14 @@ public class StopPointTestData {
         .meansOfTransport(Set.of(MeanOfTransport.BUS));
   }
 
+  public StopPointVersionBuilder<?, ?> builderVersionComplete() {
+    return StopPointVersion.builder()
+        .sloid("ch:1:sloid:54321")
+        .status(Status.VALIDATED)
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8512345))
+        .validFrom(LocalDate.of(2003, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN));
+  }
+
 }

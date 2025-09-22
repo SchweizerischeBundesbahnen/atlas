@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
@@ -27,8 +28,12 @@ class BulkImportCsvReaderTest {
       sloid;validFrom;validTo;designation;designationOperational;length;boardingAreaHeight;compassDirection;east;north;spatialReference;height;parentSloid
       """;
 
-  private static final String PLATFORM_UPDATE_HEADER = """
+  private static final String PLATFORM_REDUCED_UPDATE_HEADER = """
       sloid;validFrom;validTo;additionalInformation;height;inclinationLongitudinal;infoOpportunities;partialElevation;tactileSystem;vehicleAccess;wheelchairAreaLength;wheelchairAreaWidth
+      """;
+
+  private static final String PLATFORM_COMPLETE_UPDATE_HEADER = """
+      sloid;validFrom;validTo;boardingDevice;additionalInformation;shuttle;adviceAccessInfo;contrastingAreas;dynamicAudio;dynamicVisual;inclination;inclinationWidth;levelAccessWheelchair;superelevation
       """;
 
   @Test
@@ -76,6 +81,21 @@ class BulkImportCsvReaderTest {
 
     PlatformReducedUpdateCsvModel expected = ImportFiles.getExpectedPlatformReducedUpdateCsvModel();
     PlatformReducedUpdateCsvModel actual = platformUpdates.getFirst().getObject();
+    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void shouldReadPlatformCompleteUpdateCsvCorrectly() {
+    File file = ImportFiles.getFileByPath("import-files/valid/update_platform_complete.csv");
+
+    List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> platformUpdates =
+        BulkImportCsvReader.readLinesFromFileWithNullingValue(
+            file, PlatformCompleteUpdateCsvModel.class);
+
+    assertThat(platformUpdates).hasSize(1);
+
+    PlatformCompleteUpdateCsvModel expected = ImportFiles.getExpectedPlatformCompleteUpdateCsvModel();
+    PlatformCompleteUpdateCsvModel actual = platformUpdates.getFirst().getObject();
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
@@ -135,7 +155,7 @@ class BulkImportCsvReaderTest {
         ch:1:sloid:88253:0:1;num;tomorrow;5.000;Bern;STOP;idk;aaa;east;north;fake;height
         """;
     BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> result = BulkImportCsvReader.readObject(
-        PlatformReducedUpdateCsvModel.class, PLATFORM_UPDATE_HEADER, csvLine, 1);
+        PlatformReducedUpdateCsvModel.class, PLATFORM_REDUCED_UPDATE_HEADER, csvLine, 1);
 
     assertThat(result.getBulkImportLogEntry().getErrors()).hasSize(10);
 
@@ -153,6 +173,28 @@ class BulkImportCsvReaderTest {
         "Expected ENUM but got north in column vehicleAccess",
         "Expected DOUBLE but got fake in column wheelchairAreaLength",
         "Expected DOUBLE but got height in column wheelchairAreaWidth"
+    );
+  }
+
+  @Test
+  void shouldReportAllDataMappingErrorsForPlatformCompleteUpdate() throws IOException {
+    String csvLine = """
+        ch:1:sloid:1:0:1;num;tomorrow;TO_BE_COMPLETED;Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen Dorf bedienen diese Haltekante.;test;Achtung, Stufe von 16 cm.;sonne;TO_BE_COMPLETED;TO_BE_COMPLETED;12.0;12.0;TO_BE_COMPLETED;string
+        """;
+    BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        PlatformCompleteUpdateCsvModel.class, PLATFORM_COMPLETE_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.getBulkImportLogEntry().getErrors()).hasSize(5);
+
+    List<String> errorMessages = result.getBulkImportLogEntry().getErrors().stream()
+        .map(BulkImportError::getErrorMessage)
+        .toList();
+    assertThat(errorMessages).containsExactlyInAnyOrder(
+        "Expected DATE but got num in column validFrom",
+        "Expected DATE but got tomorrow in column validTo",
+        "Expected ENUM but got test in column shuttle",
+        "Expected DOUBLE but got string in column superelevation",
+        "Expected ENUM but got sonne in column contrastingAreas"
     );
   }
 

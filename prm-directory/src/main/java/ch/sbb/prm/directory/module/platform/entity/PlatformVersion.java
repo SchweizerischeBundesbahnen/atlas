@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.module.platform.entity;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
@@ -25,6 +26,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -60,6 +62,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   private BoardingDeviceAttributeType boardingDevice;
 
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String additionalInformation;
 
   @Enumerated(EnumType.STRING)
@@ -68,6 +71,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
 
   @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String adviceAccessInfo;
 
   @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
