@@ -66,6 +66,11 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] =
       BusinessObjectType.PlatformReduced,
       ImportType.Update,
     ],
+    [
+      ApplicationType.Prm,
+      BusinessObjectType.PlatformComplete,
+      ImportType.Update,
+    ],
     [ApplicationType.Lidi, BusinessObjectType.Line, ImportType.Update],
   ];
 

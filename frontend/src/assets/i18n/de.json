@@ -1662,7 +1662,11 @@
       "ATTRIBUTE_NULLING_NOT_SUPPORTED": "Das Attribut {{field}} darf nicht gelöscht werden.",
       "LOGFILE_NOT_FOUND": "Das gewünschte Log zum Import konnte nicht gefunden werden.",
       "IMPORTER_MAIL_NOT_FOUND": "Ihr Benutzer hat keine E-Mail Adresse hinterlegt.",
-      "TERMINATE_FORBIDDEN": "Sie haben nicht die notwendigen Rechte, um einen Terminierungs-Massenimport auszuführen."
+      "TERMINATE_FORBIDDEN": "Sie haben nicht die notwendigen Rechte, um einen Terminierungs-Massenimport auszuführen.",
+      "PRM": {
+        "BAD_REQUEST_REDUCED": "Das Objekt mit der sloid '{{sloid}}' ist eine reduzierte Haltekante und kann deswegen nicht aktualisiert werden.",
+        "BAD_REQUEST_COMPLETE": "Das Objekt mit der sloid '{{sloid}}' ist eine komplette Haltekante und kann deswegen nicht aktualisiert werden."
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.PlatformBulkImportApiV1;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
 import java.util.List;
@@ -28,4 +29,14 @@ public class PlatformBulkImportController extends BaseBulkImportControllerIntern
         platformBulkImportService::updatePlatformReduced);
   }
 
+  @Override
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public List<BulkImportItemExecutionResult> bulkImportPlatformCompleteUpdate(
+      List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> bulkImportUpdateContainers) {
+    return executeBulkImport(bulkImportUpdateContainers,
+        platformBulkImportService::updatePlatformCompleteByUsername,
+        platformBulkImportService::updatePlatformComplete);
+  }
 }
