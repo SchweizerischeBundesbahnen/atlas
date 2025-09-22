@@ -26,7 +26,9 @@ describe('FotCommentDetailComponent', () => {
   servicePointService.saveFotComment.and.returnValue(
     of({ fotComment: 'New comment', etagVersion: 3 })
   );
-  const route = { parent: { snapshot: { params: { id: 8504414 } } } };
+  const route = {
+    parent: { snapshot: { params: { servicePointNumber: 8504414 } } },
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

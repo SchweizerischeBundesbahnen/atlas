@@ -8,10 +8,10 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
-import { SpatialReference } from './spatialReference';
+import { GeolocationCreate } from './geolocationCreate';
 
 
-export interface SectorVersion { 
+export interface CreateSectorVersion { 
     /**
      * Object creation date
      */
@@ -46,9 +46,9 @@ export interface SectorVersion {
     /**
      * Designation used in the customer information systems.
      */
-    designation?: string;
+    designation: string;
     /**
-     * Length of a Sector
+     * Length of a Sector in m
      */
     length?: number;
     /**
@@ -56,24 +56,12 @@ export interface SectorVersion {
      */
     etagVersion?: number;
     /**
-     * North longitude
-     */
-    north: number;
-    /**
-     * Eastern longitude
-     */
-    east: number;
-    /**
-     * Height of the coordinate point
-     */
-    height?: number;
-    spatialReference: SpatialReference;
-    /**
-     * Height of edge
+     * Height of edge in cm
      */
     edgeHeight?: number;
+    sectorGeolocation: GeolocationCreate;
 }
-export namespace SectorVersion {
+export namespace CreateSectorVersion {
 }
 
 

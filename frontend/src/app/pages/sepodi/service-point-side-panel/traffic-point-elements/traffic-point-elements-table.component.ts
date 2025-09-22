@@ -99,39 +99,15 @@ export class TrafficPointElementsTableComponent implements OnInit {
   }
 
   addNewTrafficPointElement() {
-    this.router
-      .navigate(
-        [Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path, 'add'],
-        {
-          state: {
-            servicePointNumber: this.servicePointNumber,
-            isTrafficPointArea: this.isTrafficPointArea,
-          },
-        }
-      )
-      .then();
+    this.router.navigate(['add'], { relativeTo: this.route }).then();
   }
 
   editVersion($event: ReadTrafficPointElementVersion) {
-    this.router
-      .navigate(
-        [
-          Pages.SEPODI.path,
-          Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
-          $event.sloid,
-        ],
-        {
-          state: {
-            servicePointNumber: this.servicePointNumber,
-            isTrafficPointArea: this.isTrafficPointArea,
-          },
-        }
-      )
-      .then();
+    this.router.navigate([$event.sloid], { relativeTo: this.route }).then();
   }
 
   get servicePointNumber() {
-    return this.route.parent!.snapshot.params['id'];
+    return this.route.parent!.snapshot.params['servicePointNumber'];
   }
 
   get isParentStopPoint(): boolean {

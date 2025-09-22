@@ -57,4 +57,15 @@ describe('MeansOfTransportPickerComponent', () => {
     const currentMeans = component.formGroup.value.meansOfTransport;
     expect(currentMeans).toEqual([]);
   });
+
+  it('should show sector warning on TRAIN removed', () => {
+    component.formGroup = new FormGroup({
+      meansOfTransport: new FormControl([MeanOfTransport.Train]),
+    });
+    expect(component.sectorWarning).toBeFalse();
+    expect(component.currentlySelectedMeans).toEqual([MeanOfTransport.Train]);
+
+    component.clicked(MeanOfTransport.Train);
+    expect(component.sectorWarning).toBeTrue();
+  });
 });

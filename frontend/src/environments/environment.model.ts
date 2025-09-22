@@ -13,4 +13,5 @@ export interface Environment {
   sepodiWorkflowBavActionEnabled: boolean;
   bulkImportEnabled: boolean;
   terminationWorkflowEnabled: boolean;
+  sectorsEnabled: boolean;
 }

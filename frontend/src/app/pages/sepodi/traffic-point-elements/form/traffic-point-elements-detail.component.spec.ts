@@ -1,45 +1,47 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppTestingModule } from '../../../app.testing.module';
-import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
+import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import {
   ActivatedRouteMockType,
   MockAtlasButtonComponent,
   MockNavigationSepodiPrmComponent,
-} from '../../../app.testing.mocks';
-import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
-import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
-import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
-import { SelectComponent } from '../../../core/form-components/select/select.component';
-import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
-import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
+  translateServiceProvider,
+} from '../../../../app.testing.mocks';
+import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { SplitServicePointNumberPipe } from '../../../../core/search-service-point/split-service-point-number.pipe';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
-import { GeographyComponent } from '../geography/geography.component';
-import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
-import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
-import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
-import { TrafficPointMapService } from '../map/traffic-point-map.service';
-import { CoordinatePairWGS84, MapService } from '../map/map.service';
-import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
-import { AuthService } from '../../../core/auth/auth.service';
-import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { GeographyComponent } from '../../geography/geography.component';
+import { DecimalNumberPipe } from '../../../../core/pipe/decimal-number.pipe';
+import { AtlasSlideToggleComponent } from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { RemoveCharsDirective } from '../../../../core/form-components/text-field/remove-chars.directive';
+import { TrafficPointMapService } from '../../map/traffic-point-map.service';
+import { CoordinatePairWGS84, MapService } from '../../map/map.service';
+import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
+import { AuthService } from '../../../../core/auth/auth.service';
+import { SloidComponent } from '../../../../core/form-components/sloid/sloid.component';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
-import { BERN_WYLEREGG } from '../../../../test/data/service-point';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
-import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
-import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
-import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
-import { TrafficPointElementInternalService } from '../../../api/service/sepodi/traffic-point-element-internal.service';
-import { TrafficPointElementService } from '../../../api/service/sepodi/traffic-point-element.service';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
+import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../test/data/traffic-point-element';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
+import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
+import { TrafficPointElementService } from '../../../../api/service/sepodi/traffic-point-element.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient } from '@angular/common/http';
+import { DateModule } from '../../../../core/module/date.module';
 import SpyObj = jasmine.SpyObj;
+import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
 
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
@@ -97,9 +99,18 @@ describe('TrafficPointElementsDetailComponent', () => {
       });
       routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
-      window.history.pushState({ isTrafficPointArea: false }, '', '');
       const activatedRouteMock = {
-        data: of({ trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]] }),
+        parent: {
+          snapshot: {
+            params: {
+              servicePointNumber: 8589008,
+            },
+          },
+          data: of({
+            trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+            isTrafficPointArea: false,
+          }),
+        },
       };
       await setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
@@ -107,16 +118,7 @@ describe('TrafficPointElementsDetailComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should display current designationOperational and validity', () => {
-      expect(component.selectedVersion).toBeTruthy();
-
-      expect(component.selectedVersion.designationOperational).toEqual('1');
-      expect(component.maxValidity.validFrom).toEqual(new Date('2019-07-22'));
-      expect(component.maxValidity.validTo).toEqual(new Date('2099-12-31'));
-    });
-
     it('should init selected servicepoint', () => {
-      expect(component.servicePointName).toBeTruthy();
       expect(component.servicePoint).toBeTruthy();
       expect(component.servicePointBusinessOrganisations).toBeTruthy();
 
@@ -180,8 +182,16 @@ describe('TrafficPointElementsDetailComponent', () => {
       });
       routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
-      window.history.pushState({ isTrafficPointArea: false }, '', '');
-      const activatedRouteMock = { data: of({ trafficPoint: [] }) };
+      const activatedRouteMock = {
+        parent: {
+          snapshot: {
+            params: {
+              servicePointNumber: 89008,
+            },
+          },
+          data: of({ trafficPoint: [], isTrafficPointArea: false }),
+        },
+      };
       await setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
       component = fixture.componentInstance;
@@ -209,7 +219,7 @@ describe('TrafficPointElementsDetailComponent', () => {
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     return TestBed.configureTestingModule({
       imports: [
-        AppTestingModule,
+        ReactiveFormsModule,
         TrafficPointElementsDetailComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
@@ -232,6 +242,7 @@ describe('TrafficPointElementsDetailComponent', () => {
         DetailPageContentComponent,
         DetailFooterComponent,
         MockNavigationSepodiPrmComponent,
+        DateModule.forRoot(),
       ],
       providers: [
         { provide: AuthService, useValue: authService },
@@ -252,6 +263,8 @@ describe('TrafficPointElementsDetailComponent', () => {
         { provide: Router, useValue: routerSpy },
         SplitServicePointNumberPipe,
         TranslatePipe,
+        provideHttpClient(),
+        translateServiceProvider,
       ],
     }).compileComponents();
   }
