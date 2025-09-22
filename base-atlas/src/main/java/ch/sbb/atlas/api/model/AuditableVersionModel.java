@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-public class AuditableVersionModel {
+public abstract class AuditableVersionModel {
 
   @Schema(description = "Object creation date", example = "01.01.2000", accessMode = AccessMode.READ_ONLY)
   private LocalDateTime creationDate;
