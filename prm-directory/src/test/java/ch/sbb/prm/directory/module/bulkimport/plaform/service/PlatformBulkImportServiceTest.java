@@ -6,15 +6,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel.Fields;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.prm.directory.module.platform.PlatformTestData;
-import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
+import ch.sbb.prm.directory.exception.BulkPlatformUpdateValidationException;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
+import ch.sbb.prm.directory.module.platform.PlatformTestData;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.repository.PlatformRepository;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.repository.StopPointRepository;
 import ch.sbb.prm.directory.security.PrmUserAdministrationService;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +44,25 @@ class PlatformBulkImportServiceTest {
   @Autowired
   private PlatformBulkImportService platformBulkImportService;
 
-  private PlatformVersion platformVersion;
+  private PlatformVersion platformVersionReduced;
+
+  private PlatformVersion platformVersionComplete;
 
   private static final String ADDITIONAL_INFORMATION = "Additional information";
 
   @BeforeEach
   void setUp() {
     doReturn(true).when(prmUserAdministrationService).hasUserRightsToCreateOrEditPrmObject(any());
-    platformVersion = PlatformTestData.getReducedPlatformVersion();
-    platformRepository.save(platformVersion);
+    platformVersionReduced = PlatformTestData.getReducedPlatformVersion();
+    platformVersionComplete = PlatformTestData.getCompletePlatformVersion();
+    platformVersionComplete.setSloid("ch:1:sloid:54321:2");
+    platformVersionComplete.setParentServicePointSloid("ch:1:sloid:54321");
+    platformRepository.save(platformVersionReduced);
+    platformRepository.save(platformVersionComplete);
     StopPointVersion stopPointVersion = StopPointTestData.builderVersionReduced().build();
+    StopPointVersion stopPointVersionComplete = StopPointTestData.builderVersionComplete().build();
     stopPointRepository.save(stopPointVersion);
+    stopPointRepository.save(stopPointVersionComplete);
   }
 
   @AfterEach
@@ -63,18 +73,18 @@ class PlatformBulkImportServiceTest {
 
   @Test
   void shouldUpdateBulkAddingProperty() {
-    assertThat(platformVersion.getAdditionalInformation()).isNull();
+    assertThat(platformVersionReduced.getAdditionalInformation()).isNull();
 
     platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
         .object(PlatformReducedUpdateCsvModel.builder()
-            .sloid(platformVersion.getSloid())
-            .validFrom(platformVersion.getValidFrom())
-            .validTo(platformVersion.getValidTo())
+            .sloid(platformVersionReduced.getSloid())
+            .validFrom(platformVersionReduced.getValidFrom())
+            .validTo(platformVersionReduced.getValidTo())
             .additionalInformation(ADDITIONAL_INFORMATION)
             .build())
         .build());
     PlatformVersion platform =
-        platformRepository.findById(platformVersion.getId()).orElseThrow();
+        platformRepository.findById(platformVersionReduced.getId()).orElseThrow();
     assertThat(platform.getAdditionalInformation()).isEqualTo(ADDITIONAL_INFORMATION);
   }
 
@@ -83,43 +93,46 @@ class PlatformBulkImportServiceTest {
     platformBulkImportService.updatePlatformReducedByUsername("e123456",
         BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
             .object(PlatformReducedUpdateCsvModel.builder()
-                .sloid(platformVersion.getSloid())
-                .validFrom(platformVersion.getValidFrom())
-                .validTo(platformVersion.getValidTo())
+                .sloid(platformVersionReduced.getSloid())
+                .validFrom(platformVersionReduced.getValidFrom())
+                .validTo(platformVersionReduced.getValidTo())
                 .additionalInformation(ADDITIONAL_INFORMATION)
                 .build())
             .build());
 
     PlatformVersion platformVersion1 =
-        platformRepository.findById(platformVersion.getId()).orElseThrow();
+        platformRepository.findById(platformVersionReduced.getId()).orElseThrow();
     assertThat(platformVersion1.getAdditionalInformation()).isEqualTo(ADDITIONAL_INFORMATION);
   }
 
   @Test
   void shouldUpdateBulkRemovingProperty() {
-    assertThat(platformVersion.getHeight()).isEqualTo(123.12);
+    assertThat(platformVersionReduced.getHeight()).isEqualTo(123.12);
 
     platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
         .object(PlatformReducedUpdateCsvModel.builder()
-            .sloid(platformVersion.getSloid())
-            .validFrom(platformVersion.getValidFrom())
-            .validTo(platformVersion.getValidTo())
+            .sloid(platformVersionReduced.getSloid())
+            .validFrom(platformVersionReduced.getValidFrom())
+            .validTo(platformVersionReduced.getValidTo())
             .build())
-        .attributesToNull(List.of(Fields.height, Fields.additionalInformation, Fields.inclinationLongitudinal))
+        .attributesToNull(List.of(
+            PlatformReducedUpdateCsvModel.Fields.height,
+            PlatformReducedUpdateCsvModel.Fields.additionalInformation,
+            PlatformReducedUpdateCsvModel.Fields.inclinationLongitudinal))
         .build());
 
     PlatformVersion platformVersion1 =
-        platformRepository.findById(platformVersion.getId()).orElseThrow();
+        platformRepository.findById(platformVersionReduced.getId()).orElseThrow();
     assertThat(platformVersion1.getHeight()).isNull();
   }
 
   @Test
   void shouldUpdateAndGetMoreVersions() {
-    assertThat(platformRepository.findAllBySloidOrderByValidFrom(platformVersion.getSloid())).hasSize(1);
+    assertThat(platformRepository.findAllBySloidOrderByValidFrom(platformVersionReduced.getSloid())).hasSize(1);
 
     platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
         .object(PlatformReducedUpdateCsvModel.builder()
-            .sloid(platformVersion.getSloid())
+            .sloid(platformVersionReduced.getSloid())
             .validFrom(LocalDate.of(2000, 4, 1))
             .validTo(LocalDate.of(2000, 7, 31))
             .additionalInformation(ADDITIONAL_INFORMATION)
@@ -127,7 +140,7 @@ class PlatformBulkImportServiceTest {
         .build());
 
     List<PlatformVersion> versions =
-        platformRepository.findAllBySloidOrderByValidFrom(platformVersion.getSloid());
+        platformRepository.findAllBySloidOrderByValidFrom(platformVersionReduced.getSloid());
     assertThat(versions).hasSize(3);
 
     PlatformVersion firstVersion = versions.getFirst();
@@ -173,4 +186,152 @@ class PlatformBulkImportServiceTest {
     assertThatExceptionOfType(IllegalStateException.class).isThrownBy(update);
   }
 
+  @Test
+  void shouldUpdateBulkAddingPropertyComplete() {
+    assertThat(platformVersionComplete.getAdditionalInformation()).isNull();
+
+    platformBulkImportService.updatePlatformComplete(BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+        .object(PlatformCompleteUpdateCsvModel.builder()
+            .sloid(platformVersionComplete.getSloid())
+            .validFrom(platformVersionComplete.getValidFrom())
+            .validTo(platformVersionComplete.getValidTo())
+            .additionalInformation(ADDITIONAL_INFORMATION)
+            .build())
+        .build());
+    PlatformVersion platform =
+        platformRepository.findById(platformVersionComplete.getId()).orElseThrow();
+    assertThat(platform.getAdditionalInformation()).isEqualTo(ADDITIONAL_INFORMATION);
+  }
+
+  @Test
+  void shouldThrowWhenAttemptingToUpdateReduceObjectWithCompleteProperties() {
+    BulkPlatformUpdateValidationException exception = Assertions.assertThrows(BulkPlatformUpdateValidationException.class,
+        () -> platformBulkImportService.updatePlatformComplete(BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder()
+                .sloid(platformVersionReduced.getSloid())
+                .validFrom(platformVersionComplete.getValidFrom())
+                .validTo(platformVersionComplete.getValidTo())
+                .additionalInformation(ADDITIONAL_INFORMATION)
+                .build())
+            .build()));
+
+    assertThat(exception.getErrorResponse().getStatus()).isEqualTo(400);
+    assertThat(exception.getErrorResponse().getMessage()).contains(
+        "Attempting to save a Reduced object with wrong properties population!");
+  }
+
+  @Test
+  void shouldThrowWhenAttemptingToUpdateCompleteObjectWithReducedProperties() {
+    BulkPlatformUpdateValidationException exception = Assertions.assertThrows(BulkPlatformUpdateValidationException.class,
+        () -> platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .object(PlatformReducedUpdateCsvModel.builder()
+                .sloid(platformVersionComplete.getSloid())
+                .validFrom(platformVersionReduced.getValidFrom())
+                .validTo(platformVersionReduced.getValidTo())
+                .additionalInformation(ADDITIONAL_INFORMATION)
+                .build())
+            .build()));
+
+    assertThat(exception.getErrorResponse().getStatus()).isEqualTo(400);
+    assertThat(exception.getErrorResponse().getMessage()).contains(
+        "Attempting to save a Complete object with wrong properties population!");
+  }
+
+  @Test
+  void shouldUpdateBulkWithUserInNameOfComplete() {
+    platformBulkImportService.updatePlatformCompleteByUsername("e123456",
+        BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder()
+                .sloid(platformVersionComplete.getSloid())
+                .validFrom(platformVersionComplete.getValidFrom())
+                .validTo(platformVersionComplete.getValidTo())
+                .additionalInformation(ADDITIONAL_INFORMATION)
+                .build())
+            .build());
+
+    PlatformVersion platformVersion1 =
+        platformRepository.findById(platformVersionComplete.getId()).orElseThrow();
+    assertThat(platformVersion1.getAdditionalInformation()).isEqualTo(ADDITIONAL_INFORMATION);
+  }
+
+  @Test
+  void shouldUpdateBulkRemovingPropertyComplete() {
+    assertThat(platformVersionComplete.getSuperelevation()).isEqualTo(321.123);
+
+    platformBulkImportService.updatePlatformComplete(BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+        .object(PlatformCompleteUpdateCsvModel.builder()
+            .sloid(platformVersionComplete.getSloid())
+            .validFrom(platformVersionComplete.getValidFrom())
+            .validTo(platformVersionComplete.getValidTo())
+            .build())
+        .attributesToNull(List.of(
+            PlatformCompleteUpdateCsvModel.Fields.adviceAccessInfo,
+            PlatformCompleteUpdateCsvModel.Fields.additionalInformation,
+            PlatformCompleteUpdateCsvModel.Fields.inclination))
+        .build());
+
+    PlatformVersion platformVersion1 =
+        platformRepository.findById(platformVersionComplete.getId()).orElseThrow();
+    assertThat(platformVersion1.getHeight()).isNull();
+  }
+
+  @Test
+  void shouldUpdateAndGetMoreVersionsComplete() {
+    assertThat(platformRepository.findAllBySloidOrderByValidFrom(platformVersionComplete.getSloid())).hasSize(1);
+
+    platformBulkImportService.updatePlatformComplete(BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+        .object(PlatformCompleteUpdateCsvModel.builder()
+            .sloid(platformVersionComplete.getSloid())
+            .validFrom(LocalDate.of(2000, 4, 1))
+            .validTo(LocalDate.of(2000, 7, 31))
+            .additionalInformation(ADDITIONAL_INFORMATION)
+            .build())
+        .build());
+
+    List<PlatformVersion> versions =
+        platformRepository.findAllBySloidOrderByValidFrom(platformVersionComplete.getSloid());
+    assertThat(versions).hasSize(3);
+
+    PlatformVersion firstVersion = versions.getFirst();
+    assertThat(firstVersion.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
+    assertThat(firstVersion.getValidTo()).isEqualTo(LocalDate.of(2000, 3, 31));
+    assertThat(firstVersion.getAdditionalInformation()).isNull();
+
+    PlatformVersion secondVersion = versions.get(1);
+    assertThat(secondVersion.getValidFrom()).isEqualTo(LocalDate.of(2000, 4, 1));
+    assertThat(secondVersion.getValidTo()).isEqualTo(LocalDate.of(2000, 7, 31));
+    assertThat(secondVersion.getAdditionalInformation()).isEqualTo(ADDITIONAL_INFORMATION);
+
+    PlatformVersion thirdVersion = versions.getLast();
+    assertThat(thirdVersion.getValidFrom()).isEqualTo(LocalDate.of(2000, 8, 1));
+    assertThat(thirdVersion.getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
+    assertThat(thirdVersion.getAdditionalInformation()).isNull();
+  }
+
+  @Test
+  void shouldThrowSloidNotFoundExceptionComplete() {
+    ThrowingCallable update = () -> platformBulkImportService.updatePlatformComplete(
+        BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder()
+                .sloid("unknown:sloid")
+                .validFrom(LocalDate.of(2023, 1, 1))
+                .validTo(LocalDate.of(2023, 6, 30))
+                .additionalInformation(ADDITIONAL_INFORMATION)
+                .build())
+            .build());
+    assertThatExceptionOfType(SloidNotFoundException.class).isThrownBy(update);
+  }
+
+  @Test
+  void shouldThrowIllegalStateExceptionComplete() {
+    ThrowingCallable update = () -> platformBulkImportService.updatePlatformComplete(
+        BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+            .object(PlatformCompleteUpdateCsvModel.builder()
+                .validFrom(LocalDate.of(2023, 1, 1))
+                .validTo(LocalDate.of(2023, 6, 30))
+                .additionalInformation(ADDITIONAL_INFORMATION)
+                .build())
+            .build());
+    assertThatExceptionOfType(IllegalStateException.class).isThrownBy(update);
+  }
 }

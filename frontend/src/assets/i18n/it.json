@@ -1662,7 +1662,11 @@
       "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attributo {{field}} non deve essere cancellato.",
       "LOGFILE_NOT_FOUND": "Non è stato possibile trovare il log desiderato per l'importazione.",
       "IMPORTER_MAIL_NOT_FOUND": "Il suo utente non ha un indirizzo e-mail.",
-      "TERMINATE_FORBIDDEN": "Lei non dispone dei diritti necessari per eseguire un’importazione di massa di terminazioni."
+      "TERMINATE_FORBIDDEN": "Lei non dispone dei diritti necessari per eseguire un’importazione di massa di terminazioni.",
+      "PRM": {
+        "BAD_REQUEST_REDUCED": "L'oggetto con la sloid '{{sloid}}' è un bordo di ritenuta ridotto e pertanto non può essere aggiornato.",
+        "BAD_REQUEST_COMPLETE": "L'oggetto con la sloid '{{sloid}}' è un bordo di ritenuta completo e pertanto non può essere aggiornato."
+      }
     }
   }
 }
