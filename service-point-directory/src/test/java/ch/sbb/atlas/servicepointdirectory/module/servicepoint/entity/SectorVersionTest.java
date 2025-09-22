@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -28,7 +27,6 @@ class SectorVersionTest {
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .version(1)
-        .status(Status.VALIDATED)
         .build();
     //when
     Set<ConstraintViolation<SectorVersion>> constraintViolations = validator.validate(sectorVersion);
@@ -47,7 +45,6 @@ class SectorVersionTest {
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .version(1)
-        .status(Status.VALIDATED)
         .build();
     //when
     Set<ConstraintViolation<SectorVersion>> constraintViolations = validator.validate(sectorVersion);
