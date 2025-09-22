@@ -156,7 +156,10 @@ const trafficPointAreaDetailRoutes: Routes = [
       import(
         './traffic-point-elements/traffic-point-elements-side-panel.component'
       ).then((m) => m.TrafficPointElementsSidePanelComponent),
-    resolve: { trafficPoint: trafficPointResolver },
+    resolve: {
+      trafficPoint: trafficPointResolver,
+      servicePoint: servicePointResolver,
+    },
     data: { isTrafficPointArea: true },
     runGuardsAndResolvers: 'always',
     children: [
