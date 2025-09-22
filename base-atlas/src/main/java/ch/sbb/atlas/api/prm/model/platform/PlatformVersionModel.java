@@ -12,7 +12,6 @@ import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -43,11 +42,11 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   private BoardingDeviceAttributeType boardingDevice;
 
   @Schema(description = "Information on access to transport")
-  @Max(AtlasFieldLengths.LENGTH_2000)
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String adviceAccessInfo;
 
   @Schema(description = "Additional Information")
-  @Max(AtlasFieldLengths.LENGTH_2000)
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String additionalInformation;
 
   @Schema(description = "Shuttle")
