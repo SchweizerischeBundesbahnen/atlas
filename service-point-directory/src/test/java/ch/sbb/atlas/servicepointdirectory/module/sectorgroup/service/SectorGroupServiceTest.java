@@ -6,6 +6,7 @@ import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -164,7 +165,7 @@ class SectorGroupServiceTest {
         new SectorGroupRelationId(savedGroup.getSloid(), sector2)));
 
     // When
-    List<SectorVersionModel> result = sectorGroupService.getSectorsBySectorGroupSloid(savedGroup.getSloid());
+    List<ReadSectorVersionModel> result = sectorGroupService.getSectorsBySectorGroupSloid(savedGroup.getSloid());
 
     // Then
     assertThat(result).hasSize(2)

@@ -1,0 +1,39 @@
+<atlas-detail-page-content>
+  <div class="overview-tables">
+    @if (showCreateButtons) {
+      <atlas-button
+        buttonDataCy="new-sector-group"
+        buttonText="SEPODI.SECTOR_GROUPS.NEW"
+        buttonType="whiteFooterNonEdit"
+        buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
+        (buttonClicked)="backToServicePoint()"
+        wrapperStyleClass="mb-5"
+      >
+      </atlas-button>
+    }
+
+    <div class="font-bold-2xl mt-5 mb-3">
+      {{ 'SEPODI.SECTOR_GROUPS.SECTOR_GROUPS' | translate }}
+    </div>
+
+    <app-table
+      data-cy="sector-groups-table"
+      [tableData]="sectorGroups"
+      [totalCount]="totalSectorGroups"
+      [tableColumns]="tableColumnsSectorGroups"
+      [tableFilterConfig]="tableFilterConfig"
+      (editElementEvent)="editSectorGroup($event)"
+      (tableChanged)="getSectorGroupOverview($event)"
+      (tableInitialized)="getSectorGroupOverview($event)"
+    ></app-table>
+  </div>
+</atlas-detail-page-content>
+<atlas-detail-footer>
+  <atlas-button
+    buttonDataCy="back"
+    buttonText="COMMON.BACK"
+    buttonType="whiteFooterNonEdit"
+    (buttonClicked)="backToServicePoint()"
+  >
+  </atlas-button>
+</atlas-detail-footer>

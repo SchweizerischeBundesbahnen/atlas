@@ -47,6 +47,7 @@ describe('TrafficPointMapService', () => {
           sloid: 'ch:1:sloid:0:245',
           designation: 'A',
           type: 'BORDING_PLATFORM',
+          servicePointNumber: 857000,
         },
       },
     ] as unknown as MapGeoJSONFeature[];
@@ -54,7 +55,7 @@ describe('TrafficPointMapService', () => {
     const result =
       TrafficPointMapService.buildTrafficPointPopupInformation(features);
     expect(result).toEqual(
-      '<a href="service-point-directory/traffic-point-elements/ch:1:sloid:0:245">A - ch:1:sloid:0:245</a> <br/>'
+      '<a href="service-point-directory/service-points/857000/traffic-point-elements/ch:1:sloid:0:245">A - ch:1:sloid:0:245</a> <br/>'
     );
   });
 

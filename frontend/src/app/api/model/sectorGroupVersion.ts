@@ -45,9 +45,9 @@ export interface SectorGroupVersion {
     /**
      * Designation used in the customer information systems.
      */
-    designation?: string;
+    designation: string;
     /**
-     * Length of a Sector
+     * Length of a Sector in m
      */
     length?: number;
     /**

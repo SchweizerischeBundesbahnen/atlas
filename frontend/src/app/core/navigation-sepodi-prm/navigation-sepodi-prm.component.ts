@@ -81,7 +81,7 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
         break;
       case 'traffic-point-detail':
         this.router.navigateByUrl(
-          `/service-point-directory/traffic-point-elements/${this.sloid}`
+          `/service-point-directory/service-points/${this.number}/traffic-point-elements/${this.sloid}`
         );
         break;
       case 'platform-table':

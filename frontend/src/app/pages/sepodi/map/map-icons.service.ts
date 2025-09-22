@@ -1,5 +1,6 @@
 import { Map } from 'maplibre-gl';
 import { ServicePointIconType } from './service-point-icon-type';
+import { environment } from '../../../../environments/environment';
 
 export interface MapIcon {
   id: string;
@@ -7,11 +8,13 @@ export interface MapIcon {
 }
 
 export class MapIconsService {
-  private static IMAGES_BASE_PATH = '../../../../assets/images/';
-  private static SERVICE_POINT_ICONS_BASE_PATH =
+  private static readonly IMAGES_BASE_PATH = '../../../../assets/images/';
+  private static readonly SERVICE_POINT_ICONS_BASE_PATH =
     this.IMAGES_BASE_PATH + 'service-point-symbols/';
-  private static TRAFFIC_POINT_ICONS_BASE_PATH =
+  private static readonly TRAFFIC_POINT_ICONS_BASE_PATH =
     this.IMAGES_BASE_PATH + 'traffic-point-symbols/';
+  private static readonly SECTOR_ICONS_BASE_PATH =
+    this.IMAGES_BASE_PATH + 'sector-symbols/';
 
   static addTrafficPointIconToMap(map: Map) {
     MapIconsService.getTrafficPointIconsAsImages().then((icons) => {
@@ -34,6 +37,23 @@ export class MapIconsService {
     return Promise.all(types);
   }
 
+  static addSectorIconToMap(map: Map) {
+    MapIconsService.getSectorIconsAsImages().then((icons) => {
+      icons.forEach((icon) => {
+        if (!map.hasImage(icon.id)) {
+          map.addImage(icon.id, icon.icon);
+        }
+      });
+    });
+  }
+
+  private static getSectorIconsAsImages() {
+    const types = ['SECTOR', 'SELECTED_SECTOR_INDICATOR'].map((type) =>
+      this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, type)
+    );
+    return Promise.all(types);
+  }
+
   static getLegendIconsAsImages() {
     const servicePointIconsForLegend = Object.keys(ServicePointIconType).map(
       (type) => this.getIconAsImage(this.SERVICE_POINT_ICONS_BASE_PATH, type)
@@ -44,9 +64,14 @@ export class MapIconsService {
     ].map((type) =>
       this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type)
     );
-    const allLegendIcons = servicePointIconsForLegend.concat(
+    let allLegendIcons = servicePointIconsForLegend.concat(
       trafficPointIconsForLegend
     );
+    if (environment.sectorsEnabled) {
+      allLegendIcons = allLegendIcons.concat(
+        this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, 'SECTOR')
+      );
+    }
     return Promise.all(allLegendIcons);
   }
 
