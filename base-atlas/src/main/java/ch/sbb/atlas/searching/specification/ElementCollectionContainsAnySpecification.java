@@ -18,8 +18,8 @@ public class ElementCollectionContainsAnySpecification<T, C extends Collection<E
   @Serial
   private static final long serialVersionUID = 1;
 
-  private final Collection<E> searchParams;
-  private final PluralAttribute<T, C, E> elementCollectionAttribute;
+  private transient final Collection<E> searchParams;
+  private transient final PluralAttribute<T, C, E> elementCollectionAttribute;
 
   @Override
   public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {

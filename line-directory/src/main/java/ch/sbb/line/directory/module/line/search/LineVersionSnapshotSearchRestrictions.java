@@ -8,7 +8,6 @@ import ch.sbb.line.directory.module.line.entity.LineVersionSnapshot.Fields;
 import ch.sbb.line.directory.module.line.entity.LineVersionSnapshot_;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -31,7 +30,7 @@ public class LineVersionSnapshotSearchRestrictions {
   private List<WorkflowStatus> statusRestrictions;
 
   @Builder.Default
-  private Optional<LocalDate> validOn = Optional.empty();
+  private LocalDate validOn = null;
 
   public Specification<LineVersionSnapshot> getSpecification() {
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)

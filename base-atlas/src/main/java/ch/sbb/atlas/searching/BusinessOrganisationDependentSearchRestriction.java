@@ -1,7 +1,6 @@
 package ch.sbb.atlas.searching;
 
 import ch.sbb.atlas.searching.specification.SingleStringSpecification;
-import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,15 +10,14 @@ import org.springframework.data.jpa.domain.Specification;
 @Getter
 @ToString
 @SuperBuilder
-public abstract class BusinessOrganisationDependentSearchRestriction<T> extends
-    SearchRestrictions<T> {
+public abstract class BusinessOrganisationDependentSearchRestriction<T> extends SearchRestrictions<T> {
 
   @Builder.Default
-  private Optional<String> businessOrganisation = Optional.empty();
+  private String businessOrganisation = null;
 
   @Override
   protected Specification<T> getBaseSpecification() {
     return super.getBaseSpecification()
-                .and(new SingleStringSpecification<>(businessOrganisation, "businessOrganisation"));
+        .and(new SingleStringSpecification<>(businessOrganisation, "businessOrganisation"));
   }
 }

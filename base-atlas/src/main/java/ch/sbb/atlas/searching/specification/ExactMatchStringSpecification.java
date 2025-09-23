@@ -5,30 +5,28 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import java.io.Serial;
 import java.util.Objects;
-import java.util.Optional;
 import org.springframework.data.jpa.domain.Specification;
 
 public class ExactMatchStringSpecification<T> implements Specification<T> {
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 
-  private final Optional<String> searchString;
+  private final String searchString;
   private final String stringAttribute;
 
-  public ExactMatchStringSpecification(Optional<String> searchString,
-      String stringAttribute) {
-    this.searchString = Objects.requireNonNull(searchString);
+  public ExactMatchStringSpecification(String searchString, String stringAttribute) {
+    this.searchString = searchString;
     this.stringAttribute = stringAttribute;
   }
 
   @Override
   public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
       CriteriaBuilder criteriaBuilder) {
-    if (searchString.isEmpty()) {
+    if (Objects.isNull(searchString)) {
       return criteriaBuilder.and();
     }
-    return StringPredicates.equalIgnoreCase(criteriaBuilder, root.get(stringAttribute),
-        searchString.orElseThrow());
+    return StringPredicates.equalIgnoreCase(criteriaBuilder, root.get(stringAttribute), searchString);
   }
 }

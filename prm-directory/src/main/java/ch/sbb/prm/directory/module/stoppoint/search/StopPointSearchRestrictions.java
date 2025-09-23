@@ -6,7 +6,6 @@ import ch.sbb.prm.directory.module.stoppoint.controller.model.StopPointRequestPa
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion_;
 import java.util.List;
-import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -27,7 +26,7 @@ public class StopPointSearchRestrictions {
 
   public Specification<StopPointVersion> getSpecification() {
     return specBuilder().searchCriteriaSpecification(searchCriterias)
-        .and(specBuilder().validOnSpecification(Optional.ofNullable(stopPointRequestParams.getValidOn())))
+        .and(specBuilder().validOnSpecification(stopPointRequestParams.getValidOn()))
         .and(specBuilder().inSpecification(stopPointRequestParams.getServicePointNumbers(), StopPointVersion.Fields.number))
         .and(specBuilder().inSpecification(stopPointRequestParams.getSloids(), StopPointVersion.Fields.sloid))
         .and(specBuilder().inSpecification(stopPointRequestParams.getStatusRestrictions(), StopPointVersion.Fields.status))

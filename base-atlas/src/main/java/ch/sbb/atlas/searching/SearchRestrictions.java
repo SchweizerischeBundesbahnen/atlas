@@ -4,7 +4,6 @@ import ch.sbb.atlas.model.Status;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -27,7 +26,7 @@ public abstract class SearchRestrictions<T> {
   private List<Status> statusRestrictions;
 
   @Builder.Default
-  private Optional<LocalDate> validOn = Optional.empty();
+  private LocalDate validOn = null;
 
   public Specification<T> getSpecification() {
     return getBaseSpecification();
