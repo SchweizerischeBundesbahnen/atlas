@@ -115,7 +115,7 @@ describe('AuthService', () => {
     expect(localStorage.removeItem).toHaveBeenCalledOnceWith('tryLogin');
   });
 
-  it('should provide auth init when userData defined', (done) => {
+  it('should initAuth when userData defined', (done) => {
     // Arrange
     oidcSecurityServiceSpy.getUserData.and.returnValue(
       of({
@@ -157,7 +157,7 @@ describe('AuthService', () => {
     });
   });
 
-  describe('should provide auth init when userData is not defined', () => {
+  describe('should initAuth when userData is not defined', () => {
     it('should not try login', (done) => {
       // Arrange
       oidcSecurityServiceSpy.getUserData.and.returnValue(of(null));
@@ -189,6 +189,21 @@ describe('AuthService', () => {
         expect(result).toBeTrue();
         done();
       });
+    });
+  });
+
+  fit('should catchError in initAuth', (done) => {
+    // Arrange
+    oidcSecurityServiceSpy.getUserData.and.returnValue(
+      of({ email: 'test@sbb.ch' })
+    );
+    oidcSecurityServiceSpy.getAccessToken.and.throwError('testError');
+    authService = TestBed.inject(AuthService);
+    // Act
+    authService.initAuth().subscribe((result) => {
+      // Assert
+      expect(result).toBeTrue();
+      done();
     });
   });
 });
