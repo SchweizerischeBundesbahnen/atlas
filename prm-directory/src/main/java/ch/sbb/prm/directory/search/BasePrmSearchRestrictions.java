@@ -2,11 +2,10 @@ package ch.sbb.prm.directory.search;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
-import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion_;
+import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import java.util.Collections;
-import java.util.Optional;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,7 @@ public abstract class BasePrmSearchRestrictions<T extends BasePrmEntityVersion> 
 
   public Specification<T> getSpecification() {
     return specBuilder().searchCriteriaSpecification(Collections.emptyList())
-        .and(specBuilder().validOnSpecification(Optional.ofNullable(prmObjectRequestParams.getValidOn())))
+        .and(specBuilder().validOnSpecification(prmObjectRequestParams.getValidOn()))
         .and(specBuilder().inSpecification(prmObjectRequestParams.getNumbers(), BasePrmEntityVersion.Fields.number))
         .and(specBuilder().inSpecification(prmObjectRequestParams.getSloids(), BasePrmEntityVersion.Fields.sloid))
         .and(specBuilder().inSpecification(prmObjectRequestParams.getParentServicePointSloids(),

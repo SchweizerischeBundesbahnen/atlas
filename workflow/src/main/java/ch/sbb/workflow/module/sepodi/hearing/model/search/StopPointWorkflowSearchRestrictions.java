@@ -5,7 +5,6 @@ import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.module.sepodi.hearing.specification.ValidFromAndCreatedAtSpecification;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -23,18 +22,22 @@ public class StopPointWorkflowSearchRestrictions {
   public Specification<StopPointWorkflow> getSpecification() {
     Specification<StopPointWorkflow> specification =
         specificationBuilder().searchCriteriaSpecification(stopPointWorkflowRequestParams.getSearchCriterias())
-        .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getSloids(), StopPointWorkflow.Fields.sloid))
-        .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getWorkflowIds(), StopPointWorkflow.Fields.id))
-        .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getStatus(), StopPointWorkflow.Fields.status))
-        .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getSboids(), StopPointWorkflow.Fields.sboid))
-        .and(specificationBuilder().singleStringSpecification(
-            Optional.ofNullable(stopPointWorkflowRequestParams.getLocalityName()), StopPointWorkflow.Fields.localityName))
-        .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getDesignationOfficial(),
-            StopPointWorkflow.Fields.designationOfficial))
-        .and(new ValidFromAndCreatedAtSpecification<>(
-            stopPointWorkflowRequestParams.getVersionValidFrom(),
-            stopPointWorkflowRequestParams.getCreatedAt()
-        ));
+            .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getSloids(),
+                StopPointWorkflow.Fields.sloid))
+            .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getWorkflowIds(),
+                StopPointWorkflow.Fields.id))
+            .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getStatus(),
+                StopPointWorkflow.Fields.status))
+            .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getSboids(),
+                StopPointWorkflow.Fields.sboid))
+            .and(specificationBuilder().singleStringSpecification(stopPointWorkflowRequestParams.getLocalityName(),
+                StopPointWorkflow.Fields.localityName))
+            .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getDesignationOfficial(),
+                StopPointWorkflow.Fields.designationOfficial))
+            .and(new ValidFromAndCreatedAtSpecification<>(
+                stopPointWorkflowRequestParams.getVersionValidFrom(),
+                stopPointWorkflowRequestParams.getCreatedAt()
+            ));
     if (stopPointWorkflowRequestParams.isFilterByNoDecision()) {
       specification = specification.and(new NoDecisionSpecification());
     }

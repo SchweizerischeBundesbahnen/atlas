@@ -11,7 +11,6 @@ import ch.sbb.line.directory.module.line.entity.Line.Fields;
 import ch.sbb.line.directory.module.line.entity.Line_;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -44,13 +43,12 @@ public class LineSearchRestrictions extends SearchRestrictions<Line> {
   @Override
   public Specification<Line> getSpecification() {
     return specificationBuilder().searchCriteriaSpecification(lineRequestParams.getSearchCriteria())
-        .and(specificationBuilder().validOnSpecification(Optional.ofNullable(lineRequestParams.getValidOn())))
+        .and(specificationBuilder().validOnSpecification(lineRequestParams.getValidOn()))
         .and(specificationBuilder().enumSpecification(getStatusRestrictions(), getStatus()))
         .and(specificationBuilder().enumSpecification(lineRequestParams.getTypeRestrictions(), Line_.lidiElementType))
         .and(specificationBuilder().enumSpecification(lineRequestParams.getElementRestrictions(), Line_.elementType))
-        .and(new SingleStringSpecification<>(Optional.ofNullable(lineRequestParams.getSwissLineNumber()), Fields.swissLineNumber))
-        .and(new SingleStringSpecification<>(Optional.ofNullable(lineRequestParams.getBusinessOrganisation()),
-            Fields.businessOrganisation))
+        .and(new SingleStringSpecification<>(lineRequestParams.getSwissLineNumber(), Fields.swissLineNumber))
+        .and(new SingleStringSpecification<>(lineRequestParams.getBusinessOrganisation(), Fields.businessOrganisation))
         .and(new ValidOrEditionTimerangeSpecification<>(
                 lineRequestParams.getFromDate(),
                 lineRequestParams.getToDate(),

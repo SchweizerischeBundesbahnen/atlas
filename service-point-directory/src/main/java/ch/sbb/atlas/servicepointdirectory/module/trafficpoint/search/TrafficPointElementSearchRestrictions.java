@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPoi
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
@@ -31,7 +30,7 @@ public class TrafficPointElementSearchRestrictions {
 
   public Specification<TrafficPointElementVersion> getSpecification() {
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)
-        .and(specificationBuilder().validOnSpecification(Optional.ofNullable(trafficPointElementRequestParams.getValidOn())))
+        .and(specificationBuilder().validOnSpecification(trafficPointElementRequestParams.getValidOn()))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getSloids(),
             TrafficPointElementVersion.Fields.sloid))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getParentsloids(),

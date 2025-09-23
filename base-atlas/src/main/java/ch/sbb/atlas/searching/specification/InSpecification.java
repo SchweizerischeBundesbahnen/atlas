@@ -9,16 +9,15 @@ import java.util.List;
 import java.util.Objects;
 import org.springframework.data.jpa.domain.Specification;
 
-public class InSpecification<T> implements Specification<T> {
+public class InSpecification<T, E> implements Specification<T> {
 
   @Serial
   private static final long serialVersionUID = 1;
 
-  private final List<?> searchRestrictions;
+  private transient final List<E> searchRestrictions;
   private final String stringAttribute;
 
-  public InSpecification(List<?> searchRestrictions,
-      String stringAttribute) {
+  public InSpecification(List<E> searchRestrictions, String stringAttribute) {
     this.searchRestrictions = Objects.requireNonNull(searchRestrictions);
     this.stringAttribute = stringAttribute;
   }
