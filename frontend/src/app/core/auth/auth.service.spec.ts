@@ -13,6 +13,20 @@ import Spy = jasmine.Spy;
 const fakeToken =
   'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkZha2UgVXNlciIsInJvbGVzIjpbImF0bGFzLWFkbWluIl0sImlzcyI6Im15LWFwcCIsImV4cCI6MTcwNTA5NjAwMH0.';
 
+function storageMockImplOf(storageMock: { [k: string]: string }) {
+  return {
+    getItem: (key: string): string => {
+      return key in storageMock ? storageMock[key] : '';
+    },
+    setItem: (key: string, value: string) => {
+      storageMock[key] = value;
+    },
+    removeItem: (key: string) => {
+      delete storageMock[key];
+    },
+  };
+}
+
 describe('AuthService', () => {
   let authService: AuthService;
 
@@ -28,15 +42,6 @@ describe('AuthService', () => {
       'setCurrentUserAndLoadPermissions',
       'setToUnauthenticatedUser',
     ]);
-    userServiceSpy.setCurrentUserAndLoadPermissions.and.returnValue(
-      of({
-        name: 'Test (ITC)',
-        email: 'test@test.ch',
-        sbbuid: 'e123456',
-        isAdmin: true,
-        permissions: [],
-      })
-    );
 
     pageServiceSpy = jasmine.createSpyObj(['addPagesBasedOnPermissions']);
 
@@ -65,29 +70,51 @@ describe('AuthService', () => {
         AuthService,
       ],
     });
+
+    const localStorageMock: { [k: string]: string } = {};
+    const localStorageMockImpl = storageMockImplOf(localStorageMock);
+    spyOn(localStorage, 'getItem').and.callFake(localStorageMockImpl.getItem);
+    spyOn(localStorage, 'setItem').and.callFake(localStorageMockImpl.setItem);
+    spyOn(localStorage, 'removeItem').and.callFake(
+      localStorageMockImpl.removeItem
+    );
+
+    const sessionStorageMock: { [k: string]: string } = {};
+    const sessionStorageMockImpl = storageMockImplOf(sessionStorageMock);
+    spyOn(sessionStorage, 'getItem').and.callFake(
+      sessionStorageMockImpl.getItem
+    );
+    spyOn(sessionStorage, 'setItem').and.callFake(
+      sessionStorageMockImpl.setItem
+    );
+    spyOn(sessionStorage, 'removeItem').and.callFake(
+      sessionStorageMockImpl.removeItem
+    );
   });
 
   it('should login', () => {
+    // Arrange
     authService = TestBed.inject(AuthService);
+    // Act
     authService.login();
-
+    // Assert
     expect(sessionStorage.itemset);
     expect(oidcSecurityServiceSpy.authorize).toHaveBeenCalledOnceWith();
   });
 
-  it('should logout', (done) => {
+  it('should logout', () => {
+    // Arrange
     oidcSecurityServiceSpy.logoffAndRevokeTokens.and.returnValue(of(null));
-
     authService = TestBed.inject(AuthService);
+    // Act
     authService.logout();
-
+    // Assert
     expect(
       oidcSecurityServiceSpy.logoffAndRevokeTokens
     ).toHaveBeenCalledOnceWith();
     expect(localStorage.removeItem).toHaveBeenCalledOnceWith('tryLogin');
   });
 
-  // TDD Ansatz
   it('should provide auth init when userData defined', (done) => {
     // Arrange
     oidcSecurityServiceSpy.getUserData.and.returnValue(
@@ -102,12 +129,14 @@ describe('AuthService', () => {
     userServiceSpy.setCurrentUserAndLoadPermissions.and.returnValue(
       of({} as User)
     );
-    // Act
+    sessionStorage.setItem('returnUrl', '/test');
     authService = TestBed.inject(AuthService);
+    // Act
     authService.initAuth().subscribe((result) => {
+      // Assert
       expect(oidcSecurityServiceSpy.getUserData).toHaveBeenCalledOnceWith();
       expect(apiServiceConfigMock.basePath).toEqual('http://localhost:8888');
-      expect(bcTokenSpy).toHaveBeenCalledOnceWith(); // todo: can i match fn param?
+      expect(bcTokenSpy).toHaveBeenCalledTimes(1);
       expect(
         userServiceSpy.setCurrentUserAndLoadPermissions
       ).toHaveBeenCalledOnceWith({
@@ -120,8 +149,8 @@ describe('AuthService', () => {
       expect(
         pageServiceSpy.addPagesBasedOnPermissions
       ).toHaveBeenCalledOnceWith();
-      expect(noReturnUrlInSessionStorage);
-      expect(tryLoginInLocalstorage);
+      expect(sessionStorage.getItem('returnUrl')).toEqual('');
+      expect(localStorage.getItem('tryLogin')).toEqual('yes');
       expect(routerSpy.navigateByUrl).toHaveBeenCalledOnceWith('/test');
       expect(result).toBeTrue();
       done();
@@ -132,10 +161,10 @@ describe('AuthService', () => {
     it('should not try login', (done) => {
       // Arrange
       oidcSecurityServiceSpy.getUserData.and.returnValue(of(null));
-
-      // Act
       authService = TestBed.inject(AuthService);
+      // Act
       authService.initAuth().subscribe((result) => {
+        // Assert
         expect(oidcSecurityServiceSpy.getUserData).toHaveBeenCalledOnceWith();
         expect(
           userServiceSpy.setToUnauthenticatedUser
@@ -150,11 +179,12 @@ describe('AuthService', () => {
       oidcSecurityServiceSpy.getUserData.and.returnValue(of(null));
       authService = TestBed.inject(AuthService);
       const loginSpy = spyOn(authService, 'login');
-
+      localStorage.setItem('tryLogin', 'yes');
       // Act
       authService.initAuth().subscribe((result) => {
+        // Assert
         expect(oidcSecurityServiceSpy.getUserData).toHaveBeenCalledOnceWith();
-        expect(tryLoginNotInLocalStorage);
+        expect(localStorage.getItem('tryLogin')).toEqual('');
         expect(loginSpy).toHaveBeenCalledOnceWith();
         expect(result).toBeTrue();
         done();
