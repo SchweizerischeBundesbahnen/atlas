@@ -192,7 +192,7 @@ describe('AuthService', () => {
     });
   });
 
-  fit('should catchError in initAuth', (done) => {
+  it('should catchError in initAuth', (done) => {
     // Arrange
     oidcSecurityServiceSpy.getUserData.and.returnValue(
       of({ email: 'test@sbb.ch' })
