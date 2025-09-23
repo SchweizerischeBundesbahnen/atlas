@@ -3,12 +3,20 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { UserService } from './user/user.service';
 import { PageService } from '../pages/page.service';
 import { TokenUser, User } from './user/user';
-import { combineLatest, defaultIfEmpty, EMPTY, of, take } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  defaultIfEmpty,
+  EMPTY,
+  from,
+  of,
+  take,
+} from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Role } from './role';
 import { Configuration } from '../../api';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 export const BC_TOKEN = new InjectionToken<
@@ -70,6 +78,16 @@ export class AuthService {
         this.pageService.addPagesBasedOnPermissions();
         return this.routeToReturnUrl();
       }),
+      map((routingSuccess) => {
+        if (!routingSuccess) {
+          console.error('Error occurred during routing to returnUrl');
+        }
+        return true;
+      }),
+      catchError(() => {
+        console.error('Error occurred during authentication initialisation');
+        return EMPTY;
+      }),
       defaultIfEmpty(true),
       take(1)
     );
@@ -116,7 +134,7 @@ export class AuthService {
     const returnUrl = sessionStorage.getItem(this._returnUrlKey);
     if (returnUrl) {
       sessionStorage.removeItem(this._returnUrlKey);
-      return this.router.navigateByUrl(returnUrl);
+      return from(this.router.navigateByUrl(returnUrl));
     }
     return of(true);
   }
