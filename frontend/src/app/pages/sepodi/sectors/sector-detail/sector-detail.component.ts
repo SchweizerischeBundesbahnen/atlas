@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { ValidityService } from '../../validity/validity.service';
 import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
@@ -38,6 +38,7 @@ import { SectorService } from '../../../../api/service/sepodi/sector.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MapService } from '../../map/map.service';
 import { filter } from 'rxjs/operators';
+import { TrafficPointMapService } from '../../map/traffic-point-map.service';
 
 @Component({
   selector: 'app-sector-detail',
@@ -60,11 +61,12 @@ import { filter } from 'rxjs/operators';
   ],
 })
 export class SectorDetailComponent
-  implements DetailFormComponent, DetailWithCancelEdit, OnInit
+  implements DetailFormComponent, DetailWithCancelEdit, OnInit, OnDestroy
 {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly sectorMapService = inject(SectorMapService);
+  private readonly trafficPointMapService = inject(TrafficPointMapService);
   private readonly sectorService = inject(SectorService);
   private readonly validityService = inject(ValidityService);
   private readonly detailHelperService = inject(DetailHelperService);
@@ -122,17 +124,30 @@ export class SectorDetailComponent
 
   private initHeaderWithParentInfo(next: Data) {
     const servicePoint: ReadServicePointVersion[] = next.servicePoint;
+    const servicePointVersion =
+      VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
     this.servicePointDesignationOfficial =
-      VersionsHandlingService.determineDefaultVersionByValidity(
-        servicePoint
-      ).designationOfficial;
+      servicePointVersion.designationOfficial;
     this.servicePointBusinessOrganisations = servicePoint.map(
       (i) => i.businessOrganisation
+    );
+    this.trafficPointMapService.displayTrafficPointsOnMap(
+      servicePointVersion.number.number
     );
 
     const trafficPoint: ReadTrafficPointElementVersion[] = next.trafficPoint;
     this.trafficPoint =
       VersionsHandlingService.determineDefaultVersionByValidity(trafficPoint);
+    this.sectorMapService.displaySectorsOnMap(
+      servicePointVersion.number.number,
+      this.trafficPoint.sloid!
+    );
+  }
+
+  ngOnDestroy() {
+    this.sectorMapService.clearDisplayedSectors();
+    this.sectorMapService.clearCurrentSector();
+    this.trafficPointMapService.clearDisplayedTrafficPoints();
   }
 
   switchVersion(newIndex: number) {
