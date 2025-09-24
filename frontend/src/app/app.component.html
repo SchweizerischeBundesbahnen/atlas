@@ -1,19 +1,23 @@
-<div class="d-flex flex-column full-height-no-scroll">
-  <app-loading-spinner [isLoading]="!!(loadingSpinnerService.loading | async)">
-  </app-loading-spinner>
-  <app-header></app-header>
-  <div class="app-body">
-    <mat-sidenav-container class="page-container">
-      <mat-sidenav #sidenav mode="side" [opened]="sideNavOpened">
-        <mat-nav-list>
-          <app-side-nav></app-side-nav>
-        </mat-nav-list>
-      </mat-sidenav>
-      <mat-sidenav-content [class.content-menu-closed]="!sideNavOpened">
-        <div id="scrollbar-content-container" class="full-height">
-          <router-outlet></router-outlet>
-        </div>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
+@if (authenticated$ | async) {
+  <div class="d-flex flex-column full-height-no-scroll">
+    <app-loading-spinner
+      [isLoading]="!!(loadingSpinnerService.loading | async)"
+    >
+    </app-loading-spinner>
+    <app-header></app-header>
+    <div class="app-body">
+      <mat-sidenav-container class="page-container">
+        <mat-sidenav #sidenav mode="side" [opened]="sideNavOpened">
+          <mat-nav-list>
+            <app-side-nav></app-side-nav>
+          </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content [class.content-menu-closed]="!sideNavOpened">
+          <div id="scrollbar-content-container" class="full-height">
+            <router-outlet></router-outlet>
+          </div>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+    </div>
   </div>
-</div>
+}

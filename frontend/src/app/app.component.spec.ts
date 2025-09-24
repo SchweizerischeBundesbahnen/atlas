@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AppComponent } from './app.component';
 import { AuthService } from './core/auth/auth.service';
 import { HeaderComponent } from './core/components/header/header.component';
