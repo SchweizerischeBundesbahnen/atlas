@@ -45,6 +45,7 @@ describe('SectorMapService', () => {
           sloid: 'ch:1:sloid:7000:0:2:1',
           trafficPointSloid: 'ch:1:sloid:7000:0:2',
           designation: 'A',
+          servicePointNumber: 8507000,
         },
       },
     ] as unknown as MapGeoJSONFeature[];
@@ -88,7 +89,7 @@ describe('SectorMapService', () => {
       ])
     );
 
-    service.displaySectorsOnMap('ch:1:sloid:7000:0:1');
+    service.displaySectorsOnMap(8507000, 'ch:1:sloid:7000:0:1');
 
     expect(mapSpy.getSource).toHaveBeenCalledWith(MAP_SECTOR_LAYER_NAME);
     expect(sourceSpy.setData).toHaveBeenCalled();
