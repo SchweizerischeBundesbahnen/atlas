@@ -119,7 +119,16 @@ describe('SectorOverviewComponent', () => {
     component.backToServicePoint();
 
     expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['..', '..'],
+      ['../..'],
+      jasmine.any(Object)
+    );
+  });
+
+  it('should navigate to add sector', () => {
+    component.addSector();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(
+      ['add'],
       jasmine.any(Object)
     );
   });

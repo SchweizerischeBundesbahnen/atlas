@@ -79,7 +79,7 @@
             },
           ]"
           [formGroup]="form"
-          [required]="false"
+          [required]="true"
           controlName="designation"
           fieldLabel="SEPODI.SECTORS.DESIGNATION"
         >
@@ -143,7 +143,7 @@
   </atlas-detail-page-content>
   <atlas-detail-footer>
     <atlas-button
-      buttonDataCy="close-detail"
+      buttonDataCy="back"
       buttonText="COMMON.BACK"
       buttonType="whiteFooterNonEdit"
       (buttonClicked)="back()"
@@ -167,7 +167,7 @@
       buttonDataCy="cancel"
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
-      wrapperStyleClass="ms-3"
+      wrapperStyleClass="ms-3 sector-cancel"
     ></atlas-button>
     <atlas-button
       (buttonClicked)="save()"
@@ -177,7 +177,7 @@
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
-      wrapperStyleClass="ms-3"
+      wrapperStyleClass="ms-3 sector-save"
     >
     </atlas-button>
   </atlas-detail-footer>

@@ -107,7 +107,7 @@ export class SectorDetailComponent
           );
         this.initSelectedVersion();
       }
-      this.form.controls.trafficPointSloid.setValue(this.trafficPoint.sloid!);
+      this.form.controls.trafficPointSloid.setValue(this.trafficPoint.sloid);
     });
   }
 

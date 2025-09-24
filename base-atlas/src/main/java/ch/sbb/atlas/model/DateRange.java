@@ -2,6 +2,8 @@ package ch.sbb.atlas.model;
 
 import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Setter
-public class DateRange {
+public class DateRange implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 1;
 
   private LocalDate from;
   private LocalDate to;
