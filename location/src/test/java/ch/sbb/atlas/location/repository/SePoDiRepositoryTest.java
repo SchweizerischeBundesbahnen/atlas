@@ -38,12 +38,8 @@ class SePoDiRepositoryTest {
             select distinct sloid from traffic_point_element_version
             where sloid is not null and traffic_point_element_type = :traffic_point_element_type;
             """),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("traffic_point_element_type").equals("BOARDING_AREA");
-          }
-        }),
+        argThat(
+            (ArgumentMatcher<MapSqlParameterSource>) map -> "BOARDING_AREA".equals(map.getValue("traffic_point_element_type"))),
         any(RowMapper.class))).thenReturn(List.of("ch:1:sloid:1"));
     // when
     Set<String> distributedSloids = sePoDiRepository.getAlreadyDistributedSloids(SloidType.AREA);
@@ -59,12 +55,9 @@ class SePoDiRepositoryTest {
             select distinct sloid from traffic_point_element_version 
             where sloid is not null and traffic_point_element_type = :traffic_point_element_type;
             """),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("traffic_point_element_type").equals("BOARDING_PLATFORM");
-          }
-        }),
+        argThat(
+            (ArgumentMatcher<MapSqlParameterSource>) map -> "BOARDING_PLATFORM".equals(
+                map.getValue("traffic_point_element_type"))),
         any(RowMapper.class))).thenReturn(List.of("ch:1:sloid:1"));
     // when
     Set<String> distributedSloids = sePoDiRepository.getAlreadyDistributedSloids(SloidType.PLATFORM);

@@ -20,8 +20,8 @@ public class TimetableFieldNumberConflictException extends AtlasException {
   private static final String CODE_PREFIX = "TTFN.CONFLICT.";
   private static final String ERROR = "TimeTableFieldNumber conflict";
 
-  private final TimetableFieldNumberVersion newVersion;
-  private final List<TimetableFieldNumberVersion> overlappingVersions;
+  private transient final TimetableFieldNumberVersion newVersion;
+  private transient final List<TimetableFieldNumberVersion> overlappingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {

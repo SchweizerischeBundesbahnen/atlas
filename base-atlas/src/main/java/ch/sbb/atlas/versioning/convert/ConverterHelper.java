@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class ConverterHelper {
 
+  private static final String ERROR_DURING_PARSE_FIELD = "Error during parse field: ";
+
   private ConverterHelper() {
     throw new IllegalStateException("Utility class");
   }
@@ -107,9 +109,13 @@ public final class ConverterHelper {
       Object propertyValue = declaredField.get(version);
       return buildProperty(property.getFieldName(), propertyValue, property.isIgnoreDiff(), property.isDoNotOverride());
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      log.error("Error during parse field {}", e.getMessage());
-      throw new VersioningException("Error during parse field " + e.getMessage(), e);
+      logParseError(e);
+      throw new VersioningException(ERROR_DURING_PARSE_FIELD + e.getMessage());
     }
+  }
+
+  private static void logParseError(ReflectiveOperationException e) {
+    log.error("Error during parse field {}", e.getMessage());
   }
 
   private static <T extends Versionable> Property extractOneToOne(T version,
@@ -134,8 +140,8 @@ public final class ConverterHelper {
       }
       return propertyBuilder.build();
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      log.error("Error during parse field {}", e.getMessage());
-      throw new VersioningException("Error during parse field " + e.getMessage(), e);
+      logParseError(e);
+      throw new VersioningException(ERROR_DURING_PARSE_FIELD + e.getMessage());
     }
   }
 
@@ -166,8 +172,8 @@ public final class ConverterHelper {
         }
       }
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      log.error("Error during parse field {}", e.getMessage());
-      throw new VersioningException("Error during parse field " + e.getMessage(), e);
+      logParseError(e);
+      throw new VersioningException(ERROR_DURING_PARSE_FIELD + e.getMessage());
     }
     return propertyBuilder.oneToMany(entityRelations).build();
   }
