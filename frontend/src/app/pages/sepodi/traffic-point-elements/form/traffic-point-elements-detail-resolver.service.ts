@@ -48,7 +48,7 @@ export class TrafficPointElementsDetailResolver {
       const existingVersionIsArea =
         firstVersion.trafficPointElementType ===
         TrafficPointElementType.BoardingArea;
-      if (route.data.isTrafficPointArea != existingVersionIsArea) {
+      if ((route.data.isTrafficPointArea ?? false) != existingVersionIsArea) {
         const redirectPath = existingVersionIsArea
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA.path
           : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path;

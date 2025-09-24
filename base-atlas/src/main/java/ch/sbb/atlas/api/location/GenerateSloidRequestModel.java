@@ -15,7 +15,7 @@ public final class GenerateSloidRequestModel {
   @NotNull
   private SloidType sloidType;
 
-  @Pattern(regexp = "ch:1:sloid:[0-9]{1,7}(:[0-9]{1,7}){0,2}$")
+  @Pattern(regexp = "ch:1:sloid:\\d{1,7}(:\\d*){0,2}")
   private String sloidPrefix;
 
   private Country country;
