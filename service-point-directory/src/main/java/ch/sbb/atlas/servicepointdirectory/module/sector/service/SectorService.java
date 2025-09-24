@@ -5,7 +5,6 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.DateRange;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -118,7 +117,6 @@ public class SectorService {
   }
 
   private SectorVersion save(SectorVersion sectorVersion) {
-    sectorVersion.setStatus(Status.VALIDATED);
     return sectorVersionRepository.saveAndFlush(sectorVersion);
   }
 

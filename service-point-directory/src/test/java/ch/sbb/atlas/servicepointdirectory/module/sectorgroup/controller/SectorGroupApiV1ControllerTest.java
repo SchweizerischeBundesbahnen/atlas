@@ -77,7 +77,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
     trafficPointRepository.deleteAll();
     servicePointVersionRepository.deleteAll();
   }
-  
+
   @Test
   void shouldGetSectorGroupBySloid() throws Exception {
     sectorGroupVersionRepository.deleteAll();
@@ -131,7 +131,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(create)))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.length", is(36.0)))
+        .andExpect(jsonPath("$.length", is(17.0)))
         .andExpect(jsonPath("$.designation", is("hihi")))
         .andExpect(jsonPath("$.sloid", is("ch:1:sloid:sector:1:0:1")))
         .andReturn();

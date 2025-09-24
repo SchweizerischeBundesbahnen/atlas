@@ -5,7 +5,6 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.location.LocationService;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -72,20 +71,10 @@ public class SectorGroupService {
 
     sectorGroupVersion.setSloid(locationService.generateSloid(SloidType.SECTOR_GROUP, sectorGroupVersion.getTrafficPointSloid()));
 
-    calculateAndSetLength(sectorGroupVersion, versions);
-
     createRelation(sloids, sectorGroupVersion.getSloid());
     SectorGroupVersion saved = save(sectorGroupVersion);
 
     return SectorGroupMapper.toModel(saved);
-  }
-
-  private void calculateAndSetLength(SectorGroupVersion sectorGroupVersion, List<SectorVersion> versions) {
-    double length = versions.stream()
-        .mapToDouble(version -> version.getLength() != null ? version.getLength() : 0.0)
-        .sum();
-
-    sectorGroupVersion.setLength(length);
   }
 
   private List<SectorVersion> fetchLatestSectorVersions(List<String> sloids) {
@@ -139,8 +128,6 @@ public class SectorGroupService {
   }
 
   private SectorGroupVersion save(SectorGroupVersion sectorGroupVersion) {
-    sectorGroupVersion.setStatus(Status.VALIDATED);
-
     return sectorGroupVersionRepository.saveAndFlush(sectorGroupVersion);
   }
 
