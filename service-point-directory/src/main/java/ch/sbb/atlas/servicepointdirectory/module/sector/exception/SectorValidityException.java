@@ -13,7 +13,7 @@ public class SectorValidityException extends AtlasException {
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
         .message("Business rule validation failed")
-        .error("Validity of sector is not in range of validity of traffic point")
+        .error("Validity is not in range of validity of traffic point")
         .build();
   }
 }
