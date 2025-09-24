@@ -14,7 +14,6 @@ public class SectorJsonProcessor extends BaseSepodiProcessor implements ItemProc
         .id(version.getId())
         .designation(version.getDesignation())
         .sectorGeolocation(toModel(version))
-        .status(version.getStatus())
         .edgeHeight(version.getEdgeHeight())
         .length(version.getLength())
         .sloid(version.getSloid())
