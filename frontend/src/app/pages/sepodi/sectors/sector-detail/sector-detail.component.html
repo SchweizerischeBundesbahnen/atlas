@@ -1,0 +1,184 @@
+<atlas-detail-page-container>
+  @if (isNew) {
+    <div class="font-bold-4xl detail-title mb-3" data-cy="sector-header">
+      {{ 'SEPODI.SECTORS.NEW' | translate }}
+    </div>
+  } @else {
+    <div class="font-bold-4xl detail-title mb-3" data-cy="sector-header">
+      {{ 'SEPODI.SECTORS.SECTOR' | translate }}
+      {{ selectedVersion.designation }}
+    </div>
+  }
+  @if (!isNew) {
+    <div class="font-xl mb-2">
+      <span data-cy="total-range">
+        <date-range-text [dateRange]="maxValidity"></date-range-text>
+      </span>
+    </div>
+  }
+  <div class="d-flex flex-row mb-5" data-cy="sector-header-title">
+    @if (!isNew) {
+      <div class="d-flex flex-column me-5">
+        <div class="font-bold-base">
+          {{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}
+        </div>
+        <div>{{ selectedVersion.sloid }}</div>
+      </div>
+    }
+    <div class="d-flex flex-column me-5">
+      <div class="font-bold-base">
+        {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.HEADER' | translate }}
+      </div>
+      <div>
+        {{ trafficPoint.designation ?? '-' }} - {{ trafficPoint.sloid }}
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="font-bold-base">
+        {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.SERVICE_POINT_NAME' | translate }}
+      </div>
+      <div>{{ servicePointDesignationOfficial }}</div>
+    </div>
+  </div>
+
+  <atlas-detail-page-content>
+    @if (!isNew) {
+      <div class="col-12 d-flex flex-row mb-5 justify-content-between">
+        <div class="d-flex flex-column col-9 pe-3">
+          <app-switch-version
+            (switchVersion)="switchVersion($event)"
+            [currentRecord]="selectedVersion"
+            [records]="sectorVersions"
+            [switchDisabled]="form.enabled"
+            [showStatus]="false"
+          ></app-switch-version>
+        </div>
+      </div>
+
+      <div class="col-12 d-flex mb-3">
+        <div class="form-title-section">
+          <h2 class="font-bold-2xl color-gray-900">
+            {{ 'COMMON.VERSION_DETAILS' | translate }}
+            {{ 'COMMON.VERSION' | translate }}
+            {{ selectedVersionIndex + 1 }}
+          </h2>
+        </div>
+      </div>
+    }
+
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-4">
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: 'A |', translate: false },
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '8' },
+            },
+          ]"
+          [formGroup]="form"
+          [required]="false"
+          controlName="designation"
+          fieldLabel="SEPODI.SECTORS.DESIGNATION"
+        >
+        </atlas-text-field>
+      </div>
+    </div>
+
+    <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
+    <div class="col-12 d-flex">
+      <form-date-range [formGroup]="form"></form-date-range>
+    </div>
+
+    <sepodi-geography
+      [form]="form.controls.sectorGeolocation"
+      [editMode]="form.enabled"
+      [geographyOptional]="false"
+    ></sepodi-geography>
+
+    <div class="font-bold-2xl mt-5">
+      {{ 'SEPODI.SECTORS.CONSTRUCTION_INFORMATION' | translate }}
+    </div>
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-6 pe-3">
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: '15.123 | ', translate: false },
+            {
+              label: 'FORM.MAX_DIGITS',
+              translate: true,
+              arg: { key: 'amount', value: '3' },
+            },
+          ]"
+          [formGroup]="form"
+          [required]="false"
+          controlName="length"
+          fieldLabel="SEPODI.SECTORS.LENGTH"
+        >
+        </atlas-text-field>
+      </div>
+      <div class="d-flex flex-column col-6">
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: '22', translate: false },
+          ]"
+          [formGroup]="form"
+          [required]="false"
+          controlName="edgeHeight"
+          fieldLabel="SEPODI.SECTORS.EDGE_HEIGHT"
+        >
+        </atlas-text-field>
+      </div>
+    </div>
+    @if (!isNew) {
+      <div class="mb-3">
+        <mat-divider class="mt-4 mb-4"></mat-divider>
+        <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
+      </div>
+    }
+  </atlas-detail-page-content>
+  <atlas-detail-footer>
+    <atlas-button
+      buttonDataCy="close-detail"
+      buttonText="COMMON.BACK"
+      buttonType="whiteFooterNonEdit"
+      (buttonClicked)="back()"
+      [footerEdit]="form.enabled"
+    >
+    </atlas-button>
+    @if (form.disabled) {
+      <atlas-button
+        (buttonClicked)="toggleEdit()"
+        applicationType="SEPODI"
+        buttonDataCy="edit"
+        buttonText="COMMON.EDIT"
+        buttonType="edit-service-point-dependent"
+        [businessOrganisations]="servicePointBusinessOrganisations"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+    }
+    <atlas-button
+      [footerEdit]="form.enabled"
+      (buttonClicked)="toggleEdit()"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+    <atlas-button
+      (buttonClicked)="save()"
+      [disabled]="!form.dirty"
+      [footerEdit]="form.enabled"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
+  </atlas-detail-footer>
+</atlas-detail-page-container>

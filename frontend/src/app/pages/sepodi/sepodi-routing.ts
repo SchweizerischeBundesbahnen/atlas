@@ -9,6 +9,8 @@ import { stopPointWorkflowDetailResolver } from './workflow/detail-page/stop-poi
 import { permissionsLoaded } from '../../core/auth/guards/permissions-loaded.guard';
 import { featureToggleGuard } from '../feature-toggle.guard';
 import { stopPointTerminationWorkflowResolver } from './termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-resolver';
+import { SectorDetailComponent } from './sectors/sector-detail/sector-detail.component';
+import { sectorResolver } from './sectors/sector-detail/sector-detail-resolver.service';
 
 const workflowRoutes: Routes = [
   {
@@ -181,6 +183,28 @@ const trafficPointAreaDetailRoutes: Routes = [
   },
 ];
 
+const sectorDetailRoutes: Routes = [
+  {
+    path:
+      Pages.SERVICE_POINTS.path +
+      '/:servicePointNumber/' +
+      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path +
+      '/:trafficPointSloid/' +
+      Pages.SECTORS.path +
+      '/:sectorSloid',
+    loadComponent: () =>
+      import('./sectors/sector-detail/sector-detail.component').then(
+        (m) => m.SectorDetailComponent
+      ),
+    resolve: {
+      trafficPoint: trafficPointResolver,
+      servicePoint: servicePointResolver,
+      sector: sectorResolver,
+    },
+    runGuardsAndResolvers: 'always',
+  },
+];
+
 export const routes: Routes = [
   ...workflowRoutes,
   ...terminationWorkflowRoutes,
@@ -191,6 +215,7 @@ export const routes: Routes = [
         (m) => m.SepodiMapviewComponent
       ),
     children: [
+      ...sectorDetailRoutes,
       ...trafficPointElementDetailRoutes,
       ...trafficPointAreaDetailRoutes,
       {
