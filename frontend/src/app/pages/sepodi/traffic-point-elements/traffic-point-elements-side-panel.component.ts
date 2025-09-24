@@ -14,19 +14,18 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { DateRange } from '../../../core/versioning/date-range';
 import { Pages } from '../../pages';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ValidityService } from '../validity/validity.service';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { SectorMapService } from '../map/sector-map.service';
 import { environment } from '../../../../environments/environment';
+import { TrafficPointMapService } from '../map/traffic-point-map.service';
 
 @Component({
   selector: 'app-traffic-point-elements-side-panel',
   templateUrl: './traffic-point-elements-side-panel.component.html',
   styleUrls: ['./traffic-point-elements-side-panel.component.scss'],
-  providers: [ValidityService],
   imports: [
     DetailPageContainerComponent,
     DateRangeTextComponent,
@@ -68,6 +67,7 @@ export class TrafficPointElementsSidePanelComponent
   showTabs = true;
 
   route = inject(ActivatedRoute);
+  trafficPointMapService = inject(TrafficPointMapService);
   sectorMapService = inject(SectorMapService);
 
   ngOnInit() {
@@ -90,8 +90,15 @@ export class TrafficPointElementsSidePanelComponent
         VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
       this.servicePointName = versionToDisplay.designationOfficial;
 
+      this.trafficPointMapService.displayTrafficPointsOnMap(
+        versionToDisplay.number.number
+      );
+
       if (this.showTabs) {
-        this.sectorMapService.displaySectorsOnMap(this.selectedVersion.sloid!);
+        this.sectorMapService.displaySectorsOnMap(
+          versionToDisplay.number.number,
+          this.selectedVersion.sloid!
+        );
       }
     });
   }
@@ -109,10 +116,15 @@ export class TrafficPointElementsSidePanelComponent
         VersionsHandlingService.determineDefaultVersionByValidity(
           this.trafficPointVersions
         );
+      this.trafficPointMapService.displayCurrentTrafficPoint(
+        this.selectedVersion.trafficPointElementGeolocation?.wgs84
+      );
     }
   }
 
   ngOnDestroy() {
+    this.trafficPointMapService.clearDisplayedTrafficPoints();
+    this.trafficPointMapService.clearCurrentTrafficPoint();
     this.sectorMapService.clearDisplayedSectors();
   }
 }

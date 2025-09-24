@@ -83,7 +83,7 @@ export class SectorOverviewComponent implements OnInit {
   }
 
   backToServicePoint() {
-    this.router.navigate(['..', '..'], { relativeTo: this.route }).then();
+    this.router.navigate(['../..'], { relativeTo: this.route }).then();
   }
 
   addSector() {
