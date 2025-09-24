@@ -54,7 +54,7 @@ public class SectorValidationService {
         .build();
 
     if (!validitySector.isDateRangeContainedIn(validityTrafficPoint)) {
-      throw new SectorValidityException();
+      throw new SectorValidityException(validityTrafficPoint);
     }
   }
 }
