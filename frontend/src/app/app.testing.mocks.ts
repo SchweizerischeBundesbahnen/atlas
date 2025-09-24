@@ -16,7 +16,7 @@ import { BaseDetailController } from './core/components/base-detail/base-detail-
 import { Record } from './core/components/base-detail/record';
 import { AuthService } from './core/auth/auth.service';
 import { UserService } from './core/auth/user/user.service';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { PermissionService } from './core/auth/permission/permission.service';
 import { PageService } from './core/pages/page.service';
 import { Pages } from './pages/pages';
@@ -201,7 +201,7 @@ export class MockPrmRecordingObligationComponent {
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-export type ActivatedRouteMockType = {  parent?: any; data?: any;};
+export type ActivatedRouteMockType = { parent?: any; data?: any };
 
 export const adminUserServiceMock: Partial<UserService> = {
   currentUser: {
@@ -211,7 +211,7 @@ export const adminUserServiceMock: Partial<UserService> = {
     isAdmin: true,
     permissions: [],
   },
-  userChanged: new Subject<void>(),
+  userChanged: new ReplaySubject<void>(1),
   loggedIn: true,
   isAdmin: true,
   permissions: [],
@@ -241,6 +241,7 @@ export const pageServiceMock: Partial<PageService> = {
 export const authServiceSpy = jasmine.createSpyObj<AuthService>([
   'login',
   'logout',
+  'initAuth',
 ]);
 
 export const translateServiceProvider = provideTranslateService({

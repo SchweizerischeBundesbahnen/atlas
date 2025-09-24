@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
 import { ServiceWorkerService } from './service-worker.service';
 import {
@@ -12,6 +12,7 @@ import { MatNavList } from '@angular/material/list';
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { RouterOutlet } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,7 @@ import { AsyncPipe } from '@angular/common';
 export class AppComponent {
   @ViewChild('sidenav') sideNav?: MatSidenav;
   sideNavOpened = true;
+  protected readonly authenticated$ = inject(AuthService).initAuth();
 
   constructor(
     public readonly loadingSpinnerService: LoadingSpinnerService,
