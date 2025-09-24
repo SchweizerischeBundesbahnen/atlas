@@ -1,25 +1,15 @@
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  Router,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { SectorDetailResolver } from './sector-detail-resolver.service';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../test/data/traffic-point-element';
-import { TrafficPointElementService } from '../../../../api/service/sepodi/traffic-point-element.service';
-import { TrafficPointElementType } from '../../../../api';
-import { Pages } from '../../../pages';
+import { SpatialReference } from '../../../../api';
+import { SectorService } from '../../../../api/service/sepodi/sector.service';
 
 describe('SectorDetailResolver', () => {
-  const trafficPointElementService = jasmine.createSpyObj(
-    'trafficPointElementsService',
-    ['getTrafficPointElement']
-  );
+  const sectorService = jasmine.createSpyObj('sectorService', ['getSector']);
 
   let resolver: SectorDetailResolver;
-  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,16 +17,41 @@ describe('SectorDetailResolver', () => {
       providers: [
         SectorDetailResolver,
         {
-          provide: TrafficPointElementService,
-          useValue: trafficPointElementService,
+          provide: SectorService,
+          useValue: sectorService,
         },
       ],
     });
     resolver = TestBed.inject(SectorDetailResolver);
-    router = TestBed.inject(Router);
 
-    trafficPointElementService.getTrafficPointElement.and.returnValue(
-      of([BERN_WYLEREGG_TRAFFIC_POINTS[0]])
+    sectorService.getSector.and.returnValue(
+      of([
+        {
+          trafficPointSloid: 'ch:1:sloid:7000::1',
+          validFrom: new Date('2014-12-14'),
+          validTo: new Date('2014-12-14'),
+          designation: 'A',
+          sectorGeolocation: {
+            lv95: {
+              north: 0,
+              east: 0,
+              spatialReference: SpatialReference.Lv95,
+            },
+            spatialReference: 'WGS84WEB',
+            wgs84: {
+              north: 0,
+              east: 0,
+              spatialReference: SpatialReference.Wgs84,
+            },
+            lv03: {
+              north: 0,
+              east: 0,
+              spatialReference: SpatialReference.Lv03,
+            },
+          },
+          sloid: 'ch:1:sloid:7000::1:1',
+        },
+      ])
     );
   });
 
@@ -46,11 +61,8 @@ describe('SectorDetailResolver', () => {
 
   it('should get versions from service to display', () => {
     const mockRoute = {
-      data: {
-        isTrafficPointArea: false,
-      },
       paramMap: convertToParamMap({
-        trafficPointSloid: 'ch:1:sloid:89008:0:1',
+        sectorSloid: 'ch:1:sloid:7000::1:1',
       }),
     } as unknown as ActivatedRouteSnapshot;
 
@@ -58,54 +70,7 @@ describe('SectorDetailResolver', () => {
 
     resolvedVersion.subscribe((versions) => {
       expect(versions.length).toBe(1);
-      expect(versions[0].id).toBe(9298);
-      expect(versions[0].sloid).toBe('ch:1:sloid:89008:0:1');
-    });
-  });
-
-  it('should navigate to area if type is area but route is trafficPointElements', () => {
-    trafficPointElementService.getTrafficPointElement.and.returnValue(
-      of([
-        {
-          id: 9298,
-          designationOperational: '1',
-          compassDirection: 53.0,
-          trafficPointElementType: TrafficPointElementType.BoardingArea,
-          sloid: 'ch:1:sloid:89008:0:1',
-          validFrom: new Date('2019-07-22'),
-          validTo: new Date('2099-12-31'),
-          servicePointNumber: {
-            number: 8589008,
-            uicCountryCode: 85,
-            numberShort: 89008,
-            checkDigit: 7,
-          },
-          servicePointSloid: 'ch:1:sloid:89008',
-          hasGeolocation: false,
-        },
-      ])
-    );
-
-    const mockRoute = {
-      data: {
-        isTrafficPointArea: false,
-      },
-      paramMap: convertToParamMap({
-        servicePointNumber: 8589008,
-        trafficPointSloid: 'ch:1:sloid:89008:1',
-      }),
-    } as unknown as ActivatedRouteSnapshot;
-
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-
-    resolver.resolve(mockRoute).subscribe(() => {
-      expect(router.navigate).toHaveBeenCalledOnceWith([
-        Pages.SEPODI.path,
-        Pages.SERVICE_POINTS.path,
-        8589008,
-        Pages.TRAFFIC_POINT_ELEMENTS_AREA.path,
-        'ch:1:sloid:89008:0:1',
-      ]);
+      expect(versions[0].sloid).toBe('ch:1:sloid:7000::1:1');
     });
   });
 });

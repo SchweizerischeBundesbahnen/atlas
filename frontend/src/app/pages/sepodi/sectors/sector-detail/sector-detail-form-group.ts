@@ -20,40 +20,40 @@ export interface SectorDetailFormGroup extends BaseDetailFormGroup {
 
 export class SectorFormGroupBuilder {
   static buildFormGroup(
-    version?: ReadSectorVersion
+    sectorVersion?: ReadSectorVersion
   ): FormGroup<SectorDetailFormGroup> {
     return new FormGroup<SectorDetailFormGroup>(
       {
-        sloid: new FormControl(version?.sloid),
-        trafficPointSloid: new FormControl(version?.trafficPointSloid),
-        designation: new FormControl(version?.designation, [
+        sloid: new FormControl(sectorVersion?.sloid),
+        trafficPointSloid: new FormControl(sectorVersion?.trafficPointSloid),
+        designation: new FormControl(sectorVersion?.designation, [
           Validators.required,
           Validators.maxLength(8),
         ]),
-        length: new FormControl(version?.length, [
+        length: new FormControl(sectorVersion?.length, [
           AtlasCharsetsValidator.decimalWithDigits(6, 3),
           Validators.min(0),
         ]),
-        edgeHeight: new FormControl(version?.edgeHeight, [
+        edgeHeight: new FormControl(sectorVersion?.edgeHeight, [
           AtlasCharsetsValidator.numeric,
           Validators.max(999),
         ]),
         sectorGeolocation: GeographyFormGroupBuilder.buildFormGroup(
-          version?.sectorGeolocation!
+          sectorVersion?.sectorGeolocation
         ),
         validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
+          sectorVersion?.validFrom ? moment(sectorVersion.validFrom) : null,
           [Validators.required]
         ),
         validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
+          sectorVersion?.validTo ? moment(sectorVersion.validTo) : null,
           [Validators.required]
         ),
-        etagVersion: new FormControl(version?.etagVersion),
-        creationDate: new FormControl(version?.creationDate),
-        editionDate: new FormControl(version?.editionDate),
-        editor: new FormControl(version?.editor),
-        creator: new FormControl(version?.creator),
+        etagVersion: new FormControl(sectorVersion?.etagVersion),
+        creationDate: new FormControl(sectorVersion?.creationDate),
+        editionDate: new FormControl(sectorVersion?.editionDate),
+        editor: new FormControl(sectorVersion?.editor),
+        creator: new FormControl(sectorVersion?.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );

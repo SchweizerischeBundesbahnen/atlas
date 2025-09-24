@@ -9,7 +9,6 @@ import { stopPointWorkflowDetailResolver } from './workflow/detail-page/stop-poi
 import { permissionsLoaded } from '../../core/auth/guards/permissions-loaded.guard';
 import { featureToggleGuard } from '../feature-toggle.guard';
 import { stopPointTerminationWorkflowResolver } from './termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-resolver';
-import { SectorDetailComponent } from './sectors/sector-detail/sector-detail.component';
 import { sectorResolver } from './sectors/sector-detail/sector-detail-resolver.service';
 
 const workflowRoutes: Routes = [

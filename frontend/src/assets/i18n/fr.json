@@ -56,6 +56,7 @@
     "FROM": "de",
     "TO": "à",
     "VERSION": "Version",
+    "VERSION_DETAILS": "Informations sur",
     "FILLED_AUTOMATICALLY": "Remplissage automatique",
     "VERSION_VALIDITY": "Version valable",
     "VALID_FROM": "Valable du",
@@ -1261,9 +1262,18 @@
     },
     "SECTORS": {
       "SECTORS": "Secteur",
+      "SECTOR": "Secteur",
       "DESIGNATION": "Désignation",
       "NEW": "Saisir le secteur",
-      "MOT_CHANGE_WARNING": "Cette modification pourrait rendre invalides les secteurs attribués, car ils ne sont valables que pour les haltes ferroviaires."
+      "MOT_CHANGE_WARNING": "Cette modification pourrait rendre invalides les secteurs attribués, car ils ne sont valables que pour les haltes ferroviaires.",
+      "CONSTRUCTION_INFORMATION": "Informations sur la construction",
+      "LENGTH": "Longueur [m]",
+      "EDGE_HEIGHT": "Hauteur des arêtes [cm]",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le secteur a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le secteur a été enregistré avec succès."
+      },
+      "TRAFFIC_POINT_VALIDITY_ERROR": "La validité de la bordure d’arrêt de {{from}} à {{to}} ne doit pas être dépassée."
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Groupe sectoriel",
