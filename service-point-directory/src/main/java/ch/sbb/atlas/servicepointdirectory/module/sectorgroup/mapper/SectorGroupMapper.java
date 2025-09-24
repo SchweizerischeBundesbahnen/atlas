@@ -22,7 +22,7 @@ public class SectorGroupMapper {
         .editor(sectorGroupVersion.getEditor())
         .editionDate(sectorGroupVersion.getEditionDate())
         .etagVersion(sectorGroupVersion.getVersion())
-        .status(sectorGroupVersion.getStatus())
+        .length(sectorGroupVersion.getLength())
         .build();
   }
 
@@ -38,7 +38,7 @@ public class SectorGroupMapper {
         .editor(createSectorGroupVersionModel.getEditor())
         .editionDate(createSectorGroupVersionModel.getEditionDate())
         .version(createSectorGroupVersionModel.getEtagVersion())
-        .status(createSectorGroupVersionModel.getStatus())
+        .length(createSectorGroupVersionModel.getLength())
         .build();
   }
 
@@ -49,7 +49,7 @@ public class SectorGroupMapper {
         .validTo(updateSectorGroupVersionModel.getValidTo())
         .designation(updateSectorGroupVersionModel.getDesignation())
         .version(updateSectorGroupVersionModel.getEtagVersion())
-        .status(updateSectorGroupVersionModel.getStatus())
+        .length(updateSectorGroupVersionModel.getLength())
         .build();
   }
 

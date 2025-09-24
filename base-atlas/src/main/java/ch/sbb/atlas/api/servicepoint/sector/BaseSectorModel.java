@@ -2,7 +2,7 @@ package ch.sbb.atlas.api.servicepoint.sector;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.api.model.AuditableVersionModel;
 import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -24,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class BaseSectorModel extends BaseVersionModel implements Versionable {
+public abstract class BaseSectorModel extends AuditableVersionModel implements Versionable {
 
   @Schema(description = """
       This ID helps identify versions of a traffic point element in the use case front end and/or update.
@@ -62,7 +62,7 @@ public abstract class BaseSectorModel extends BaseVersionModel implements Versio
   private String designation;
 
   @Schema(description = "Length of a Sector in m", example = "180.000")
-  @Digits(integer = 3, fraction = 3)
+  @Digits(integer = 6, fraction = 3)
   private Double length;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
