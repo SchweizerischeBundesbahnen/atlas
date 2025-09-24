@@ -1270,9 +1270,10 @@
       "LENGTH": "Länge [m]",
       "EDGE_HEIGHT": "Kantenhöhe [cm]",
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Der Sektor erfolgreich hinzugefügt.",
-        "EDIT_SUCCESS": "Der Sektor erfolgreich gespeichert."
-      }
+        "ADD_SUCCESS": "Der Sektor wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Der Sektor wurde erfolgreich gespeichert."
+      },
+      "TRAFFIC_POINT_VALIDITY_ERROR": "Die Haltekantengültigkeit von {{from}} bis {{to}} darf nicht überschritten werden."
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Sektorgruppen",
