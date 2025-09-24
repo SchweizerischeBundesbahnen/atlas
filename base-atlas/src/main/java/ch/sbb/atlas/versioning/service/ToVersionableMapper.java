@@ -23,7 +23,7 @@ final class ToVersionableMapper {
     try {
       return toVersionable(versionedObject, clazz);
     } catch (Exception e) {
-      throw new VersioningException("Could not convert VersionedObject to Versionable", e);
+      throw new VersioningException("Could not convert VersionedObject to Versionable");
     }
   }
 

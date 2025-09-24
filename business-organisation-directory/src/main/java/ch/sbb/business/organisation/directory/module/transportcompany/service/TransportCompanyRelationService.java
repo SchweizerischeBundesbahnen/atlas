@@ -46,7 +46,7 @@ public class TransportCompanyRelationService {
           .anyMatch(relation -> relation.getId().equals(transportCompanyRelation.getId()));
     }
     if (relationOverlaps.size() == 1 && !isSelfOverlapping || relationOverlaps.size() > 1) {
-      throw new TransportCompanyRelationConflictException(transportCompanyRelation, relationOverlaps);
+      throw new TransportCompanyRelationConflictException(relationOverlaps);
     }
   }
 

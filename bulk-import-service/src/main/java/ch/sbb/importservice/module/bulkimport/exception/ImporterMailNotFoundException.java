@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class ImporterMailNotFoundException extends AtlasException {
 
-  private final UserModel importer;
+  private transient final UserModel importer;
 
   @Override
   public ErrorResponse getErrorResponse() {

@@ -193,6 +193,8 @@ class BulkImportLogFileIntegrationTest {
                       .build())))
                   .build())
               .build());
+          default -> {
+          }
         }
       });
       return answer;
