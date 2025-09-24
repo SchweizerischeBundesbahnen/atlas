@@ -103,7 +103,7 @@ describe('SectorGroupOverviewComponent', () => {
     component.backToServicePoint();
 
     expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['..', '..'],
+      ['../..'],
       jasmine.any(Object)
     );
   });

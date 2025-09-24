@@ -73,4 +73,28 @@ class GenerateSloidRequestModelTest {
     assertThat(violations).isEmpty();
   }
 
+  @Test
+  void shouldNotHaveErrorWhenTrafficPointSloidHasNoArea() {
+    // given
+    GenerateSloidRequestModel model = new GenerateSloidRequestModel(SloidType.SECTOR, "ch:1:sloid:8054::1");
+
+    // when
+    Set<ConstraintViolation<GenerateSloidRequestModel>> violations = validator.validate(model);
+
+    // then
+    assertThat(violations).isEmpty();
+  }
+
+  @Test
+  void shouldNotHaveErrorWhenTrafficPointSloidHasArea() {
+    // given
+    GenerateSloidRequestModel model = new GenerateSloidRequestModel(SloidType.SECTOR, "ch:1:sloid:8054:6:1");
+
+    // when
+    Set<ConstraintViolation<GenerateSloidRequestModel>> violations = validator.validate(model);
+
+    // then
+    assertThat(violations).isEmpty();
+  }
+
 }

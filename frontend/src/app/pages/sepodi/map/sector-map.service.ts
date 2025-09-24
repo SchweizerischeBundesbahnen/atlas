@@ -8,12 +8,12 @@ import { MapService } from './map.service';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
 import { SectorInternalService } from '../../../api/service/sepodi/sector-internal.service';
-import { SloidHelper } from '../../../core/util/sloidHelper';
 
 export interface DisplayableSector {
   sloid: string;
   designation: string;
   trafficPointSloid: string;
+  servicePointNumber: number;
   coordinates: CoordinatePair;
 }
 
@@ -34,9 +34,7 @@ export class SectorMapService implements OnDestroy {
         : point.properties.sloid;
 
       const trafficPointSloid: string = point.properties.trafficPointSloid;
-      const servicePointNumber = SloidHelper.servicePointSloidToNumber(
-        SloidHelper.trafficPointSloidToServicePointSloid(trafficPointSloid)
-      );
+      const servicePointNumber = point.properties.servicePointNumber;
       popupHtml +=
         `<a href="${Pages.SEPODI.path}/${Pages.SERVICE_POINTS.path}/${servicePointNumber}/${Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path}/${trafficPointSloid}/${Pages.SECTORS.path}/${point.properties.sloid}">` +
         `${description}</a> <br/>`;
@@ -50,7 +48,7 @@ export class SectorMapService implements OnDestroy {
     this.onDestroy$.complete();
   }
 
-  displaySectorsOnMap(trafficPointSloid: string) {
+  displaySectorsOnMap(servicePointNumber: number, trafficPointSloid: string) {
     this.mapService.mapInitialized
       .pipe(
         filter((initialized) => initialized),
@@ -67,6 +65,7 @@ export class SectorMapService implements OnDestroy {
                 designation: point.designation,
                 coordinates: point.sectorGeolocation!.wgs84,
                 trafficPointSloid: point.trafficPointSloid,
+                servicePointNumber: servicePointNumber,
               };
             });
             this.setDisplayedSectors(sectors);
@@ -89,6 +88,7 @@ export class SectorMapService implements OnDestroy {
           sloid: point.sloid,
           designation: point.designation,
           trafficPointSloid: point.trafficPointSloid,
+          servicePointNumber: point.servicePointNumber,
         },
       };
     });

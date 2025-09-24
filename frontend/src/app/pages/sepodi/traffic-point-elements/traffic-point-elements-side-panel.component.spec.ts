@@ -9,6 +9,7 @@ import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { SectorMapService } from '../map/sector-map.service';
+import { TrafficPointMapService } from '../map/traffic-point-map.service';
 
 describe('TrafficPointElementsSidePanelComponent', () => {
   let component: TrafficPointElementsSidePanelComponent;
@@ -17,6 +18,12 @@ describe('TrafficPointElementsSidePanelComponent', () => {
   const sectorMapService = jasmine.createSpyObj<SectorMapService>([
     'displaySectorsOnMap',
     'clearDisplayedSectors',
+  ]);
+  const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
+    'displayTrafficPointsOnMap',
+    'displayCurrentTrafficPoint',
+    'clearDisplayedTrafficPoints',
+    'clearCurrentTrafficPoint',
   ]);
 
   beforeEach(() => {
@@ -58,6 +65,7 @@ describe('TrafficPointElementsSidePanelComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: SectorMapService, useValue: sectorMapService },
+        { provide: TrafficPointMapService, useValue: trafficPointMapService },
         TranslatePipe,
       ],
     }).compileComponents();

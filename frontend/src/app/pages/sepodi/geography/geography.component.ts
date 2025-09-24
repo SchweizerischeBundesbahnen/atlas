@@ -56,7 +56,6 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   _form?: FormGroup<GeographyFormGroup>;
   @Input() set form(form: FormGroup<GeographyFormGroup> | undefined) {
     this._form = form;
-
     if (form) {
       this._geographyActive = true;
       this.updateMapInteractionMode();
@@ -78,6 +77,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   @Input() editMode = false;
+  @Input() geographyOptional = true;
   @Output() geographyChanged = new EventEmitter<boolean>();
   @Output() coordinatesChanged = new EventEmitter<CoordinatePair>();
 
@@ -228,7 +228,9 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   private updateMapInteractionMode() {
-    if (!this.mapService.mapInitialized.value) return;
+    if (!this.mapService.mapInitialized.value) {
+      return;
+    }
     if (this.editMode && this.geographyActive) {
       this.mapService.enterCoordinateSelectionMode();
     } else {

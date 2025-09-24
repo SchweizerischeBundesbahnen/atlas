@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CreateTrafficPointElementVersion,
@@ -73,7 +73,7 @@ const NUMBER_COLONS_AREA = 0;
   ],
 })
 export class TrafficPointElementsDetailComponent
-  implements OnInit, OnDestroy, DetailFormComponent
+  implements OnInit, DetailFormComponent
 {
   readonly extractSloid = (option: AreaOption) => option.sloid;
   readonly displayExtractor = (option: AreaOption) => option.displayText;
@@ -124,11 +124,6 @@ export class TrafficPointElementsDetailComponent
     });
   }
 
-  ngOnDestroy() {
-    this.trafficPointMapService.clearDisplayedTrafficPoints();
-    this.trafficPointMapService.clearCurrentTrafficPoint();
-  }
-
   private initTrafficPoint() {
     if (this.trafficPointVersions.length == 0) {
       this.isNew = true;
@@ -158,10 +153,6 @@ export class TrafficPointElementsDetailComponent
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
     } else {
-      this.trafficPointMapService.displayTrafficPointsOnMap(
-        this.servicePointNumber
-      );
-
       this.servicePointService
         .getServicePointVersions(this.servicePointNumber)
         .subscribe((servicePoint) => {
