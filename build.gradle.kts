@@ -5,7 +5,7 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.863.0"
 
-extra["awsS3Version"] = "2.34.2"
+extra["awsS3Version"] = "2.34.3"
 
 extra["okhttpVersion"] = "5.1.0"
 
