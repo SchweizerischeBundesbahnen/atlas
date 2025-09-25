@@ -3,7 +3,7 @@ package ch.sbb.workflow.module.lidi.line.controller;
 import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
 import ch.sbb.atlas.api.workflow.WorkflowModel;
 import ch.sbb.atlas.api.workflow.WorkflowStartModel;
-import ch.sbb.workflow.module.lidi.line.api.LineWorkflowApiV1;
+import ch.sbb.workflow.module.lidi.line.api.LineWorkflowApiInternal;
 import ch.sbb.workflow.module.lidi.line.entity.LineWorkflow;
 import ch.sbb.workflow.module.lidi.line.mapper.LineWorkflowMapper;
 import ch.sbb.workflow.module.lidi.line.mapper.WorkflowStartMapper;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class LineWorkflowController implements LineWorkflowApiV1 {
+public class LineWorkflowController implements LineWorkflowApiInternal {
 
   private final LineWorkflowService service;
 

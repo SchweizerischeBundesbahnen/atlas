@@ -1,13 +1,11 @@
 package ch.sbb.workflow.module.sepodi.hearing.controller;
 
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.module.sepodi.hearing.api.StopPointWorkflowApiV1;
+import ch.sbb.workflow.module.sepodi.hearing.api.StopPointWorkflowApiInternal;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.hearing.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.module.sepodi.hearing.mapper.StopPointWorkflowDecisionMapper;
 import ch.sbb.workflow.module.sepodi.hearing.mapper.StopPointWorkflowMapper;
-import ch.sbb.workflow.module.sepodi.hearing.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.DecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.EditStopPointWorkflowModel;
@@ -16,11 +14,9 @@ import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.ReadDecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.ReadStopPointWorkflowModel;
-import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.StopPointRestartWorkflowModel;
-import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.module.sepodi.hearing.service.DecisionService;
 import ch.sbb.workflow.module.sepodi.hearing.service.StopPointWorkflowEndExpiredService;
 import ch.sbb.workflow.module.sepodi.hearing.service.StopPointWorkflowOtpService;
@@ -28,14 +24,12 @@ import ch.sbb.workflow.module.sepodi.hearing.service.StopPointWorkflowService;
 import ch.sbb.workflow.module.sepodi.hearing.service.StopPointWorkflowTransitionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
+public class StopPointWorkflowInternalController implements StopPointWorkflowApiInternal {
 
   private final StopPointWorkflowService service;
   private final StopPointWorkflowOtpService otpService;
@@ -46,38 +40,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   @Override
   public List<StopPointClientPersonModel> getExaminants(Long servicePointVersionId) {
     return service.getExaminantsByServicePointVersionId(servicePointVersionId);
-  }
-
-  @Override
-  public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
-    ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(service.getWorkflow(id));
-
-    service.getWorkflowByFollowUpId(id).ifPresent(stopPointWorkflow ->
-        stopPointWorkflowModel.setPreviousWorkflowId(stopPointWorkflow.getId())
-    );
-
-    decisionService.addJudgementsToExaminants(stopPointWorkflowModel.getExaminants());
-    return stopPointWorkflowModel;
-  }
-
-  @Override
-  public Container<ReadStopPointWorkflowModel> getStopPointWorkflows(Pageable pageable,
-      StopPointWorkflowRequestParams stopPointWorkflowRequestParams) {
-    StopPointWorkflowSearchRestrictions stopPointWorkflowSearchRestrictions = StopPointWorkflowSearchRestrictions.builder()
-        .pageable(pageable)
-        .stopPointWorkflowRequestParams(stopPointWorkflowRequestParams)
-        .build();
-    Page<StopPointWorkflow> workflows = service.getWorkflows(stopPointWorkflowSearchRestrictions);
-
-    return Container.<ReadStopPointWorkflowModel>builder()
-        .objects(workflows.stream().map(StopPointWorkflowMapper::toModel).toList())
-        .totalCount(workflows.getTotalElements())
-        .build();
-  }
-
-  @Override
-  public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel));
   }
 
   @PreAuthorize(
