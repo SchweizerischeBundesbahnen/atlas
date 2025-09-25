@@ -10,6 +10,8 @@ drop sequence traffic_point_element_version_seq;
 
 drop sequence sector_version_seq;
 
+drop sequence sector_group_version_seq;
+
 drop table service_point_version;
 
 drop table service_point_fot_comment;
@@ -27,5 +29,7 @@ drop table traffic_point_element_version;
 drop table traffic_point_element_version_geolocation;
 
 drop table sector_version;
+
+drop table sector_group_version;
 
 drop table shared_business_organisation_version;
