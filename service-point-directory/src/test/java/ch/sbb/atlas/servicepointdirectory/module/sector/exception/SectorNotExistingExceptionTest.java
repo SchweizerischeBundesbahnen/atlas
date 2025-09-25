@@ -15,5 +15,8 @@ class SectorNotExistingExceptionTest {
     ErrorResponse errorResponse = exception.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(404);
     assertThat(errorResponse.getMessage()).isEqualTo("No sector exists with sloid ch:sloid:1");
+    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
+        "SEPODI.SECTORS.SECTOR_NOT_EXISTING_ERROR");
+
   }
 }

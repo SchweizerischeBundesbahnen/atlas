@@ -6,16 +6,17 @@ import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.model.exception.AtlasException;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-public class MissingTrainStopPointException extends AtlasException {
+@RequiredArgsConstructor
+public class AtLeastTwoSectorsRequiredException extends AtlasException {
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
-        .message("Expected at least one service point version that is a stop point and has only TRAIN as means of "
-            + "transport.")
+        .message("At least two sector's are required")
         .details(getDetails())
         .build();
   }
@@ -23,9 +24,9 @@ public class MissingTrainStopPointException extends AtlasException {
   private SortedSet<Detail> getDetails() {
     TreeSet<Detail> errorDetails = new TreeSet<>();
     errorDetails.add(Detail.builder()
-        .message("Means of transport must include TRAIN and no other means of transport.")
+        .message("At least two sector's are required.")
         .displayInfo(DisplayInfo.builder()
-            .code("SEPODI.SECTORS.MEANS_OF_TRANSPORT_ERROR")
+            .code("SEPODI.SECTORS.REQUIRED_AT_LEAST_TWO_SECTOR_ERROR")
             .build())
         .build());
     return errorDetails;
