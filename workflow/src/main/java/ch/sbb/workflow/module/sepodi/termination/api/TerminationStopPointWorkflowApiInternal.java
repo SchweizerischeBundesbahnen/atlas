@@ -1,5 +1,6 @@
 package ch.sbb.workflow.module.sepodi.termination.api;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
@@ -26,9 +27,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "TerminationStopPointWorkflow")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "TerminationStopPointWorkflow")
 @RequestMapping("internal/termination-stop-point/workflows")
-public interface TerminationStopPointWorkflowApi {
+public interface TerminationStopPointWorkflowApiInternal {
 
   @GetMapping
   @PageableAsQueryParam

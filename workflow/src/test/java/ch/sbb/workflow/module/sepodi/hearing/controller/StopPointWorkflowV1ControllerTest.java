@@ -63,12 +63,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 
-class StopPointWorkflowControllerTest extends BaseControllerApiTest {
+class StopPointWorkflowV1ControllerTest extends BaseControllerApiTest {
 
   static final String MAIL_ADDRESS = "marek@hamsik.com";
 
   @Autowired
-  private StopPointWorkflowController controller;
+  private StopPointWorkflowV1Controller controller;
 
   @Autowired
   private StopPointWorkflowRepository workflowRepository;
