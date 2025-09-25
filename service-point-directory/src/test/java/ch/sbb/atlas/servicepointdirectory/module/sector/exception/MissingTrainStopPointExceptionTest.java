@@ -16,5 +16,7 @@ class MissingTrainStopPointExceptionTest {
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo(
         "Expected at least one service point version that is a stop point and has only TRAIN as means of transport.");
+    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
+        "SEPODI.SECTORS.MEANS_OF_TRANSPORT_ERROR");
   }
 }
