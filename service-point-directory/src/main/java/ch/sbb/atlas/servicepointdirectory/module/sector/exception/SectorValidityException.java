@@ -21,11 +21,11 @@ public class SectorValidityException extends AtlasException {
         .status(HttpStatus.BAD_REQUEST.value())
         .message("Business rule validation failed")
         .error("Validity is not in range of validity of traffic point")
-        .details(details())
+        .details(getDetails())
         .build();
   }
 
-  private SortedSet<Detail> details() {
+  private SortedSet<Detail> getDetails() {
     TreeSet<Detail> errorDetails = new TreeSet<>();
     errorDetails.add(Detail.builder()
         .field("validity")

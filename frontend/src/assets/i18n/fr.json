@@ -1273,7 +1273,10 @@
         "ADD_SUCCESS": "Le secteur a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le secteur a été enregistré avec succès."
       },
-      "TRAFFIC_POINT_VALIDITY_ERROR": "La validité de la bordure d’arrêt de {{from}} à {{to}} ne doit pas être dépassée."
+      "TRAFFIC_POINT_VALIDITY_ERROR": "La validité de la bordure d’arrêt de {{from}} à {{to}} ne doit pas être dépassée.",
+      "MEANS_OF_TRANSPORT_ERROR": "Au moins une version du service est attendue qui correspond à un arrêt avec uniquement le train comme moyen de transport.",
+      "SECTOR_NOT_EXISTING_ERROR": "Le secteur portant le sloid {{sloid}} n’existe pas.",
+      "REQUIRED_AT_LEAST_TWO_SECTOR_ERROR": "Au moins deux secteurs sont requis."
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Groupe sectoriel",

@@ -10,8 +10,8 @@ import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
+import ch.sbb.atlas.servicepointdirectory.module.sector.exception.AtLeastTwoSectorsRequiredException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorNotExistingException;
-import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorNotValidException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
@@ -92,7 +92,7 @@ public class SectorGroupService {
 
   private void validateSectorVersions(List<SectorVersion> versions) {
     if (versions.size() < 2) {
-      throw new SectorNotValidException();
+      throw new AtLeastTwoSectorsRequiredException();
     }
   }
 
