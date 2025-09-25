@@ -12,11 +12,11 @@ import static org.mockito.Mockito.verify;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowExaminantNotFoundException;
-import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowPinCodeInvalidException;
 import ch.sbb.workflow.module.sepodi.hearing.enity.Decision;
 import ch.sbb.workflow.module.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
+import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowExaminantNotFoundException;
+import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowPinCodeInvalidException;
 import ch.sbb.workflow.module.sepodi.hearing.mail.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.DecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpRequestModel;
@@ -47,7 +47,10 @@ class StopPointWorkflowControllerVotingTest {
   private static final String MAIL_ADDRESS = "marek@hamsik.com";
 
   @Autowired
-  private StopPointWorkflowController controller;
+  private StopPointWorkflowInternalController stopPointWorkflowInternalController;
+
+  @Autowired
+  private StopPointWorkflowV1Controller stopPointWorkflowV1Controller;
 
   @Autowired
   private StopPointWorkflowRepository workflowRepository;
@@ -105,7 +108,7 @@ class StopPointWorkflowControllerVotingTest {
 
   @Test
   void shouldObtainOtpViaMailWithCorrectMailAddress() {
-    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
 
     assertThat(otpRepository.findAll()).isNotEmpty();
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
@@ -115,7 +118,7 @@ class StopPointWorkflowControllerVotingTest {
   @Test
   void shouldNotObtainOtpViaMailWithIncorrectMailAddress() {
     assertThatExceptionOfType(StopPointWorkflowExaminantNotFoundException.class).isThrownBy(() ->
-        controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail("iwantmail@here.ch").build()));
+        stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail("iwantmail@here.ch").build()));
 
     assertThat(otpRepository.findAll()).isEmpty();
     verify(notificationService, times(0)).sendPinCodeMail(any(), anyString(), anyString());
@@ -123,10 +126,10 @@ class StopPointWorkflowControllerVotingTest {
 
   @Test
   void shouldObtainOtpViaMailAndValidateIt() {
-    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
 
-    StopPointClientPersonModel verifiedExaminant = controller.verifyOtp(workflowInHearing.getId(),
+    StopPointClientPersonModel verifiedExaminant = stopPointWorkflowInternalController.verifyOtp(workflowInHearing.getId(),
         OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
 
     assertThat(verifiedExaminant.getId()).isNotNull();
@@ -135,30 +138,30 @@ class StopPointWorkflowControllerVotingTest {
 
   @Test
   void shouldObtainOtpViaMailAndFailValidate() {
-    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
 
     assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class).isThrownBy(
-        () -> controller.verifyOtp(workflowInHearing.getId(),
+        () -> stopPointWorkflowInternalController.verifyOtp(workflowInHearing.getId(),
             OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode("incorrectPin").build()));
   }
 
   @Test
   void shouldObtainOtpViaMailAndVoteCorrectly() {
     // Read workflow details
-    ReadStopPointWorkflowModel stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
+    ReadStopPointWorkflowModel stopPointWorkflow = stopPointWorkflowV1Controller.getStopPointWorkflow(workflowInHearing.getId());
     assertThat(stopPointWorkflow.getExaminants().getFirst().getJudgement()).isNull();
 
     // Obtain OTP
-    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
 
     // Verify examinant
-    StopPointClientPersonModel verifiedExaminant = controller.verifyOtp(workflowInHearing.getId(),
+    StopPointClientPersonModel verifiedExaminant = stopPointWorkflowInternalController.verifyOtp(workflowInHearing.getId(),
         OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
 
     // Vote
-    controller.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
+    stopPointWorkflowInternalController.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
         DecisionModel.builder().judgement(JudgementType.YES).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue())
             .build());
 
@@ -166,7 +169,7 @@ class StopPointWorkflowControllerVotingTest {
     Decision decision = decisionRepository.findDecisionByExaminantId(verifiedExaminant.getId());
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
 
-    stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
+    stopPointWorkflow = stopPointWorkflowV1Controller.getStopPointWorkflow(workflowInHearing.getId());
     assertThat(stopPointWorkflow.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow()
         .getJudgement()).isEqualTo(JudgementType.YES);
   }
@@ -174,13 +177,13 @@ class StopPointWorkflowControllerVotingTest {
   @Test
   void shouldOverridePreviousVoteBySelfCorrectly() {
     // First Vote: NO
-    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
 
-    StopPointClientPersonModel verifiedExaminant = controller.verifyOtp(workflowInHearing.getId(),
+    StopPointClientPersonModel verifiedExaminant = stopPointWorkflowInternalController.verifyOtp(workflowInHearing.getId(),
         OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
 
-    controller.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
+    stopPointWorkflowInternalController.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
         DecisionModel.builder().judgement(JudgementType.NO).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue())
             .build());
 
@@ -191,13 +194,13 @@ class StopPointWorkflowControllerVotingTest {
     clearInvocations(notificationService);
 
     // Second Vote: YES
-    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
 
-    verifiedExaminant = controller.verifyOtp(workflowInHearing.getId(),
+    verifiedExaminant = stopPointWorkflowInternalController.verifyOtp(workflowInHearing.getId(),
         OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
 
-    controller.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
+    stopPointWorkflowInternalController.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
         DecisionModel.builder().judgement(JudgementType.YES).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue())
             .build());
 
@@ -222,7 +225,7 @@ class StopPointWorkflowControllerVotingTest {
         .fotMotivation("Nein, Müll")
         .build();
 
-    controller.overrideVoteWorkflow(workflowInHearing.getId(), examinantToOverride.getId(), override);
+    stopPointWorkflowInternalController.overrideVoteWorkflow(workflowInHearing.getId(), examinantToOverride.getId(), override);
 
     // then
     examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
@@ -250,13 +253,13 @@ class StopPointWorkflowControllerVotingTest {
         .fotMotivation("Good stuff")
         .build();
 
-    controller.overrideVoteWorkflow(workflowInHearing.getId(), examinantToOverride.getId(), override);
+    stopPointWorkflowInternalController.overrideVoteWorkflow(workflowInHearing.getId(), examinantToOverride.getId(), override);
 
     // then
     Decision examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
     assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
 
-    ReadDecisionModel decisionModel = controller.getDecision(examinantToOverride.getId());
+    ReadDecisionModel decisionModel = stopPointWorkflowInternalController.getDecision(examinantToOverride.getId());
     assertThat(decisionModel.getJudgement()).isEqualTo(JudgementType.NO);
     assertThat(decisionModel.getFotJudgement()).isEqualTo(JudgementType.YES);
   }

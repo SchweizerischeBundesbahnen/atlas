@@ -1,5 +1,6 @@
 package ch.sbb.workflow.module.lidi.line.api;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
 import ch.sbb.atlas.api.workflow.WorkflowModel;
 import ch.sbb.atlas.api.workflow.WorkflowStartModel;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "Workflow")
-@RequestMapping("v1/line/workflows")
-public interface LineWorkflowApiV1 {
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Line Workflow")
+@RequestMapping("internal/line/workflows")
+public interface LineWorkflowApiInternal {
 
   @GetMapping("{id}")
   WorkflowModel getWorkflow(@PathVariable Long id);
