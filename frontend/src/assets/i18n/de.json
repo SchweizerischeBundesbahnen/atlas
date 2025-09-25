@@ -1273,7 +1273,10 @@
         "ADD_SUCCESS": "Der Sektor wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Der Sektor wurde erfolgreich gespeichert."
       },
-      "TRAFFIC_POINT_VALIDITY_ERROR": "Die Haltekantengültigkeit von {{from}} bis {{to}} darf nicht überschritten werden."
+      "TRAFFIC_POINT_VALIDITY_ERROR": "Die Haltekantengültigkeit von {{from}} bis {{to}} darf nicht überschritten werden.",
+      "MEANS_OF_TRANSPORT_ERROR": "Es wird mindestens eine Dienststellen Version erwartet, die eine Haltestelle ist und nur Zug als Transportmittel hat.",
+      "SECTOR_NOT_EXISTING_ERROR": "Der Sektor mit der Sloid {{sloid}} existiert nicht.",
+      "REQUIRED_AT_LEAST_TWO_SECTOR_ERROR": "Mindestens zwei Sektoren sind erforderlich."
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Sektorgruppen",

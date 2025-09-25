@@ -1273,7 +1273,10 @@
         "ADD_SUCCESS": "Settore aggiunto con successo.",
         "EDIT_SUCCESS": "Settore salvato correttamente."
       },
-      "TRAFFIC_POINT_VALIDITY_ERROR": "La validità del bordo di fermata da {{from}} a {{to}} non può essere superata."
+      "TRAFFIC_POINT_VALIDITY_ERROR": "La validità del bordo di fermata da {{from}} a {{to}} non può essere superata.",
+      "MEANS_OF_TRANSPORT_ERROR": "Si attende almeno una versione del posto di servizio che è una fermata e ha solo il treno come mezzo di trasporto",
+      "SECTOR_NOT_EXISTING_ERROR": "Il settore con lo sloid {{sloid}} non esiste.",
+      "REQUIRED_AT_LEAST_TWO_SECTOR_ERROR": "Necessari almeno due settori."
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Gruppo settoriale",
