@@ -1,11 +1,11 @@
 package ch.sbb.importservice.module.bulkimport.client;
 
 import ch.sbb.atlas.api.client.TokenPassingFeignClientConfig;
-import ch.sbb.atlas.api.prm.PlatformBulkImportApiV1;
+import ch.sbb.atlas.api.prm.PlatformBulkImportApi;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(name = "platformBulkImportClient", url = "${atlas.client.gateway.url}", path = "prm-directory",
     configuration = TokenPassingFeignClientConfig.class)
-public interface PlatformBulkImportClient extends PlatformBulkImportApiV1 {
+public interface PlatformBulkImportClient extends PlatformBulkImportApi {
 
 }

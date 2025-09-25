@@ -50,7 +50,8 @@ class ExportServiceBatchSchedulerServiceTest {
         new BatchTestCase(client::exportSublineBatch, schedulerService::postTriggerExportSublineBatch),
         new BatchTestCase(client::exportTimetableFieldNumberBatch, schedulerService::postTriggerExportTimetableFieldNumberBatch),
         new BatchTestCase(client::exportRecordingObligationBatch, schedulerService::postTriggerExportRecordingObligationBatch),
-        new BatchTestCase(client::exportSectorBatch, schedulerService::postTriggerExportSectorBatch)
+        new BatchTestCase(client::exportSectorBatch, schedulerService::postTriggerExportSectorBatch),
+        new BatchTestCase(client::exportSectorGroupBatch, schedulerService::postTriggerExportSectorGroupBatch)
     );
   }
 

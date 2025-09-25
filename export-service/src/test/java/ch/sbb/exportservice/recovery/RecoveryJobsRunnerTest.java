@@ -29,6 +29,7 @@ import ch.sbb.exportservice.job.prm.stoppoint.service.ExportStopPointJobService;
 import ch.sbb.exportservice.job.prm.toilet.service.ExportToiletJobService;
 import ch.sbb.exportservice.job.sepodi.loadingpoint.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.job.sepodi.sector.service.ExportSectorJobService;
+import ch.sbb.exportservice.job.sepodi.sectorgroup.service.ExportSectorGroupJobService;
 import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.model.SePoDiExportType;
@@ -114,6 +115,9 @@ class RecoveryJobsRunnerTest {
   private ExportSectorJobService exportSectorJobService;
 
   @Mock
+  private ExportSectorGroupJobService exportSectorGroupJobService;
+
+  @Mock
   private JobInstance jobInstance;
 
   @Mock
@@ -135,7 +139,8 @@ class RecoveryJobsRunnerTest {
         exportServicePointJobService, exportTrafficPointElementJobService, exportLoadingPointJobService,
         exportStopPointJobService, exportPlatformJobService, exportReferencePointJobService, exportContactPointJobService,
         exportToiletJobService, exportParkingLotJobService, exportRelationJobService, exportLineJobService,
-        exportBusinessOrganisationJobService, exportTransportCompanyJobService, exportSublineJobService, exportSectorJobService
+        exportBusinessOrganisationJobService, exportTransportCompanyJobService, exportSublineJobService, exportSectorJobService,
+        exportSectorGroupJobService
     );
   }
 

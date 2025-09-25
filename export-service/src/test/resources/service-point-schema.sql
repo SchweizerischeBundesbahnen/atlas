@@ -10,6 +10,8 @@ create sequence traffic_point_element_version_seq;
 
 create sequence sector_version_seq;
 
+create sequence sector_group_version_seq;
+
 create table service_point_version_geolocation
 (
     id                        bigint           not null
@@ -183,7 +185,6 @@ create table sector_version
     spatial_reference   varchar(50)      not null,
     length              numeric(6, 3),
     edge_height         numeric(3),
-    status              varchar(50)      not null,
     creation_date       timestamp        not null,
     creator             varchar(50)      not null,
     edition_date        timestamp        not null,
@@ -193,5 +194,20 @@ create table sector_version
         unique (sloid, valid_from)
 );
 
-
-
+create table sector_group_version
+(
+    id                  bigint           not null        primary key,
+    sloid               varchar(128)     not null,
+    traffic_point_sloid varchar(128)     not null,
+    valid_from          date             not null,
+    valid_to            date             not null,
+    designation         varchar(8)       not null,
+    length              numeric(6, 3),
+    creation_date       timestamp        not null,
+    creator             varchar(50)      not null,
+    edition_date        timestamp        not null,
+    editor              varchar(50)      not null,
+    version             bigint default 0 not null,
+    constraint sector_group_version_sloid_unique
+        unique (sloid, valid_from)
+);
