@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.module.bulkimport.controller;
 
-import ch.sbb.atlas.api.prm.PlatformBulkImportApiV1;
+import ch.sbb.atlas.api.prm.PlatformBulkImportApi;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class PlatformBulkImportController extends BaseBulkImportControllerInternal implements PlatformBulkImportApiV1 {
+public class PlatformBulkImportController extends BaseBulkImportControllerInternal implements PlatformBulkImportApi {
 
   private final PlatformBulkImportService platformBulkImportService;
 
