@@ -14,6 +14,7 @@ public class SectorGroupVersionRowMapper implements RowMapper<SectorGroupVersion
         .sloid(rs.getString("sloid"))
         .validFrom(rs.getDate("valid_from").toLocalDate())
         .validTo(rs.getDate("valid_to").toLocalDate())
+        .length(rs.getDouble("length"))
         .trafficPointSloid(rs.getString("traffic_point_sloid"))
         .designation(rs.getString("designation"))
         .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())

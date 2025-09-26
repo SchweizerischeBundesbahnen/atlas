@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,22 @@ class SectorGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
   @Test
   void shouldReturnFullSectorGroups() throws SQLException {
     //given
-    insertSectorGroupPoint("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
+    SectorGroupVersion expectedSectorGroupVersion = SectorGroupVersion.builder()
+        .id(1L)
+        .sloid("ch:1:sloid:8000:1:100")
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2001, 1, 1))
+        .length(150.000)
+        .trafficPointSloid("ch:1:sloid:6602:0:7110")
+        .designation("test1")
+        .creationDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
+        .creator("abab81fb-6ba0-4153-af93-8fb3dc910210")
+        .editionDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
+        .editor("abab81fb-6ba0-4153-af93-8fb3dc910210")
+        .version(0)
+        .build();
+
+    insertSectorGroup("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
     String sqlQuery = SectorGroupSqlQueryUtil.getSqlQuery(ExportTypeV2.FULL);
 
     //when
@@ -30,33 +46,65 @@ class SectorGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
 
     //then
     assertThat(result).hasSize(1);
+    assertThat(result.getFirst()).usingRecursiveComparison().isEqualTo(expectedSectorGroupVersion);
 
   }
 
   @Test
   void shouldReturnActualSectorGroup() throws SQLException {
+    SectorGroupVersion expectedSectorGroupVersion = SectorGroupVersion.builder()
+        .id(2L)
+        .sloid("ch:1:sloid:8000:1:200")
+        .validFrom(LocalDate.now())
+        .validTo(LocalDate.now().plusMonths(2))
+        .length(150.000)
+        .trafficPointSloid("ch:1:sloid:6602:0:7110")
+        .designation("test1")
+        .creationDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
+        .creator("abab81fb-6ba0-4153-af93-8fb3dc910210")
+        .editionDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
+        .editor("abab81fb-6ba0-4153-af93-8fb3dc910210")
+        .version(0)
+        .build();
+
     //given
-    insertSectorGroupPoint("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
+    insertSectorGroup("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
+    insertSectorGroup("ch:1:sloid:8000:1:200", LocalDate.now(), LocalDate.now().plusMonths(2));
 
-    insertSectorGroupPoint("ch:1:sloid:8000:1:200", LocalDate.now(), LocalDate.now().plusMonths(2));
-
-    String sqlQuery = ch.sbb.exportservice.job.sepodi.sectorgroup.sql.SectorGroupSqlQueryUtil.getSqlQuery(ExportTypeV2.ACTUAL);
+    String sqlQuery = SectorGroupSqlQueryUtil.getSqlQuery(ExportTypeV2.ACTUAL);
 
     //when
     List<SectorGroupVersion> result = executeQuery(sqlQuery);
 
     //then
     assertThat(result).hasSize(1);
+    assertThat(result.getFirst()).usingRecursiveComparison().isEqualTo(expectedSectorGroupVersion);
 
   }
 
   @Test
   void shouldReturnTimetableFutureSectorGroup() throws SQLException {
-    //given
     DateRange timetableYearsDateRange = ExportYearsTimetableUtil.getTimetableYearsDateRange();
-    insertSectorGroupPoint("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
 
-    insertSectorGroupPoint("ch:1:sloid:8000:1:200", timetableYearsDateRange.getFrom().plusMonths(1),
+    SectorGroupVersion expectedSectorGroupVersion = SectorGroupVersion.builder()
+        .id(2L)
+        .sloid("ch:1:sloid:8000:1:200")
+        .validFrom(timetableYearsDateRange.getFrom().plusMonths(1))
+        .validTo(timetableYearsDateRange.getTo().minusMonths(1))
+        .length(150.000)
+        .trafficPointSloid("ch:1:sloid:6602:0:7110")
+        .designation("test1")
+        .creationDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
+        .creator("abab81fb-6ba0-4153-af93-8fb3dc910210")
+        .editionDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
+        .editor("abab81fb-6ba0-4153-af93-8fb3dc910210")
+        .version(0)
+        .build();
+
+    //given
+    insertSectorGroup("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
+
+    insertSectorGroup("ch:1:sloid:8000:1:200", timetableYearsDateRange.getFrom().plusMonths(1),
         timetableYearsDateRange.getTo().minusMonths(1));
 
     String sqlQuery = SectorGroupSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
@@ -66,10 +114,11 @@ class SectorGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
 
     //then
     assertThat(result).hasSize(1);
+    assertThat(result.getFirst()).usingRecursiveComparison().isEqualTo(expectedSectorGroupVersion);
 
   }
 
-  protected void insertSectorGroupPoint(String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
+  protected void insertSectorGroup(String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
     final String insertSql = """
         INSERT INTO sector_group_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, length, creation_date,
                                     creator, edition_date, editor, version)
@@ -99,5 +148,4 @@ class SectorGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
     connection.close();
     return result;
   }
-
 }
