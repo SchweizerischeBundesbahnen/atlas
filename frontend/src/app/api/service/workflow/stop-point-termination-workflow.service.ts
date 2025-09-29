@@ -12,9 +12,10 @@ import {TerminationAbort} from "../../model/terminationAbort";
 @Injectable({
   providedIn: 'root',
 })
-export class WorkflowService {
+export class StopPointTerminationWorkflowService {
 
-  private readonly STOP_POINT_TERMINATION = '/workflow/internal/termination-stop-point/workflows';
+  private readonly STOP_POINT_TERMINATION = '/workflow/v1/termination-stop-point/workflows';
+  private readonly STOP_POINT_TERMINATION_INTERNAL = '/workflow/internal/termination-stop-point/workflows';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
@@ -24,7 +25,7 @@ export class WorkflowService {
 
   public getTerminationInfoBySloid(sloid: string): Observable<TerminationInfo> {
     this.atlasApiService.validateParams({ sloid });
-    return this.atlasApiService.get(`${this.STOP_POINT_TERMINATION}/termination-info/${encodeURIComponent(String(sloid))}`);
+    return this.atlasApiService.get(`${this.STOP_POINT_TERMINATION_INTERNAL}/termination-info/${encodeURIComponent(String(sloid))}`);
   }
 
   getTerminationStopPointWorkflows(searchCriterias?: string[], sboids?: string[], workflowIds?: number[],
@@ -49,16 +50,16 @@ export class WorkflowService {
 
   decisionInfoPlus(id: number, decision: TerminationDecision): Observable<TerminationStopPointAddWorkflow> {
     this.atlasApiService.validateParams({ id, decision });
-    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}/decision/info-plus/${encodeURIComponent(String(id))}`, decision);
+    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION_INTERNAL}/decision/info-plus/${encodeURIComponent(String(id))}`, decision);
   }
 
   decisionNova(id: number, decision: TerminationDecision): Observable<TerminationStopPointAddWorkflow> {
     this.atlasApiService.validateParams({ id, decision });
-    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}/decision/nova/${encodeURIComponent(String(id))}`, decision);
+    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION_INTERNAL}/decision/nova/${encodeURIComponent(String(id))}`, decision);
   }
 
   abortTermination(id: number, terminationAbort: TerminationAbort): Observable<TerminationStopPointAddWorkflow> {
     this.atlasApiService.validateParams({ id, terminationCancel: terminationAbort });
-    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}/abort/${encodeURIComponent(String(id))}`, terminationAbort);
+    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION_INTERNAL}/abort/${encodeURIComponent(String(id))}`, terminationAbort);
   }
 }

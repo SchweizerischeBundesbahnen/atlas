@@ -4,7 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, mergeMap, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
 import { map } from 'rxjs/operators';
-import { WorkflowService } from '../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 
@@ -16,7 +16,7 @@ export interface StopPointTerminationWorkflowDetailData {
 @Injectable({ providedIn: 'root' })
 export class StopPointTerminationWorkflowResolver {
   constructor(
-    private readonly workflowService: WorkflowService,
+    private readonly workflowService: StopPointTerminationWorkflowService,
     private readonly servicePointService: ServicePointService,
     private readonly router: Router
   ) {}

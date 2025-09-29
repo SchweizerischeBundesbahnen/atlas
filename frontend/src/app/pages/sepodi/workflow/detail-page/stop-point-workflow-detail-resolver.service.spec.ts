@@ -10,13 +10,11 @@ import {
   stopPointWorkflowDetailResolver,
   StopPointWorkflowDetailResolver,
 } from './stop-point-workflow-detail-resolver.service';
-import {
-  ReadStopPointWorkflow,
-  StopPointWorkflowService,
-} from '../../../../api';
+import { ReadStopPointWorkflow } from '../../../../api';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,

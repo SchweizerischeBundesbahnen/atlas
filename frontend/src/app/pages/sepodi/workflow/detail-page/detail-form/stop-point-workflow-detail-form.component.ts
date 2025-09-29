@@ -17,7 +17,6 @@ import {
   ReadStopPointWorkflow,
   Status,
   StopPointPerson,
-  StopPointWorkflowService,
   WorkflowStatus,
 } from 'src/app/api';
 import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
@@ -35,6 +34,7 @@ import { StopPointWorkflowExaminantsTableComponent } from '../examinant-table/st
 import { StringListComponent } from '../../../../../core/form-components/string-list/string-list.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointWorkflowBasicInfo } from '../../stop-point-workflow-basic-info/stop-point-workflow-basic-info';
+import { StopPointWorkflowService } from '../../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'stop-point-workflow-detail-form',

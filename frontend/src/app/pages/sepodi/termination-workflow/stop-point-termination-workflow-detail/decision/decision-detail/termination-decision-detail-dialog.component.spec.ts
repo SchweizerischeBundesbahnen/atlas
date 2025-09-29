@@ -18,7 +18,7 @@ import { TerminationDecision } from '../../../../../../api/model/terminationDeci
 import { FormControl, FormGroup } from '@angular/forms';
 import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
 import moment from 'moment/moment';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
@@ -96,7 +96,7 @@ describe('TerminationDecisionDetailDialogComponent', () => {
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: decisionDialogData },
         {
-          provide: WorkflowService,
+          provide: StopPointTerminationWorkflowService,
           useValue: terminationWorkflowService,
         },
       ],

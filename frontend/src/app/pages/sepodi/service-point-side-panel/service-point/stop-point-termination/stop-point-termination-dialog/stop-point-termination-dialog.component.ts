@@ -9,7 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { TerminationStopPointAddWorkflow } from '../../../../../../api/model/terminationStopPointAddWorkflow';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { UserService } from '../../../../../../core/auth/user/user.service';
@@ -32,7 +32,7 @@ export class StopPointTerminationDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<StopPointTerminationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StopPointTerminationDialogData,
     private detailHelperService: DetailHelperService,
-    private workflowService: WorkflowService,
+    private workflowService: StopPointTerminationWorkflowService,
     private notificationService: NotificationService,
     private userService: UserService
   ) {}

@@ -13,7 +13,6 @@ import {
   DecisionType,
   JudgementType,
   ReadStopPointWorkflow,
-  StopPointWorkflowService,
 } from '../../../../api';
 import { Router } from '@angular/router';
 import { UserService } from '../../../../core/auth/user/user.service';
@@ -27,6 +26,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,

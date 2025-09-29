@@ -1,12 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StopPointRestartWorkflowDialogComponent } from './stop-point-restart-workflow-dialog.component';
-import {
-  Permission,
-  ReadStopPointWorkflow,
-  StopPointWorkflowService,
-  User,
-} from '../../../../api';
+import { Permission, ReadStopPointWorkflow, User } from '../../../../api';
 import { of } from 'rxjs';
 import { StopPointRejectWorkflowDialogData } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data';
 import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
@@ -20,6 +15,7 @@ import { DetailHelperService } from '../../../../core/detail/detail-helper.servi
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,

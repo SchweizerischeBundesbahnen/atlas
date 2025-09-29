@@ -10,8 +10,8 @@ import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-la
 import { LoadingSpinnerComponent } from '../../../../../../core/components/loading-spinner/loading-spinner.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
-import { StopPointWorkflowService } from '../../../../../../api';
 import { of, throwError } from 'rxjs';
+import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
 
 describe('DecisionStepperComponent', () => {
   let component: DecisionStepperComponent;
