@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class LineWorkflowController implements LineWorkflowApiInternal {
+public class LineWorkflowApiInternalController implements LineWorkflowApiInternal {
 
   private final LineWorkflowService service;
 

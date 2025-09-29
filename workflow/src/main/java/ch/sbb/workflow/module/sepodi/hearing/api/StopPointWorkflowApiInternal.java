@@ -29,8 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "StopPointWorkflow")
-@RequestMapping("internal/stop-point/workflows")
+@RequestMapping(StopPointWorkflowApiInternal.BASE_PATH)
 public interface StopPointWorkflowApiInternal {
+
+  String BASE_PATH = "/internal/stop-point/workflows";
 
   @GetMapping("{servicePointVersionId}/examinants")
   List<StopPointClientPersonModel> getExaminants(@PathVariable Long servicePointVersionId);

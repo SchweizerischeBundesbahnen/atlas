@@ -22,9 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "StopPointWorkflow")
-@RequestMapping("v1/stop-point/workflows")
+@Tag(name = "StopPointWorkflow", description = "Workflow for hearing the change of designation official with the FoT, cantons "
+    + "and municipals")
+@RequestMapping(StopPointWorkflowApiV1.BASE_PATH)
 public interface StopPointWorkflowApiV1 {
+
+  String BASE_PATH = "/v1/stop-point/workflows";
 
   @GetMapping("{id}")
   ReadStopPointWorkflowModel getStopPointWorkflow(@PathVariable Long id);

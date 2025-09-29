@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class StopPointWorkflowV1Controller implements StopPointWorkflowApiV1 {
+public class StopPointWorkflowApiV1Controller implements StopPointWorkflowApiV1 {
 
   private final StopPointWorkflowService service;
   private final DecisionService decisionService;
