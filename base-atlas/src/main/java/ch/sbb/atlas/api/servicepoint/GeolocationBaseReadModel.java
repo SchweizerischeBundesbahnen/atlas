@@ -30,7 +30,7 @@ public class GeolocationBaseReadModel {
   @NotNull
   private CoordinatePair lv03;
 
-  @Schema(description = "Height of the coordinate point", example = "540.20000")
+  @Schema(description = "Height of the coordinate point", example = "540.2000")
   private Double height;
 
 }
