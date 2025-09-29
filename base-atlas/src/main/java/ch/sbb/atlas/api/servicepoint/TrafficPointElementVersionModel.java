@@ -46,7 +46,7 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
   private String designationOperational;
 
   @Schema(description = "Length of the TrafficPointElement", example = "18.000")
-  @Digits(integer = 11, fraction = 3)
+  @Digits(integer = 10, fraction = 3)
   @Min(0)
   private Double length;
 
