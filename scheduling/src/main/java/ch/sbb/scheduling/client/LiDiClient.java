@@ -29,14 +29,4 @@ public interface LiDiClient {
       MediaType.APPLICATION_JSON_VALUE)
   Response putLiDiSublineExportNextTimetableVersions();
 
-  @PostMapping(value = "/line-directory/internal/field-numbers/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response putLiDiTimetableFieldNumberExportFull();
-
-  @PostMapping(value = "/line-directory/internal/field-numbers/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response putLiDiTimetableFieldNumberExportActual();
-
-  @PostMapping(value = "/line-directory/internal/field-numbers/export-csv/timetable-year-change", produces =
-      MediaType.APPLICATION_JSON_VALUE)
-  Response putLiDiTimetableFieldNumberExportNextTimetableVersions();
-
 }

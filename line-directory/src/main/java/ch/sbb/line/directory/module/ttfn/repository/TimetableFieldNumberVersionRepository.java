@@ -33,16 +33,6 @@ public interface TimetableFieldNumberVersionRepository extends
   void incrementVersion(@Param("ttfnid") String ttfnid);
 
   @Query("SELECT tv FROM timetable_field_number_version as tv"
-      + " ORDER BY tv.ttfnid, tv.validFrom ASC")
-  List<TimetableFieldNumberVersion> getFullTimeTableNumberVersions();
-
-  @Query("SELECT tv FROM timetable_field_number_version as tv"
-      + " WHERE  :actualDate >= tv.validFrom AND :actualDate <= tv.validTo"
-      + " ORDER BY tv.ttfnid, tv.validFrom ASC")
-  List<TimetableFieldNumberVersion> getActualTimeTableNumberVersions(
-      @Param("actualDate") LocalDate actualDate);
-
-  @Query("SELECT tv FROM timetable_field_number_version as tv"
       + " WHERE  :validAt >= tv.validFrom AND :validAt <= tv.validTo"
       + " AND tv.ttfnid in :ttfnids"
       + " ORDER BY tv.ttfnid, tv.validFrom ASC")

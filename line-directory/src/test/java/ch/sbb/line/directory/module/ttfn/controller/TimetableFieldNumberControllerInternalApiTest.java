@@ -12,8 +12,8 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
+import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -78,27 +78,6 @@ class TimetableFieldNumberControllerInternalApiTest extends BaseControllerApiTes
             .queryParam("sort", "swissTimetableFieldNumber,asc"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount").value(1));
-  }
-
-  @Test
-  void shouldExportFullTimetableFieldNumberVersionsCsv() throws Exception {
-    //when
-    mvc.perform(post("/internal/field-numbers/export-csv/full"))
-        .andExpect(status().isOk()).andReturn();
-  }
-
-  @Test
-  void shouldExportActualTimetableFieldNumberVersionsCsv() throws Exception {
-    //when
-    mvc.perform(post("/internal/field-numbers/export-csv/actual"))
-        .andExpect(status().isOk()).andReturn();
-  }
-
-  @Test
-  void shouldExportTimeTableYearChangeTimetableFieldNumberVersionsCsv() throws Exception {
-    //when
-    mvc.perform(post("/internal/field-numbers/export-csv/timetable-year-change"))
-        .andExpect(status().isOk()).andReturn();
   }
 
   @Test
