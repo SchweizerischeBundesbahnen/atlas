@@ -14,10 +14,10 @@ import { AppTestingModule } from '../../../../../app.testing.module';
 import { FormModule } from '../../../../../core/module/form.module';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { DetailHelperService } from '../../../../../core/detail/detail-helper.service';
-import { StopPointWorkflowService } from '../../../../../api';
 import { Router } from '@angular/router';
 import { ValidationService } from '../../../../../core/validation/validation.service';
 import { StringListComponent } from '../../../../../core/form-components/string-list/string-list.component';
+import { StopPointWorkflowService } from '../../../../../api/service/workflow/stop-point-workflow.service';
 
 const dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', [

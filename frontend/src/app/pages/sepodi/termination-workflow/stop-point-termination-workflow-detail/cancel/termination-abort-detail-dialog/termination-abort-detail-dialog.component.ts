@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { TerminationAbortFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
 import { TerminationAbortDetailDialogData } from '../termination-abort-dialog.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
@@ -30,7 +30,9 @@ export class TerminationAbortDetailDialogComponent implements OnInit {
   private readonly decisionDetailDialogData: TerminationAbortDetailDialogData =
     inject(MAT_DIALOG_DATA);
 
-  private readonly workflowService = inject(WorkflowService);
+  private readonly workflowService = inject(
+    StopPointTerminationWorkflowService
+  );
   private readonly notificationService = inject(NotificationService);
 
   form!: FormGroup<TerminationAbortFormGroup>;

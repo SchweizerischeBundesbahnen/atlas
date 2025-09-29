@@ -1,10 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import {
-  ReadStopPointWorkflow,
-  StopPointPerson,
-  StopPointWorkflowService,
-} from '../../../../../api';
+import { ReadStopPointWorkflow, StopPointPerson } from '../../../../../api';
 import { StopPointWorkflowDetailFormComponent } from './stop-point-workflow-detail-form.component';
 import { StringListComponent } from '../../../../../core/form-components/string-list/string-list.component';
 import { MockAtlasButtonComponent } from '../../../../../app.testing.mocks';
@@ -18,6 +14,7 @@ import { StopPointWorkflowDetailFormGroupBuilder } from './stop-point-workflow-d
 import { FormModule } from '../../../../../core/module/form.module';
 import { StopPointWorkflowExaminantsTableComponent } from '../examinant-table/stop-point-workflow-examinants-table.component';
 import { of } from 'rxjs';
+import { StopPointWorkflowService } from '../../../../../api/service/workflow/stop-point-workflow.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,

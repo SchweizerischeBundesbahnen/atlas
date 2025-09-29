@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {WorkflowService} from './workflow.service';
+import {StopPointTerminationWorkflowService} from './stop-point-termination-workflow.service';
 import {AtlasApiService} from '../atlas-api.service';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {UserService} from '../../../core/auth/user/user.service';
@@ -7,20 +7,20 @@ import {TerminationStopPointAddWorkflow} from '../../model/terminationStopPointA
 import {TerminationAbort} from "../../model/terminationAbort";
 import any = jasmine.any;
 
-describe('WorkflowService', () => {
-  let service: WorkflowService;
+describe('StopPointTerminationWorkflowService', () => {
+  let service: StopPointTerminationWorkflowService;
   let apiService: AtlasApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        WorkflowService,
+        StopPointTerminationWorkflowService,
         AtlasApiService,
         { provide: HttpClient, useValue: {} },
         { provide: UserService, useValue: {} },
       ],
     });
-    service = TestBed.inject(WorkflowService);
+    service = TestBed.inject(StopPointTerminationWorkflowService);
     apiService = TestBed.inject(AtlasApiService);
     spyOn(apiService, 'get');
     spyOn(apiService, 'post');
@@ -42,10 +42,10 @@ describe('WorkflowService', () => {
     service.startTermination(terminationStopPointAddWorkflow);
 
     // then
-    expect(apiService.post).toHaveBeenCalledOnceWith('/workflow/internal/termination-stop-point/workflows', terminationStopPointAddWorkflow);
+    expect(apiService.post).toHaveBeenCalledOnceWith('/workflow/v1/termination-stop-point/workflows', terminationStopPointAddWorkflow);
   });
 
-  it('test getTerminationInfoBySloid', () => {
+  it('should getTerminationInfoBySloid', () => {
     // when
     service.getTerminationInfoBySloid('ch:1:sloid:1');
 
@@ -56,7 +56,7 @@ describe('WorkflowService', () => {
     );
   });
 
-  it('test getTerminationStopPointWorkflows', () => {
+  it('should getTerminationStopPointWorkflows', () => {
     // when
     service.getTerminationStopPointWorkflows(undefined, undefined, [1, 2]);
 
@@ -73,7 +73,7 @@ describe('WorkflowService', () => {
       },
     );
     expect(apiService.get).toHaveBeenCalledOnceWith(
-      '/workflow/internal/termination-stop-point/workflows',
+      '/workflow/v1/termination-stop-point/workflows',
       any(HttpParams)
     );
   });

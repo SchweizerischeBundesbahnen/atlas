@@ -10,7 +10,6 @@ import {
   DecisionType,
   JudgementType,
   ReadDecision,
-  StopPointWorkflowService,
   WorkflowStatus,
 } from '../../../../../../api';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
@@ -24,6 +23,7 @@ import { DialogCloseComponent } from '../../../../../../core/components/dialog/c
 import { DecisionOverrideComponent } from './override/decision-override.component';
 import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
 import { MockAtlasButtonComponent } from '../../../../../../app.testing.mocks';
+import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const dialogData: DecisionDetailDialogData = {

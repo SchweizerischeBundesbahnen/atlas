@@ -1,10 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  StopPointAddWorkflow,
-  StopPointPerson,
-  StopPointWorkflowService,
-} from '../../../../api';
+import { StopPointAddWorkflow, StopPointPerson } from '../../../../api';
 import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
 import { FormGroup } from '@angular/forms';
 import { ValidationService } from '../../../../core/validation/validation.service';
@@ -22,6 +18,7 @@ import { DialogContentComponent } from '../../../../core/components/dialog/conte
 import { StopPointWorkflowDetailFormComponent } from '../detail-page/detail-form/stop-point-workflow-detail-form.component';
 import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'app-workflow-dialog',

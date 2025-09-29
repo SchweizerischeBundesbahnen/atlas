@@ -5,7 +5,6 @@ import {
   ApplicationType,
   BusinessOrganisation,
   ReadStopPointWorkflow,
-  StopPointWorkflowService,
   WorkflowStatus,
 } from '../../../../api';
 import { TableFilterSearchType } from '../../../../core/components/table-filter/config/table-filter-search-type';
@@ -24,6 +23,7 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'stop-point-workflow-overview',
