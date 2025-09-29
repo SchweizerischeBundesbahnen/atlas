@@ -22,6 +22,9 @@ public interface ExportServiceBatchClient {
   @PostMapping(value = "sepodi/sector-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response exportSectorBatch();
 
+  @PostMapping(value = "sepodi/sector-group-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportSectorGroupBatch();
+
   @PostMapping(value = "prm/stop-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response exportStopPointBatch();
 
