@@ -8,10 +8,8 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.module.ttfn.export.TimetableFieldNumberVersionExportService;
 import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TimetableFieldNumberControllerInternal implements TimetableFieldNumberApiInternal {
 
   private final TimetableFieldNumberService timetableFieldNumberService;
-
-  private final TimetableFieldNumberVersionExportService versionExportService;
 
   static TimetableFieldNumberVersionModel toModel(TimetableFieldNumberVersion version) {
     return TimetableFieldNumberVersionModel.builder()
@@ -109,32 +105,4 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
     }
     timetableFieldNumberService.deleteAll(allVersionsVersioned);
   }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportFullTimetableFieldNumberVersions() {
-    return versionExportService.exportFullVersions();
-  }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportActualTimetableFieldNumberVersions() {
-    return versionExportService.exportActualVersions();
-  }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportTimetableYearChangeTimetableFieldNumberVersions() {
-    return versionExportService.exportFutureTimetableVersions();
-  }
-
 }
