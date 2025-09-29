@@ -42,15 +42,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-class StopPointWorkflowControllerVotingTest {
+class StopPointWorkflowVotingTest {
 
   private static final String MAIL_ADDRESS = "marek@hamsik.com";
 
   @Autowired
-  private StopPointWorkflowInternalController stopPointWorkflowInternalController;
+  private StopPointWorkflowApiInternalController stopPointWorkflowInternalController;
 
   @Autowired
-  private StopPointWorkflowV1Controller stopPointWorkflowV1Controller;
+  private StopPointWorkflowApiV1Controller stopPointWorkflowApiV1Controller;
 
   @Autowired
   private StopPointWorkflowRepository workflowRepository;
@@ -149,7 +149,7 @@ class StopPointWorkflowControllerVotingTest {
   @Test
   void shouldObtainOtpViaMailAndVoteCorrectly() {
     // Read workflow details
-    ReadStopPointWorkflowModel stopPointWorkflow = stopPointWorkflowV1Controller.getStopPointWorkflow(workflowInHearing.getId());
+    ReadStopPointWorkflowModel stopPointWorkflow = stopPointWorkflowApiV1Controller.getStopPointWorkflow(workflowInHearing.getId());
     assertThat(stopPointWorkflow.getExaminants().getFirst().getJudgement()).isNull();
 
     // Obtain OTP
@@ -169,7 +169,7 @@ class StopPointWorkflowControllerVotingTest {
     Decision decision = decisionRepository.findDecisionByExaminantId(verifiedExaminant.getId());
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
 
-    stopPointWorkflow = stopPointWorkflowV1Controller.getStopPointWorkflow(workflowInHearing.getId());
+    stopPointWorkflow = stopPointWorkflowApiV1Controller.getStopPointWorkflow(workflowInHearing.getId());
     assertThat(stopPointWorkflow.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow()
         .getJudgement()).isEqualTo(JudgementType.YES);
   }

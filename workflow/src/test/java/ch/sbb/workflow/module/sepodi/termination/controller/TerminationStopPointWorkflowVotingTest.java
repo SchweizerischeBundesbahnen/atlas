@@ -37,7 +37,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
  * href="https://confluence.sbb.ch/spaces/ATLAS/pages/3057021043/ADR-0031+ServicePoint+Workflow+Haltestellen
  * +Terminierungsworkflow#ADR0031:ServicePointWorkflow(HaltestellenTerminierungsworkflow)-UseCasesDiagramm">UseCases</a>
  */
-class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseControllerApiTest {
+class TerminationStopPointWorkflowVotingTest extends BaseControllerApiTest {
 
   private static final StartTerminationStopPointWorkflowModel WORKFLOW = StartTerminationStopPointWorkflowModel.builder()
       .workflowComment("Please terminate this stop point")
@@ -49,7 +49,10 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
   private static final LocalDate TERMINATION_DATE = LocalDate.of(2020, 1, 2);
 
   @Autowired
-  private TerminationStopPointWorkflowInternalController controller;
+  private TerminationStopPointWorkflowApiInternalController controller;
+
+  @Autowired
+  private TerminationStopPointWorkflowApiV1Controller v1Controller;
 
   @Autowired
   private TerminationStopPointWorkflowService service;
@@ -92,7 +95,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
 
   @Test
   void shouldFlowThroughInfoPlusAndNovaApproval() {
-    TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
+    TerminationStopPointWorkflowModel terminationWorkflow = v1Controller.startTerminationStopPointWorkflow(
         WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
     verify(notificationService).sendStartTerminationNotificationToInfoPlusAndBo(any());
@@ -129,7 +132,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
 
   @Test
   void shouldFlowThroughInfoPlusAndNovaApprovalOnLaterNovaDate() {
-    TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
+    TerminationStopPointWorkflowModel terminationWorkflow = v1Controller.startTerminationStopPointWorkflow(
         WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
     verify(notificationService).sendStartTerminationNotificationToInfoPlusAndBo(any());
@@ -156,7 +159,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
 
   @Test
   void shouldFlowThroughInfoPlusDisapproval() {
-    TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
+    TerminationStopPointWorkflowModel terminationWorkflow = v1Controller.startTerminationStopPointWorkflow(
         WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
     verify(notificationService).sendStartTerminationNotificationToInfoPlusAndBo(any());
@@ -182,7 +185,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
 
   @Test
   void shouldFlowThroughInfoPlusApprovalButNovaDisapproval() {
-    TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
+    TerminationStopPointWorkflowModel terminationWorkflow = v1Controller.startTerminationStopPointWorkflow(
         WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
 

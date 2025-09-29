@@ -1,23 +1,12 @@
 package ch.sbb.workflow.module.sepodi.termination.api;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.model.Container;
-import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
-import ch.sbb.workflow.module.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationInfoModel;
-import ch.sbb.workflow.module.sepodi.termination.model.TerminationStopPointWorkflowFilterParams;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationStopPointWorkflowModel;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springdoc.core.converters.models.PageableAsQueryParam;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,28 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "TerminationStopPointWorkflow")
-@RequestMapping("internal/termination-stop-point/workflows")
+@RequestMapping(TerminationStopPointWorkflowApiInternal.BASE_PATH)
 public interface TerminationStopPointWorkflowApiInternal {
 
-  @GetMapping
-  @PageableAsQueryParam
-  Container<TerminationStopPointWorkflowModel> getTerminationStopPointWorkflows(
-      @Parameter(hidden = true) @PageableDefault(sort = {TerminationStopPointWorkflow.Fields.id}) Pageable pageable,
-      @ParameterObject TerminationStopPointWorkflowFilterParams filterParams
-  );
-
-  @GetMapping("{id}")
-  TerminationStopPointWorkflowModel getTerminationStopPointWorkflow(@PathVariable Long id);
+  String BASE_PATH = "/internal/termination-stop-point/workflows";
 
   @GetMapping("/termination-info/{sloid}")
   TerminationInfoModel getTerminationInfoBySloid(@PathVariable String sloid);
-
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "201")})
-  TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
-      @RequestBody @Valid StartTerminationStopPointWorkflowModel workflowModel);
 
   @PreAuthorize(
       "@servicePointTerminationBasedUserAdministrationService.hasUserInfoPlusTerminationVotePermission()")

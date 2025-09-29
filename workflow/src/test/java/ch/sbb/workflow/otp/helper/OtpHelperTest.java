@@ -23,7 +23,6 @@ class OtpHelperTest {
 
     for (int i = 0; i < 10; i++) {
       String pinCode = OtpHelper.generatePinCode();
-      System.out.println(OtpHelper.hashPinCode(pinCode));
 
       boolean isUnique = generatedPinCodes.add(pinCode);
       assertThat(isUnique).isTrue();

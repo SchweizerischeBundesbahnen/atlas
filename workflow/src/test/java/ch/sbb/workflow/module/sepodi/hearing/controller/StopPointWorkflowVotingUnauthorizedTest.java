@@ -46,14 +46,14 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("integration-test")
 @Import(TestcontainersConfiguration.class)
 @Transactional
-class StopPointWorkflowControllerVotingUnauthorizedTest {
+class StopPointWorkflowVotingUnauthorizedTest {
 
   private static final String MAIL_ADDRESS = "marek@hamsik.com";
 
   @Autowired
-  private StopPointWorkflowInternalController controller;
+  private StopPointWorkflowApiInternalController controller;
   @Autowired
-  private StopPointWorkflowV1Controller stopPointWorkflowV1Controller;
+  private StopPointWorkflowApiV1Controller stopPointWorkflowApiV1Controller;
 
   @Autowired
   private StopPointWorkflowRepository workflowRepository;
@@ -158,7 +158,7 @@ class StopPointWorkflowControllerVotingUnauthorizedTest {
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
 
     // Workflow is approved
-    ReadStopPointWorkflowModel stopPointWorkflow = stopPointWorkflowV1Controller.getStopPointWorkflow(workflowInHearing.getId());
+    ReadStopPointWorkflowModel stopPointWorkflow = stopPointWorkflowApiV1Controller.getStopPointWorkflow(workflowInHearing.getId());
     assertThat(stopPointWorkflow.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
 
     // Mails are redacted for unauthorized user

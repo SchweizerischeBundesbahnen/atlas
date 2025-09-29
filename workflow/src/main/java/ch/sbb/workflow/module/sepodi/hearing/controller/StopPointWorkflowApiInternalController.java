@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class StopPointWorkflowInternalController implements StopPointWorkflowApiInternal {
+public class StopPointWorkflowApiInternalController implements StopPointWorkflowApiInternal {
 
   private final StopPointWorkflowService service;
   private final StopPointWorkflowOtpService otpService;

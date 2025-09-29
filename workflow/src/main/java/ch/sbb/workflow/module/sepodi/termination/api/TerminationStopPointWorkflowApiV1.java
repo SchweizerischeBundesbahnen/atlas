@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "TerminationStopPointWorkflow")
-@RequestMapping("v1/termination-stop-point/workflows")
+@Tag(name = "TerminationStopPointWorkflow", description = "Workflow for terminating a stop point")
+@RequestMapping(TerminationStopPointWorkflowApiV1.BASE_PATH)
 public interface TerminationStopPointWorkflowApiV1 {
+
+  String BASE_PATH = "/v1/termination-stop-point/workflows";
 
   @GetMapping
   @PageableAsQueryParam
