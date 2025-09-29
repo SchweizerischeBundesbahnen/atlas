@@ -19,6 +19,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Person;
+import ch.sbb.workflow.module.lidi.line.api.LineWorkflowApiInternal;
 import ch.sbb.workflow.module.lidi.line.entity.LineWorkflow;
 import ch.sbb.workflow.module.lidi.line.repository.WorkflowRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -27,11 +28,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-class LineWorkflowControllerTest extends BaseControllerApiTest {
+class LineWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
-  static final String MAIL_ADDRESS = "marek@hamsik.com";
+  private static final String MAIL_ADDRESS = "marek@hamsik.com";
+
   @Autowired
-  private LineWorkflowController controller;
+  private LineWorkflowApiInternalController controller;
 
   @Autowired
   private WorkflowRepository workflowRepository;
@@ -68,7 +70,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
 
     controller.startWorkflow(workflowModel);
 
-    mvc.perform(get("/v1/line/workflows"))
+    mvc.perform(get(LineWorkflowApiInternal.BASE_PATH))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
@@ -96,7 +98,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
 
     LineWorkflow entity = workflowRepository.save(lineWorkflow);
 
-    mvc.perform(get("/v1/line/workflows/" + entity.getId()))
+    mvc.perform(get(LineWorkflowApiInternal.BASE_PATH + "/" + entity.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.swissId", is("CH123456")));
   }
@@ -123,7 +125,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post("/v1/line/workflows")
+    mvc.perform(post(LineWorkflowApiInternal.BASE_PATH)
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().isCreated());
@@ -147,7 +149,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post("/v1/line/workflows")
+    mvc.perform(post(LineWorkflowApiInternal.BASE_PATH)
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
@@ -183,7 +185,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post("/v1/line/workflows")
+    mvc.perform(post(LineWorkflowApiInternal.BASE_PATH)
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
@@ -220,7 +222,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post("/v1/line/workflows")
+    mvc.perform(post(LineWorkflowApiInternal.BASE_PATH)
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
@@ -266,7 +268,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post("/v1/line/workflows/" + startedWorkflow.getId() + "/examinant-check")
+    mvc.perform(post(LineWorkflowApiInternal.BASE_PATH + "/" + startedWorkflow.getId() + "/examinant-check")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowCheck)))
         .andExpect(status().isOk())

@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Line Workflow")
-@RequestMapping("internal/line/workflows")
+@RequestMapping(LineWorkflowApiInternal.BASE_PATH)
 public interface LineWorkflowApiInternal {
+
+  String BASE_PATH = "/internal/line/workflows";
 
   @GetMapping("{id}")
   WorkflowModel getWorkflow(@PathVariable Long id);
