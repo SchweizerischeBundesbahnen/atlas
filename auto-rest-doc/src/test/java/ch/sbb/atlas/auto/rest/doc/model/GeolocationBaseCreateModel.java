@@ -26,7 +26,7 @@ public class GeolocationBaseCreateModel {
   private Double east;
 
   @Schema(description = "Height of the coordinate point", example = "540.20000")
-  @Digits(integer = 5, fraction = 4)
+  @Digits(integer = 5, fraction = 5)
   private Double height;
 
 }
