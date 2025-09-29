@@ -62,20 +62,20 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   private BasicAttributeType dynamicVisual;
 
   @Schema(description = "Height [cm]")
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 7, fraction = 3)
   @Min(0)
   private Double height;
 
   @Schema(description = "Cross-platform slope [%]")
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 7, fraction = 3)
   private Double inclination;
 
   @Schema(description = "Longitudinal inclination of the holding edge [%]")
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 7, fraction = 3)
   private Double inclinationLongitudinal;
 
   @Schema(description = "Platform longitudinal inclination [%]")
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 7, fraction = 3)
   private Double inclinationWidth;
 
   @Schema(description = "Information options")
@@ -86,7 +86,7 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   private Boolean partialElevation;
 
   @Schema(description = "Track superelevation value [mm]")
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 7, fraction = 3)
   private Double superelevation;
 
   private BooleanOptionalAttributeType tactileSystem;
@@ -96,12 +96,12 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   private VehicleAccessAttributeType vehicleAccess;
 
   @Schema(description = "Wheelchair Area Length [mm]")
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 7, fraction = 3)
   @Min(0)
   private Double wheelchairAreaLength;
 
   @Schema(description = "Wheelchair Area Width [mm]")
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 7, fraction = 3)
   @Min(0)
   private Double wheelchairAreaWidth;
 
