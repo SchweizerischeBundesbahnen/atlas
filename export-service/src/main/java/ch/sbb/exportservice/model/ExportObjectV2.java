@@ -26,6 +26,7 @@ public enum ExportObjectV2 {
   TRAFFIC_POINT(ExportTypes.SWISS_WORLD, "traffic-point", "traffic-point-batch"),
   LOADING_POINT(ExportTypes.SWISS_WORLD, "loading-point", "loading-point-batch"),
   SECTOR(ExportTypes.DEFAULT, "sector", "sector-batch"),
+  SECTOR_GROUP(ExportTypes.DEFAULT, "sector-group", "sector-group-batch"),
   ;
 
   private final List<ExportTypeV2> supportedExportTypes;
