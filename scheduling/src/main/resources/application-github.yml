@@ -124,6 +124,10 @@ scheduler:
       chron: "0 5 0 * * ?" #At 00:05:00am every day
     loading-point-trigger-batch:
       chron: "0 8 0 * * ?" #At 00:08:00am every day
+    sector-trigger-batch:
+      chron: "0 6 0 * * ?" #At 00:06:00am every day
+    sector-group-trigger-batch:
+      chron: "0 7 0 * * ?" #At 00:07:00am every day
     stop-point-trigger-batch:
       chron: "0 10 0 * * ?" #At 00:10:00am every day
     platform-trigger-batch:
@@ -149,7 +153,7 @@ scheduler:
     subline-trigger-batch:
       chron: "0 29 0 * * ?" #At 00:29:00am every day
     timetable-field-number-trigger-batch:
-      chron: "0 30 0 * * ?" #At 00:30:00am every day
+      chron: "-" #Disabled
 
   location:
     sync:
