@@ -1,10 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  AddExaminants,
-  StopPointPerson,
-  StopPointWorkflowService,
-} from 'src/app/api';
+import { AddExaminants, StopPointPerson } from 'src/app/api';
 import { DetailHelperService } from 'src/app/core/detail/detail-helper.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { Router } from '@angular/router';
@@ -27,6 +23,7 @@ import { StringListComponent } from '../../../../../core/form-components/string-
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { DialogFooterComponent } from '../../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { StopPointWorkflowService } from '../../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'app-add-examinants',

@@ -4,13 +4,13 @@ import { MockTableComponent } from '../../../../app.testing.mocks';
 import {
   ContainerReadStopPointWorkflow,
   ReadStopPointWorkflow,
-  StopPointWorkflowService,
 } from '../../../../api';
 import { of, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
