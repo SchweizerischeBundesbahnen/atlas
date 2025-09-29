@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Platform Bulk Import")
-public interface PlatformBulkImportApiV1 {
+public interface PlatformBulkImportApi {
 
   String BASEPATH = "internal/platform/bulk-import";
 
