@@ -7,7 +7,6 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -241,51 +240,4 @@ class TimetableFieldNumberRepositoryTest {
     assertThat(timetableFieldNumber.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
     assertThat(timetableFieldNumber.getValidTo()).isEqualTo(validLastYear.getValidTo());
   }
-
-  @Test
-  void shouldGetFullLineVersions() {
-    //given
-    TimetableFieldNumberVersion fieldNumberVersion =
-        TimetableFieldNumberVersion.builder()
-            .ttfnid(TTFNID)
-            .description("Earlier")
-            .swissTimetableFieldNumber("a.100")
-            .status(Status.VALIDATED)
-            .number("10.100")
-            .validFrom(LocalDate.now().minusYears(4))
-            .validTo(LocalDate.now().minusYears(3))
-            .businessOrganisation("sbb")
-            .build();
-    versionRepository.saveAndFlush(fieldNumberVersion);
-    //when
-    List<TimetableFieldNumberVersion> result = versionRepository.getFullTimeTableNumberVersions();
-
-    //then
-    assertThat(result).hasSize(1);
-  }
-
-  @Test
-  void shouldGetActualLineVersions() {
-    //given
-    TimetableFieldNumberVersion fieldNumberVersion =
-        TimetableFieldNumberVersion.builder()
-            .ttfnid(TTFNID)
-            .description("Earlier")
-            .swissTimetableFieldNumber("a.100")
-            .status(Status.VALIDATED)
-            .number("10.100")
-            .validFrom(LocalDate.of(2022, 1, 1))
-            .validTo(LocalDate.of(2022, 1, 1))
-            .businessOrganisation("sbb")
-            .build();
-    versionRepository.saveAndFlush(fieldNumberVersion);
-    //when
-    List<TimetableFieldNumberVersion> result = versionRepository.getActualTimeTableNumberVersions(
-        LocalDate.of(2022, 1, 1));
-
-    //then
-    assertThat(result).hasSize(1).contains(fieldNumberVersion);
-
-  }
-
 }

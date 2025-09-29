@@ -78,36 +78,4 @@ public class LidiSchedulerService extends BaseSchedulerService {
     return executeRequest(liDiClient::putLiDiSublineExportNextTimetableVersions,
         "Future Timetable Subline Versions CSV/ZIP");
   }
-
-  @SpanTracing
-  @Retryable(label = "exportFullTimetableFieldNumberVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4,
-      backoff = @Backoff(delay = 65000))
-  @Scheduled(cron = "${scheduler.lidi.export.timetable.full.chron}", zone = "${scheduler.zone}")
-  @SchedulerLock(name = "exportFullTimetableFieldNumberVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
-  public Response exportFullTimetableFieldNumberVersions() {
-    return executeRequest(liDiClient::putLiDiTimetableFieldNumberExportFull,
-        "Full TimetableFieldNumber Versions CSV/ZIP");
-  }
-
-  @SpanTracing
-  @Retryable(label = "exportActualTimetableFieldNumberVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4
-      , backoff = @Backoff(delay = 65000))
-  @Scheduled(cron = "${scheduler.lidi.export.timetable.actual.chron}", zone = "${scheduler.zone}")
-  @SchedulerLock(name = "exportActualTimetableFieldNumberVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
-  public Response exportActualTimetableFieldNumberVersions() {
-    return executeRequest(liDiClient::putLiDiTimetableFieldNumberExportActual,
-        "Actual TimetableFieldNumber Versions CSV/ZIP");
-  }
-
-  @SpanTracing
-  @Retryable(label = "exportFutureTimetableTimetableFieldNumberVersions", retryFor = SchedulingExecutionException.class,
-      maxAttempts = 4, backoff = @Backoff(delay = 65000))
-  @Scheduled(cron = "${scheduler.lidi.export.timetable.future.chron}", zone = "${scheduler.zone}")
-  @SchedulerLock(name = "exportFutureTimetableTimetableFieldNumberSublineVersions", lockAtMostFor = "PT1M", lockAtLeastFor =
-      "PT1M")
-  public Response exportNextTimetableTimetableFieldNumberVersions() {
-    return executeRequest(liDiClient::putLiDiTimetableFieldNumberExportNextTimetableVersions,
-        "Future Timetable TimetableFieldNumber Versions CSV/ZIP");
-  }
-
 }
