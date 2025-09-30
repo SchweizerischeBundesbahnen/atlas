@@ -30,7 +30,6 @@
               "progress": true,
               "watch": false,
               "codeCoverageExclude": [
-                "src/app/api/**",
                 "charts/**",
                 "src/polyfills.ts"
               ],
@@ -172,7 +171,6 @@
               "progress": false,
               "watch": false,
               "codeCoverageExclude": [
-                "src/app/api/**",
                 "charts/**",
                 "src/polyfills.ts"
               ],

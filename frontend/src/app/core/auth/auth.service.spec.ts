@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { UserService } from './user/user.service';
 import { PageService } from '../pages/page.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { Configuration } from '../../api';
 import { Router } from '@angular/router';
 import { User } from './user/user';
 import SpyObj = jasmine.SpyObj;
@@ -33,7 +32,6 @@ describe('AuthService', () => {
   let userServiceSpy: SpyObj<UserService>;
   let pageServiceSpy: SpyObj<PageService>;
   let oidcSecurityServiceSpy: SpyObj<OidcSecurityService>;
-  let apiServiceConfigMock: Partial<Configuration>;
   let bcTokenSpy: Spy;
   let routerSpy: SpyObj<Router>;
 
@@ -52,10 +50,6 @@ describe('AuthService', () => {
       'getAccessToken',
     ]);
 
-    apiServiceConfigMock = {
-      basePath: undefined,
-    };
-
     bcTokenSpy = jasmine.createSpy('BC_TOKEN_SPY');
     routerSpy = jasmine.createSpyObj(['navigateByUrl']);
 
@@ -64,7 +58,6 @@ describe('AuthService', () => {
         { provide: UserService, useValue: userServiceSpy },
         { provide: PageService, useValue: pageServiceSpy },
         { provide: OidcSecurityService, useValue: oidcSecurityServiceSpy },
-        { provide: Configuration, useValue: apiServiceConfigMock },
         { provide: BC_TOKEN, useValue: bcTokenSpy },
         { provide: Router, useValue: routerSpy },
         AuthService,
@@ -135,7 +128,6 @@ describe('AuthService', () => {
     authService.initAuth().subscribe((result) => {
       // Assert
       expect(oidcSecurityServiceSpy.getUserData).toHaveBeenCalledOnceWith();
-      expect(apiServiceConfigMock.basePath).toEqual('http://localhost:8888');
       expect(bcTokenSpy).toHaveBeenCalledTimes(1);
       expect(
         userServiceSpy.setCurrentUserAndLoadPermissions
