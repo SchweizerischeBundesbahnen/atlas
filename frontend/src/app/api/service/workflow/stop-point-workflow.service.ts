@@ -30,6 +30,25 @@ export class StopPointWorkflowService {
     return this.atlasApiService.get(`${this.STOP_POINT_WORKFLOW}/${encodeURIComponent(String(id))}`);
   }
 
+  getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: string, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, filterByNoDecision?: boolean, page?: number, size?: number, sort?: Array<string>):Observable<ContainerReadStopPointWorkflow>{
+    const httpParams = this.atlasApiService.paramsOf({
+      searchCriterias,
+      workflowIds,
+      status,
+      sloids,
+      designationOfficial,
+      localityName,
+      sboids,
+      createdAt,
+      versionValidFrom,
+      filterByNoDecision,
+      page,
+      size,
+      sort,
+    });
+    return this.atlasApiService.get(this.STOP_POINT_WORKFLOW, httpParams);
+  }
+
   addStopPointWorkflow(stopPointAddWorkflow: StopPointAddWorkflow): Observable<ReadStopPointWorkflow> {
     this.atlasApiService.validateParams({ stopPointAddWorkflow });
     return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW}`, stopPointAddWorkflow);
@@ -61,55 +80,36 @@ export class StopPointWorkflowService {
 
   obtainOtp(id: number, otpRequest: OtpRequest):Observable<void>{
     this.atlasApiService.validateParams({ id, otpRequest });
-    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/obtain-otp/${encodeURIComponent(String(id))}/`, otpRequest);
+    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/obtain-otp/${encodeURIComponent(String(id))}`, otpRequest);
   }
 
   verifyOtp(id: number, otpVerification: OtpVerification):Observable<StopPointPerson>{
     this.atlasApiService.validateParams({ id, otpVerification });
-    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/verify-otp/${encodeURIComponent(String(id))}/`, otpVerification);
+    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/verify-otp/${encodeURIComponent(String(id))}`, otpVerification);
   }
 
   voteWorkflow(id: number, personId: number, decision: Decision):Observable<void>{
     this.atlasApiService.validateParams({ id, personId, decision });
-    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/vote/${encodeURIComponent(String(id))}/`, decision);
+    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/vote/${encodeURIComponent(String(id))}/${encodeURIComponent(String(personId))}`, decision);
   }
 
   getExaminants(servicePointVersionId: number):Observable<Array<StopPointPerson>>{
     return this.atlasApiService.get(`${this.STOP_POINT_WORKFLOW_INTERNAL}/${encodeURIComponent(String(servicePointVersionId))}/examinants`);
   }
 
-  getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: string, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, filterByNoDecision?: boolean, page?: number, size?: number, sort?: Array<string>):Observable<ContainerReadStopPointWorkflow>{
-    const httpParams = this.atlasApiService.paramsOf({
-      searchCriterias,
-      workflowIds,
-      status,
-      sloids,
-      designationOfficial,
-      localityName,
-      sboids,
-      createdAt,
-      versionValidFrom,
-      filterByNoDecision,
-      page,
-      size,
-      sort,
-    });
-    return this.atlasApiService.get(this.STOP_POINT_WORKFLOW, httpParams);
-  }
-
   cancelStopPointWorkflow(id: number, stopPointRejectWorkflow: StopPointRejectWorkflow):Observable<ReadStopPointWorkflow>{
     this.atlasApiService.validateParams({ id, stopPointRejectWorkflow });
-    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/cancel/${encodeURIComponent(String(id))}/`, stopPointRejectWorkflow);
+    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/cancel/${encodeURIComponent(String(id))}`, stopPointRejectWorkflow);
   }
 
   rejectStopPointWorkflow(id: number, stopPointRejectWorkflow: StopPointRejectWorkflow): Observable<ReadStopPointWorkflow>{
     this.atlasApiService.validateParams({ id, stopPointRejectWorkflow });
-    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/reject/${encodeURIComponent(String(id))}/`, stopPointRejectWorkflow);
+    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/reject/${encodeURIComponent(String(id))}`, stopPointRejectWorkflow);
   }
 
   restartStopPointWorkflow(id: number, stopPointRestartWorkflow: StopPointRestartWorkflow): Observable<ReadStopPointWorkflow>{
     this.atlasApiService.validateParams({ id, stopPointRestartWorkflow });
-    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/restart/${encodeURIComponent(String(id))}/`, stopPointRestartWorkflow);
+    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/restart/${encodeURIComponent(String(id))}`, stopPointRestartWorkflow);
   }
 
 }
