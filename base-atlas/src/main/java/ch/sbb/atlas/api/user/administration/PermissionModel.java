@@ -36,13 +36,12 @@ public class PermissionModel extends BaseVersionModel {
   @Schema(description = "Permission Restrictions")
   @NotNull
   @Builder.Default
-  private List<? extends PermissionRestrictionModel<?>> permissionRestrictions = new ArrayList<>();
+  private List<PermissionRestrictionModel> permissionRestrictions = new ArrayList<>();
 
   @Schema(hidden = true)
   @JsonIgnore
   @AssertTrue(message = "Only one restriction is allowed, and its only for SEPODI.")
   public boolean isNovaOrInfoPlusPermissionAllowed() {
-
     boolean hasInfoPlus = getPermissionRestrictions().stream()
         .anyMatch(r -> r.getType() == PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
             && Boolean.TRUE.equals(r.getValue()));
@@ -70,7 +69,6 @@ public class PermissionModel extends BaseVersionModel {
     Set<PermissionRestrictionType> permissionRestrictionTypes = permissionRestrictions.stream()
         .map(PermissionRestrictionModel::getType)
         .collect(Collectors.toSet());
-
     return allowedRestrictionTypes.containsAll(permissionRestrictionTypes);
   }
 

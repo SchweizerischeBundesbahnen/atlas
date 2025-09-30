@@ -7,12 +7,11 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
-import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
+import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -243,11 +242,11 @@ class TimetableFieldNumberServiceSearchTest {
 
                 Pageable.ofSize(20).withPage(0))
             .searchCriterias(List.of("version"))
-            .validOn(Optional.of(SEARCH_DATE))
+            .validOn(SEARCH_DATE)
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(4);
-    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
   }
 
   @Test
@@ -258,7 +257,7 @@ class TimetableFieldNumberServiceSearchTest {
         TimetableFieldNumberSearchRestrictions.builder()
             .pageable(
                 PageRequest.of(0, 20, Sort.by("description")))
-            .validOn(Optional.of(SEARCH_DATE))
+            .validOn(SEARCH_DATE)
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(4);
@@ -292,7 +291,7 @@ class TimetableFieldNumberServiceSearchTest {
                 PageRequest.of(0, 20, Sort.by("description")))
             .searchCriterias(
                 List.of("TimetableFieldNumberVersion"))
-            .validOn(Optional.of(SEARCH_DATE))
+            .validOn(SEARCH_DATE)
             .statusRestrictions(List.of(Status.VALIDATED))
             .build()).toList();
     // Then
@@ -333,12 +332,12 @@ class TimetableFieldNumberServiceSearchTest {
         TimetableFieldNumberSearchRestrictions.builder()
             .pageable(Pageable.ofSize(5).withPage(0))
             .searchCriterias(List.of("a.1"))
-            .validOn(Optional.of(SEARCH_DATE))
+            .validOn(SEARCH_DATE)
             .statusRestrictions(List.of(Status.VALIDATED))
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(1);
-    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
   }
 
   @Test
@@ -412,10 +411,10 @@ class TimetableFieldNumberServiceSearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumberVersion> result =
-        timetableFieldNumberService.getVersionsValidAt(Set.of(versionList.get(0).getTtfnid()), SEARCH_DATE);
+        timetableFieldNumberService.getVersionsValidAt(Set.of(versionList.getFirst().getTtfnid()), SEARCH_DATE);
     // Then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(result.get(0).getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
   }
 
   @AfterEach

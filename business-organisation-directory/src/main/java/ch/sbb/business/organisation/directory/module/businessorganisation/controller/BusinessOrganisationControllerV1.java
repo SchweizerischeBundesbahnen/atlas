@@ -21,7 +21,6 @@ import ch.sbb.business.organisation.directory.module.businessorganisation.servic
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
@@ -44,7 +43,7 @@ public class BusinessOrganisationControllerV1 implements BusinessOrganisationApi
 
   @Override
   public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
-      List<String> searchCriteria, List<String> inSboids, Optional<LocalDate> validOn, List<Status> statusChoices) {
+      List<String> searchCriteria, List<String> inSboids, LocalDate validOn, List<Status> statusChoices) {
     log.info(
         "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, inSboids={} validOn={} and "
             + "statusChoices={}",

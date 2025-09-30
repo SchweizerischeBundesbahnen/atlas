@@ -59,7 +59,7 @@ class TimetableFieldNumberResolverServiceTest {
     verify(timetableFieldNumberService).getVersionsSearched(searchRestrictionsArgumentCaptor.capture());
     TimetableFieldNumberSearchRestrictions appliedSearchRestrictions = searchRestrictionsArgumentCaptor.getValue();
     assertThat(appliedSearchRestrictions.getNumber()).isEqualTo("1.1");
-    assertThat(appliedSearchRestrictions.getValidOn().orElseThrow()).isEqualTo(
+    assertThat(appliedSearchRestrictions.getValidOn()).isEqualTo(
         FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now()));
   }
 
@@ -96,7 +96,7 @@ class TimetableFieldNumberResolverServiceTest {
 
     // Then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getTimetableFieldNumber()).isEqualTo("1.1");
-    assertThat(result.get(0).getTimetableFieldDescription()).isEqualTo("Bern - Ostermundigen");
+    assertThat(result.getFirst().getTimetableFieldNumber()).isEqualTo("1.1");
+    assertThat(result.getFirst().getTimetableFieldDescription()).isEqualTo("Bern - Ostermundigen");
   }
 }

@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class ForbiddenDueToChosenServicePointVersionValidationPeriodException extends AtlasException {
 
-  private final ServicePointNumber servicePointNumber;
+  private transient final ServicePointNumber servicePointNumber;
 
   @Override
   public ErrorResponse getErrorResponse() {

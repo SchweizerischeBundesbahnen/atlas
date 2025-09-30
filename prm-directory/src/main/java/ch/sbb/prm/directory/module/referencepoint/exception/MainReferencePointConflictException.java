@@ -22,8 +22,7 @@ public class MainReferencePointConflictException extends AtlasException {
   private static final String CODE = "PRM.REFERENCE_POINTS.CONFLICT";
   private static final String ERROR = "Main ReferencePoint conflict";
 
-  private final ReferencePointVersion newVersion;
-  private final List<ReferencePointVersion> overlappingVersions;
+  private transient final List<ReferencePointVersion> overlappingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {
@@ -36,8 +35,7 @@ public class MainReferencePointConflictException extends AtlasException {
   }
 
   private SortedSet<Detail> getErrorDetails() {
-    return overlappingVersions.stream().map(toErrorDetail()).collect(Collectors.toCollection(
-        TreeSet::new));
+    return overlappingVersions.stream().map(toErrorDetail()).collect(Collectors.toCollection(TreeSet::new));
   }
 
   private Function<ReferencePointVersion, Detail> toErrorDetail() {

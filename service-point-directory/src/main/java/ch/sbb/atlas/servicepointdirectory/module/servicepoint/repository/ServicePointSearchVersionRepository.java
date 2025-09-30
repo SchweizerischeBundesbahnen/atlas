@@ -233,7 +233,7 @@ public class ServicePointSearchVersionRepository {
   }
 
   private static String escapePercent(String value) {
-    return value.replaceAll("%", "\\\\%");
+    return value.replace("%", "\\%");
   }
 
 }

@@ -18,8 +18,8 @@ public abstract class ServicePointDesignationConflictException extends AtlasExce
   protected static final String CODE_PREFIX = "SEPODI.SERVICE_POINTS.CONFLICT.";
   private static final String ERROR = "ServicePoint conflict";
 
-  private final ServicePointVersion newVersion;
-  private final List<ServicePointVersion> overlappingVersions;
+  private transient final ServicePointVersion newVersion;
+  private transient final List<ServicePointVersion> overlappingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {

@@ -21,10 +21,10 @@ import ch.sbb.prm.directory.module.platform.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.module.platform.util.PlatformRecordingStatusEvaluator;
 import ch.sbb.prm.directory.module.referencepoint.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.module.relation.service.RelationService;
+import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
 import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.service.PrmRelatableVersionableService;
 import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointService;
-import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
 import ch.sbb.prm.directory.util.PrmMeansOfTransportHelper;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -106,8 +106,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
-  public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
-    return updateVersion(currentVersion, editedVersion);
+  public void updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
+    updateVersion(currentVersion, editedVersion);
   }
 
   public Optional<PlatformVersion> getPlatformVersionById(Long id) {

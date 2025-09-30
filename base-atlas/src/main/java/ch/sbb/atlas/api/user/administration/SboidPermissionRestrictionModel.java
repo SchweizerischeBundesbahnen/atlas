@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SboidPermissionRestrictionModel extends PermissionRestrictionModel<String> {
+public class SboidPermissionRestrictionModel extends PermissionRestrictionModel {
 
   public SboidPermissionRestrictionModel() {
     super(PermissionRestrictionType.BUSINESS_ORGANISATION);
