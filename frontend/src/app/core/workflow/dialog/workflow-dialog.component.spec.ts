@@ -11,7 +11,6 @@ import {
   User,
   Workflow,
   WorkflowProcessingStatus,
-  WorkflowService,
   WorkflowStart,
 } from '../../../api';
 import { CommentComponent } from '../../form-components/comment/comment.component';
@@ -27,11 +26,12 @@ import {
   MockAtlasButtonComponent,
 } from '../../../app.testing.mocks';
 import { PermissionService } from '../../auth/permission/permission.service';
-import WorkflowTypeEnum = WorkflowStart.WorkflowTypeEnum;
 import { DialogFooterComponent } from '../../components/dialog/footer/dialog-footer.component';
 import { DialogContentComponent } from '../../components/dialog/content/dialog-content.component';
 import { DialogCloseComponent } from '../../components/dialog/close/dialog-close.component';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
+import { LineWorkflowService } from '../../../api/service/workflow/line-workflow.service';
+import WorkflowTypeEnum = WorkflowStart.WorkflowTypeEnum;
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -63,7 +63,7 @@ const workflow: Workflow = {
   },
   workflowType: WorkflowTypeEnum.Line,
 };
-const workflowServiceMock = jasmine.createSpyObj(WorkflowService, {
+const workflowServiceMock = jasmine.createSpyObj(LineWorkflowService, {
   getWorkflow: of(workflow),
   startWorkflow: of({}),
 });
@@ -187,7 +187,7 @@ function setupTestBed(workflowDialogData: WorkflowDialogData) {
         provide: UserAdministrationService,
         useValue: userAdministrationServiceMock,
       },
-      { provide: WorkflowService, useValue: workflowServiceMock },
+      { provide: LineWorkflowService, useValue: workflowServiceMock },
       {
         provide: MAT_DIALOG_DATA,
         useValue: workflowDialogData,

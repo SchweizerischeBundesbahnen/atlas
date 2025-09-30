@@ -7,13 +7,13 @@ import { CommentComponent } from '../../form-components/comment/comment.componen
 import { By } from '@angular/platform-browser';
 import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
-import { WorkflowService } from '../../../api';
 import { of } from 'rxjs';
 import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { TextFieldComponent } from '../../form-components/text-field/text-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PermissionService } from '../../auth/permission/permission.service';
+import { LineWorkflowService } from '../../../api/service/workflow/line-workflow.service';
 
 let isAtLeastSupervisor = true;
 const permissionServiceMock: Partial<PermissionService> = {
@@ -26,7 +26,7 @@ describe('WorkflowCheckFormComponent', () => {
   let component: WorkflowCheckFormComponent;
   let fixture: ComponentFixture<WorkflowCheckFormComponent>;
 
-  const workflowServiceSpy = jasmine.createSpyObj(WorkflowService, {
+  const workflowServiceSpy = jasmine.createSpyObj(LineWorkflowService, {
     examinantCheck: of({}),
   });
 
@@ -34,7 +34,7 @@ describe('WorkflowCheckFormComponent', () => {
     await TestBed.configureTestingModule({
       providers: [
         { provide: PermissionService, useValue: permissionServiceMock },
-        { provide: WorkflowService, useValue: workflowServiceSpy },
+        { provide: LineWorkflowService, useValue: workflowServiceSpy },
         { provide: TranslatePipe },
       ],
       imports: [

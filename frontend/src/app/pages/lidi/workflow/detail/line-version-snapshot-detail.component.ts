@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  LineVersion,
-  LineVersionSnapshot,
-  Workflow,
-  WorkflowService,
-} from '../../../../api';
+import { LineVersion, LineVersionSnapshot, Workflow } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
@@ -26,6 +21,7 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LineWorkflowService } from '../../../../api/service/workflow/line-workflow.service';
 
 @Component({
   templateUrl: './line-version-snapshot-detail.component.html',
@@ -74,7 +70,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private workflowService: WorkflowService,
+    private workflowService: LineWorkflowService,
     private lineService: LineService
   ) {}
 
