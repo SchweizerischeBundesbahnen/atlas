@@ -51,7 +51,7 @@ describe('LineWorkflowService', () => {
     service.startWorkflow(workflowStart);
 
     // then
-    expect(apiService.post).toHaveBeenCalledOnceWith('/workflow/v1/line/workflows', workflowStart);
+    expect(apiService.post).toHaveBeenCalledOnceWith('/workflow/internal/line/workflows', workflowStart);
   });
 
   it('should getWorkflow', () => {
