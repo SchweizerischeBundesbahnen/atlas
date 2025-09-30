@@ -15,7 +15,6 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { AppRouting } from './app-routing';
-import { AtlasApiModule, Configuration } from './api';
 import { environment } from '../environments/environment';
 import { provideServiceWorker } from '@angular/service-worker';
 import { GlobalErrorHandler } from './core/configuration/global-error-handler';
@@ -32,10 +31,6 @@ import {
   withAppInitializerAuthCheck,
 } from 'angular-auth-oidc-client';
 
-function withBasePath(basePath: string) {
-  return () => new Configuration({ basePath: basePath });
-}
-
 if (environment.production) {
   enableProdMode();
 }
@@ -51,12 +46,7 @@ export const appConfig: ApplicationConfig = {
       }),
     }),
     TranslatePipe,
-    importProvidersFrom(
-      CoreModule,
-      DateModule.forRoot(),
-      AppRouting,
-      AtlasApiModule.forRoot(withBasePath(environment.atlasUnauthApiUrl))
-    ),
+    importProvidersFrom(CoreModule, DateModule.forRoot(), AppRouting),
     { provide: MatPaginatorIntl, useClass: TranslatedPaginator },
     {
       provide: MAT_CHIPS_DEFAULT_OPTIONS,
