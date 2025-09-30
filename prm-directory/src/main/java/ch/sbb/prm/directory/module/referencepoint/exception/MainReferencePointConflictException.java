@@ -22,7 +22,7 @@ public class MainReferencePointConflictException extends AtlasException {
   private static final String CODE = "PRM.REFERENCE_POINTS.CONFLICT";
   private static final String ERROR = "Main ReferencePoint conflict";
 
-  private transient final List<ReferencePointVersion> overlappingVersions;
+  private final transient List<ReferencePointVersion> overlappingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {

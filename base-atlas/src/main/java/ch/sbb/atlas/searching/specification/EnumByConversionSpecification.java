@@ -16,9 +16,9 @@ public class EnumByConversionSpecification<T, U, E> implements Specification<T> 
 
   @Serial private static final long serialVersionUID = 1;
 
-  private transient final List<U> parameterRestrictions;
-  private transient final Function<U, E> parameterToEnumFunction;
-  private transient final SingularAttribute<T, E> enumAttribute;
+  private final transient List<U> parameterRestrictions;
+  private final transient Function<U, E> parameterToEnumFunction;
+  private final transient SingularAttribute<T, E> enumAttribute;
   private final Boolean notIn;
 
   public EnumByConversionSpecification(List<U> parameterRestrictions, Function<U, E> parameterToEnumFunction,

@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class TerminationNotAllowedException extends AtlasException {
 
-  private transient final ServicePointNumber servicePointNumber;
+  private final transient ServicePointNumber servicePointNumber;
 
   @Override
   public ErrorResponse getErrorResponse() {

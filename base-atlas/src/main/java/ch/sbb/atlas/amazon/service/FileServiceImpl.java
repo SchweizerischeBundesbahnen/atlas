@@ -36,7 +36,7 @@ public class FileServiceImpl implements FileService {
   @Override
   public File zipFile(File file) {
     String filename = file.getName();
-    File zipFile = new File(file.toPath().getParent().toString(), file.getName() + ZIP);
+    File zipFile = new File(String.valueOf(file.toPath().getParent()), file.getName() + ZIP);
 
     try (ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(zipFile));
         InputStream inputStream = new FileInputStream(file)) {

@@ -22,8 +22,8 @@ public class LineConflictException extends AtlasException {
   private static final String CODE_PREFIX = "LIDI.LINE.CONFLICT.";
   private static final String ERROR = "Line conflict";
 
-  private transient final LineVersion newVersion;
-  private transient final List<LineVersion> overlappingVersions;
+  private final transient LineVersion newVersion;
+  private final transient List<LineVersion> overlappingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {

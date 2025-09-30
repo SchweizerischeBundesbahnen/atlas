@@ -9,6 +9,7 @@ import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +30,7 @@ public class PlatformBulkImportController extends BaseBulkImportControllerIntern
         platformBulkImportService::updatePlatformReduced);
   }
 
+  @SneakyThrows
   @Override
   @PreAuthorize("""
       @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,

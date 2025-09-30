@@ -16,14 +16,14 @@ public enum Country {
   BELGIUM("BE", 88, "Belgien", "Belgique", "Belgio", "Belgium"),
   BELARUS("BY", 21, "Weißrussland", "Bélarus", "Bielorussia", "Belarus"),
   SERB_BOSNIA_AND_HERZEGOVINA("BA", 44, "Bosnien und Herzegowinas, serbische Republik", "Bosnie-Herzégovine, République serbe de",
-      "Bosnia ed Erzegovina", "Bosnia and Herzegovina, Serb Republic of"),
-  BOSNIA_AND_HERZEGOVINA("BA", 49, "Bosnien und Herzegowina", "Bosnie-Herzégovine", "Bosnia ed Erzegovina",
+      Constants.BOSNIA_ED_ERZEGOVINA, "Bosnia and Herzegovina, Serb Republic of"),
+  BOSNIA_AND_HERZEGOVINA("BA", 49, "Bosnien und Herzegowina", "Bosnie-Herzégovine", Constants.BOSNIA_ED_ERZEGOVINA,
       "Bosnia and Herzegovina"),
   CROAT_BOSNIA_AND_HERZEGOVINA("BA", 50, "Bosnien und Herzegowinas, kroatisch-moslemische Föderation",
-      "Bosnie-Herzégovine, Fédération croato-musulmane de", "Bosnia ed Erzegovina",
+      "Bosnie-Herzégovine, Fédération croato-musulmane de", Constants.BOSNIA_ED_ERZEGOVINA,
       "Bosnia and Herzegovina, Muslim-Croat Federation of"),
   BULGARIA("BG", 52, "Bulgarien", "Bulgarie", "Bulgaria", "Bulgaria"),
-  CANADA("CA", null, "Kanada", "Canada", "Canada", "Canada"),
+  CANADA("CA", null, "Kanada", Constants.CANADA, Constants.CANADA, Constants.CANADA),
   CHINA("CN", 33, "China", "Chine", "Cina", "China"),
   NORTH_KOREA("KP", 30, "Koreas Demokratische Volksrepublik", "Corée, République populaire démocratique de", "Corea del Nord",
       "Korea, Democratic People's Republic of"),
@@ -55,11 +55,12 @@ public enum Country {
   MOROCCO("MA", 93, "Marokko", "Maroc", "Marocco", "Morocco"),
   MOLDOVA("MD", 23, "Moldawien, Republik", "Moldava, République de", "Moldavia", "Moldova, Republic of"),
   MONGOLIA("MN", 31, "Mongolei", "Mongolie", "Mongolia", "Mongolia"),
-  MONTENEGRO("ME", 62, "Montenegro", "Montenegro", "Montenegro", "Montenegro"),
+  MONTENEGRO("ME", 62, Constants.MONTENEGRO, Constants.MONTENEGRO, Constants.MONTENEGRO,
+      Constants.MONTENEGRO),
   NORWAY("NO", 76, "Norwegen", "Norvège", "Norvegia", "Norway"),
   NETHERLANDS("NL", 84, "Niederlande", "Pays-Bas", "Paesi Bassi", "Netherlands"),
   POLAND("PL", 51, "Polen", "Pologne", "Polonia", "Poland"),
-  PORTUGAL("PT", 94, "Portugal", "Portugal", "Portogallo", "Portugal"),
+  PORTUGAL("PT", 94, Constants.PORTUGAL, Constants.PORTUGAL, "Portogallo", Constants.PORTUGAL),
   GREAT_BRITAIN("GB", 70, "Vereinigtes Königreich von Großbritannien und von Nordirland",
       "Royaume-Uni de Grande-Bretagne et d'Irlande du Nord", "Regno Unito",
       "United Kingdom of Great Britain and Northern Ireland"),
@@ -80,11 +81,12 @@ public enum Country {
   TAJIKISTAN("TJ", 66, "Tadschikistan", "Tadjikistan", "Tagikistan", "Tajikistan"),
   TUNISIA("TN", 91, "Tunesien", "Tunisie", "Tunisia", "Tunisia"),
   TURKEY("TR", 75, "Türkei", "Turquie", "Turchia", "Turkey"),
-  TURKMENISTAN("TM", 67, "Turkmenistan", "Turkménistan", "Turkmenistan", "Turkmenistan"),
-  UKRAINE("UA", 22, "Ukraine", "Ukraine", "Ucraina", "Ukraine"),
+  TURKMENISTAN("TM", 67, Constants.TURKMENISTAN, "Turkménistan", Constants.TURKMENISTAN,
+      Constants.TURKMENISTAN),
+  UKRAINE("UA", 22, Constants.UKRAINE, Constants.UKRAINE, "Ucraina", Constants.UKRAINE),
   HUNGARY("HU", 55, "Ungarn", "Hongrie", "Ungheria", "Hungary"),
   UZBEKISTAN("UZ", 29, "Usbekistan", "Ouzbékistan", "Uzbekistan", "Uzbekistan"),
-  VIETNAM("VN", 32, "Vietnam", "Viet Nam", "Vietnam", "Vietnam"),
+  VIETNAM("VN", 32, Constants.VIETNAM, "Viet Nam", Constants.VIETNAM, Constants.VIETNAM),
   GERMANY_BUS("DE", 11, "Deutschland (Bus)", "Allemagne (bus)", "Germania (bus)", "Germany (bus)"),
   AUSTRIA_BUS("AT", 12, "Österreich (Bus)", "Autriche (bus)", "Austria (bus)", "Austria (bus)"),
   ITALY_BUS("IT", 13, "Italien (Bus)", "Italie (bus)", "Italia (bus)", "Italy (bus)"),
@@ -92,7 +94,8 @@ public enum Country {
   AUSTRIA_HUNGARY("GYSEV/ROEE", 43, "Österreich-Ungarn", "Austria-Hungary", null, "Raab-Ödenburg-Eberfurter Eisenbahn AG"),
   BOSNIA_AND_HERZEGOVINA_RAILWAY("ZBH", 89, "Bosnien-Herzegowina", "Bosnia-Herzegowina", null,
       "Eisenbahn Bosnien - Herzegowinas"),
-  AFGHANISTAN("AF", 68, "Afghanistan", "Afghanistan", "Afghanistan", "Afghanistan"),
+  AFGHANISTAN("AF", 68, Constants.AFGHANISTAN, Constants.AFGHANISTAN, Constants.AFGHANISTAN,
+      Constants.AFGHANISTAN),
   ALBANIA("AL", 41, "Albanien", "Albanie", "Albania", "Albania"),
   ALGERIA("DZ", 92, "Algerien", "Algérie", "Algeria", "Algeria"),
   ARMENIA("AM", 58, "Armenien", "Arménie", "Armenia", "Armenia"),
@@ -143,4 +146,15 @@ public enum Country {
         .orElse(null);
   }
 
+  private static class Constants {
+
+    private static final String BOSNIA_ED_ERZEGOVINA = "Bosnia ed Erzegovina";
+    private static final String CANADA = "Canada";
+    private static final String MONTENEGRO = "Montenegro";
+    private static final String PORTUGAL = "Portugal";
+    private static final String TURKMENISTAN = "Turkmenistan";
+    private static final String UKRAINE = "Ukraine";
+    private static final String VIETNAM = "Vietnam";
+    private static final String AFGHANISTAN = "Afghanistan";
+  }
 }

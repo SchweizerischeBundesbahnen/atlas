@@ -22,8 +22,8 @@ public class BusinessOrganisationConflictException extends AtlasException {
   private static final String CODE_PREFIX = "BODI.BUSINESS_ORGANISATION.CONFLICT.";
   private static final String ERROR = "BO conflict";
 
-  private transient final BusinessOrganisationVersion newVersion;
-  private transient final List<BusinessOrganisationVersion> overlappingVersions;
+  private final transient BusinessOrganisationVersion newVersion;
+  private final transient List<BusinessOrganisationVersion> overlappingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {

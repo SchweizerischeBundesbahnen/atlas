@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ServicePointStatusRevokedChangeNotAllowedException extends AtlasException {
 
-  private transient final ServicePointNumber servicePointNumber;
+  private final transient ServicePointNumber servicePointNumber;
   private final Status servicePointStatus;
   private static final String ERROR_MESSAGE = "ServicePoint Status cannot be changed for Status REVOKED and can be updated only"
       + " from DRAFT to VALIDATED!";

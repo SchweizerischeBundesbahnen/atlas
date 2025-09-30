@@ -15,8 +15,8 @@ public class ValidOnSpecification<T> implements Specification<T> {
   @Serial private static final long serialVersionUID = 1;
 
   private final LocalDate validOn;
-  private transient final SingularAttribute<? super T, LocalDate> validFromAttribute;
-  private transient final SingularAttribute<? super T, LocalDate> validToAttribute;
+  private final transient SingularAttribute<? super T, LocalDate> validFromAttribute;
+  private final transient SingularAttribute<? super T, LocalDate> validToAttribute;
 
   public ValidOnSpecification(
       LocalDate validOn,

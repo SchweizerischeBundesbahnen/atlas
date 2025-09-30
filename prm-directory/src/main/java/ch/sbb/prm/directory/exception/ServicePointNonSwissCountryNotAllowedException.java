@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ServicePointNonSwissCountryNotAllowedException extends AtlasException {
 
-  private transient final ServicePointNumber servicePointNumber;
+  private final transient ServicePointNumber servicePointNumber;
 
   @Override
   public ErrorResponse getErrorResponse() {

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SePoDiClientException extends AtlasException {
 
-  private transient final ErrorResponse errorResponse;
+  private final transient ErrorResponse errorResponse;
 
   @Override
   public ErrorResponse getErrorResponse() {

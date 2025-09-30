@@ -66,8 +66,8 @@ public enum OperatingPointTechnicalTimetableType {
       "pfi",
       null),
   ROUTE_SPEED_CHANGE(70, true, "Streckengeschwindigkeitswechsel", "Changement de vitesse de ligne",
-      "Variazioni di velocità di linea", "Track speed change", Constants.TECHNISCHERFAHRPLAN, "Stkmh", "Stkmh", "Stkmh",
-      null),
+      "Variazioni di velocità di linea", "Track speed change", Constants.TECHNISCHERFAHRPLAN, Constants.STKMH, Constants.STKMH,
+      Constants.STKMH, null),
 
   ;
 
@@ -93,5 +93,6 @@ public enum OperatingPointTechnicalTimetableType {
   private static class Constants {
 
     private static final String TECHNISCHERFAHRPLAN = "technischerfahrplan";
+    private static final String STKMH = "Stkmh";
   }
 }
