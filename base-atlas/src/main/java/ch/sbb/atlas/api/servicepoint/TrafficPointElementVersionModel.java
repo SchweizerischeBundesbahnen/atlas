@@ -46,17 +46,17 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
   private String designationOperational;
 
   @Schema(description = "Length of the TrafficPointElement", example = "18.000")
-  @Digits(integer = 13, fraction = 3)
+  @Digits(integer = 10, fraction = 3)
   @Min(0)
   private Double length;
 
   @Schema(description = "Height of BoardingArea at the TrafficPointElement", example = "22.00")
-  @Digits(integer = 5, fraction = 2)
+  @Digits(integer = 3, fraction = 2)
   @Min(0)
   private Double boardingAreaHeight;
 
   @Schema(description = "Compass Direction at the TrafficPointElement", example = "107.00")
-  @Digits(integer = 5, fraction = 2)
+  @Digits(integer = 3, fraction = 2)
   @Min(0)
   @Max(360)
   private Double compassDirection;
