@@ -37,7 +37,7 @@ public class GeolocationBaseCreateModel implements TransformableGeolocation {
   @Schema(description = "Eastern longitude", example = "681821.00000000000")
   private Double east;
 
-  @Schema(description = "Height of the coordinate point", example = "540.20000")
+  @Schema(description = "Height of the coordinate point", example = "540.2000")
   @Digits(integer = 5, fraction = 4)
   private Double height;
 
