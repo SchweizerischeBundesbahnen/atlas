@@ -22,7 +22,7 @@ public class LineDeleteConflictException extends AtlasException {
   private static final String ERROR = "Line delete conflict";
 
   private final String lineVersionSlnid;
-  private transient final List<SublineVersion> sublineVersions;
+  private final transient List<SublineVersion> sublineVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {

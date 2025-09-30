@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class StopPointVariantChangingNotAllowedException extends AtlasException {
 
-  private transient final StopPointVersion current;
+  private final transient StopPointVersion current;
 
   @Override
   public ErrorResponse getErrorResponse() {

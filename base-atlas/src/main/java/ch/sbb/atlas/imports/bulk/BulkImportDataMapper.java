@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import lombok.SneakyThrows;
 import org.springframework.util.ReflectionUtils;
 
 public abstract class BulkImportDataMapper {
@@ -14,6 +15,7 @@ public abstract class BulkImportDataMapper {
     applyDefaultMapping(update, null, targetModel);
   }
 
+  @SneakyThrows
   protected <T, U, V> void applyDefaultMapping(T update, U currentEntity, V targetModel) {
     for (Field updateField : update.getClass().getDeclaredFields()) {
       if (updateField.isAnnotationPresent(DefaultMapping.class)) {
@@ -21,7 +23,7 @@ public abstract class BulkImportDataMapper {
 
         Field targetField = ReflectionUtils.findField(targetModel.getClass(), updateField.getName());
         if (Objects.isNull(targetField)) {
-          throw new RuntimeException("Not found following field for default mapping application: " + updateField.getName());
+          throw new NoSuchFieldException("Not found following field for default mapping application: " + updateField.getName());
         }
         ReflectionUtils.makeAccessible(targetField);
 
@@ -31,7 +33,7 @@ public abstract class BulkImportDataMapper {
         } else if (Objects.nonNull(currentEntity)) {
           Field defaultField = ReflectionUtils.findField(currentEntity.getClass(), updateField.getName());
           if (Objects.isNull(defaultField)) {
-            throw new RuntimeException("Not found following field for default mapping application: " + updateField.getName());
+            throw new NoSuchFieldException("Not found following field for default mapping application: " + updateField.getName());
           }
           ReflectionUtils.makeAccessible(defaultField);
           Object defaultValue = ReflectionUtils.getField(defaultField, currentEntity);

@@ -10,8 +10,7 @@ public class ServicePointBulkImportCreate extends
     GeolocationBulkImportCreateDataMapper<ServicePointCreateCsvModel, CreateServicePointVersionModel> {
 
   public static CreateServicePointVersionModel apply(BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
-    return new ServicePointBulkImportCreate().applyCreate(bulkImportContainer,
-        new CreateServicePointVersionModel());
+    return new ServicePointBulkImportCreate().applyCreate(bulkImportContainer, new CreateServicePointVersionModel());
   }
 
   @Override

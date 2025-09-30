@@ -3,6 +3,7 @@ package ch.sbb.atlas.searching.specification;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
+import java.io.Serial;
 import java.util.List;
 import java.util.function.Function;
 
@@ -14,8 +15,10 @@ import java.util.function.Function;
  */
 public class EnumByConversionServicePointGeolocationSpecification<T, U, E, V> extends EnumByConversionSpecification<T, U, E> {
 
-  private transient final SingularAttribute<T, V> enumAttribute;
-  private transient final SingularAttribute<V, E> deepEnumAttribute;
+  @Serial private static final long serialVersionUID = 1;
+
+  private final transient SingularAttribute<T, V> enumAttribute;
+  private final transient SingularAttribute<V, E> deepEnumAttribute;
 
   public EnumByConversionServicePointGeolocationSpecification(List<U> parameterRestrictions,
       Function<U, E> parameterToEnumFunction, SingularAttribute<T, V> enumAttribute, SingularAttribute<V, E> deepEnumAttribute) {

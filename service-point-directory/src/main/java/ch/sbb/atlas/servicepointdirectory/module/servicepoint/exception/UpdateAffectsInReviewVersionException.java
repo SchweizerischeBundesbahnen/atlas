@@ -19,7 +19,7 @@ public class UpdateAffectsInReviewVersionException extends AtlasException {
 
   private final LocalDate updateFrom;
   private final LocalDate updateTo;
-  private transient final List<? extends Versionable> affectedVersions;
+  private final transient List<? extends Versionable> affectedVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {

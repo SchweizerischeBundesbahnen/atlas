@@ -11,7 +11,7 @@ public class LocalizedPropertyNamingStrategy extends PropertyNamingStrategies.Na
 
   @Serial private static final long serialVersionUID = 1;
 
-  private transient final MessageSource messageSource;
+  private final transient MessageSource messageSource;
   private final Locale locale;
 
   @Override

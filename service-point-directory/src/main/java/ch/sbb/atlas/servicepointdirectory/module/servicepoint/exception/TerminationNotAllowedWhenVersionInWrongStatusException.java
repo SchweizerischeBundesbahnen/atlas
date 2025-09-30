@@ -17,7 +17,7 @@ public class TerminationNotAllowedWhenVersionInWrongStatusException extends Atla
   public static final String CODE_TERMINATION_IN_REVIEW = "SEPODI.SERVICE_POINTS.TERMINATION_NOT_ALLOWED_WITH_VERSION_IN_REVIEW";
   public static final String CODE_TERMINATION_NOT_IN_VALIDATE = "SEPODI.SERVICE_POINTS"
       + ".TERMINATION_NOT_ALLOWED_WITH_VERSION_NOT_IN_VALIDATED";
-  private transient final ServicePointNumber servicePointNumber;
+  private final transient ServicePointNumber servicePointNumber;
   private final Status status;
 
   @Override

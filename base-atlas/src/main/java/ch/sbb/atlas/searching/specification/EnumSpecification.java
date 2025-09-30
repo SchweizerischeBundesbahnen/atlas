@@ -15,7 +15,7 @@ public class EnumSpecification<T, E> implements Specification<T> {
 
   @Serial private static final long serialVersionUID = 1;
 
-  private transient final List<E> enumRestrictions;
+  private final transient List<E> enumRestrictions;
   private final String enumAttribute;
   private final boolean notIn;
 

@@ -14,7 +14,7 @@ public class InSpecification<T, E> implements Specification<T> {
   @Serial
   private static final long serialVersionUID = 1;
 
-  private transient final List<E> searchRestrictions;
+  private final transient List<E> searchRestrictions;
   private final String stringAttribute;
 
   public InSpecification(List<E> searchRestrictions, String stringAttribute) {

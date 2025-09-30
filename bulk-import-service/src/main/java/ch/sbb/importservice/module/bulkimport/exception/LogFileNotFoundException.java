@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class LogFileNotFoundException extends AtlasException {
 
-  private transient final BulkImport bulkImport;
+  private final transient BulkImport bulkImport;
 
   @Override
   public ErrorResponse getErrorResponse() {

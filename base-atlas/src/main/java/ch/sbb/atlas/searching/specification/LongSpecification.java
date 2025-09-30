@@ -16,7 +16,7 @@ public class LongSpecification<T> implements Specification<T> {
   @Serial
   private static final long serialVersionUID = 1;
 
-  private transient final SingularAttribute<T, Long> attribute;
+  private final transient SingularAttribute<T, Long> attribute;
   private final Long value;
 
   @Override
