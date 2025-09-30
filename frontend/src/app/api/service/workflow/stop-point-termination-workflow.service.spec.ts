@@ -6,6 +6,9 @@ import {UserService} from '../../../core/auth/user/user.service';
 import {TerminationStopPointAddWorkflow} from '../../model/terminationStopPointAddWorkflow';
 import {TerminationAbort} from "../../model/terminationAbort";
 import any = jasmine.any;
+import { TerminationDecision } from '../../model/terminationDecision';
+import { JudgementType } from '../../model/judgementType';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 describe('StopPointTerminationWorkflowService', () => {
   let service: StopPointTerminationWorkflowService;
@@ -75,6 +78,36 @@ describe('StopPointTerminationWorkflowService', () => {
     expect(apiService.get).toHaveBeenCalledOnceWith(
       '/workflow/v1/termination-stop-point/workflows',
       any(HttpParams)
+    );
+  });
+
+  it('should decide as info+', () => {
+    const decision: TerminationDecision = {
+      judgement: JudgementType.No, terminationDecisionPerson: TerminationDecisionPersonEnum.InfoPlus
+    };
+
+    // when
+    service.decisionInfoPlus(1, decision);
+
+    // then
+    expect(apiService.post).toHaveBeenCalledOnceWith(
+      '/workflow/internal/termination-stop-point/workflows/decision/info-plus/1',
+      decision
+    );
+  });
+
+  it('should decide as nova', () => {
+    const decision: TerminationDecision = {
+      judgement: JudgementType.No, terminationDecisionPerson: TerminationDecisionPersonEnum.Nova
+    };
+
+    // when
+    service.decisionNova(1, decision);
+
+    // then
+    expect(apiService.post).toHaveBeenCalledOnceWith(
+      '/workflow/internal/termination-stop-point/workflows/decision/nova/1',
+      decision
     );
   });
 

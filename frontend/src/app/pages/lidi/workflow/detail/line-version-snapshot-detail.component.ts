@@ -68,10 +68,10 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     });
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private workflowService: LineWorkflowService,
-    private lineService: LineService
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly workflowService: LineWorkflowService,
+    private readonly lineService: LineService
   ) {}
 
   ngOnInit() {

@@ -29,12 +29,13 @@ import { WhitespaceValidator } from '../../../../../../core/validation/whitespac
 })
 export class StopPointTerminationDialogComponent implements OnInit {
   constructor(
-    private dialogRef: MatDialogRef<StopPointTerminationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StopPointTerminationDialogData,
-    private detailHelperService: DetailHelperService,
-    private workflowService: StopPointTerminationWorkflowService,
-    private notificationService: NotificationService,
-    private userService: UserService
+    private readonly dialogRef: MatDialogRef<StopPointTerminationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public readonly data: StopPointTerminationDialogData,
+    private readonly detailHelperService: DetailHelperService,
+    private readonly workflowService: StopPointTerminationWorkflowService,
+    private readonly notificationService: NotificationService,
+    private readonly userService: UserService
   ) {}
 
   form!: FormGroup<StartTerminationStopPointAddWorkflowFormGroup>;
