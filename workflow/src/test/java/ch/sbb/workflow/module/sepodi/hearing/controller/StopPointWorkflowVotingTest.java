@@ -117,8 +117,10 @@ class StopPointWorkflowVotingTest {
 
   @Test
   void shouldNotObtainOtpViaMailWithIncorrectMailAddress() {
+    OtpRequestModel otpRequestModel = OtpRequestModel.builder().examinantMail("iwantmail@here.ch").build();
+    Long workflowId = workflowInHearing.getId();
     assertThatExceptionOfType(StopPointWorkflowExaminantNotFoundException.class).isThrownBy(() ->
-        stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail("iwantmail@here.ch").build()));
+        stopPointWorkflowInternalController.obtainOtp(workflowId, otpRequestModel));
 
     assertThat(otpRepository.findAll()).isEmpty();
     verify(notificationService, times(0)).sendPinCodeMail(any(), anyString(), anyString());
@@ -138,12 +140,15 @@ class StopPointWorkflowVotingTest {
 
   @Test
   void shouldObtainOtpViaMailAndFailValidate() {
-    stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    Long workflowId = workflowInHearing.getId();
+    stopPointWorkflowInternalController.obtainOtp(workflowId,
+        OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
 
+    OtpVerificationModel otpVerificationModel = OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode("incorrectPin")
+        .build();
     assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class).isThrownBy(
-        () -> stopPointWorkflowInternalController.verifyOtp(workflowInHearing.getId(),
-            OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode("incorrectPin").build()));
+        () -> stopPointWorkflowInternalController.verifyOtp(workflowId, otpVerificationModel));
   }
 
   @Test

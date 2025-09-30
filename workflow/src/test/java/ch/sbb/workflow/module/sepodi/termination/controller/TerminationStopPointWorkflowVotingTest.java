@@ -164,23 +164,24 @@ class TerminationStopPointWorkflowVotingTest extends BaseControllerApiTest {
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
     verify(notificationService).sendStartTerminationNotificationToInfoPlusAndBo(any());
 
+    Long workflowId = terminationWorkflow.getId();
     TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
         TerminationDecisionModel.builder()
             .judgement(JudgementType.NO)
             .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
             .terminationDate(TERMINATION_DATE)
-            .build(), terminationWorkflow.getId());
+            .build(), workflowId);
     assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED);
     verify(notificationService).sendTariffStopNotApprovedNotificationToBo(any(), any());
     verify(sePoDiAdminClient).stopServicePointTermination(any(), any());
 
+    TerminationDecisionModel terminationDecisionModel = TerminationDecisionModel.builder()
+        .judgement(JudgementType.NO)
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+        .terminationDate(TERMINATION_DATE)
+        .build();
     assertThatExceptionOfType(TerminationStopPointWorkflowPreconditionStatusException.class).isThrownBy(
-        () -> controller.decisionNova(
-            TerminationDecisionModel.builder()
-                .judgement(JudgementType.NO)
-                .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
-                .terminationDate(TERMINATION_DATE)
-                .build(), terminationWorkflow.getId()));
+        () -> controller.decisionNova(terminationDecisionModel, workflowId));
   }
 
   @Test

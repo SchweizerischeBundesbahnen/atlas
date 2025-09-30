@@ -88,12 +88,12 @@ export class WorkflowDialogComponent implements OnInit {
   workflowStatusTranslated$?: Observable<string>;
 
   constructor(
-    public dialogRef: MatDialogRef<WorkflowDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: WorkflowDialogData,
-    private notificationService: NotificationService,
-    private workflowService: LineWorkflowService,
-    private userAdministrationService: UserAdministrationService,
-    private translateService: TranslateService
+    public readonly dialogRef: MatDialogRef<WorkflowDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: WorkflowDialogData,
+    private readonly notificationService: NotificationService,
+    private readonly workflowService: LineWorkflowService,
+    private readonly userAdministrationService: UserAdministrationService,
+    private readonly translateService: TranslateService
   ) {}
 
   ngOnInit() {
