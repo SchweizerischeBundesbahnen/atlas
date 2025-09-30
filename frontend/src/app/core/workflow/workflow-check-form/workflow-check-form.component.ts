@@ -8,7 +8,6 @@ import {
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 import { Subject } from 'rxjs';
-import { WorkflowService } from '../../../api';
 import { takeUntil } from 'rxjs/operators';
 import { WorkflowCheckFormGroup } from './workflow-check-form-group';
 import { NotificationService } from '../../notification/notification.service';
@@ -20,6 +19,7 @@ import { WorkflowFormComponent } from '../workflow-form/workflow-form.component'
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
+import { LineWorkflowService } from '../../../api/service/workflow/line-workflow.service';
 
 @Component({
   selector: 'app-workflow-check-form',
@@ -66,7 +66,7 @@ export class WorkflowCheckFormComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private readonly workflowService: WorkflowService,
+    private readonly workflowService: LineWorkflowService,
     private readonly notificationService: NotificationService,
     private readonly userAdministrationService: UserAdministrationService,
     public permissionService: PermissionService
