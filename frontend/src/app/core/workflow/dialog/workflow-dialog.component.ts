@@ -16,7 +16,6 @@ import {
   LineVersionWorkflow,
   Workflow,
   WorkflowProcessingStatus,
-  WorkflowService,
   WorkflowStart,
 } from '../../../api';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -30,6 +29,7 @@ import { WorkflowCheckFormComponent } from '../workflow-check-form/workflow-chec
 import { DialogFooterComponent } from '../../components/dialog/footer/dialog-footer.component';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
+import { LineWorkflowService } from '../../../api/service/workflow/line-workflow.service';
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -91,7 +91,7 @@ export class WorkflowDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<WorkflowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: WorkflowDialogData,
     private notificationService: NotificationService,
-    private workflowService: WorkflowService,
+    private workflowService: LineWorkflowService,
     private userAdministrationService: UserAdministrationService,
     private translateService: TranslateService
   ) {}
