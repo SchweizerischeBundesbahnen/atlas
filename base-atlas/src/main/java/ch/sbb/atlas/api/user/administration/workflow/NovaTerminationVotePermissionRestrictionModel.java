@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class NovaTerminationVotePermissionRestrictionModel extends PermissionRestrictionModel<Boolean> {
+public class NovaTerminationVotePermissionRestrictionModel extends PermissionRestrictionModel {
 
   public NovaTerminationVotePermissionRestrictionModel() {
     super(PermissionRestrictionType.NOVA_TERMINATION_VOTE);

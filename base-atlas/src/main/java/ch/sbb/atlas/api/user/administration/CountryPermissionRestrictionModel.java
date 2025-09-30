@@ -10,27 +10,22 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CountryPermissionRestrictionModel extends PermissionRestrictionModel<Country> {
+public class CountryPermissionRestrictionModel extends PermissionRestrictionModel {
 
-    public CountryPermissionRestrictionModel() {
-        super(PermissionRestrictionType.COUNTRY);
-    }
+  public CountryPermissionRestrictionModel() {
+    super(PermissionRestrictionType.COUNTRY);
+  }
 
-    public CountryPermissionRestrictionModel(Country value) {
-        super(PermissionRestrictionType.COUNTRY);
-        this.value = value;
-    }
+  @NotNull
+  private Country value;
 
-    @NotNull
-    private Country value;
+  @Override
+  public String getValueAsString() {
+    return getValue().name();
+  }
 
-    @Override
-    public String getValueAsString() {
-        return getValue().name();
-    }
-
-    @Override
-    public void setValueAsString(String value) {
-        setValue(Country.valueOf(value));
-    }
+  @Override
+  public void setValueAsString(String value) {
+    setValue(Country.valueOf(value));
+  }
 }

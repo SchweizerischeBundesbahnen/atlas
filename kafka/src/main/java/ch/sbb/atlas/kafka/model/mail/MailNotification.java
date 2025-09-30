@@ -36,7 +36,7 @@ public class MailNotification implements Serializable, AtlasEvent {
 
   private String content;
 
-  private transient List<Map<String, Object>> templateProperties; // todo: does kafka serialization still work?
+  private transient List<Map<String, Object>> templateProperties;
 
   private MailType mailType;
 

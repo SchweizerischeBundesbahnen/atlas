@@ -30,12 +30,12 @@ import lombok.experimental.SuperBuilder;
     @Type(value = NovaTerminationVotePermissionRestrictionModel.class, name = "NOVA_TERMINATION_VOTE"),
     @Type(value = InfoPlusTerminationVotePermissionRestrictionModel.class, name = "INFO_PLUS_TERMINATION_VOTE")
 })
-public abstract class PermissionRestrictionModel<T> {
+public abstract class PermissionRestrictionModel {
 
   protected final PermissionRestrictionType type;
 
   @JsonIgnore
-  public abstract T getValue();
+  public abstract Object getValue();
 
   public abstract String getValueAsString();
 

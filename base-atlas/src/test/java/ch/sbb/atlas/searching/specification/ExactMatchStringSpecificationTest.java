@@ -9,7 +9,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,8 +49,7 @@ class ExactMatchStringSpecificationTest {
 
   @Test
   void shouldReturnExpectedPredicateWhenPathOptionalIsEmpty() {
-    ExactMatchStringSpecification<Object> specification = new ExactMatchStringSpecification<>(Optional.empty(), "test"
-    );
+    ExactMatchStringSpecification<Object> specification = new ExactMatchStringSpecification<>(null, "test");
     when(criteriaBuilder.and()).thenReturn(expectedPredicate);
 
     Predicate result = specification.toPredicate(root, query, criteriaBuilder);
@@ -67,8 +65,7 @@ class ExactMatchStringSpecificationTest {
         .when(() -> StringPredicates.equalIgnoreCase(criteriaBuilder, path, "test"))
         .thenReturn(expectedPredicate);
 
-    ExactMatchStringSpecification<Object> spec =
-        new ExactMatchStringSpecification<>(Optional.of("test"), "test");
+    ExactMatchStringSpecification<Object> spec = new ExactMatchStringSpecification<>("test", "test");
     Predicate result = spec.toPredicate(root, query, criteriaBuilder);
 
     assertThat(result).isSameAs(expectedPredicate);

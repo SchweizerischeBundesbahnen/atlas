@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InfoPlusTerminationVotePermissionRestrictionModel extends PermissionRestrictionModel<Boolean> {
+public class InfoPlusTerminationVotePermissionRestrictionModel extends PermissionRestrictionModel {
 
   public InfoPlusTerminationVotePermissionRestrictionModel() {
     super(PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE);

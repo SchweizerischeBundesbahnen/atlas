@@ -33,7 +33,7 @@ public class TimetableFieldNumberResolverService {
           TimetableFieldNumberSearchRestrictions.builder()
               .pageable(Pageable.unpaged())
               .number(timetableFieldNumber)
-              .validOn(Optional.of(beginningOfNextTimetableYear))
+              .validOn(beginningOfNextTimetableYear)
               .build());
 
       if (timetableFieldNumbers.getTotalElements() == 1) {

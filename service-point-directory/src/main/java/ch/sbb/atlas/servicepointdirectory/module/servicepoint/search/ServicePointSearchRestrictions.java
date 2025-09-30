@@ -14,7 +14,6 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePoin
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -35,8 +34,8 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
   }
 
   @Override
-  public Optional<LocalDate> getValidOn() {
-    return Optional.ofNullable(servicePointRequestParams.getValidOn());
+  public LocalDate getValidOn() {
+    return servicePointRequestParams.getValidOn();
   }
 
   @Override

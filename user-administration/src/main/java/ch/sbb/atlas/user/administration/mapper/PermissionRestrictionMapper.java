@@ -15,8 +15,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class PermissionRestrictionMapper {
 
-  public static PermissionRestrictionModel<?> toModel(PermissionRestriction permissionRestriction) {
-    PermissionRestrictionModel<?> restrictionModel = switch (permissionRestriction.getType()) {
+  public static PermissionRestrictionModel toModel(PermissionRestriction permissionRestriction) {
+    PermissionRestrictionModel restrictionModel = switch (permissionRestriction.getType()) {
       case CANTON -> new CantonPermissionRestrictionModel();
       case BUSINESS_ORGANISATION -> new SboidPermissionRestrictionModel();
       case COUNTRY -> new CountryPermissionRestrictionModel();
@@ -29,7 +29,7 @@ public class PermissionRestrictionMapper {
   }
 
   public static PermissionRestriction toEntity(UserPermission userPermission,
-      PermissionRestrictionModel<?> permissionRestrictionModel) {
+      PermissionRestrictionModel permissionRestrictionModel) {
     return PermissionRestriction.builder()
         .userPermission(userPermission)
         .type(permissionRestrictionModel.getType())
@@ -38,7 +38,7 @@ public class PermissionRestrictionMapper {
   }
 
   public static PermissionRestriction toEntity(ClientCredentialPermission clientCredentialPermission,
-      PermissionRestrictionModel<?> permissionRestrictionModel) {
+      PermissionRestrictionModel permissionRestrictionModel) {
     return PermissionRestriction.builder()
         .clientCredentialPermission(clientCredentialPermission)
         .type(permissionRestrictionModel.getType())

@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class LoadingPointNumberAlreadyExistsException extends AtlasException {
 
-  private final ServicePointNumber servicePointNumber;
+  private transient final ServicePointNumber servicePointNumber;
   private final Integer number;
 
   @Override

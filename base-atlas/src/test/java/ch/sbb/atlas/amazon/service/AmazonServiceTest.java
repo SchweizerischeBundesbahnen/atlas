@@ -104,7 +104,7 @@ class AmazonServiceTest {
   @Test
   void shouldReturnBucketDir() throws IOException {
     //when
-    String result = amazonService.getFilePathName(createTempFile().toFile(), "dev");
+    String result = amazonService.getFilePathName("dev", createTempFile().toFile());
     //then
     assertThat(result).contains("dev/");
   }

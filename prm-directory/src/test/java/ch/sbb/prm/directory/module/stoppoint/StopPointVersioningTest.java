@@ -134,7 +134,7 @@ class StopPointVersioningTest {
     StopPointVersion version2 = StopPointTestData.builderVersion2().build();
     StopPointVersion version3 = StopPointTestData.builderVersion3().build();
     StopPointVersion savedVersion1 = stopPointRepository.saveAndFlush(version1);
-    StopPointVersion savedVersion2 = stopPointRepository.saveAndFlush(version2);
+    stopPointRepository.saveAndFlush(version2);
     StopPointVersion savedVersion3 = stopPointRepository.saveAndFlush(version3);
 
     StopPointVersion editedVersion = StopPointTestData.builderVersion2().build();

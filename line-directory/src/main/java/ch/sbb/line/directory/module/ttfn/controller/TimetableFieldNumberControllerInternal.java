@@ -12,7 +12,6 @@ import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestri
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -59,8 +58,8 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
             .searchCriterias(searchCriteria)
             .number(number)
             .statusRestrictions(statusChoices)
-            .validOn(Optional.ofNullable(validOn))
-            .businessOrganisation(Optional.ofNullable(businessOrganisation))
+            .validOn(validOn)
+            .businessOrganisation(businessOrganisation)
             .build());
     List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
         .toList();

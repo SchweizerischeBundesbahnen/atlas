@@ -9,27 +9,27 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BulkImportPermissionRestrictionModel extends PermissionRestrictionModel<Boolean> {
+public class BulkImportPermissionRestrictionModel extends PermissionRestrictionModel {
 
-    public BulkImportPermissionRestrictionModel() {
-        super(PermissionRestrictionType.BULK_IMPORT);
-    }
+  public BulkImportPermissionRestrictionModel() {
+    super(PermissionRestrictionType.BULK_IMPORT);
+  }
 
-    public BulkImportPermissionRestrictionModel(Boolean value) {
-        super(PermissionRestrictionType.BULK_IMPORT);
-        this.value = value;
-    }
+  public BulkImportPermissionRestrictionModel(Boolean value) {
+    super(PermissionRestrictionType.BULK_IMPORT);
+    this.value = value;
+  }
 
-    @NotNull
-    private Boolean value;
+  @NotNull
+  private Boolean value;
 
-    @Override
-    public String getValueAsString() {
-        return String.valueOf(getValue());
-    }
+  @Override
+  public String getValueAsString() {
+    return String.valueOf(getValue());
+  }
 
-    @Override
-    public void setValueAsString(String value) {
-        setValue(Boolean.valueOf(value));
-    }
+  @Override
+  public void setValueAsString(String value) {
+    setValue(Boolean.valueOf(value));
+  }
 }

@@ -26,7 +26,7 @@ public class ReferencePointValidationService {
       List<ReferencePointVersion> mainReferencePointOverlaps = referencePointRepository.findMainReferencePointOverlaps(
           referencePointVersion);
       if (!mainReferencePointOverlaps.isEmpty()) {
-        throw new MainReferencePointConflictException(referencePointVersion, mainReferencePointOverlaps);
+        throw new MainReferencePointConflictException(mainReferencePointOverlaps);
       }
     }
   }

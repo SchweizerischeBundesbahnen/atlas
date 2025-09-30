@@ -29,4 +29,3 @@ public class EnumByConversionServicePointGeolocationSpecification<T, U, E, V> ex
     return root.get(enumAttribute).get(deepEnumAttribute.getName());
   }
 }
-// todo: test
