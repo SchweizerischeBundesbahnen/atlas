@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.integration;
 
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_WITH_GROUP_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_JSON_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,6 +32,11 @@ class ExportSectorIntegrationTest {
   @Qualifier(EXPORT_SECTOR_JSON_JOB_NAME)
   private Job exportSectorJsonJob;
 
+
+  @Autowired
+  @Qualifier(EXPORT_SECTOR_WITH_GROUP_CSV_JOB_NAME)
+  private Job exportSectorWithGroupCsvJob;
+
   @Test
   void shouldExecuteExportSectorJsonJob() throws Exception {
     // given
@@ -44,6 +50,22 @@ class ExportSectorIntegrationTest {
 
     // then
     assertThat(actualJobInstance.getJobName()).isEqualTo(EXPORT_SECTOR_JSON_JOB_NAME);
+    assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
+  }
+
+  @Test
+  void shouldExecuteExportSectorWithGroupCsvJob() throws Exception {
+    // given
+
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(
+        new JobParams(ExportTypeV2.FULL));
+    // when
+    JobExecution jobExecution = jobLauncher.run(exportSectorWithGroupCsvJob, jobParameters);
+    JobInstance actualJobInstance = jobExecution.getJobInstance();
+    ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
+
+    // then
+    assertThat(actualJobInstance.getJobName()).isEqualTo(EXPORT_SECTOR_WITH_GROUP_CSV_JOB_NAME);
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
   }
 

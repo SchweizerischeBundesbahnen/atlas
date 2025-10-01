@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.sector.service;
 
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_WITH_GROUP_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
@@ -16,9 +17,10 @@ public class ExportSectorJobService extends BaseExportJobService {
 
   public ExportSectorJobService(
       JobLauncher jobLauncher,
+      @Qualifier(EXPORT_SECTOR_WITH_GROUP_CSV_JOB_NAME) Job exportServiceCsvJob,
       @Qualifier(EXPORT_SECTOR_JSON_JOB_NAME) Job exportServiceJsonJob
   ) {
-    super(jobLauncher, exportServiceJsonJob);
+    super(jobLauncher, exportServiceCsvJob, exportServiceJsonJob);
   }
 
   @Override
