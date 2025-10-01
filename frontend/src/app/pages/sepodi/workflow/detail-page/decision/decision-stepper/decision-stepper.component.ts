@@ -3,7 +3,7 @@ import { MatStepper, MatStepperIcon, MatStep } from '@angular/material/stepper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { catchError, EMPTY, Observable, of, shareReplay, take } from 'rxjs';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
-import { StopPointPerson, StopPointWorkflowService } from 'src/app/api';
+import { StopPointPerson } from 'src/app/api';
 import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import { DialogService } from 'src/app/core/components/dialog/dialog.service';
 import { map } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { DecisionFormComponent } from '../decision-form/decision-form.component'
 import { LoadingSpinnerComponent } from '../../../../../../core/components/loading-spinner/loading-spinner.component';
 import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'sepodi-wf-decision-stepper',

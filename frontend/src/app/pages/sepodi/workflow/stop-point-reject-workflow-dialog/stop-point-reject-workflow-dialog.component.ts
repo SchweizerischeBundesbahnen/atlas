@@ -7,10 +7,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StopPointRejectWorkflowDialogData } from './stop-point-reject-workflow-dialog-data';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import {
-  StopPointRejectWorkflow,
-  StopPointWorkflowService,
-} from '../../../../api';
+import { StopPointRejectWorkflow } from '../../../../api';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { Pages } from '../../../pages';
 import { Router } from '@angular/router';
@@ -22,6 +19,7 @@ import { CommentComponent } from '../../../../core/form-components/comment/comme
 import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'app-stop-point-reject-workflow-dialog',

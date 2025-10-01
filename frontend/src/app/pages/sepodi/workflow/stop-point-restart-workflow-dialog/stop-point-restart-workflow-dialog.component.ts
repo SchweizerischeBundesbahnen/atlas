@@ -7,10 +7,7 @@ import {
 import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ValidationService } from '../../../../core/validation/validation.service';
-import {
-  StopPointRestartWorkflow,
-  StopPointWorkflowService,
-} from '../../../../api';
+import { StopPointRestartWorkflow } from '../../../../api';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { Pages } from '../../../pages';
@@ -22,6 +19,7 @@ import { CommentComponent } from '../../../../core/form-components/comment/comme
 import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'app-stop-point-restart-workflow-dialog',

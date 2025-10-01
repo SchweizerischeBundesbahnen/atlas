@@ -6,7 +6,6 @@ import {
   ReadStopPointWorkflow,
   Status,
   StopPointPerson,
-  StopPointWorkflowService,
   WorkflowStatus,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
@@ -36,6 +35,7 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
 import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'stop-point-workflow-detail',

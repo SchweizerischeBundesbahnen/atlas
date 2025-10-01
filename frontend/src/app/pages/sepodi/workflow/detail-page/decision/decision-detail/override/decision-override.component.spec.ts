@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DecisionOverrideComponent } from './decision-override.component';
 import { AppTestingModule } from '../../../../../../../app.testing.module';
-import {
-  JudgementType,
-  StopPointWorkflowService,
-} from '../../../../../../../api';
+import { JudgementType } from '../../../../../../../api';
 import { of } from 'rxjs';
 import { PermissionService } from '../../../../../../../core/auth/permission/permission.service';
 import { adminPermissionServiceMock } from '../../../../../../../app.testing.mocks';
@@ -14,6 +11,7 @@ import { CommentComponent } from '../../../../../../../core/form-components/comm
 import { AtlasFieldErrorComponent } from '../../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
 import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
+import { StopPointWorkflowService } from '../../../../../../../api/service/workflow/stop-point-workflow.service';
 
 const stopPointWorkflowService = jasmine.createSpyObj(
   'stopPointWorkflowService',

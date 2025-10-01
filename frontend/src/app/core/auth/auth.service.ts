@@ -14,10 +14,8 @@ import {
 } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Role } from './role';
-import { Configuration } from '../../api';
 import { Router } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
 
 export const BC_TOKEN = new InjectionToken<
   (logoutFn: () => void) => BroadcastChannel
@@ -52,7 +50,6 @@ export class AuthService {
   private readonly oidcSecurityService = inject(OidcSecurityService);
   private readonly userService = inject(UserService);
   private readonly pageService = inject(PageService);
-  private readonly apiServiceConfig = inject(Configuration);
   private readonly router = inject(Router);
 
   initAuth() {
@@ -62,7 +59,6 @@ export class AuthService {
           this.handleNotLoggedIn();
           return EMPTY;
         }
-        this.apiServiceConfig.basePath = environment.atlasApiUrl;
         this._bc = this.createBC(() => this.logout());
         localStorage.setItem(this._tryLoginKey, this._tryLoginValue);
         return combineLatest([

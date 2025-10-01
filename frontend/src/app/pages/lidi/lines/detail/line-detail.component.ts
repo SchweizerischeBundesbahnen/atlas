@@ -35,7 +35,7 @@ import { DateRangeTextComponent } from '../../../../core/versioning/date-range-t
 import { NgIf } from '@angular/common';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { SublineTableComponent } from './subline-table/subline-table.component';
-import { WorkflowComponent } from '../../../../core/workflow/workflow.component';
+import { LineWorkflowComponent } from '../../../../core/workflow/line-workflow.component';
 import { LinkComponent } from '../../../../core/form-components/link/link.component';
 import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
 import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
@@ -57,7 +57,7 @@ import { LineInternalService } from '../../../../api/service/lidi/line-internal.
     NgIf,
     SwitchVersionComponent,
     SublineTableComponent,
-    WorkflowComponent,
+    LineWorkflowComponent,
     LinkComponent,
     LineDetailFormComponent,
     UserDetailInfoComponent,

@@ -5,12 +5,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { FormModule } from '../../../../core/module/form.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import {
-  Permission,
-  ReadStopPointWorkflow,
-  StopPointWorkflowService,
-  User,
-} from '../../../../api';
+import { Permission, ReadStopPointWorkflow, User } from '../../../../api';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -20,6 +15,7 @@ import { DialogFooterComponent } from '../../../../core/components/dialog/footer
 import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
 import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,

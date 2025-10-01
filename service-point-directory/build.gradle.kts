@@ -11,7 +11,6 @@ group = "ch.sbb.atlas"
 version = "2.874.0"
 
 description = "ServicePointDirectory"
-extra["shedlockVersion"] = "5.16.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")

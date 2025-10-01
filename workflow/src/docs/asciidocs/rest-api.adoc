@@ -1,0 +1,29 @@
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ATLAS-HEAD.adoc[]
+
+= Stop Point Workflow
+
+== Get Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-api-v1-controller-test/should-get-workflows/atlas-doc.adoc[]
+
+== Get Stop Point Workflow by ID - Successfully
+
+include::{snippets}/stop-point-workflow-api-v1-controller-test/should-get-workflow-by-id/atlas-doc.adoc[]
+
+== Create Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-api-v1-controller-test/should-add-workflow/atlas-doc.adoc[]
+
+= Stop Point Termination Workflow
+
+== Get Stop Point Termination Workflow - Successfully
+
+include::{snippets}/termination-stop-point-workflow-api-v1-controller-test/should-get-termination-stop-point-by-id/atlas-doc.adoc[]
+
+== Get Stop Point Termination Workflow by ID- Successfully
+
+include::{snippets}/termination-stop-point-workflow-api-v1-controller-test/should-get-termination-stop-point-by-id/atlas-doc.adoc[]
+
+== Create Stop Point Termination Workflow Workflow - Successfully
+
+include::{snippets}/termination-stop-point-workflow-api-v1-controller-test/should-save-termination-stop-point/atlas-doc.adoc[]
