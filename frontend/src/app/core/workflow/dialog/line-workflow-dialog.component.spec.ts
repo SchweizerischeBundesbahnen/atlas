@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkflowDialogComponent } from './workflow-dialog.component';
+import { LineWorkflowDialogComponent } from './line-workflow-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
-import { WorkflowDialogData } from './workflow-dialog-data';
+import { LineWorkflowDialogData } from './line-workflow-dialog-data';
 import {
   LineVersionWorkflow,
   Permission,
@@ -19,8 +19,8 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { FormModule } from '../../module/form.module';
 import { NotificationService } from '../../notification/notification.service';
 import { of } from 'rxjs';
-import { WorkflowCheckFormComponent } from '../workflow-check-form/workflow-check-form.component';
-import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
+import { LineWorkflowCheckFormComponent } from '../workflow-check-form/line-workflow-check-form.component';
+import { LineWorkflowFormComponent } from '../workflow-form/line-workflow-form.component';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
@@ -68,9 +68,9 @@ const workflowServiceMock = jasmine.createSpyObj(LineWorkflowService, {
   startWorkflow: of({}),
 });
 
-describe('WorkflowDialogComponent new', () => {
-  let component: WorkflowDialogComponent;
-  let fixture: ComponentFixture<WorkflowDialogComponent>;
+describe('LineWorkflowDialogComponent new', () => {
+  let component: LineWorkflowDialogComponent;
+  let fixture: ComponentFixture<LineWorkflowDialogComponent>;
 
   beforeEach(async () => {
     setupTestBed({
@@ -88,7 +88,7 @@ describe('WorkflowDialogComponent new', () => {
       message: 'Andiamo in spiaggia?',
     });
 
-    fixture = TestBed.createComponent(WorkflowDialogComponent);
+    fixture = TestBed.createComponent(LineWorkflowDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -115,9 +115,9 @@ describe('WorkflowDialogComponent new', () => {
   });
 });
 
-describe('WorkflowDialogComponent open', () => {
-  let component: WorkflowDialogComponent;
-  let fixture: ComponentFixture<WorkflowDialogComponent>;
+describe('LineWorkflowDialogComponent open', () => {
+  let component: LineWorkflowDialogComponent;
+  let fixture: ComponentFixture<LineWorkflowDialogComponent>;
 
   beforeEach(async () => {
     setupTestBed({
@@ -141,7 +141,7 @@ describe('WorkflowDialogComponent open', () => {
       message: 'Andiamo in spiaggia?',
     });
 
-    fixture = TestBed.createComponent(WorkflowDialogComponent);
+    fixture = TestBed.createComponent(LineWorkflowDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -166,14 +166,14 @@ describe('WorkflowDialogComponent open', () => {
   });
 });
 
-function setupTestBed(workflowDialogData: WorkflowDialogData) {
+function setupTestBed(workflowDialogData: LineWorkflowDialogData) {
   TestBed.configureTestingModule({
     imports: [
       AppTestingModule,
       FormModule,
-      WorkflowDialogComponent,
-      WorkflowFormComponent,
-      WorkflowCheckFormComponent,
+      LineWorkflowDialogComponent,
+      LineWorkflowFormComponent,
+      LineWorkflowCheckFormComponent,
       CommentComponent,
       ErrorNotificationComponent,
       MockAtlasButtonComponent,

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { WorkflowDialogData } from './workflow-dialog-data';
+import { LineWorkflowDialogData } from './line-workflow-dialog-data';
 import { NotificationService } from '../../notification/notification.service';
 import {
   FormControl,
@@ -24,8 +24,8 @@ import { Observable } from 'rxjs';
 import { DialogCloseComponent } from '../../components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../components/dialog/content/dialog-content.component';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
-import { WorkflowCheckFormComponent } from '../workflow-check-form/workflow-check-form.component';
+import { LineWorkflowFormComponent } from '../workflow-form/line-workflow-form.component';
+import { LineWorkflowCheckFormComponent } from '../workflow-check-form/line-workflow-check-form.component';
 import { DialogFooterComponent } from '../../components/dialog/footer/dialog-footer.component';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
@@ -33,22 +33,22 @@ import { LineWorkflowService } from '../../../api/service/workflow/line-workflow
 
 @Component({
   selector: 'app-workflow-dialog',
-  templateUrl: './workflow-dialog.component.html',
-  styleUrls: ['./workflow-dialog.component.scss'],
+  templateUrl: './line-workflow-dialog.component.html',
+  styleUrls: ['./line-workflow-dialog.component.scss'],
   imports: [
     DialogCloseComponent,
     DialogContentComponent,
     NgIf,
-    WorkflowFormComponent,
+    LineWorkflowFormComponent,
     ReactiveFormsModule,
-    WorkflowCheckFormComponent,
+    LineWorkflowCheckFormComponent,
     DialogFooterComponent,
     AsyncPipe,
     TranslatePipe,
   ],
   providers: [TranslatePipe],
 })
-export class WorkflowDialogComponent implements OnInit {
+export class LineWorkflowDialogComponent implements OnInit {
   workflowStartFormGroup: FormGroup<WorkflowFormGroup> =
     new FormGroup<WorkflowFormGroup>({
       comment: new FormControl('', [
@@ -88,10 +88,10 @@ export class WorkflowDialogComponent implements OnInit {
   workflowStatusTranslated$?: Observable<string>;
 
   constructor(
-    public readonly dialogRef: MatDialogRef<WorkflowDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public readonly data: WorkflowDialogData,
+    public readonly dialogRef: MatDialogRef<LineWorkflowDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: LineWorkflowDialogData,
     private readonly notificationService: NotificationService,
-    private readonly workflowService: LineWorkflowService,
+    private readonly lineWorkflowService: LineWorkflowService,
     private readonly userAdministrationService: UserAdministrationService,
     private readonly translateService: TranslateService
   ) {}
@@ -116,7 +116,7 @@ export class WorkflowDialogComponent implements OnInit {
     this.workflowStartFormGroup.disable();
     this.workflowId = workflowId;
 
-    this.workflowService
+    this.lineWorkflowService
       .getWorkflow(workflowId)
       .subscribe((workflow: Workflow) =>
         this.populateWorkflowStartFormGroupFromPersistence(workflow)
@@ -167,7 +167,7 @@ export class WorkflowDialogComponent implements OnInit {
     if (this.workflowStartFormGroup.valid) {
       const workflowStart = this.populateWorkflowStart();
       this.workflowStartFormGroup.disable();
-      this.workflowService.startWorkflow(workflowStart).subscribe(() => {
+      this.lineWorkflowService.startWorkflow(workflowStart).subscribe(() => {
         this.closeDialog();
         this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
       });

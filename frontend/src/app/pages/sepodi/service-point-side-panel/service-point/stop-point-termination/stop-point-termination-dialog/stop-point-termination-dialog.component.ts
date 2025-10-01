@@ -33,7 +33,7 @@ export class StopPointTerminationDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public readonly data: StopPointTerminationDialogData,
     private readonly detailHelperService: DetailHelperService,
-    private readonly workflowService: StopPointTerminationWorkflowService,
+    private readonly stopPointTerminationWorkflowService: StopPointTerminationWorkflowService,
     private readonly notificationService: NotificationService,
     private readonly userService: UserService
   ) {}
@@ -48,7 +48,7 @@ export class StopPointTerminationDialogComponent implements OnInit {
     const startTerminationValue = this.getStartTermination();
     if (this.form.valid) {
       this.form.disable();
-      this.workflowService
+      this.stopPointTerminationWorkflowService
         .startTermination(startTerminationValue)
         .subscribe(() => {
           this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
