@@ -1261,10 +1261,10 @@
       }
     },
     "SECTORS": {
-      "SECTORS": "Settore",
+      "SECTORS": "Settori",
       "SECTOR": "Settore",
       "DESIGNATION": "Denominazione",
-      "NEW": "Registrare settore",
+      "NEW": "Inserire un settore",
       "MOT_CHANGE_WARNING": "Questa modifica potrebbe invalidare i settori assegnati, in quanto validi solo per le fermate ferroviarie.",
       "CONSTRUCTION_INFORMATION": "Informazioni costruttive",
       "LENGTH": "Lunghezza [m]",
@@ -1279,8 +1279,8 @@
       "REQUIRED_AT_LEAST_TWO_SECTOR_ERROR": "Necessari almeno due settori."
     },
     "SECTOR_GROUPS": {
-      "SECTOR_GROUPS": "Gruppo settoriale",
-      "NEW": "Registrare gruppo settoriale"
+      "SECTOR_GROUPS": "Gruppi di settori",
+      "NEW": "Inserire un gruppo di settori"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Posti di carico",
