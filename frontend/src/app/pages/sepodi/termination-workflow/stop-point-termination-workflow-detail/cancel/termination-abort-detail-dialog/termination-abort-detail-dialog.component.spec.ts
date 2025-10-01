@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TerminationAbortFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
 import { TerminationAbortDetailDialogData } from '../termination-abort-dialog.service';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { of } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../../../../app.testing.mocks';
@@ -37,7 +37,7 @@ describe('TerminationCancelDetailDialog', () => {
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: closeTerminationDialogData },
         {
-          provide: WorkflowService,
+          provide: StopPointTerminationWorkflowService,
           useValue: terminationWorkflowService,
         },
         TranslatePipe,

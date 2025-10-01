@@ -22,7 +22,7 @@ import {
   MatDatepickerInput,
 } from '@angular/material/datepicker';
 import { MIN_DATE } from '../../../../../../core/date/date.service';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
@@ -58,7 +58,9 @@ export class TerminationDecisionDetailDialogComponent implements OnInit {
   );
   private readonly decisionDetailDialogData: TerminationDecisionDetailDialogData =
     inject(MAT_DIALOG_DATA);
-  private readonly terminationWorkflowService = inject(WorkflowService);
+  private readonly terminationWorkflowService = inject(
+    StopPointTerminationWorkflowService
+  );
 
   form!: FormGroup<TerminationDecisionFormGroup>;
   examinant!: TerminationDecisionPersonEnum;

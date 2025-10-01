@@ -8,8 +8,7 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.874.0"
 
-description = "Atlas Scheduling Service"
-extra["shedlockVersion"] = "5.16.0"
+description = "Atlas Workflow Service"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")

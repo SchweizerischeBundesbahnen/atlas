@@ -4,11 +4,11 @@ import { catchError, mergeMap, Observable, of } from 'rxjs';
 import {
   ReadServicePointVersion,
   ReadStopPointWorkflow,
-  StopPointWorkflowService,
 } from '../../../../api';
 import { Pages } from '../../../pages';
 import { map } from 'rxjs/operators';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 export interface StopPointWorkflowDetailData {
   workflow: ReadStopPointWorkflow;

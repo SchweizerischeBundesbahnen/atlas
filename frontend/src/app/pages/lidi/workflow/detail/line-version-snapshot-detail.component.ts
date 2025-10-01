@@ -1,23 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  LineVersion,
-  LineVersionSnapshot,
-  Workflow,
-  WorkflowService,
-} from '../../../../api';
+import { LineVersion, LineVersionSnapshot, Workflow } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
 import { Pages } from '../../../pages';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
 import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
-import { WorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
+import { LineWorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/line-workflow-check-form-group';
 import { LineService } from '../../../../api/service/lidi/line.service';
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
-import { WorkflowFormComponent } from '../../../../core/workflow/workflow-form/workflow-form.component';
+import { LineWorkflowFormComponent } from '../../../../core/workflow/workflow-form/line-workflow-form.component';
 import { NgIf } from '@angular/common';
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/line-detail-form.component';
@@ -26,6 +21,7 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LineWorkflowService } from '../../../../api/service/workflow/line-workflow.service';
 
 @Component({
   templateUrl: './line-version-snapshot-detail.component.html',
@@ -35,7 +31,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     DetailPageContainerComponent,
     DetailPageContentComponent,
     DateRangeTextComponent,
-    WorkflowFormComponent,
+    LineWorkflowFormComponent,
     ReactiveFormsModule,
     NgIf,
     LinkIconComponent,
@@ -63,8 +59,8 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
       mail: new FormControl(''),
     });
 
-  workflowCheckFormGroup: FormGroup<WorkflowCheckFormGroup> =
-    new FormGroup<WorkflowCheckFormGroup>({
+  workflowCheckFormGroup: FormGroup<LineWorkflowCheckFormGroup> =
+    new FormGroup<LineWorkflowCheckFormGroup>({
       comment: new FormControl(''),
       firstName: new FormControl(''),
       lastName: new FormControl(''),
@@ -72,10 +68,10 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     });
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private workflowService: WorkflowService,
-    private lineService: LineService
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly lineWorkflowService: LineWorkflowService,
+    private readonly lineService: LineService
   ) {}
 
   ngOnInit() {
@@ -154,7 +150,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
   }
 
   private initWorkflowForms() {
-    this.workflowService
+    this.lineWorkflowService
       .getWorkflow(this.lineVersionSnapshot.workflowId)
       .subscribe((workflow) => {
         this.workflow = workflow;

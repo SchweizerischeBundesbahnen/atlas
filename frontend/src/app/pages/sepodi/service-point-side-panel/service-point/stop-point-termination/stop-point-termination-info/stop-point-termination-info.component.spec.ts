@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StopPointTerminationInfoComponent } from './stop-point-termination-info.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { TerminationInfo } from '../../../../../../api/model/terminationInfo';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -34,7 +34,10 @@ describe('StopPointTerminationInfoComponent', () => {
       imports: [StopPointTerminationInfoComponent, TranslateModule.forRoot()],
       providers: [
         { provide: TranslatePipe },
-        { provide: WorkflowService, useValue: workflowService },
+        {
+          provide: StopPointTerminationWorkflowService,
+          useValue: workflowService,
+        },
         { provide: Router, useValue: routerSpy },
       ],
     }).compileComponents();

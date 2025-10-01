@@ -1,6 +1,6 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { DateService } from '../../../../../../core/date/date.service';
 import { Router } from '@angular/router';
 import { Pages } from '../../../../../pages';
@@ -13,7 +13,9 @@ import { Pages } from '../../../../../pages';
   templateUrl: './stop-point-termination-info.component.html',
 })
 export class StopPointTerminationInfoComponent implements OnInit {
-  private readonly workflowService = inject(WorkflowService);
+  private readonly stopPointTerminationWorkflowService = inject(
+    StopPointTerminationWorkflowService
+  );
   private readonly router = inject(Router);
   readonly sloid = input.required<string>();
 
@@ -37,7 +39,7 @@ export class StopPointTerminationInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.workflowService
+    this.stopPointTerminationWorkflowService
       .getTerminationInfoBySloid(this.sloid())
       .subscribe((terminationInfo) => {
         this.terminationDate = DateService.getDateFormatted(
