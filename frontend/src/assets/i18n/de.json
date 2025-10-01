@@ -1265,7 +1265,7 @@
       "SECTOR": "Sektor",
       "DESIGNATION": "Bezeichnung",
       "NEW": "Sektor erfassen",
-      "MOT_CHANGE_WARNING": "Durch diese Änderung könnten zugewiesene Sektoren/Sektorgruppen ungültig werden, da diese nur für Eisenbahnhaltestellen gültig sind.",
+      "MOT_CHANGE_WARNING": "Durch diese Änderung könnten zugewiesene Sektoren/Sektorengruppen ungültig werden, da diese nur für Eisenbahnhaltestellen gültig sind.",
       "CONSTRUCTION_INFORMATION": "Bauliche Informationen",
       "LENGTH": "Länge [m]",
       "EDGE_HEIGHT": "Kantenhöhe [cm]",
@@ -1279,7 +1279,7 @@
       "REQUIRED_AT_LEAST_TWO_SECTOR_ERROR": "Mindestens zwei Sektoren sind erforderlich."
     },
     "SECTOR_GROUPS": {
-      "SECTOR_GROUPS": "Sektorgruppen",
+      "SECTOR_GROUPS": "Sektorengruppen",
       "NEW": "Sektorengruppe erfassen"
     },
     "LOADING_POINTS": {
