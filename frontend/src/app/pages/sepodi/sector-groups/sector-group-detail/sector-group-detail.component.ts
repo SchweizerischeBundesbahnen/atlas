@@ -25,16 +25,16 @@ import {
   ReadTrafficPointElementVersion,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
-import {
-  SectorDetailFormGroup,
-  SectorFormGroupBuilder,
-} from '../../sectors/sector-detail/sector-detail-form-group';
-import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVersion';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { CreateSectorVersion } from '../../../../api/model/createSectorVersion';
 import { catchError, EMPTY } from 'rxjs';
 import { SectorGroupService } from '../../../../api/service/sepodi/sector-group.service';
+import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
+import {
+  SectorGroupDetailFormGroup,
+  SectorGroupFormGroupBuilder,
+} from './sector-group-detail-form-group';
 
 @Component({
   selector: 'app-sector-group-detail',
@@ -65,15 +65,15 @@ export class SectorGroupDetailComponent
   private readonly sectorGroupService = inject(SectorGroupService);
   //TODO sectorGroupService
 
-  sectorGroupVersions!: ReadSectorGroupVersion[];
-  selectedVersion!: ReadSectorGroupVersion;
+  sectorGroupVersions!: SectorGroupVersion[];
+  selectedVersion!: SectorGroupVersion;
   selectedVersionIndex!: number;
   maxValidity!: DateRange;
   servicePointDesignationOfficial!: string;
   trafficPoint!: ReadTrafficPointElementVersion;
 
   isNew = false;
-  form!: FormGroup<SectorDetailFormGroup>;
+  form!: FormGroup<SectorGroupDetailFormGroup>;
   servicePointBusinessOrganisations: string[] = [];
 
   ngOnInit() {
@@ -83,7 +83,7 @@ export class SectorGroupDetailComponent
 
       if (this.sectorGroupVersions.length == 0) {
         this.isNew = true;
-        this.form = SectorFormGroupBuilder.buildFormGroup();
+        this.form = SectorGroupFormGroupBuilder.buildFormGroup();
       } else {
         this.isNew = false;
         VersionsHandlingService.addVersionNumbers(this.sectorGroupVersions);
@@ -105,7 +105,9 @@ export class SectorGroupDetailComponent
   }
 
   private initSelectedVersion(): void {
-    this.form = SectorFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.form = SectorGroupFormGroupBuilder.buildFormGroup(
+      this.selectedVersion
+    );
     this.selectedVersionIndex = this.sectorGroupVersions.indexOf(
       this.selectedVersion
     );

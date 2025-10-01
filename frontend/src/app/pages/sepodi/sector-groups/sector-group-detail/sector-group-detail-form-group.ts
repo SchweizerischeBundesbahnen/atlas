@@ -3,49 +3,50 @@ import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
+import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
 
-export interface SectorDetailFormGroup extends BaseDetailFormGroup {
+export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
   designation: FormControl<string | null | undefined>;
   trafficPointSloid: FormControl<string | null | undefined>;
   length: FormControl<number | null | undefined>;
-  edgeHeight: FormControl<number | null | undefined>;
 }
 
 export class SectorGroupFormGroupBuilder {
   static buildFormGroup(
-    sectorVersion?: ReadSectorVersion
-  ): FormGroup<SectorDetailFormGroup> {
-    return new FormGroup<SectorDetailFormGroup>(
+    sectorGroupVersion?: SectorGroupVersion
+  ): FormGroup<SectorGroupDetailFormGroup> {
+    return new FormGroup<SectorGroupDetailFormGroup>(
       {
-        sloid: new FormControl(sectorVersion?.sloid),
-        trafficPointSloid: new FormControl(sectorVersion?.trafficPointSloid),
-        designation: new FormControl(sectorVersion?.designation, [
+        sloid: new FormControl(sectorGroupVersion?.sloid),
+        trafficPointSloid: new FormControl(
+          sectorGroupVersion?.trafficPointSloid
+        ),
+        designation: new FormControl(sectorGroupVersion?.designation, [
           Validators.required,
           Validators.maxLength(8),
         ]),
-        length: new FormControl(sectorVersion?.length, [
+        length: new FormControl(sectorGroupVersion?.length, [
           AtlasCharsetsValidator.decimalWithDigits(6, 3),
           Validators.min(0),
         ]),
-        edgeHeight: new FormControl(sectorVersion?.edgeHeight, [
-          AtlasCharsetsValidator.numeric,
-          Validators.max(999),
-        ]),
         validFrom: new FormControl(
-          sectorVersion?.validFrom ? moment(sectorVersion.validFrom) : null,
+          sectorGroupVersion?.validFrom
+            ? moment(sectorGroupVersion.validFrom)
+            : null,
           [Validators.required]
         ),
         validTo: new FormControl(
-          sectorVersion?.validTo ? moment(sectorVersion.validTo) : null,
+          sectorGroupVersion?.validTo
+            ? moment(sectorGroupVersion.validTo)
+            : null,
           [Validators.required]
         ),
-        etagVersion: new FormControl(sectorVersion?.etagVersion),
-        creationDate: new FormControl(sectorVersion?.creationDate),
-        editionDate: new FormControl(sectorVersion?.editionDate),
-        editor: new FormControl(sectorVersion?.editor),
-        creator: new FormControl(sectorVersion?.creator),
+        etagVersion: new FormControl(sectorGroupVersion?.etagVersion),
+        creationDate: new FormControl(sectorGroupVersion?.creationDate),
+        editionDate: new FormControl(sectorGroupVersion?.editionDate),
+        editor: new FormControl(sectorGroupVersion?.editor),
+        creator: new FormControl(sectorGroupVersion?.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
