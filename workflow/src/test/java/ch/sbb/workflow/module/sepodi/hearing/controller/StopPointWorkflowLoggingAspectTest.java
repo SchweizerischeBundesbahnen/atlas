@@ -14,6 +14,8 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.entity.Person;
+import ch.sbb.workflow.module.sepodi.hearing.api.StopPointWorkflowApiInternal;
+import ch.sbb.workflow.module.sepodi.hearing.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.module.sepodi.hearing.enity.Decision;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.StopPointAddWorkflowModel;
@@ -92,7 +94,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
         .thenThrow(new IllegalStateException());
 
     // when & then
-    mvc.perform(post("/v1/stop-point/workflows")
+    mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().is5xxServerError());
@@ -138,7 +140,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
         .build();
 
     // when & then
-    mvc.perform(post("/v1/stop-point/workflows/reject/" + stopPointWorkflow.getId() + 1)
+    mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/reject/" + stopPointWorkflow.getId() + 1)
             .contentType(contentType)
             .content(mapper.writeValueAsString(stopPointRejectWorkflowModel)))
         .andExpect(status().isNotFound());
@@ -147,7 +149,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
         workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
             .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
     assertThat(workflows).hasSize(1);
-    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.ADDED);
+    assertThat(workflows.getFirst().getStatus()).isEqualTo(WorkflowStatus.ADDED);
 
     Decision decisionResult = decisionRepository.findAll().stream()
         .filter(decision -> decision.getExaminant().getStopPointWorkflow().getId().equals(stopPointWorkflow.getId())).findFirst()
@@ -194,7 +196,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
         .build();
 
     // when & then
-    mvc.perform(post("/v1/stop-point/workflows/cancel/" + stopPointWorkflow.getId() + 1)
+    mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/cancel/" + stopPointWorkflow.getId() + 1)
             .contentType(contentType)
             .content(mapper.writeValueAsString(stopPointCancelWorkflowModel)))
         .andExpect(status().isNotFound());
@@ -203,7 +205,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
         workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
             .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
     assertThat(workflows).hasSize(1);
-    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.HEARING);
+    assertThat(workflows.getFirst().getStatus()).isEqualTo(WorkflowStatus.HEARING);
 
     Decision decisionResult = decisionRepository.findAll().stream()
         .filter(decision -> decision.getExaminant().getStopPointWorkflow().getId().equals(stopPointWorkflow.getId())).findFirst()
@@ -262,7 +264,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
         .build();
 
     // when & then
-    mvc.perform(post("/v1/stop-point/workflows/restart/" + stopPointWorkflow.getId() + 5)
+    mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/restart/" + stopPointWorkflow.getId() + 5)
             .contentType(contentType)
             .content(mapper.writeValueAsString(stopPointRestartWorkflowModel)))
         .andExpect(status().isNotFound());

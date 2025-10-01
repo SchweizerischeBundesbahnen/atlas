@@ -7,7 +7,7 @@ import { TablePagination } from '../../../../core/components/table/table-paginat
 import { Observable, of } from 'rxjs';
 import { ContainerTerminationStopPointWorkflowModel } from '../../../../api/model/containerTerminationStopPointWorkflowModel';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
-import { WorkflowService } from '../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { TableService } from '../../../../core/components/table/table.service';
 import { Pages } from '../../../pages';
 import { TableFilterChip } from '../../../../core/components/table-filter/config/table-filter-chip';
@@ -29,7 +29,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   imports: [TableComponent, TranslatePipe, AsyncPipe],
 })
 export class StopPointTerminationWorkflowOverviewComponent {
-  private readonly workflowService = inject(WorkflowService);
+  private readonly stopPointTerminationWorkflowService = inject(
+    StopPointTerminationWorkflowService
+  );
   private readonly tableService = inject(TableService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -116,18 +118,19 @@ export class StopPointTerminationWorkflowOverviewComponent {
   }
 
   protected loadWorkflows(pagination: TablePagination) {
-    this.workflows$ = this.workflowService.getTerminationStopPointWorkflows(
-      this.tableService.filter.search.getActiveSearch(),
-      addElementsToArrayWhenNotUndefined(
-        this.tableService.filter.sboid.getActiveSearch()?.sboid
-      ),
-      addElementsToArrayWhenNotUndefined(
-        this.tableService.filter.workflowIds.getActiveSearch()
-      ),
-      this.tableService.filter.workflowStatus.getActiveSearch(),
-      pagination.page,
-      pagination.size,
-      addElementsToArrayWhenNotUndefined(pagination.sort, 'id,desc')
-    );
+    this.workflows$ =
+      this.stopPointTerminationWorkflowService.getTerminationStopPointWorkflows(
+        this.tableService.filter.search.getActiveSearch(),
+        addElementsToArrayWhenNotUndefined(
+          this.tableService.filter.sboid.getActiveSearch()?.sboid
+        ),
+        addElementsToArrayWhenNotUndefined(
+          this.tableService.filter.workflowIds.getActiveSearch()
+        ),
+        this.tableService.filter.workflowStatus.getActiveSearch(),
+        pagination.page,
+        pagination.size,
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'id,desc')
+      );
   }
 }

@@ -17,7 +17,6 @@ import {
   ReadServicePointVersion,
   ReadStopPointWorkflow,
   Status,
-  StopPointWorkflowService,
 } from '../../../../api';
 import { StringListComponent } from '../../../../core/form-components/string-list/string-list.component';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
@@ -41,6 +40,7 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { StopPointWorkflowExaminantsTableComponent } from './examinant-table/stop-point-workflow-examinants-table.component';
 import { StopPointWorkflowDetailFormGroupBuilder } from './detail-form/stop-point-workflow-detail-form-group';
 import { AddExaminantsDialogService } from './add-examinants-dialog/add-examinants-dialog.service';
+import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,

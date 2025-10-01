@@ -12,7 +12,6 @@ import {
   JudgementType,
   OverrideDecision,
   ReadDecision,
-  StopPointWorkflowService,
 } from 'src/app/api';
 import { NotificationService } from 'src/app/core/notification/notification.service';
 import { PermissionService } from 'src/app/core/auth/permission/permission.service';
@@ -23,6 +22,7 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AtlasFieldErrorComponent } from '../../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { CommentComponent } from '../../../../../../../core/form-components/comment/comment.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { StopPointWorkflowService } from '../../../../../../../api/service/workflow/stop-point-workflow.service';
 
 @Component({
   selector: 'decision-override',

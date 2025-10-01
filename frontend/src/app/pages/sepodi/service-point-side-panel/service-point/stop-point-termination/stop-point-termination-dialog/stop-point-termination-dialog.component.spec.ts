@@ -8,7 +8,7 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { Permission, User } from '../../../../../../api';
@@ -17,9 +17,12 @@ import { provideHttpClient } from '@angular/common/http';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
-const workflowServiceMock = jasmine.createSpyObj(WorkflowService, {
-  startTermination: of({}),
-});
+const workflowServiceMock = jasmine.createSpyObj(
+  StopPointTerminationWorkflowService,
+  {
+    startTermination: of({}),
+  }
+);
 const user: User = {
   sbbUserId: 'e123',
   lastName: 'Marek',
@@ -64,7 +67,10 @@ describe('StopPointTerminationDialogComponent', () => {
           provide: MAT_DIALOG_DATA,
           useValue: workflowDialogData,
         },
-        { provide: WorkflowService, useValue: workflowServiceMock },
+        {
+          provide: StopPointTerminationWorkflowService,
+          useValue: workflowServiceMock,
+        },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
           provide: UserAdministrationService,

@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
-import { WorkflowCheckFormGroup } from './workflow-check-form/workflow-check-form-group';
+import { LineWorkflowCheckFormGroup } from './workflow-check-form/line-workflow-check-form-group';
 
-export interface WorkflowFormGroup extends WorkflowCheckFormGroup {
+export interface WorkflowFormGroup extends LineWorkflowCheckFormGroup {
   mail: FormControl<string | null | undefined>;
 }

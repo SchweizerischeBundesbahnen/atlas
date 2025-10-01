@@ -9,7 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';
-import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { TerminationStopPointAddWorkflow } from '../../../../../../api/model/terminationStopPointAddWorkflow';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { UserService } from '../../../../../../core/auth/user/user.service';
@@ -29,12 +29,13 @@ import { WhitespaceValidator } from '../../../../../../core/validation/whitespac
 })
 export class StopPointTerminationDialogComponent implements OnInit {
   constructor(
-    private dialogRef: MatDialogRef<StopPointTerminationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StopPointTerminationDialogData,
-    private detailHelperService: DetailHelperService,
-    private workflowService: WorkflowService,
-    private notificationService: NotificationService,
-    private userService: UserService
+    private readonly dialogRef: MatDialogRef<StopPointTerminationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public readonly data: StopPointTerminationDialogData,
+    private readonly detailHelperService: DetailHelperService,
+    private readonly stopPointTerminationWorkflowService: StopPointTerminationWorkflowService,
+    private readonly notificationService: NotificationService,
+    private readonly userService: UserService
   ) {}
 
   form!: FormGroup<StartTerminationStopPointAddWorkflowFormGroup>;
@@ -47,7 +48,7 @@ export class StopPointTerminationDialogComponent implements OnInit {
     const startTerminationValue = this.getStartTermination();
     if (this.form.valid) {
       this.form.disable();
-      this.workflowService
+      this.stopPointTerminationWorkflowService
         .startTermination(startTerminationValue)
         .subscribe(() => {
           this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');

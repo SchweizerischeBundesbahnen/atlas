@@ -42,7 +42,7 @@ class HeaderUtil {
       JSONObject jsonObject = new JSONObject(payload);
       return jsonObject.getString(claim);
     } catch (Exception e) {
-      log.error("Could not read claim={} from token={}", claim, token, e);
+      log.debug("Could not read claim={} from token={}", claim, token, e);
       return "";
     }
   }

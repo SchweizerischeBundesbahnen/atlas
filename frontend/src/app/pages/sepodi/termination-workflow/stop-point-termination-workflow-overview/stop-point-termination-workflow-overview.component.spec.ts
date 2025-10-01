@@ -3,7 +3,7 @@ import { StopPointTerminationWorkflowOverviewComponent } from './stop-point-term
 import { Component, input, output } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
-import { WorkflowService } from '../../../../api/service/workflow/workflow.service';
+import { StopPointTerminationWorkflowService } from '../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { of, Subject } from 'rxjs';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -27,7 +27,7 @@ class MockTableComponent {
 describe('StopPointTerminationWorkflowOverviewComponent', () => {
   let fixture: ComponentFixture<StopPointTerminationWorkflowOverviewComponent>;
 
-  let wfServiceSpy: SpyObj<WorkflowService>;
+  let wfServiceSpy: SpyObj<StopPointTerminationWorkflowService>;
 
   beforeEach(async () => {
     wfServiceSpy = jasmine.createSpyObj(['getTerminationStopPointWorkflows']);
@@ -48,7 +48,10 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: WorkflowService, useValue: wfServiceSpy },
+        {
+          provide: StopPointTerminationWorkflowService,
+          useValue: wfServiceSpy,
+        },
         { provide: ActivatedRoute, useValue: { queryParam: new Subject() } },
       ],
     })
