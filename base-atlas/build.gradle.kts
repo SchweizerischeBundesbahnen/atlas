@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.874.0"
+version = "2.875.0"
 
 configurations {
     create("test") //used to create the base-atlas-test jar
