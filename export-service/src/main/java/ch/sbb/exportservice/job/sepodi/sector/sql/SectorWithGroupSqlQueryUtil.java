@@ -55,7 +55,7 @@ public class SectorWithGroupSqlQueryUtil extends SqlQueryUtil {
       left join sector_group_relations sgr on sg.sloid = sgr.sector_group_sloid
       group by sg.id
       )""";
-  private static final String ORDER_BY_STATEMENT = "order by sloid, valid_from ASC";
+  private static final String ORDER_BY_STATEMENT = "order by type, sloid, valid_from ASC";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     String sqlQuery = ExportSqlQueryBuilder.builder()
