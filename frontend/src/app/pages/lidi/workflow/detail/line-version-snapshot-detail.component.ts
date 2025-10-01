@@ -6,13 +6,13 @@ import moment from 'moment';
 import { Pages } from '../../../pages';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
 import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
-import { WorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
+import { LineWorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/line-workflow-check-form-group';
 import { LineService } from '../../../../api/service/lidi/line.service';
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
-import { WorkflowFormComponent } from '../../../../core/workflow/workflow-form/workflow-form.component';
+import { LineWorkflowFormComponent } from '../../../../core/workflow/workflow-form/line-workflow-form.component';
 import { NgIf } from '@angular/common';
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/line-detail-form.component';
@@ -31,7 +31,7 @@ import { LineWorkflowService } from '../../../../api/service/workflow/line-workf
     DetailPageContainerComponent,
     DetailPageContentComponent,
     DateRangeTextComponent,
-    WorkflowFormComponent,
+    LineWorkflowFormComponent,
     ReactiveFormsModule,
     NgIf,
     LinkIconComponent,
@@ -59,8 +59,8 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
       mail: new FormControl(''),
     });
 
-  workflowCheckFormGroup: FormGroup<WorkflowCheckFormGroup> =
-    new FormGroup<WorkflowCheckFormGroup>({
+  workflowCheckFormGroup: FormGroup<LineWorkflowCheckFormGroup> =
+    new FormGroup<LineWorkflowCheckFormGroup>({
       comment: new FormControl(''),
       firstName: new FormControl(''),
       lastName: new FormControl(''),
@@ -70,7 +70,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly workflowService: LineWorkflowService,
+    private readonly lineWorkflowService: LineWorkflowService,
     private readonly lineService: LineService
   ) {}
 
@@ -150,7 +150,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
   }
 
   private initWorkflowForms() {
-    this.workflowService
+    this.lineWorkflowService
       .getWorkflow(this.lineVersionSnapshot.workflowId)
       .subscribe((workflow) => {
         this.workflow = workflow;

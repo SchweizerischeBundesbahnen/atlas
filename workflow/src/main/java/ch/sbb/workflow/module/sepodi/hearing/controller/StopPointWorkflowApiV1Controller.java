@@ -20,15 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class StopPointWorkflowApiV1Controller implements StopPointWorkflowApiV1 {
 
-  private final StopPointWorkflowService service;
+  private final StopPointWorkflowService stopPointWorkflowService;
   private final DecisionService decisionService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
-    ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(service.getWorkflow(id));
+    ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(stopPointWorkflowService.getWorkflow(id));
 
-    service.getWorkflowByFollowUpId(id).ifPresent(stopPointWorkflow ->
+    stopPointWorkflowService.getWorkflowByFollowUpId(id).ifPresent(stopPointWorkflow ->
         stopPointWorkflowModel.setPreviousWorkflowId(stopPointWorkflow.getId())
     );
 
@@ -43,7 +43,7 @@ public class StopPointWorkflowApiV1Controller implements StopPointWorkflowApiV1 
         .pageable(pageable)
         .stopPointWorkflowRequestParams(stopPointWorkflowRequestParams)
         .build();
-    Page<StopPointWorkflow> workflows = service.getWorkflows(stopPointWorkflowSearchRestrictions);
+    Page<StopPointWorkflow> workflows = stopPointWorkflowService.getWorkflows(stopPointWorkflowSearchRestrictions);
 
     return Container.<ReadStopPointWorkflowModel>builder()
         .objects(workflows.stream().map(StopPointWorkflowMapper::toModel).toList())

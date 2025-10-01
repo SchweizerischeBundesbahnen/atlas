@@ -7,22 +7,19 @@ import {
   Output,
 } from '@angular/core';
 import { LineRecord } from './model/line-record';
-import {
-  LineVersionWorkflow,
-  WorkflowProcessingStatus,
-} from '../../api';
-import { WorkflowDialogService } from './dialog/workflow-dialog.service';
+import { LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
+import { LineWorkflowDialogService } from './dialog/line-workflow-dialog.service';
 import { LineInternalService } from '../../api/service/lidi/line-internal.service';
 import { NgIf } from '@angular/common';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 
 @Component({
   selector: 'app-workflow [lineRecord]',
-  templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.scss'],
+  templateUrl: './line-workflow.component.html',
+  styleUrls: ['./line-workflow.component.scss'],
   imports: [NgIf, AtlasButtonComponent],
 })
-export class WorkflowComponent implements OnInit, OnChanges {
+export class LineWorkflowComponent implements OnInit, OnChanges {
   @Input() lineRecord!: LineRecord;
   @Input() descriptionForWorkflow!: string;
 
@@ -33,7 +30,7 @@ export class WorkflowComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly lineInternalService: LineInternalService,
-    private readonly workflowDialogService: WorkflowDialogService
+    private readonly workflowDialogService: LineWorkflowDialogService
   ) {}
 
   ngOnInit(): void {

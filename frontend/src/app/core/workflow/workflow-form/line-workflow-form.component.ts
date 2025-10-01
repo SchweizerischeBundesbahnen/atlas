@@ -7,7 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-workflow-form',
-  templateUrl: './workflow-form.component.html',
+  templateUrl: './line-workflow-form.component.html',
   imports: [
     ReactiveFormsModule,
     CommentComponent,
@@ -17,7 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
   providers: [TranslatePipe],
 })
-export class WorkflowFormComponent {
+export class LineWorkflowFormComponent {
   @Input() formGroup!: FormGroup;
   @Input() commentLabel!: string;
   @Input() personLabel!: string;

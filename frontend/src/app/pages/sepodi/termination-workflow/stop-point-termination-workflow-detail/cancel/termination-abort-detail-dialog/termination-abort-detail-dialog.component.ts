@@ -30,7 +30,7 @@ export class TerminationAbortDetailDialogComponent implements OnInit {
   private readonly decisionDetailDialogData: TerminationAbortDetailDialogData =
     inject(MAT_DIALOG_DATA);
 
-  private readonly workflowService = inject(
+  private readonly stopPointTerminationWorkflowService = inject(
     StopPointTerminationWorkflowService
   );
   private readonly notificationService = inject(NotificationService);
@@ -50,7 +50,7 @@ export class TerminationAbortDetailDialogComponent implements OnInit {
     if (this.form.valid) {
       const abortComment = this.form.controls.abortComment.value;
       const workflowId = this.decisionDetailDialogData.workflowId;
-      this.workflowService
+      this.stopPointTerminationWorkflowService
         .abortTermination(workflowId, {
           abortComment: abortComment!,
         })

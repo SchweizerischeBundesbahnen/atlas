@@ -9,13 +9,13 @@ import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { WorkflowCheckFormGroup } from './workflow-check-form-group';
+import { LineWorkflowCheckFormGroup } from './line-workflow-check-form-group';
 import { NotificationService } from '../../notification/notification.service';
 import { ValidationService } from '../../validation/validation.service';
 import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
 import { PermissionService } from '../../auth/permission/permission.service';
 import { NgIf } from '@angular/common';
-import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
+import { LineWorkflowFormComponent } from '../workflow-form/line-workflow-form.component';
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
@@ -23,22 +23,22 @@ import { LineWorkflowService } from '../../../api/service/workflow/line-workflow
 
 @Component({
   selector: 'app-workflow-check-form',
-  templateUrl: './workflow-check-form.component.html',
+  templateUrl: './line-workflow-check-form.component.html',
   imports: [
     NgIf,
-    WorkflowFormComponent,
+    LineWorkflowFormComponent,
     ReactiveFormsModule,
     AtlasButtonComponent,
     TranslatePipe,
   ],
   providers: [TranslatePipe],
 })
-export class WorkflowCheckFormComponent implements OnInit {
+export class LineWorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
   @Output() workflowChecked = new EventEmitter<void>();
 
-  formGroup: FormGroup<WorkflowCheckFormGroup> =
-    new FormGroup<WorkflowCheckFormGroup>({
+  formGroup: FormGroup<LineWorkflowCheckFormGroup> =
+    new FormGroup<LineWorkflowCheckFormGroup>({
       comment: new FormControl('', [
         AtlasFieldLengthValidator.comments,
         AtlasCharsetsValidator.iso88591,
