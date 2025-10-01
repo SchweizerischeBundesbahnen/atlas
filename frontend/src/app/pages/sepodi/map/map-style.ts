@@ -256,6 +256,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       source: 'current_traffic_point',
       type: 'symbol',
       layout: {
+        'icon-allow-overlap': true,
         'icon-image': 'SELECTED_TP_INDICATOR',
         'icon-size': [
           'interpolate',
@@ -303,6 +304,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       source: 'current_sector',
       type: 'symbol',
       layout: {
+        'icon-allow-overlap': true,
         'icon-image': 'SELECTED_SECTOR_INDICATOR',
         'icon-size': [
           'interpolate',
