@@ -13,7 +13,7 @@ import { Pages } from '../../../../../pages';
   templateUrl: './stop-point-termination-info.component.html',
 })
 export class StopPointTerminationInfoComponent implements OnInit {
-  private readonly workflowService = inject(
+  private readonly stopPointTerminationWorkflowService = inject(
     StopPointTerminationWorkflowService
   );
   private readonly router = inject(Router);
@@ -39,7 +39,7 @@ export class StopPointTerminationInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.workflowService
+    this.stopPointTerminationWorkflowService
       .getTerminationInfoBySloid(this.sloid())
       .subscribe((terminationInfo) => {
         this.terminationDate = DateService.getDateFormatted(

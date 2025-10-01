@@ -29,7 +29,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   imports: [TableComponent, TranslatePipe, AsyncPipe],
 })
 export class StopPointTerminationWorkflowOverviewComponent {
-  private readonly workflowService = inject(
+  private readonly stopPointTerminationWorkflowService = inject(
     StopPointTerminationWorkflowService
   );
   private readonly tableService = inject(TableService);
@@ -118,18 +118,19 @@ export class StopPointTerminationWorkflowOverviewComponent {
   }
 
   protected loadWorkflows(pagination: TablePagination) {
-    this.workflows$ = this.workflowService.getTerminationStopPointWorkflows(
-      this.tableService.filter.search.getActiveSearch(),
-      addElementsToArrayWhenNotUndefined(
-        this.tableService.filter.sboid.getActiveSearch()?.sboid
-      ),
-      addElementsToArrayWhenNotUndefined(
-        this.tableService.filter.workflowIds.getActiveSearch()
-      ),
-      this.tableService.filter.workflowStatus.getActiveSearch(),
-      pagination.page,
-      pagination.size,
-      addElementsToArrayWhenNotUndefined(pagination.sort, 'id,desc')
-    );
+    this.workflows$ =
+      this.stopPointTerminationWorkflowService.getTerminationStopPointWorkflows(
+        this.tableService.filter.search.getActiveSearch(),
+        addElementsToArrayWhenNotUndefined(
+          this.tableService.filter.sboid.getActiveSearch()?.sboid
+        ),
+        addElementsToArrayWhenNotUndefined(
+          this.tableService.filter.workflowIds.getActiveSearch()
+        ),
+        this.tableService.filter.workflowStatus.getActiveSearch(),
+        pagination.page,
+        pagination.size,
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'id,desc')
+      );
   }
 }

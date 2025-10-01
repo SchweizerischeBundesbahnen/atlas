@@ -7,10 +7,10 @@ import {
   Status,
   WorkflowProcessingStatus,
 } from '../../../api';
-import { WorkflowDialogService } from './workflow-dialog.service';
+import { LineWorkflowDialogService } from './line-workflow-dialog.service';
 
-describe('WorkflowDialogService', () => {
-  let service: WorkflowDialogService;
+describe('LineWorkflowDialogService', () => {
+  let service: LineWorkflowDialogService;
 
   const dialogSpy = jasmine.createSpyObj('dialog', ['open']);
 
@@ -19,7 +19,7 @@ describe('WorkflowDialogService', () => {
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: MatDialog, useValue: dialogSpy }],
     });
-    service = TestBed.inject(WorkflowDialogService);
+    service = TestBed.inject(LineWorkflowDialogService);
   });
 
   it('should open new workflow', () => {

@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { WorkflowDialogComponent } from './workflow-dialog.component';
+import { LineWorkflowDialogComponent } from './line-workflow-dialog.component';
 import { LineRecord } from '../model/line-record';
-import { WorkflowDialogData } from './workflow-dialog-data';
+import { LineWorkflowDialogData } from './line-workflow-dialog-data';
 
 @Injectable({ providedIn: 'root' })
-export class WorkflowDialogService {
-  private dialogRef?: MatDialogRef<WorkflowDialogComponent>;
+export class LineWorkflowDialogService {
+  private dialogRef?: MatDialogRef<LineWorkflowDialogComponent>;
 
   constructor(private dialog: MatDialog) {}
 
@@ -16,7 +16,7 @@ export class WorkflowDialogService {
     lineRecord: LineRecord,
     descriptionForWorkflow: string
   ): Observable<boolean> {
-    const dialogData: WorkflowDialogData = {
+    const dialogData: LineWorkflowDialogData = {
       title: 'WORKFLOW.BUTTON.ADD',
       message: '',
       cancelText: 'WORKFLOW.BUTTON.CANCEL',
@@ -33,7 +33,7 @@ export class WorkflowDialogService {
     lineRecord: LineRecord,
     descriptionForWorkflow: string
   ): Observable<boolean> {
-    const dialogData: WorkflowDialogData = {
+    const dialogData: LineWorkflowDialogData = {
       title: 'WORKFLOW.TITLE',
       message: '',
       cancelText: 'COMMON.BACK',
@@ -45,8 +45,8 @@ export class WorkflowDialogService {
     return this.open(dialogData);
   }
 
-  private open(dialogData: WorkflowDialogData) {
-    this.dialogRef = this.dialog.open(WorkflowDialogComponent, {
+  private open(dialogData: LineWorkflowDialogData) {
+    this.dialogRef = this.dialog.open(LineWorkflowDialogComponent, {
       data: dialogData,
       disableClose: true,
       panelClass: 'atlas-dialog-panel',
