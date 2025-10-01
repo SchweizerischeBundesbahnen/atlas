@@ -1261,7 +1261,7 @@
       }
     },
     "SECTORS": {
-      "SECTORS": "Secteur",
+      "SECTORS": "Secteurs",
       "SECTOR": "Secteur",
       "DESIGNATION": "Désignation",
       "NEW": "Saisir le secteur",
@@ -1279,8 +1279,8 @@
       "REQUIRED_AT_LEAST_TWO_SECTOR_ERROR": "Au moins deux secteurs sont requis."
     },
     "SECTOR_GROUPS": {
-      "SECTOR_GROUPS": "Groupe sectoriel",
-      "NEW": "Saisir un groupe de secteurs"
+      "SECTOR_GROUPS": "Groupes de secteurs",
+      "NEW": "Saisir un secteur"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",
