@@ -183,6 +183,8 @@ export class SectorDetailComponent
           if (confirmed) {
             this.form.disable();
             this.update(this.selectedVersion.id!, sectorVersion);
+          } else {
+            this.form.enable();
           }
         });
       }
