@@ -211,3 +211,11 @@ create table sector_group_version
     constraint sector_group_version_sloid_unique
         unique (sloid, valid_from)
 );
+
+create table sector_group_relations
+(
+    sector_sloid       varchar(128) not null,
+    sector_group_sloid varchar(128) not null,
+    constraint pk_sector_group_relations
+        primary key (sector_sloid, sector_group_sloid)
+);
