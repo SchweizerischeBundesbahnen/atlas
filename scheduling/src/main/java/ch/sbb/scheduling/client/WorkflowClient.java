@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name = "workflowClient", url = "${atlas.client.gateway.url}", configuration = OAuthFeignConfig.class)
 public interface WorkflowClient {
 
-  @PostMapping(value = "/workflow/v1/stop-point/workflows/end-expired")
+  @PostMapping(value = "/workflow/internal/stop-point/workflows/end-expired")
   Response endExpiredWorkflows();
 
 }
