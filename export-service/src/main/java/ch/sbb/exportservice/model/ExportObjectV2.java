@@ -27,7 +27,7 @@ public enum ExportObjectV2 {
   LOADING_POINT(ExportTypes.SWISS_WORLD, "loading-point", "loading-point-batch"),
   SECTOR(ExportTypes.DEFAULT, "sector", "sector-batch"),
   SECTOR_GROUP(ExportTypes.DEFAULT, "sector-group", "sector-group-batch"),
-  SECTORS_AND_SECTOR_GROUPS(ExportTypes.DEFAULT, "sectors-and-sector-groups", "sectors-and-sector-groups-batch"),
+  SECTORS_AND_SECTORGROUPS(ExportTypes.DEFAULT, "sectors-and-sectorgroups", "sectors-and-sectorgroups-batch"),
   ;
 
   private final List<ExportTypeV2> supportedExportTypes;
