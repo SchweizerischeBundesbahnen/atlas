@@ -31,6 +31,15 @@ class SectorsAndSectorGroupsSqlIntegrationTest extends BaseSqlIntegrationTest {
     //then
     assertThat(result).hasSize(2);
 
+    SectorAndSectorGroup sector = result.getFirst();
+    assertThat(sector.getType()).isEqualTo("SECTOR");
+    assertThat(sector.getRelatedSectors()).isNull();
+    assertThat(sector.getRelatedGroups()).isEqualTo("ch:1:sloid:8000:1:1001");
+
+    SectorAndSectorGroup sectorGroup = result.getLast();
+    assertThat(sectorGroup.getType()).isEqualTo("SECTOR_GROUP");
+    assertThat(sectorGroup.getRelatedSectors()).isEqualTo("ch:1:sloid:8000:1:100");
+    assertThat(sectorGroup.getRelatedGroups()).isNull();
   }
 
   @Test
