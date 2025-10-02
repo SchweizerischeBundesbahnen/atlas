@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.converter;
 
-import static ch.sbb.line.directory.module.line.LineTestData.lineVersionModelBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.line.directory.module.line.LineTestData;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -19,32 +19,32 @@ class TrimLeadingTrailingWhitespaceTest {
 
   @Test
   void shouldTrimLeadingWhitespaceTest() throws IOException {
-    LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
-    lineVersionModel.setAlternativeName("   TEST");
-    LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
-    assertThat(deserializedVersionModel.getAlternativeName()).isEqualTo("TEST");
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder().build();
+    lineVersionModel.setLongName("   TEST");
+    LineVersionModelV2 deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
+    assertThat(deserializedVersionModel.getLongName()).isEqualTo("TEST");
   }
 
   @Test
   void shouldTrimTrailingWhitespaceTest() throws IOException {
-    LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
-    lineVersionModel.setAlternativeName("TEST   ");
-    LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
-    assertThat(deserializedVersionModel.getAlternativeName()).isEqualTo("TEST");
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder().build();
+    lineVersionModel.setLongName("TEST   ");
+    LineVersionModelV2 deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
+    assertThat(deserializedVersionModel.getLongName()).isEqualTo("TEST");
   }
 
   @Test
   void shouldNotTrimWhitespacesBetweenTest() throws IOException {
-    LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
-    lineVersionModel.setAlternativeName("   TEST  TEST  . ");
-    LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
-    assertThat(deserializedVersionModel.getAlternativeName()).isEqualTo("TEST  TEST  .");
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder().build();
+    lineVersionModel.setLongName("   TEST  TEST  . ");
+    LineVersionModelV2 deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
+    assertThat(deserializedVersionModel.getLongName()).isEqualTo("TEST  TEST  .");
   }
 
-  private LineVersionModel serializeThenDeserializeModel(LineVersionModel lineVersionModel)
+  private LineVersionModelV2 serializeThenDeserializeModel(LineVersionModelV2 lineVersionModel)
       throws IOException {
     String serializedLineVersionModel = objectMapper.writeValueAsString(lineVersionModel);
     JsonParser parser = objectMapper.getFactory().createParser(serializedLineVersionModel);
-    return parser.readValueAs(LineVersionModel.class);
+    return parser.readValueAs(LineVersionModelV2.class);
   }
 }

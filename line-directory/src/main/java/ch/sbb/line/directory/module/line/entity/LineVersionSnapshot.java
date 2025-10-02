@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
@@ -61,9 +60,6 @@ public class LineVersionSnapshot extends BaseVersionSnapshot {
   @NotNull
   @Enumerated(EnumType.STRING)
   private Status status;
-
-  @Enumerated(EnumType.STRING)
-  private PaymentType paymentType;
 
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String number;

@@ -9,14 +9,12 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.entity.LineVersionSnapshot;
-import ch.sbb.line.directory.module.line.export.LineVersionExportService;
 import ch.sbb.line.directory.module.line.mapper.LineMapper;
 import ch.sbb.line.directory.module.line.mapper.LineVersionSnapshotMapper;
 import ch.sbb.line.directory.module.line.search.LineVersionSnapshotSearchRestrictions;
 import ch.sbb.line.directory.module.line.service.LineService;
 import ch.sbb.line.directory.module.line.service.LineVersionSnapshotService;
 import ch.sbb.line.directory.module.subline.service.SublineShorteningService;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineControllerInternal implements LineApiInternal {
 
   private final LineService lineService;
-  private final LineVersionExportService lineVersionExportService;
   private final LineVersionSnapshotService lineVersionSnapshotService;
   private final SublineShorteningService sublineShorteningService;
 
@@ -52,33 +49,6 @@ public class LineControllerInternal implements LineApiInternal {
   @Override
   public void skipWorkflow(Long id) {
     lineService.skipWorkflow(id);
-  }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportFullLineVersions() {
-    return lineVersionExportService.exportFullVersions();
-  }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportActualLineVersions() {
-    return lineVersionExportService.exportActualVersions();
-  }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportFutureTimetableLineVersions() {
-    return lineVersionExportService.exportFutureTimetableVersions();
   }
 
   @Override

@@ -5,14 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.module.line.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.module.line.entity.LineVersionSnapshot.LineVersionSnapshotBuilder;
-import ch.sbb.line.directory.module.line.search.LineVersionSnapshotSearchRestrictions;
 import ch.sbb.line.directory.module.line.repository.LineVersionSnapshotRepository;
+import ch.sbb.line.directory.module.line.search.LineVersionSnapshotSearchRestrictions;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -141,7 +140,7 @@ class LineVersionSnapshotSearchTest {
 
     // Then
     assertThat(result.getContent()).hasSize(2);
-    assertThat(result.getContent().get(0).getSwissLineNumber()).isEqualTo("1");
+    assertThat(result.getContent().getFirst().getSwissLineNumber()).isEqualTo("1");
   }
 
   @Test
@@ -158,7 +157,7 @@ class LineVersionSnapshotSearchTest {
 
     // Then
     assertThat(result.getContent()).hasSize(2);
-    assertThat(result.getContent().get(0).getSwissLineNumber()).isEqualTo("2");
+    assertThat(result.getContent().getFirst().getSwissLineNumber()).isEqualTo("2");
   }
 
   @Test
@@ -346,7 +345,6 @@ class LineVersionSnapshotSearchTest {
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
         .workflowStatus(WorkflowStatus.STARTED)
-        .paymentType(PaymentType.INTERNATIONAL)
         .shortNumber("asd")
         .offerCategory(OfferCategory.IC)
         .concessionType(LineConcessionType.COLLECTION_LINE)
