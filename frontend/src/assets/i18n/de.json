@@ -1280,6 +1280,7 @@
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Sektorengruppen",
+      "SECTOR_GROUP": "Sektorengruppe",
       "NEW": "Sektorengruppe erfassen"
     },
     "LOADING_POINTS": {

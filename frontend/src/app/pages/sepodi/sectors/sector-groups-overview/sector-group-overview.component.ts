@@ -91,6 +91,10 @@ export class SectorGroupOverviewComponent implements OnInit {
       });
   }
 
+  addSectorGroup() {
+    this.router.navigate(['add'], { relativeTo: this.route }).then();
+  }
+
   backToServicePoint() {
     this.router.navigate(['../..'], { relativeTo: this.route }).then();
   }

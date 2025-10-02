@@ -5,7 +5,6 @@ import { DateRangeTextComponent } from '../../../../core/versioning/date-range-t
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
-import { GeographyComponent } from '../../geography/geography.component';
 import { MatDivider } from '@angular/material/divider';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
@@ -23,11 +22,11 @@ import { DateRange } from '../../../../core/versioning/date-range';
 import {
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
+  Status,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
-import { CreateSectorVersion } from '../../../../api/model/createSectorVersion';
 import { catchError, EMPTY } from 'rxjs';
 import { SectorGroupService } from '../../../../api/service/sepodi/sector-group.service';
 import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
@@ -35,6 +34,24 @@ import {
   SectorGroupDetailFormGroup,
   SectorGroupFormGroupBuilder,
 } from './sector-group-detail-form-group';
+import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { Pages } from '../../../pages';
+import { TableColumn } from '../../../../core/components/table/table-column';
+import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
+import { CreateSectorGroupVersion } from '../../../../api/model/createSectorGroupVersion';
+import {
+  DisplayableSector,
+  SectorMapService,
+} from '../../map/sector-map.service';
+import { TrafficPointMapService } from '../../map/traffic-point-map.service';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
+import { TableFilterChip } from '../../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterMultiSelect } from '../../../../core/components/table-filter/config/table-filter-multiselect';
+import { DEFAULT_STATUS_SELECTION } from '../../../../core/constants/status.choices';
+import { TableFilterDateSelect } from '../../../../core/components/table-filter/config/table-filter-date-select';
+import { TableService } from '../../../../core/components/table/table.service';
 
 @Component({
   selector: 'app-sector-group-detail',
@@ -45,32 +62,66 @@ import {
     DetailFooterComponent,
     DetailPageContainerComponent,
     DetailPageContentComponent,
-    GeographyComponent,
     MatDivider,
     SwitchVersionComponent,
     TextFieldComponent,
     TranslatePipe,
     UserDetailInfoComponent,
+    TableComponent,
+    SelectComponent,
   ],
   templateUrl: './sector-group-detail.component.html',
+  styleUrls: ['./sector-group-detail.component.scss'],
+  providers: [ValidityService],
 })
 export class SectorGroupDetailComponent
   implements DetailFormComponent, DetailWithCancelEdit, OnInit, OnDestroy
 {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly sectorMapService = inject(SectorMapService);
+  private readonly trafficPointMapService = inject(TrafficPointMapService);
   private readonly validityService = inject(ValidityService);
   private readonly detailHelperService = inject(DetailHelperService);
   private readonly notificationService = inject(NotificationService);
   private readonly sectorGroupService = inject(SectorGroupService);
-  //TODO sectorGroupService
+  private readonly sectorInternalService = inject(SectorInternalService);
+  private readonly tableService = inject(TableService);
+
+  private tableFilterConfigIntern = {
+    chipSearch: new TableFilterChip(0, 'col-6'),
+    multiSelectStatus: new TableFilterMultiSelect(
+      'COMMON.STATUS_TYPES.',
+      'COMMON.STATUS',
+      Object.values(Status),
+      1,
+      'filter-width-quarter',
+      DEFAULT_STATUS_SELECTION
+    ),
+    dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
+  };
+
+  tableColumns: TableColumn<ReadSectorVersion>[] = [
+    { headerTitle: 'SEPODI.SECTORS.DESIGNATION', value: 'designation' },
+    { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+  ];
+  tableFilterConfig!: TableFilter<unknown>[][];
 
   sectorGroupVersions!: SectorGroupVersion[];
   selectedVersion!: SectorGroupVersion;
   selectedVersionIndex!: number;
+  sectorVersions: ReadSectorVersion[] = [];
+  allSectorVersionsOfTrafficPoint: ReadSectorVersion[] = [];
   maxValidity!: DateRange;
   servicePointDesignationOfficial!: string;
   trafficPoint!: ReadTrafficPointElementVersion;
+  servicePointNumber!: number;
 
   isNew = false;
   form!: FormGroup<SectorGroupDetailFormGroup>;
@@ -78,7 +129,7 @@ export class SectorGroupDetailComponent
 
   ngOnInit() {
     this.route.data.subscribe((next) => {
-      this.sectorGroupVersions = next.sector;
+      this.sectorGroupVersions = next.sectorGroup;
       this.initHeaderWithParentInfo(next);
 
       if (this.sectorGroupVersions.length == 0) {
@@ -98,10 +149,14 @@ export class SectorGroupDetailComponent
       }
       this.form.controls.trafficPointSloid.setValue(this.trafficPoint.sloid);
     });
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      this.tableFilterConfigIntern,
+      Pages.SECTOR_GROUPS
+    );
   }
 
   ngOnDestroy() {
-    //Todo
+    this.sectorMapService.clearDisplayedSectors();
   }
 
   private initSelectedVersion(): void {
@@ -118,15 +173,20 @@ export class SectorGroupDetailComponent
     const servicePoint: ReadServicePointVersion[] = next.servicePoint;
     const servicePointVersion =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
+    this.servicePointNumber = servicePointVersion.number.number;
+
     this.servicePointDesignationOfficial =
       servicePointVersion.designationOfficial;
     this.servicePointBusinessOrganisations = servicePoint.map(
       (i) => i.businessOrganisation
     );
-
+    this.trafficPointMapService.displayTrafficPointsOnMap(
+      this.servicePointNumber
+    );
     const trafficPoint: ReadTrafficPointElementVersion[] = next.trafficPoint;
     this.trafficPoint =
       VersionsHandlingService.determineDefaultVersionByValidity(trafficPoint);
+    this.getSectorsOfTrafficPointValidToday(this.trafficPoint.sloid!);
   }
 
   switchVersion(newIndex: number) {
@@ -152,7 +212,7 @@ export class SectorGroupDetailComponent
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       const sectorVersion =
-        this.form.getRawValue() as unknown as CreateSectorVersion;
+        this.form.getRawValue() as unknown as CreateSectorGroupVersion;
       this.form.disable();
       if (this.isNew) {
         this.create(sectorVersion);
@@ -168,7 +228,7 @@ export class SectorGroupDetailComponent
     }
   }
 
-  private create(sectorVersion: CreateSectorVersion): void {
+  private create(sectorVersion: CreateSectorGroupVersion): void {
     this.sectorGroupService
       .createSectorGroup(sectorVersion)
       .pipe(catchError(this.handleError()))
@@ -182,9 +242,9 @@ export class SectorGroupDetailComponent
       });
   }
 
-  private update(id: number, sublineVersion: CreateSectorVersion): void {
+  private update(id: number, sectorGroupVersion: SectorGroupVersion): void {
     this.sectorGroupService
-      .updateSectorGroup(id, sublineVersion)
+      .updateSectorGroup(id, sectorGroupVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success(
@@ -203,5 +263,47 @@ export class SectorGroupDetailComponent
       this.form.enable();
       return EMPTY;
     };
+  }
+
+  rowClicked(sectorVersion: ReadSectorVersion) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([
+        Pages.SEPODI.path,
+        Pages.SERVICE_POINTS.path,
+        this.servicePointNumber,
+        Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
+        this.trafficPoint.sloid,
+        Pages.SECTORS.path,
+        sectorVersion.sloid,
+      ])
+    );
+    window.open(url, '_blank');
+  }
+
+  getOverview(sectorGroupSloid: string) {
+    this.sectorGroupService
+      .getSectorsBySectorGroupSloid(sectorGroupSloid)
+      .subscribe((sectorVersions) => {
+        this.sectorVersions = sectorVersions;
+        const sectors: DisplayableSector[] = sectorVersions.map((point) => {
+          return {
+            sloid: point.sloid!,
+            designation: point.designation,
+            coordinates: point.sectorGeolocation!.wgs84,
+            trafficPointSloid: point.trafficPointSloid,
+            servicePointNumber: this.servicePointNumber,
+          };
+        });
+
+        this.sectorMapService.setDisplayedSectors(sectors);
+      });
+  }
+
+  getSectorsOfTrafficPointValidToday(trafficPointSloid: string) {
+    this.sectorInternalService
+      .getSectorsValidToday(trafficPointSloid)
+      .subscribe((sectorVersions) => {
+        this.allSectorVersionsOfTrafficPoint = sectorVersions;
+      });
   }
 }
