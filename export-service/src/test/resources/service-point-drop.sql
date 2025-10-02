@@ -32,4 +32,6 @@ drop table sector_version;
 
 drop table sector_group_version;
 
+drop table sector_group_relations;
+
 drop table shared_business_organisation_version;

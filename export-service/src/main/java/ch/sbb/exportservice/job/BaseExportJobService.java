@@ -63,7 +63,9 @@ public abstract class BaseExportJobService {
       if (exportCsvJob != null) {
         startExportJob(jobParams, exportCsvJob);
       }
-      startExportJob(jobParams, exportJsonJob);
+      if (exportJsonJob != null) {
+        startExportJob(jobParams, exportJsonJob);
+      }
     }
     log.info("CSV and JSON export execution finished");
   }
