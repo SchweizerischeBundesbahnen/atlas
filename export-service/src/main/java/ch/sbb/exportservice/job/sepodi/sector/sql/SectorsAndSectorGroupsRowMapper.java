@@ -1,16 +1,16 @@
 package ch.sbb.exportservice.job.sepodi.sector.sql;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.exportservice.job.sepodi.sector.entity.SectorWithGroupVersion;
+import ch.sbb.exportservice.job.sepodi.sector.entity.SectorAndSectorGroup;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
-public class SectorWithGroupVersionRowMapper implements RowMapper<SectorWithGroupVersion> {
+public class SectorsAndSectorGroupsRowMapper implements RowMapper<SectorAndSectorGroup> {
 
   @Override
-  public SectorWithGroupVersion mapRow(ResultSet rs, int rowNum) throws SQLException {
-    return SectorWithGroupVersion.builder()
+  public SectorAndSectorGroup mapRow(ResultSet rs, int rowNum) throws SQLException {
+    return SectorAndSectorGroup.builder()
         .sloid(rs.getString("sloid"))
         .type(rs.getString("type"))
         .trafficPointSloid(rs.getString("traffic_point_sloid"))

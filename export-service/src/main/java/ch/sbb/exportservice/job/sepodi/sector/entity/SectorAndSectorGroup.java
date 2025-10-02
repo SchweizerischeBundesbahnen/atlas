@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class SectorWithGroupVersion extends SectorVersion {
+public class SectorAndSectorGroup extends SectorVersion {
 
   private String type;
 
