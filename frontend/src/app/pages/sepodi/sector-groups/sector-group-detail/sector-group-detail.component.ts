@@ -22,7 +22,6 @@ import { DateRange } from '../../../../core/versioning/date-range';
 import {
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
-  Status,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
@@ -47,10 +46,6 @@ import {
 import { TrafficPointMapService } from '../../map/traffic-point-map.service';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
-import { TableFilterChip } from '../../../../core/components/table-filter/config/table-filter-chip';
-import { TableFilterMultiSelect } from '../../../../core/components/table-filter/config/table-filter-multiselect';
-import { DEFAULT_STATUS_SELECTION } from '../../../../core/constants/status.choices';
-import { TableFilterDateSelect } from '../../../../core/components/table-filter/config/table-filter-date-select';
 import { TableService } from '../../../../core/components/table/table.service';
 
 @Component({
@@ -88,19 +83,6 @@ export class SectorGroupDetailComponent
   private readonly sectorInternalService = inject(SectorInternalService);
   private readonly tableService = inject(TableService);
 
-  private tableFilterConfigIntern = {
-    chipSearch: new TableFilterChip(0, 'col-6'),
-    multiSelectStatus: new TableFilterMultiSelect(
-      'COMMON.STATUS_TYPES.',
-      'COMMON.STATUS',
-      Object.values(Status),
-      1,
-      'filter-width-quarter',
-      DEFAULT_STATUS_SELECTION
-    ),
-    dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
-  };
-
   tableColumns: TableColumn<ReadSectorVersion>[] = [
     { headerTitle: 'SEPODI.SECTORS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
@@ -117,7 +99,7 @@ export class SectorGroupDetailComponent
   selectedVersion!: SectorGroupVersion;
   selectedVersionIndex!: number;
   sectorVersions: ReadSectorVersion[] = [];
-  allSectorVersionsOfTrafficPoint: ReadSectorVersion[] = [];
+  allSectorVersionsOfTrafficPoint: string[] = [];
   maxValidity!: DateRange;
   servicePointDesignationOfficial!: string;
   trafficPoint!: ReadTrafficPointElementVersion;
@@ -149,10 +131,6 @@ export class SectorGroupDetailComponent
       }
       this.form.controls.trafficPointSloid.setValue(this.trafficPoint.sloid);
     });
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      this.tableFilterConfigIntern,
-      Pages.SECTOR_GROUPS
-    );
   }
 
   ngOnDestroy() {
@@ -222,6 +200,8 @@ export class SectorGroupDetailComponent
           if (confirmed) {
             this.form.disable();
             this.update(this.selectedVersion.id!, sectorVersion);
+          } else {
+            this.form.enable();
           }
         });
       }
@@ -229,6 +209,7 @@ export class SectorGroupDetailComponent
   }
 
   private create(sectorVersion: CreateSectorGroupVersion): void {
+    console.log(sectorVersion);
     this.sectorGroupService
       .createSectorGroup(sectorVersion)
       .pipe(catchError(this.handleError()))
@@ -303,7 +284,9 @@ export class SectorGroupDetailComponent
     this.sectorInternalService
       .getSectorsValidToday(trafficPointSloid)
       .subscribe((sectorVersions) => {
-        this.allSectorVersionsOfTrafficPoint = sectorVersions;
+        sectorVersions.map((sectorVersion) => {
+          this.allSectorVersionsOfTrafficPoint.push(sectorVersion.sloid!);
+        });
       });
   }
 }
