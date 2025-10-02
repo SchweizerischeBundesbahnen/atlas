@@ -1264,7 +1264,7 @@
       "SECTORS": "Secteurs",
       "SECTOR": "Secteur",
       "DESIGNATION": "Désignation",
-      "NEW": "Saisir le secteur",
+      "NEW": "Saisir un secteur",
       "MOT_CHANGE_WARNING": "Cette modification pourrait rendre invalides les secteurs attribués, car ils ne sont valables que pour les haltes ferroviaires.",
       "CONSTRUCTION_INFORMATION": "Informations sur la construction",
       "LENGTH": "Longueur [m]",
