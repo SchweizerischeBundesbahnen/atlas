@@ -48,8 +48,8 @@ public class SectorsAndSectorGroupsSqlQueryUtil extends SqlQueryUtil {
              sg.creator,
              sg.edition_date,
              sg.editor,
-             null                                    as related_groups,
-             string_agg(sgr.sector_group_sloid, '|') as related_sectors,
+             null                              as related_groups,
+             string_agg(sgr.sector_sloid, '|') as related_sectors,
              'SECTOR_GROUP' as type
       from sector_group_version sg
       left join sector_group_relations sgr on sg.sloid = sgr.sector_group_sloid
