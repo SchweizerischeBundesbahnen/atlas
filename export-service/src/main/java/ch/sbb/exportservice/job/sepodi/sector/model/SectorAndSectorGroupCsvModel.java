@@ -16,7 +16,7 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @EqualsAndHashCode
-public class SectorWithGroupVersionCsvModel {
+public class SectorAndSectorGroupCsvModel {
 
   private String sloid;
 

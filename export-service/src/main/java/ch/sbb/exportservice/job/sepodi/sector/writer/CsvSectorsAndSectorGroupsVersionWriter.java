@@ -2,14 +2,14 @@ package ch.sbb.exportservice.job.sepodi.sector.writer;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
-import ch.sbb.exportservice.job.sepodi.sector.model.SectorWithGroupVersionCsvModel;
-import ch.sbb.exportservice.job.sepodi.sector.model.SectorWithGroupVersionCsvModel.Fields;
+import ch.sbb.exportservice.job.sepodi.sector.model.SectorAndSectorGroupCsvModel;
+import ch.sbb.exportservice.job.sepodi.sector.model.SectorAndSectorGroupCsvModel.Fields;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CsvSectorWithGroupVersionWriter extends BaseCsvWriter<SectorWithGroupVersionCsvModel> {
+public class CsvSectorsAndSectorGroupsVersionWriter extends BaseCsvWriter<SectorAndSectorGroupCsvModel> {
 
-  CsvSectorWithGroupVersionWriter(FileService fileService) {
+  CsvSectorsAndSectorGroupsVersionWriter(FileService fileService) {
     super(fileService);
   }
 

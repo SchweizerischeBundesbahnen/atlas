@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.sector.service;
 
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.model.ExportObjectV2;
@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ExportSectorJobService extends BaseExportJobService {
+public class ExportSectorsAndSectorGroupsJobService extends BaseExportJobService {
 
-  public ExportSectorJobService(
+  public ExportSectorsAndSectorGroupsJobService(
       JobLauncher jobLauncher,
-      @Qualifier(EXPORT_SECTOR_JSON_JOB_NAME) Job exportServiceJsonJob
+      @Qualifier(EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME) Job exportCsvJob
   ) {
-    super(jobLauncher, exportServiceJsonJob);
+    super(jobLauncher, exportCsvJob);
   }
 
   @Override
@@ -32,6 +32,6 @@ public class ExportSectorJobService extends BaseExportJobService {
 
   @Override
   public ExportObjectV2 getExportObject() {
-    return ExportObjectV2.SECTOR;
+    return ExportObjectV2.SECTORS_AND_SECTOR_GROUPS;
   }
 }

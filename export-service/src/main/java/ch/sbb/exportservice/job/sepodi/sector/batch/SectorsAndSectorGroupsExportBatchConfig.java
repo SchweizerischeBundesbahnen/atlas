@@ -1,14 +1,14 @@
 package ch.sbb.exportservice.job.sepodi.sector.batch;
 
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_WITH_GROUP_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME;
 
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.exportservice.job.sepodi.sector.entity.SectorWithGroupVersion;
-import ch.sbb.exportservice.job.sepodi.sector.model.SectorWithGroupVersionCsvModel;
-import ch.sbb.exportservice.job.sepodi.sector.processor.SectorWithGroupCsvProcessor;
-import ch.sbb.exportservice.job.sepodi.sector.sql.SectorWithGroupSqlQueryUtil;
-import ch.sbb.exportservice.job.sepodi.sector.sql.SectorWithGroupVersionRowMapper;
-import ch.sbb.exportservice.job.sepodi.sector.writer.CsvSectorWithGroupVersionWriter;
+import ch.sbb.exportservice.job.sepodi.sector.entity.SectorAndSectorGroup;
+import ch.sbb.exportservice.job.sepodi.sector.model.SectorAndSectorGroupCsvModel;
+import ch.sbb.exportservice.job.sepodi.sector.processor.SectorsAndSectorGroupsCsvProcessor;
+import ch.sbb.exportservice.job.sepodi.sector.sql.SectorsAndSectorGroupsSqlQueryUtil;
+import ch.sbb.exportservice.job.sepodi.sector.sql.SectorsAndSectorGroupsRowMapper;
+import ch.sbb.exportservice.job.sepodi.sector.writer.CsvSectorsAndSectorGroupsVersionWriter;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
@@ -39,51 +39,51 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @RequiredArgsConstructor
-public class SectorWithGroupExportBatchConfig {
+public class SectorsAndSectorGroupsExportBatchConfig {
 
   private final JobRepository jobRepository;
   private final PlatformTransactionManager transactionManager;
   private final JobCompletionListener jobCompletionListener;
   private final StepTracerListener stepTracerListener;
-  private final CsvSectorWithGroupVersionWriter csvSectorWithGroupVersionWriter;
+  private final CsvSectorsAndSectorGroupsVersionWriter csvSectorsAndSectorGroupsVersionWriter;
 
   private final FileService fileService;
 
   @Bean
   @StepScope
-  public JdbcCursorItemReader<SectorWithGroupVersion> sectorWithGroupReader(
+  public JdbcCursorItemReader<SectorAndSectorGroup> sectorsAndSectorGroupsReader(
       @Autowired @Qualifier("servicePointDataSource") DataSource dataSource,
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    JdbcCursorItemReader<SectorWithGroupVersion> itemReader = new JdbcCursorItemReader<>();
+    JdbcCursorItemReader<SectorAndSectorGroup> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(SectorWithGroupSqlQueryUtil.getSqlQuery(exportTypeV2));
+    itemReader.setSql(SectorsAndSectorGroupsSqlQueryUtil.getSqlQuery(exportTypeV2));
     itemReader.setFetchSize(StepUtil.FETCH_SIZE);
-    itemReader.setRowMapper(new SectorWithGroupVersionRowMapper());
+    itemReader.setRowMapper(new SectorsAndSectorGroupsRowMapper());
     return itemReader;
   }
 
   @Bean
-  @Qualifier(EXPORT_SECTOR_WITH_GROUP_CSV_JOB_NAME)
-  public Job exportSectorCsvJob(ItemReader<SectorWithGroupVersion> itemReader) {
-    return new JobBuilder(EXPORT_SECTOR_WITH_GROUP_CSV_JOB_NAME, jobRepository)
+  @Qualifier(EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME)
+  public Job exportSectorsAndSectorGroupsCsvJob(ItemReader<SectorAndSectorGroup> itemReader) {
+    return new JobBuilder(EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(exportSectorCsvStep(itemReader))
-        .next(uploadSectorWithGroupCsvFileStep())
-        .next(deleteSectorWithGroupCsvFileStepV2())
+        .flow(exportSectorsAndSectorGroupsCsvStep(itemReader))
+        .next(uploadSectorsAndSectorGroupsCsvFileStep())
+        .next(deleteSectorsAndSectorGroupsCsvFileStepV2())
         .end()
         .build();
   }
 
   @Bean
-  public Step exportSectorCsvStep(ItemReader<SectorWithGroupVersion> itemReader) {
-    String stepName = "exportSectorCsvStep";
+  public Step exportSectorsAndSectorGroupsCsvStep(ItemReader<SectorAndSectorGroup> itemReader) {
+    String stepName = "exportSectorsAndSectorGroupsCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<SectorWithGroupVersion, SectorWithGroupVersionCsvModel>chunk(StepUtil.CHUNK_SIZE, transactionManager)
+        .<SectorAndSectorGroup, SectorAndSectorGroupCsvModel>chunk(StepUtil.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(csvProcessor())
-        .writer(csvSectorWithGroupWriter(null))
+        .writer(csvSectorsAndSectorGroupsWriter(null))
         .faultTolerant()
         .backOffPolicy(StepUtil.getBackOffPolicy(stepName))
         .retryPolicy(StepUtil.getRetryPolicy(stepName))
@@ -92,30 +92,30 @@ public class SectorWithGroupExportBatchConfig {
   }
 
   @Bean
-  public SectorWithGroupCsvProcessor csvProcessor() {
-    return new SectorWithGroupCsvProcessor();
+  public SectorsAndSectorGroupsCsvProcessor csvProcessor() {
+    return new SectorsAndSectorGroupsCsvProcessor();
   }
 
   @Bean
   @StepScope
-  public FlatFileItemWriter<SectorWithGroupVersionCsvModel> csvSectorWithGroupWriter(
+  public FlatFileItemWriter<SectorAndSectorGroupCsvModel> csvSectorsAndSectorGroupsWriter(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    return csvSectorWithGroupVersionWriter.csvWriter(ExportObjectV2.SECTOR, exportTypeV2);
+    return csvSectorsAndSectorGroupsVersionWriter.csvWriter(ExportObjectV2.SECTORS_AND_SECTOR_GROUPS, exportTypeV2);
   }
 
   @Bean
-  public Step uploadSectorWithGroupCsvFileStep() {
-    return new StepBuilder("uploadSectorWithGroupCsvFileStep", jobRepository)
-        .tasklet(uploadSectorWithGroupCsvFileTasklet(null), transactionManager)
+  public Step uploadSectorsAndSectorGroupsCsvFileStep() {
+    return new StepBuilder("uploadSectorsAndSectorGroupsCsvFileStep", jobRepository)
+        .tasklet(uploadSectorsAndSectorGroupsCsvFileTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public UploadCsvFileTaskletV2 uploadSectorWithGroupCsvFileTasklet(
+  public UploadCsvFileTaskletV2 uploadSectorsAndSectorGroupsCsvFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.SECTOR, exportTypeV2)
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.SECTORS_AND_SECTOR_GROUPS, exportTypeV2)
         .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
@@ -123,16 +123,16 @@ public class SectorWithGroupExportBatchConfig {
   }
 
   @Bean
-  public Step deleteSectorWithGroupCsvFileStepV2() {
-    return new StepBuilder("deleteSectorWithGroupCsvFileStepV2", jobRepository)
-        .tasklet(deleteSectorWithGroupCsvTaskletV2(null), transactionManager)
+  public Step deleteSectorsAndSectorGroupsCsvFileStepV2() {
+    return new StepBuilder("deleteSectorsAndSectorGroupsCsvFileStepV2", jobRepository)
+        .tasklet(deleteSectorsAndSectorGroupsCsvTaskletV2(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public FileDeletingTaskletV2 deleteSectorWithGroupCsvTaskletV2(
+  public FileDeletingTaskletV2 deleteSectorsAndSectorGroupsCsvTaskletV2(
       @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
     return new FileDeletingTaskletV2(filePathV2);
   }

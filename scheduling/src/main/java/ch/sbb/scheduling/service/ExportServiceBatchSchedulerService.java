@@ -228,4 +228,16 @@ public class ExportServiceBatchSchedulerService extends BaseSchedulerService {
         "Trigger Export Sector Group Batch");
   }
 
+  @SpanTracing
+  @Retryable(label = "triggerExportSectorsAndSectorGroupsBatch", retryFor = SchedulingExecutionException.class, maxAttempts =
+      MAX_ATTEMPTS,
+      backoff =
+      @Backoff(delay = BACKOFF_DELAY))
+  @Scheduled(cron = "${scheduler.export-service.sectors-and-sector-groups-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerExportSectorsAndSectorGroupsBatch", lockAtMostFor = LOCK_FOR, lockAtLeastFor = LOCK_FOR)
+  public Response postTriggerExportSectorsAndSectorGroupsBatch() {
+    return executeRequest(exportServiceBatchClient::exportSectorsAndSectorGroupsBatch,
+        "Trigger Export Sectors and Sector Groups Batch");
+  }
+
 }

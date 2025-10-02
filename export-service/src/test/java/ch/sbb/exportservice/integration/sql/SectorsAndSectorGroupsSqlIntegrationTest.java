@@ -3,9 +3,9 @@ package ch.sbb.exportservice.integration.sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.DateRange;
-import ch.sbb.exportservice.job.sepodi.sector.entity.SectorWithGroupVersion;
-import ch.sbb.exportservice.job.sepodi.sector.sql.SectorWithGroupSqlQueryUtil;
-import ch.sbb.exportservice.job.sepodi.sector.sql.SectorWithGroupVersionRowMapper;
+import ch.sbb.exportservice.job.sepodi.sector.entity.SectorAndSectorGroup;
+import ch.sbb.exportservice.job.sepodi.sector.sql.SectorsAndSectorGroupsSqlQueryUtil;
+import ch.sbb.exportservice.job.sepodi.sector.sql.SectorsAndSectorGroupsRowMapper;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.ExportYearsTimetableUtil;
 import java.sql.Connection;
@@ -17,16 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class SectorWithGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
+class SectorsAndSectorGroupsSqlIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
   void shouldReturnFullSectorsWithGroups() throws SQLException {
     //given
     insertSectorWithGroupRelation("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
-    String sqlQuery = SectorWithGroupSqlQueryUtil.getSqlQuery(ExportTypeV2.FULL);
+    String sqlQuery = SectorsAndSectorGroupsSqlQueryUtil.getSqlQuery(ExportTypeV2.FULL);
 
     //when
-    List<SectorWithGroupVersion> result = executeQuery(sqlQuery);
+    List<SectorAndSectorGroup> result = executeQuery(sqlQuery);
 
     //then
     assertThat(result).hasSize(2);
@@ -40,10 +40,10 @@ class SectorWithGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
 
     insertSectorWithGroupRelation("ch:1:sloid:8000:1:200", LocalDate.now(), LocalDate.now().plusMonths(2));
 
-    String sqlQuery = SectorWithGroupSqlQueryUtil.getSqlQuery(ExportTypeV2.ACTUAL);
+    String sqlQuery = SectorsAndSectorGroupsSqlQueryUtil.getSqlQuery(ExportTypeV2.ACTUAL);
 
     //when
-    List<SectorWithGroupVersion> result = executeQuery(sqlQuery);
+    List<SectorAndSectorGroup> result = executeQuery(sqlQuery);
 
     //then
     assertThat(result).hasSize(2);
@@ -59,10 +59,10 @@ class SectorWithGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
     insertSectorWithGroupRelation("ch:1:sloid:8000:1:200", timetableYearsDateRange.getFrom().plusMonths(1),
         timetableYearsDateRange.getTo().minusMonths(1));
 
-    String sqlQuery = SectorWithGroupSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
+    String sqlQuery = SectorsAndSectorGroupsSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
 
     //when
-    List<SectorWithGroupVersion> result = executeQuery(sqlQuery);
+    List<SectorAndSectorGroup> result = executeQuery(sqlQuery);
 
     //then
     assertThat(result).hasSize(2);
@@ -93,15 +93,15 @@ class SectorWithGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
     connection.close();
   }
 
-  private List<SectorWithGroupVersion> executeQuery(String sqlQuery) throws SQLException {
-    List<SectorWithGroupVersion> result = new ArrayList<>();
+  private List<SectorAndSectorGroup> executeQuery(String sqlQuery) throws SQLException {
+    List<SectorAndSectorGroup> result = new ArrayList<>();
     Connection connection = servicePointDataSource.getConnection();
     try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
       ResultSet resultSet = preparedStatement.executeQuery();
       assertThat(resultSet).isNotNull();
-      SectorWithGroupVersionRowMapper sectorVersionRowMapper = new SectorWithGroupVersionRowMapper();
+      SectorsAndSectorGroupsRowMapper sectorVersionRowMapper = new SectorsAndSectorGroupsRowMapper();
       while (resultSet.next()) {
-        SectorWithGroupVersion sectorVersion = sectorVersionRowMapper.mapRow(resultSet, resultSet.getRow());
+        SectorAndSectorGroup sectorVersion = sectorVersionRowMapper.mapRow(resultSet, resultSet.getRow());
         result.add(sectorVersion);
       }
     }
