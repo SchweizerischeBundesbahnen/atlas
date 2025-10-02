@@ -10,6 +10,7 @@ import { permissionsLoaded } from '../../core/auth/guards/permissions-loaded.gua
 import { featureToggleGuard } from '../feature-toggle.guard';
 import { stopPointTerminationWorkflowResolver } from './termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-resolver';
 import { sectorResolver } from './sectors/sector-detail/sector-detail-resolver.service';
+import { sectorGroupResolver } from './sector-groups/sector-group-detail/sector-group-detail-resolver.service';
 
 const workflowRoutes: Routes = [
   {
@@ -204,6 +205,28 @@ const sectorDetailRoutes: Routes = [
   },
 ];
 
+const sectorGroupDetailRoutes: Routes = [
+  {
+    path:
+      Pages.SERVICE_POINTS.path +
+      '/:servicePointNumber/' +
+      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path +
+      '/:trafficPointSloid/' +
+      Pages.SECTOR_GROUPS.path +
+      '/:sectorGroupSloid',
+    loadComponent: () =>
+      import(
+        './sector-groups/sector-group-detail/sector-group-detail.component'
+      ).then((m) => m.SectorGroupDetailComponent),
+    resolve: {
+      trafficPoint: trafficPointResolver,
+      servicePoint: servicePointResolver,
+      sectorGroup: sectorGroupResolver,
+    },
+    runGuardsAndResolvers: 'always',
+  },
+];
+
 export const routes: Routes = [
   ...workflowRoutes,
   ...terminationWorkflowRoutes,
@@ -215,6 +238,7 @@ export const routes: Routes = [
       ),
     children: [
       ...sectorDetailRoutes,
+      ...sectorGroupDetailRoutes,
       ...trafficPointElementDetailRoutes,
       ...trafficPointAreaDetailRoutes,
       {

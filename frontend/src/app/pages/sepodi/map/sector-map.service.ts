@@ -8,6 +8,7 @@ import { MapService } from './map.service';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
 import { SectorInternalService } from '../../../api/service/sepodi/sector-internal.service';
+import { SectorGroupService } from '../../../api/service/sepodi/sector-group.service';
 
 export interface DisplayableSector {
   sloid: string;
@@ -23,6 +24,7 @@ export interface DisplayableSector {
 export class SectorMapService implements OnDestroy {
   private readonly mapService = inject(MapService);
   private readonly sectorInternalService = inject(SectorInternalService);
+  private readonly sectoGroupService = inject(SectorGroupService);
   private readonly onDestroy$ = new Subject<boolean>();
 
   static buildSectorPopupInformation(features: MapGeoJSONFeature[]) {
@@ -73,7 +75,7 @@ export class SectorMapService implements OnDestroy {
       });
   }
 
-  private setDisplayedSectors(sectors: DisplayableSector[]) {
+  public setDisplayedSectors(sectors: DisplayableSector[]) {
     const source = this.mapService.map.getSource(
       MAP_SECTOR_LAYER_NAME
     ) as GeoJSONSource;

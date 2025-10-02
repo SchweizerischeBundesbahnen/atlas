@@ -149,7 +149,6 @@ public class SectorGroupService {
 
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointSloid(currentVersion.getTrafficPointSloid());
-    editedVersion.setLength(currentVersion.getLength());
 
     List<SectorGroupVersion> currentVersions = findAllBySloidOrderByValidFrom(currentVersion.getSloid());
 
