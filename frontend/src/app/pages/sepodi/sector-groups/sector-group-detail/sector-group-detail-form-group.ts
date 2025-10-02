@@ -10,7 +10,7 @@ export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
   designation: FormControl<string | null | undefined>;
   trafficPointSloid: FormControl<string | null | undefined>;
   length: FormControl<number | null | undefined>;
-  sectorVersions: FormControl<Set<string> | null | undefined>;
+  sectorSloids: FormControl<Set<string> | null | undefined>;
 }
 
 export class SectorGroupFormGroupBuilder {
@@ -43,7 +43,7 @@ export class SectorGroupFormGroupBuilder {
             : null,
           [Validators.required]
         ),
-        sectorVersions: new FormControl(sectorGroupVersion?.sectorSloids, [
+        sectorSloids: new FormControl(sectorGroupVersion?.sectorSloids, [
           Validators.required,
           Validators.minLength(2),
         ]),
