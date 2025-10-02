@@ -100,7 +100,7 @@ public class SectorsAndSectorGroupsExportBatchConfig {
   @StepScope
   public FlatFileItemWriter<SectorAndSectorGroupCsvModel> csvSectorsAndSectorGroupsWriter(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    return csvSectorsAndSectorGroupsVersionWriter.csvWriter(ExportObjectV2.SECTORS_AND_SECTOR_GROUPS, exportTypeV2);
+    return csvSectorsAndSectorGroupsVersionWriter.csvWriter(ExportObjectV2.SECTORS_AND_SECTORGROUPS, exportTypeV2);
   }
 
   @Bean
@@ -115,7 +115,7 @@ public class SectorsAndSectorGroupsExportBatchConfig {
   @StepScope
   public UploadCsvFileTaskletV2 uploadSectorsAndSectorGroupsCsvFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.SECTORS_AND_SECTOR_GROUPS, exportTypeV2)
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.SECTORS_AND_SECTORGROUPS, exportTypeV2)
         .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
