@@ -128,6 +128,8 @@ scheduler:
       chron: "0 6 0 * * ?" #At 00:06:00am every day
     sector-group-trigger-batch:
       chron: "0 7 0 * * ?" #At 00:07:00am every day
+    sectors-and-sector-groups-trigger-batch:
+      chron: "0 7 0 * * ?" #At 00:07:00am every day"
     stop-point-trigger-batch:
       chron: "0 10 0 * * ?" #At 00:10:00am every day
     platform-trigger-batch:

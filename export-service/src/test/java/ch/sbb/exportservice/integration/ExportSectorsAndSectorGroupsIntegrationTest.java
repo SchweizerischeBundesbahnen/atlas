@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.integration;
 
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -22,28 +22,28 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-class ExportSectorIntegrationTest {
+class ExportSectorsAndSectorGroupsIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
 
   @Autowired
-  @Qualifier(EXPORT_SECTOR_JSON_JOB_NAME)
-  private Job exportSectorJsonJob;
+  @Qualifier(EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME)
+  private Job exportSectorsAndSectorGroupsCsvJob;
 
   @Test
-  void shouldExecuteExportSectorJsonJob() throws Exception {
+  void shouldExecuteExportSectorWithGroupCsvJob() throws Exception {
     // given
 
     JobParameters jobParameters = BaseExportJobService.buildJobParameters(
         new JobParams(ExportTypeV2.FULL));
     // when
-    JobExecution jobExecution = jobLauncher.run(exportSectorJsonJob, jobParameters);
+    JobExecution jobExecution = jobLauncher.run(exportSectorsAndSectorGroupsCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
     ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
     // then
-    assertThat(actualJobInstance.getJobName()).isEqualTo(EXPORT_SECTOR_JSON_JOB_NAME);
+    assertThat(actualJobInstance.getJobName()).isEqualTo(EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME);
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
   }
 

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @UtilityClass
-public class SectorWithGroupSqlQueryUtil extends SqlQueryUtil {
+public class SectorsAndSectorGroupsSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_STATEMENT = """
       select * from (

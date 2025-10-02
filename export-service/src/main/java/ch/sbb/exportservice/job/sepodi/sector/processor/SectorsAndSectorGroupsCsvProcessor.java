@@ -2,20 +2,20 @@ package ch.sbb.exportservice.job.sepodi.sector.processor;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.exportservice.job.sepodi.BaseSepodiProcessor;
-import ch.sbb.exportservice.job.sepodi.sector.entity.SectorWithGroupVersion;
-import ch.sbb.exportservice.job.sepodi.sector.model.SectorWithGroupVersionCsvModel;
-import ch.sbb.exportservice.job.sepodi.sector.model.SectorWithGroupVersionCsvModel.SectorWithGroupVersionCsvModelBuilder;
+import ch.sbb.exportservice.job.sepodi.sector.entity.SectorAndSectorGroup;
+import ch.sbb.exportservice.job.sepodi.sector.model.SectorAndSectorGroupCsvModel;
+import ch.sbb.exportservice.job.sepodi.sector.model.SectorAndSectorGroupCsvModel.SectorAndSectorGroupCsvModelBuilder;
 import ch.sbb.exportservice.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
-public class SectorWithGroupCsvProcessor extends BaseSepodiProcessor implements
-    ItemProcessor<SectorWithGroupVersion, SectorWithGroupVersionCsvModel> {
+public class SectorsAndSectorGroupsCsvProcessor extends BaseSepodiProcessor implements
+    ItemProcessor<SectorAndSectorGroup, SectorAndSectorGroupCsvModel> {
 
   @Override
-  public SectorWithGroupVersionCsvModel process(SectorWithGroupVersion version) {
-    SectorWithGroupVersionCsvModelBuilder builder = SectorWithGroupVersionCsvModel.builder()
+  public SectorAndSectorGroupCsvModel process(SectorAndSectorGroup version) {
+    SectorAndSectorGroupCsvModelBuilder builder = SectorAndSectorGroupCsvModel.builder()
         .sloid(version.getSloid())
         .type(version.getType())
         .trafficPointSloid(version.getTrafficPointSloid())
