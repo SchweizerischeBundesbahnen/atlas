@@ -55,7 +55,7 @@ class LineServiceStatusDecisionTest {
         .swissLineNumber("3")
         .number("3")
         .status(Status.VALIDATED)
-        .colorBackRgb(LineTestData.RBG_RED)
+        .description("red")
         .validFrom(LocalDate.of(2024, 1, 1))
         .validTo(LocalDate.of(2024, 12, 31));
   }
@@ -65,7 +65,7 @@ class LineServiceStatusDecisionTest {
         .swissLineNumber("2")
         .number("2")
         .status(Status.VALIDATED)
-        .colorBackRgb(LineTestData.RGB_BLACK)
+        .description("black")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31));
   }
@@ -75,7 +75,7 @@ class LineServiceStatusDecisionTest {
         .swissLineNumber("1")
         .number("1")
         .status(Status.VALIDATED)
-        .colorBackRgb(LineTestData.RBG_YELLOW)
+        .description("yellow")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31));
   }
@@ -101,7 +101,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(1);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.DRAFT);
   }
 
@@ -121,7 +121,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(1);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
   }
 
@@ -145,7 +145,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(2);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -158,7 +158,7 @@ class LineServiceStatusDecisionTest {
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.DRAFT);
 
     editedVersion = version1Builder().build();
-    editedVersion.setColorBackRgb(LineTestData.RBG_RED);
+    editedVersion.setDescription("red");
     editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
     editedVersion.setVersion(version1.getVersion());
@@ -204,7 +204,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(2);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -250,7 +250,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(2);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 12, 31));
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -338,7 +338,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(2);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 12, 31));
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -372,7 +372,7 @@ class LineServiceStatusDecisionTest {
     LineVersion editedVersion = version3Builder().build();
     editedVersion.setSwissLineNumber("2");
     editedVersion.setNumber("2");
-    editedVersion.setColorBackRgb(LineTestData.RGB_BLACK);
+    editedVersion.setDescription("black");
 
     editedVersion.setValidFrom(LocalDate.of(2021, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2024, 1, 1));
@@ -387,7 +387,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(3);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 30));
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -439,7 +439,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(1);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(editedVersion.getValidFrom());
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(editedVersion.getValidTo());
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -480,7 +480,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(3);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(version1.getValidFrom());
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(version1.getValidTo());
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -535,7 +535,7 @@ class LineServiceStatusDecisionTest {
     assertThat(result).isNotNull().hasSize(5);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(version1.getValidFrom());
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(editedVersion.getValidFrom().minusDays(1));
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);

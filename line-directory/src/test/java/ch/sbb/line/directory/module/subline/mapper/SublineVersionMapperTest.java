@@ -5,12 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
-import ch.sbb.line.directory.module.subline.mapper.SublineMapper;
 import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,8 +22,6 @@ class SublineVersionMapperTest {
         .id(1L)
         .status(Status.VALIDATED)
         .sublineType(SublineType.TECHNICAL)
-        .paymentType(PaymentType.INTERNATIONAL)
-        .number("number")
         .longName("longName")
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))
