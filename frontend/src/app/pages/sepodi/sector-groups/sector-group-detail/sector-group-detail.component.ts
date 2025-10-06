@@ -116,7 +116,7 @@ export class SectorGroupDetailComponent
 
       if (this.sectorGroupVersions.length == 0) {
         this.isNew = true;
-        this.form = SectorGroupFormGroupBuilder.buildFormGroup();
+        this.form = SectorGroupFormGroupBuilder.buildFormGroupCreate();
       } else {
         this.isNew = false;
         VersionsHandlingService.addVersionNumbers(this.sectorGroupVersions);
@@ -138,7 +138,7 @@ export class SectorGroupDetailComponent
   }
 
   private initSelectedVersion(): void {
-    this.form = SectorGroupFormGroupBuilder.buildFormGroup(
+    this.form = SectorGroupFormGroupBuilder.buildFormGroupUpdate(
       this.selectedVersion
     );
     this.selectedVersionIndex = this.sectorGroupVersions.indexOf(
