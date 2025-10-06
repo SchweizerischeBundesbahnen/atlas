@@ -66,7 +66,7 @@
             [sortingDisabled]="true"
             [showTableFilter]="false"
             [showPaginator]="false"
-            data-cy="subline-table"
+            data-cy="sector-table"
             additionalTableStyleClass="scrollable-table"
           >
           </app-table>
@@ -110,7 +110,9 @@
             controlName="sectorSloids"
             dataCy="sectorSloids"
             label="SEPODI.SECTORS.SECTORS"
-            [options]="allSectorVersionsOfTrafficPoint"
+            [options]="allSectorVersionsOfTrafficPointTest"
+            [displayExtractor]="displayExtractor"
+            [valueExtractor]="extractSloid"
             [additionalLabelspace]="5"
             [multiple]="true"
           >
