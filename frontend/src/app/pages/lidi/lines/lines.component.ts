@@ -89,9 +89,9 @@ export class LinesComponent implements OnInit, OnDestroy {
   totalCount$ = 0;
 
   constructor(
-    private lineService: LineInternalService,
-    private router: Router,
-    private tableService: TableService
+    private readonly lineService: LineInternalService,
+    private readonly router: Router,
+    private readonly tableService: TableService
   ) {}
 
   ngOnInit() {

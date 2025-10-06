@@ -27,6 +27,41 @@ describe('LineInternalService', () => {
     spyOn(apiService, 'delete');
   });
 
+  it('should getLines', () => {
+    const validOn = new Date(2025, 0, 1);
+
+    service.getLines('123', undefined, ['REVOKED', 'DRAFT'], undefined, undefined, undefined, validOn);
+
+    expect(apiService.paramsOf).toHaveBeenCalledOnceWith({
+      swissLineNumber: '123',
+      statusRestrictions: ['REVOKED', 'DRAFT'],
+      validOn,
+      businessOrganisation: undefined,
+      elementRestrictions: undefined,
+      typeRestrictions: undefined,
+      validToFromDate: undefined,
+      searchCriteria: undefined,
+      fromDate: undefined,
+      toDate: undefined,
+      page: undefined,
+      size: undefined,
+      sort: undefined,
+    });
+    expect(apiService.get).toHaveBeenCalledOnceWith(
+      '/line-directory/internal/lines',
+      any(HttpParams),
+    );
+  });
+
+  it('should getLine', () => {
+    service.getLine('123');
+
+    expect(apiService.get).toHaveBeenCalledOnceWith(
+      '/line-directory/internal/lines/123',
+    );
+    expect(apiService.validateParams).toHaveBeenCalledOnceWith({ slnid: '123' });
+  });
+
   it('should revokeLine', () => {
     service.revokeLine('123');
 
