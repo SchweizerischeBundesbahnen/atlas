@@ -109,6 +109,10 @@ export class SectorGroupDetailComponent
   form!: FormGroup<SectorGroupDetailFormGroup>;
   servicePointBusinessOrganisations: string[] = [];
 
+  readonly displayExtractor = (option: ReadSectorVersion) =>
+    `${option.designation} - ${option.sloid}`;
+  readonly extractSloid = (option: ReadSectorVersion) => option.sloid;
+
   ngOnInit() {
     this.route.data.subscribe((next) => {
       this.sectorGroupVersions = next.sectorGroup;
@@ -209,7 +213,6 @@ export class SectorGroupDetailComponent
   }
 
   private create(sectorVersion: CreateSectorGroupVersion): void {
-    console.log(sectorVersion);
     this.sectorGroupService
       .createSectorGroup(sectorVersion)
       .pipe(catchError(this.handleError()))
@@ -266,12 +269,12 @@ export class SectorGroupDetailComponent
       .getSectorsBySectorGroupSloid(sectorGroupSloid)
       .subscribe((sectorVersions) => {
         this.sectorVersions = sectorVersions;
-        const sectors: DisplayableSector[] = sectorVersions.map((point) => {
+        const sectors: DisplayableSector[] = sectorVersions.map((sector) => {
           return {
-            sloid: point.sloid!,
-            designation: point.designation,
-            coordinates: point.sectorGeolocation!.wgs84,
-            trafficPointSloid: point.trafficPointSloid,
+            sloid: sector.sloid!,
+            designation: sector.designation,
+            coordinates: sector.sectorGeolocation!.wgs84,
+            trafficPointSloid: sector.trafficPointSloid,
             servicePointNumber: this.servicePointNumber,
           };
         });
