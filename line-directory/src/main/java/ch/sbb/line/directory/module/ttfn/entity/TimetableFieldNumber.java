@@ -1,12 +1,12 @@
 package ch.sbb.line.directory.module.ttfn.entity;
 
 import ch.sbb.atlas.model.Status;
-import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class TimetableFieldNumber {
 
   private String number;
 
-  private String description;
+  private String description; // todo: update according to new view
 
   @Enumerated(EnumType.STRING)
   private Status status;

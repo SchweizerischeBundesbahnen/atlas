@@ -1,13 +1,13 @@
 package ch.sbb.line.directory.module.ttfn.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
-import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,7 +64,7 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
 
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
-  private String description;
+  private String description; // todo: update according to new model
 
   @AtlasVersionableProperty
   @NotNull
