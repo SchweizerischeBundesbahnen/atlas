@@ -15,41 +15,46 @@ export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
 }
 
 export class SectorGroupFormGroupBuilder {
+  private static createBaseControls(
+    sectorGroupVersion?: CreateSectorGroupVersion
+  ) {
+    const controls = {
+      sloid: new FormControl(sectorGroupVersion?.sloid),
+      trafficPointSloid: new FormControl(sectorGroupVersion?.trafficPointSloid),
+      designation: new FormControl(sectorGroupVersion?.designation, [
+        Validators.required,
+        Validators.maxLength(8),
+      ]),
+      length: new FormControl(sectorGroupVersion?.length, [
+        AtlasCharsetsValidator.decimalWithDigits(6, 3),
+        Validators.min(0),
+      ]),
+      validFrom: new FormControl(
+        sectorGroupVersion?.validFrom
+          ? moment(sectorGroupVersion.validFrom)
+          : null,
+        [Validators.required]
+      ),
+      validTo: new FormControl(
+        sectorGroupVersion?.validTo ? moment(sectorGroupVersion.validTo) : null,
+        [Validators.required]
+      ),
+      etagVersion: new FormControl(sectorGroupVersion?.etagVersion),
+      creationDate: new FormControl(sectorGroupVersion?.creationDate),
+      editionDate: new FormControl(sectorGroupVersion?.editionDate),
+      editor: new FormControl(sectorGroupVersion?.editor),
+      creator: new FormControl(sectorGroupVersion?.creator),
+    };
+
+    return controls;
+  }
+
   static buildFormGroupUpdate(
     sectorGroupVersion?: CreateSectorGroupVersion
   ): FormGroup<SectorGroupDetailFormGroup> {
+    const controls = this.createBaseControls(sectorGroupVersion);
     return new FormGroup<SectorGroupDetailFormGroup>(
-      {
-        sloid: new FormControl(sectorGroupVersion?.sloid),
-        trafficPointSloid: new FormControl(
-          sectorGroupVersion?.trafficPointSloid
-        ),
-        designation: new FormControl(sectorGroupVersion?.designation, [
-          Validators.required,
-          Validators.maxLength(8),
-        ]),
-        length: new FormControl(sectorGroupVersion?.length, [
-          AtlasCharsetsValidator.decimalWithDigits(6, 3),
-          Validators.min(0),
-        ]),
-        validFrom: new FormControl(
-          sectorGroupVersion?.validFrom
-            ? moment(sectorGroupVersion.validFrom)
-            : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          sectorGroupVersion?.validTo
-            ? moment(sectorGroupVersion.validTo)
-            : null,
-          [Validators.required]
-        ),
-        etagVersion: new FormControl(sectorGroupVersion?.etagVersion),
-        creationDate: new FormControl(sectorGroupVersion?.creationDate),
-        editionDate: new FormControl(sectorGroupVersion?.editionDate),
-        editor: new FormControl(sectorGroupVersion?.editor),
-        creator: new FormControl(sectorGroupVersion?.creator),
-      },
+      controls as SectorGroupDetailFormGroup,
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
@@ -57,45 +62,20 @@ export class SectorGroupFormGroupBuilder {
   static buildFormGroupCreate(
     sectorGroupVersion?: CreateSectorGroupVersion
   ): FormGroup<SectorGroupDetailFormGroup> {
-    return new FormGroup<SectorGroupDetailFormGroup>(
-      {
-        sloid: new FormControl(sectorGroupVersion?.sloid),
-        trafficPointSloid: new FormControl(
-          sectorGroupVersion?.trafficPointSloid
-        ),
-        designation: new FormControl(sectorGroupVersion?.designation, [
-          Validators.required,
-          Validators.maxLength(8),
-        ]),
-        length: new FormControl(sectorGroupVersion?.length, [
-          AtlasCharsetsValidator.decimalWithDigits(6, 3),
-          Validators.min(0),
-        ]),
-        validFrom: new FormControl(
-          sectorGroupVersion?.validFrom
-            ? moment(sectorGroupVersion.validFrom)
-            : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          sectorGroupVersion?.validTo
-            ? moment(sectorGroupVersion.validTo)
-            : null,
-          [Validators.required]
-        ),
-        sectorSloids: new FormControl(
-          sectorGroupVersion?.sectorSloids
-            ? Array.from(sectorGroupVersion.sectorSloids)
-            : [],
-          [Validators.required, Validators.minLength(2)]
-        ),
-        etagVersion: new FormControl(sectorGroupVersion?.etagVersion),
-        creationDate: new FormControl(sectorGroupVersion?.creationDate),
-        editionDate: new FormControl(sectorGroupVersion?.editionDate),
-        editor: new FormControl(sectorGroupVersion?.editor),
-        creator: new FormControl(sectorGroupVersion?.creator),
-      },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
-    );
+    const controls: SectorGroupDetailFormGroup = {
+      ...(this.createBaseControls(
+        sectorGroupVersion
+      ) as SectorGroupDetailFormGroup),
+      sectorSloids: new FormControl(
+        sectorGroupVersion?.sectorSloids
+          ? Array.from(sectorGroupVersion.sectorSloids)
+          : [],
+        [Validators.required, Validators.minLength(2)]
+      ),
+    };
+
+    return new FormGroup<SectorGroupDetailFormGroup>(controls, [
+      DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo'),
+    ]);
   }
 }

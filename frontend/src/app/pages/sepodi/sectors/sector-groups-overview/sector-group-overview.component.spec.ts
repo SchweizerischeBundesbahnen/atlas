@@ -107,4 +107,13 @@ describe('SectorGroupOverviewComponent', () => {
       jasmine.any(Object)
     );
   });
+
+  it('should navigate to add sector group', () => {
+    component.addSectorGroup();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(
+      ['add'],
+      jasmine.any(Object)
+    );
+  });
 });
