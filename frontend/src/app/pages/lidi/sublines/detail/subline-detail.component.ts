@@ -55,6 +55,7 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { TranslatePipe } from '@ngx-translate/core';
 import { MainlineDescriptionPipe } from './mainline-description.pipe';
 import { LineService } from '../../../../api/service/lidi/line.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -114,6 +115,7 @@ export class SublineDetailComponent
     private sublineInternalService: SublineInternalService,
     private notificationService: NotificationService,
     private lineService: LineService,
+    private lineServiceInternal: LineInternalService,
     private permissionService: PermissionService,
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
@@ -137,7 +139,7 @@ export class SublineDetailComponent
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
 
       this.initSelectedVersion();
-      this.mainlines$ = this.lineService
+      this.mainlines$ = this.lineServiceInternal
         .getLine(this.selectedVersion.mainlineSlnid)
         .pipe(map((value) => [value]));
 
@@ -309,7 +311,7 @@ export class SublineDetailComponent
   }
 
   searchMainlines(searchString: string) {
-    this.mainlines$ = this.lineService
+    this.mainlines$ = this.lineServiceInternal
       .getLines(
         undefined,
         [searchString],

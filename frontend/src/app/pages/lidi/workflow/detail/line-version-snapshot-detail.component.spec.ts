@@ -1,12 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import {
-  LineType,
-  LineVersion,
-  LineVersionSnapshot,
-  PaymentType,
-} from '../../../../api';
+import { LineType, LineVersionSnapshot, LineVersionV2 } from '../../../../api';
 import { LineVersionSnapshotDetailComponent } from './line-version-snapshot-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
@@ -50,7 +45,6 @@ const lineVersionSnapsot: LineVersionSnapshot = {
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentType.None,
   lineType: LineType.Orderly,
   parentObjectId: 1234,
   workflowId: 1,
@@ -60,7 +54,7 @@ const lineVersionSnapsot: LineVersionSnapshot = {
   offerCategory: 'ASC',
 };
 
-const lineVersion: LineVersion = {
+const lineVersion: LineVersionV2 = {
   id: 1234,
   slnid: 'slnid',
   number: 'name',
@@ -69,12 +63,7 @@ const lineVersion: LineVersion = {
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentType.None,
   lineType: LineType.Orderly,
-  colorBackCmyk: '',
-  colorBackRgb: '',
-  colorFontCmyk: '',
-  colorFontRgb: '',
   swissLineNumber: '13',
 };
 
@@ -83,9 +72,9 @@ let fixture: ComponentFixture<LineVersionSnapshotDetailComponent>;
 
 describe('LineVersionSnapshotDetailComponent', () => {
   const mockLineService = jasmine.createSpyObj('lineService', [
-    'getLineVersions',
+    'getLineVersionsV2',
   ]);
-  mockLineService.getLineVersions.and.returnValue(of([lineVersion]));
+  mockLineService.getLineVersionsV2.and.returnValue(of([lineVersion]));
 
   const mockLineInternalService = jasmine.createSpyObj('lineInternalService', [
     'getLineVersionSnapshotById',

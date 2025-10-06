@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LineVersion, LineVersionSnapshot, Workflow } from '../../../../api';
+import { LineVersionSnapshot, LineVersionV2, Workflow } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
@@ -133,10 +133,10 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
 
   private checkLineVersionSnapshottedAlreadyExists() {
     this.lineService
-      .getLineVersions(this.lineVersionSnapshot.slnid!)
+      .getLineVersionsV2(this.lineVersionSnapshot.slnid!)
       .subscribe({
         next: (lineVersions) => {
-          const lineVersionsFiltered: LineVersion[] = lineVersions.filter(
+          const lineVersionsFiltered: LineVersionV2[] = lineVersions.filter(
             (version) => version.id === this.lineVersionSnapshot.parentObjectId
           );
           if (lineVersionsFiltered.length === 0) {

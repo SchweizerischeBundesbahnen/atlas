@@ -1,12 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AtlasApiService } from '../atlas-api.service';
-import { Status } from '../../model/status';
-import { LidiElementType } from '../../model/lidiElementType';
-import { ElementType } from '../../model/elementType';
 import { Observable } from 'rxjs';
-import { ContainerLine } from '../../model/containerLine';
-import { Line } from '../../model/line';
-import { LineVersion } from '../../model/lineVersion';
 import { LineVersionV2 } from '../../model/lineVersionV2';
 import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
 
@@ -15,43 +9,9 @@ import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
 })
 export class LineService {
 
-  private readonly V1_LINES = '/line-directory/v1/lines';
   private readonly V2_LINES = '/line-directory/v2/lines';
 
   private readonly atlasApiService = inject(AtlasApiService);
-
-  public getLines(swissLineNumber?: string, searchCriteria?: Array<string>,
-                  statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>,
-                  elementRestrictions?: Array<ElementType>, businessOrganisation?: string,
-                  validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, page?: number, size?: number, sort?: Array<string>,
-  ): Observable<ContainerLine> {
-    const httpParams = this.atlasApiService.paramsOf({
-      swissLineNumber,
-      searchCriteria,
-      statusRestrictions,
-      typeRestrictions,
-      elementRestrictions,
-      businessOrganisation,
-      validOn,
-      fromDate,
-      toDate,
-      validToFromDate,
-      page,
-      size,
-      sort,
-    });
-    return this.atlasApiService.get(this.V1_LINES, httpParams);
-  }
-
-  public getLine(slnid: string): Observable<Line> {
-    this.atlasApiService.validateParams({ slnid });
-    return this.atlasApiService.get(`${this.V1_LINES}/${encodeURIComponent(String(slnid))}`);
-  }
-
-  public getLineVersions(slnid: string): Observable<LineVersion[]> {
-    this.atlasApiService.validateParams({ slnid });
-    return this.atlasApiService.get(`${this.V1_LINES}/versions/${encodeURIComponent(String(slnid))}`);
-  }
 
   public getLineVersionsV2(slnid: string): Observable<LineVersionV2[]> {
     this.atlasApiService.validateParams({ slnid });
