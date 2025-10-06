@@ -10,11 +10,12 @@ export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
   designation: FormControl<string | null | undefined>;
   trafficPointSloid: FormControl<string | null | undefined>;
   length: FormControl<number | null | undefined>;
-  sectorSloids: FormControl<Set<string> | null | undefined>;
+
+  sectorSloids?: FormControl<string[] | null>;
 }
 
 export class SectorGroupFormGroupBuilder {
-  static buildFormGroup(
+  static buildFormGroupUpdate(
     sectorGroupVersion?: CreateSectorGroupVersion
   ): FormGroup<SectorGroupDetailFormGroup> {
     return new FormGroup<SectorGroupDetailFormGroup>(
@@ -43,10 +44,51 @@ export class SectorGroupFormGroupBuilder {
             : null,
           [Validators.required]
         ),
-        sectorSloids: new FormControl(sectorGroupVersion?.sectorSloids, [
+        etagVersion: new FormControl(sectorGroupVersion?.etagVersion),
+        creationDate: new FormControl(sectorGroupVersion?.creationDate),
+        editionDate: new FormControl(sectorGroupVersion?.editionDate),
+        editor: new FormControl(sectorGroupVersion?.editor),
+        creator: new FormControl(sectorGroupVersion?.creator),
+      },
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+    );
+  }
+
+  static buildFormGroupCreate(
+    sectorGroupVersion?: CreateSectorGroupVersion
+  ): FormGroup<SectorGroupDetailFormGroup> {
+    return new FormGroup<SectorGroupDetailFormGroup>(
+      {
+        sloid: new FormControl(sectorGroupVersion?.sloid),
+        trafficPointSloid: new FormControl(
+          sectorGroupVersion?.trafficPointSloid
+        ),
+        designation: new FormControl(sectorGroupVersion?.designation, [
           Validators.required,
-          Validators.minLength(2),
+          Validators.maxLength(8),
         ]),
+        length: new FormControl(sectorGroupVersion?.length, [
+          AtlasCharsetsValidator.decimalWithDigits(6, 3),
+          Validators.min(0),
+        ]),
+        validFrom: new FormControl(
+          sectorGroupVersion?.validFrom
+            ? moment(sectorGroupVersion.validFrom)
+            : null,
+          [Validators.required]
+        ),
+        validTo: new FormControl(
+          sectorGroupVersion?.validTo
+            ? moment(sectorGroupVersion.validTo)
+            : null,
+          [Validators.required]
+        ),
+        sectorSloids: new FormControl(
+          sectorGroupVersion?.sectorSloids
+            ? Array.from(sectorGroupVersion.sectorSloids)
+            : [],
+          [Validators.required, Validators.minLength(2)]
+        ),
         etagVersion: new FormControl(sectorGroupVersion?.etagVersion),
         creationDate: new FormControl(sectorGroupVersion?.creationDate),
         editionDate: new FormControl(sectorGroupVersion?.editionDate),
