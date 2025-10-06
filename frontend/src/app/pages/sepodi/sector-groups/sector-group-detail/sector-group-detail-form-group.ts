@@ -18,7 +18,7 @@ export class SectorGroupFormGroupBuilder {
   private static createBaseControls(
     sectorGroupVersion?: CreateSectorGroupVersion
   ) {
-    const controls = {
+    return {
       sloid: new FormControl(sectorGroupVersion?.sloid),
       trafficPointSloid: new FormControl(sectorGroupVersion?.trafficPointSloid),
       designation: new FormControl(sectorGroupVersion?.designation, [
@@ -45,8 +45,6 @@ export class SectorGroupFormGroupBuilder {
       editor: new FormControl(sectorGroupVersion?.editor),
       creator: new FormControl(sectorGroupVersion?.creator),
     };
-
-    return controls;
   }
 
   static buildFormGroupUpdate(

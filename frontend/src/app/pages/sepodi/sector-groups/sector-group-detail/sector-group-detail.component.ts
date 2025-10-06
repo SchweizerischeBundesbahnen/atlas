@@ -287,7 +287,7 @@ export class SectorGroupDetailComponent
     this.sectorInternalService
       .getSectorsValidToday(trafficPointSloid)
       .subscribe((sectorVersions) => {
-        sectorVersions.map((sectorVersion) => {
+        sectorVersions.forEach((sectorVersion) => {
           this.allSectorVersionsOfTrafficPoint.push(sectorVersion);
         });
       });
