@@ -4,6 +4,8 @@ import { SectorGroupService } from './sector-group.service';
 import { AtlasApiService } from '../atlas-api.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../../core/auth/user/user.service';
+import { CreateSectorGroupVersion } from '../../model/createSectorGroupVersion';
+import { SectorGroupVersion } from '../../model/sectorGroupVersion';
 
 describe('SectorGroupService', () => {
   let service: SectorGroupService;
@@ -31,4 +33,21 @@ describe('SectorGroupService', () => {
       '/service-point-directory/v1/sector-groups/ch%3A1%3Asloid%3A7000%3A1');
   });
 
+  it('should createLoadingPoint', () => {
+    service.createSectorGroup( {} as CreateSectorGroupVersion);
+
+    expect(apiService.post).toHaveBeenCalledOnceWith(
+      '/service-point-directory/v1/sector-groups',
+      {}
+    );
+  });
+
+  it('should updateLoadingPoint', () => {
+    service.updateSectorGroup(123, {} as SectorGroupVersion);
+
+    expect(apiService.put).toHaveBeenCalledOnceWith(
+      '/service-point-directory/v1/sector-groups/123',
+      {}
+    );
+  });
 });

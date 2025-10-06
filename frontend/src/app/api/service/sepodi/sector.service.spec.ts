@@ -1,9 +1,10 @@
-import {TestBed} from '@angular/core/testing';
-import {AtlasApiService} from '../atlas-api.service';
-import {HttpClient} from '@angular/common/http';
-import {UserService} from '../../../core/auth/user/user.service';
-import {SectorInternalService} from './sector-internal.service';
-import {SectorService} from "./sector.service";
+import { TestBed } from '@angular/core/testing';
+import { AtlasApiService } from '../atlas-api.service';
+import { HttpClient } from '@angular/common/http';
+import { UserService } from '../../../core/auth/user/user.service';
+import { SectorInternalService } from './sector-internal.service';
+import { SectorService } from './sector.service';
+import { CreateSectorVersion } from '../../model/createSectorVersion';
 
 describe('SectorService', () => {
   let service: SectorService;
@@ -32,4 +33,21 @@ describe('SectorService', () => {
       '/service-point-directory/v1/sectors/ch%3A1%3Asloid%3A7000%3A1');
   });
 
+  it('should createLoadingPoint', () => {
+    service.createSector( {} as CreateSectorVersion);
+
+    expect(apiService.post).toHaveBeenCalledOnceWith(
+      '/service-point-directory/v1/sectors',
+      {}
+    );
+  });
+
+  it('should updateLoadingPoint', () => {
+    service.updateSector(123, {} as CreateSectorVersion);
+
+    expect(apiService.put).toHaveBeenCalledOnceWith(
+      '/service-point-directory/v1/sectors/123',
+      {}
+    );
+  });
 });
