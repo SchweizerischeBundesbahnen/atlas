@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -62,5 +63,13 @@ public interface LineApiInternal {
   AffectedSublinesModel checkAffectedSublines(@PathVariable Long id,
       @RequestBody @Valid UpdateLineVersionModelV2 newVersion
   );
+
+  @GetMapping
+  @PageableAsQueryParam
+  Container<LineModel> getOverview(@Parameter(hidden = true) Pageable pageable,
+      @Valid @ParameterObject LineRequestParams lineRequestParams);
+
+  @GetMapping("{slnid}")
+  LineModel getLine(@PathVariable String slnid);
 
 }

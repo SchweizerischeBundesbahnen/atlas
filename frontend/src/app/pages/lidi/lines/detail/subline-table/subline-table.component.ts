@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TableComponent } from '../../../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LineService } from '../../../../../api/service/lidi/line.service';
+import { LineInternalService } from '../../../../../api/service/lidi/line-internal.service';
 
 @Component({
   selector: 'app-subline-table',
@@ -35,8 +35,8 @@ export class SublineTableComponent implements OnInit, OnDestroy {
   sublines: Array<Line> = [];
 
   constructor(
-    private lineService: LineService,
-    private router: Router
+    private readonly lineInternalService: LineInternalService,
+    private readonly router: Router
   ) {}
 
   ngOnInit() {
@@ -66,7 +66,7 @@ export class SublineTableComponent implements OnInit, OnDestroy {
   }
 
   getOverview() {
-    this.lineService
+    this.lineInternalService
       .getLines(
         undefined,
         [this.mainLineSlnid + ':'],

@@ -5,19 +5,13 @@ import {
   lineVersionSnapshotResolver,
   LineVersionSnapshotResolver,
 } from './line-version-snapshot.resolver';
-import {
-  LineType,
-  LineVersionSnapshot,
-  PaymentType,
-  WorkflowStatus,
-} from '../../../../api';
+import { LineType, LineVersionSnapshot, WorkflowStatus } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 const version: LineVersionSnapshot = {
   lineType: LineType.Operational,
   parentObjectId: 0,
-  paymentType: PaymentType.International,
   workflowId: 0,
   workflowStatus: WorkflowStatus.Approved,
   id: 1234,

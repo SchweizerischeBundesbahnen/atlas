@@ -3,6 +3,7 @@ package ch.sbb.line.directory.module.line.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -65,6 +66,34 @@ class LineControllerInternalApiTest extends BaseControllerApiTest {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
     lineVersionSnapshotService.deleteAll();
+  }
+
+  @Test
+  void shouldGetLineOverview() throws Exception {
+    //given
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder().build();
+    lineControllerV2.createLineVersionV2(lineVersionModel);
+
+    //when
+    mvc.perform(get("/internal/lines")
+            .queryParam("page", "0")
+            .queryParam("size", "5")
+            .queryParam("sort", "swissLineNumber,asc"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1))
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetLineOverviewBySlnid() throws Exception {
+    //given
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder().build();
+    lineVersionModel = lineControllerV2.createLineVersionV2(lineVersionModel);
+
+    //when
+    mvc.perform(get("/internal/lines/" + lineVersionModel.getSlnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.slnid", notNullValue()));
   }
 
   @Test
