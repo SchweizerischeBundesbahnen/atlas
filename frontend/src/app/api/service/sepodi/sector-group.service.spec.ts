@@ -24,10 +24,6 @@ describe('SectorGroupService', () => {
     spyOn(apiService, 'post');
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should getSectorGroups', () => {
     service.getSectorGroup('ch:1:sloid:7000:1');
 
