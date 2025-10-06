@@ -99,7 +99,7 @@ export class SectorGroupDetailComponent
   selectedVersion!: SectorGroupVersion;
   selectedVersionIndex!: number;
   sectorVersions: ReadSectorVersion[] = [];
-  allSectorVersionsOfTrafficPoint: string[] = [];
+  allSectorVersionsOfTrafficPoint: ReadSectorVersion[] = [];
   maxValidity!: DateRange;
   servicePointDesignationOfficial!: string;
   trafficPoint!: ReadTrafficPointElementVersion;
@@ -288,7 +288,7 @@ export class SectorGroupDetailComponent
       .getSectorsValidToday(trafficPointSloid)
       .subscribe((sectorVersions) => {
         sectorVersions.map((sectorVersion) => {
-          this.allSectorVersionsOfTrafficPoint.push(sectorVersion.sloid!);
+          this.allSectorVersionsOfTrafficPoint.push(sectorVersion);
         });
       });
   }
