@@ -46,7 +46,9 @@ import {
 import { TrafficPointMapService } from '../../map/traffic-point-map.service';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
-import { TableService } from '../../../../core/components/table/table.service';
+import { AtlasLabelFieldComponent } from '@atlas/form';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-sector-group-detail',
@@ -64,6 +66,9 @@ import { TableService } from '../../../../core/components/table/table.service';
     UserDetailInfoComponent,
     TableComponent,
     SelectComponent,
+    AtlasLabelFieldComponent,
+    AtlasFieldErrorComponent,
+    NgIf,
   ],
   templateUrl: './sector-group-detail.component.html',
   styleUrls: ['./sector-group-detail.component.scss'],
@@ -81,7 +86,6 @@ export class SectorGroupDetailComponent
   private readonly notificationService = inject(NotificationService);
   private readonly sectorGroupService = inject(SectorGroupService);
   private readonly sectorInternalService = inject(SectorInternalService);
-  private readonly tableService = inject(TableService);
 
   tableColumns: TableColumn<ReadSectorVersion>[] = [
     { headerTitle: 'SEPODI.SECTORS.DESIGNATION', value: 'designation' },
@@ -100,6 +104,7 @@ export class SectorGroupDetailComponent
   selectedVersionIndex!: number;
   sectorVersions: ReadSectorVersion[] = [];
   allSectorVersionsOfTrafficPoint: ReadSectorVersion[] = [];
+  empty: string[] = ['It is empty'];
   maxValidity!: DateRange;
   servicePointDesignationOfficial!: string;
   trafficPoint!: ReadTrafficPointElementVersion;
@@ -111,6 +116,7 @@ export class SectorGroupDetailComponent
 
   readonly displayExtractor = (option: ReadSectorVersion) =>
     `${option.designation} - ${option.sloid}`;
+
   readonly extractSloid = (option: ReadSectorVersion) => option.sloid;
 
   ngOnInit() {
@@ -168,7 +174,7 @@ export class SectorGroupDetailComponent
     const trafficPoint: ReadTrafficPointElementVersion[] = next.trafficPoint;
     this.trafficPoint =
       VersionsHandlingService.determineDefaultVersionByValidity(trafficPoint);
-    this.getSectorsOfTrafficPointValidToday(this.trafficPoint.sloid!);
+    this.getSectors(this.trafficPoint.sloid!);
   }
 
   switchVersion(newIndex: number) {
@@ -283,13 +289,11 @@ export class SectorGroupDetailComponent
       });
   }
 
-  getSectorsOfTrafficPointValidToday(trafficPointSloid: string) {
+  getSectors(trafficPointSloid: string) {
     this.sectorInternalService
-      .getSectorsValidToday(trafficPointSloid)
-      .subscribe((sectorVersions) => {
-        sectorVersions.forEach((sectorVersion) => {
-          this.allSectorVersionsOfTrafficPoint.push(sectorVersion);
-        });
+      .getSectors(trafficPointSloid)
+      .subscribe((sectors) => {
+        this.allSectorVersionsOfTrafficPoint = sectors.objects ?? [];
       });
   }
 }

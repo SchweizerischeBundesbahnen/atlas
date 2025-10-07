@@ -8,6 +8,7 @@
         buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
         (buttonClicked)="addSectorGroup()"
         wrapperStyleClass="mb-5"
+        [disabled]="!hasAtLeastTwoSectors"
       >
       </atlas-button>
     }

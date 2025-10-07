@@ -4,6 +4,7 @@ import { BaseDetailFormGroup } from '../../../../core/components/base-detail/bas
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { CreateSectorGroupVersion } from '../../../../api/model/createSectorGroupVersion';
+import { MinSelectedValidator } from '../../../../core/validation/min-selected/min-selected.validator';
 
 export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -68,12 +69,13 @@ export class SectorGroupFormGroupBuilder {
         sectorGroupVersion?.sectorSloids
           ? Array.from(sectorGroupVersion.sectorSloids)
           : [],
-        [Validators.required, Validators.minLength(2)]
+        [Validators.required]
       ),
     };
 
     return new FormGroup<SectorGroupDetailFormGroup>(controls, [
       DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo'),
+      MinSelectedValidator.minSelected('sectorSloids', 2),
     ]);
   }
 }

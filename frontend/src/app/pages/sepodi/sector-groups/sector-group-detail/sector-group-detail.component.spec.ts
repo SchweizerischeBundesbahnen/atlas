@@ -23,6 +23,7 @@ import {
   BERN_PLATFORM_1_SECTOR_MULTIPLE,
 } from '../../../../../test/data/sector';
 import { MapService } from '../../map/map.service';
+import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 
 describe('SectorGroupDetailComponent', () => {
   let component: SectorGroupDetailComponent;
@@ -57,8 +58,12 @@ describe('SectorGroupDetailComponent', () => {
   validityService.validate.and.returnValue(of(true));
 
   const sectorInternalService = jasmine.createSpyObj<SectorInternalService>([
-    'getSectorsValidToday',
+    'getSectors',
   ]);
+  const sectorOverview: ContainerReadSectorVersion = {
+    objects: [],
+    totalCount: 0,
+  };
 
   const sectorGroupService = jasmine.createSpyObj<SectorGroupService>([
     'createSectorGroup',
@@ -79,7 +84,7 @@ describe('SectorGroupDetailComponent', () => {
       router = TestBed.inject(Router);
       fixture = TestBed.createComponent(SectorGroupDetailComponent);
       component = fixture.componentInstance;
-      sectorInternalService.getSectorsValidToday.and.returnValue(of([]));
+      sectorInternalService.getSectors.and.returnValue(of(sectorOverview));
       sectorGroupService.getSectorsBySectorGroupSloid.and.returnValue(of([]));
       fixture.detectChanges();
     });
@@ -138,7 +143,7 @@ describe('SectorGroupDetailComponent', () => {
       router = TestBed.inject(Router);
       fixture = TestBed.createComponent(SectorGroupDetailComponent);
       component = fixture.componentInstance;
-      sectorInternalService.getSectorsValidToday.and.returnValue(of([]));
+      sectorInternalService.getSectors.and.returnValue(of(sectorOverview));
       sectorGroupService.getSectorsBySectorGroupSloid.and.returnValue(of([]));
 
       fixture.detectChanges();

@@ -25,10 +25,6 @@ include::{snippets}/sector-api-v1-controller-test/should-update-sector-and-retur
 
 include::{snippets}/sector-group-api-v1-controller-test/should-get-sector-group-by-sloid/atlas-doc.adoc[]
 
-== Read Sector Group Version by ID - Successfully
-
-include::{snippets}/sector-group-api-internal-controller-test/should-get-sector-by-sector-group-id/atlas-doc.adoc[]
-
 == Create Sector Group - Successfully
 
 include::{snippets}/sector-group-api-v1-controller-test/should-create-sector-group/atlas-doc.adoc[]
