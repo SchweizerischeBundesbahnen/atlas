@@ -205,9 +205,9 @@ export class SectorDetailComponent
       });
   }
 
-  private update(id: number, sublineVersion: CreateSectorVersion): void {
+  private update(id: number, createSectorVersion: CreateSectorVersion): void {
     this.sectorService
-      .updateSector(id, sublineVersion)
+      .updateSector(id, createSectorVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success(

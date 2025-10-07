@@ -1,23 +1,33 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SectorDetailComponent } from './sector-detail.component';
+
+import { SectorGroupDetailComponent } from './sector-group-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectorMapService } from '../../map/sector-map.service';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { TrafficPointMapService } from '../../map/traffic-point-map.service';
+import { of } from 'rxjs';
+import { ValidityService } from '../../validity/validity.service';
+import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 import { BERN_TRAFFIC_POINT_PLATFORM_1 } from '../../../../../test/data/traffic-point-element';
 import { BERN } from '../../../../../test/data/service-point';
+import moment from 'moment';
 import { ActivatedRouteMockType } from '../../../../app.testing.mocks';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CoordinatePairWGS84, MapService } from '../../map/map.service';
-import { TrafficPointMapService } from '../../map/traffic-point-map.service';
-import { SectorService } from '../../../../api/service/sepodi/sector.service';
-import { BERN_PLATFORM_1_SECTOR_A } from '../../../../../test/data/sector';
-import moment from 'moment/moment';
-import { ValidityService } from '../../validity/validity.service';
+import { SectorGroupService } from '../../../../api/service/sepodi/sector-group.service';
+import {
+  BERN_PLATFORM_1_SECTORGROUP_A,
+  CREATE_BERN_PLATFORM_1_SECTORGROUP_A,
+} from '../../../../../test/data/sectorgroup';
+import {
+  BERN_PLATFORM_1_SECTOR_A,
+  BERN_PLATFORM_1_SECTOR_MULTIPLE,
+} from '../../../../../test/data/sector';
+import { MapService } from '../../map/map.service';
+import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 
-describe('SectorDetailComponent', () => {
-  let component: SectorDetailComponent;
-  let fixture: ComponentFixture<SectorDetailComponent>;
+describe('SectorGroupDetailComponent', () => {
+  let component: SectorGroupDetailComponent;
+  let fixture: ComponentFixture<SectorGroupDetailComponent>;
 
   let router: Router;
 
@@ -33,13 +43,12 @@ describe('SectorDetailComponent', () => {
     'clearDisplayedTrafficPoints',
     'clearCurrentTrafficPoint',
   ]);
+
   const mapService = jasmine.createSpyObj<MapService>([
     'placeMarkerAndFlyTo',
     'enterCoordinateSelectionMode',
     'exitCoordinateSelectionMode',
   ]);
-  mapService.mapInitialized = new BehaviorSubject<boolean>(true);
-  mapService.clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
 
   const validityService = jasmine.createSpyObj<ValidityService>([
     'initValidity',
@@ -48,9 +57,18 @@ describe('SectorDetailComponent', () => {
   ]);
   validityService.validate.and.returnValue(of(true));
 
-  const sectorService = jasmine.createSpyObj<SectorService>([
-    'createSector',
-    'updateSector',
+  const sectorInternalService = jasmine.createSpyObj<SectorInternalService>([
+    'getSectors',
+  ]);
+  const sectorOverview: ContainerReadSectorVersion = {
+    objects: [],
+    totalCount: 0,
+  };
+
+  const sectorGroupService = jasmine.createSpyObj<SectorGroupService>([
+    'createSectorGroup',
+    'updateSectorGroup',
+    'getSectorsBySectorGroupSloid',
   ]);
 
   describe('new mode', () => {
@@ -59,34 +77,36 @@ describe('SectorDetailComponent', () => {
         data: of({
           trafficPoint: BERN_TRAFFIC_POINT_PLATFORM_1,
           servicePoint: BERN,
-          sector: [],
+          sectorGroup: [],
         }),
       };
       setupTestBed(activatedRouteMock);
       router = TestBed.inject(Router);
-      fixture = TestBed.createComponent(SectorDetailComponent);
+      fixture = TestBed.createComponent(SectorGroupDetailComponent);
       component = fixture.componentInstance;
+      sectorInternalService.getSectors.and.returnValue(of(sectorOverview));
+      sectorGroupService.getSectorsBySectorGroupSloid.and.returnValue(of([]));
       fixture.detectChanges();
     });
 
-    it('should enter new with coordinate selection mode', () => {
+    it('should enter new', () => {
       expect(component.isNew).toBeTrue();
-      expect(component.servicePointDesignationOfficial).toBe('Bern');
-
-      expect(mapService.enterCoordinateSelectionMode).toHaveBeenCalled();
     });
 
-    it('should go back to sector overview', () => {
+    it('should go back to sectorGroup overview', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
       component.back();
 
       expect(router.navigate).toHaveBeenCalledWith(['..'], jasmine.any(Object));
     });
 
-    it('should save new sector', () => {
+    it('should save new sector group', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      sectorService.createSector.and.returnValue(
-        of(BERN_PLATFORM_1_SECTOR_A[0])
+      sectorGroupService.createSectorGroup.and.returnValue(
+        of(CREATE_BERN_PLATFORM_1_SECTORGROUP_A[0])
+      );
+      sectorGroupService.getSectorsBySectorGroupSloid.and.returnValue(
+        of(BERN_PLATFORM_1_SECTOR_MULTIPLE)
       );
 
       component.form.controls.designation.setValue('A');
@@ -96,14 +116,15 @@ describe('SectorDetailComponent', () => {
       component.form.controls.validTo.setValue(
         moment('31.10.2099', 'dd.MM.yyyy')
       );
-      component.form.controls.sectorGeolocation?.controls.north.setValue(1.2);
-      component.form.controls.sectorGeolocation?.controls.east.setValue(1.2);
-
+      component.form.controls.sectorSloids!.setValue([
+        'ch:1:sloid:7000:1:1:1',
+        'ch:1:sloid:7000:1:1:2',
+      ]);
       component.save();
 
-      expect(sectorService.createSector).toHaveBeenCalled();
+      expect(sectorGroupService.createSectorGroup).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(
-        ['..', 'ch:1:sloid:7000:1:1:1'],
+        ['..', 'ch:1:sloid:7000:1:1:5'],
         jasmine.any(Object)
       );
     });
@@ -115,13 +136,16 @@ describe('SectorDetailComponent', () => {
         data: of({
           trafficPoint: BERN_TRAFFIC_POINT_PLATFORM_1,
           servicePoint: BERN,
-          sector: BERN_PLATFORM_1_SECTOR_A,
+          sectorGroup: BERN_PLATFORM_1_SECTORGROUP_A,
         }),
       };
       setupTestBed(activatedRouteMock);
       router = TestBed.inject(Router);
-      fixture = TestBed.createComponent(SectorDetailComponent);
+      fixture = TestBed.createComponent(SectorGroupDetailComponent);
       component = fixture.componentInstance;
+      sectorInternalService.getSectors.and.returnValue(of(sectorOverview));
+      sectorGroupService.getSectorsBySectorGroupSloid.and.returnValue(of([]));
+
       fixture.detectChanges();
     });
 
@@ -146,35 +170,42 @@ describe('SectorDetailComponent', () => {
       expect(component.form.enabled).toBeFalse();
     });
 
-    it('should update sector', () => {
-      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      sectorService.updateSector.and.returnValue(of(BERN_PLATFORM_1_SECTOR_A));
+    it('should update sector group', () => {
+      expect(component.isNew).toBeFalse();
 
+      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+      sectorGroupService.updateSectorGroup.and.returnValue(
+        of(BERN_PLATFORM_1_SECTORGROUP_A)
+      );
+      sectorGroupService.getSectorsBySectorGroupSloid.and.returnValue(
+        of(BERN_PLATFORM_1_SECTOR_A)
+      );
       component.toggleEdit();
       component.form.controls.designation.setValue('AAA');
 
       component.save();
 
-      expect(sectorService.updateSector).toHaveBeenCalled();
+      expect(sectorGroupService.updateSectorGroup).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(
-        ['..', 'ch:1:sloid:7000:1:1:1'],
+        ['..', 'ch:1:sloid:7000:1:1:5'],
         jasmine.any(Object)
       );
     });
   });
 
-  function setupTestBed(activatedRoute: ActivatedRouteMockType) {
+  async function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     return TestBed.configureTestingModule({
-      imports: [AppTestingModule, SectorDetailComponent],
+      imports: [AppTestingModule, SectorGroupDetailComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: SectorMapService, useValue: sectorMapService },
         { provide: TrafficPointMapService, useValue: trafficPointMapService },
+        { provide: SectorGroupService, useValue: sectorGroupService },
+        { provide: SectorInternalService, useValue: sectorInternalService },
         { provide: MapService, useValue: mapService },
-        { provide: SectorService, useValue: sectorService },
       ],
     })
-      .overrideComponent(SectorDetailComponent, {
+      .overrideComponent(SectorGroupDetailComponent, {
         set: {
           providers: [
             { provide: ValidityService, useValue: validityService },
@@ -182,7 +213,6 @@ describe('SectorDetailComponent', () => {
           ],
         },
       })
-      .compileComponents()
-      .then();
+      .compileComponents();
   }
 });

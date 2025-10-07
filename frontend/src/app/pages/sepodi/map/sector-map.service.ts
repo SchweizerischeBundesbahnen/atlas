@@ -73,7 +73,7 @@ export class SectorMapService implements OnDestroy {
       });
   }
 
-  private setDisplayedSectors(sectors: DisplayableSector[]) {
+  public setDisplayedSectors(sectors: DisplayableSector[]) {
     const source = this.mapService.map.getSource(
       MAP_SECTOR_LAYER_NAME
     ) as GeoJSONSource;
