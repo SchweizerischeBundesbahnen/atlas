@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Sector Groups")
 @RequestMapping("internal/sector-groups")
 @Validated
-@Hidden // ATLAS-3130 To Remove once public, add link to sector restdoc in SePoDi
 public interface SectorGroupApiInternal {
 
   @GetMapping("{trafficPointSloid}/overview")

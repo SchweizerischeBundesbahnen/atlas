@@ -23,7 +23,7 @@ export class SectorService {
   }
 
   public updateSector(id: number, sectorVersion: CreateSectorVersion): Observable<ReadSectorVersion[]> {
-    this.atlasApiService.validateParams({ id, sublineVersionV2: sectorVersion });
+    this.atlasApiService.validateParams({ id, sectorVersion: sectorVersion });
     return this.atlasApiService.put(
       `${this.BASE_PATH}/${encodeURIComponent(String(id))}`, sectorVersion);
   }

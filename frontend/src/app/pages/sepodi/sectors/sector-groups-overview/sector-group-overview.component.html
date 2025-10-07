@@ -6,8 +6,9 @@
         buttonText="SEPODI.SECTOR_GROUPS.NEW"
         buttonType="whiteFooterNonEdit"
         buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
-        (buttonClicked)="backToServicePoint()"
+        (buttonClicked)="addSectorGroup()"
         wrapperStyleClass="mb-5"
+        [disabled]="!hasAtLeastTwoSectors"
       >
       </atlas-button>
     }

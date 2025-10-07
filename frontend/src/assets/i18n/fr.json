@@ -289,6 +289,7 @@
     "BLANK": "Ce champ ne peut pas être vide.",
     "MAXLENGTH": "Le nombre maximum de caractères autorisés est {{length}}.",
     "MINLENGTH": "Un minimum de {{length}} caractères est requis.",
+    "MIN_SELECTED_ERROR": "Vous devez sélectionner au moins {{min}}.",
     "MATDATEPICKERMIN": "La date doit être supérieure ou égale à {{date}}.",
     "MATDATEPICKERMAX": "La date doit être inférieure ou égale à {{date}}.",
     "MATDATEPICKERPARSE": "Le format de date n’est pas valable. (Format valide: JJ.MM.AAAA)",
@@ -1280,7 +1281,8 @@
     },
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Groupes de secteurs",
-      "NEW": "Saisir un secteur"
+      "SECTOR_GROUP": "Groupe de secteurs",
+      "NEW": "Saisir un groupe de secteurs"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",
