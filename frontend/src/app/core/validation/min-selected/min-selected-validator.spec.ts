@@ -1,7 +1,7 @@
 import { FormArray, FormControl } from '@angular/forms';
 import { MinSelectedValidator } from './min-selected.validator';
 
-describe('Min Selected Validator', () => {
+describe('Min Selected Validator ', () => {
   it('should set validation error when exactly one element is selected', () => {
     const control = new FormControl(['A']);
     control.markAsDirty();
