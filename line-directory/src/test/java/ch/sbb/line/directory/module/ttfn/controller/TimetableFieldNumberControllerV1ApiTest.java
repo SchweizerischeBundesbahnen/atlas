@@ -12,11 +12,12 @@ import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.module.ttfn.mapper.TimetableFieldNumberMapper;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberValidationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -42,7 +43,9 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
   private TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
           .ttfnid("ch:1:ttfnid:100000")
-          .description("FPFN Description")
+          .descriptionOutwardLine1("FPFN Outward Line Desc")
+          .descriptionReturnLine1("FPFN Return Line Desc")
+          .meanOfTransport(MeanOfTransport.TRAIN)
           .number("10.100")
           .status(Status.VALIDATED)
           .swissTimetableFieldNumber("b0.100")
@@ -71,7 +74,9 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
             .businessOrganisation("sbb")
             .swissTimetableFieldNumber("swissLineNumber")
             .number("123")
-            .description("description")
+            .descriptionOutwardLine1("description")
+            .descriptionReturnLine1("description")
+            .meanOfTransport(MeanOfTransport.TRAIN)
             .ttfnid("123")
             .status(Status.VALIDATED).build();
     //when && then
@@ -92,7 +97,9 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
             .businessOrganisation("sbb")
             .swissTimetableFieldNumber("swissLineNumber")
             .number("123")
-            .description("description")
+            .descriptionOutwardLine1("description")
+            .descriptionReturnLine1("description")
+            .meanOfTransport(MeanOfTransport.TRAIN)
             .ttfnid("123")
             .status(Status.VALIDATED).build();
     //when && then
@@ -116,24 +123,22 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
         .andReturn()
         .getResponse()
         .getContentAsString();
-    List<TimetableFieldNumberVersionModel> response = mapper.readValue(responseBody,
-        new TypeReference<>() {
-        });
+    List<TimetableFieldNumberVersionModel> response = mapper.readerForListOf(TimetableFieldNumberVersionModel.class)
+        .readValue(responseBody);
 
     assertThat(response).size().isEqualTo(1);
-    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = response.get(0);
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = response.getFirst();
 
     // When first update it is ok
-    timetableFieldNumberVersionModel.setComment("Neuer Kommentar");
+    timetableFieldNumberVersionModel.setDescriptionOutwardLine1("Neue Desc");
     mvc.perform(createUpdateRequest(timetableFieldNumberVersionModel)).andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
-    timetableFieldNumberVersionModel.setComment("Neuer Kommentar wurde erfasst");
+    timetableFieldNumberVersionModel.setDescriptionOutwardLine1("Neue Desc zwei");
     MvcResult mvcResult = mvc.perform(createUpdateRequest(timetableFieldNumberVersionModel))
         .andExpect(status().isPreconditionFailed())
         .andReturn();
-    ErrorResponse errorResponse = mapper.readValue(
-        mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+    ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
     assertThat(errorResponse.getDetails()).size().isEqualTo(1);
@@ -146,7 +151,9 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
     // Given
     TimetableFieldNumberVersion secondVersion = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Outward Line Desc")
+        .descriptionReturnLine1("FPFN Return Line Desc")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .number("10.100")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.100")
@@ -155,13 +162,15 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
         .businessOrganisation("BLS")
         .build();
     versionRepository.saveAndFlush(secondVersion);
-    //When
+    // When
     TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionModel.builder()
         .id(version.getId())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
         .ttfnid(version.getTtfnid())
-        .description(version.getDescription())
+        .descriptionOutwardLine1(version.getDescriptionOutwardLine1())
+        .descriptionReturnLine1(version.getDescriptionReturnLine1())
+        .meanOfTransport(version.getMeanOfTransport())
         .number(version.getNumber())
         .status(version.getStatus())
         .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
@@ -172,8 +181,8 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
         .editor(version.getEditor())
         .etagVersion(version.getVersion())
         .build();
-
-    //Then
+    // Then
+    // todo: mby change to put
     mvc.perform(post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(timetableFieldNumberVersionModel)))
@@ -213,18 +222,15 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
     // When first update it is ok
     version.setValidFrom(LocalDate.of(2025, 1, 1));
     version.setValidTo(LocalDate.of(2025, 12, 31));
-    mvc.perform(createUpdateRequest(TimetableFieldNumberControllerV1.toModel(version)))
-        .andExpect(status().isOk());
+    mvc.perform(createUpdateRequest(TimetableFieldNumberMapper.toModel(version))).andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     version.setValidFrom(LocalDate.of(2000, 1, 1));
     version.setValidTo(LocalDate.of(2025, 12, 31));
-    mvc.perform(createUpdateRequest(TimetableFieldNumberControllerV1.toModel(version)))
-        .andExpect(status().isPreconditionFailed());
+    mvc.perform(createUpdateRequest(TimetableFieldNumberMapper.toModel(version))).andExpect(status().isPreconditionFailed());
   }
 
-  private MockHttpServletRequestBuilder createUpdateRequest(
-      TimetableFieldNumberVersionModel timetableFieldNumberVersionModel)
+  private MockHttpServletRequestBuilder createUpdateRequest(TimetableFieldNumberVersionModel timetableFieldNumberVersionModel)
       throws JsonProcessingException {
     return post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)

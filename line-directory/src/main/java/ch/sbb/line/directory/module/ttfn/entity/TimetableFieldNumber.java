@@ -32,7 +32,8 @@ public class TimetableFieldNumber {
 
   private String number;
 
-  private String description; // todo: update according to new view
+  @Column(name = "description_outward_line_1")
+  private String descriptionOutwardLine1;
 
   @Enumerated(EnumType.STRING)
   private Status status;

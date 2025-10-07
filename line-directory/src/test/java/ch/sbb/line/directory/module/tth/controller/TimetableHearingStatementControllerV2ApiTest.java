@@ -22,16 +22,17 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
+import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import ch.sbb.line.directory.module.tth.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.module.tth.exception.NoClientCredentialAuthUsedException;
-import ch.sbb.line.directory.shared.transportcompany.repository.SharedTransportCompanyRepository;
-import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingYearRepository;
-import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
+import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
+import ch.sbb.line.directory.shared.transportcompany.repository.SharedTransportCompanyRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -145,7 +146,9 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
         .ttfnid(TTFNID)
         .swissTimetableFieldNumber("1234")
         .number("5678")
-        .description("Description")
+        .descriptionOutwardLine1("Description")
+        .descriptionReturnLine1("Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())

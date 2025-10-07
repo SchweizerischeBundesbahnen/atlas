@@ -8,6 +8,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.module.ttfn.mapper.TimetableFieldNumberMapper;
 import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import java.time.LocalDate;
@@ -25,26 +26,6 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
 
   private final TimetableFieldNumberService timetableFieldNumberService;
 
-  static TimetableFieldNumberVersionModel toModel(TimetableFieldNumberVersion version) {
-    return TimetableFieldNumberVersionModel.builder()
-        .id(version.getId())
-        .description(version.getDescription())
-        .number(version.getNumber())
-        .ttfnid(version.getTtfnid())
-        .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
-        .status(version.getStatus())
-        .validFrom(version.getValidFrom())
-        .validTo(version.getValidTo())
-        .businessOrganisation(version.getBusinessOrganisation())
-        .comment(version.getComment())
-        .creator(version.getCreator())
-        .creationDate(version.getCreationDate())
-        .editor(version.getEditor())
-        .editionDate(version.getEditionDate())
-        .etagVersion(version.getVersion())
-        .build();
-  }
-
   @Override
   public Container<TimetableFieldNumberModel> getOverview(Pageable pageable,
       List<String> searchCriteria, String number, String businessOrganisation,
@@ -61,7 +42,7 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
             .validOn(validOn)
             .businessOrganisation(businessOrganisation)
             .build());
-    List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
+    List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(TimetableFieldNumberMapper::toModel)
         .toList();
     return Container.<TimetableFieldNumberModel>builder()
         .objects(versions)
@@ -69,25 +50,11 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
         .build();
   }
 
-  private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {
-    return TimetableFieldNumberModel.builder()
-        .description(version.getDescription())
-        .number(version.getNumber())
-        .ttfnid(version.getTtfnid())
-        .swissTimetableFieldNumber(
-            version.getSwissTimetableFieldNumber())
-        .status(version.getStatus())
-        .businessOrganisation(version.getBusinessOrganisation())
-        .validFrom(version.getValidFrom())
-        .validTo(version.getValidTo())
-        .build();
-  }
-
   @Override
   public List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(String ttfnId) {
     List<TimetableFieldNumberVersionModel> versions = timetableFieldNumberService.revokeTimetableFieldNumber(ttfnId)
         .stream()
-        .map(TimetableFieldNumberControllerInternal::toModel)
+        .map(TimetableFieldNumberMapper::toModel)
         .toList();
     if (versions.isEmpty()) {
       throw new TtfnidNotFoundException(ttfnId);

@@ -18,6 +18,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
@@ -162,13 +163,13 @@ class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     List<MultipartFile> documents = new ArrayList<>();
-    documents.add(PdfFiles.MULTIPART_FILES.get(0));
+    documents.add(PdfFiles.MULTIPART_FILES.getFirst());
     documents.add(PdfFiles.MULTIPART_FILES.get(1));
 
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, documents);
 
-    String originalFilename = PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename();
+    String originalFilename = PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename();
     File statementDocument = timetableHearingStatementService.getStatementDocument(createdStatement.getId(), originalFilename);
     assertTrue(statementDocument.getName().contains("dummy.pdf"));
   }
@@ -204,7 +205,7 @@ class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     List<MultipartFile> documents = new ArrayList<>();
-    documents.add(PdfFiles.MULTIPART_FILES.get(0));
+    documents.add(PdfFiles.MULTIPART_FILES.getFirst());
     documents.add(PdfFiles.MULTIPART_FILES.get(1));
 
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
@@ -469,7 +470,9 @@ class TimetableHearingStatementServiceTest {
         .ttfnid("ch:1:ttfnid:2341234")
         .swissTimetableFieldNumber("1234")
         .number("5678")
-        .description("Description")
+        .descriptionOutwardLine1("Description")
+        .descriptionReturnLine1("Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())
@@ -520,7 +523,9 @@ class TimetableHearingStatementServiceTest {
         .ttfnid("ch:1:ttfnid:2341234")
         .swissTimetableFieldNumber("1234")
         .number("5678")
-        .description("Description")
+        .descriptionOutwardLine1("Description")
+        .descriptionReturnLine1("Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())

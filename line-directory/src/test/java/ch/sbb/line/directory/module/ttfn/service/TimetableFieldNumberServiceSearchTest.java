@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
@@ -28,8 +29,7 @@ class TimetableFieldNumberServiceSearchTest {
 
   private static final LocalDate SEARCH_DATE = LocalDate.now();
   private static final LocalDate START_OF_MONTH_AT_SEARCH_DATE = SEARCH_DATE.withDayOfMonth(1);
-  private static final LocalDate END_OF_MONTH_AT_SEARCH_DATE = SEARCH_DATE.withDayOfMonth(
-      SEARCH_DATE.lengthOfMonth());
+  private static final LocalDate END_OF_MONTH_AT_SEARCH_DATE = SEARCH_DATE.withDayOfMonth(SEARCH_DATE.lengthOfMonth());
 
   private final TimetableFieldNumberVersionRepository versionRepository;
   private final List<TimetableFieldNumberVersion> versionList = new ArrayList<>();
@@ -48,42 +48,37 @@ class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersionBuilder<?, ?> versionBuilder =
         TimetableFieldNumberVersion.builder()
             .ttfnid("ch:1:ttfnid:100000")
-            .description("TimetableFieldNumberVersion 1")
+            .descriptionOutwardLine1("TimetableFieldNumberVersion 1")
+            .descriptionReturnLine1("TimetableFieldNumberVersion 1")
+            .meanOfTransport(MeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.1")
             .status(Status.VALIDATED)
             .number("1.0")
-            .comment("Valid this month")
             .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
             .validTo(END_OF_MONTH_AT_SEARCH_DATE)
             .businessOrganisation("sbb");
     TimetableFieldNumberVersion version1 = versionBuilder.build();
-    TimetableFieldNumberVersion version2 = versionBuilder.description(
-            "TimetableFieldNumberVersion 2")
-        .comment("Valid in future")
-        .validFrom(
-            START_OF_MONTH_AT_SEARCH_DATE.plusMonths(
-                1))
-        .validTo(
-            START_OF_MONTH_AT_SEARCH_DATE.plusMonths(
-                6))
+    TimetableFieldNumberVersion version2 = versionBuilder
+        .descriptionOutwardLine1("TimetableFieldNumberVersion 2")
+        .validFrom(START_OF_MONTH_AT_SEARCH_DATE.plusMonths(1))
+        .validTo(START_OF_MONTH_AT_SEARCH_DATE.plusMonths(6))
         .build();
-    TimetableFieldNumberVersion version3 = versionBuilder.ttfnid("ch:1:ttfnid:100001")
+    TimetableFieldNumberVersion version3 = versionBuilder
+        .ttfnid("ch:1:ttfnid:100001")
         .number("2.0")
-        .description(
-            "TimetableFieldNumberVersion 3")
+        .descriptionOutwardLine1("TimetableFieldNumberVersion 3")
         .swissTimetableFieldNumber("a.2")
-        .comment("Valid this month")
         .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
         .validTo(END_OF_MONTH_AT_SEARCH_DATE)
         .build();
-    TimetableFieldNumberVersion version4 = versionBuilder.ttfnid("ch:1:ttfnid:100002")
-        .description(
-            "TimetableFieldNumberVersion 4")
+    TimetableFieldNumberVersion version4 = versionBuilder
+        .ttfnid("ch:1:ttfnid:100002")
+        .descriptionOutwardLine1("TimetableFieldNumberVersion 4")
         .swissTimetableFieldNumber("a.3")
         .build();
-    TimetableFieldNumberVersion version5 = versionBuilder.ttfnid("ch:1:ttfnid:100003")
-        .description(
-            "TimetableFieldNumberVersion 5")
+    TimetableFieldNumberVersion version5 = versionBuilder
+        .ttfnid("ch:1:ttfnid:100003")
+        .descriptionOutwardLine1("TimetableFieldNumberVersion 5")
         .swissTimetableFieldNumber("a.1")
         .status(Status.IN_REVIEW)
         .build();
@@ -110,9 +105,10 @@ class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersion versionWithUnderscore =
         TimetableFieldNumberVersion.builder()
             .ttfnid("ch:1:ttfnid:100011")
-            .description("_bls")
+            .descriptionOutwardLine1("_bls")
+            .descriptionReturnLine1("_bls")
+            .meanOfTransport(MeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.2")
-            .comment("Valid this month")
             .status(Status.VALIDATED)
             .number("1.0")
             .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
@@ -138,9 +134,10 @@ class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersion versionWithUnderscore =
         TimetableFieldNumberVersion.builder()
             .ttfnid("ch:1:ttfnid:100011")
-            .description("__bls")
+            .descriptionOutwardLine1("__bls")
+            .descriptionReturnLine1("__bls")
+            .meanOfTransport(MeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.2")
-            .comment("Valid this month")
             .status(Status.VALIDATED)
             .number("1.0")
             .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
@@ -166,12 +163,12 @@ class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersion versionWithUnderscore =
         TimetableFieldNumberVersion.builder()
             .ttfnid("ch:1:ttfnid:100011")
-            .description("%bls")
+            .descriptionOutwardLine1("%bls")
+            .descriptionReturnLine1("%bls")
+            .meanOfTransport(MeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.2")
-            .comment("Valid this month")
             .status(Status.VALIDATED)
             .number("1.0")
-            .comment("Valid this month")
             .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
             .validTo(END_OF_MONTH_AT_SEARCH_DATE)
             .businessOrganisation("ch:1:sboid:2345245")
@@ -195,12 +192,12 @@ class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersion versionWithUnderscore =
         TimetableFieldNumberVersion.builder()
             .ttfnid("ch:1:ttfnid:100011")
-            .description("%%bls")
+            .descriptionOutwardLine1("%%bls")
+            .descriptionReturnLine1("%%bls")
+            .meanOfTransport(MeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.2")
-            .comment("Valid this month")
             .status(Status.VALIDATED)
             .number("1.0")
-            .comment("Valid this month")
             .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
             .validTo(END_OF_MONTH_AT_SEARCH_DATE)
             .businessOrganisation("ch:1:sboid:36456154")
@@ -238,9 +235,7 @@ class TimetableFieldNumberServiceSearchTest {
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
-            .pageable(
-
-                Pageable.ofSize(20).withPage(0))
+            .pageable(Pageable.ofSize(20).withPage(0))
             .searchCriterias(List.of("version"))
             .validOn(SEARCH_DATE)
             .build()).toList();
@@ -255,13 +250,12 @@ class TimetableFieldNumberServiceSearchTest {
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
-            .pageable(
-                PageRequest.of(0, 20, Sort.by("description")))
+            .pageable(PageRequest.of(0, 20, Sort.by("descriptionOutwardLine1")))
             .validOn(SEARCH_DATE)
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(4);
-    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
     assertThat(searchResult.get(3)).usingRecursiveComparison().isEqualTo(versionList.get(4));
@@ -287,16 +281,14 @@ class TimetableFieldNumberServiceSearchTest {
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
-            .pageable(
-                PageRequest.of(0, 20, Sort.by("description")))
-            .searchCriterias(
-                List.of("TimetableFieldNumberVersion"))
+            .pageable(PageRequest.of(0, 20, Sort.by("descriptionOutwardLine1")))
+            .searchCriterias(List.of("TimetableFieldNumberVersion"))
             .validOn(SEARCH_DATE)
             .statusRestrictions(List.of(Status.VALIDATED))
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(3);
-    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
   }
@@ -337,7 +329,7 @@ class TimetableFieldNumberServiceSearchTest {
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(1);
-    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
   }
 
   @Test
@@ -346,13 +338,12 @@ class TimetableFieldNumberServiceSearchTest {
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
-            .pageable(
-                PageRequest.of(0, 3, Sort.by("description")))
+            .pageable(PageRequest.of(0, 3, Sort.by("descriptionOutwardLine1")))
             .searchCriterias(List.of("version"))
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(3);
-    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
   }
@@ -363,13 +354,12 @@ class TimetableFieldNumberServiceSearchTest {
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
-            .pageable(
-                PageRequest.of(1, 2, Sort.by("description")))
+            .pageable(PageRequest.of(1, 2, Sort.by("descriptionOutwardLine1")))
             .searchCriterias(List.of("version"))
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(2);
-    assertThat(searchResult.get(0)).usingRecursiveComparison().isEqualTo(versionList.get(3));
+    assertThat(searchResult.getFirst()).usingRecursiveComparison().isEqualTo(versionList.get(3));
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(4));
   }
 
@@ -379,14 +369,13 @@ class TimetableFieldNumberServiceSearchTest {
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
-            .pageable(PageRequest.of(0, 10,
-                Sort.by(Direction.DESC, "description")))
+            .pageable(PageRequest.of(0, 10, Sort.by(Direction.DESC, "descriptionOutwardLine1")))
             .searchCriterias(List.of("a.1"))
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(2);
-    assertThat(searchResult.get(0)).usingRecursiveComparison().isEqualTo(versionList.get(4));
-    assertThat(searchResult.get(1).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(searchResult.getFirst()).usingRecursiveComparison().isEqualTo(versionList.get(4));
+    assertThat(searchResult.get(1).getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
   }
 
   @Test
@@ -395,12 +384,11 @@ class TimetableFieldNumberServiceSearchTest {
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
-            .pageable(PageRequest.of(0, 10, Sort.by(Direction.ASC,
-                "swissTimetableFieldNumber", "ttfnid")))
+            .pageable(PageRequest.of(0, 10, Sort.by(Direction.ASC, "swissTimetableFieldNumber", "ttfnid")))
             .build()).toList();
     // Then
     assertThat(searchResult).hasSize(4);
-    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(4));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(3)).usingRecursiveComparison().isEqualTo(versionList.get(3));
@@ -414,7 +402,7 @@ class TimetableFieldNumberServiceSearchTest {
         timetableFieldNumberService.getVersionsValidAt(Set.of(versionList.getFirst().getTtfnid()), SEARCH_DATE);
     // Then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
+    assertThat(result.getFirst().getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
   }
 
   @AfterEach
