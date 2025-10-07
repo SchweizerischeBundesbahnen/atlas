@@ -1,10 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-import { AtlasApiService } from '../atlas-api.service';
-import { HttpClient } from '@angular/common/http';
-import { UserService } from '../../../core/auth/user/user.service';
-import { SectorInternalService } from './sector-internal.service';
-import { SectorService } from './sector.service';
-import { CreateSectorVersion } from '../../model/createSectorVersion';
+import {TestBed} from '@angular/core/testing';
+import {AtlasApiService} from '../atlas-api.service';
+import {HttpClient} from '@angular/common/http';
+import {UserService} from '../../../core/auth/user/user.service';
+import {SectorInternalService} from './sector-internal.service';
+import {SectorService} from './sector.service';
+import {CreateSectorVersion} from '../../model/createSectorVersion';
 
 describe('SectorService', () => {
   let service: SectorService;
@@ -33,7 +33,7 @@ describe('SectorService', () => {
       '/service-point-directory/v1/sectors/ch%3A1%3Asloid%3A7000%3A1');
   });
 
-  it('should createLoadingPoint', () => {
+  it('should createSector', () => {
     service.createSector( {} as CreateSectorVersion);
 
     expect(apiService.post).toHaveBeenCalledOnceWith(
@@ -42,7 +42,7 @@ describe('SectorService', () => {
     );
   });
 
-  it('should updateLoadingPoint', () => {
+  it('should updateSector', () => {
     service.updateSector(123, {} as CreateSectorVersion);
 
     expect(apiService.put).toHaveBeenCalledOnceWith(

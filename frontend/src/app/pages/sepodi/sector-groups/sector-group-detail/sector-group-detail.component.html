@@ -85,7 +85,7 @@
     }
 
     <div class="col-12 d-flex justify-content-between">
-      <div class="d-flex flex-column col-4">
+      <div class="d-flex flex-column col-5">
         <atlas-text-field
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -104,19 +104,35 @@
         </atlas-text-field>
       </div>
       @if (isNew) {
-        <div class="d-flex flex-column col-4">
-          <atlas-select
-            [formGroup]="form"
-            controlName="sectorSloids"
-            dataCy="sectorSloids"
-            label="SEPODI.SECTORS.SECTORS"
-            [options]="allSectorVersionsOfTrafficPoint"
-            [displayExtractor]="displayExtractor"
-            [valueExtractor]="extractSloid"
-            [additionalLabelspace]="5"
-            [multiple]="true"
-          >
-          </atlas-select>
+        <div class="d-flex flex-column col-6">
+          @if (allSectorVersionsOfTrafficPoint.length > 0) {
+            <atlas-select
+              [formGroup]="form"
+              controlName="sectorSloids"
+              dataCy="sectorSloids"
+              label="SEPODI.SECTORS.SECTORS"
+              [options]="allSectorVersionsOfTrafficPoint"
+              [displayExtractor]="displayExtractor"
+              [valueExtractor]="extractSloid"
+              [additionalLabelspace]="20"
+              [multiple]="true"
+              [required]="true"
+            >
+            </atlas-select>
+          } @else {
+            <app-atlas-label-field
+              fieldLabel="SEPODI.SECTORS.SECTORS"
+              [required]="true"
+            >
+            </app-atlas-label-field>
+            <div>
+              {{ 'COMMON.NODATAFOUND' | translate }}
+            </div>
+            <app-atlas-field-error
+              [form]="form"
+              [controlName]="'sectorSloids'"
+            ></app-atlas-field-error>
+          }
         </div>
       }
     </div>

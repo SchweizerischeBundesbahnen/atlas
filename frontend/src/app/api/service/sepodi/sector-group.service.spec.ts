@@ -33,7 +33,7 @@ describe('SectorGroupService', () => {
       '/service-point-directory/v1/sector-groups/ch%3A1%3Asloid%3A7000%3A1');
   });
 
-  it('should createLoadingPoint', () => {
+  it('should createSectorGroup', () => {
     service.createSectorGroup( {} as CreateSectorGroupVersion);
 
     expect(apiService.post).toHaveBeenCalledOnceWith(
@@ -42,7 +42,7 @@ describe('SectorGroupService', () => {
     );
   });
 
-  it('should updateLoadingPoint', () => {
+  it('should updateSectorGroup', () => {
     service.updateSectorGroup(123, {} as SectorGroupVersion);
 
     expect(apiService.put).toHaveBeenCalledOnceWith(

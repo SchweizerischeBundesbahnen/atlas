@@ -13,9 +13,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { SectorPermissionService } from '../sector-permission.service';
+import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 
 @Component({
-  selector: 'app-sector-overview',
+  selector: 'app-sector-group-overview',
   imports: [
     TranslatePipe,
     DetailPageContentComponent,
@@ -28,6 +29,7 @@ import { SectorPermissionService } from '../sector-permission.service';
 })
 export class SectorGroupOverviewComponent implements OnInit {
   sectorGroupInternalService = inject(SectorGroupInternalService);
+  sectorInternalService = inject(SectorInternalService);
   tableService = inject(TableService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -55,6 +57,7 @@ export class SectorGroupOverviewComponent implements OnInit {
   ];
 
   showCreateButtons = false;
+  hasAtLeastTwoSectors = false;
 
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(
@@ -67,6 +70,12 @@ export class SectorGroupOverviewComponent implements OnInit {
     this.showCreateButtons = this.sectorPermissionService.showCreateButton(
       this.route.parent!.snapshot.data.servicePoint
     );
+
+    this.sectorInternalService
+      .getSectors(this.trafficPointSloid)
+      .subscribe((sectors) => {
+        this.hasAtLeastTwoSectors = sectors.totalCount! >= 2;
+      });
   }
 
   editSectorGroup(clickedRow: SectorGroupVersion) {
