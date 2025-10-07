@@ -35,8 +35,7 @@ public abstract class SearchRestrictions<T> {
   protected Specification<T> getBaseSpecification() {
     return specificationBuilder().searchCriteriaSpecification(getSearchCriterias())
         .and(specificationBuilder().validOnSpecification(getValidOn()))
-        .and(specificationBuilder().enumSpecification(getStatusRestrictions(),
-            getStatus()));
+        .and(specificationBuilder().enumSpecification(getStatusRestrictions(), getStatus()));
   }
 
   protected abstract SingularAttribute<T, Status> getStatus();

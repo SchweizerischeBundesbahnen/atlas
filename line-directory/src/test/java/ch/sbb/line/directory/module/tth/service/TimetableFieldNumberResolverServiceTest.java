@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.FutureTimetableHelper;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
@@ -76,7 +77,9 @@ class TimetableFieldNumberResolverServiceTest {
     TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:12341241")
         .number("1.1")
-        .description("Bern - Ostermundigen")
+        .descriptionOutwardLine1("Bern - Ostermundigen")
+        .descriptionReturnLine1("Bern - Ostermundigen")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .build();
     when(timetableFieldNumberService.getVersionsValidAt(any(), any())).thenReturn(Collections.singletonList(version));
 

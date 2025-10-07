@@ -2,6 +2,7 @@ package ch.sbb.line.directory.module.ttfn.service;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
@@ -46,42 +47,24 @@ abstract class BaseTimetableFieldNumberServiceTest {
     version5 = version5Builder().build();
   }
 
-  protected static TimetableFieldNumberVersionBuilder<?, ?> version5Builder() {
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version1Builder() {
     return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-        .description("FPFN Description")
-        .number("BEX5")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
+        .number("BEX1")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")
-        .validFrom(LocalDate.of(2026, 1, 1))
-        .validTo(LocalDate.of(2026, 12, 31))
-        .businessOrganisation("sbb");
-  }
-
-  protected static TimetableFieldNumberVersionBuilder<?, ?> version4Builder() {
-    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-        .description("FPFN Description")
-        .number("BEX4")
-        .status(Status.VALIDATED)
-        .swissTimetableFieldNumber("b0.BEX")
-        .validFrom(LocalDate.of(2025, 1, 1))
-        .validTo(LocalDate.of(2025, 12, 31))
-        .businessOrganisation("sbb");
-  }
-
-  protected static TimetableFieldNumberVersionBuilder<?, ?> version3Builder() {
-    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-        .description("FPFN Description")
-        .number("BEX3")
-        .status(Status.VALIDATED)
-        .swissTimetableFieldNumber("b0.BEX")
-        .validFrom(LocalDate.of(2024, 1, 1))
-        .validTo(LocalDate.of(2024, 12, 31))
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
         .businessOrganisation("sbb");
   }
 
   protected static TimetableFieldNumberVersionBuilder<?, ?> version2Builder() {
     return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .number("BEX2")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")
@@ -90,14 +73,42 @@ abstract class BaseTimetableFieldNumberServiceTest {
         .businessOrganisation("sbb");
   }
 
-  protected static TimetableFieldNumberVersionBuilder<?, ?> version1Builder() {
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version3Builder() {
     return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-        .description("FPFN Description")
-        .number("BEX1")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
+        .number("BEX3")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2021, 12, 31))
+        .validFrom(LocalDate.of(2024, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .businessOrganisation("sbb");
+  }
+
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version4Builder() {
+    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
+        .number("BEX4")
+        .status(Status.VALIDATED)
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2025, 1, 1))
+        .validTo(LocalDate.of(2025, 12, 31))
+        .businessOrganisation("sbb");
+  }
+
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version5Builder() {
+    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
+        .number("BEX5")
+        .status(Status.VALIDATED)
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2026, 1, 1))
+        .validTo(LocalDate.of(2026, 12, 31))
         .businessOrganisation("sbb");
   }
 

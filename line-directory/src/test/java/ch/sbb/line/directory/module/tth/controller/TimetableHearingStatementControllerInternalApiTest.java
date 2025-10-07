@@ -38,19 +38,20 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
-import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
-import ch.sbb.line.directory.module.tth.entity.StatementSender;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
+import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
+import ch.sbb.line.directory.module.tth.entity.StatementSender;
 import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.module.tth.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.module.tth.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.module.tth.mapper.ResponsibleTransportCompanyMapper;
-import ch.sbb.line.directory.shared.transportcompany.repository.SharedTransportCompanyRepository;
-import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingYearRepository;
-import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
+import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
+import ch.sbb.line.directory.shared.transportcompany.repository.SharedTransportCompanyRepository;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -171,7 +172,9 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .ttfnid(TTFNID)
         .swissTimetableFieldNumber("1234")
         .number("5678")
-        .description("Description")
+        .descriptionOutwardLine1("Description")
+        .descriptionReturnLine1("Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())
@@ -195,7 +198,9 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .ttfnid("ch:1:ttfnid:12341241")
         .swissTimetableFieldNumber("1234")
         .number("5678")
-        .description("Description")
+        .descriptionOutwardLine1("Description")
+        .descriptionReturnLine1("Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())
@@ -231,7 +236,9 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .ttfnid("ch:1:ttfnid:12341241")
         .swissTimetableFieldNumber("1234")
         .number("5678")
-        .description("Description")
+        .descriptionOutwardLine1("Description")
+        .descriptionReturnLine1("Description")
+        .meanOfTransport(MeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())
