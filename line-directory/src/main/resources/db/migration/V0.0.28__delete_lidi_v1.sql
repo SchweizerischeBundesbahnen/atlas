@@ -1,3 +1,5 @@
+delete from line_version_workflow where line_version_id in
+                                        (select id from line_version where line_type!='ORDERLY' and (swiss_line_number is not null or concession_type is not null));
 delete from line_version where line_type!='ORDERLY' and (swiss_line_number is not null or concession_type is not null);
 
 -- LineVersion
