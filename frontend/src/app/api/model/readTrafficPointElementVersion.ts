@@ -57,7 +57,7 @@ export interface ReadTrafficPointElementVersion {
     compassDirection?: number;
     trafficPointElementType: TrafficPointElementType;
     /**
-     * Unique code for traffic point element (TPE) that is used in customer information. By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.  The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here.  https://transportdatamanagement.ch/standards/
+     * Unique code for traffic point element (TPE) that is used in customer information. By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.  The structure is described in the \"Swiss Location ID\" specification, chapter 4.2. The document is available here:  https://transportdatamanagement.ch/standards/
      */
     sloid?: string;
     /**

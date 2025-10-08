@@ -55,6 +55,6 @@ export interface CreateSectorGroupVersion {
     /**
      * Sector sloid\'s related to the sector group
      */
-    sectorSloids?: Set<string>;
+    sectorSloids: Set<string>;
 }
 

@@ -7,11 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PermissionRestrictionObject } from './permissionRestrictionObject';
+import { PermissionRestriction } from './permissionRestriction';
 import { PermissionRestrictionType } from './permissionRestrictionType';
 
 
-export interface CountryPermissionRestrictionModel extends PermissionRestrictionObject { 
+export interface CountryPermissionRestrictionModel extends PermissionRestriction { 
 }
 export namespace CountryPermissionRestrictionModel {
 }

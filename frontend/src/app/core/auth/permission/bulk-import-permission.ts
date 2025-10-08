@@ -2,9 +2,9 @@ import {
   ApplicationRole,
   ApplicationType,
   Permission,
-  PermissionRestrictionObject,
   PermissionRestrictionType,
 } from '../../../api';
+import { PermissionRestriction } from '../../../api/model/permissionRestriction';
 
 export const BULK_IMPORT_APPLICATIONS = [
   ApplicationType.Sepodi,
@@ -27,7 +27,7 @@ export class BulkImportPermission {
   }
 
   private static hasExplicitBulkImportPermission(
-    restrictions: Array<PermissionRestrictionObject>
+    restrictions: Array<PermissionRestriction>
   ) {
     return restrictions.some(
       (i) =>
