@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "[INTERNAL] Timetable Field Numbers")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Timetable Field Numbers")
 @RequestMapping("internal/field-numbers")
 public interface TimetableFieldNumberApiInternal {
 

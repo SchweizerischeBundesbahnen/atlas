@@ -19,7 +19,6 @@ public class LineVersionSnapshotMapper {
         .slnid(lineVersionSnapshot.getSlnid())
         .status(lineVersionSnapshot.getStatus())
         .lineType(lineVersionSnapshot.getLineType())
-        .paymentType(lineVersionSnapshot.getPaymentType())
         .number(lineVersionSnapshot.getNumber())
         .longName(lineVersionSnapshot.getLongName())
         .description(lineVersionSnapshot.getDescription())

@@ -20,9 +20,9 @@ import { TableFilterMultiSelect } from '../../../core/components/table-filter/co
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 import { Pages } from '../../pages';
-import { LineService } from '../../../api/service/lidi/line.service';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LineInternalService } from '../../../api/service/lidi/line-internal.service';
 
 @Component({
   selector: 'app-lidi-lines',
@@ -89,9 +89,9 @@ export class LinesComponent implements OnInit, OnDestroy {
   totalCount$ = 0;
 
   constructor(
-    private lineService: LineService,
-    private router: Router,
-    private tableService: TableService
+    private readonly lineService: LineInternalService,
+    private readonly router: Router,
+    private readonly tableService: TableService
   ) {}
 
   ngOnInit() {

@@ -4,7 +4,7 @@ import { Line } from '../../../../../api';
 import { of, Subject } from 'rxjs';
 import { MockTableComponent } from '../../../../../app.testing.mocks';
 import { AppTestingModule } from '../../../../../app.testing.module';
-import { LineService } from '../../../../../api/service/lidi/line.service';
+import { LineInternalService } from '../../../../../api/service/lidi/line-internal.service';
 
 const subline: Line = {
   swissLineNumber: 'IC6',
@@ -18,8 +18,10 @@ const subline: Line = {
   validTo: new Date('2099-12-31'),
 };
 
-const lineService = jasmine.createSpyObj('LineService', ['getLines']);
-lineService.getLines.and.returnValue(of({ objects: subline }));
+const lineInternalService = jasmine.createSpyObj('LineInternalService', [
+  'getLines',
+]);
+lineInternalService.getLines.and.returnValue(of({ objects: subline }));
 
 describe('SublineTableComponent', () => {
   let component: SublineTableComponent;
@@ -29,7 +31,9 @@ describe('SublineTableComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule, SublineTableComponent, MockTableComponent],
-      providers: [{ provide: LineService, useValue: lineService }],
+      providers: [
+        { provide: LineInternalService, useValue: lineInternalService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SublineTableComponent);
@@ -45,7 +49,7 @@ describe('SublineTableComponent', () => {
 
   it('should load sublines from backend', () => {
     component.getOverview();
-    expect(lineService.getLines).toHaveBeenCalled();
+    expect(lineInternalService.getLines).toHaveBeenCalled();
   });
 
   it('should navigate to subline in new tab', () => {

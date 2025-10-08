@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 public class TerminationStopPointWorkflowFilterParams {
 
-  @Parameter(description = "List of search strings")
+  @Parameter(description = "List of search strings (SLOID; designationOfficial)")
   @Singular(ignoreNullCollections = true)
   private List<String> searchCriterias = new ArrayList<>();
 

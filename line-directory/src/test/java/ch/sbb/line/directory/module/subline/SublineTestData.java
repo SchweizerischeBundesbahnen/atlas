@@ -1,9 +1,6 @@
 package ch.sbb.line.directory.module.subline;
 
 import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
-import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
@@ -19,8 +16,6 @@ public class SublineTestData {
     return SublineVersion.builder()
         .status(Status.VALIDATED)
         .sublineType(SublineType.TECHNICAL)
-        .paymentType(PaymentType.INTERNATIONAL)
-        .number("number")
         .longName("longName")
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -35,18 +30,6 @@ public class SublineTestData {
 
   public static SublineVersion sublineVersion() {
     return sublineVersionBuilder().build();
-  }
-
-  public static SublineVersionModelBuilder<?, ?> sublineVersionModelBuilder() {
-    return SublineVersionModel.builder()
-        .validFrom(LocalDate.of(2020, 2, 1))
-        .validTo(LocalDate.of(2020, 11, 30))
-        .businessOrganisation("sbb")
-        .number("number")
-        .description("description")
-        .sublineType(SublineType.TECHNICAL)
-        .paymentType(PaymentType.LOCAL)
-        .mainlineSlnid(MAINLINE_SLNID);
   }
 
   public static CreateSublineVersionModelV2.CreateSublineVersionModelV2Builder<?, ?> createSublineVersionModelBuilderV2() {

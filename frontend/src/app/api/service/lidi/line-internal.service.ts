@@ -6,6 +6,11 @@ import { ContainerLineVersionSnapshot } from '../../model/containerLineVersionSn
 import { LineVersionSnapshot } from '../../model/lineVersionSnapshot';
 import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
 import { AffectedSublinesModel } from '../../model/affectedSublinesModel';
+import { Line } from '../../model/line';
+import { ContainerLine } from '../../model/containerLine';
+import { ElementType } from '../../model/elementType';
+import { Status } from '../../model/status';
+import { LidiElementType } from '../../model/lidiElementType';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +20,34 @@ export class LineInternalService {
   private readonly INTERNAL_LINES = '/line-directory/internal/lines';
 
   private readonly atlasApiService = inject(AtlasApiService);
+
+  public getLines(swissLineNumber?: string, searchCriteria?: Array<string>,
+                  statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>,
+                  elementRestrictions?: Array<ElementType>, businessOrganisation?: string,
+                  validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, page?: number, size?: number, sort?: Array<string>,
+  ): Observable<ContainerLine> {
+    const httpParams = this.atlasApiService.paramsOf({
+      swissLineNumber,
+      searchCriteria,
+      statusRestrictions,
+      typeRestrictions,
+      elementRestrictions,
+      businessOrganisation,
+      validOn,
+      fromDate,
+      toDate,
+      validToFromDate,
+      page,
+      size,
+      sort,
+    });
+    return this.atlasApiService.get(this.INTERNAL_LINES, httpParams);
+  }
+
+  public getLine(slnid: string): Observable<Line> {
+    this.atlasApiService.validateParams({ slnid });
+    return this.atlasApiService.get(`${this.INTERNAL_LINES}/${encodeURIComponent(String(slnid))}`);
+  }
 
   public revokeLine(slnid: string): Observable<void> {
     this.atlasApiService.validateParams({ slnid });

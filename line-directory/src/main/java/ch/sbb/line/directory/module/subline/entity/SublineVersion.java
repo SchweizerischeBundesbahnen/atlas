@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.module.subline.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
@@ -73,25 +72,9 @@ public class SublineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String description;
 
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true, since = "2.328.0")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  @AtlasVersionableProperty
-  private String number;
-
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String longName;
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true, since = "2.328.0")
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
-  private PaymentType paymentType;
 
   @NotNull
   @Column(columnDefinition = "TIMESTAMP")

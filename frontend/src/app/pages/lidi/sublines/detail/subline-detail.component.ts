@@ -55,6 +55,7 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { TranslatePipe } from '@ngx-translate/core';
 import { MainlineDescriptionPipe } from './mainline-description.pipe';
 import { LineService } from '../../../../api/service/lidi/line.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -109,16 +110,17 @@ export class SublineDetailComponent
   boSboidRestriction: string[] = [];
 
   constructor(
-    private router: Router,
-    private sublineService: SublineService,
-    private sublineInternalService: SublineInternalService,
-    private notificationService: NotificationService,
-    private lineService: LineService,
-    private permissionService: PermissionService,
-    private activatedRoute: ActivatedRoute,
-    private validityService: ValidityService,
-    private detailHelperService: DetailHelperService,
-    private dialogService: DialogService
+    private readonly router: Router,
+    private readonly sublineService: SublineService,
+    private readonly sublineInternalService: SublineInternalService,
+    private readonly notificationService: NotificationService,
+    private readonly lineService: LineService,
+    private readonly lineServiceInternal: LineInternalService,
+    private readonly permissionService: PermissionService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly validityService: ValidityService,
+    private readonly detailHelperService: DetailHelperService,
+    private readonly dialogService: DialogService
   ) {}
 
   ngOnInit() {
@@ -137,7 +139,7 @@ export class SublineDetailComponent
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
 
       this.initSelectedVersion();
-      this.mainlines$ = this.lineService
+      this.mainlines$ = this.lineServiceInternal
         .getLine(this.selectedVersion.mainlineSlnid)
         .pipe(map((value) => [value]));
 
@@ -309,7 +311,7 @@ export class SublineDetailComponent
   }
 
   searchMainlines(searchString: string) {
-    this.mainlines$ = this.lineService
+    this.mainlines$ = this.lineServiceInternal
       .getLines(
         undefined,
         [searchString],

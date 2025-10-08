@@ -2,21 +2,23 @@ package ch.sbb.line.directory.module.line.controller;
 
 import ch.sbb.atlas.api.lidi.AffectedSublinesModel;
 import ch.sbb.atlas.api.lidi.LineApiInternal;
+import ch.sbb.atlas.api.lidi.LineModel;
+import ch.sbb.atlas.api.lidi.LineRequestParams;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.module.line.entity.Line;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.entity.LineVersionSnapshot;
-import ch.sbb.line.directory.module.line.export.LineVersionExportService;
 import ch.sbb.line.directory.module.line.mapper.LineMapper;
 import ch.sbb.line.directory.module.line.mapper.LineVersionSnapshotMapper;
+import ch.sbb.line.directory.module.line.search.LineSearchRestrictions;
 import ch.sbb.line.directory.module.line.search.LineVersionSnapshotSearchRestrictions;
 import ch.sbb.line.directory.module.line.service.LineService;
 import ch.sbb.line.directory.module.line.service.LineVersionSnapshotService;
 import ch.sbb.line.directory.module.subline.service.SublineShorteningService;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +34,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineControllerInternal implements LineApiInternal {
 
   private final LineService lineService;
-  private final LineVersionExportService lineVersionExportService;
   private final LineVersionSnapshotService lineVersionSnapshotService;
   private final SublineShorteningService sublineShorteningService;
+
+  @Override
+  public Container<LineModel> getOverview(Pageable pageable, LineRequestParams lineRequestParams) {
+    log.info("Load Versions using pageable={}, params={}", pageable, lineRequestParams);
+    Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder()
+        .pageable(pageable)
+        .lineRequestParams(lineRequestParams)
+        .build());
+    List<LineModel> lineModels = lines.stream().map(LineMapper::toModel).toList();
+    return Container.<LineModel>builder()
+        .objects(lineModels)
+        .totalCount(lines.getTotalElements()).build();
+  }
+
+  @Override
+  public LineModel getLine(String slnid) {
+    return lineService.findLine(slnid)
+        .map(LineMapper::toModel)
+        .orElseThrow(() -> new SlnidNotFoundException(slnid));
+  }
 
   @Override
   public void revokeLine(String slnid) {
@@ -52,33 +73,6 @@ public class LineControllerInternal implements LineApiInternal {
   @Override
   public void skipWorkflow(Long id) {
     lineService.skipWorkflow(id);
-  }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportFullLineVersions() {
-    return lineVersionExportService.exportFullVersions();
-  }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportActualLineVersions() {
-    return lineVersionExportService.exportActualVersions();
-  }
-
-  /**
-   * @deprecated since V2.544.0
-   */
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportFutureTimetableLineVersions() {
-    return lineVersionExportService.exportFutureTimetableVersions();
   }
 
   @Override

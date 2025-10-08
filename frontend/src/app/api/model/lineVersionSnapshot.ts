@@ -8,14 +8,13 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
-import { PaymentType } from './paymentType';
 import { LineConcessionType } from './lineConcessionType';
 import { OfferCategory } from './offerCategory';
 import { LineType } from './lineType';
 import { WorkflowStatus } from './workflowStatus';
 
 
-export interface LineVersionSnapshot { 
+export interface LineVersionSnapshot {
     /**
      * Object creation date
      */
@@ -34,7 +33,7 @@ export interface LineVersionSnapshot {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a line point in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a line. To do this, use the slnid or number in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a line point in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a line. To do this, use the slnid or number in combination with the data range (valid from/valid until).
      */
     readonly id?: number;
     /**
@@ -51,7 +50,6 @@ export interface LineVersionSnapshot {
      * SLNID
      */
     readonly slnid?: string;
-    paymentType: PaymentType;
     /**
      * Number
      */
