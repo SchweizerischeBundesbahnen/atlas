@@ -86,7 +86,6 @@ public class LineWorkflowProcessingService extends
         .swissLineNumber(lineVersion.getSwissLineNumber())
         .slnid(lineVersion.getSlnid())
         .lineType(lineVersion.getLineType())
-        .paymentType(lineVersion.getPaymentType())
         .number(lineVersion.getNumber())
         .longName(lineVersion.getLongName())
         .description(lineVersion.getDescription())

@@ -111,7 +111,7 @@ const dialogService = jasmine.createSpyObj<DialogService>('DialogService', {
 });
 
 describe('LineDetailComponent for existing lineVersion', () => {
-  const mockLineService = jasmine.createSpyObj('lineService', [
+  const mockLineService = jasmine.createSpyObj('lineInternalService', [
     'updateLineVersion',
   ]);
   const mockLineInternalService = jasmine.createSpyObj('lineInternalService', [
@@ -295,7 +295,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 });
 
 describe('LineDetailComponent for new lineVersion', () => {
-  const mockLineService = jasmine.createSpyObj('lineService', [
+  const mockLineService = jasmine.createSpyObj('lineInternalService', [
     'createLineVersionV2',
   ]);
   const mockData = {

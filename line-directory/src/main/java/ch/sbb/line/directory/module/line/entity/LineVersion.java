@@ -4,21 +4,15 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.line.directory.module.line.converter.CmykColorConverter;
-import ch.sbb.line.directory.module.line.converter.RgbColorConverter;
-import ch.sbb.line.directory.module.line.model.CmykColor;
-import ch.sbb.line.directory.module.line.model.RgbColor;
 import ch.sbb.line.directory.module.workflow.entity.LineVersionWorkflow;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -76,59 +70,14 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private LineType lineType;
 
-  /**
-   * @deprecated since V2.328.0
-   */
-  @Deprecated(forRemoval = true, since = "2.328.0")
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
-  private PaymentType paymentType;
-
   @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_8)
   @AtlasVersionableProperty
   private String number;
 
-  /**
-   * @deprecated since V2.328.0
-   */
-  @Deprecated(forRemoval = true, since = "2.328.0")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  @AtlasVersionableProperty
-  private String alternativeName;
-
-  /**
-   * @deprecated since V2.328.0
-   */
-  @Deprecated(forRemoval = true, since = "2.328.0")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  @AtlasVersionableProperty
-  private String combinationName;
-
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String longName;
-
-  @Convert(converter = RgbColorConverter.class)
-  @AtlasVersionableProperty
-  private RgbColor colorFontRgb;
-
-  @Convert(converter = RgbColorConverter.class)
-  @AtlasVersionableProperty
-  private RgbColor colorBackRgb;
-
-  @Convert(converter = CmykColorConverter.class)
-  @AtlasVersionableProperty
-  private CmykColor colorFontCmyk;
-
-  @Convert(converter = CmykColorConverter.class)
-  @AtlasVersionableProperty
-  private CmykColor colorBackCmyk;
-
-  @Deprecated(forRemoval = true, since = "2.328.0")
-  @Size(max = AtlasFieldLengths.LENGTH_255)
-  @AtlasVersionableProperty
-  private String icon;
 
   @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)

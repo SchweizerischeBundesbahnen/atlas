@@ -58,7 +58,6 @@ class LineServiceUpdateWithInReviewVersionsTest {
         .swissLineNumber("3")
         .number("3")
         .status(Status.VALIDATED)
-        .colorBackRgb(LineTestData.RBG_RED)
         .validFrom(LocalDate.of(2024, 1, 1))
         .validTo(LocalDate.of(2024, 12, 31));
   }
@@ -68,7 +67,6 @@ class LineServiceUpdateWithInReviewVersionsTest {
         .swissLineNumber("2")
         .number("2")
         .status(Status.VALIDATED)
-        .colorBackRgb(LineTestData.RGB_BLACK)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31));
   }
@@ -78,7 +76,6 @@ class LineServiceUpdateWithInReviewVersionsTest {
         .swissLineNumber("1")
         .number("1")
         .status(Status.VALIDATED)
-        .colorBackRgb(LineTestData.RBG_YELLOW)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31));
   }
@@ -121,7 +118,7 @@ class LineServiceUpdateWithInReviewVersionsTest {
     assertThat(result).isNotNull().hasSize(2);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.IN_REVIEW);
@@ -182,7 +179,6 @@ class LineServiceUpdateWithInReviewVersionsTest {
     LineVersion editedVersion = version3Builder().build();
     editedVersion.setSwissLineNumber("2");
     editedVersion.setNumber("2");
-    editedVersion.setColorBackRgb(LineTestData.RGB_BLACK);
 
     editedVersion.setValidFrom(LocalDate.of(2021, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2024, 1, 1));
@@ -360,7 +356,7 @@ class LineServiceUpdateWithInReviewVersionsTest {
     assertThat(result).isNotNull().hasSize(1);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(version1.getValidFrom());
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(version1.getValidTo());
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.IN_REVIEW);

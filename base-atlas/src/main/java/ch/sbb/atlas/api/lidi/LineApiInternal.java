@@ -9,14 +9,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "[INTERNAL] Lines")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Lines")
 @RequestMapping("internal/lines")
 public interface LineApiInternal {
 
@@ -46,22 +45,6 @@ public interface LineApiInternal {
       + ".ApplicationType).LIDI)")
   void skipWorkflow(@PathVariable Long id);
 
-  @Deprecated(forRemoval = true)
-  @Operation(description = "Export all line versions as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
-  List<URL> exportFullLineVersions();
-
-  @Deprecated(forRemoval = true)
-  @Operation(description = "Export all actual line versions as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
-  List<URL> exportActualLineVersions();
-
-  @Deprecated(forRemoval = true)
-  @Operation(description = "Export all line versions for the current timetable year change as csv and zip file to the ATLAS "
-      + "Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
-  List<URL> exportFutureTimetableLineVersions();
-
   @Operation(description = "Returns all line versions with its related workflow id")
   @GetMapping("/workflows")
   @PageableAsQueryParam
@@ -80,5 +63,13 @@ public interface LineApiInternal {
   AffectedSublinesModel checkAffectedSublines(@PathVariable Long id,
       @RequestBody @Valid UpdateLineVersionModelV2 newVersion
   );
+
+  @GetMapping
+  @PageableAsQueryParam
+  Container<LineModel> getOverview(@Parameter(hidden = true) Pageable pageable,
+      @Valid @ParameterObject LineRequestParams lineRequestParams);
+
+  @GetMapping("{slnid}")
+  LineModel getLine(@PathVariable String slnid);
 
 }

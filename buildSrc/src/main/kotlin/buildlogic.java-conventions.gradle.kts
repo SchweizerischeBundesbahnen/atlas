@@ -95,7 +95,7 @@ publishing {
 }
 
 tasks.withType<Test> {
-    failFast = true
+    failFast = false
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed", "standardOut", "standardError")

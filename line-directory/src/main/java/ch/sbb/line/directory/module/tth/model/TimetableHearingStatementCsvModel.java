@@ -3,7 +3,6 @@ package ch.sbb.line.directory.module.tth.model;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.export.model.VersionCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.time.LocalDateTime;
@@ -23,7 +22,7 @@ import lombok.NoArgsConstructor;
     "timetabeHearingStatementId", "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement",
     "documentsPresent", "status", "justification", "firstName", "lastName", "organisation",
     "street", "zipAndCity", "emails", "editor", "editionDate", "timetableHearingYear"})
-public class TimetableHearingStatementCsvModel implements VersionCsvModel {
+public class TimetableHearingStatementCsvModel {
 
   private String cantonAbbreviation;
   private String timetableFieldNumber;

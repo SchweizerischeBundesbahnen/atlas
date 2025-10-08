@@ -5,7 +5,6 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -61,10 +60,6 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001234")
   private String slnid;
-
-  @Schema(description = "PaymentType", accessMode = AccessMode.READ_ONLY)
-  @NotNull
-  private PaymentType paymentType;
 
   @Schema(description = "Number", example = "L1", accessMode = AccessMode.READ_ONLY)
   private String number;

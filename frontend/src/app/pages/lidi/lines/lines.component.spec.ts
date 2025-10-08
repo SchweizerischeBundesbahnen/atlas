@@ -12,8 +12,8 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
-import { LineService } from '../../../api/service/lidi/line.service';
 import { TableComponent } from '../../../core/components/table/table.component';
+import { LineInternalService } from '../../../api/service/lidi/line-internal.service';
 import SpyObj = jasmine.SpyObj;
 
 const line: Line = {
@@ -49,18 +49,21 @@ describe('LinesComponent', () => {
   let fixture: ComponentFixture<LinesComponent>;
   let router: Router;
 
-  let lineServiceSpy: SpyObj<LineService>;
+  let lineInternalServiceSpy: SpyObj<LineInternalService>;
 
   beforeEach(() => {
-    lineServiceSpy = jasmine.createSpyObj<LineService>('LineServiceSpy', {
-      getLines: of(versionContainer),
-    });
+    lineInternalServiceSpy = jasmine.createSpyObj<LineInternalService>(
+      'LineServiceSpy',
+      {
+        getLines: of(versionContainer),
+      }
+    );
 
     TestBed.configureTestingModule({
       imports: [LinesComponent, TranslateModule.forRoot()],
       providers: [
         TranslatePipe,
-        { provide: LineService, useValue: lineServiceSpy },
+        { provide: LineInternalService, useValue: lineInternalServiceSpy },
         {
           provide: ActivatedRoute,
           useValue: { paramMap: new Subject() },
@@ -117,7 +120,7 @@ describe('LinesComponent', () => {
       size: 10,
     });
 
-    expect(lineServiceSpy.getLines).toHaveBeenCalledOnceWith(
+    expect(lineInternalServiceSpy.getLines).toHaveBeenCalledOnceWith(
       undefined,
       [],
       [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn],

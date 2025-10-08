@@ -3,6 +3,7 @@ package ch.sbb.line.directory.module.line.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -17,7 +18,6 @@ import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
@@ -69,62 +69,31 @@ class LineControllerInternalApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldExportFullLineVersionsCsv() throws Exception {
+  void shouldGetLineOverview() throws Exception {
     //given
-    LineVersionModelV2 lineVersionModel1 = LineTestData.createLineVersionModelBuilder().build();
-    LineVersionModelV2 lineVersionModel2 = LineTestData.createLineVersionModelBuilder()
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .description("descriptiön2")
-        .build();
-    lineControllerV2.createLineVersionV2(lineVersionModel1);
-    lineControllerV2.createLineVersionV2(lineVersionModel2);
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder().build();
+    lineControllerV2.createLineVersionV2(lineVersionModel);
 
     //when
-    mvc.perform(post("/internal/lines/export-csv/full"))
-        .andExpect(status().isOk()).andReturn();
+    mvc.perform(get("/internal/lines")
+            .queryParam("page", "0")
+            .queryParam("size", "5")
+            .queryParam("sort", "swissLineNumber,asc"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1))
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
-  void shouldExportActualLineVersionsCsv() throws Exception {
+  void shouldGetLineOverviewBySlnid() throws Exception {
     //given
-    LineVersionModelV2 lineVersionModel1 = LineTestData.createLineVersionModelBuilder().build();
-    LineVersionModelV2 lineVersionModel2 = LineTestData.createLineVersionModelBuilder()
-        .validFrom(LocalDate.now()
-            .withMonth(1)
-            .withDayOfMonth(1))
-        .validTo(LocalDate.now()
-            .withMonth(12)
-            .withDayOfMonth(31))
-        .description("desc2")
-        .build();
-    lineControllerV2.createLineVersionV2(lineVersionModel1);
-    lineControllerV2.createLineVersionV2(lineVersionModel2);
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder().build();
+    lineVersionModel = lineControllerV2.createLineVersionV2(lineVersionModel);
 
     //when
-    mvc.perform(post("/internal/lines/export-csv/actual"))
-        .andExpect(status().isOk()).andReturn();
-  }
-
-  @Test
-  void shouldExportFutureTimetableLineVersionsCsv() throws Exception {
-    //given
-    LineVersionModelV2 lineVersionModel1 = LineTestData.createLineVersionModelBuilder().build();
-    LineVersionModelV2 lineVersionModel2 = LineTestData.createLineVersionModelBuilder()
-        .validFrom(LocalDate.now()
-            .withMonth(1)
-            .withDayOfMonth(1))
-        .validTo(LocalDate.now()
-            .withMonth(12)
-            .withDayOfMonth(31))
-        .description("desc2")
-        .build();
-    lineControllerV2.createLineVersionV2(lineVersionModel1);
-    lineControllerV2.createLineVersionV2(lineVersionModel2);
-
-    //when
-    mvc.perform(post("/internal/lines/export-csv/timetable-year-change"))
-        .andExpect(status().isOk()).andReturn();
+    mvc.perform(get("/internal/lines/" + lineVersionModel.getSlnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.slnid", notNullValue()));
   }
 
   @Test
@@ -196,7 +165,6 @@ class LineControllerInternalApiTest extends BaseControllerApiTest {
         .offerCategory(OfferCategory.IC)
         .shortNumber("asd")
         .workflowStatus(WorkflowStatus.STARTED)
-        .paymentType(PaymentType.INTERNATIONAL)
         .number("number")
         .longName("longName")
         .description("description")
@@ -228,8 +196,6 @@ class LineControllerInternalApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.objects", hasSize(1)))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.longName, is("longName")))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.lineType, is(LineType.ORDERLY.toString())))
-        .andExpect(
-            jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.paymentType, is(PaymentType.INTERNATIONAL.toString())))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.description, is("b0.IC2")))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.workflowId, is(123)))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.parentObjectId, is(123)))
@@ -258,7 +224,7 @@ class LineControllerInternalApiTest extends BaseControllerApiTest {
     //then
     List<LineVersionModelV2> lineVersions = lineControllerV2.getLineVersionsV2(lineVersionSaved.getSlnid());
     assertThat(lineVersions).hasSize(1);
-    assertThat(lineVersions.get(0).getStatus()).isEqualTo(Status.VALIDATED);
+    assertThat(lineVersions.getFirst().getStatus()).isEqualTo(Status.VALIDATED);
   }
 
 }
