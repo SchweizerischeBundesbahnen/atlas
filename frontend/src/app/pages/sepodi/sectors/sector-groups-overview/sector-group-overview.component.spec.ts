@@ -134,6 +134,9 @@ describe('SectorGroupOverviewComponent', () => {
   });
 
   it('should set hasAtLeastTwoSectors to false ', () => {
+    subject.next({ totalCount: 1, objects: [] });
+    fixture.detectChanges();
+
     expect(component.hasAtLeastTwoSectors).toBeFalse();
   });
 
@@ -142,6 +145,5 @@ describe('SectorGroupOverviewComponent', () => {
     fixture.detectChanges();
 
     expect(component.hasAtLeastTwoSectors).toBeTrue();
-    subject.complete();
   });
 });
