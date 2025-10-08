@@ -6,11 +6,13 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { ContainerSectorGroupVersion } from '../../../../api/model/containerSectorGroupVersion';
+import { BehaviorSubject, of } from 'rxjs';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
+import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
+import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
+import { ContainerSectorGroupVersion } from '../../../../api/model/containerSectorGroupVersion';
 
 describe('SectorGroupOverviewComponent', () => {
   let component: SectorGroupOverviewComponent;
@@ -41,6 +43,16 @@ describe('SectorGroupOverviewComponent', () => {
     of(sectorGroupOverview)
   );
 
+  const sectorInternalService = jasmine.createSpyObj('SectorInternalService', [
+    'getSectors',
+  ]);
+
+  const subject = new BehaviorSubject<ContainerReadSectorVersion>({
+    totalCount: 1,
+    objects: [],
+  });
+  sectorInternalService.getSectors.and.returnValue(subject.asObservable());
+
   const routerSpy = jasmine.createSpyObj(['navigate']);
   routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
@@ -53,6 +65,10 @@ describe('SectorGroupOverviewComponent', () => {
         {
           provide: SectorGroupInternalService,
           useValue: sectorGroupInternalService,
+        },
+        {
+          provide: SectorInternalService,
+          useValue: sectorInternalService,
         },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
@@ -115,5 +131,19 @@ describe('SectorGroupOverviewComponent', () => {
       ['add'],
       jasmine.any(Object)
     );
+  });
+
+  it('should set hasAtLeastTwoSectors to false ', () => {
+    subject.next({ totalCount: 1, objects: [] });
+    fixture.detectChanges();
+
+    expect(component.hasAtLeastTwoSectors).toBeFalse();
+  });
+
+  it('should set hasAtLeastTwoSectors to true ', () => {
+    subject.next({ totalCount: 2, objects: [] });
+    fixture.detectChanges();
+
+    expect(component.hasAtLeastTwoSectors).toBeTrue();
   });
 });

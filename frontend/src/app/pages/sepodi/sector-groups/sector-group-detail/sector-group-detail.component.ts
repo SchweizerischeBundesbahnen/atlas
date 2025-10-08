@@ -48,7 +48,6 @@ import { SelectComponent } from '../../../../core/form-components/select/select.
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-sector-group-detail',
@@ -68,7 +67,6 @@ import { NgIf } from '@angular/common';
     SelectComponent,
     AtlasLabelFieldComponent,
     AtlasFieldErrorComponent,
-    NgIf,
   ],
   templateUrl: './sector-group-detail.component.html',
   styleUrls: ['./sector-group-detail.component.scss'],
