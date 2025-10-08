@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.module.sector.api;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = "Sectors")
 @RequestMapping("v1/sectors")
 @Validated
-@Hidden // ATLAS-3130 To Remove once public, add link to sector restdoc in SePoDi
 public interface SectorApiV1 {
 
   @GetMapping("{sloid}")

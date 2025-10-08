@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { ClientCredentialPermissionCreate } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
@@ -21,6 +20,7 @@ import { TextFieldComponent } from '../../../../../core/form-components/text-fie
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
+import { ClientCredentialCreate } from '../../../../../api/model/clientCredentialCreate';
 
 @Component({
   selector: 'app-client-credential-administration-create',
@@ -73,7 +73,7 @@ export class UserAdministrationClientCreateComponent {
       this.saveEnabled = false;
       const permission = {
         ...this.form.value,
-      } as ClientCredentialPermissionCreate;
+      } as ClientCredentialCreate;
       this.clientCredentialAdministrationService
         .createClientCredential(permission)
         .subscribe({

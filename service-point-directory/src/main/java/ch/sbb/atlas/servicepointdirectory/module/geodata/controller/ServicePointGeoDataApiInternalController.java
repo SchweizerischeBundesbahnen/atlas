@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Hidden
+@Hidden // todo: why hidden
 public class ServicePointGeoDataApiInternalController implements ServicePointGeoDataApiInternal {
 
   private final GeoReferenceService geoReferenceService;
