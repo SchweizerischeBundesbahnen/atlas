@@ -70,6 +70,15 @@ public class BulkImportTemplateGenerator {
 
     templateLookup.put(
         BulkImportConfig.builder()
+            .application(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.TRAFFIC_POINT)
+            .importType(ImportType.TERMINATE)
+            .build(),
+        TrafficPointTemplateGenerator::getTrafficPointTerminateCsvModelExample
+    );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
             .application(ApplicationType.PRM)
             .objectType(BusinessObjectType.PLATFORM_REDUCED)
             .importType(ImportType.UPDATE)
