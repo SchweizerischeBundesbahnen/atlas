@@ -22,7 +22,7 @@ public class RelationVersionRowMapper implements RowMapper<RelationVersion> {
     builder.sloid(rs.getString("sloid"));
     builder.parentServicePointSloid(rs.getString("parent_service_point_sloid"));
     builder.parentServicePointNumber(
-        ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
+        ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     builder.referencePointSloid(rs.getString("reference_point_sloid"));
     builder.tactileVisualMarks(TactileVisualAttributeType.valueOf(rs.getString("tactile_visual_marks")));
     builder.contrastingAreas(StandardAttributeType.valueOf(rs.getString("contrasting_areas")));

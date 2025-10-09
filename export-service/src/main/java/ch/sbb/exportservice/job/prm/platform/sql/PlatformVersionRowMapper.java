@@ -26,7 +26,7 @@ public class PlatformVersionRowMapper implements RowMapper<PlatformVersion> {
     builder.sloid(rs.getString("sloid"));
     builder.parentServicePointSloid(rs.getString("parent_service_point_sloid"));
     builder.parentNumberServicePoint(
-        ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
+        ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     builder.shuttle(
         rs.getObject("shuttle") != null ? BooleanOptionalAttributeType.valueOf(rs.getString("shuttle"))
             : null);

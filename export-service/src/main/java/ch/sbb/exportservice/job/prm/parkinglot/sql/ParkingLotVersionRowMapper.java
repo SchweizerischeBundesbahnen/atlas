@@ -20,7 +20,7 @@ public class ParkingLotVersionRowMapper implements RowMapper<ParkingLotVersion> 
     builder.sloid(rs.getString("sloid"));
     builder.parentServicePointSloid(rs.getString("parent_service_point_sloid"));
     builder.parentServicePointNumber(
-        ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
+        ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     builder.designation(rs.getString("designation"));
     builder.additionalInformation(rs.getString("additional_information"));
     builder.placesAvailable(BooleanOptionalAttributeType.valueOf(rs.getString("places_available")));

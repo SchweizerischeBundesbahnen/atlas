@@ -20,7 +20,7 @@ public class ContactPointVersionRowMapper implements RowMapper<ContactPointVersi
     builder.sloid(rs.getString("sloid"));
     builder.parentServicePointSloid(rs.getString("parent_service_point_sloid"));
     builder.parentServicePointNumber(
-        ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
+        ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     builder.type(ContactPointType.valueOf(rs.getString("type")));
     builder.designation(rs.getString("designation"));
     builder.additionalInformation(rs.getString("additional_information"));
