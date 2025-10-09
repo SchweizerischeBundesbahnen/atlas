@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { NgClass } from '@angular/common';
 
@@ -8,7 +16,7 @@ import { NgClass } from '@angular/common';
   styleUrls: ['./atlas-slide-toggle.component.scss'],
   imports: [NgClass],
 })
-export class AtlasSlideToggleComponent implements OnInit {
+export class AtlasSlideToggleComponent implements OnInit, OnChanges {
   @Input() toggle = false;
   @Input() disabled = false;
 
@@ -23,6 +31,12 @@ export class AtlasSlideToggleComponent implements OnInit {
       this.formControl.valueChanges.subscribe(
         (newValue) => (this.toggle = newValue)
       );
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.formGroup) {
+      this.ngOnInit();
     }
   }
 

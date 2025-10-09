@@ -162,10 +162,13 @@ export class ApplicationPermissionComponent implements OnInit {
   }
 
   removeBusinessOrganisation(): void {
+    const sboidToRemove =
+      this.currentBusinessOrganisations[this.selectedBusinessOrganisationIndex]
+        .sboid!;
+
     const sboids = this.form.controls.permissions.controls.sboidsRestrictions!;
-    const updatedSboids = sboids.value!;
-    updatedSboids.splice(this.selectedBusinessOrganisationIndex, 1);
-    sboids.setValue(updatedSboids);
+    const indexToRemove = sboids.value!.indexOf(sboidToRemove);
+    sboids.value!.splice(indexToRemove, 1);
     sboids.markAsDirty();
 
     this.currentBusinessOrganisations =
