@@ -16,6 +16,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -333,6 +334,41 @@ class TrafficPointElementBulkImportServiceTest {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
         generatedSloid).getFirst();
     assertThat(trafficPointElementVersion.getSloid()).isNotNull().isEqualTo(generatedSloid);
+  }
+
+  @Test
+  void shouldTerminateTrafficPointElement() {
+    String sloid = bernWylereggPlatform.getSloid();
+    LocalDate validTo = bernWylereggPlatform.getValidTo().minusDays(10);
+
+    trafficPointElementBulkImportService.terminateTrafficPoint(BulkImportUpdateContainer.<TrafficPointTerminateCsvModel>builder()
+        .object(TrafficPointTerminateCsvModel.builder()
+            .sloid(sloid)
+            .validTo(validTo)
+            .build())
+        .build());
+
+    TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+        sloid).getFirst();
+    assertThat(trafficPointElementVersion.getValidTo()).isNotNull().isEqualTo(validTo);
+  }
+
+  @Test
+  void shouldTerminateTrafficPointElementByUsername() {
+    String sloid = bernWylereggPlatform.getSloid();
+    LocalDate validTo = bernWylereggPlatform.getValidTo().minusDays(10);
+
+    trafficPointElementBulkImportService.terminateTrafficPointByUserName("e123456",
+        BulkImportUpdateContainer.<TrafficPointTerminateCsvModel>builder()
+            .object(TrafficPointTerminateCsvModel.builder()
+                .sloid(sloid)
+                .validTo(validTo)
+                .build())
+            .build());
+
+    TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+        sloid).getFirst();
+    assertThat(trafficPointElementVersion.getValidTo()).isNotNull().isEqualTo(validTo);
   }
 
 }

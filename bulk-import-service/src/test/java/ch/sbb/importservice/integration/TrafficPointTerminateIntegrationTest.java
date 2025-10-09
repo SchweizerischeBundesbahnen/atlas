@@ -50,7 +50,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @Slf4j
 @IntegrationTest
-class TrafficPointCreateIntegrationTest {
+class TrafficPointTerminateIntegrationTest {
 
   @Autowired
   private BulkImportController bulkImportController;
@@ -81,7 +81,7 @@ class TrafficPointCreateIntegrationTest {
   @BeforeEach
   void setUp() {
     todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
-        + "/SEPODI/TRAFFIC_POINT/CREATE";
+        + "/SEPODI/TRAFFIC_POINT/TERMINATE";
     when(amazonService.putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), anyString()))
         .thenAnswer(i -> URI.create("https://atlas-bulk-import-dev-dev.s3.eu-central-1.amazonaws.com/" +
             todaysDirectory + "/" + i.getArgument(1, File.class).getName()).toURL());
@@ -94,27 +94,27 @@ class TrafficPointCreateIntegrationTest {
   }
 
   @Test
-  void shouldImportTrafficPointsAndCreateViaApi() throws IOException {
+  void shouldImportTrafficPointsAndTerminateViaApi() throws IOException {
     // Given
-    when(trafficPointBulkImportClient.bulkImportCreate(any())).thenAnswer(i -> {
+    when(trafficPointBulkImportClient.bulkImportTerminate(any())).thenAnswer(i -> {
       List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> argument = i.getArgument(0, List.class);
       return argument.stream().map(j -> BulkImportItemExecutionResult.builder().lineNumber(j.getLineNumber()).build()).toList();
     });
-    File file = ImportFiles.getFileByPath("import-files/valid/traffic-point-create.csv");
+    File file = ImportFiles.getFileByPath("import-files/valid/traffic-point-terminate.csv");
 
     // When
-    MockMultipartFile multipartFile = new MockMultipartFile("file", "traffic-point-create", CSV_CONTENT_TYPE,
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "traffic-point-terminate", CSV_CONTENT_TYPE,
         Files.readAllBytes(file.toPath()));
     BulkImportRequest importRequest = BulkImportRequest.builder()
         .applicationType(ApplicationType.SEPODI)
         .objectType(BusinessObjectType.TRAFFIC_POINT)
-        .importType(ImportType.CREATE)
+        .importType(ImportType.TERMINATE)
         .emails(List.of("test-cc@atlas.ch"))
         .build();
     bulkImportController.startBulkImport(importRequest, multipartFile);
 
     // Then
-    verify(trafficPointBulkImportClient, times(1)).bulkImportCreate(any());
+    verify(trafficPointBulkImportClient, times(1)).bulkImportTerminate(any());
 
     verify(bulkImportLogService).writeLogToFile(logFileCaptor.capture(), any(BulkImport.class));
     LogFile writtenLogFile = logFileCaptor.getValue();
