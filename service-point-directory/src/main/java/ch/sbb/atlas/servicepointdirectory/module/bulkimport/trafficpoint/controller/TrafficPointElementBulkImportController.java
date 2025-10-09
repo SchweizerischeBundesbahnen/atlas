@@ -6,6 +6,7 @@ import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.trafficpoint.service.TrafficPointElementBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,14 @@ public class TrafficPointElementBulkImportController extends BaseBulkImportContr
     return executeBulkImport(bulkImportContainers,
         trafficPointElementBulkImportService::updateTrafficPointByUserName,
         trafficPointElementBulkImportService::updateTrafficPoint);
+  }
+
+  @Override
+  public List<BulkImportItemExecutionResult> bulkImportTerminate(
+      List<BulkImportUpdateContainer<TrafficPointTerminateCsvModel>> bulkImportTerminateContainers) {
+    return executeBulkImport(bulkImportTerminateContainers,
+        trafficPointElementBulkImportService::terminateTrafficPointByUserName,
+        trafficPointElementBulkImportService::terminateTrafficPoint);
   }
 
 }

@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
@@ -36,7 +37,7 @@ public class TrafficPointElementBulkImportService {
 
   public void createTrafficPoint(BulkImportUpdateContainer<TrafficPointCreateCsvModel> bulkImportContainer) {
     CreateTrafficPointElementVersionModel createModel = TrafficPointElementBulkImportCreate.apply(bulkImportContainer);
-    trafficPointElementApiClient.createServicePoint(createModel);
+    trafficPointElementApiClient.createTrafficPoint(createModel);
   }
 
   @RunAsUser
@@ -56,7 +57,7 @@ public class TrafficPointElementBulkImportService {
     CreateTrafficPointElementVersionModel updateModel = TrafficPointElementBulkImportUpdate.apply(bulkImportContainer,
         currentVersion);
 
-    trafficPointElementApiClient.updateServicePoint(currentVersion.getId(), updateModel);
+    trafficPointElementApiClient.updateTrafficPoint(currentVersion.getId(), updateModel);
   }
 
   private List<TrafficPointElementVersion> getCurrentTrafficPointVersions(TrafficPointUpdateCsvModel trafficPointUpdateCsvModel) {
@@ -69,6 +70,18 @@ public class TrafficPointElementBulkImportService {
       return trafficPointElementVersions;
     }
     throw new IllegalStateException("Sloid should be given");
+  }
+
+  @RunAsUser
+  public void terminateTrafficPointByUserName(@RunAsUserParameter String userName,
+      BulkImportUpdateContainer<TrafficPointTerminateCsvModel> bulkImportContainer) {
+    log.info("Terminating versions in name of the user: {}", userName);
+    terminateTrafficPoint(bulkImportContainer);
+  }
+
+  public void terminateTrafficPoint(BulkImportUpdateContainer<TrafficPointTerminateCsvModel> bulkImportContainer) {
+    trafficPointElementApiClient.terminateTrafficPoint(bulkImportContainer.getObject().getSloid(),
+        bulkImportContainer.getObject().getValidTo());
   }
 
 }

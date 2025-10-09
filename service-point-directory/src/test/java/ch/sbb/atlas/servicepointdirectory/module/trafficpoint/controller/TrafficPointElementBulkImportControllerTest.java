@@ -10,9 +10,11 @@ import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.trafficpoint.controller.TrafficPointElementBulkImportController;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.trafficpoint.service.TrafficPointElementBulkImportService;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -127,4 +129,43 @@ class TrafficPointElementBulkImportControllerTest {
         .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(true);
   }
 
+  @Test
+  void shouldBulkImportTerminate() {
+    BulkImportUpdateContainer<TrafficPointTerminateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<TrafficPointTerminateCsvModel>builder()
+            .object(TrafficPointTerminateCsvModel.builder()
+                .sloid("ch:1:sloid:89008:123:123")
+                .validTo(LocalDate.of(2099,12,31))
+                .build())
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        trafficPointElementBulkImportController.bulkImportTerminate(List.of(updateContainer));
+
+    verify(trafficPointElementBulkImportService, never()).terminateTrafficPointByUserName("username", updateContainer);
+    verify(trafficPointElementBulkImportService).terminateTrafficPoint(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first()
+        .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(true);
+  }
+
+  @Test
+  void shouldBulkImportTerminateWithUsername() {
+    String username = "e123456";
+    BulkImportUpdateContainer<TrafficPointTerminateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<TrafficPointTerminateCsvModel>builder()
+            .object(TrafficPointTerminateCsvModel.builder()
+                .sloid("ch:1:sloid:89008:123:123")
+                .validTo(LocalDate.of(2099,12,31))
+                .build())
+            .inNameOf(username)
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        trafficPointElementBulkImportController.bulkImportTerminate(List.of(updateContainer));
+
+    verify(trafficPointElementBulkImportService).terminateTrafficPointByUserName(username, updateContainer);
+    verify(trafficPointElementBulkImportService, never()).terminateTrafficPoint(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first()
+        .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(true);
+  }
 }
