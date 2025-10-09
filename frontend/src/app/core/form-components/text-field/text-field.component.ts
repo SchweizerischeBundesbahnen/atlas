@@ -25,7 +25,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class TextFieldComponent {
   @Input() controlName!: string;
-  @Input() fieldLabel!: string;
+  @Input() fieldLabel?: string;
   @Input() infoIconTitle!: string;
   @Input() infoIconLink!: string;
   @Input() required!: boolean;

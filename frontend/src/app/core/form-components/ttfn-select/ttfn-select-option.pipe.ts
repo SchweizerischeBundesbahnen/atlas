@@ -7,6 +7,6 @@ import { TimetableFieldNumber } from '../../../api';
 })
 export class TimetableFieldNumberSelectOptionPipe implements PipeTransform {
   transform(value: TimetableFieldNumber): string {
-    return `${value.swissTimetableFieldNumber} - ${value.number} - ${value.description}`;
+    return `${value.swissTimetableFieldNumber} - ${value.number} - ${value.descriptionOutwardLine1}`;
   }
 }

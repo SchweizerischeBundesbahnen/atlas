@@ -86,8 +86,12 @@ export class BusinessOrganisationDetailComponent
     return ApplicationType.Bodi;
   }
 
-  readRecord(): BusinessOrganisationVersion {
-    return this.activatedRoute.snapshot.data.businessOrganisationDetail;
+  readRecords(): BusinessOrganisationVersion[] {
+    return (
+      this.activatedRoute.snapshot.data as {
+        businessOrganisationDetail: BusinessOrganisationVersion[];
+      }
+    ).businessOrganisationDetail;
   }
 
   getDetailHeading(record: BusinessOrganisationVersion): string {
@@ -103,19 +107,18 @@ export class BusinessOrganisationDetailComponent
   }
 
   updateRecord(): void {
+    const id = this.getId();
+    const sboid = this.record?.sboid;
+    if (!id || !sboid) throw new Error('id and sboid are required');
     this.businessOrganisationInternalService
-      .updateBusinessOrganisationVersion(this.getId(), this.form.value)
+      .updateBusinessOrganisationVersion(id, this.form.value)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success(
           'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
         );
         this.router
-          .navigate([
-            Pages.BODI.path,
-            Pages.BUSINESS_ORGANISATIONS.path,
-            this.record.sboid,
-          ])
+          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, sboid])
           .then(() => this.ngOnInit());
       });
   }
@@ -140,38 +143,31 @@ export class BusinessOrganisationDetailComponent
   }
 
   revokeRecord(): void {
-    const selectedRecord = this.getSelectedRecord();
-    if (selectedRecord.sboid) {
-      this.businessOrganisationInternalService
-        .revokeBusinessOrganisation(selectedRecord.sboid)
-        .subscribe(() => {
-          this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
-          );
-          this.router
-            .navigate([
-              Pages.BODI.path,
-              Pages.BUSINESS_ORGANISATIONS.path,
-              selectedRecord.sboid,
-            ])
-            .then(() => this.ngOnInit());
-        });
-    }
+    const sboid = this.getSelectedRecord()?.sboid;
+    if (!sboid) throw new Error('sboid is required');
+    this.businessOrganisationInternalService
+      .revokeBusinessOrganisation(sboid)
+      .subscribe(() => {
+        this.notificationService.success(
+          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
+        );
+        this.router
+          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, sboid])
+          .then(() => this.ngOnInit());
+      });
   }
 
   deleteRecord(): void {
-    const selectedVersion: BusinessOrganisationVersion =
-      this.getSelectedRecord();
-    if (selectedVersion.sboid != null) {
-      this.businessOrganisationInternalService
-        .deleteBusinessOrganisation(selectedVersion.sboid)
-        .subscribe(() => {
-          this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
-          );
-          this.backToOverview();
-        });
-    }
+    const sboid = this.getSelectedRecord()?.sboid;
+    if (!sboid) throw new Error('sboid is required');
+    this.businessOrganisationInternalService
+      .deleteBusinessOrganisation(sboid)
+      .subscribe(() => {
+        this.notificationService.success(
+          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
+        );
+        this.backToOverview();
+      });
   }
 
   getFormGroup(version: BusinessOrganisationVersion): FormGroup {

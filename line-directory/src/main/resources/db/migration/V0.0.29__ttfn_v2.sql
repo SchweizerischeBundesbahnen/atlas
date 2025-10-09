@@ -6,10 +6,6 @@ column comment;
 
 alter table timetable_field_number_version
     rename column description to description_outward_line_1;
-update timetable_field_number_version
-    set description_outward_line_1 = 'DEFAULT' where description_outward_line_1 is null;
-alter table timetable_field_number_version
-    alter column description_outward_line_1 set not null;
 
 alter table timetable_field_number_version
     add column description_outward_line_2 varchar(255);
@@ -18,7 +14,7 @@ alter table timetable_field_number_version
     add column description_outward_line_3 varchar(255);
 
 alter table timetable_field_number_version
-    add column description_return_line_1 varchar(255) not null default 'DEFAULT';
+    add column description_return_line_1 varchar(255);
 
 alter table timetable_field_number_version
     add column description_return_line_2 varchar(255);
@@ -27,7 +23,7 @@ alter table timetable_field_number_version
     add column description_return_line_3 varchar(255);
 
 alter table timetable_field_number_version
-    add column mean_of_transport varchar(50) not null default 'TRAIN';
+    add column mean_of_transport varchar(50);
 
 create or replace view timetable_field_number as
 select *

@@ -12,7 +12,7 @@ public class TimetableFieldNumberJsonProcessor implements ItemProcessor<Timetabl
   public TimetableFieldNumberVersionModel process(TimetableFieldNumber timetableFieldNumber) {
     return TimetableFieldNumberVersionModel.builder()
         .id(timetableFieldNumber.getId())
-        .description(timetableFieldNumber.getDescription())
+        .descriptionOutwardLine1(timetableFieldNumber.getDescription())
         .number(timetableFieldNumber.getNumber())
         .ttfnid(timetableFieldNumber.getTtfnid())
         .swissTimetableFieldNumber(timetableFieldNumber.getSwissTimetableFieldNumber())
@@ -20,7 +20,6 @@ public class TimetableFieldNumberJsonProcessor implements ItemProcessor<Timetabl
         .validFrom(timetableFieldNumber.getValidFrom())
         .validTo(timetableFieldNumber.getValidTo())
         .businessOrganisation(timetableFieldNumber.getBusinessOrganisation())
-        .comment(timetableFieldNumber.getComment())
         .creator(timetableFieldNumber.getCreator())
         .creationDate(timetableFieldNumber.getCreationDate())
         .editor(timetableFieldNumber.getEditor())

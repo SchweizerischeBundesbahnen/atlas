@@ -14,7 +14,11 @@
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
             { label: '30.003 |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '50' },
+            },
           ]"
           [formGroup]="form"
           [required]="true"
@@ -28,7 +32,11 @@
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
             { label: '30.003 |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '50' },
+            },
           ]"
           [formGroup]="form"
           [required]="true"
@@ -39,21 +47,70 @@
       </div>
     </div>
 
+    <!-- todo: clean spaces -->
+
     <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-12 pe-3">
+      <div class="col-6">
         <atlas-text-field
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'Bern Bahnhof - Eigerplatz - Weissenbühl |', translate: false },
+            {
+              label: 'Abtwil - Spisegg - St. Gallen Bahnhof |',
+              translate: false,
+            },
             {
               label: 'FORM.MAX_CHARS',
               translate: true,
-              arg: { key: 'numberOfChars', value: '255' }
-            }
+              arg: { key: 'numberOfChars', value: '255' },
+            },
           ]"
           [formGroup]="form"
-          controlName="description"
+          controlName="descriptionOutwardLine1"
           fieldLabel="TTFN.DESCRIPTION"
+        >
+        </atlas-text-field>
+        <atlas-text-field
+          [fieldExamples]="[]"
+          [formGroup]="form"
+          controlName="descriptionOutwardLine2"
+        >
+        </atlas-text-field>
+        <atlas-text-field
+          [fieldExamples]="[]"
+          [formGroup]="form"
+          controlName="descriptionOutwardLine3"
+        >
+        </atlas-text-field>
+      </div>
+      <div class="col-6">
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            {
+              label: 'St. Gallen Bahnhof - Spisegg - Abtwil |',
+              translate: false,
+            },
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '255' },
+            },
+          ]"
+          [formGroup]="form"
+          controlName="descriptionReturnLine1"
+          fieldLabel="TTFN.DESCRIPTION"
+        >
+        </atlas-text-field>
+        <atlas-text-field
+          [fieldExamples]="[]"
+          [formGroup]="form"
+          controlName="descriptionReturnLine2"
+        >
+        </atlas-text-field>
+        <atlas-text-field
+          [fieldExamples]="[]"
+          [formGroup]="form"
+          controlName="descriptionReturnLine3"
         >
         </atlas-text-field>
       </div>
@@ -72,13 +129,6 @@
           controlName="businessOrganisation"
           data-cy="businessOrganisation"
         ></bo-select>
-      </div>
-    </div>
-
-    <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-    <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-6">
-        <form-comment [formGroup]="form"></form-comment>
       </div>
     </div>
   </form>

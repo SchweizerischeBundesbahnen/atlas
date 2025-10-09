@@ -45,7 +45,7 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() controller!: BaseDetailController<Record>;
   @Input() headingNew!: string;
   @Input() formDetailHeading!: string;
-  selectedRecord!: Record;
+  selectedRecord?: Record;
   private recordSubscription!: Subscription;
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('additionalInfo') additionalInfo!: TemplateRef<any>;
@@ -58,10 +58,6 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
       this.controller.closeConfirmDialog();
       this.controller.backToOverview();
     });
-  }
-
-  receiveWorkflowEvent() {
-    this.controller.reloadRecord();
   }
 
   ngOnInit(): void {
@@ -78,7 +74,7 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
 
   isEditButtonVisible() {
     return (
-      this.selectedRecord.status !== 'IN_REVIEW' ||
+      this.selectedRecord?.status !== 'IN_REVIEW' ||
       this.permissionService.isAtLeastSupervisor(
         this.controller.getApplicationType()
       )

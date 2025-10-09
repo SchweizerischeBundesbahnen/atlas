@@ -1,9 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import {
-  TimetableFieldNumberVersion,
-} from '../../../api';
+import { TimetableFieldNumberVersion } from '../../../api';
 import { Pages } from '../../pages';
 import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
 
@@ -35,6 +33,6 @@ export class TimetableFieldNumberDetailResolver {
 }
 
 export const timetableFieldNumberResolver: ResolveFn<
-  Array<TimetableFieldNumberVersion>
+  TimetableFieldNumberVersion[]
 > = (route: ActivatedRouteSnapshot) =>
   inject(TimetableFieldNumberDetailResolver).resolve(route);
