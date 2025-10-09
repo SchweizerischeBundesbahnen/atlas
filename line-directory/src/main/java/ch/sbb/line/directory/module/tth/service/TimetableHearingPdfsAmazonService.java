@@ -22,11 +22,11 @@ public class TimetableHearingPdfsAmazonService {
   }
 
   public File downloadPdfFile(String dirName, String fileName) {
-    return amazonService.pullFile(AmazonBucket.HEARING_DOCUMENT, dirName + "/" + fileName);
+    return amazonService.pullFile(AmazonBucket.HEARING_DOCUMENT, String.join("/", dirName, fileName));
   }
 
   public void deletePdfFile(String dirName, String fileName) {
-    amazonService.deleteFile(AmazonBucket.HEARING_DOCUMENT, dirName + "/" + fileName);
+    amazonService.deleteFile(AmazonBucket.HEARING_DOCUMENT, String.join("/", dirName, fileName));
   }
 
 }

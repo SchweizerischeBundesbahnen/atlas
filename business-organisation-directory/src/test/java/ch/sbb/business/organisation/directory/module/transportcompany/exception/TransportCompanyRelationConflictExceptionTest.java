@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.business.organisation.directory.module.transportcompany.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.module.transportcompany.entity.TransportCompanyRelation;
-import ch.sbb.business.organisation.directory.module.transportcompany.exception.TransportCompanyRelationConflictException;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ class TransportCompanyRelationConflictExceptionTest {
   void shouldConvertToErrorMessageCorrectly() {
     // Given
     TransportCompanyRelationConflictException conflictException = new TransportCompanyRelationConflictException(
-        RELATION, List.of(RELATION, RELATION_2));
+        List.of(RELATION, RELATION_2));
     // When
     ErrorResponse errorResponse = conflictException.getErrorResponse();
 

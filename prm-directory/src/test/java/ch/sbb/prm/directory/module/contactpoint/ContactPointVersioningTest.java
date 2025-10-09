@@ -70,7 +70,7 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
     ContactPointVersion savedVersion1 = contactPointRepository.saveAndFlush(version1);
     ContactPointVersion version2 = ContactPointTestData.builderVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    ContactPointVersion savedVersion2 = contactPointRepository.saveAndFlush(version2);
+    contactPointRepository.saveAndFlush(version2);
 
     ContactPointVersion editedVersion = ContactPointTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));

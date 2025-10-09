@@ -11,19 +11,13 @@ import org.springframework.http.HttpStatus;
 public class VersioningException extends AtlasException {
 
   private final String cause;
-  private final Throwable error;
 
   public VersioningException() {
     this("Something went wrong. I'm not able to apply versioning.");
   }
 
   public VersioningException(String message) {
-    this(message, null);
-  }
-
-  public VersioningException(String message, Throwable error) {
     this.cause = message;
-    this.error = error;
   }
 
   @Override

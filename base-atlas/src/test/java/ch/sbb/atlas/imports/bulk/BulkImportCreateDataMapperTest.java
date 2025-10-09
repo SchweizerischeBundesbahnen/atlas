@@ -1,14 +1,13 @@
 package ch.sbb.atlas.imports.bulk;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class BulkImportCreateDataMapperTest {
 
@@ -34,7 +33,7 @@ class BulkImportCreateDataMapperTest {
   }
 
   private static class DummyBulkImportCreateDataMapper extends BulkImportCreateDataMapper<ServicePointCreateCsvModel,
-          CreateServicePointVersionModel> {
+      CreateServicePointVersionModel> {
 
   }
 

@@ -18,7 +18,7 @@ public class SubLineAssignToLineConflictException extends AtlasException {
   private static final String CODE_PREFIX = "LIDI.SUBLINE.CONFLICT.";
   private static final String ERROR = "Subline conflict";
 
-  private final SublineVersion actualSubline;
+  private final transient SublineVersion actualSubline;
 
   @Override
   public ErrorResponse getErrorResponse() {

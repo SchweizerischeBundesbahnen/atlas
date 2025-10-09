@@ -15,7 +15,6 @@ import ch.sbb.line.directory.module.line.search.LineVersionSnapshotSearchRestric
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +77,7 @@ class LineVersionSnapshotSearchTest {
     Page<LineVersionSnapshot> result = lineVersionSnapshotService.findAll(
         LineVersionSnapshotSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
-            .validOn(Optional.of(LocalDate.of(2020, 1, 1)))
+            .validOn(LocalDate.of(2020, 1, 1))
             .build());
 
     // Then
@@ -93,8 +92,7 @@ class LineVersionSnapshotSearchTest {
     lineVersionSnapshotRepository.saveAndFlush(version3);
     // When
     Page<LineVersionSnapshot> result = lineVersionSnapshotService.findAll(
-        LineVersionSnapshotSearchRestrictions.builder().pageable(Pageable.unpaged()).validOn(
-            Optional.of(LocalDate.of(2019, 1, 1))).build());
+        LineVersionSnapshotSearchRestrictions.builder().pageable(Pageable.unpaged()).validOn(LocalDate.of(2019, 1, 1)).build());
 
     // Then
     assertThat(result.getContent()).isEmpty();

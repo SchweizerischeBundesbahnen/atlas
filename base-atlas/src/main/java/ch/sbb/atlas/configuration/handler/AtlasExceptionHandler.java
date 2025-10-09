@@ -141,7 +141,8 @@ public class AtlasExceptionHandler {
   public ResponseEntity<ErrorResponse> handleException(Exception exception) {
     if (exception instanceof AsyncRequestNotUsableException) {
       log.debug("Client aborted the connection", exception);
-      return ResponseEntity.status(499).build();
+      final int CLIENT_CLOSED_REQUEST_CODE = 499;
+      return ResponseEntity.status(CLIENT_CLOSED_REQUEST_CODE).build();
     }
     log.error("Unexpected Exception occurred", exception);
     return ResponseEntity.internalServerError().body(ErrorResponseMapper.map(exception));

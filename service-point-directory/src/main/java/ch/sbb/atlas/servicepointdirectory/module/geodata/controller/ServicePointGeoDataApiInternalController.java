@@ -12,7 +12,6 @@ import ch.sbb.atlas.servicepointdirectory.module.geodata.model.UpdateGeoLocation
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceJobService;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
-import io.swagger.v3.oas.annotations.Hidden;
 import java.time.LocalDate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Hidden
 public class ServicePointGeoDataApiInternalController implements ServicePointGeoDataApiInternal {
 
   private final GeoReferenceService geoReferenceService;

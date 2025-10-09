@@ -1,35 +1,21 @@
 package ch.sbb.atlas.export;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.cfg.MapperConfig;
-import com.fasterxml.jackson.databind.introspect.AnnotatedField;
-import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import java.io.Serial;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 
 @RequiredArgsConstructor
-public class LocalizedPropertyNamingStrategy extends PropertyNamingStrategy {
+public class LocalizedPropertyNamingStrategy extends PropertyNamingStrategies.NamingBase {
 
-  private final MessageSource messageSource;
+  @Serial private static final long serialVersionUID = 1;
+
+  private final transient MessageSource messageSource;
   private final Locale locale;
 
   @Override
-  public String nameForField(MapperConfig<?> config, AnnotatedField field, String defaultName) {
-    return localize(defaultName);
-  }
-
-  @Override
-  public String nameForSetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName) {
-    return localize(defaultName);
-  }
-
-  @Override
-  public String nameForGetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName) {
-    return localize(defaultName);
-  }
-
-  private String localize(String property) {
-    return messageSource.getMessage(property, null, property, locale);
+  public String translate(String propertyName) {
+    return messageSource.getMessage(propertyName, null, propertyName, locale);
   }
 }

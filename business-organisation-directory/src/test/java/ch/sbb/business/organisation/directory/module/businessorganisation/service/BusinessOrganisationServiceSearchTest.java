@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -120,7 +119,7 @@ class BusinessOrganisationServiceSearchTest {
     Page<BusinessOrganisation> result = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
-            .validOn(Optional.of(LocalDate.of(2020, 1, 1)))
+            .validOn(LocalDate.of(2020, 1, 1))
             .build());
 
     //then
@@ -172,7 +171,7 @@ class BusinessOrganisationServiceSearchTest {
     Page<BusinessOrganisation> result = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
-            .validOn(Optional.of(LocalDate.of(2019, 1, 1)))
+            .validOn(LocalDate.of(2019, 1, 1))
             .build());
 
     //then

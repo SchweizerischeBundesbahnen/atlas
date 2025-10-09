@@ -12,12 +12,14 @@ import lombok.experimental.Accessors;
 @RequiredArgsConstructor
 public enum OperatingPointType {
 
-  INVENTORY_POINT(30, false, "Inventarpunkt", "Point d'inventaire", "punto di inventario", "Inventory point", "betriebspunkt",
+  INVENTORY_POINT(30, false, "Inventarpunkt", "Point d'inventaire", "punto di inventario", "Inventory point",
+      Constants.BETRIEBSPUNKT,
       null,
       null, null, null),
   SYSTEM_OPERATING_POINT(40, false, "System Betriebspunkt", "Point d’exploitation système", "Punto d’esercizio sistema",
-      "System operating point", "betriebspunkt", null, null, null, null),
-  RAILNET_POINT(31, false, "BP Netze", "Point de réseau", "Punto di rete", "Network point", "betriebspunkt", null, null, null,
+      "System operating point", Constants.BETRIEBSPUNKT, null, null, null, null),
+  RAILNET_POINT(31, false, "BP Netze", "Point de réseau", "Punto di rete", "Network point", Constants.BETRIEBSPUNKT, null, null,
+      null,
       null),
 
   ;
@@ -40,4 +42,8 @@ public enum OperatingPointType {
         .findFirst().orElse(null);
   }
 
+  private static class Constants {
+
+    private static final String BETRIEBSPUNKT = "betriebspunkt";
+  }
 }

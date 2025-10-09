@@ -9,7 +9,6 @@ import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement.Fields;
 import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement_;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -29,7 +28,7 @@ public class TimetableHearingStatementSearchRestrictions {
     return new LongSpecification<>(TimetableHearingStatement_.timetableYear, statementRequestParams.getTimetableHearingYear())
         .and(new EnumSpecification<>(statementRequestParams.getCanton(), TimetableHearingStatement_.swissCanton))
         .and(new EnumSpecification<>(statementRequestParams.getStatusRestrictions(), TimetableHearingStatement_.statementStatus))
-        .and(new SingleStringSpecification<>(Optional.ofNullable(statementRequestParams.getTtfnid()), Fields.ttfnid))
+        .and(new SingleStringSpecification<>(statementRequestParams.getTtfnid(), Fields.ttfnid))
         .and(new ResponsibleTransportCompanySpecification(statementRequestParams.getTransportCompanies()))
         .and(new SearchCriteriaSpecification<>(statementRequestParams.getSearchCriterias(),
             List.of(Fields.id, Fields.statement, Fields.justification, Fields.stopPlace,

@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class DateRangeConflictException extends AtlasException {
 
-  private final DateRange dateRange;
+  private final transient DateRange dateRange;
 
   @Override
   public ErrorResponse getErrorResponse() {

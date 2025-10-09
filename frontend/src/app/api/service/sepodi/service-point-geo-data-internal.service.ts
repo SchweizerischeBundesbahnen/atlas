@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { AtlasApiService } from '../atlas-api.service';
 import { Observable } from 'rxjs';
 import { CoordinatePair } from '../../model/coordinatePair';
-import { GeoReference } from '../../model/geoReference';
 import { HttpParams } from '@angular/common/http';
+import { GeoReference } from '../../model/geoReference';
 
 @Injectable({
   providedIn: 'root',

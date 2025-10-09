@@ -18,6 +18,7 @@ import ch.sbb.prm.directory.module.platform.service.PlatformService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
 import ch.sbb.prm.directory.util.PrmMeansOfTransportHelper;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -39,14 +40,14 @@ public class PlatformBulkImportService {
   @RunAsUser
   public void updatePlatformReducedByUsername(@RunAsUserParameter String username,
       BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> bulkImportContainer) {
-    log.info("Update versions in name of the user: {}", username);
+    logInNameOfInfo(username);
     updatePlatformReduced(bulkImportContainer);
   }
 
   public void updatePlatformReduced(BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> bulkImportUpdateContainer) {
     PlatformReducedUpdateCsvModel platformReducedUpdateCsvModel = bulkImportUpdateContainer.getObject();
 
-    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersionsReduced(platformReducedUpdateCsvModel);
+    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersions(platformReducedUpdateCsvModel.getSloid());
     PlatformVersion currentVersion = ImportUtils.getCurrentVersion(currentPlatformVersions,
         platformReducedUpdateCsvModel.getValidFrom(), platformReducedUpdateCsvModel.getValidTo());
 
@@ -60,14 +61,14 @@ public class PlatformBulkImportService {
   @RunAsUser
   public void updatePlatformCompleteByUsername(@RunAsUserParameter String username,
       BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> bulkImportContainer) {
-    log.info("Update versions in name of the user: {}", username);
+    logInNameOfInfo(username);
     updatePlatformComplete(bulkImportContainer);
   }
 
   public void updatePlatformComplete(BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> bulkImportUpdateContainer) {
     PlatformCompleteUpdateCsvModel platformCompleteUpdateCsvModel = bulkImportUpdateContainer.getObject();
 
-    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersionsComplete(platformCompleteUpdateCsvModel);
+    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersions(platformCompleteUpdateCsvModel.getSloid());
 
     PlatformVersion currentVersion = ImportUtils.getCurrentVersion(currentPlatformVersions,
         platformCompleteUpdateCsvModel.getValidFrom(), platformCompleteUpdateCsvModel.getValidTo());
@@ -79,23 +80,11 @@ public class PlatformBulkImportService {
     platformApiClient.updatePlatform(currentVersion.getId(), updateModel);
   }
 
-  private List<PlatformVersion> getCurrentPlatformVersionsReduced(PlatformReducedUpdateCsvModel platformReducedUpdateCsvModel) {
-    if (platformReducedUpdateCsvModel.getSloid() != null) {
-      List<PlatformVersion> platformVersions = platformService.getAllVersions(platformReducedUpdateCsvModel.getSloid());
+  private List<PlatformVersion> getCurrentPlatformVersions(String sloid) {
+    if (Objects.nonNull(sloid)) {
+      List<PlatformVersion> platformVersions = platformService.getAllVersions(sloid);
       if (platformVersions.isEmpty()) {
-        throw new SloidNotFoundException(platformReducedUpdateCsvModel.getSloid());
-      }
-      return platformVersions;
-    }
-    throw new IllegalStateException("Sloid should be given");
-  }
-
-  private List<PlatformVersion> getCurrentPlatformVersionsComplete(
-      PlatformCompleteUpdateCsvModel platformCompleteUpdateCsvModel) {
-    if (platformCompleteUpdateCsvModel.getSloid() != null) {
-      List<PlatformVersion> platformVersions = platformService.getAllVersions(platformCompleteUpdateCsvModel.getSloid());
-      if (platformVersions.isEmpty()) {
-        throw new SloidNotFoundException(platformCompleteUpdateCsvModel.getSloid());
+        throw new SloidNotFoundException(sloid);
       }
       return platformVersions;
     }
@@ -122,5 +111,9 @@ public class PlatformBulkImportService {
     if (!isReduced) {
       throw new BulkPlatformUpdateValidationException(false, currentVersion.getSloid());
     }
+  }
+
+  private static void logInNameOfInfo(String username) {
+    log.info("Update versions in name of the user: {}", username);
   }
 }

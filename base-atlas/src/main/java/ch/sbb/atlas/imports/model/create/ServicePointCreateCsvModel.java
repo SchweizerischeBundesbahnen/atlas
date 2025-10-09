@@ -165,7 +165,11 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
   }
 
   private boolean isNumberShortRequired(Integer uicCountryCode) {
-    return uicCountryCode == null || (uicCountryCode != 85 && (uicCountryCode < 11 || uicCountryCode > 14));
+    return uicCountryCode == null ||
+        (
+            !Country.SWITZERLAND.getUicCode().equals(uicCountryCode) &&
+                (uicCountryCode < Country.GERMANY_BUS.getUicCode() || uicCountryCode > Country.FRANCE_BUS.getUicCode())
+        );
   }
 
   private boolean isGeographyValid() {

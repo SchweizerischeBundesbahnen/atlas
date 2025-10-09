@@ -19,7 +19,7 @@ public class BulkImportS3BucketService {
   public String uploadImportFile(File file, BulkImport bulkImport) {
     String dir = createImportFilePath(bulkImport);
     amazonService.putFile(AmazonBucket.BULK_IMPORT, file, dir);
-    return dir + "/" + file.getName();
+    return String.join("/", dir, file.getName());
   }
 
   public File downloadImportFile(String filePath) {

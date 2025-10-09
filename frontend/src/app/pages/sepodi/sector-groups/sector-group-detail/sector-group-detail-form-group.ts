@@ -3,8 +3,8 @@ import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { CreateSectorGroupVersion } from '../../../../api/model/createSectorGroupVersion';
 import { MinSelectedValidator } from '../../../../core/validation/min-selected/min-selected.validator';
+import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
 
 export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -16,9 +16,7 @@ export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
 }
 
 export class SectorGroupFormGroupBuilder {
-  private static createBaseControls(
-    sectorGroupVersion?: CreateSectorGroupVersion
-  ) {
+  private static createBaseControls(sectorGroupVersion?: SectorGroupVersion) {
     return {
       sloid: new FormControl(sectorGroupVersion?.sloid),
       trafficPointSloid: new FormControl(sectorGroupVersion?.trafficPointSloid),
@@ -49,7 +47,7 @@ export class SectorGroupFormGroupBuilder {
   }
 
   static buildFormGroupUpdate(
-    sectorGroupVersion?: CreateSectorGroupVersion
+    sectorGroupVersion?: SectorGroupVersion
   ): FormGroup<SectorGroupDetailFormGroup> {
     const controls = this.createBaseControls(sectorGroupVersion);
     return new FormGroup<SectorGroupDetailFormGroup>(
@@ -58,19 +56,10 @@ export class SectorGroupFormGroupBuilder {
     );
   }
 
-  static buildFormGroupCreate(
-    sectorGroupVersion?: CreateSectorGroupVersion
-  ): FormGroup<SectorGroupDetailFormGroup> {
+  static buildFormGroupCreate(): FormGroup<SectorGroupDetailFormGroup> {
     const controls: SectorGroupDetailFormGroup = {
-      ...(this.createBaseControls(
-        sectorGroupVersion
-      ) as SectorGroupDetailFormGroup),
-      sectorSloids: new FormControl(
-        sectorGroupVersion?.sectorSloids
-          ? Array.from(sectorGroupVersion.sectorSloids)
-          : [],
-        [Validators.required]
-      ),
+      ...this.createBaseControls(),
+      sectorSloids: new FormControl([], [Validators.required]),
     };
 
     return new FormGroup<SectorGroupDetailFormGroup>(controls, [

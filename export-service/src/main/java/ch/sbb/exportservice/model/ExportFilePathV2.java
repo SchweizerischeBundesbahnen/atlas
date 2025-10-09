@@ -10,7 +10,6 @@ import lombok.Getter;
 @Builder
 public final class ExportFilePathV2 implements Serializable {
 
-  private static final String PATH_DELIMITER = "/";
   private static final String FILENAME_DELIMITER = "-";
 
   private final LocalDate actualDate;
@@ -34,7 +33,7 @@ public final class ExportFilePathV2 implements Serializable {
   }
 
   public String fileToStream() {
-    return s3BucketDirPath() + PATH_DELIMITER + fileName() + ".json.gz";
+    return String.join("/", s3BucketDirPath(), fileName() + ".json.gz");
   }
 
   /**
@@ -45,7 +44,7 @@ public final class ExportFilePathV2 implements Serializable {
   }
 
   public String s3BucketDirPath() {
-    return baseDir + PATH_DELIMITER + dir;
+    return String.join("/", baseDir, dir);
   }
 
   private String actualDateString() {
@@ -59,7 +58,7 @@ public final class ExportFilePathV2 implements Serializable {
   public static ExportFilePathV2Builder getV2Builder(ExportObjectV2 type, ExportTypeV2 subtype) {
     final ExportFilePathV2Builder exportFilePathBuilder = new ExportFilePathV2Builder();
     exportFilePathBuilder.actualDate(LocalDate.now());
-    exportFilePathBuilder.baseDir("v2" + PATH_DELIMITER + type.getName());
+    exportFilePathBuilder.baseDir(String.join("/", "v2", type.getName()));
     exportFilePathBuilder.dir(subtype.dir);
     exportFilePathBuilder.prefix(subtype.prefix);
     exportFilePathBuilder.fileName(type.getName());

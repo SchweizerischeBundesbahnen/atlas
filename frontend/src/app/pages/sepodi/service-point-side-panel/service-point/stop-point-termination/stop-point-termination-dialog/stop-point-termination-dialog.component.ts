@@ -10,11 +10,11 @@ import { CommentComponent } from '../../../../../../core/form-components/comment
 import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
-import { TerminationStopPointAddWorkflow } from '../../../../../../api/model/terminationStopPointAddWorkflow';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { UserService } from '../../../../../../core/auth/user/user.service';
 import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
+import { StartTerminationStopPointAddWorkflow } from '../../../../../../api/model/startTerminationStopPointAddWorkflow';
 
 @Component({
   selector: 'app-stop-point-termination-dialog',
@@ -64,7 +64,7 @@ export class StopPointTerminationDialogComponent implements OnInit {
     this.form.controls.applicantMail.setValue(
       this.userService.currentUser!.email
     );
-    return this.form.getRawValue() as unknown as TerminationStopPointAddWorkflow;
+    return this.form.getRawValue() as unknown as StartTerminationStopPointAddWorkflow;
   }
 
   cancel() {

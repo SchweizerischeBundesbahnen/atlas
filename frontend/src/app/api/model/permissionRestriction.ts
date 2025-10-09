@@ -7,11 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TerminationStopPointAddWorkflow } from './terminationStopPointAddWorkflow';
+import { PermissionRestrictionType } from './permissionRestrictionType';
 
 
-export interface ContainerTerminationStopPointAddWorkflow { 
-    objects?: Array<TerminationStopPointAddWorkflow>;
-    totalCount?: number;
+export interface PermissionRestriction { 
+    type?: PermissionRestrictionType;
+    valueAsString?: string;
 }
+export namespace PermissionRestriction {
+}
+
 

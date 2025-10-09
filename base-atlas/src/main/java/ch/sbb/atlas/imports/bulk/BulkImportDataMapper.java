@@ -6,35 +6,37 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+import lombok.SneakyThrows;
 import org.springframework.util.ReflectionUtils;
 
 public abstract class BulkImportDataMapper {
 
-  protected <T, U, V> void applyDefaultMapping(T update, U currentEntity, V targetModel) {
-    applyDefaultMapping(update, Optional.of(currentEntity), targetModel);
-  }
-
   protected <T, V> void applyDefaultMapping(T update, V targetModel) {
-    applyDefaultMapping(update, Optional.empty(), targetModel);
+    applyDefaultMapping(update, null, targetModel);
   }
 
-  private <T, U, V> void applyDefaultMapping(T update, Optional<U> currentEntity, V targetModel) {
+  @SneakyThrows
+  protected <T, U, V> void applyDefaultMapping(T update, U currentEntity, V targetModel) {
     for (Field updateField : update.getClass().getDeclaredFields()) {
       if (updateField.isAnnotationPresent(DefaultMapping.class)) {
-        ReflectionUtils.makeAccessible(Objects.requireNonNull(updateField));
+        ReflectionUtils.makeAccessible(updateField);
 
         Field targetField = ReflectionUtils.findField(targetModel.getClass(), updateField.getName());
-        ReflectionUtils.makeAccessible(Objects.requireNonNull(targetField));
+        if (Objects.isNull(targetField)) {
+          throw new NoSuchFieldException("Not found following field for default mapping application: " + updateField.getName());
+        }
+        ReflectionUtils.makeAccessible(targetField);
 
         Object updateValue = ReflectionUtils.getField(updateField, update);
         if (updateValue != null) {
           setFieldValue(targetField, targetModel, updateValue);
-        } else if (currentEntity.isPresent()) {
-          Field defaultField = ReflectionUtils.findField(currentEntity.get().getClass(), updateField.getName());
-          ReflectionUtils.makeAccessible(Objects.requireNonNull(defaultField, "Field " + updateField.getName() + " not found"));
-          Object defaultValue = ReflectionUtils.getField(Objects.requireNonNull(defaultField), currentEntity.get());
-
+        } else if (Objects.nonNull(currentEntity)) {
+          Field defaultField = ReflectionUtils.findField(currentEntity.getClass(), updateField.getName());
+          if (Objects.isNull(defaultField)) {
+            throw new NoSuchFieldException("Not found following field for default mapping application: " + updateField.getName());
+          }
+          ReflectionUtils.makeAccessible(defaultField);
+          Object defaultValue = ReflectionUtils.getField(defaultField, currentEntity);
           setFieldValue(targetField, targetModel, defaultValue);
         }
       }

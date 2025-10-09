@@ -19,8 +19,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class TransportCompanyRelationConflictException extends AtlasException {
 
-  private final TransportCompanyRelation newRelation;
-  private final List<TransportCompanyRelation> overlappingRelations;
+  private final transient List<TransportCompanyRelation> overlappingRelations;
 
   @Override
   public ErrorResponse getErrorResponse() {

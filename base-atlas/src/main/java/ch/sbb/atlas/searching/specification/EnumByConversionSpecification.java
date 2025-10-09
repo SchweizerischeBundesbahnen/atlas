@@ -6,25 +6,28 @@ import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
+import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import org.springframework.data.jpa.domain.Specification;
 
-public class EnumByConversionSpecification<T, U> implements Specification<T> {
+public class EnumByConversionSpecification<T, U, E> implements Specification<T> {
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 
-  private final List<U> parameterRestrictions;
-  private final Function<U, ?> parameterToEnumFunction;
-  private final SingularAttribute<T, ?> enumAttribute;
+  private final transient List<U> parameterRestrictions;
+  private final transient Function<U, E> parameterToEnumFunction;
+  private final transient SingularAttribute<T, E> enumAttribute;
   private final Boolean notIn;
 
-  public EnumByConversionSpecification(List<U> parameterRestrictions, Function<U, ?> parameterToEnumFunction, SingularAttribute<T, ?> enumAttribute) {
+  public EnumByConversionSpecification(List<U> parameterRestrictions, Function<U, E> parameterToEnumFunction,
+      SingularAttribute<T, E> enumAttribute) {
     this(parameterRestrictions, parameterToEnumFunction, enumAttribute, false);
   }
 
-  public EnumByConversionSpecification(List<U> parameterRestrictions, Function<U, ?> parameterToEnumFunction, SingularAttribute<T, ?> enumAttribute, Boolean notIn) {
+  public EnumByConversionSpecification(List<U> parameterRestrictions, Function<U, E> parameterToEnumFunction,
+      SingularAttribute<T, E> enumAttribute, Boolean notIn) {
     this.parameterRestrictions = Objects.requireNonNull(parameterRestrictions);
     this.enumAttribute = enumAttribute;
     this.notIn = notIn;
@@ -37,14 +40,14 @@ public class EnumByConversionSpecification<T, U> implements Specification<T> {
     if (parameterRestrictions.isEmpty()) {
       return criteriaBuilder.and();
     }
-    List<?> enumRestrictions = parameterRestrictions.stream().map(parameterToEnumFunction).toList();
+    List<E> enumRestrictions = parameterRestrictions.stream().map(parameterToEnumFunction).toList();
     if (enumRestrictions.stream().allMatch(Objects::isNull)) {
       return criteriaBuilder.or();
     }
     return notIn ? getPathSingular(root).in(enumRestrictions).not() : getPathSingular(root).in(enumRestrictions);
   }
 
-  Path<?> getPathSingular(Root<T> root) {
+  Path<E> getPathSingular(Root<T> root) {
     return root.get(enumAttribute);
   }
 }

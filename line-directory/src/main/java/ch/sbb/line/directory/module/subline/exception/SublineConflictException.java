@@ -22,8 +22,8 @@ public class SublineConflictException extends AtlasException {
   private static final String CODE_PREFIX = "LIDI.SUBLINE.CONFLICT.";
   private static final String ERROR = "Subline conflict";
 
-  private final SublineVersion newVersion;
-  private final List<SublineVersion> overlappingVersions;
+  private final transient SublineVersion newVersion;
+  private final transient List<SublineVersion> overlappingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {

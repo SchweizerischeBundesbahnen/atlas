@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class BulkImportNotImplementedException extends AtlasException {
 
-  private final BulkImportConfig bulkImportConfig;
+  private final transient BulkImportConfig bulkImportConfig;
 
   @Override
   public ErrorResponse getErrorResponse() {

@@ -477,18 +477,16 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   isOnlyValidityChangedToTruncation() {
     const initForm = { ...this.initForm.value };
     const updatedForm = { ...this.form.value };
-
     const ignoreFields = ['validFrom', 'validTo'];
+    const getRelevantFormKeys = (form: typeof initForm) =>
+      Object.keys(form)
+        .filter((key) => !ignoreFields.includes(key))
+        .sort((a, b) => a.localeCompare(b));
 
-    const keysInitForm = Object.keys(initForm)
-      .filter((key) => !ignoreFields.includes(key))
-      .sort();
-    const keysUpdatedForm = Object.keys(updatedForm)
-      .filter((key) => !ignoreFields.includes(key))
-      .sort();
+    const keysInitForm = getRelevantFormKeys(initForm);
+    const keysUpdatedForm = getRelevantFormKeys(updatedForm);
 
     let formsEqual = false;
-
     keysInitForm.forEach((key) => {
       if (keysUpdatedForm.includes(key)) {
         formsEqual = true;

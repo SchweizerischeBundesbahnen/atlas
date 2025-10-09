@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class ExcelToCsvConversionException extends AtlasException {
 
-  private final Cell cell;
+  private final transient Cell cell;
 
   @Override
   public ErrorResponse getErrorResponse() {

@@ -43,8 +43,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -166,35 +168,36 @@ class BulkImportLogFileIntegrationTest {
   }
 
   private void setupSepodiResponsesForMix() {
+    Map<Integer, Consumer<List<BulkImportItemExecutionResult>>> predefinedAnswers = Map.of(
+        2, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(2).build()),
+        5, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(5).errorResponse(ErrorResponse.builder()
+                .error("Not found")
+                .details(new TreeSet<>(Set.of(Detail.builder()
+                    .message("Object with SLOID ch:1:sloid:notfound not found")
+                    .displayInfo(DisplayInfo.builder()
+                        .code("ERROR.ENTITY_NOT_FOUND")
+                        .with("field", "sloid")
+                        .with("value", "ch:1:sloid:notfound")
+                        .build())
+                    .build())))
+                .build())
+            .build()),
+        6, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(6).errorResponse(ErrorResponse.builder()
+                .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
+                .error("No entities were modified after versioning execution.")
+                .details(new TreeSet<>(Set.of(Detail.builder()
+                    .message("No entities were modified after versioning execution.")
+                    .displayInfo(DisplayInfo.builder().code("ERROR.WARNING.VERSIONING_NO_CHANGES").build())
+                    .build())))
+                .build())
+            .build())
+    );
+
     when(servicePointBulkImportClient.bulkImportUpdate(any())).thenAnswer(i -> {
       List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> argument = i.getArgument(0);
       List<BulkImportItemExecutionResult> answer = new ArrayList<>();
-      argument.forEach(container -> {
-        switch (container.getLineNumber()) {
-          case 2 -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(2).build());
-          case 5 -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(5).errorResponse(ErrorResponse.builder()
-                  .error("Not found")
-                  .details(new TreeSet<>(Set.of(Detail.builder()
-                      .message("Object with SLOID ch:1:sloid:notfound not found")
-                      .displayInfo(DisplayInfo.builder()
-                          .code("ERROR.ENTITY_NOT_FOUND")
-                          .with("field", "sloid")
-                          .with("value", "ch:1:sloid:notfound")
-                          .build())
-                      .build())))
-                  .build())
-              .build());
-          case 6 -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(6).errorResponse(ErrorResponse.builder()
-                  .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
-                  .error("No entities were modified after versioning execution.")
-                  .details(new TreeSet<>(Set.of(Detail.builder()
-                      .message("No entities were modified after versioning execution.")
-                      .displayInfo(DisplayInfo.builder().code("ERROR.WARNING.VERSIONING_NO_CHANGES").build())
-                      .build())))
-                  .build())
-              .build());
-        }
-      });
+      argument.forEach(container -> Optional.ofNullable(predefinedAnswers.get(container.getLineNumber()))
+          .ifPresent(answerAddition -> answerAddition.accept(answer)));
       return answer;
     });
   }
