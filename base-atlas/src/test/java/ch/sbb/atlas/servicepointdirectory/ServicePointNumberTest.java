@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.module.servicepoint.model;
+package ch.sbb.atlas.servicepointdirectory;
 
 import static ch.sbb.atlas.servicepoint.Country.SLOID_COMPATIBLE_COUNTRIES;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -6,18 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ServicePointNumberTest {
-
-  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   void shouldGetCountrySuccessfully() {
@@ -42,9 +36,8 @@ class ServicePointNumberTest {
 
   @Test
   void shouldCheckServicePointCountry() {
-    Set<ConstraintViolation<ServicePointNumber>> constraintViolations = validator.validate(
-        ServicePointNumber.ofNumberWithoutCheckDigit(1500000));
-    assertThat(constraintViolations).isNotEmpty();
+    assertThrows(IllegalArgumentException.class,
+        () -> ServicePointNumber.ofNumberWithoutCheckDigit(1500000));
   }
 
   @Test
@@ -157,23 +150,6 @@ class ServicePointNumberTest {
       }
     });
 
-  }
-
-  @Test
-  void shouldRemoveCheckDigit() {
-    //when
-    Integer result = ServicePointNumber.removeCheckDigit(85070003);
-    //then
-    assertThat(String.valueOf(result)).hasSize(7);
-  }
-
-  @Test
-  void shouldReturnNumberWithoutCheckDigit() {
-    //when
-    Integer result = ServicePointNumber.removeCheckDigit(8507000);
-    //then
-    assertThat(String.valueOf(result)).hasSize(7);
-    assertThat(result).isEqualTo(8507000);
   }
 
 }
