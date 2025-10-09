@@ -15,7 +15,7 @@ public class BooleanSpecification<T> implements Specification<T> {
   @Serial
   private static final long serialVersionUID = 1;
 
-  private final SingularAttribute<T, Boolean> attribute;
+  private final transient SingularAttribute<T, Boolean> attribute;
   private final Boolean value;
 
   @Override

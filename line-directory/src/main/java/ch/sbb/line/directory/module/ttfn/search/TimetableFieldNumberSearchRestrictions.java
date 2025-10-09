@@ -7,7 +7,6 @@ import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber_;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -28,7 +27,7 @@ public class TimetableFieldNumberSearchRestrictions extends
 
   @Override
   public Specification<TimetableFieldNumber> getSpecification() {
-    return getBaseSpecification().and(specificationBuilder().exactMatchStringSpecification(Optional.ofNullable(number)));
+    return getBaseSpecification().and(specificationBuilder().exactMatchStringSpecification(number));
   }
 
   @Override

@@ -7,7 +7,6 @@ import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification
 import ch.sbb.business.organisation.directory.module.businessorganisation.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.module.businessorganisation.entity.BusinessOrganisationVersion_;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -43,8 +42,7 @@ public class BusinessOrganisationVersionSearchRestrictions {
 
   public Specification<BusinessOrganisationVersion> getSpecification() {
     return specificationBuilder().searchCriteriaSpecification(businessOrganisationVersionRequestParams.getSearchCriteria())
-        .and(specificationBuilder().validOnSpecification(
-                Optional.ofNullable(businessOrganisationVersionRequestParams.getValidOn()))
+        .and(specificationBuilder().validOnSpecification(businessOrganisationVersionRequestParams.getValidOn())
             .and(new EnumSpecification<>(businessOrganisationVersionRequestParams.getStatusChoices(), "status"))
             .and(specificationBuilder().stringInSpecification(businessOrganisationVersionRequestParams.getInSboids(),
                 BusinessOrganisationVersion_.sboid))

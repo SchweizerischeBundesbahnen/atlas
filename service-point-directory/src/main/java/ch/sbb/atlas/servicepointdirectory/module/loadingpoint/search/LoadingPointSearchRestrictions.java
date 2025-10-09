@@ -8,7 +8,6 @@ import ch.sbb.atlas.servicepointdirectory.module.loadingpoint.entity.LoadingPoin
 import ch.sbb.atlas.servicepointdirectory.module.loadingpoint.service.LoadingPointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.module.loadingpoint.service.LoadingPointServicePointSpecification;
 import java.util.List;
-import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -29,7 +28,7 @@ public class LoadingPointSearchRestrictions {
 
   public Specification<LoadingPointVersion> getSpecification() {
     return specBuilder().searchCriteriaSpecification(searchCriterias)
-        .and(specBuilder().validOnSpecification(Optional.ofNullable(loadingPointRequestParams.getValidOn())))
+        .and(specBuilder().validOnSpecification(loadingPointRequestParams.getValidOn()))
         .and(specBuilder().inSpecification(loadingPointRequestParams.getNumbers(),
             LoadingPointVersion.Fields.number))
         .and(specBuilder().inSpecification(loadingPointRequestParams.getServicePointNumbersWithoutDigits(),

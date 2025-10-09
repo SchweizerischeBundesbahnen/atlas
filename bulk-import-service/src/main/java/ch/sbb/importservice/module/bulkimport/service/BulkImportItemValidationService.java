@@ -13,14 +13,14 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class BulkImportItemValidationService {
 
-  public static <T extends Validatable> void validateAll(List<BulkImportUpdateContainer<T>> items) {
+  public static <T extends Validatable<T>> void validateAll(List<BulkImportUpdateContainer<T>> items) {
     items.stream()
         .filter(Objects::nonNull)
         .filter(i -> i.getObject() != null)
         .forEach(BulkImportItemValidationService::validate);
   }
 
-  public static <T extends Validatable> void validate(BulkImportUpdateContainer<T> item) {
+  public static <T extends Validatable<T>> void validate(BulkImportUpdateContainer<T> item) {
     T object = item.getObject();
     List<BulkImportError> validationErrors = object.validate();
     if (!validationErrors.isEmpty()) {
@@ -28,7 +28,7 @@ public class BulkImportItemValidationService {
     }
   }
 
-  private static <T extends Validatable> void storeInfoInLogEntry(BulkImportUpdateContainer<T> item,
+  private static <T extends Validatable<T>> void storeInfoInLogEntry(BulkImportUpdateContainer<T> item,
       List<BulkImportError> validationErrors) {
     if (item.getBulkImportLogEntry() == null) {
       item.setBulkImportLogEntry(BulkImportLogEntry.builder()

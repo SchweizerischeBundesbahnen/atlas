@@ -10,7 +10,6 @@ import ch.sbb.atlas.searching.specification.ValidOnSpecification;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.Builder;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -31,15 +30,15 @@ public class SpecificationBuilder<T> {
     return new EnumSpecification<>(enumRestrictions, enumAttribute);
   }
 
-  public Specification<T> validOnSpecification(Optional<LocalDate> validOn) {
+  public Specification<T> validOnSpecification(LocalDate validOn) {
     return new ValidOnSpecification<>(validOn, validFromAttribute, validToAttribute);
   }
 
-  public Specification<T> singleStringSpecification(Optional<String> searchString, String column) {
+  public Specification<T> singleStringSpecification(String searchString, String column) {
     return new SingleStringSpecification<>(searchString, column);
   }
 
-  public Specification<T> exactMatchStringSpecification(Optional<String> searchString) {
+  public Specification<T> exactMatchStringSpecification(String searchString) {
     return new ExactMatchStringSpecification<>(searchString, singleStringAttribute.getName());
   }
 
@@ -47,7 +46,7 @@ public class SpecificationBuilder<T> {
     return inSpecification(searchStrings, column.getName());
   }
 
-  public Specification<T> inSpecification(List<?> searchRestrictions, String columnName) {
+  public <E> Specification<T> inSpecification(List<E> searchRestrictions, String columnName) {
     return new InSpecification<>(searchRestrictions, columnName);
   }
 

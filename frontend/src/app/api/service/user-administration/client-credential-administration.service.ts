@@ -4,10 +4,8 @@ import { Observable } from 'rxjs';
 import { ApplicationType } from '../../model/applicationType';
 import { Permission } from '../../model/permission';
 import { ClientCredential } from '../../model/clientCredential';
-import { ClientCredentialPermissionCreate } from '../../model/clientCredentialPermissionCreate';
-import { PermissionRestrictionType } from '../../model/permissionRestrictionType';
-import { User } from '../../model/user';
 import { ContainerClientCredential } from '../../model/containerClientCredential';
+import { ClientCredentialCreate } from '../../model/clientCredentialCreate';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +33,7 @@ export class ClientCredentialAdministrationService {
     return this.atlasApiService.get(`${this.CLIENT_CREDENTIAL_BASE_PATH}/${clientId}`);
   }
 
-  createClientCredential(
-    clientCredential: ClientCredentialPermissionCreate,
-  ): Observable<ClientCredential> {
+  createClientCredential(clientCredential: ClientCredentialCreate): Observable<ClientCredential> {
     return this.atlasApiService.post(this.CLIENT_CREDENTIAL_BASE_PATH, clientCredential);
   }
 

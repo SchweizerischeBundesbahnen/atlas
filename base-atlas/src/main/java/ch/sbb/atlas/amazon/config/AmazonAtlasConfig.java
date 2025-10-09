@@ -15,13 +15,11 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
-import software.amazon.awssdk.services.s3.model.BucketLifecycleConfiguration;
 import software.amazon.awssdk.services.s3.model.ExpirationStatus;
 import software.amazon.awssdk.services.s3.model.GetBucketLifecycleConfigurationRequest;
-import software.amazon.awssdk.services.s3.model.LifecycleExpiration;
 import software.amazon.awssdk.services.s3.model.LifecycleRule;
-import software.amazon.awssdk.services.s3.model.LifecycleRuleFilter;
 import software.amazon.awssdk.services.s3.model.PutBucketLifecycleConfigurationRequest;
+import software.amazon.awssdk.utils.builder.SdkBuilder;
 
 @UtilityClass
 @Slf4j
@@ -63,19 +61,18 @@ public class AmazonAtlasConfig {
       log.info("Current BucketLifecycleConfiguration is not up to date, setting lifeCycleRules");
       s3Client.putBucketLifecycleConfiguration(PutBucketLifecycleConfigurationRequest.builder()
           .bucket(bucketConfig.getBucketName())
-          .lifecycleConfiguration(BucketLifecycleConfiguration.builder()
-              .rules(lifeCycleRules)
-              .build())
-          .build());
+          .lifecycleConfiguration(lc -> lc.rules(lifeCycleRules))
+          .build()
+      );
     }
   }
 
   private static LifecycleRule getExpirationRule(AmazonBucketConfig amazonBucketConfig) {
     return LifecycleRule.builder()
         .id(amazonBucketConfig.getBucketName() + "-expiration-id")
-        .filter(LifecycleRuleFilter.builder().build())
+        .filter(SdkBuilder::build)
         .status(ExpirationStatus.ENABLED)
-        .expiration(LifecycleExpiration.builder().days(amazonBucketConfig.getObjectExpirationDays()).build())
+        .expiration(le -> le.days(amazonBucketConfig.getObjectExpirationDays()))
         .build();
   }
 

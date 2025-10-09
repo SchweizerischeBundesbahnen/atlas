@@ -42,12 +42,8 @@ class SloidRepositoryTest {
   void shouldGetAllocatedSloid() {
     // given
     when(locationJdbcTemplate.query(eq("select distinct sloid from allocated_sloid where sloid is not null and sloidtype = "
-        + ":sloidType;"), argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-      @Override
-      public boolean matches(MapSqlParameterSource map) {
-        return map.getValue("sloidType").equals("TOILET");
-      }
-    }), any(RowMapper.class))).thenReturn(List.of("ch:1:sloid:1"));
+            + ":sloidType;"), argThat((ArgumentMatcher<MapSqlParameterSource>) map -> "TOILET".equals(map.getValue("sloidType"))),
+        any(RowMapper.class))).thenReturn(List.of("ch:1:sloid:1"));
     // when
     Set<String> allocatedSloids = sloidRepository.getAllocatedSloids(SloidType.TOILET);
     // then
@@ -58,12 +54,8 @@ class SloidRepositoryTest {
   void shouldGetNextSeqValue() {
     // given
     when(locationJdbcTemplate.queryForObject(eq("select nextval(:sequence);"),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("sequence").equals("area_seq");
-          }
-        }), any(RowMapper.class))).thenReturn(100);
+        argThat((ArgumentMatcher<MapSqlParameterSource>) map -> "area_seq".equals(map.getValue("sequence"))),
+        any(RowMapper.class))).thenReturn(100);
     // when
     Integer nextSeqValue = sloidRepository.getNextSeqValue(SloidType.AREA);
     // then
@@ -76,12 +68,9 @@ class SloidRepositoryTest {
     sloidRepository.insertSloid("ch:1:sloid:7000:500", SloidType.PARKING_LOT);
     // then
     verify(locationJdbcTemplate, times(1)).update(eq("insert into allocated_sloid (sloid, sloidtype) values (:sloid, "
-        + ":sloidType);"), argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-      @Override
-      public boolean matches(MapSqlParameterSource map) {
-        return map.getValue("sloid").equals("ch:1:sloid:7000:500") && map.getValue("sloidType").equals("PARKING_LOT");
-      }
-    }));
+        + ":sloidType);"), argThat(
+        (ArgumentMatcher<MapSqlParameterSource>) map -> "ch:1:sloid:7000:500".equals(map.getValue("sloid")) &&
+            "PARKING_LOT".equals(map.getValue("sloidType"))));
   }
 
   @Test
@@ -89,12 +78,9 @@ class SloidRepositoryTest {
     // given
     when(locationJdbcTemplate.queryForObject(
         eq("select sloid from available_service_point_sloid where country = :country and claimed = false limit 1;"),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("country").equals("SWITZERLAND");
-          }
-        }), any(RowMapper.class))).thenReturn("ch:1:sloid:7000");
+        argThat((ArgumentMatcher<MapSqlParameterSource>) map -> "SWITZERLAND".equals(map.getValue("country"))),
+        any(RowMapper.class))).thenReturn("ch:1:sloid"
+        + ":7000");
     // when
     String nextAvailableSloid = sloidRepository.getNextAvailableSloid(Country.SWITZERLAND);
     // then
@@ -105,12 +91,8 @@ class SloidRepositoryTest {
   void shouldReturnTrueWhenSloidIsAllocated() {
     // given
     when(locationJdbcTemplate.queryForObject(eq("select count(*) from allocated_sloid where sloid = :sloid;"),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("sloid").equals("ch:1:sloid:7000:500");
-          }
-        }), any(RowMapper.class))).thenReturn((byte) 1);
+        argThat((ArgumentMatcher<MapSqlParameterSource>) map -> "ch:1:sloid:7000:500".equals(map.getValue("sloid"))),
+        any(RowMapper.class))).thenReturn((byte) 1);
     // when
     boolean isSloidAllocated = sloidRepository.isSloidAllocated("ch:1:sloid:7000:500");
     // then
@@ -121,12 +103,8 @@ class SloidRepositoryTest {
   void shouldReturnTrueWhenServicePointSloidIsAvailable() {
     // given
     when(locationJdbcTemplate.queryForObject(eq("select claimed from available_service_point_sloid where sloid = :sloid;"),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("sloid").equals("ch:1:sloid:7000");
-          }
-        }), any(RowMapper.class))).thenReturn(Boolean.FALSE);
+        argThat((ArgumentMatcher<MapSqlParameterSource>) map -> "ch:1:sloid:7000".equals(map.getValue("sloid"))),
+        any(RowMapper.class))).thenReturn(Boolean.FALSE);
     // when
     boolean isAvailable = sloidRepository.isServicePointSloidAvailable("ch:1:sloid:7000");
     // then
@@ -141,14 +119,9 @@ class SloidRepositoryTest {
     // then
     verify(locationJdbcTemplate, times(1)).update(
         eq("delete from allocated_sloid where sloid in (:sloids) and sloidtype = :sloidType;"),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("sloids").equals(
-                new HashSet<>(List.of("ch:1:sloid:7000:500", "ch:1:sloid:20:700"))
-            ) && map.getValue("sloidType").equals("PARKING_LOT");
-          }
-        }));
+        argThat((ArgumentMatcher<MapSqlParameterSource>) map ->
+            new HashSet<>(List.of("ch:1:sloid:7000:500", "ch:1:sloid:20:700")).equals(map.getValue("sloids"))
+                && "PARKING_LOT".equals(map.getValue("sloidType"))));
   }
 
   @Test
@@ -158,14 +131,8 @@ class SloidRepositoryTest {
     // then
     verify(locationJdbcTemplate, times(1)).update(
         eq("update available_service_point_sloid set claimed = false where sloid in (:sloids);"),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("sloids").equals(
-                new HashSet<>(List.of("ch:1:sloid:7000:500", "ch:1:sloid:20:700"))
-            );
-          }
-        }));
+        argThat((ArgumentMatcher<MapSqlParameterSource>) map -> new HashSet<>(
+            List.of("ch:1:sloid:7000:500", "ch:1:sloid:20:700")).equals(map.getValue("sloids"))));
   }
 
   @Test
@@ -175,14 +142,8 @@ class SloidRepositoryTest {
     // then
     verify(locationJdbcTemplate, times(1)).update(
         eq("update available_service_point_sloid set claimed = true where sloid = :sloid;"),
-        argThat(new ArgumentMatcher<MapSqlParameterSource>() {
-          @Override
-          public boolean matches(MapSqlParameterSource map) {
-            return map.getValue("sloid").equals(
-                "ch:1:sloid:7000"
-            );
-          }
-        }));
+        argThat((ArgumentMatcher<MapSqlParameterSource>) map -> "ch:1:sloid:7000".equals(map.getValue("sloid"))
+        ));
   }
 
   @Test

@@ -71,7 +71,9 @@ class AmazonServiceIntegrationTest {
     InputStreamResource inputStreamResource = amazonService.pullFileAsStream(AmazonBucket.EXPORT,
         INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip");
     //check is a zip file
-    assertThat(new ZipInputStream(inputStreamResource.getInputStream()).getNextEntry()).isNotNull();
+    try (ZipInputStream zipInputStream = new ZipInputStream(inputStreamResource.getInputStream())) {
+      assertThat(zipInputStream.getNextEntry()).isNotNull();
+    }
 
     assertThat(url).hasToString(
         "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE +
@@ -90,7 +92,9 @@ class AmazonServiceIntegrationTest {
     //check is a gz file
     InputStreamResource inputStreamResource = amazonService.pullFileAsStream(AmazonBucket.EXPORT,
         INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
-    assertThat(new GZIPInputStream(inputStreamResource.getInputStream()).readAllBytes()).isNotNull();
+    try (GZIPInputStream gzipInputStream = new GZIPInputStream(inputStreamResource.getInputStream())) {
+      assertThat(gzipInputStream.readAllBytes()).isNotNull();
+    }
     assertThat(url).hasToString(
         "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
   }

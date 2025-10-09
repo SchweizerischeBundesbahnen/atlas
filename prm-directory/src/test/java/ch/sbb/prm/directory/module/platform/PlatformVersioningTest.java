@@ -61,7 +61,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion version2 = PlatformTestData.builderCompleteVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion savedVersion1 = platformRepository.saveAndFlush(version1);
-    PlatformVersion savedVersion2 = platformRepository.saveAndFlush(version2);
+    platformRepository.saveAndFlush(version2);
 
     PlatformVersion editedVersion = PlatformTestData.builderCompleteVersion2().build();
     editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
@@ -122,7 +122,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion version2 = PlatformTestData.builderReducedVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion savedVersion1 = platformRepository.saveAndFlush(version1);
-    PlatformVersion savedVersion2 = platformRepository.saveAndFlush(version2);
+    platformRepository.saveAndFlush(version2);
 
     PlatformVersion editedVersion = PlatformTestData.builderReducedVersion2().build();
     editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
@@ -182,7 +182,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion version3 = PlatformTestData.builderCompleteVersion3().build();
     version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion savedVersion1 = platformRepository.saveAndFlush(version1);
-    PlatformVersion savedVersion2 = platformRepository.saveAndFlush(version2);
+    platformRepository.saveAndFlush(version2);
     PlatformVersion savedVersion3 = platformRepository.saveAndFlush(version3);
 
     PlatformVersion editedVersion = PlatformTestData.builderCompleteVersion2().build();
@@ -252,7 +252,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion version3 = PlatformTestData.builderReducedVersion3().build();
     version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion savedVersion1 = platformRepository.saveAndFlush(version1);
-    PlatformVersion savedVersion2 = platformRepository.saveAndFlush(version2);
+    platformRepository.saveAndFlush(version2);
     PlatformVersion savedVersion3 = platformRepository.saveAndFlush(version3);
 
     PlatformVersion editedVersion = PlatformTestData.builderReducedVersion2().build();

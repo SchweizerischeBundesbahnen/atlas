@@ -6,8 +6,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class DoubleOperations {
 
-  public static Double round(double value, int places){
-    double scale = Math.pow(10, places);
+  public static Double round(double value, int places) {
+    final byte BASE = 10;
+    double scale = Math.pow(BASE, places);
     return Math.round(value * scale) / scale;
   }
 

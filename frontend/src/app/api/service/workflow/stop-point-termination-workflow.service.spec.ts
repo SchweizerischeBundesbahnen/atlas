@@ -1,13 +1,13 @@
-import {TestBed} from '@angular/core/testing';
-import {StopPointTerminationWorkflowService} from './stop-point-termination-workflow.service';
-import {AtlasApiService} from '../atlas-api.service';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {UserService} from '../../../core/auth/user/user.service';
-import {TerminationStopPointAddWorkflow} from '../../model/terminationStopPointAddWorkflow';
-import {TerminationAbort} from "../../model/terminationAbort";
-import any = jasmine.any;
+import { TestBed } from '@angular/core/testing';
+import { StopPointTerminationWorkflowService } from './stop-point-termination-workflow.service';
+import { AtlasApiService } from '../atlas-api.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UserService } from '../../../core/auth/user/user.service';
+import { TerminationAbort } from '../../model/terminationAbort';
 import { TerminationDecision } from '../../model/terminationDecision';
 import { JudgementType } from '../../model/judgementType';
+import { StartTerminationStopPointAddWorkflow } from '../../model/startTerminationStopPointAddWorkflow';
+import any = jasmine.any;
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 describe('StopPointTerminationWorkflowService', () => {
@@ -33,7 +33,7 @@ describe('StopPointTerminationWorkflowService', () => {
 
   it('should start termination', () => {
     // given
-    const terminationStopPointAddWorkflow: TerminationStopPointAddWorkflow = {
+    const terminationStopPointAddWorkflow: StartTerminationStopPointAddWorkflow = {
       sloid: 'ch:1sloid:700',
       versionId: 123,
       boTerminationDate: new Date(),

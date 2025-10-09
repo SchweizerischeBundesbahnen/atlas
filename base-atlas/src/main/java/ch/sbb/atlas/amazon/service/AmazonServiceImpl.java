@@ -67,7 +67,7 @@ public class AmazonServiceImpl implements AmazonService {
 
   private ZipPutResult zipAndPutFile(AmazonBucket bucket, File file, String dir) {
     File zipFile = fileService.zipFile(file);
-    String filePathName = getFilePathName(zipFile, dir);
+    String filePathName = getFilePathName(dir, zipFile);
     PutObjectRequest putObjectRequest = PutObjectRequest.builder()
         .bucket(getAmazonBucketConfig(bucket).getBucketName())
         .key(filePathName)
@@ -116,6 +116,7 @@ public class AmazonServiceImpl implements AmazonService {
           .bucket(getAmazonBucketConfig(bucket).getBucketName())
           .key(filePath).build());
     } catch (S3Exception amazonS3Exception) {
+      log.debug("Following S3Exception occurred", amazonS3Exception);
       throw new FileNotFoundOnS3Exception(filePath);
     }
   }
@@ -153,7 +154,7 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   private URL putFileToBucket(AmazonBucket bucket, File file, String dir) {
-    String filePathName = getFilePathName(file, dir);
+    String filePathName = getFilePathName(dir, file);
     PutObjectRequest putObjectRequest = PutObjectRequest.builder()
         .bucket(getAmazonBucketConfig(bucket).getBucketName())
         .key(filePathName)
@@ -163,7 +164,7 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException {
-    String filePathName = getFilePathName(file, dir) + GZ_EXTENSION;
+    String filePathName = getFilePathName(dir, file) + GZ_EXTENSION;
     try (FileInputStream inputStream = new FileInputStream(file)) {
       byte[] zippedBytes = fileService.gzipCompress(inputStream.readAllBytes());
       PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -191,12 +192,12 @@ public class AmazonServiceImpl implements AmazonService {
     return url;
   }
 
-  String getFilePathName(File file, String dir) {
-    return dir + "/" + file.getName();
+  String getFilePathName(String dirPath, File file) {
+    return getFilePathName(dirPath, file.getName());
   }
 
   String getFilePathName(String dirPath, String fileName) {
-    return "%s/%s".formatted(dirPath, fileName);
+    return String.join("/", dirPath, fileName);
   }
 
 }

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 class ConverterHelperTest extends BaseTest {
 
-   static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+  static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
 
   static {
     VERSIONABLE.add(VersionableProperty.builder()
@@ -47,7 +47,7 @@ class ConverterHelperTest extends BaseTest {
   private Relation relation;
 
   @BeforeEach
-   void init() {
+  void init() {
     relation = Relation.builder().id(1L).value("value1").build();
     versionableObject1 = VersionableObject
         .builder()
@@ -68,7 +68,7 @@ class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-   void shouldConvertToEditedEntity() {
+  void shouldConvertToEditedEntity() {
     //given
     VersionableObject current = VersionableObject
         .builder()
@@ -123,7 +123,7 @@ class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-   void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentAndEditedPropertiesAreEquals() {
+  void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentAndEditedPropertiesAreEquals() {
 
     //when
     Entity result = ConverterHelper.convertToEditedEntity(false, versionableObject1, versionableObject1,
@@ -138,7 +138,7 @@ class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-   void shouldContainsNullPropertyWhenDeletePropertyWhenNull() {
+  void shouldContainsNullPropertyWhenDeletePropertyWhenNull() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -179,7 +179,7 @@ class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-   void shouldContainsNullPropertyWhenDeletePropertyWhenNullAndDoNotOverrideProperty() {
+  void shouldContainsNullPropertyWhenDeletePropertyWhenNullAndDoNotOverrideProperty() {
     //given
     List<VersionableProperty> versionableProperties = new ArrayList<>();
 
@@ -240,7 +240,7 @@ class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-   void shouldNotContainsNullPropertyWhenNotDeletePropertyWhenNull() {
+  void shouldNotContainsNullPropertyWhenNotDeletePropertyWhenNull() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -276,7 +276,7 @@ class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-   void shouldConvertAllObjectsToVersioning() {
+  void shouldConvertAllObjectsToVersioning() {
     //given
 
     //when
@@ -380,7 +380,7 @@ class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-   void shouldConvertEntityOneToOneRelation() {
+  void shouldConvertEntityOneToOneRelation() {
     //given
 
     //when
@@ -404,7 +404,7 @@ class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-   void shouldThrowExceptionWhenTryToUsePropertyNotDefinedAsVersionable() {
+  void shouldThrowExceptionWhenTryToUsePropertyNotDefinedAsVersionable() {
     //given
     List<VersionableProperty> versionable = new ArrayList<>();
 
@@ -420,11 +420,11 @@ class ConverterHelperTest extends BaseTest {
       );
       //then
     }).isInstanceOf(VersioningException.class)
-        .hasMessageContaining("Error during parse field not_defined");
+        .hasMessageContaining("Error during parse field: not_defined");
   }
 
   @Test
-   void shouldThrowExceptionWhenTryToUsePropertyOnOneToManyRelationNotDefinedAsVersionable() {
+  void shouldThrowExceptionWhenTryToUsePropertyOnOneToManyRelationNotDefinedAsVersionable() {
     //given
     List<VersionableProperty> versionable = new ArrayList<>();
 
@@ -442,7 +442,7 @@ class ConverterHelperTest extends BaseTest {
       );
       //then
     }).isInstanceOf(VersioningException.class)
-        .hasMessageContaining("Error during parse field not_defined");
+        .hasMessageContaining("Error during parse field: not_defined");
   }
 
 }

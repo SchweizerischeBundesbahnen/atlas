@@ -13,8 +13,12 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.util.PrmMeansOfTransportHelper;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.Supplier;
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.NonNull;
 
 @UtilityClass
 public class PlatformVersionMapper {
@@ -124,38 +128,56 @@ public class PlatformVersionMapper {
   }
 
   public static void initDefaultDropdownData(PlatformVersion platformVersion, Set<MeanOfTransport> meansOfTransport) {
-    if (platformVersion.getShuttle() == null) {
-      platformVersion.setShuttle(BooleanOptionalAttributeType.TO_BE_COMPLETED);
-    }
+    platformVersion.setShuttle(
+        ifCurrentNull(BooleanOptionalAttributeType.TO_BE_COMPLETED, platformVersion::getShuttle)
+    );
     if (PrmMeansOfTransportHelper.isReduced(meansOfTransport)) {
-      if (platformVersion.getTactileSystem() == null) {
-        platformVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
-      }
-      if (platformVersion.getAttentionField() == null && PrmMeansOfTransportHelper.isAttentionFieldAllowed(meansOfTransport)) {
-        platformVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
-      }
-      if (platformVersion.getVehicleAccess() == null) {
-        platformVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);
-      }
-      if (platformVersion.getInfoOpportunities() == null || platformVersion.getInfoOpportunities().isEmpty()) {
-        platformVersion.setInfoOpportunities(Set.of(InfoOpportunityAttributeType.TO_BE_COMPLETED));
-      }
+      initDefaultDropdownDataReduced(platformVersion, meansOfTransport);
     } else {
-      if (platformVersion.getContrastingAreas() == null) {
-        platformVersion.setContrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED);
-      }
-      if (platformVersion.getBoardingDevice() == null) {
-        platformVersion.setBoardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED);
-      }
-      if (platformVersion.getDynamicAudio() == null) {
-        platformVersion.setDynamicAudio(BasicAttributeType.TO_BE_COMPLETED);
-      }
-      if (platformVersion.getDynamicVisual() == null) {
-        platformVersion.setDynamicVisual(BasicAttributeType.TO_BE_COMPLETED);
-      }
-      if (platformVersion.getLevelAccessWheelchair() == null) {
-        platformVersion.setLevelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED);
-      }
+      initDefaultDropdownDataComplete(platformVersion);
     }
+  }
+
+  private static void initDefaultDropdownDataReduced(PlatformVersion platformVersion, Set<MeanOfTransport> meansOfTransport) {
+    platformVersion.setTactileSystem(
+        ifCurrentNull(BooleanOptionalAttributeType.TO_BE_COMPLETED, platformVersion::getTactileSystem)
+    );
+    platformVersion.setVehicleAccess(
+        ifCurrentNull(VehicleAccessAttributeType.TO_BE_COMPLETED, platformVersion::getVehicleAccess)
+    );
+    platformVersion.setInfoOpportunities(
+        ifCurrentNullOrEmpty(Set.of(InfoOpportunityAttributeType.TO_BE_COMPLETED), platformVersion::getInfoOpportunities)
+    );
+    if (PrmMeansOfTransportHelper.isAttentionFieldAllowed(meansOfTransport)) {
+      platformVersion.setAttentionField(
+          ifCurrentNull(BooleanOptionalAttributeType.TO_BE_COMPLETED, platformVersion::getAttentionField)
+      );
+    }
+  }
+
+  private static void initDefaultDropdownDataComplete(PlatformVersion platformVersion) {
+    platformVersion.setContrastingAreas(
+        ifCurrentNull(BooleanOptionalAttributeType.TO_BE_COMPLETED, platformVersion::getContrastingAreas)
+    );
+    platformVersion.setBoardingDevice(
+        ifCurrentNull(BoardingDeviceAttributeType.TO_BE_COMPLETED, platformVersion::getBoardingDevice)
+    );
+    platformVersion.setDynamicAudio(
+        ifCurrentNull(BasicAttributeType.TO_BE_COMPLETED, platformVersion::getDynamicAudio)
+    );
+    platformVersion.setDynamicVisual(
+        ifCurrentNull(BasicAttributeType.TO_BE_COMPLETED, platformVersion::getDynamicVisual)
+    );
+    platformVersion.setLevelAccessWheelchair(
+        ifCurrentNull(BasicAttributeType.TO_BE_COMPLETED, platformVersion::getLevelAccessWheelchair)
+    );
+  }
+
+  private static <T> T ifCurrentNull(T value, @NonNull Supplier<T> getter) {
+    return Objects.isNull(getter.get()) ? value : getter.get();
+  }
+
+  private static <E, T extends Collection<E>> T ifCurrentNullOrEmpty(T value, @NonNull Supplier<T> getter) {
+    return Objects.isNull(getter.get()) || getter.get().isEmpty() ? value : getter.get();
   }
 }

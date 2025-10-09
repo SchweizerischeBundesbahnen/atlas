@@ -20,7 +20,7 @@ class PermissionRestrictionModelTest {
     String jsonValue = """
         {"valueAsString":"ch:1:sboid:1100000","type":"BUSINESS_ORGANISATION"}
         """;
-    PermissionRestrictionModel<?> permissionRestrictionModel = objectMapper.readValue(jsonValue,
+    PermissionRestrictionModel permissionRestrictionModel = objectMapper.readValue(jsonValue,
         PermissionRestrictionModel.class);
 
     assertThat(permissionRestrictionModel.getType()).isEqualTo(PermissionRestrictionType.BUSINESS_ORGANISATION);
@@ -32,7 +32,7 @@ class PermissionRestrictionModelTest {
     String jsonValue = """
         {"valueAsString":"BERN","type":"CANTON"}
         """;
-    PermissionRestrictionModel<?> permissionRestrictionModel = objectMapper.readValue(jsonValue,
+    PermissionRestrictionModel permissionRestrictionModel = objectMapper.readValue(jsonValue,
         PermissionRestrictionModel.class);
 
     assertThat(permissionRestrictionModel.getType()).isEqualTo(PermissionRestrictionType.CANTON);
@@ -44,7 +44,7 @@ class PermissionRestrictionModelTest {
     String jsonValue = """
         {"valueAsString":"MACEDONIA","type":"COUNTRY"}
         """;
-    PermissionRestrictionModel<?> permissionRestrictionModel = objectMapper.readValue(jsonValue,
+    PermissionRestrictionModel permissionRestrictionModel = objectMapper.readValue(jsonValue,
         PermissionRestrictionModel.class);
 
     assertThat(permissionRestrictionModel.getType()).isEqualTo(PermissionRestrictionType.COUNTRY);
@@ -56,7 +56,7 @@ class PermissionRestrictionModelTest {
     String jsonValue = """
         {"valueAsString":"true","type":"BULK_IMPORT"}
         """;
-    PermissionRestrictionModel<?> permissionRestrictionModel = objectMapper.readValue(jsonValue,
+    PermissionRestrictionModel permissionRestrictionModel = objectMapper.readValue(jsonValue,
         PermissionRestrictionModel.class);
 
     assertThat(permissionRestrictionModel.getType()).isEqualTo(PermissionRestrictionType.BULK_IMPORT);

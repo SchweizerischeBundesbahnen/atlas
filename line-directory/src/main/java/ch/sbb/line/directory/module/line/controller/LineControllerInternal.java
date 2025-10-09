@@ -21,7 +21,6 @@ import ch.sbb.line.directory.module.line.service.LineVersionSnapshotService;
 import ch.sbb.line.directory.module.subline.service.SublineShorteningService;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -77,7 +76,7 @@ public class LineControllerInternal implements LineApiInternal {
 
   @Override
   public Container<LineVersionSnapshotModel> getLineVersionSnapshot(Pageable pageable, List<String> searchCriteria,
-      Optional<LocalDate> validOn, List<WorkflowStatus> statusChoices) {
+      LocalDate validOn, List<WorkflowStatus> statusChoices) {
     log.info(
         "Load LineVersionSnapshot using pageable={}, searchCriteriaSpecification={}, validOn={}", pageable, searchCriteria,
         validOn);

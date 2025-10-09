@@ -9,7 +9,6 @@ import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification
 import ch.sbb.line.directory.module.line.entity.Line.Fields;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.entity.LineVersion_;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -25,14 +24,11 @@ public class LineVersionSearchRestrictions {
   private final LineVersionRequestParams lineVersionRequestParams;
 
   public Specification<LineVersion> getSpecification() {
-    return new ValidOnSpecification<>(Optional.ofNullable(lineVersionRequestParams.getValidOn()), LineVersion_.validFrom,
-        LineVersion_.validTo)
+    return new ValidOnSpecification<>(lineVersionRequestParams.getValidOn(), LineVersion_.validFrom, LineVersion_.validTo)
         .and(new EnumSpecification<>(lineVersionRequestParams.getStatusRestrictions(), BaseVersion_.status))
         .and(new EnumSpecification<>(lineVersionRequestParams.getTypeRestrictions(), LineVersion_.lineType))
-        .and(new SingleStringSpecification<>(Optional.ofNullable(lineVersionRequestParams.getSwissLineNumber()),
-            Fields.swissLineNumber))
-        .and(new SingleStringSpecification<>(Optional.ofNullable(lineVersionRequestParams.getBusinessOrganisation()),
-            Fields.businessOrganisation))
+        .and(new SingleStringSpecification<>(lineVersionRequestParams.getSwissLineNumber(), Fields.swissLineNumber))
+        .and(new SingleStringSpecification<>(lineVersionRequestParams.getBusinessOrganisation(), Fields.businessOrganisation))
         .and(new ValidOrEditionTimerangeSpecification<>(lineVersionRequestParams));
   }
 

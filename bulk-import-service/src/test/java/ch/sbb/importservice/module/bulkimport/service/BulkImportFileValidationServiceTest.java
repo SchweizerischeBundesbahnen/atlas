@@ -18,7 +18,6 @@ import ch.sbb.importservice.module.bulkimport.job.sepodi.servicepoint.update.Ser
 import ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.update.TrafficPointUpdate;
 import ch.sbb.importservice.module.bulkimport.model.BulkImportConfig;
 import ch.sbb.importservice.module.bulkimport.template.BulkImportTemplateGenerator;
-import ch.sbb.importservice.module.bulkimport.template.ServicePointTemplateGenerator;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,8 +35,6 @@ class BulkImportFileValidationServiceTest {
 
   @Autowired
   private BulkImportFileValidationService bulkImportFileValidationService;
-
-  private ServicePointTemplateGenerator servicePointTemplateGenerator;
 
   @Mock
   private FileService fileService;
