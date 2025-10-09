@@ -2,23 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationType, TimetableFieldNumberVersion } from '../../../api';
 import { BaseDetailController } from '../../../core/components/base-detail/base-detail-controller';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { catchError } from 'rxjs';
-import moment from 'moment';
-import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Pages } from '../../pages';
 import { Page } from '../../../core/model/page';
-import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
-import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
-import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
-import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
 import { ValidityService } from '../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
@@ -28,7 +17,6 @@ import { NgIf } from '@angular/common';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
 import { BusinessOrganisationSelectComponent } from '../../../core/form-components/bo-select/business-organisation-select.component';
-import { CommentComponent } from '../../../core/form-components/comment/comment.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -43,7 +31,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     TextFieldComponent,
     DateRangeComponent,
     BusinessOrganisationSelectComponent,
-    CommentComponent,
     TranslatePipe,
   ],
 })
@@ -75,12 +62,16 @@ export class TimetableFieldNumberDetailComponent
     super.ngOnInit();
   }
 
-  readRecord(): TimetableFieldNumberVersion {
-    return this.activatedRoute.snapshot.data.timetableFieldNumberDetail;
+  readRecords(): TimetableFieldNumberVersion[] {
+    return (
+      this.activatedRoute.snapshot.data as {
+        timetableFieldNumberDetail: TimetableFieldNumberVersion[];
+      }
+    ).timetableFieldNumberDetail;
   }
 
   getDetailHeading(record: TimetableFieldNumberVersion): string {
-    return `${record.number} - ${record.description ?? ''}`;
+    return `${record.number} - ${record.descriptionOutwardLine1}`;
   }
 
   getDetailSubheading(record: TimetableFieldNumberVersion): string {
@@ -88,14 +79,17 @@ export class TimetableFieldNumberDetailComponent
   }
 
   updateRecord(): void {
+    const id = this.getId();
+    const ttfnid = this.record?.ttfnid;
+    if (!id || !ttfnid) throw new Error('id and ttfnid are required');
     this.form.disable();
     this.timetableFieldNumberService
-      .updateVersionWithVersioning(this.getId(), this.form.value)
+      .updateVersionWithVersioning(id, this.form.value)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate([Pages.TTFN.path, this.record.ttfnid])
+          .navigate([Pages.TTFN.path, ttfnid])
           .then(() => this.ngOnInit());
       });
   }
@@ -113,34 +107,33 @@ export class TimetableFieldNumberDetailComponent
   }
 
   revokeRecord(): void {
-    const selectedRecord = this.getSelectedRecord();
-    if (selectedRecord.ttfnid) {
-      this.timetableFieldNumberInternalService
-        .revokeTimetableFieldNumber(selectedRecord.ttfnid)
-        .subscribe(() => {
-          this.notificationService.success('TTFN.NOTIFICATION.REVOKE_SUCCESS');
-          this.router
-            .navigate([Pages.TTFN.path, selectedRecord.ttfnid])
-            .then(() => this.ngOnInit());
-        });
-    }
+    const ttfnid = this.getSelectedRecord()?.ttfnid;
+    if (!ttfnid) throw new Error('ttfnid is required');
+    this.timetableFieldNumberInternalService
+      .revokeTimetableFieldNumber(ttfnid)
+      .subscribe(() => {
+        this.notificationService.success('TTFN.NOTIFICATION.REVOKE_SUCCESS');
+        this.router
+          .navigate([Pages.TTFN.path, ttfnid])
+          .then(() => this.ngOnInit());
+      });
   }
 
   deleteRecord(): void {
-    const selectedRecord: TimetableFieldNumberVersion =
-      this.getSelectedRecord();
-    if (selectedRecord.ttfnid != null) {
-      this.timetableFieldNumberInternalService
-        .deleteVersions(selectedRecord.ttfnid)
-        .subscribe(() => {
-          this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-          this.backToOverview();
-        });
-    }
+    const ttfnid = this.getSelectedRecord()?.ttfnid;
+    if (!ttfnid) throw new Error('ttfnid is required');
+    this.timetableFieldNumberInternalService
+      .deleteVersions(ttfnid)
+      .subscribe(() => {
+        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+        this.backToOverview();
+      });
   }
 
   getFormGroup(version: TimetableFieldNumberVersion): FormGroup {
-    return new FormGroup<TimetableFieldNumberDetailFormGroup>(
+    return new FormGroup({});
+    // todo
+    /*return new FormGroup<TimetableFieldNumberDetailFormGroup>(
       {
         swissTimetableFieldNumber: new FormControl(
           version.swissTimetableFieldNumber,
@@ -170,15 +163,16 @@ export class TimetableFieldNumberDetailComponent
           AtlasFieldLengthValidator.length_50,
           AtlasCharsetsValidator.numericWithDot,
         ]),
-        description: new FormControl(version.description, [
-          AtlasFieldLengthValidator.length_255,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        comment: new FormControl(version.comment, [
-          AtlasFieldLengthValidator.comments,
-          AtlasCharsetsValidator.iso88591,
-        ]),
+        descriptionOutwardLine1: new FormControl(
+          version.descriptionOutwardLine1,{
+            nonNullable: true,
+            validators: [
+              AtlasFieldLengthValidator.length_255,
+              WhitespaceValidator.blankOrEmptySpaceSurrounding,
+              AtlasCharsetsValidator.iso88591,
+            ]
+          }
+        ),
         status: new FormControl(version.status),
         etagVersion: new FormControl(version.etagVersion),
         creationDate: new FormControl(version.creationDate),
@@ -187,7 +181,7 @@ export class TimetableFieldNumberDetailComponent
         creator: new FormControl(version.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
-    );
+    );*/
   }
 
   getPageType(): Page {

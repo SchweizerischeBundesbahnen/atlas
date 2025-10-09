@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
+import { MeanOfTransport } from './meanOfTransport';
 
 
 export interface TimetableFieldNumberVersion { 
@@ -37,9 +38,30 @@ export interface TimetableFieldNumberVersion {
      */
     readonly ttfnid?: string;
     /**
-     * Description
+     * Description outward line one
      */
-    description?: string;
+    descriptionOutwardLine1: string;
+    /**
+     * Description outward line two
+     */
+    descriptionOutwardLine2?: string;
+    /**
+     * Description outward line three
+     */
+    descriptionOutwardLine3?: string;
+    /**
+     * Description return line one
+     */
+    descriptionReturnLine1: string;
+    /**
+     * Description return line two
+     */
+    descriptionReturnLine2?: string;
+    /**
+     * Description return line three
+     */
+    descriptionReturnLine3?: string;
+    meanOfTransport: MeanOfTransport;
     /**
      * Number
      */
@@ -60,10 +82,6 @@ export interface TimetableFieldNumberVersion {
      * BusinessOrganisation SBOID
      */
     businessOrganisation: string;
-    /**
-     * Additional comment
-     */
-    comment?: string;
     /**
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */

@@ -268,7 +268,8 @@ class TimetableFieldNumberVersionModelTest {
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(fieldName);
   }
 
-  // todo: test complex validation
+  // todo: test that @ValidTtfnDescription validation is triggered on endpoint hit
+  //  and test validator logic isolated
 
   @Test
   void businessOrganisationShouldNotHaveMoreThan50Chars() {
