@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "Sector Groups")
+@Tag(name = "Sector Groups - Beta")
 @RequestMapping("v1/sector-groups")
 @Validated
 public interface SectorGroupApiV1 {
