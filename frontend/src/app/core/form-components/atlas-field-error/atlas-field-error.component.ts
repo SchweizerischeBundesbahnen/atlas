@@ -24,21 +24,26 @@ export class AtlasFieldErrorComponent {
       return this.validationService.getValidation(this.control.errors || null);
     } else {
       if (this.controlName) {
-        const formField = this.form.get(this.controlName);
-        const validationErrors = this.getValidationErrors();
-        if (validationErrors) {
-          if (
-            (validationErrors['required'] && formField?.touched) ||
-            !validationErrors['required']
-          ) {
-            return this.validationService.getValidation(validationErrors);
-          }
-        }
+        return this.getValidationErrorsByControlName(this.controlName);
       } else {
         const validationErrors = this.form.errors;
         if (validationErrors) {
           return this.validationService.getValidation(validationErrors);
         }
+      }
+    }
+    return null;
+  }
+
+  private getValidationErrorsByControlName(controlName: string) {
+    const formField = this.form.get(controlName);
+    const validationErrors = this.getValidationErrors();
+    if (validationErrors) {
+      if (
+        (validationErrors['required'] && formField?.touched) ||
+        !validationErrors['required']
+      ) {
+        return this.validationService.getValidation(validationErrors);
       }
     }
     return null;
