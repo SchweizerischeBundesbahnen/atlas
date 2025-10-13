@@ -98,9 +98,6 @@ public final class ServicePointNumber {
   @Schema(description = "UicCountryCode, Indicates which country allocated the service point number and is to be interpreted "
       + "organisationally, not territorially.", example = "85")
   public Integer getUicCountryCode() {
-    if (getCountry() == null) {
-      return null;
-    }
     return getCountry().getUicCode();
   }
 
@@ -109,9 +106,6 @@ public final class ServicePointNumber {
   @Schema(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7",
       example = "8518771")
   public Integer getNumber() {
-    if (getCountry() == null || getCountry().getUicCode() == null) {
-      return null;
-    }
     return getCountry().getUicCode() * SEVEN_DIGIT_SPLITTER + getNumberShort();
   }
 
