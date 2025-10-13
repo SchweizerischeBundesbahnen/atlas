@@ -17,8 +17,7 @@ public class TrafficPointElementVersionRowMapper extends BaseSepodiRowMapper imp
 
   @Override
   public TrafficPointElementVersion mapRow(ResultSet rs, int rowNum) throws SQLException {
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
-        ServicePointNumber.removeCheckDigit(rs.getInt("service_point_number")));
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("service_point_number"));
     TrafficPointElementVersion.TrafficPointElementVersionBuilder<?, ?> builder = TrafficPointElementVersion.builder();
     builder.id(rs.getLong("id"));
     builder.sloid(rs.getString("sloid"));

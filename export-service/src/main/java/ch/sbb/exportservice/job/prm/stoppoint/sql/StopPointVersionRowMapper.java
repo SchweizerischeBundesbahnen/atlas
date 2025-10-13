@@ -22,7 +22,7 @@ public class StopPointVersionRowMapper implements RowMapper<StopPointVersion> {
   public StopPointVersion mapRow(ResultSet rs, int rowNum) throws SQLException {
     StopPointVersionBuilder<?, ?> builder = StopPointVersion.builder();
     builder.id(rs.getLong("id"));
-    builder.number(ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
+    builder.number(ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     builder.sloid(rs.getString("sloid"));
     builder.freeText(rs.getString("free_text"));
     builder.address(rs.getString("address"));

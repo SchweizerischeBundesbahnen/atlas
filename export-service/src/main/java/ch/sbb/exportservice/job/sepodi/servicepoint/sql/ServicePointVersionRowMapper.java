@@ -32,7 +32,7 @@ public class ServicePointVersionRowMapper extends BaseSepodiRowMapper implements
     ServicePointVersionBuilder<?, ?> servicePointVersionBuilder = ServicePointVersion.builder();
     servicePointVersionBuilder.id(rs.getLong("id"));
     servicePointVersionBuilder.number(
-        ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
+        ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     servicePointVersionBuilder.country(Country.valueOf(rs.getString("country")));
     servicePointVersionBuilder.sloid(rs.getString("sloid"));
     servicePointVersionBuilder.validFrom(rs.getObject("valid_from", LocalDate.class));
@@ -66,7 +66,7 @@ public class ServicePointVersionRowMapper extends BaseSepodiRowMapper implements
     Integer operatingPointKilometerMaster = RowMapperUtil.getInteger(rs, "operating_point_kilometer_master");
     if (operatingPointKilometerMaster != null) {
       servicePointVersionBuilder.operatingPointKilometerMaster(
-          ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(operatingPointKilometerMaster)));
+          ServicePointNumber.ofNumberWithoutCheckDigit(operatingPointKilometerMaster));
     }
     servicePointVersionBuilder.sortCodeOfDestinationStation(rs.getString("sort_code_of_destination_station"));
 
