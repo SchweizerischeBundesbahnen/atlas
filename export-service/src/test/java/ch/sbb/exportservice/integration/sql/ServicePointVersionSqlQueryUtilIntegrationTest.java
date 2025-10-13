@@ -23,7 +23,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
   void shouldReturnWorldOnlyActualWithActualBusinessOrganisationData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
-    int servicePointNumber = 1905886;
+    int servicePointNumber = 4105886;
     insertServicePoint(servicePointNumber, now, now, Country.ALBANIA);
     String sboid = "ch:1:sboid:101999";
     insertSharedBusinessOrganisation(sboid, "abb", now, now);
@@ -36,16 +36,16 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumber);
-    assertThat(result.get(0).getSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(sboid);
-    assertThat(result.get(0).getSharedBusinessOrganisation().getBusinessOrganisationAbbreviationIt()).isEqualTo("abb");
+    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
+    assertThat(result.getFirst().getSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(sboid);
+    assertThat(result.getFirst().getSharedBusinessOrganisation().getBusinessOrganisationAbbreviationIt()).isEqualTo("abb");
   }
 
   @Test
   void shouldReturnWorldOnlyActualWithoutBusinessOrganisationData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
-    int servicePointNumber = 1905886;
+    int servicePointNumber = 4105886;
     insertServicePoint(servicePointNumber, now, now, Country.ALBANIA);
     String sboid = "ch:1:sboid:101999";
     insertSharedBusinessOrganisation(sboid, "abb", now.minusMonths(2), now.minusMonths(1));
@@ -57,17 +57,17 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumber);
-    assertThat(result.get(0).getSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(sboid);
-    assertThat(result.get(0).getSharedBusinessOrganisation().getBusinessOrganisationAbbreviationIt()).isEqualTo(null);
+    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
+    assertThat(result.getFirst().getSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(sboid);
+    assertThat(result.getFirst().getSharedBusinessOrganisation().getBusinessOrganisationAbbreviationIt()).isNull();
   }
 
   @Test
   void shouldReturnWorldFullData() throws SQLException {
     //given
     final LocalDate now = LocalDate.now();
-    insertServicePoint(1956734, now, now, Country.ALBANIA);
-    insertServicePoint(7847382, now.minusMonths(5), now.minusMonths(4), Country.AFGHANISTAN);
+    insertServicePoint(4156734, now, now, Country.ALBANIA);
+    insertServicePoint(6847382, now.minusMonths(5), now.minusMonths(4), Country.AFGHANISTAN);
     insertServicePoint(8547389, now.plusMonths(4), now.plusMonths(5), Country.SWITZERLAND);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FULL);
 
@@ -83,7 +83,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
   void shouldReturnWorldOnlyActualData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
-    int servicePointNumber = 1905886;
+    int servicePointNumber = 4105886;
     insertServicePoint(servicePointNumber, now, now, Country.ALBANIA);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_ACTUAL);
 
@@ -93,14 +93,14 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumber);
+    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
   }
 
   @Test
   void shouldReturnWorldOnlyTimetableFutureData() throws SQLException {
     //given
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    int servicePointNumber = 1905886;
+    int servicePointNumber = 9005886;
     insertServicePoint(servicePointNumber, now, now, Country.EGYPT);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
 
@@ -110,7 +110,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumber);
+    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
   }
 
   @Test
@@ -129,7 +129,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumberSwitzerland);
+    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumberSwitzerland);
   }
 
   @Test
@@ -146,7 +146,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumber);
+    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
   }
 
   @Test
@@ -165,7 +165,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumberSwitzerland);
+    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumberSwitzerland);
   }
 
   private List<ServicePointVersion> executeQuery(String sqlQuery) throws SQLException {

@@ -5,7 +5,6 @@ import static ch.sbb.atlas.api.AtlasFieldLengths.SERVICE_POINT_NUMBER_LENGTH;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -31,7 +30,6 @@ public final class ServicePointNumber {
 
   private static final int TEN = 10;
   private static final int SEVEN_DIGIT_SPLITTER = 100000;
-  public static final String EMPTY_STRING = "";
 
   @JsonIgnore
   private int value;
@@ -40,7 +38,11 @@ public final class ServicePointNumber {
     if (String.valueOf(number).length() != SERVICE_POINT_NUMBER_LENGTH) {
       throw new IllegalArgumentException("The number size must be 7![" + number + "]");
     }
-    return new ServicePointNumber(number);
+    ServicePointNumber servicePointNumber = new ServicePointNumber(number);
+    if (servicePointNumber.getCountry() == null) {
+      throw new IllegalArgumentException(servicePointNumber.getNumericPart(0, 2) + " is not a valid uicCountryCode!");
+    }
+    return servicePointNumber;
   }
 
   public static ServicePointNumber of(Country country, int servicePointId) {
@@ -59,18 +61,6 @@ public final class ServicePointNumber {
       return SloidValidation.SLOID_PREFIX + servicePointNumber.getNumber();
     }
     return null;
-  }
-
-  /**
-   * @deprecated used until Didok CSV File are imported.
-   */
-  @Deprecated
-  public static Integer removeCheckDigit(Integer didokCode) {
-    String didokCodeAsString = Integer.toString(didokCode);
-    if (didokCodeAsString.length() == SERVICE_POINT_NUMBER_LENGTH) {
-      return didokCode;
-    }
-    return Integer.parseInt(didokCodeAsString.substring(0, didokCodeAsString.length() - 1));
   }
 
   private static ServicePointNumber fromString(String number) {
@@ -135,11 +125,6 @@ public final class ServicePointNumber {
   @Schema(description = "Calculated value formed from the numberShort. Range: 0-9", example = "6")
   public Integer getCheckDigit() {
     return calculateCheckDigit(String.format("%05d", getNumberShort()));
-  }
-
-  @AssertTrue
-  boolean isEightDigitsLong() {
-    return asString().length() == SERVICE_POINT_NUMBER_LENGTH;
   }
 
   public String asString() {
