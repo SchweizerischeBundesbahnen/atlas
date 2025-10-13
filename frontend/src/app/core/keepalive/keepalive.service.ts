@@ -66,18 +66,27 @@ export class KeepaliveService {
 
   private createIdleInterval(timeoutFunc: () => void): void {
     this.zone.runOutsideAngular(() => {
-      this.intervalId = <number>(<unknown>setInterval(() => {
-        if (this.interruptions.length !== 0) {
-          this.interruptions = [];
-        } else {
-          this.timeoutId = <number>(<unknown>setTimeout(() => {
-            this.cleanup();
-            this.zone.run(() => timeoutFunc());
-          }, this.TIMEOUT_MS));
-          this.removeActiveInterval();
-        }
-      }, this.INTERVAL_FREQUENCY_MS));
+      this.intervalId = <number>(
+        (<unknown>(
+          setInterval(
+            () => this.intervalFunction(timeoutFunc),
+            this.INTERVAL_FREQUENCY_MS
+          )
+        ))
+      );
     });
+  }
+
+  private intervalFunction(timeoutFunc: () => void) {
+    if (this.interruptions.length !== 0) {
+      this.interruptions = [];
+    } else {
+      this.timeoutId = <number>(<unknown>setTimeout(() => {
+        this.cleanup();
+        this.zone.run(() => timeoutFunc());
+      }, this.TIMEOUT_MS));
+      this.removeActiveInterval();
+    }
   }
 
   private removeActiveInterval(): void {

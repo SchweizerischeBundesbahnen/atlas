@@ -44,7 +44,7 @@ class ServicePointNumberTest {
   void shouldCalculateCheckDigitCorrectly() {
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 7000).getCheckDigit()).isEqualTo(3);
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 92223).getCheckDigit()).isEqualTo(7);
-    assertThat(ServicePointNumber.of(Country.SWITZERLAND, 89573).getCheckDigit()).isEqualTo(0);
+    assertThat(ServicePointNumber.of(Country.SWITZERLAND, 89573).getCheckDigit()).isZero();
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 94267).getCheckDigit()).isEqualTo(2);
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 90765).getCheckDigit()).isEqualTo(9);
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 91085).getCheckDigit()).isEqualTo(1);
