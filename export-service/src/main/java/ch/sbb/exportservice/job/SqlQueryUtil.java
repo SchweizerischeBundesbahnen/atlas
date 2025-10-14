@@ -61,6 +61,10 @@ public abstract class SqlQueryUtil {
     private final String selectStatement;
     private final String whereClause;
     private final String groupByAndOrderByClause;
+    @Builder.Default
+    private String validFromIdentifier = "valid_from";
+    @Builder.Default
+    private String validToIdentifier = "valid_to";
 
     private final ExportTypeV2 exportType;
 
@@ -80,18 +84,21 @@ public abstract class SqlQueryUtil {
         case FULL -> "1=1";
         case ACTUAL -> {
           String today = DateHelper.getDateAsSqlString(LocalDate.now());
-          yield "'%s' >= valid_from AND '%s' <= valid_to".formatted(today, today);
+          String sqlCondition = "'%s' >= " + validFromIdentifier + " AND '%s' <= " + validToIdentifier;
+          yield sqlCondition.formatted(today, today);
         }
         case FUTURE_TIMETABLE -> {
           String futureTimetable = DateHelper.getDateAsSqlString(
               FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-          yield "'%s' >= valid_from AND '%s' <= valid_to".formatted(futureTimetable, futureTimetable);
+          String sqlCondition = "'%s' >= " + validFromIdentifier + " AND '%s' <= " + validToIdentifier;
+          yield sqlCondition.formatted(futureTimetable, futureTimetable);
         }
         case TIMETABLE_YEARS -> {
           DateRange timetableYearsDateRange = ExportYearsTimetableUtil.getTimetableYearsDateRange();
           String timetableYearsStart = DateHelper.getDateAsSqlString(timetableYearsDateRange.getFrom());
           String timetableYearsEnd = DateHelper.getDateAsSqlString(timetableYearsDateRange.getTo());
-          yield "'%s' <= valid_to  AND valid_from <= '%s'".formatted(timetableYearsStart, timetableYearsEnd);
+          String sqlCondition = "'%s' <= " + validToIdentifier + "  AND " + validFromIdentifier + " <= '%s'";
+          yield sqlCondition.formatted(timetableYearsStart, timetableYearsEnd);
         }
         default -> throw new IllegalArgumentException("Value not allowed: " + exportType);
       };

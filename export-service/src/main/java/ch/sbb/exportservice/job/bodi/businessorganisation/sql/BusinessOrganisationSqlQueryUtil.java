@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.job.bodi.businessorganisation.sql;
 
-import static ch.sbb.exportservice.model.ExportTypeV2.FULL;
 import static ch.sbb.exportservice.model.ExportTypeV2.FUTURE_TIMETABLE;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
@@ -24,23 +23,23 @@ public class BusinessOrganisationSqlQueryUtil extends SqlQueryUtil {
                 left join business_organisation_version_business_types bovbt on bov.id = bovbt.business_organisation_version_id
       """;
 
-  private static final String WHERE_CLAUSE = "WHERE '%s' between bov.valid_from and bov.valid_to";
   private static final String ORDER_BY = "ORDER BY bov.sboid, bov.valid_from ASC";
   private static final String GROUP_BY = "group by bov.id, tc.id";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    final LocalDate date =
+    LocalDate date =
         exportTypeV2 == FUTURE_TIMETABLE ? FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now())
             : LocalDate.now();
-    final String dateAsSqlString = DateHelper.getDateAsSqlString(date);
+    String transportCompanyRelationDateAsSqlString = DateHelper.getDateAsSqlString(date);
 
-    final String sqlQuery = buildSqlQuery(
-        SELECT_STATEMENT.formatted(dateAsSqlString),
-        exportTypeV2 == FULL ? "" : WHERE_CLAUSE.formatted(dateAsSqlString),
-        GROUP_BY,
-        ORDER_BY
-    );
-
+    String sqlQuery = ExportSqlQueryBuilder.builder()
+        .exportType(exportTypeV2)
+        .validFromIdentifier("bov.valid_from")
+        .validToIdentifier("bov.valid_to")
+        .selectStatement(SELECT_STATEMENT.formatted(transportCompanyRelationDateAsSqlString))
+        .groupByAndOrderByClause(GROUP_BY + " " + ORDER_BY)
+        .build()
+        .getQuery();
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;
