@@ -7,7 +7,10 @@ public enum ExportTypeV2 {
 
   ACTUAL(Constants.ACTUAL_DATE, ""),
   FULL(Constants.FULL, ""),
+
+  // future-timetable export will be deleted on 01.05.2026
   FUTURE_TIMETABLE(Constants.FUTURE_TIMETABLE, ""),
+
   TIMETABLE_YEARS("timetable-years", ""),
 
   SWISS_ACTUAL(Constants.ACTUAL_DATE, Constants.SWISS),
