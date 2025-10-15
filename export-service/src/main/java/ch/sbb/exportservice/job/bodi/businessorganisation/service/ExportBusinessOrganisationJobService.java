@@ -25,7 +25,8 @@ public class ExportBusinessOrganisationJobService extends BaseExportJobService {
     return List.of(
         new JobParams(ExportTypeV2.FULL),
         new JobParams(ExportTypeV2.ACTUAL),
-        new JobParams(ExportTypeV2.FUTURE_TIMETABLE)
+        new JobParams(ExportTypeV2.FUTURE_TIMETABLE),
+        new JobParams(ExportTypeV2.TIMETABLE_YEARS)
     );
   }
 
