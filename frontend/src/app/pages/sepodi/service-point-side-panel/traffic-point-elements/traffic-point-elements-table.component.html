@@ -10,7 +10,9 @@
           ? ('SEPODI.BOARDING_AREAS.NEW' | translate)
           : ('SEPODI.TRAFFIC_POINT_ELEMENTS.NEW' | translate)
       }}"
-      buttonType="createCheckingPermission"
+      buttonType="edit-service-point-dependent"
+      [businessOrganisations]="servicePointBusinessOrganisations"
+      buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
       wrapperStyleClass="mb-3"
     ></atlas-button>
     <app-navigation-sepodi-prm
