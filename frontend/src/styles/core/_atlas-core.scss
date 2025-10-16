@@ -10,10 +10,6 @@
   color: variables.$gray-900;
 }
 
-.info-icon-position {
-  display: flex;
-}
-
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -38,12 +34,14 @@ input[type='number'] {
 
   &-tabs {
     @extend .white-table-container;
-    border-radius: 0 variables.$border-radius variables.$border-radius variables.$border-radius;
+    border-radius: 0 variables.$border-radius variables.$border-radius
+      variables.$border-radius;
   }
 
   &-no-padding {
     @extend .white-table-container;
-    border-radius: 0 variables.$border-radius variables.$border-radius variables.$border-radius;
+    border-radius: 0 variables.$border-radius variables.$border-radius
+      variables.$border-radius;
     padding: 0;
   }
 }
@@ -70,4 +68,8 @@ input[type='number'] {
 
 .justify-self-start {
   justify-self: start;
+}
+
+.flex-50 {
+  flex: 50%;
 }

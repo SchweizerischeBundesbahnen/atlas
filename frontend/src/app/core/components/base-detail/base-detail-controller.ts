@@ -236,7 +236,7 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   private init() {
     this.getRecord();
-    if (this.records) {
+    if (this.records.length > 0) {
       VersionsHandlingService.addVersionNumbers(this.records);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.records);
     }

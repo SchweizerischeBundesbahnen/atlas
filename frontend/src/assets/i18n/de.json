@@ -370,6 +370,8 @@
     }
   },
   "TTFN": {
+    "OUTWARD_LINE": "Buchsatztitel Hinfahrt",
+    "RETURN_LINE": "Buchsatztitel Rückfahrt",
     "TTFN": "Fahrplanfeldnummer",
     "NEW": "Neues Fahrplanfeld erfassen",
     "DETAIL_TIMETABLE_INFORMATION": "Angaben zum Fahrplanfeld",

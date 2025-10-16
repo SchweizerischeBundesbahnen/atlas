@@ -16,7 +16,7 @@ import { StopPointCompleteFormComponent } from '../form/stop-point-complete-form
 import { StopPointReducedFormComponent } from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
-import { MeansOfTransportPickerComponent } from '../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { MeansOfTransportPickerComponent } from '../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';

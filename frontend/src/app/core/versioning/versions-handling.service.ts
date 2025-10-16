@@ -10,7 +10,7 @@ export class VersionsHandlingService {
   static hasMultipleVersions<TYPE extends Record>(
     versions: Array<TYPE>
   ): boolean {
-    return !!Array.isArray(versions);
+    return versions.length > 0;
   }
 
   static getMaxValidity<TYPE extends Record>(versions: Array<TYPE>): DateRange {

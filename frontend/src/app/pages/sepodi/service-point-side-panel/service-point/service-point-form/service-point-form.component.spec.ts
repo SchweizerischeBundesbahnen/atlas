@@ -17,15 +17,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
-import {
-  BusinessOrganisationSelectComponent
-} from '../../../../../core/form-components/bo-select/business-organisation-select.component';
+import { BusinessOrganisationSelectComponent } from '../../../../../core/form-components/bo-select/business-organisation-select.component';
 import { MatLabel } from '@angular/material/form-field';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { SelectComponent } from '../../../../../core/form-components/select/select.component';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MeansOfTransportPickerComponent } from '../../../means-of-transport-picker/means-of-transport-picker.component';
+import { MeansOfTransportPickerComponent } from '../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { KilometerMasterSearchComponent } from '../search/kilometer-master-search.component';
 import { DisplayCantonPipe } from '../../../../../core/cantons/display-canton.pipe';
