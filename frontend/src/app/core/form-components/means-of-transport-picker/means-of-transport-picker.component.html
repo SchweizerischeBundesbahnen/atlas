@@ -17,9 +17,11 @@
           [title]="
             'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate
           "
-          src="../../../../assets/images/means-of-transport/{{
+          ngSrc="../../../../assets/images/means-of-transport/{{
             getIcon(mean)
           }}.svg"
+          width="35"
+          height="35"
           (click)="clicked(mean)"
           [attr.data-cy]="mean"
           [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
@@ -37,3 +39,4 @@
     }
   </div>
 </form>
+<!-- todo: check priority attribute of ng optimized img -->

@@ -37,7 +37,7 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { SelectComponent } from '../../../../../core/form-components/select/select.component';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MeansOfTransportPickerComponent } from '../../../means-of-transport-picker/means-of-transport-picker.component';
+import { MeansOfTransportPickerComponent } from '../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { KilometerMasterSearchComponent } from '../search/kilometer-master-search.component';
 import { DisplayCantonPipe } from '../../../../../core/cantons/display-canton.pipe';
 import { TranslatePipe } from '@ngx-translate/core';

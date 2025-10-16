@@ -17,7 +17,7 @@ import {
 } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { PrmVariantInfoService } from '../../prm-variant-info.service';
-import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { MeansOfTransportPickerComponent } from '../../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';

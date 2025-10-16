@@ -8,113 +8,123 @@
       {{ 'TTFN.NEW_TIMETABLE_INFORMATION' | translate }}
     </h2>
 
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-6 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '30.003 |', translate: false },
-            {
-              label: 'FORM.MAX_CHARS',
-              translate: true,
-              arg: { key: 'numberOfChars', value: '50' },
-            },
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="number"
-          fieldLabel="TTFN.NUMBER"
-        >
-        </atlas-text-field>
-      </div>
-      <div class="d-flex flex-column col-6 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '30.003 |', translate: false },
-            {
-              label: 'FORM.MAX_CHARS',
-              translate: true,
-              arg: { key: 'numberOfChars', value: '50' },
-            },
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="swissTimetableFieldNumber"
-          fieldLabel="TTFN.SWISS_TIMETABLE_FIELD_NUMBER"
-        >
-        </atlas-text-field>
-      </div>
+    <div class="col-12 d-flex gap-4">
+      <atlas-text-field
+        class="flex-50"
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: ' 30.003 | ', translate: false },
+          {
+            label: 'FORM.MAX_CHARS',
+            translate: true,
+            arg: { key: 'numberOfChars', value: '50' },
+          },
+        ]"
+        [formGroup]="form"
+        [required]="true"
+        controlName="number"
+        fieldLabel="TTFN.NUMBER"
+      >
+      </atlas-text-field>
+      <atlas-text-field
+        class="flex-50"
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: ' 30.003 | ', translate: false },
+          {
+            label: 'FORM.MAX_CHARS',
+            translate: true,
+            arg: { key: 'numberOfChars', value: '50' },
+          },
+        ]"
+        [formGroup]="form"
+        [required]="true"
+        controlName="swissTimetableFieldNumber"
+        fieldLabel="TTFN.SWISS_TIMETABLE_FIELD_NUMBER"
+      >
+      </atlas-text-field>
     </div>
 
-    <!-- todo: clean spaces -->
-
-    <div class="col-12 d-flex">
-      <div class="col-6">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            {
-              label: 'Abtwil - Spisegg - St. Gallen Bahnhof |',
-              translate: false,
-            },
-            {
-              label: 'FORM.MAX_CHARS',
-              translate: true,
-              arg: { key: 'numberOfChars', value: '255' },
-            },
-          ]"
-          [formGroup]="form"
-          controlName="descriptionOutwardLine1"
-          fieldLabel="TTFN.DESCRIPTION"
-        >
-        </atlas-text-field>
-        <atlas-text-field
-          [fieldExamples]="[]"
-          [formGroup]="form"
-          controlName="descriptionOutwardLine2"
-        >
-        </atlas-text-field>
-        <atlas-text-field
-          [fieldExamples]="[]"
-          [formGroup]="form"
-          controlName="descriptionOutwardLine3"
-        >
-        </atlas-text-field>
-      </div>
-      <div class="col-6">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            {
-              label: 'St. Gallen Bahnhof - Spisegg - Abtwil |',
-              translate: false,
-            },
-            {
-              label: 'FORM.MAX_CHARS',
-              translate: true,
-              arg: { key: 'numberOfChars', value: '255' },
-            },
-          ]"
-          [formGroup]="form"
-          controlName="descriptionReturnLine1"
-          fieldLabel="TTFN.DESCRIPTION"
-        >
-        </atlas-text-field>
-        <atlas-text-field
-          [fieldExamples]="[]"
-          [formGroup]="form"
-          controlName="descriptionReturnLine2"
-        >
-        </atlas-text-field>
-        <atlas-text-field
-          [fieldExamples]="[]"
-          [formGroup]="form"
-          controlName="descriptionReturnLine3"
-        >
-        </atlas-text-field>
-      </div>
+    <div class="col-12 d-flex gap-4">
+      <atlas-text-field
+        class="flex-grow-1"
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          {
+            label: ' Abtwil - Spisegg - St. Gallen Bahnhof | ',
+            translate: false,
+          },
+          {
+            label: 'FORM.MAX_CHARS',
+            translate: true,
+            arg: { key: 'numberOfChars', value: '255' },
+          },
+        ]"
+        [formGroup]="form"
+        [required]="true"
+        controlName="descriptionOutwardLine1"
+        fieldLabel="TTFN.OUTWARD_LINE"
+      >
+      </atlas-text-field>
+      <atlas-text-field
+        class="flex-grow-1"
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          {
+            label: ' St. Gallen Bahnhof - Spisegg - Abtwil | ',
+            translate: false,
+          },
+          {
+            label: 'FORM.MAX_CHARS',
+            translate: true,
+            arg: { key: 'numberOfChars', value: '255' },
+          },
+        ]"
+        [formGroup]="form"
+        [required]="true"
+        controlName="descriptionReturnLine1"
+        fieldLabel="TTFN.RETURN_LINE"
+      >
+      </atlas-text-field>
     </div>
+    <div class="col-12 d-flex gap-4">
+      <atlas-text-field
+        class="flex-grow-1"
+        [fieldExamples]="[]"
+        [formGroup]="form"
+        controlName="descriptionOutwardLine2"
+      >
+      </atlas-text-field>
+      <atlas-text-field
+        class="flex-grow-1"
+        [fieldExamples]="[]"
+        [formGroup]="form"
+        controlName="descriptionReturnLine2"
+      >
+      </atlas-text-field>
+    </div>
+    <div class="col-12 d-flex gap-4">
+      <atlas-text-field
+        class="flex-grow-1"
+        [fieldExamples]="[]"
+        [formGroup]="form"
+        controlName="descriptionOutwardLine3"
+      >
+      </atlas-text-field>
+      <atlas-text-field
+        class="flex-grow-1"
+        [fieldExamples]="[]"
+        [formGroup]="form"
+        controlName="descriptionReturnLine3"
+      >
+      </atlas-text-field>
+    </div>
+
+    <means-of-transport-picker
+      [formGroup]="form"
+      controlName="meanOfTransport"
+      label="hallo"
+    ></means-of-transport-picker>
 
     <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
     <div class="w-50">
