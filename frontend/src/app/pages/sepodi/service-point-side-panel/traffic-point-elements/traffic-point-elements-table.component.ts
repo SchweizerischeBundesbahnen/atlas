@@ -70,6 +70,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
 
   tableFilterConfig!: TableFilter<unknown>[][];
   servicePointVersion!: ReadServicePointVersion;
+  servicePointBusinessOrganisations: string[] = [];
 
   constructor(
     private readonly trafficPointElementInternalService: TrafficPointElementInternalService,
@@ -91,6 +92,9 @@ export class TrafficPointElementsTableComponent implements OnInit {
       const servicePoints: ReadServicePointVersion[] =
         this.route.parent!.snapshot.data.servicePoint;
       this.servicePointVersion = servicePoints[servicePoints.length - 1];
+      this.servicePointBusinessOrganisations = servicePoints.map(
+        (i) => i.businessOrganisation
+      );
     });
   }
 
