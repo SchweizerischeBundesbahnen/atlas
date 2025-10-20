@@ -75,6 +75,8 @@ public class QuoVadisDataImportService {
   }
 
   private List<TimetableFieldNumber> mapToTimetableFieldNumber(List<QuoVadisDataRow> quoVadisData) {
+    List<String> occurredErrors = new ArrayList<>();
+
     Map<String, List<QuoVadisDataRow>> dataPerNumber = quoVadisData.stream()
         .collect(Collectors.groupingBy(QuoVadisDataRow::getNumber));
 
@@ -83,6 +85,7 @@ public class QuoVadisDataImportService {
       boolean hasDifferentMoT = data.stream().map(QuoVadisDataRow::getMeanOfTransport).distinct().count() != 1;
       if (hasDifferentMoT) {
         log.error("{} has different mot in different lines!", number);
+        occurredErrors.add(number + " has different mot in different lines!");
       }
 
       List<String> descriptionOnward = getDescription(data, "H");
@@ -92,6 +95,7 @@ public class QuoVadisDataImportService {
           .filter(i -> i.getDesignationDe().equals(data.getFirst().getMeanOfTransport())).findFirst();
       if (meanOfTransport.isEmpty()) {
         log.error("{} has invalid mot!", number);
+        occurredErrors.add(number + " has invalid mot!");
         return;
       }
       TimetableFieldNumberBuilder timetableFieldNumber = TimetableFieldNumber.builder()
@@ -121,6 +125,10 @@ public class QuoVadisDataImportService {
       timetableFieldNumbers.add(timetableFieldNumber.build());
     });
 
+    if (!occurredErrors.isEmpty()) {
+      throw new IllegalStateException("There were " + occurredErrors.size() +
+          " errors during mapping! Canceling further processing");
+    }
     return timetableFieldNumbers;
   }
 
@@ -133,18 +141,18 @@ public class QuoVadisDataImportService {
     return getDescription(dataRow);
   }
 
-  private List<String> getDescription(QuoVadisDataRow dataRow) {
+  static List<String> getDescription(QuoVadisDataRow dataRow) {
     int expectedAmountOfDescriptions = dataRow.getRowCount().split("\\|").length;
     String[] descriptions = dataRow.getDescription().split("\\|");
-    int actualAmountOfDescriptions = descriptions.length;
 
-    if (expectedAmountOfDescriptions != actualAmountOfDescriptions) {
-      log.error("{} has different amount of descriptions on direction {}!", dataRow.getNumber(), dataRow.getDirection());
+    // only split on first expectedAmount of pipes
+    if (expectedAmountOfDescriptions == 1) {
+      return List.of(dataRow.getDescription());
     }
-    if (actualAmountOfDescriptions < 1) {
-      log.error("{} has no descriptions on direction {}!", dataRow.getNumber(), dataRow.getDirection());
-    }
-    return Arrays.asList(descriptions);
+    List<String> descriptionList = new ArrayList<>(Arrays.asList(descriptions).subList(0, expectedAmountOfDescriptions - 1));
+    descriptionList.add(String.join("|", Arrays.asList(descriptions).subList(expectedAmountOfDescriptions - 1,
+        descriptions.length)));
+    return descriptionList;
   }
 
   @Builder
