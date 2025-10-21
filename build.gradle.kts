@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.910.0"
+version = "2.911.0"
 
 extra["awsS3Version"] = "2.35.7"
 extra["jaxbApiVersion"] = "2.4.0-b180830.0359"
@@ -24,7 +24,7 @@ extra["springCloudVersion"] = "2025.0.0"
 subprojects {
     sonar {
         properties {
-            property("sonar.projectKey", "ch.sbb.atlas:atlas")
+            property("sonar.projectKey", "ch.sbb.atlas:atlasgithub")
             property("sonar.projectVersion", project.version)
             property("sonar.dynamicAnalysis", "reuseReports")
             property("sonar.java.coveragePlugin", "jacoco")
@@ -38,7 +38,7 @@ subprojects {
     if (project.name == "frontend") {
         sonar {
             properties {
-                property("sonar.projectKey", "ch.sbb.atlas:atlas")
+                property("sonar.projectKey", "ch.sbb.atlas:atlasgithub")
                 property("sonar.projectVersion", project.version)
                 property(
                     "sonar.exclusions",
