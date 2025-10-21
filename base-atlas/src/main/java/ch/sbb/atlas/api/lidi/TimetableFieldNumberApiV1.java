@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,7 +31,7 @@ public interface TimetableFieldNumberApiV1 {
   @GetMapping("/versions/{ttfnId}")
   List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
-  @PostMapping("/versions/{id}")
+  @PutMapping("/versions/{id}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content =
@@ -53,7 +54,6 @@ public interface TimetableFieldNumberApiV1 {
       @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  TimetableFieldNumberVersionModel createVersion(
-      @RequestBody @Valid @CreateIdCheck TimetableFieldNumberVersionModel newVersion);
+  TimetableFieldNumberVersionModel createVersion(@RequestBody @Valid @CreateIdCheck TimetableFieldNumberVersionModel newVersion);
 
 }

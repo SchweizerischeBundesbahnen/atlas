@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -182,8 +183,7 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
         .etagVersion(version.getVersion())
         .build();
     // Then
-    // todo: mby change to put
-    mvc.perform(post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
+    mvc.perform(put("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(timetableFieldNumberVersionModel)))
         .andExpect(jsonPath("$.status", is(520)))
@@ -232,7 +232,7 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
 
   private MockHttpServletRequestBuilder createUpdateRequest(TimetableFieldNumberVersionModel timetableFieldNumberVersionModel)
       throws JsonProcessingException {
-    return post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
+    return put("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .content(mapper.writeValueAsString(timetableFieldNumberVersionModel));
   }

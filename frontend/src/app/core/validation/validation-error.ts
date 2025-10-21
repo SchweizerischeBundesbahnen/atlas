@@ -16,4 +16,5 @@ export interface TranslationParameter {
   max?: string;
   min?: string;
   number?: string;
+  reqSelections?: number;
 }

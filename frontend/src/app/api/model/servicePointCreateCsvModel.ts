@@ -10,7 +10,6 @@
 import { OperatingPointTrafficPointType } from './operatingPointTrafficPointType';
 import { StopPointType } from './stopPointType';
 import { Category } from './category';
-import { MeanOfTransport } from './meanOfTransport';
 import { OperatingPointType } from './operatingPointType';
 import { SpatialReference } from './spatialReference';
 import { OperatingPointTechnicalTimetableType } from './operatingPointTechnicalTimetableType';
@@ -27,7 +26,7 @@ export interface ServicePointCreateCsvModel {
     freightServicePoint?: boolean;
     operatingPointType?: OperatingPointType;
     operatingPointTechnicalTimetableType?: OperatingPointTechnicalTimetableType;
-    meansOfTransport?: Set<MeanOfTransport>;
+    meansOfTransport?: Set<ServicePointCreateCsvModel.MeansOfTransportEnum>;
     categories?: Set<Category>;
     operatingPointTrafficPointType?: OperatingPointTrafficPointType;
     sortCodeOfDestinationStation?: string;
@@ -38,6 +37,20 @@ export interface ServicePointCreateCsvModel {
     height?: number;
 }
 export namespace ServicePointCreateCsvModel {
+    export type MeansOfTransportEnum = 'TRAIN' | 'BUS' | 'TRAM' | 'BOAT' | 'CABLE_CAR' | 'CHAIRLIFT' | 'CABLE_RAILWAY' | 'RACK_RAILWAY' | 'METRO' | 'ELEVATOR' | 'UNKNOWN';
+    export const MeansOfTransportEnum = {
+        Train: 'TRAIN' as MeansOfTransportEnum,
+        Bus: 'BUS' as MeansOfTransportEnum,
+        Tram: 'TRAM' as MeansOfTransportEnum,
+        Boat: 'BOAT' as MeansOfTransportEnum,
+        CableCar: 'CABLE_CAR' as MeansOfTransportEnum,
+        Chairlift: 'CHAIRLIFT' as MeansOfTransportEnum,
+        CableRailway: 'CABLE_RAILWAY' as MeansOfTransportEnum,
+        RackRailway: 'RACK_RAILWAY' as MeansOfTransportEnum,
+        Metro: 'METRO' as MeansOfTransportEnum,
+        Elevator: 'ELEVATOR' as MeansOfTransportEnum,
+        Unknown: 'UNKNOWN' as MeansOfTransportEnum
+    };
 }
 
 

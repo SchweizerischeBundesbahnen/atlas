@@ -12,7 +12,9 @@
       "VALID_SPATIAL_REFERENCE_FRACTION": "Maximale Dezimalstellen überschritten. LV03 und LV95 max. 5. WGS84 und WGS84WEB max. 11.",
       "VALID_SERVICE_POINT_NUMBER": "<numberShort> muss nur vorhanden sein, wenn das Land nicht in (85,11,12,13,14) liegt.",
       "VALID_STOP_POINT_TYPE": "<stopPointType> darf nur für Haltestellen verwendet werden. Eine Haltestelle ist definiert durch die Auswahl von Verkehrsmitteln. Bei Haltestellen muss ein gültiger Wert zugewiesen werden, der nicht \"UNKNOWN\" ist.",
-      "CREATE_ID_CHECK": "Beim Erstellen eines neuen Objekts muss die ID leer sein."
+      "CREATE_ID_CHECK": "Beim Erstellen eines neuen Objekts muss die ID leer sein.",
+      "TRIMMED_NOT_BLANK": "Der Wert für das Feld <{{propertyPath}}> darf nicht leer sein oder mit Leerschlägen beginnen/enden.",
+      "VALID_TTFN_DESCRIPTION": "Buchsatztitel Hin- und Rückfahrt 2–3 sind nur erlaubt, wenn die vorherige Zeile mindestens 2 Zeichen hat."
     },
     "CLIENT": {
       "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle atlas."
@@ -310,7 +312,8 @@
     "DECISION_COMMENT_REQUIRED": "Begründung ist notwendig",
     "NOTUNIQUEEMAIL": "E-Mail bereits vorhanden. Bitte prüfen Sie ob der Empfänger bereits erfasst ist oder ändern Sie die E-Mail Adresse.",
     "EXAMINANT_OR_CC_MAIL": "Bitte mindestens einen Empfänger oder eine zusätzliche cc-Mail erfassen.",
-    "REQUIREDANDNOTUNKNOWN": "Darf nicht leer oder unspezifiziert sein."
+    "REQUIREDANDNOTUNKNOWN": "Darf nicht leer oder unspezifiziert sein.",
+    "REQ_SELECTED_ERROR": "Anzahl auszuwählender Elemente: {{reqSelections}}"
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
@@ -370,14 +373,13 @@
     }
   },
   "TTFN": {
-    "OUTWARD_LINE": "Buchsatztitel Hinfahrt",
-    "RETURN_LINE": "Buchsatztitel Rückfahrt",
+    "DESCRIPTION_OUTWARD": "Buchsatztitel Hinfahrt",
+    "DESCRIPTION_RETURN": "Buchsatztitel Rückfahrt",
     "TTFN": "Fahrplanfeldnummer",
     "NEW": "Neues Fahrplanfeld erfassen",
     "DETAIL_TIMETABLE_INFORMATION": "Angaben zum Fahrplanfeld",
     "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld",
     "SWISS_TIMETABLE_FIELD_NUMBER": "CH-Fahrplanfeldnummer",
-    "DESCRIPTION": "CH-Fahrplanfeldnummer Bezeichnung",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "NUMBER": "Fahrplanfeldnummer",
     "TTFNID": "Fahrplanfeldnummer-ID",

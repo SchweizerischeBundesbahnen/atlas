@@ -96,8 +96,8 @@ describe('BaseDetailController', () => {
       });
     }
 
-    readRecords(): Record {
-      return record;
+    readRecords(): Record[] {
+      return [record];
     }
 
     updateRecord(): void {

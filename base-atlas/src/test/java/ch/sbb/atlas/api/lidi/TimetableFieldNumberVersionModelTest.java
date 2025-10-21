@@ -19,6 +19,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.EnumSource.Mode;
 import org.junit.jupiter.params.provider.FieldSource;
 
 class TimetableFieldNumberVersionModelTest {
@@ -34,7 +36,6 @@ class TimetableFieldNumberVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 1))
         .businessOrganisation("sbb")
         .descriptionOutwardLine1("test")
-        .descriptionReturnLine1("test")
         .meanOfTransport(MeanOfTransport.TRAIN);
   }
 
@@ -247,11 +248,24 @@ class TimetableFieldNumberVersionModelTest {
     assertThat(numberOfFieldViolations).isEqualTo(1);
   }
 
+  @ParameterizedTest
+  @FieldSource("descriptionSupplier")
+  void descriptionShouldNotAllowUntrimmedOrBlank(Function<String, TimetableFieldNumberVersionModel> modelSupplier,
+      String fieldName) {
+    // Given
+    TimetableFieldNumberVersionModel version = modelSupplier.apply("");
+    // When
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(version);
+    // Then
+    ConstraintViolation<TimetableFieldNumberVersionModel> expectedViolation = constraintViolations.stream()
+        .filter(v -> String.valueOf(v.getPropertyPath()).equals(fieldName))
+        .findFirst().orElseThrow();
+    assertThat(expectedViolation.getMessage()).isEqualTo("{atlas.constraint.trimmedNotBlank}");
+  }
+
   static Supplier<Stream<Arguments>> fieldsShouldNotAllowNull = () -> Stream.of(
       Arguments.of((Supplier<TimetableFieldNumberVersionModel>) () -> versionModel().descriptionOutwardLine1(null).build(),
           "descriptionOutwardLine1"),
-      Arguments.of((Supplier<TimetableFieldNumberVersionModel>) () -> versionModel().descriptionReturnLine1(null).build(),
-          "descriptionReturnLine1"),
       Arguments.of((Supplier<TimetableFieldNumberVersionModel>) () -> versionModel().meanOfTransport(null).build(),
           "meanOfTransport")
   );
@@ -268,8 +282,39 @@ class TimetableFieldNumberVersionModelTest {
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(fieldName);
   }
 
-  // todo: test that @ValidTtfnDescription validation is triggered on endpoint hit
-  //  and test validator logic isolated
+  @ParameterizedTest
+  @EnumSource(value = MeanOfTransport.class, names = {"ELEVATOR", "UNKNOWN"})
+  void shouldNotAllowMeanOfTransport(MeanOfTransport meanOfTransport) {
+    // Given
+    TimetableFieldNumberVersionModel version = versionModel().meanOfTransport(meanOfTransport).build();
+    // When
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(version);
+    // Then
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getMessage()).isEqualTo("{atlas.constraint.allowedMeanOfTransport}");
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = MeanOfTransport.class, names = {"ELEVATOR", "UNKNOWN"}, mode = Mode.EXCLUDE)
+  void shouldAllowMeanOfTransport(MeanOfTransport meanOfTransport) {
+    // Given
+    TimetableFieldNumberVersionModel version = versionModel().meanOfTransport(meanOfTransport).build();
+    // When
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(version);
+    // Then
+    assertThat(constraintViolations).isEmpty();
+  }
+
+  @Test
+  void shouldValidateTtfnDescriptionRules() {
+    // Given
+    TimetableFieldNumberVersionModel version = versionModel().descriptionReturnLine2("test").build();
+    // When
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(version);
+    // Then
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getMessage()).isEqualTo("{atlas.constraint.validTtfnDescription}");
+  }
 
   @Test
   void businessOrganisationShouldNotHaveMoreThan50Chars() {

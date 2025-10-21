@@ -37,8 +37,7 @@ public class TimetableFieldNumberModel {
   @Schema(description = "Timetable field number identifier", example = "ch:1:fpfnid:100000")
   private String ttfnid;
 
-  @Schema(description = "Description outward line one", example = "") // todo: complete @schema
-  @NotNull
+  @Schema(description = "Description outward line one", example = "Como - Chiasso - Mendrisio - Varese (S40)")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionOutwardLine1;

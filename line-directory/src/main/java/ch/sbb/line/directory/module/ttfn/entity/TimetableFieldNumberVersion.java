@@ -66,7 +66,6 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   private String ttfnid;
 
   @AtlasVersionableProperty
-  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Column(name = "description_outward_line_1")
   private String descriptionOutwardLine1;
@@ -82,7 +81,6 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   private String descriptionOutwardLine3;
 
   @AtlasVersionableProperty
-  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Column(name = "description_return_line_1")
   private String descriptionReturnLine1;
@@ -98,7 +96,6 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   private String descriptionReturnLine3;
 
   @AtlasVersionableProperty
-  @NotNull
   @Enumerated(value = EnumType.STRING)
   private MeanOfTransport meanOfTransport;
 
