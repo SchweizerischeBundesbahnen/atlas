@@ -56,6 +56,11 @@ public class ConstraintViolationMapper {
     ERROR_CODE_MAP.put("{atlas.constraint.validServicePointNumber}", new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_SERVICE_POINT_NUMBER",
         cv -> "numberShort must be present only if country not in (85,11,12,13,14)"));
+    ERROR_CODE_MAP.put("{atlas.constraint.trimmedNotBlank}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.TRIMMED_NOT_BLANK",
+        cv -> "must not be empty or start/end with whitespace"));
+    ERROR_CODE_MAP.put("{atlas.constraint.validTtfnDescription}", new ErrorInfo(
+        "ERROR.CONSTRAINT_VIOLATION.VALID_TTFN_DESCRIPTION",
+        cv -> "outward and return lines 2-3 are only allowed if the previous line has at least 2 chars"));
   }
 
   private static String propertyName(ConstraintViolation<?> cv) {

@@ -12,7 +12,9 @@
       "VALID_SPATIAL_REFERENCE_FRACTION": "Il numero massimo di decimali è stato superato. LV03 e LV95 max. 5. WGS84 e WGS84WEB max. 11.",
       "VALID_SERVICE_POINT_NUMBER": "<numberShort> deve essere presente solo se il paese non è in (85,11,12,13,14).",
       "VALID_STOP_POINT_TYPE": "<stopPointType> può essere utilizzato solo per le fermate. Una fermata è definita dalla selezione del mezzo di trasporto. Per le fermate deve essere assegnato un valore valido che non sia \"UNKNOWN\".",
-      "CREATE_ID_CHECK": "Quando si crea un nuovo oggetto, l'ID deve essere vuoto."
+      "CREATE_ID_CHECK": "Quando si crea un nuovo oggetto, l'ID deve essere vuoto.",
+      "TRIMMED_NOT_BLANK": "Il valore per il campo <{{propertyPath}}> non può essere vuoto o iniziare/terminare con spazi.",
+      "VALID_TTFN_DESCRIPTION": "Denominazione linea di andata e ritorno 2-3 sono consentite solo se la riga precedente è composta da almeno 2 caratteri."
     },
     "CLIENT": {
       "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas."
@@ -310,7 +312,8 @@
     "DECISION_COMMENT_REQUIRED": "La giustificazione è necessaria",
     "NOTUNIQUEEMAIL": "L'e-mail esiste già. Verificare se il destinatario è già stato inserito o modificare l'indirizzo e-mail.",
     "EXAMINANT_OR_CC_MAIL": "Inserire almeno un destinatario o un indirizzo e-mail aggiuntivo.",
-    "REQUIREDANDNOTUNKNOWN": "Non può essere vuoto o non specificato."
+    "REQUIREDANDNOTUNKNOWN": "Non può essere vuoto o non specificato.",
+    "REQ_SELECTED_ERROR": "Numero di elementi da selezionare: {{reqSelections}}"
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
@@ -370,12 +373,13 @@
     }
   },
   "TTFN": {
+    "DESCRIPTION_OUTWARD": "Denominazione linea andata",
+    "DESCRIPTION_RETURN": "Denominazione linea ritorno",
     "TTFN": "Numero del quadro d’orario",
     "NEW": "Inserire nuovo numero del quadro d’orario",
     "DETAIL_TIMETABLE_INFORMATION": "Informazioni sugli orari",
     "NEW_TIMETABLE_INFORMATION": "Informazioni sul nuovo orario",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numero del quadro d’orario CH",
-    "DESCRIPTION": "Denominazione quadro d’orario CH",
     "BUSINESS_ORGANISATION": "Organizzazione aziendale",
     "NUMBER": "Numero del quadro d’orario",
     "TTFNID": "ID numero del quadro d’orario",

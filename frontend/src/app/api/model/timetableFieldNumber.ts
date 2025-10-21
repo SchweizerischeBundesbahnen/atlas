@@ -26,7 +26,7 @@ export interface TimetableFieldNumber {
     /**
      * Description outward line one
      */
-    descriptionOutwardLine1: string;
+    descriptionOutwardLine1?: string;
     status: Status;
     /**
      * BusinessOrganisation SBOID

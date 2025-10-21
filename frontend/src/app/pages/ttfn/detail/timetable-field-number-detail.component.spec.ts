@@ -31,13 +31,14 @@ import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable
 const version: TimetableFieldNumberVersion = {
   id: 1,
   ttfnid: 'ttfnid',
-  description: 'description',
   swissTimetableFieldNumber: 'asdf',
   status: 'VALIDATED',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   number: '1.1',
   businessOrganisation: 'sbb',
+  descriptionOutwardLine1: 'desc',
+  meanOfTransport: 'TRAIN',
 };
 
 const error = new HttpErrorResponse({

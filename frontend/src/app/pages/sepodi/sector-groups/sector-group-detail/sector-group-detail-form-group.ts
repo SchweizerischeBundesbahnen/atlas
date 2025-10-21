@@ -3,7 +3,7 @@ import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { MinSelectedValidator } from '../../../../core/validation/min-selected/min-selected.validator';
+import { SelectionValidator } from '../../../../core/validation/min-selected/selection-validator';
 import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
 
 export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
@@ -11,7 +11,6 @@ export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
   designation: FormControl<string | null | undefined>;
   trafficPointSloid: FormControl<string | null | undefined>;
   length: FormControl<number | null | undefined>;
-
   sectorSloids?: FormControl<string[] | null>;
 }
 
@@ -59,12 +58,14 @@ export class SectorGroupFormGroupBuilder {
   static buildFormGroupCreate(): FormGroup<SectorGroupDetailFormGroup> {
     const controls: SectorGroupDetailFormGroup = {
       ...this.createBaseControls(),
-      sectorSloids: new FormControl([], [Validators.required]),
+      sectorSloids: new FormControl(
+        [],
+        [Validators.required, SelectionValidator.minSelected(2)]
+      ),
     };
 
     return new FormGroup<SectorGroupDetailFormGroup>(controls, [
       DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo'),
-      MinSelectedValidator.minSelected('sectorSloids', 2),
     ]);
   }
 }

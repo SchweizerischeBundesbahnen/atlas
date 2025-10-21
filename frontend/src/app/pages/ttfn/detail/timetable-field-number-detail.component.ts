@@ -30,6 +30,7 @@ import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import moment from 'moment';
 import { MeansOfTransportPickerComponent } from '../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
+import { SelectionValidator } from '../../../core/validation/min-selected/selection-validator';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -96,7 +97,7 @@ export class TimetableFieldNumberDetailComponent
     if (!id || !ttfnid) throw new Error('id and ttfnid are required');
     this.form.disable();
     this.timetableFieldNumberService
-      .updateVersionWithVersioning(id, this.form.value)
+      .updateVersionWithVersioning(id, this.getPayloadOfForm())
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
@@ -108,7 +109,7 @@ export class TimetableFieldNumberDetailComponent
 
   createRecord(): void {
     this.timetableFieldNumberService
-      .createVersion(this.form.value)
+      .createVersion(this.getPayloadOfForm())
       .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
@@ -218,7 +219,6 @@ export class TimetableFieldNumberDetailComponent
               AtlasFieldLengthValidator.length_255,
               WhitespaceValidator.blankOrEmptySpaceSurrounding,
               AtlasCharsetsValidator.iso88591,
-              Validators.required,
             ],
           }
         ),
@@ -244,10 +244,16 @@ export class TimetableFieldNumberDetailComponent
             ],
           }
         ),
-        meanOfTransport: new FormControl(version?.meanOfTransport, {
-          nonNullable: true,
-          validators: [Validators.required],
-        }),
+        meanOfTransport: new FormControl(
+          version?.meanOfTransport ? [version.meanOfTransport] : [],
+          {
+            nonNullable: true,
+            validators: [
+              Validators.required,
+              SelectionValidator.requiredSelected(1),
+            ],
+          }
+        ),
         validFrom: new FormControl(
           version?.validFrom ? moment(version.validFrom) : null,
           [Validators.required]
@@ -273,4 +279,12 @@ export class TimetableFieldNumberDetailComponent
   getApplicationType(): ApplicationType {
     return ApplicationType.Ttfn;
   }
+
+  private getPayloadOfForm() {
+    return {
+      ...this.form.value,
+      meanOfTransport: this.form.value.meanOfTransport[0],
+    };
+  }
 }
+// todo: which mean of transport should i show?

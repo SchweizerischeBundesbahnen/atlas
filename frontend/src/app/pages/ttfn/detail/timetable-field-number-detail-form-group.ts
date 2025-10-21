@@ -15,5 +15,5 @@ export interface TimetableFieldNumberDetailFormGroup
   descriptionReturnLine1: FormControl<string | undefined>;
   descriptionReturnLine2: FormControl<string | null | undefined>;
   descriptionReturnLine3: FormControl<string | null | undefined>;
-  meanOfTransport: FormControl<MeanOfTransport | undefined>;
+  meanOfTransport: FormControl<MeanOfTransport[] | undefined>;
 }

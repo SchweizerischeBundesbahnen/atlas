@@ -49,7 +49,7 @@ describe('OpenStatementInMailService', () => {
     const ttfn: TimetableFieldNumber = {
       ttfnid: 'ttfnid',
       number: '1.1',
-      description: 'description',
+      descriptionOutwardLine1: 'description',
       swissTimetableFieldNumber: 'asdf',
       status: Status.Validated,
       validFrom: new Date('2021-06-01'),
@@ -100,7 +100,7 @@ describe('OpenStatementInMailService', () => {
     const ttfn: TimetableFieldNumber = {
       ttfnid: 'ttfnid',
       number: '1.1',
-      description: 'Das ist eine & Beschreibung',
+      descriptionOutwardLine1: 'Das ist eine & Beschreibung',
       swissTimetableFieldNumber: 'asdf',
       status: Status.Validated,
       validFrom: new Date('2021-06-01'),
@@ -131,7 +131,7 @@ describe('OpenStatementInMailService', () => {
     const ttfn: TimetableFieldNumber = {
       ttfnid: 'ttfnid',
       number: '1.1',
-      description: 'description',
+      descriptionOutwardLine1: 'description',
       swissTimetableFieldNumber: 'asdf',
       status: Status.Validated,
       validFrom: new Date('2021-06-01'),

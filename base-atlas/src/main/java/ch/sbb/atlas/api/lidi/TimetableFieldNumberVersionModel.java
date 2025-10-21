@@ -1,12 +1,24 @@
 package ch.sbb.atlas.api.lidi;
 
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.BOAT;
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.BUS;
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.CABLE_CAR;
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.CABLE_RAILWAY;
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.CHAIRLIFT;
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.METRO;
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.RACK_RAILWAY;
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAIN;
+import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAM;
+
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.IdCheckable;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.validation.AllowedMeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.atlas.validation.TrimmedNotBlank;
 import ch.sbb.atlas.validation.ValidTtfnDescription;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -40,40 +52,66 @@ public class TimetableFieldNumberVersionModel extends BaseVersionModel implement
   @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000", accessMode = AccessMode.READ_ONLY)
   private String ttfnid;
 
-  @Schema(description = "Description outward line one", example = "")
+  @Schema(description = "Description outward line one", example = "Como - Chiasso - Mendrisio - Varese (S40)")
   @NotNull
+  @TrimmedNotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionOutwardLine1;
 
-  @Schema(description = "Description outward line two", example = "")
+  @Schema(description = "Description outward line two", example = "Bellinzona - Mendrisio - Varese - Malpensa Aeroporto (S50)")
+  @TrimmedNotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionOutwardLine2;
 
-  @Schema(description = "Description outward line three", example = "") // todo: complete @schema
+  @Schema(description = "Description outward line three", example = "(Ferrovia - Regionale TILO-Linea S40, S50)")
+  @TrimmedNotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionOutwardLine3;
 
-  @Schema(description = "Description return line one", example = "")
-  @NotNull
+  @Schema(description = "Description return line one", example = "Varese - Mendrisio - Chiasso - Como (S40)")
+  @TrimmedNotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionReturnLine1;
 
-  @Schema(description = "Description return line two", example = "")
+  @Schema(description = "Description return line two", example = "Malpensa Aeroporto - Varese - Mendrisio - Bellinzona (S50)")
+  @TrimmedNotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionReturnLine2;
 
-  @Schema(description = "Description return line three", example = "")
+  @Schema(description = "Description return line three", example = "(Ferrovia - Regionale TILO-Linea S40, S50)")
+  @TrimmedNotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionReturnLine3;
 
-  @Schema(description = "Mean of transport", example = "TRAIN")
+  @Schema(description = "Mean of transport", example = "TRAIN", allowableValues = {
+      "TRAIN",
+      "BUS",
+      "TRAM",
+      "BOAT",
+      "CABLE_CAR",
+      "CHAIRLIFT",
+      "CABLE_RAILWAY",
+      "RACK_RAILWAY",
+      "METRO"
+  })
   @NotNull
+  @AllowedMeanOfTransport(allowed = {
+      TRAIN,
+      BUS,
+      TRAM,
+      BOAT,
+      CABLE_CAR,
+      CHAIRLIFT,
+      CABLE_RAILWAY,
+      RACK_RAILWAY,
+      METRO
+  })
   private MeanOfTransport meanOfTransport;
 
   @Schema(description = "Number", example = "100; 80.099; 2700")

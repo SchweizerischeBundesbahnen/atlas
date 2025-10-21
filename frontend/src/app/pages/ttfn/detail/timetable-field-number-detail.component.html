@@ -63,7 +63,7 @@
         [formGroup]="form"
         [required]="true"
         controlName="descriptionOutwardLine1"
-        fieldLabel="TTFN.OUTWARD_LINE"
+        fieldLabel="TTFN.DESCRIPTION_OUTWARD"
       >
       </atlas-text-field>
       <atlas-text-field
@@ -83,7 +83,7 @@
         [formGroup]="form"
         [required]="true"
         controlName="descriptionReturnLine1"
-        fieldLabel="TTFN.RETURN_LINE"
+        fieldLabel="TTFN.DESCRIPTION_RETURN"
       >
       </atlas-text-field>
     </div>
@@ -123,10 +123,12 @@
     <means-of-transport-picker
       [formGroup]="form"
       controlName="meanOfTransport"
-      label="hallo"
+      [disabled]="form.disabled"
     ></means-of-transport-picker>
 
-    <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
+    <span class="font-bold-2xl d-block mt-4">{{
+      'FORM.KEY_DATA' | translate
+    }}</span>
     <div class="w-50">
       <form-date-range [formGroup]="form"></form-date-range>
     </div>

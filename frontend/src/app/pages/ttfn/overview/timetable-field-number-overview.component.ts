@@ -59,7 +59,10 @@ export class TimetableFieldNumberOverviewComponent
 
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
-    { headerTitle: 'TTFN.DESCRIPTION', value: 'descriptionOutwardLine1' },
+    {
+      headerTitle: 'TTFN.DESCRIPTION_OUTWARD',
+      value: 'descriptionOutwardLine1',
+    },
     {
       headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER',
       value: 'swissTimetableFieldNumber',
