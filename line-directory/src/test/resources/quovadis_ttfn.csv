@@ -1415,8 +1415,6 @@ EFA-Linienbezeichnung;Verkehrsmitteltextname;BuchUeberschrift;BuchUeberschrift-Z
 62.523;Bus;Gaggiolo - Stabio - Ligornetto - Genestrerio - Mendrisio;1;R
 62.428;Bus;Ponte Tresa - Castelrotto - Novaggio;1;H
 62.428;Bus;Novaggio - Castelrotto - Ponte Tresa;1;R
-10.211;Bus;Corseaux - Vevey - La Tour-de-Peilz - Blonay;1;H
-10.211;Bus;Blonay - La Tour-de-Peilz - Vevey - Corseaux ;0;R
 10.213;Bus;Vevey - Jongny - Monts-de-Corsier - Châtel-St-Denis;1;H
 10.213;Bus;Châtel-St-Denis - Monts-de-Corsier - Jongny - Vevey;1;R
 10.215;Bus;Vevey - St-Légier;1;H
@@ -3829,10 +3827,8 @@ EFA-Linienbezeichnung;Verkehrsmitteltextname;BuchUeberschrift;BuchUeberschrift-Z
 191;Metro;Lausanne - Chavannes - R. - Ecublens VD - Renens VD (m1);1;R
 240;Zug;Delle - Boncourt - (Bonfol-) Porrentruy - Delémont | (Lignes R1, R11, R2, R22);1 | 2;H
 240;Zug;Delémont - Porrentruy  (-Bonfol) - Boncourt - Delle | (Lignes R1, R11, R2, R22);1 | 2;R
-205.2;Zug;Allaman - Lausanne - Palézieux - Payerne - Murten/Morat | (RER Vaud, Lignes R8, R9)
-(RER Fribourg | Freiburg, Lignes S41);1 | 2;H
-205.2;Zug;Murten/Morat - Payerne - Palézieux - Lausanne - Allaman | (RER Vaud, Lignes R8, R9)
-(RER Fribourg | Freiburg, Lignes S41);0 | 1;R
+205.2;Zug;Allaman - Lausanne - Palézieux - Payerne - Murten/Morat | (RER Vaud, Lignes R8, R9) | (RER Fribourg | Freiburg, Lignes S41);1 | 2 | 3;H
+205.2;Zug;Murten/Morat - Payerne - Palézieux - Lausanne - Allaman | (RER Vaud, Lignes R8, R9) | (RER Fribourg | Freiburg, Lignes S41);0 | 1 | 2;R
 205.3;Zug;Allaman - Lausanne - Palézieux - Payerne - Murten/Morat | (RER Vaud, Lignes R8, R9);1 | 2;H
 205.3;Zug;Murten/Morat - Payerne - Palézieux - Lausanne - Allaman | (RER Vaud, Lignes R8, R9);0 | 1;R
 1975;Zug;Autoverlad Kandersteg - Iselle (I);0;H

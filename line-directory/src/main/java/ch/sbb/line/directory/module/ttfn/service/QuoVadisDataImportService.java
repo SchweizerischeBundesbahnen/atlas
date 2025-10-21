@@ -86,6 +86,7 @@ public class QuoVadisDataImportService {
       if (hasDifferentMoT) {
         log.error("{} has different mot in different lines!", number);
         occurredErrors.add(number + " has different mot in different lines!");
+        return;
       }
 
       List<String> descriptionOnward = getDescription(data, "H");
