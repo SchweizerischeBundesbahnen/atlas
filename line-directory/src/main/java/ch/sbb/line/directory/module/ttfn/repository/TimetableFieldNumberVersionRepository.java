@@ -38,4 +38,21 @@ public interface TimetableFieldNumberVersionRepository extends
       + " ORDER BY tv.ttfnid, tv.validFrom ASC")
   List<TimetableFieldNumberVersion> getVersionsValidAt(Set<String> ttfnids, LocalDate validAt);
 
+
+  @Modifying(clearAutomatically = true)
+  @Query("delete from timetable_field_number_version t where t.validFrom >= :validFrom")
+  void deleteVersionsValidFromAfter(LocalDate validFrom);
+
+  @Modifying(clearAutomatically = true)
+  @Query(value = """
+        UPDATE timetable_field_number_version t
+        SET valid_to='2025-12-13'
+        WHERE valid_from = (
+            SELECT MAX(valid_from)
+            FROM timetable_field_number_version
+            WHERE ttfnid = t.ttfnid
+        );
+      """, nativeQuery = true)
+  void updateLastVersionsByTerminating();
+
 }

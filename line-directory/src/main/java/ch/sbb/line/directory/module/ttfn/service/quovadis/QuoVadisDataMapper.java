@@ -1,14 +1,8 @@
-package ch.sbb.line.directory.module.ttfn.service;
+package ch.sbb.line.directory.module.ttfn.service.quovadis;
 
-import ch.sbb.atlas.exception.CsvException;
-import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.line.directory.module.ttfn.service.QuoVadisDataImportService.TimetableFieldNumber.TimetableFieldNumberBuilder;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MappingIterator;
-import java.io.File;
-import java.io.IOException;
+import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisCsvReader.QuoVadisDataRow;
+import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisDataMapper.TimetableFieldNumberV2.TimetableFieldNumberV2Builder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,69 +12,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
-public class QuoVadisDataImportService {
+@UtilityClass
+class QuoVadisDataMapper {
 
-  public void importDataFromQuoVadis(File file) {
-    List<QuoVadisDataRow> quoVadisDataRows = parseFile(file);
-    log.info("Parsed {} rows", quoVadisDataRows.size());
-
-    List<TimetableFieldNumber> timetableFieldNumbers = mapToTimetableFieldNumber(quoVadisDataRows);
-    log.info("Mappped to {} timetableFieldNumbers", timetableFieldNumbers.size());
-
-    printAsCsv(timetableFieldNumbers);
-  }
-
-  private void printAsCsv(List<TimetableFieldNumber> timetableFieldNumbers) {
-    System.out.println("number;meanOfTransport;descriptionOutwardLine1;descriptionOutwardLine2;descriptionOutwardLine3;"
-        + "descriptionReturnLine1;descriptionReturnLine2;descriptionReturnLine3");
-    timetableFieldNumbers.forEach(System.out::println);
-  }
-
-  private List<QuoVadisDataRow> parseFile(File file) {
-    List<QuoVadisDataRow> parsedLines = new ArrayList<>();
-    try (MappingIterator<QuoVadisDataRow> objectMappingIterator = AtlasCsvReader.CSV_MAPPER
-        .enable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
-        .readerFor(QuoVadisDataRow.class)
-        .with(AtlasCsvReader.CSV_SCHEMA)
-        .readValues(file)) {
-      objectMappingIterator.forEachRemaining(parsedLines::add);
-    } catch (IOException e) {
-      throw new CsvException(e);
-    }
-    return parsedLines;
-  }
-
-  @Data
-  static class QuoVadisDataRow {
-
-    @JsonProperty("EFA-Linienbezeichnung")
-    private String number;
-
-    @JsonProperty("Verkehrsmitteltextname")
-    private String meanOfTransport;
-
-    @JsonProperty("BuchUeberschrift")
-    private String description;
-
-    @JsonProperty("BuchUeberschrift-Zeile")
-    private String rowCount;
-
-    @JsonProperty("BuchUeberschrift-Richtung")
-    private String direction;
-  }
-
-  private List<TimetableFieldNumber> mapToTimetableFieldNumber(List<QuoVadisDataRow> quoVadisData) {
+  static List<TimetableFieldNumberV2> mapToTimetableFieldNumber(List<QuoVadisDataRow> quoVadisData) {
     List<String> occurredErrors = new ArrayList<>();
 
     Map<String, List<QuoVadisDataRow>> dataPerNumber = quoVadisData.stream()
         .collect(Collectors.groupingBy(QuoVadisDataRow::getNumber));
 
-    List<TimetableFieldNumber> timetableFieldNumbers = new ArrayList<>();
+    List<TimetableFieldNumberV2> timetableFieldNumbers = new ArrayList<>();
     dataPerNumber.forEach((number, data) -> {
       boolean hasDifferentMoT = data.stream().map(QuoVadisDataRow::getMeanOfTransport).distinct().count() != 1;
       if (hasDifferentMoT) {
@@ -99,7 +44,7 @@ public class QuoVadisDataImportService {
         occurredErrors.add(number + " has invalid mot!");
         return;
       }
-      TimetableFieldNumberBuilder timetableFieldNumber = TimetableFieldNumber.builder()
+      TimetableFieldNumberV2Builder timetableFieldNumber = TimetableFieldNumberV2.builder()
           .number(number)
           .meanOfTransport(meanOfTransport.get());
 
@@ -133,7 +78,7 @@ public class QuoVadisDataImportService {
     return timetableFieldNumbers;
   }
 
-  private List<String> getDescription(List<QuoVadisDataRow> data, String direction) {
+  static List<String> getDescription(List<QuoVadisDataRow> data, String direction) {
     List<QuoVadisDataRow> dataRows = data.stream().filter(i -> direction.equals(i.getDirection())).toList();
     if (dataRows.size() != 1) {
       return Collections.emptyList();
@@ -158,7 +103,7 @@ public class QuoVadisDataImportService {
 
   @Builder
   @Data
-  static class TimetableFieldNumber {
+  static class TimetableFieldNumberV2 {
 
     private String number;
 
@@ -175,22 +120,6 @@ public class QuoVadisDataImportService {
     private String descriptionReturnLine2;
 
     private String descriptionReturnLine3;
-
-    @Override
-    public String toString() {
-      return number + ";" + meanOfTransport + ";" +
-          toPrintable(descriptionOutwardLine1) + ";" + toPrintable(descriptionOutwardLine2) + ";" + toPrintable(
-          descriptionOutwardLine3) + ";" +
-          toPrintable(descriptionReturnLine1) + ";" + toPrintable(descriptionReturnLine2) + ";" + toPrintable(
-          descriptionReturnLine3);
-    }
-
-    static String toPrintable(String string) {
-      if (string == null) {
-        return "";
-      }
-      return string;
-    }
 
   }
 
