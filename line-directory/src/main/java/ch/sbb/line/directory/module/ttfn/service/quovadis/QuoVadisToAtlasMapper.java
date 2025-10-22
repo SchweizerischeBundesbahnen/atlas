@@ -11,8 +11,6 @@ class QuoVadisToAtlasMapper {
 
   static TimetableFieldNumberVersion toEntity(TimetableFieldNumberV2 fieldNumber) {
     return TimetableFieldNumberVersion.builder()
-//        .swissTimetableFieldNumber()  Was machen wir hier mit dem? Die bekommen wir von Quovadis nicht ....
-//        .businessOrganisation()  Was machen wir hier mit dem? Die bekommen wir von Quovadis nicht ....
         .number(fieldNumber.getNumber())
         .description(fieldNumber.getDescriptionOutwardLine1())
         .validFrom(QuoVadisDataImportService.FIRST_DAY_OF_FP_2026)

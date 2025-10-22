@@ -5,6 +5,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,12 @@ public class TimetableFieldNumberValidationService {
     }
   }
 
+  // TODO: reimplement select to find overlaps with number only
   private List<TimetableFieldNumberVersion> getOverlapsOnNumberAndSttfn(TimetableFieldNumberVersion version) {
     String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
+    if (version.getSwissTimetableFieldNumber() == null) {
+      return Collections.emptyList();
+    }
     return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(
             version.getNumber(), version.getSwissTimetableFieldNumber().toLowerCase(),
             version.getValidFrom(), version.getValidTo(), ttfnid).stream()

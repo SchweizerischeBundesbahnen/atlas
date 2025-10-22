@@ -47,7 +47,7 @@ public class QuoVadisCsvReader {
     @JsonProperty("BuchUeberschrift-Richtung")
     private String direction;
 
-    @JsonProperty("Unternehmer")
+    @JsonProperty("GO-Nummer")
     private String businessOrganisation;
   }
 

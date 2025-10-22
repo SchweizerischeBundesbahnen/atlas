@@ -37,9 +37,7 @@ class QuoVadisDataMapper {
       }
 
       List<String> descriptionOnward = getDescription(data, "H");
-      descriptionOnward.forEach(description -> checkDescription(description, number));
       List<String> descriptionReturn = getDescription(data, "R");
-      descriptionReturn.forEach(description -> checkDescription(description, number));
 
       Optional<MeanOfTransport> meanOfTransport = Arrays.stream(MeanOfTransport.values())
           .filter(i -> i.getDesignationDe().equals(data.getFirst().getMeanOfTransport())).findFirst();
@@ -84,7 +82,7 @@ class QuoVadisDataMapper {
   }
 
   private static Integer getBusinessOrganisationNumber(String businessOrganisation) {
-    return Integer.valueOf(businessOrganisation.split(" ")[0]);
+    return Integer.valueOf(businessOrganisation);
   }
 
   static List<String> getDescription(List<QuoVadisDataRow> data, String direction) {
@@ -108,15 +106,6 @@ class QuoVadisDataMapper {
     descriptionList.add(String.join("|", Arrays.asList(descriptions).subList(expectedAmountOfDescriptions - 1,
         descriptions.length)));
     return descriptionList;
-  }
-
-  private static void checkDescription(String description, String number) {
-    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.ISO_8859_1);
-
-    boolean doesPatternMatch = pattern.matcher(description.replaceAll("–","-").replaceAll("’", "'")).matches();
-    if(!doesPatternMatch) {
-      log.error("Pattern does not match for {} in {}", description, number);
-    }
   }
 
   @Builder

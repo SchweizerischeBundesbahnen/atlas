@@ -5,6 +5,8 @@ import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionR
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisCsvReader.QuoVadisDataRow;
 import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisDataMapper.TimetableFieldNumberV2;
+import ch.sbb.line.directory.shared.businessorganisation.entity.SharedBusinessOrganisationVersion;
+import ch.sbb.line.directory.shared.businessorganisation.repository.SharedBusinessOrganisationVersionRepository;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -23,6 +25,7 @@ public class QuoVadisDataImportService {
 
   private final TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
   private final TimetableFieldNumberService timetableFieldNumberService;
+  private final SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository;
 
   @Transactional
   public void importDataFromQuoVadis(File file) {
@@ -45,19 +48,37 @@ public class QuoVadisDataImportService {
     int numberOfCreates = 0;
     List<TimetableFieldNumberVersion> versionsInDb = timetableFieldNumberVersionRepository.findAll();
     for (TimetableFieldNumberV2 timetableFieldNumber : newTtfns) {
+
+      List<SharedBusinessOrganisationVersion> businessOrganisation =
+          sharedBusinessOrganisationVersionRepository.findByOrganisationNumber(
+              timetableFieldNumber.getBusinessOrganisationNumber());
+      if (businessOrganisation.isEmpty()) {
+        log.error("No business organisation found for given business organisation number {}",
+            timetableFieldNumber.getBusinessOrganisationNumber());
+        throw new IllegalStateException(
+            "No business organisation found for given bo number" + timetableFieldNumber.getBusinessOrganisationNumber());
+      }
+      String sboid = businessOrganisation.getFirst().getSboid();
+
       List<TimetableFieldNumberVersion> currentTtfn = versionsInDb.stream()
           .filter(i -> i.getNumber().equals(timetableFieldNumber.getNumber()))
           .sorted(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom))
           .toList();
       if (!currentTtfn.isEmpty()) {
         numberOfUpdates++;
-        //        TimetableFieldNumberVersion currentVersion = currentTtfn.getLast();
-        //        TimetableFieldNumberVersion editedVersion = QuoVadisToAtlasMapper.toEntity(timetableFieldNumber);
-        //        editedVersion.setVersion(currentVersion.getVersion());
-        //        timetableFieldNumberService.update(currentVersion, editedVersion, currentTtfn);
+        TimetableFieldNumberVersion currentVersion = currentTtfn.getLast();
+
+        TimetableFieldNumberVersion editedVersion = QuoVadisToAtlasMapper.toEntity(timetableFieldNumber);
+        editedVersion.setSwissTimetableFieldNumber(currentVersion.getSwissTimetableFieldNumber());
+        editedVersion.setBusinessOrganisation(currentVersion.getBusinessOrganisation());
+
+        editedVersion.setVersion(currentVersion.getVersion());
+        timetableFieldNumberService.update(currentVersion, editedVersion, currentTtfn);
       } else {
         numberOfCreates++;
-        //        timetableFieldNumberService.create(QuoVadisToAtlasMapper.toEntity(timetableFieldNumber));
+        TimetableFieldNumberVersion newVersion = QuoVadisToAtlasMapper.toEntity(timetableFieldNumber);
+        newVersion.setBusinessOrganisation(sboid);
+        timetableFieldNumberService.create(newVersion);
       }
     }
 

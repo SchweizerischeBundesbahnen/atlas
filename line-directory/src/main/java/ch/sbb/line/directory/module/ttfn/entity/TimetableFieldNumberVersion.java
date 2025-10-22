@@ -106,7 +106,6 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
 
   @AtlasVersionableProperty
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-  @NotNull
   private String swissTimetableFieldNumber;
 
   @Column(columnDefinition = "TIMESTAMP")

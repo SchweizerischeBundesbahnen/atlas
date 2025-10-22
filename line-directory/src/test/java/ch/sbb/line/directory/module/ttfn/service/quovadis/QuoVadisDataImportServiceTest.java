@@ -1,14 +1,19 @@
 package ch.sbb.line.directory.module.ttfn.service.quovadis;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisCsvReader.QuoVadisDataRow;
+import ch.sbb.line.directory.shared.businessorganisation.entity.SharedBusinessOrganisationVersion;
+import ch.sbb.line.directory.shared.businessorganisation.repository.SharedBusinessOrganisationVersionRepository;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class QuoVadisDataImportServiceTest {
@@ -16,8 +21,20 @@ class QuoVadisDataImportServiceTest {
   @Autowired
   private QuoVadisDataImportService quoVadisDataImportService;
 
+  @MockitoBean
+  private SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository;
+
+  @MockitoBean
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+
   @Test
-  void importDataFromQuoVadis() throws IOException {
+  void importDataFromQuoVadis() {
+    List<SharedBusinessOrganisationVersion> businessOrganisation = List.of(SharedBusinessOrganisationVersion.builder()
+        .sboid("ch:1:sboid:123123")
+        .build());
+    when(sharedBusinessOrganisationVersionRepository.findByOrganisationNumber(any())).thenReturn(businessOrganisation);
+    when(sharedBusinessOrganisationService.existsBySboid(any())).thenReturn(true);
+
     File file = new File("src/test/resources/quovadis_ttfn.csv");
     quoVadisDataImportService.importDataFromQuoVadis(file);
   }
