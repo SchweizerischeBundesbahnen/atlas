@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import org.junit.jupiter.api.Test;
 
-public class ValidTtfnDescriptionValidatorTest {
+class ValidTtfnDescriptionValidatorTest {
 
   private final ValidTtfnDescription.Validator validator = new ValidTtfnDescription.Validator();
 
