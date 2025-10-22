@@ -22,6 +22,8 @@
           width="35"
           height="35"
           (click)="clicked(mean)"
+          (keydown.enter)="clicked(mean)"
+          (keydown.space)="clicked(mean)"
           [attr.data-cy]="mean"
           [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
         />

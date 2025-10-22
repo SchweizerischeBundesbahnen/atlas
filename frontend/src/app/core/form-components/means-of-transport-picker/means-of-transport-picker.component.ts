@@ -88,10 +88,7 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   getIcon(mean: MeanOfTransport) {
-    if (
-      this.currentlySelectedMeans &&
-      this.currentlySelectedMeans.includes(mean)
-    ) {
+    if (this.currentlySelectedMeans.includes(mean)) {
       return mean;
     } else return mean + '_GRAY';
   }
