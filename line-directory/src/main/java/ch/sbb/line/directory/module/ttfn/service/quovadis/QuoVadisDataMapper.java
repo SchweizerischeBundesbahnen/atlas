@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.module.ttfn.service.quovadis;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisCsvReader.QuoVadisDataRow;
 import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisDataMapper.TimetableFieldNumberV2.TimetableFieldNumberV2Builder;
@@ -9,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +37,9 @@ class QuoVadisDataMapper {
       }
 
       List<String> descriptionOnward = getDescription(data, "H");
+      descriptionOnward.forEach(description -> checkDescription(description, number));
       List<String> descriptionReturn = getDescription(data, "R");
+      descriptionReturn.forEach(description -> checkDescription(description, number));
 
       Optional<MeanOfTransport> meanOfTransport = Arrays.stream(MeanOfTransport.values())
           .filter(i -> i.getDesignationDe().equals(data.getFirst().getMeanOfTransport())).findFirst();
@@ -46,7 +50,8 @@ class QuoVadisDataMapper {
       }
       TimetableFieldNumberV2Builder timetableFieldNumber = TimetableFieldNumberV2.builder()
           .number(number)
-          .meanOfTransport(meanOfTransport.get());
+          .meanOfTransport(meanOfTransport.get())
+          .businessOrganisationNumber(getBusinessOrganisationNumber(data.getFirst().getBusinessOrganisation()));
 
       if (!descriptionOnward.isEmpty()) {
         timetableFieldNumber.descriptionOutwardLine1(descriptionOnward.getFirst().trim());
@@ -78,6 +83,10 @@ class QuoVadisDataMapper {
     return timetableFieldNumbers;
   }
 
+  private static Integer getBusinessOrganisationNumber(String businessOrganisation) {
+    return Integer.valueOf(businessOrganisation.split(" ")[0]);
+  }
+
   static List<String> getDescription(List<QuoVadisDataRow> data, String direction) {
     List<QuoVadisDataRow> dataRows = data.stream().filter(i -> direction.equals(i.getDirection())).toList();
     if (dataRows.size() != 1) {
@@ -101,6 +110,15 @@ class QuoVadisDataMapper {
     return descriptionList;
   }
 
+  private static void checkDescription(String description, String number) {
+    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.ISO_8859_1);
+
+    boolean doesPatternMatch = pattern.matcher(description.replaceAll("–","-").replaceAll("’", "'")).matches();
+    if(!doesPatternMatch) {
+      log.error("Pattern does not match for {} in {}", description, number);
+    }
+  }
+
   @Builder
   @Data
   static class TimetableFieldNumberV2 {
@@ -120,6 +138,8 @@ class QuoVadisDataMapper {
     private String descriptionReturnLine2;
 
     private String descriptionReturnLine3;
+
+    private Integer businessOrganisationNumber;
 
   }
 
