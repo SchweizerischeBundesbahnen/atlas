@@ -84,7 +84,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
   ]);
 
   const mockData = {
-    businessOrganisationDetail: businessOrganisationVersion,
+    businessOrganisationDetail: [businessOrganisationVersion],
   };
 
   const validityService = jasmine.createSpyObj<ValidityService>(
@@ -99,7 +99,12 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
   );
 
   beforeEach(() => {
-    setupTestBed(mockBusinessOrganisationsService, validityService, mockData);
+    setupTestBed(
+      mockBusinessOrganisationsService,
+      validityService,
+      mockData,
+      '1234'
+    );
 
     fixture = TestBed.createComponent(BusinessOrganisationDetailComponent);
     component = fixture.componentInstance;
@@ -166,7 +171,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     ['createBusinessOrganisationVersion']
   );
   const mockData = {
-    businessOrganisationDetail: 'add',
+    businessOrganisationDetail: [],
   };
 
   const validityService = jasmine.createSpyObj<ValidityService>(
@@ -174,7 +179,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     ['initValidity', 'updateValidity', 'validate']
   );
   beforeEach(() => {
-    setupTestBed(mockLinesService, validityService, mockData);
+    setupTestBed(mockLinesService, validityService, mockData, 'add');
 
     fixture = TestBed.createComponent(BusinessOrganisationDetailComponent);
     component = fixture.componentInstance;
@@ -222,7 +227,8 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
 function setupTestBed(
   businessOrganisationInternalService: BusinessOrganisationInternalService,
   validityService: ValidityService,
-  data: { businessOrganisationDetail: string | BusinessOrganisationVersion }
+  data: { businessOrganisationDetail: BusinessOrganisationVersion[] },
+  id: string
 ) {
   TestBed.configureTestingModule({
     imports: [
@@ -244,7 +250,10 @@ function setupTestBed(
       },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ValidityService, useValue: validityService },
-      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
+      {
+        provide: ActivatedRoute,
+        useValue: { snapshot: { data: data, queryParams: { id } } },
+      },
       { provide: TranslatePipe },
     ],
   })

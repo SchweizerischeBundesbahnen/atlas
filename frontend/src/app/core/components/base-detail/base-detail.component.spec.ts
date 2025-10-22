@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { BaseDetailController } from './base-detail-controller';
 import { of, Subject } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
-import { Component, Input } from '@angular/core';
 import { ApplicationType, Status } from '../../../api';
 import {
   adminPermissionServiceMock,
@@ -15,20 +14,8 @@ import { NotificationService } from '../../notification/notification.service';
 import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../detail-footer/detail-footer.component';
 import { DateRangeTextComponent } from '../../versioning/date-range-text/date-range-text.component';
-import { Record } from './record';
-import { Page } from '../../model/page';
 import { DetailPageContentComponent } from '../detail-page-content/detail-page-content.component';
 import { PermissionService } from '../../auth/permission/permission.service';
-
-@Component({
-  selector: 'app-coverage',
-  template: '<p>Mock Product Editor Component</p>',
-  imports: [AppTestingModule],
-})
-class MockAppCoverageComponent {
-  @Input() pageType!: Record;
-  @Input() currentRecord!: Page;
-}
 
 describe('BaseDetailComponent', () => {
   /*eslint-disable */
@@ -45,7 +32,6 @@ describe('BaseDetailComponent', () => {
       imports: [
         AppTestingModule,
         BaseDetailComponent,
-        MockAppCoverageComponent,
         AtlasButtonComponent,
         MockUserDetailInfoComponent,
         DetailPageContainerComponent,
@@ -142,12 +128,18 @@ function createDummyForm(enabledForm: boolean) {
       'disableUneditableFormFields',
       'confirmBoTransfer',
       'isWorkflowable',
+      'getDetailHeading',
+      'getDetailSubheading',
     ],
     {
       heading: undefined,
       form: form,
       record: { id: 1, status: Status.Validated },
       selectedRecordChange: selectedRecordChange,
+      maxValidity: {
+        validFrom: Date(),
+        validTo: Date(),
+      },
     }
   );
   dummyController.getId.and.callFake(BaseDetailController.prototype.getId);

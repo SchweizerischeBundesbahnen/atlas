@@ -77,7 +77,7 @@ const error = new HttpErrorResponse({
 });
 
 const mockData = {
-  timetableFieldNumberDetail: version,
+  timetableFieldNumberDetail: [version],
 };
 
 @Component({
@@ -133,7 +133,10 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
           useValue: mockTimetableFieldNumberInternalService,
         },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
-        { provide: ActivatedRoute, useValue: { snapshot: { data: mockData } } },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { data: mockData, queryParams: { id: '1' } } },
+        },
         { provide: TranslatePipe },
       ],
     })
@@ -232,7 +235,10 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: { data: { timetableFieldNumberDetail: 'add' } },
+            snapshot: {
+              data: { timetableFieldNumberDetail: [] },
+              queryParams: { id: 'add' },
+            },
           },
         },
         {
@@ -352,7 +358,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
   describe('Validation description', () => {
     it('should not be greater then 255', () => {
       const description: AbstractControl =
-        fixture.componentInstance.form.controls['description'];
+        fixture.componentInstance.form.controls['descriptionOutwardLine1'];
       description.setValue(loremIpsum256Chars);
       description.markAsTouched();
 

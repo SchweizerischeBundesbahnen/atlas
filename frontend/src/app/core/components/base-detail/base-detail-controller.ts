@@ -198,9 +198,6 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   abstract getPageType(): Page;
 
-  reloadRecord(): void {
-    throw new Error('You have to override me');
-  }
   abstract getApplicationType(): ApplicationType;
 
   backToOverview(): void {
