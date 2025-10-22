@@ -88,42 +88,57 @@
       </atlas-text-field>
     </div>
     <div class="col-12 d-flex gap-4">
-      <atlas-text-field
-        class="flex-grow-1"
-        [fieldExamples]="[]"
-        [formGroup]="form"
-        controlName="descriptionOutwardLine2"
-      >
-      </atlas-text-field>
-      <atlas-text-field
-        class="flex-grow-1"
-        [fieldExamples]="[]"
-        [formGroup]="form"
-        controlName="descriptionReturnLine2"
-      >
-      </atlas-text-field>
+      <div class="flex-50">
+        @if (displayOutwardLine2$ | async) {
+          <atlas-text-field
+            [fieldExamples]="[]"
+            [formGroup]="form"
+            controlName="descriptionOutwardLine2"
+          >
+          </atlas-text-field>
+        }
+      </div>
+      <div class="flex-50">
+        @if (displayReturnLine2$ | async) {
+          <atlas-text-field
+            [fieldExamples]="[]"
+            [formGroup]="form"
+            controlName="descriptionReturnLine2"
+          >
+          </atlas-text-field>
+        }
+      </div>
     </div>
     <div class="col-12 d-flex gap-4">
-      <atlas-text-field
-        class="flex-grow-1"
-        [fieldExamples]="[]"
-        [formGroup]="form"
-        controlName="descriptionOutwardLine3"
-      >
-      </atlas-text-field>
-      <atlas-text-field
-        class="flex-grow-1"
-        [fieldExamples]="[]"
-        [formGroup]="form"
-        controlName="descriptionReturnLine3"
-      >
-      </atlas-text-field>
+      <div class="flex-50">
+        @if (displayOutwardLine3$ | async) {
+          <atlas-text-field
+            class="flex-grow-1"
+            [fieldExamples]="[]"
+            [formGroup]="form"
+            controlName="descriptionOutwardLine3"
+          >
+          </atlas-text-field>
+        }
+      </div>
+      <div class="flex-50">
+        @if (displayReturnLine3$ | async) {
+          <atlas-text-field
+            class="flex-grow-1"
+            [fieldExamples]="[]"
+            [formGroup]="form"
+            controlName="descriptionReturnLine3"
+          >
+          </atlas-text-field>
+        }
+      </div>
     </div>
 
     <means-of-transport-picker
       [formGroup]="form"
       controlName="meanOfTransport"
       [disabled]="form.disabled"
+      [meansOfTransportToShow]="allowableMeansOfTransport"
     ></means-of-transport-picker>
 
     <span class="font-bold-2xl d-block mt-4">{{

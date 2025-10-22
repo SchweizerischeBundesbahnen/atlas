@@ -14,22 +14,17 @@ export class TimetableFieldNumberService {
 
   public createVersion(timetableFieldNumberVersion: TimetableFieldNumberVersion): Observable<TimetableFieldNumberVersion> {
     this.atlasApiService.validateParams({ timetableFieldNumberVersion });
-    return this.atlasApiService.post(
-      this.FIELD_NUMBER_VERSIONS,
-      timetableFieldNumberVersion);
+    return this.atlasApiService.post(this.FIELD_NUMBER_VERSIONS, timetableFieldNumberVersion);
   }
 
   public getAllVersionsVersioned(ttfnId: string): Observable<TimetableFieldNumberVersion[]> {
     this.atlasApiService.validateParams({ ttfnId });
-    return this.atlasApiService.get(
-      `${this.FIELD_NUMBER_VERSIONS}/${encodeURIComponent(String(ttfnId))}`);
+    return this.atlasApiService.get(`${this.FIELD_NUMBER_VERSIONS}/${encodeURIComponent(String(ttfnId))}`);
   }
 
   public updateVersionWithVersioning(id: number, timetableFieldNumberVersion: TimetableFieldNumberVersion): Observable<TimetableFieldNumberVersion[]> {
     this.atlasApiService.validateParams({ id, timetableFieldNumberVersion });
-    return this.atlasApiService.post(
-      `${this.FIELD_NUMBER_VERSIONS}/${encodeURIComponent(String(id))}`,
-      timetableFieldNumberVersion);
+    return this.atlasApiService.put(`${this.FIELD_NUMBER_VERSIONS}/${encodeURIComponent(String(id))}`, timetableFieldNumberVersion);
   }
 
 }

@@ -22,6 +22,7 @@ describe('TimetableFieldNumberService', () => {
     spyOn(apiService, 'validateParams').and.callThrough();
     spyOn(apiService, 'post');
     spyOn(apiService, 'get');
+    spyOn(apiService, 'put');
   });
 
   it('should createVersion', () => {
@@ -48,13 +49,13 @@ describe('TimetableFieldNumberService', () => {
   });
 
   it('should updateVersionWithVersioning', () => {
-    service.updateVersionWithVersioning(1,{} as TimetableFieldNumberVersion);
+    service.updateVersionWithVersioning(1, {} as TimetableFieldNumberVersion);
 
     expect(apiService.validateParams).toHaveBeenCalledOnceWith({
       id: 1,
       timetableFieldNumberVersion: {},
     });
-    expect(apiService.post).toHaveBeenCalledOnceWith(
+    expect(apiService.put).toHaveBeenCalledOnceWith(
       '/line-directory/v1/field-numbers/versions/1',
       {}
     );

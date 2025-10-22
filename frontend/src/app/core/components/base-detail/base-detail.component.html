@@ -3,22 +3,20 @@
     <atlas-detail-page-content>
       <div class="detail-wrapper mt-5">
         @if (controller.record) {
-          <ng-template>
-            <div class="font-bold-4xl detail-title mb-3">
-              {{ controller.getDetailHeading(controller.record) }}
-            </div>
-            <div class="font-bold-xl mb-2">
-              <span data-cy="detail-subheading-id">{{
-                controller.getDetailSubheading(controller.record)
-              }}</span>
-              <span data-cy="total-range">
-                -
-                <date-range-text
-                  [dateRange]="controller.maxValidity"
-                ></date-range-text>
-              </span>
-            </div>
-          </ng-template>
+          <div class="font-bold-4xl detail-title mb-3">
+            {{ controller.getDetailHeading(controller.record) }}
+          </div>
+          <div class="font-bold-xl mb-2">
+            <span data-cy="detail-subheading-id">{{
+              controller.getDetailSubheading(controller.record)
+            }}</span>
+            <span data-cy="total-range">
+              -
+              <date-range-text
+                [dateRange]="controller.maxValidity"
+              ></date-range-text>
+            </span>
+          </div>
         } @else {
           <h1 class="font-bold-4xl mb-5">
             {{ headingNew | translate }}

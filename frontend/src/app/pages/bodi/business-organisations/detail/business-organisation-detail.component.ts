@@ -170,77 +170,77 @@ export class BusinessOrganisationDetailComponent
       });
   }
 
-  getFormGroup(version: BusinessOrganisationVersion): FormGroup {
+  getFormGroup(version?: BusinessOrganisationVersion): FormGroup {
     return new FormGroup<BusinessOrganisationDetailFormGroup>(
       {
-        descriptionDe: new FormControl(version.descriptionDe, [
+        descriptionDe: new FormControl(version?.descriptionDe, [
           Validators.required,
           AtlasFieldLengthValidator.length_60,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        descriptionFr: new FormControl(version.descriptionFr, [
+        descriptionFr: new FormControl(version?.descriptionFr, [
           Validators.required,
           AtlasFieldLengthValidator.length_60,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        descriptionIt: new FormControl(version.descriptionIt, [
+        descriptionIt: new FormControl(version?.descriptionIt, [
           Validators.required,
           AtlasFieldLengthValidator.length_60,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        descriptionEn: new FormControl(version.descriptionEn, [
+        descriptionEn: new FormControl(version?.descriptionEn, [
           Validators.required,
           AtlasFieldLengthValidator.length_60,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        abbreviationDe: new FormControl(version.abbreviationDe, [
+        abbreviationDe: new FormControl(version?.abbreviationDe, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
           AtlasCharsetsValidator.iso88591,
         ]),
-        abbreviationFr: new FormControl(version.abbreviationFr, [
+        abbreviationFr: new FormControl(version?.abbreviationFr, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
           AtlasCharsetsValidator.iso88591,
         ]),
-        abbreviationIt: new FormControl(version.abbreviationIt, [
+        abbreviationIt: new FormControl(version?.abbreviationIt, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
           AtlasCharsetsValidator.iso88591,
         ]),
-        abbreviationEn: new FormControl(version.abbreviationEn, [
+        abbreviationEn: new FormControl(version?.abbreviationEn, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
           AtlasCharsetsValidator.iso88591,
         ]),
-        organisationNumber: new FormControl(version.organisationNumber, [
+        organisationNumber: new FormControl(version?.organisationNumber, [
           Validators.required,
           AtlasCharsetsValidator.numeric,
           Validators.min(0),
           Validators.max(99999),
         ]),
         contactEnterpriseEmail: new FormControl(
-          version.contactEnterpriseEmail,
+          version?.contactEnterpriseEmail,
           [AtlasFieldLengthValidator.length_255, AtlasCharsetsValidator.email]
         ),
-        businessTypes: new FormControl(version.businessTypes),
+        businessTypes: new FormControl(version?.businessTypes),
         validFrom: new FormControl(
-          version.validFrom ? moment(version.validFrom) : version.validFrom,
+          version?.validFrom ? moment(version.validFrom) : null,
           [Validators.required]
         ),
         validTo: new FormControl(
-          version.validTo ? moment(version.validTo) : version.validTo,
+          version?.validTo ? moment(version.validTo) : null,
           [Validators.required]
         ),
-        etagVersion: new FormControl(version.etagVersion),
-        creationDate: new FormControl(version.creationDate),
-        editionDate: new FormControl(version.editionDate),
-        editor: new FormControl(version.editor),
-        creator: new FormControl(version.creator),
+        etagVersion: new FormControl(version?.etagVersion),
+        creationDate: new FormControl(version?.creationDate),
+        editionDate: new FormControl(version?.editionDate),
+        editor: new FormControl(version?.editor),
+        creator: new FormControl(version?.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );

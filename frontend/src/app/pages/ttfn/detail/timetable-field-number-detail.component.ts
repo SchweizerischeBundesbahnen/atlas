@@ -9,7 +9,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { catchError } from 'rxjs';
+import {
+  catchError,
+  distinctUntilChanged,
+  of,
+  skipWhile,
+  startWith,
+} from 'rxjs';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Pages } from '../../pages';
 import { Page } from '../../../core/model/page';
@@ -18,7 +24,7 @@ import { PermissionService } from '../../../core/auth/permission/permission.serv
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
 import { BaseDetailComponent } from '../../../core/components/base-detail/base-detail.component';
-import { NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
 import { BusinessOrganisationSelectComponent } from '../../../core/form-components/bo-select/business-organisation-select.component';
@@ -31,6 +37,7 @@ import { DateRangeValidator } from '../../../core/validation/date-range/date-ran
 import moment from 'moment';
 import { MeansOfTransportPickerComponent } from '../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { SelectionValidator } from '../../../core/validation/min-selected/selection-validator';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -45,12 +52,21 @@ import { SelectionValidator } from '../../../core/validation/min-selected/select
     BusinessOrganisationSelectComponent,
     TranslatePipe,
     MeansOfTransportPickerComponent,
+    AsyncPipe,
   ],
 })
 export class TimetableFieldNumberDetailComponent
   extends BaseDetailController<TimetableFieldNumberVersion>
   implements OnInit
 {
+  protected allowableMeansOfTransport = Object.values(
+    TimetableFieldNumberVersion.MeanOfTransportEnum
+  );
+  protected displayOutwardLine2$ = of(false);
+  protected displayOutwardLine3$ = of(false);
+  protected displayReturnLine2$ = of(false);
+  protected displayReturnLine3$ = of(false);
+
   constructor(
     protected router: Router,
     private timetableFieldNumberInternalService: TimetableFieldNumberInternalService,
@@ -143,9 +159,8 @@ export class TimetableFieldNumberDetailComponent
       });
   }
 
-  // todo: add dynamic validator for lines 2-3
   getFormGroup(version?: TimetableFieldNumberVersion): FormGroup {
-    return new FormGroup<TimetableFieldNumberDetailFormGroup>(
+    const formGroup = new FormGroup<TimetableFieldNumberDetailFormGroup>(
       {
         swissTimetableFieldNumber: new FormControl(
           version?.swissTimetableFieldNumber,
@@ -270,6 +285,28 @@ export class TimetableFieldNumberDetailComponent
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
+
+    this.displayOutwardLine2$ = this.getDisplayObs(
+      formGroup.controls.descriptionOutwardLine1,
+      formGroup.controls.descriptionOutwardLine2
+    );
+
+    this.displayOutwardLine3$ = this.getDisplayObs(
+      formGroup.controls.descriptionOutwardLine2,
+      formGroup.controls.descriptionOutwardLine3
+    );
+
+    this.displayReturnLine2$ = this.getDisplayObs(
+      formGroup.controls.descriptionReturnLine1,
+      formGroup.controls.descriptionReturnLine2
+    );
+
+    this.displayReturnLine3$ = this.getDisplayObs(
+      formGroup.controls.descriptionReturnLine2,
+      formGroup.controls.descriptionReturnLine3
+    );
+
+    return formGroup;
   }
 
   getPageType(): Page {
@@ -280,6 +317,23 @@ export class TimetableFieldNumberDetailComponent
     return ApplicationType.Ttfn;
   }
 
+  private getDisplayObs(
+    previous: FormControl<string | null | undefined>,
+    actual: FormControl<string | null | undefined>
+  ) {
+    return previous.valueChanges.pipe(
+      startWith(previous.value),
+      map((val) => (val?.length ?? 0) > 1),
+      distinctUntilChanged(),
+      skipWhile((val) => !val),
+      tap((val) => {
+        if (!val) {
+          actual.reset(null);
+        }
+      })
+    );
+  }
+
   private getPayloadOfForm() {
     return {
       ...this.form.value,
@@ -287,4 +341,3 @@ export class TimetableFieldNumberDetailComponent
     };
   }
 }
-// todo: which mean of transport should i show?
