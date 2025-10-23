@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.module.ttfn.service.quovadis;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +29,7 @@ class QuoVadisDataImportServiceTest {
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @Test
-  void importDataFromQuoVadis() {
+  void shouldImportDataFromQuoVadisFile() {
     List<SharedBusinessOrganisationVersion> businessOrganisation = List.of(SharedBusinessOrganisationVersion.builder()
         .sboid("ch:1:sboid:123123")
         .build());
@@ -36,11 +37,11 @@ class QuoVadisDataImportServiceTest {
     when(sharedBusinessOrganisationService.existsBySboid(any())).thenReturn(true);
 
     File file = new File("src/test/resources/quovadis_ttfn.csv");
-    quoVadisDataImportService.importDataFromQuoVadis(file);
+    assertThatNoException().isThrownBy(() -> quoVadisDataImportService.importDataFromQuoVadis(file));
   }
 
   @Test
-  void shouldBastelDescription() {
+  void shouldExtractDescriptionBySplittingOnPipes() {
     QuoVadisDataRow row = new QuoVadisDataRow();
     row.setNumber("203");
     row.setDescription("Lausanne - Palézieux - Romont - Fribourg/Freiburg  | (RER Fribourg | Freiburg, Lignes S40, S41)");

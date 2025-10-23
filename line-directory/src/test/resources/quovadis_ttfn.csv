@@ -5351,8 +5351,6 @@ EFA-Linienbezeichnung;Verkehrsmitteltextname;BuchUeberschrift;BuchUeberschrift-Z
 3901;Schiff;Murg-Quinten-Unterterzen (Walensee);1;R;197
 3940;Schiff;Sils/Segl Maria-Maloja (Silsersee);1;H;3183
 3940;Schiff;Maloja-Sils/Segl Maria (Silsersee);0;R;3183
-10.650 et 651;Bus;Yverdon – Cheseaux-Noréaz – Yvonand – Pomy – Yverdon (ligne 10.650);1;H;801
-10.650 et 651;Bus;Yverdon – Pomy – Yvonand – Cheseaux-Noréaz- Yverdon (ligne 10.651);2;R;801
 79.N1;Bus;Zürich HB - Hermetschloo / - Dunkelhölzli (N1);0;H;849
 79.N1;Bus;Dunkelhölzli / - Zürich HB - Hermetschloo (N1);0;R;849
 79.N10;Bus;Zürich Seebach - Oerlikon Bhf Ost - Universität Irchel - Bahnhofplatz/HB;0;H;849

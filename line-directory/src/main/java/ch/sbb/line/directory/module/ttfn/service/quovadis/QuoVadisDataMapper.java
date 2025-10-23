@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 class QuoVadisDataMapper {
 
+  private static final Pattern TTFN_NUMBER_PATTERN = Pattern.compile(AtlasCharacterSetsRegex.TTFN_NUMBER);
+
   static List<TimetableFieldNumberV2> mapToTimetableFieldNumber(List<QuoVadisDataRow> quoVadisData) {
     List<String> occurredErrors = new ArrayList<>();
 
@@ -33,6 +35,12 @@ class QuoVadisDataMapper {
       if (hasDifferentMoT) {
         log.error("{} has different mot in different lines!", number);
         occurredErrors.add(number + " has different mot in different lines!");
+        return;
+      }
+
+      if (!TTFN_NUMBER_PATTERN.matcher(number).matches()) {
+        log.error("{} does not conform to number pattern!", number);
+        occurredErrors.add(number + " does not conform to number pattern!");
         return;
       }
 

@@ -38,14 +38,16 @@ public class AtlasCharacterSetsRegexTest {
   }
 
   @Test
-  void shouldValidateNumericWithDotCorrectly() {
-    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.NUMERIC_WITH_DOT);
+  void shouldValidateTtfnNumberCorrectly() {
+    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.TTFN_NUMBER);
 
     assertThat(pattern.matcher("23.23").matches()).isTrue();
     assertThat(pattern.matcher("00124").matches()).isTrue();
+    assertThat(pattern.matcher("800.SN1").matches()).isTrue();
 
     assertThat(pattern.matcher("abcÂÃ").matches()).isFalse();
     assertThat(pattern.matcher("x").matches()).isFalse();
+    assertThat(pattern.matcher("10.650 et 654").matches()).isFalse();
   }
 
   @Test

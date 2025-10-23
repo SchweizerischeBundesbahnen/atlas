@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.module.ttfn.entity;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
@@ -21,6 +22,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -102,6 +104,7 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   @AtlasVersionableProperty
   @NotNull
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.TTFN_NUMBER)
   private String number;
 
   @AtlasVersionableProperty
