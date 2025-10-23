@@ -44,37 +44,37 @@ public class TimetableFieldNumberVersionModel extends BaseVersionModel implement
   @Schema(description = "Description outward line one", example = "Como - Chiasso - Mendrisio - Varese (S40)")
   @NotNull
   @TrimmedNotBlank
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_70)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionOutwardLine1;
 
   @Schema(description = "Description outward line two", example = "Bellinzona - Mendrisio - Varese - Malpensa Aeroporto (S50)")
   @TrimmedNotBlank
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_70)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionOutwardLine2;
 
   @Schema(description = "Description outward line three", example = "(Ferrovia - Regionale TILO-Linea S40, S50)")
   @TrimmedNotBlank
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_70)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionOutwardLine3;
 
   @Schema(description = "Description return line one", example = "Varese - Mendrisio - Chiasso - Como (S40)")
   @TrimmedNotBlank
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_70)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionReturnLine1;
 
   @Schema(description = "Description return line two", example = "Malpensa Aeroporto - Varese - Mendrisio - Bellinzona (S50)")
   @TrimmedNotBlank
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_70)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionReturnLine2;
 
   @Schema(description = "Description return line three", example = "(Ferrovia - Regionale TILO-Linea S40, S50)")
   @TrimmedNotBlank
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_70)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionReturnLine3;
 
