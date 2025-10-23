@@ -31,7 +31,9 @@
               "watch": false,
               "codeCoverageExclude": [
                 "charts/**",
-                "src/polyfills.ts"
+                "src/polyfills.ts",
+                "components/coverage/**/*",
+                "coverage/**/*"
               ],
               "reporters": [
                 "progress",
@@ -172,7 +174,9 @@
               "watch": false,
               "codeCoverageExclude": [
                 "charts/**",
-                "src/polyfills.ts"
+                "src/polyfills.ts",
+                "components/coverage/**/*",
+                "coverage/**/*"
               ],
               "reporters": [
                 "progress",
