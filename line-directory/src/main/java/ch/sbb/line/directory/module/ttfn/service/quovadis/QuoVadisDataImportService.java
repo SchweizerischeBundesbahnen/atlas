@@ -49,17 +49,6 @@ public class QuoVadisDataImportService {
     List<TimetableFieldNumberVersion> versionsInDb = timetableFieldNumberVersionRepository.findAll();
     for (TimetableFieldNumberV2 timetableFieldNumber : newTtfns) {
 
-      List<SharedBusinessOrganisationVersion> businessOrganisation =
-          sharedBusinessOrganisationVersionRepository.findByOrganisationNumber(
-              timetableFieldNumber.getBusinessOrganisationNumber());
-      if (businessOrganisation.isEmpty()) {
-        log.error("No business organisation found for given business organisation number {}",
-            timetableFieldNumber.getBusinessOrganisationNumber());
-        throw new IllegalStateException(
-            "No business organisation found for given bo number" + timetableFieldNumber.getBusinessOrganisationNumber());
-      }
-      String sboid = businessOrganisation.getFirst().getSboid();
-
       List<TimetableFieldNumberVersion> currentTtfn = versionsInDb.stream()
           .filter(i -> i.getNumber().equals(timetableFieldNumber.getNumber()))
           .sorted(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom))
@@ -76,7 +65,9 @@ public class QuoVadisDataImportService {
         timetableFieldNumberService.update(currentVersion, editedVersion, currentTtfn);
       } else {
         numberOfCreates++;
+
         TimetableFieldNumberVersion newVersion = QuoVadisToAtlasMapper.toEntity(timetableFieldNumber);
+        String sboid = getSboid(timetableFieldNumber);
         newVersion.setBusinessOrganisation(sboid);
         timetableFieldNumberService.create(newVersion);
       }
@@ -84,6 +75,19 @@ public class QuoVadisDataImportService {
 
     log.info("Number of updates: {}", numberOfUpdates);
     log.info("Number of creates: {}", numberOfCreates);
+  }
+
+  private String getSboid(TimetableFieldNumberV2 timetableFieldNumber) {
+    List<SharedBusinessOrganisationVersion> businessOrganisation =
+        sharedBusinessOrganisationVersionRepository.findByOrganisationNumber(
+            timetableFieldNumber.getBusinessOrganisationNumber());
+    if (businessOrganisation.isEmpty()) {
+      log.error("No business organisation found for given business organisation number {}",
+          timetableFieldNumber.getBusinessOrganisationNumber());
+      throw new IllegalStateException(
+          "No business organisation found for given bo number " + timetableFieldNumber.getBusinessOrganisationNumber());
+    }
+    return businessOrganisation.getFirst().getSboid();
   }
 
 }
