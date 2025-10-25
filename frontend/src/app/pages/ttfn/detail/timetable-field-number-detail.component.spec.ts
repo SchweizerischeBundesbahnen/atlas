@@ -9,7 +9,6 @@ import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormModule } from '../../../core/module/form.module';
-import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import {
@@ -22,8 +21,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
-import { Page } from '../../../core/model/page';
-import { Record } from '../../../core/components/base-detail/record';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
@@ -80,16 +77,6 @@ const mockData = {
   timetableFieldNumberDetail: [version],
 };
 
-@Component({
-  selector: 'app-coverage',
-  template: '<p>Mock Product Editor Component</p>',
-  imports: [AppTestingModule],
-})
-class MockAppCoverageComponent {
-  @Input() pageType!: Page;
-  @Input() currentRecord!: Record;
-}
-
 let component: TimetableFieldNumberDetailComponent;
 let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
 
@@ -108,7 +95,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
       imports: [
         AppTestingModule,
         TimetableFieldNumberDetailComponent,
-        MockAppCoverageComponent,
         MockAppDetailWrapperComponent,
         MockBoSelectComponent,
         ErrorNotificationComponent,
@@ -135,7 +121,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { data: mockData, queryParams: { id: '1' } } },
+          useValue: { snapshot: { data: mockData } },
         },
         { provide: TranslatePipe },
       ],
@@ -222,7 +208,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         FormModule,
         TimetableFieldNumberDetailComponent,
         MockAppDetailWrapperComponent,
-        MockAppCoverageComponent,
         ErrorNotificationComponent,
         InfoIconComponent,
       ],
@@ -237,7 +222,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
           useValue: {
             snapshot: {
               data: { timetableFieldNumberDetail: [] },
-              queryParams: { id: 'add' },
             },
           },
         },
