@@ -2,26 +2,23 @@
   <atlas-detail-page-container>
     <atlas-detail-page-content>
       <div class="detail-wrapper mt-5">
-        @if (controller.record) {
+        <h1 *ngIf="!controller.showSwitch; else detailPageTitle" class="font-bold-4xl mb-5">
+          {{ headingNew | translate }}
+        </h1>
+        <ng-template #detailPageTitle>
           <div class="font-bold-4xl detail-title mb-3">
             {{ controller.getDetailHeading(controller.record) }}
           </div>
           <div class="font-bold-xl mb-2">
-            <span data-cy="detail-subheading-id">{{
+          <span data-cy="detail-subheading-id">{{
               controller.getDetailSubheading(controller.record)
             }}</span>
             <span data-cy="total-range">
-              -
-              <date-range-text
-                [dateRange]="controller.maxValidity"
-              ></date-range-text>
-            </span>
+            -
+            <date-range-text [dateRange]="controller.maxValidity"></date-range-text>
+          </span>
           </div>
-        } @else {
-          <h1 class="font-bold-4xl mb-5">
-            {{ headingNew | translate }}
-          </h1>
-        }
+        </ng-template>
         <div class="col-12 d-flex mt-3">
           <div class="d-flex flex-column col-6 pe-3">
             <app-switch-version
@@ -34,40 +31,29 @@
           </div>
         </div>
 
-        <div
-          *ngIf="controller.isExistingRecord()"
-          class="form-title-section mt-4"
-        >
+        <div *ngIf="controller.isExistingRecord()" class="form-title-section mt-4">
           <h2 class="font-bold-2xl color-gray-900">
-            {{ formDetailHeading | translate }} -
-            {{ 'COMMON.VERSION' | translate }}
+            {{ formDetailHeading | translate }} - {{ 'COMMON.VERSION' | translate }}
             {{ controller.versionNumberOfCurrentRecord }}
           </h2>
           <div>
-            <span class="font-bold-lg color-gray-900"
-              >{{ 'COMMON.STATUS' | translate }}
-            </span>
+            <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
             <span class="color-gray-900">{{
-              'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord
-                | translate
-            }}</span>
-            <ng-container
-              #additionalInfo
-              *ngTemplateOutlet="additionalInfo"
-            ></ng-container>
+              'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
+              }}</span>
+            <ng-container #additionalInfo *ngTemplateOutlet="additionalInfo"></ng-container>
           </div>
         </div>
 
         <div>
           <ng-content></ng-content>
         </div>
-        @if (controller.record) {
-          <div class="mt-5">
-            <app-user-detail-info
-              [record]="controller.record"
-            ></app-user-detail-info>
-          </div>
-        }
+        <div class="mt-5">
+          <app-user-detail-info
+            *ngIf="controller.isExistingRecord()"
+            [record]="controller.record"
+          ></app-user-detail-info>
+        </div>
       </div>
     </atlas-detail-page-content>
 
@@ -99,45 +85,39 @@
         buttonType="whiteFooterEdit"
       >
       </atlas-button>
-      @if (selectedRecord) {
-        <ng-container>
-          <div *ngIf="isEditButtonVisible()">
-            <atlas-button
-              (buttonClicked)="controller.toggleEdit()"
-              [applicationType]="controller.getApplicationType()"
-              [businessOrganisation]="selectedRecord.businessOrganisation!"
-              [disabled]="
-                controller.form.enabled || selectedRecord.status === 'REVOKED'
-              "
-              buttonDataCy="edit-item"
-              buttonText="COMMON.EDIT"
-              buttonType="edit"
-              wrapperStyleClass="ms-3"
-            ></atlas-button>
-          </div>
+      <ng-container *ngIf="controller.isExistingRecord()">
+        <div *ngIf="isEditButtonVisible()">
           <atlas-button
-            (buttonClicked)="controller.revoke()"
+            (buttonClicked)="controller.toggleEdit()"
             [applicationType]="controller.getApplicationType()"
-            [disabled]="
-              controller.form.enabled || selectedRecord.status === 'REVOKED'
-            "
-            buttonDataCy="revoke-item"
-            buttonText="COMMON.REVOKE"
-            buttonType="revoke"
+            [businessOrganisation]="selectedRecord.businessOrganisation!"
+            [disabled]="controller.form.enabled || selectedRecord.status === 'REVOKED'"
+            buttonDataCy="edit-item"
+            buttonText="COMMON.EDIT"
+            buttonType="edit"
             wrapperStyleClass="ms-3"
-          >
-          </atlas-button>
-          <atlas-button
-            (buttonClicked)="controller.delete()"
-            [disabled]="controller.form.enabled"
-            buttonDataCy="delete-item"
-            buttonText="COMMON.DELETE"
-            buttonType="delete"
-            wrapperStyleClass="ms-3"
-          >
-          </atlas-button>
-        </ng-container>
-      }
+          ></atlas-button>
+        </div>
+        <atlas-button
+          (buttonClicked)="controller.revoke()"
+          [applicationType]="controller.getApplicationType()"
+          [disabled]="controller.form.enabled || controller.record.status === 'REVOKED'"
+          buttonDataCy="revoke-item"
+          buttonText="COMMON.REVOKE"
+          buttonType="revoke"
+          wrapperStyleClass="ms-3"
+        >
+        </atlas-button>
+        <atlas-button
+          (buttonClicked)="controller.delete()"
+          [disabled]="controller.form.enabled"
+          buttonDataCy="delete-item"
+          buttonText="COMMON.DELETE"
+          buttonType="delete"
+          wrapperStyleClass="ms-3"
+        >
+        </atlas-button>
+      </ng-container>
     </atlas-detail-footer>
   </atlas-detail-page-container>
 </div>

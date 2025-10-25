@@ -196,8 +196,6 @@ export class TimetableFieldNumberDetailComponent
     }
   }
 
-  // todo: check leave dirty form behaviour and version switch
-
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {

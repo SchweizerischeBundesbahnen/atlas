@@ -14,7 +14,7 @@ export class BusinessOrganisationDetailResolver {
 
   resolve(
     route: ActivatedRouteSnapshot
-  ): Observable<BusinessOrganisationVersion[]> {
+  ): Observable<Array<BusinessOrganisationVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
@@ -31,6 +31,6 @@ export class BusinessOrganisationDetailResolver {
 }
 
 export const businessOrganisationResolver: ResolveFn<
-  BusinessOrganisationVersion[]
+  Array<BusinessOrganisationVersion>
 > = (route: ActivatedRouteSnapshot) =>
   inject(BusinessOrganisationDetailResolver).resolve(route);

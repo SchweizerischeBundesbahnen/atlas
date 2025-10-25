@@ -18,9 +18,9 @@ import { PermissionService } from '../../auth/permission/permission.service';
 export abstract class BaseDetailController<TYPE extends Record>
   implements OnInit, DetailFormComponent
 {
-  record?: TYPE;
+  record!: TYPE;
   selectedRecordChange = new Subject<Record>();
-  records: Array<TYPE> = [];
+  records!: Array<TYPE>;
   form!: FormGroup;
   switchedIndex!: number | undefined;
   showSwitch: boolean | undefined;
@@ -36,12 +36,12 @@ export abstract class BaseDetailController<TYPE extends Record>
     protected validityService: ValidityService
   ) {}
 
-  get versionNumberOfCurrentRecord(): number | undefined {
-    return this.record?.versionNumber;
+  get versionNumberOfCurrentRecord(): number {
+    return this.record.versionNumber!;
   }
 
-  get statusOfCurrentRecord(): Status | undefined {
-    return this.record?.status;
+  get statusOfCurrentRecord(): Status {
+    return this.record.status!;
   }
 
   ngOnInit(): void {
@@ -74,7 +74,7 @@ export abstract class BaseDetailController<TYPE extends Record>
     return false;
   }
 
-  getSelectedRecord(): TYPE | undefined {
+  getSelectedRecord(): TYPE {
     return this.record;
   }
 
@@ -83,8 +83,8 @@ export abstract class BaseDetailController<TYPE extends Record>
     this.selectedRecordChange.next(record);
   }
 
-  getId(): number | undefined {
-    return this.record?.id;
+  getId(): number {
+    return this.record.id!;
   }
 
   isNewRecord() {
@@ -184,9 +184,9 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   abstract getDetailSubheading(record: TYPE): string;
 
-  abstract readRecords(): TYPE[];
+  abstract readRecord(): TYPE;
 
-  abstract getFormGroup(record?: TYPE): FormGroup;
+  abstract getFormGroup(record: TYPE): FormGroup;
 
   abstract updateRecord(): void;
 
@@ -197,6 +197,14 @@ export abstract class BaseDetailController<TYPE extends Record>
   abstract deleteRecord(): void;
 
   abstract getPageType(): Page;
+
+  reloadRecord(): void {
+    throw new Error('You have to override me');
+  }
+
+  getDescriptionForWorkflow(): string {
+    throw new Error('You have to override me');
+  }
 
   abstract getApplicationType(): ApplicationType;
 
@@ -233,12 +241,12 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   private init() {
     this.getRecord();
-    if (this.records.length > 0) {
+    if (this.records) {
       VersionsHandlingService.addVersionNumbers(this.records);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.records);
     }
     this.form = this.getFormGroup(this.record);
-    if (this.record) this.switchVersionEvent.next(this.record);
+    this.switchVersionEvent.next(this.record);
     if (this.isExistingRecord()) {
       this.form.disable();
     } else {
@@ -248,11 +256,16 @@ export abstract class BaseDetailController<TYPE extends Record>
   }
 
   private getRecord() {
-    const records = this.readRecords();
-    if (records.length > 0) {
+    const records = this.readRecord();
+
+    //if is a version/s already persist get switched or actual version and fill the Form
+    if (Array.isArray(records) && records.length > 0) {
       this.records = records;
       this.sortRecords();
       this.setSelectedRecord(this.evaluateSelectedRecord(this.records));
+    } else {
+      //is creating a new version, prepare empty Form
+      this.setSelectedRecord(records);
     }
   }
 

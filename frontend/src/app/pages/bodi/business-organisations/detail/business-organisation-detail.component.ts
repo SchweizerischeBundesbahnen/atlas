@@ -86,12 +86,8 @@ export class BusinessOrganisationDetailComponent
     return ApplicationType.Bodi;
   }
 
-  readRecords(): BusinessOrganisationVersion[] {
-    return (
-      this.activatedRoute.snapshot.data as {
-        businessOrganisationDetail: BusinessOrganisationVersion[];
-      }
-    ).businessOrganisationDetail;
+  readRecord(): BusinessOrganisationVersion {
+    return this.activatedRoute.snapshot.data.businessOrganisationDetail;
   }
 
   getDetailHeading(record: BusinessOrganisationVersion): string {
@@ -107,18 +103,19 @@ export class BusinessOrganisationDetailComponent
   }
 
   updateRecord(): void {
-    const id = this.getId();
-    const sboid = this.record?.sboid;
-    if (!id || !sboid) throw new Error('id and sboid are required');
     this.businessOrganisationInternalService
-      .updateBusinessOrganisationVersion(id, this.form.value)
+      .updateBusinessOrganisationVersion(this.getId(), this.form.value)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success(
           'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
         );
         this.router
-          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, sboid])
+          .navigate([
+            Pages.BODI.path,
+            Pages.BUSINESS_ORGANISATIONS.path,
+            this.record.sboid,
+          ])
           .then(() => this.ngOnInit());
       });
   }
@@ -143,104 +140,111 @@ export class BusinessOrganisationDetailComponent
   }
 
   revokeRecord(): void {
-    const sboid = this.getSelectedRecord()?.sboid;
-    if (!sboid) throw new Error('sboid is required');
-    this.businessOrganisationInternalService
-      .revokeBusinessOrganisation(sboid)
-      .subscribe(() => {
-        this.notificationService.success(
-          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
-        );
-        this.router
-          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, sboid])
-          .then(() => this.ngOnInit());
-      });
+    const selectedRecord = this.getSelectedRecord();
+    if (selectedRecord.sboid) {
+      this.businessOrganisationInternalService
+        .revokeBusinessOrganisation(selectedRecord.sboid)
+        .subscribe(() => {
+          this.notificationService.success(
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
+          );
+          this.router
+            .navigate([
+              Pages.BODI.path,
+              Pages.BUSINESS_ORGANISATIONS.path,
+              selectedRecord.sboid,
+            ])
+            .then(() => this.ngOnInit());
+        });
+    }
   }
 
   deleteRecord(): void {
-    const sboid = this.getSelectedRecord()?.sboid;
-    if (!sboid) throw new Error('sboid is required');
-    this.businessOrganisationInternalService
-      .deleteBusinessOrganisation(sboid)
-      .subscribe(() => {
-        this.notificationService.success(
-          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
-        );
-        this.backToOverview();
-      });
+    const selectedVersion: BusinessOrganisationVersion =
+      this.getSelectedRecord();
+    if (selectedVersion.sboid != null) {
+      this.businessOrganisationInternalService
+        .deleteBusinessOrganisation(selectedVersion.sboid)
+        .subscribe(() => {
+          this.notificationService.success(
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
+          );
+          this.backToOverview();
+        });
+    }
   }
 
-  getFormGroup(version?: BusinessOrganisationVersion): FormGroup {
+  getFormGroup(version: BusinessOrganisationVersion): FormGroup {
     return new FormGroup<BusinessOrganisationDetailFormGroup>(
       {
-        descriptionDe: new FormControl(version?.descriptionDe, [
+        descriptionDe: new FormControl(version.descriptionDe, [
           Validators.required,
           AtlasFieldLengthValidator.length_60,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        descriptionFr: new FormControl(version?.descriptionFr, [
+        descriptionFr: new FormControl(version.descriptionFr, [
           Validators.required,
           AtlasFieldLengthValidator.length_60,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        descriptionIt: new FormControl(version?.descriptionIt, [
+        descriptionIt: new FormControl(version.descriptionIt, [
           Validators.required,
           AtlasFieldLengthValidator.length_60,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        descriptionEn: new FormControl(version?.descriptionEn, [
+        descriptionEn: new FormControl(version.descriptionEn, [
           Validators.required,
           AtlasFieldLengthValidator.length_60,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        abbreviationDe: new FormControl(version?.abbreviationDe, [
+        abbreviationDe: new FormControl(version.abbreviationDe, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
           AtlasCharsetsValidator.iso88591,
         ]),
-        abbreviationFr: new FormControl(version?.abbreviationFr, [
+        abbreviationFr: new FormControl(version.abbreviationFr, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
           AtlasCharsetsValidator.iso88591,
         ]),
-        abbreviationIt: new FormControl(version?.abbreviationIt, [
+        abbreviationIt: new FormControl(version.abbreviationIt, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
           AtlasCharsetsValidator.iso88591,
         ]),
-        abbreviationEn: new FormControl(version?.abbreviationEn, [
+        abbreviationEn: new FormControl(version.abbreviationEn, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
           AtlasCharsetsValidator.iso88591,
         ]),
-        organisationNumber: new FormControl(version?.organisationNumber, [
+        organisationNumber: new FormControl(version.organisationNumber, [
           Validators.required,
           AtlasCharsetsValidator.numeric,
           Validators.min(0),
           Validators.max(99999),
         ]),
         contactEnterpriseEmail: new FormControl(
-          version?.contactEnterpriseEmail,
+          version.contactEnterpriseEmail,
           [AtlasFieldLengthValidator.length_255, AtlasCharsetsValidator.email]
         ),
-        businessTypes: new FormControl(version?.businessTypes),
+        businessTypes: new FormControl(version.businessTypes),
         validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
+          version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required]
         ),
         validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
+          version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required]
         ),
-        etagVersion: new FormControl(version?.etagVersion),
-        creationDate: new FormControl(version?.creationDate),
-        editionDate: new FormControl(version?.editionDate),
-        editor: new FormControl(version?.editor),
-        creator: new FormControl(version?.creator),
+        etagVersion: new FormControl(version.etagVersion),
+        creationDate: new FormControl(version.creationDate),
+        editionDate: new FormControl(version.editionDate),
+        editor: new FormControl(version.editor),
+        creator: new FormControl(version.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
