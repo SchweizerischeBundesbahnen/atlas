@@ -4,7 +4,7 @@ import {
   StopPointRestartWorkflowFormGroup,
   StopPointRestartWorkflowFormGroupBuilder,
 } from './stop-point-restart-workflow-form-group';
-import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { StopPointRestartWorkflow } from '../../../../api';
@@ -42,7 +42,7 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<StopPointRestartWorkflowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StopPointRejectWorkflowDialogData,
-    private detailHelperService: DetailHelperService,
+    private detailHelperService: DetailDialogHelperService,
     private router: Router,
     private notificationService: NotificationService,
     private stopPointWorkflowService: StopPointWorkflowService,

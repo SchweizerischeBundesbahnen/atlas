@@ -1,5 +1,12 @@
 package ch.sbb.atlas.configuration.handler;
 
+import static ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel.ATLAS_CONSTRAINT_VALID_SERVICE_POINT_NUMBER;
+import static ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel.ATLAS_CONSTRAINT_VALID_SPATIAL_REFERENCE_FRACTION;
+import static ch.sbb.atlas.validation.CreateIdCheck.ATLAS_CONSTRAINT_CREATE_ID_CHECK;
+import static ch.sbb.atlas.validation.TrimmedNotBlank.ATLAS_CONSTRAINT_TRIMMED_NOT_BLANK;
+import static ch.sbb.atlas.validation.ValidStopPointType.ATLAS_CONSTRAINT_VALID_STOP_POINT_TYPE;
+import static ch.sbb.atlas.validation.ValidTtfnDescription.ATLAS_CONSTRAINT_VALID_TTFN_DESCRIPTION;
+
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.DisplayInfoBuilder;
@@ -44,21 +51,21 @@ public class ConstraintViolationMapper {
     ERROR_CODE_MAP.put("{jakarta.validation.constraints.Digits.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.DIGITS"));
     ERROR_CODE_MAP.put("{jakarta.validation.constraints.Max.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.MAX"));
     ERROR_CODE_MAP.put("{jakarta.validation.constraints.Min.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.MIN"));
-    ERROR_CODE_MAP.put("{atlas.constraint.validSpatialReferenceFraction}", new ErrorInfo(
+    ERROR_CODE_MAP.put(ATLAS_CONSTRAINT_VALID_SPATIAL_REFERENCE_FRACTION, new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_SPATIAL_REFERENCE_FRACTION",
         cv -> "Max decimal places exceeded. LV03 and LV95 max. 5. WGS84 and WGS84WEB max. 11."));
-    ERROR_CODE_MAP.put("{atlas.constraint.validStopPointType}", new ErrorInfo(
+    ERROR_CODE_MAP.put(ATLAS_CONSTRAINT_VALID_STOP_POINT_TYPE, new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_STOP_POINT_TYPE",
         cv -> "stopPointType is only allowed for StopPoints and must not be null or unknown"));
-    ERROR_CODE_MAP.put("{atlas.constraint.createIdCheck}", new ErrorInfo(
+    ERROR_CODE_MAP.put(ATLAS_CONSTRAINT_CREATE_ID_CHECK, new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK",
         cv -> "ID must be null when creating a new element"));
-    ERROR_CODE_MAP.put("{atlas.constraint.validServicePointNumber}", new ErrorInfo(
+    ERROR_CODE_MAP.put(ATLAS_CONSTRAINT_VALID_SERVICE_POINT_NUMBER, new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_SERVICE_POINT_NUMBER",
         cv -> "numberShort must be present only if country not in (85,11,12,13,14)"));
-    ERROR_CODE_MAP.put("{atlas.constraint.trimmedNotBlank}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.TRIMMED_NOT_BLANK",
+    ERROR_CODE_MAP.put(ATLAS_CONSTRAINT_TRIMMED_NOT_BLANK, new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.TRIMMED_NOT_BLANK",
         cv -> "must not be empty or start/end with whitespace"));
-    ERROR_CODE_MAP.put("{atlas.constraint.validTtfnDescription}", new ErrorInfo(
+    ERROR_CODE_MAP.put(ATLAS_CONSTRAINT_VALID_TTFN_DESCRIPTION, new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_TTFN_DESCRIPTION",
         cv -> "outward and return lines 2-3 are only allowed if the previous line has at least 2 chars"));
   }

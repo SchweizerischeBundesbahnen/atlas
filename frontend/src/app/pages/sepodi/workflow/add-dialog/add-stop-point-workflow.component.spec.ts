@@ -7,7 +7,7 @@ import { adminUserServiceMock } from '../../../../app.testing.mocks';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
-import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
 import { of } from 'rxjs';
 import {
   DecisionType,
@@ -73,7 +73,7 @@ describe('AddStopPointWorkflowComponent', () => {
         },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
-        { provide: DetailHelperService, useValue: detailHelperService },
+        { provide: DetailDialogHelperService, useValue: detailHelperService },
         {
           provide: StopPointWorkflowService,
           useValue: stopPointWorkflowService,

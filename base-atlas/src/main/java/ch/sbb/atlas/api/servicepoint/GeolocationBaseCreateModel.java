@@ -23,6 +23,9 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "GeolocationCreate")
 public class GeolocationBaseCreateModel implements TransformableGeolocation {
 
+  public static final String ATLAS_CONSTRAINT_VALID_SPATIAL_REFERENCE_FRACTION = "{atlas.constraint" 
+      + ".validSpatialReferenceFraction}";
+
   @Schema(description = "Coordinate system spatial reference", example = "LV95")
   @NotNull
   private SpatialReference spatialReference;
@@ -42,7 +45,7 @@ public class GeolocationBaseCreateModel implements TransformableGeolocation {
   private Double height;
 
   @JsonIgnore
-  @AssertTrue(message = "{atlas.constraint.validSpatialReferenceFraction}")
+  @AssertTrue(message = ATLAS_CONSTRAINT_VALID_SPATIAL_REFERENCE_FRACTION)
   public boolean isValidSpatialReferenceFraction() {
     if (getSpatialReference() == null || getNorth() == null || getEast() == null) {
       return true;

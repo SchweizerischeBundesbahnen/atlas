@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DetailHelperService } from '../../../../../../core/detail/detail-helper.service';
+import { DetailDialogHelperService } from '../../../../../../core/detail/detail-dialog-helper.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
@@ -32,7 +32,7 @@ export class StopPointTerminationDialogComponent implements OnInit {
     private readonly dialogRef: MatDialogRef<StopPointTerminationDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     public readonly data: StopPointTerminationDialogData,
-    private readonly detailHelperService: DetailHelperService,
+    private readonly detailHelperService: DetailDialogHelperService,
     private readonly stopPointTerminationWorkflowService: StopPointTerminationWorkflowService,
     private readonly notificationService: NotificationService,
     private readonly userService: UserService

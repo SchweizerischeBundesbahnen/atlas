@@ -17,7 +17,9 @@ import java.util.Objects;
 @Constraint(validatedBy = {TrimmedNotBlank.Validator.class})
 public @interface TrimmedNotBlank {
 
-  String message() default "{atlas.constraint.trimmedNotBlank}";
+  String ATLAS_CONSTRAINT_TRIMMED_NOT_BLANK = "{atlas.constraint.trimmedNotBlank}";
+
+  String message() default ATLAS_CONSTRAINT_TRIMMED_NOT_BLANK;
 
   Class<?>[] groups() default {};
 
