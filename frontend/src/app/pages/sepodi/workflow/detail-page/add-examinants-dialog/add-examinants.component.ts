@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AddExaminants, StopPointPerson } from 'src/app/api';
-import { DetailHelperService } from 'src/app/core/detail/detail-helper.service';
+import { DetailDialogHelperService } from '../../../../../core/detail/detail-dialog-helper.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { Router } from '@angular/router';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -49,7 +49,7 @@ export class AddExaminantsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: AddExaminantsDialogData,
     public dialogRef: MatDialogRef<AddExaminantsComponent>,
-    private detailHelperService: DetailHelperService,
+    private detailHelperService: DetailDialogHelperService,
     private stopPointWorkflowService: StopPointWorkflowService,
     private notificationService: NotificationService,
     private router: Router

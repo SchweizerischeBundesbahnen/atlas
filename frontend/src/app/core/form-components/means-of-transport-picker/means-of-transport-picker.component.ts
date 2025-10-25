@@ -12,6 +12,7 @@ import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-la
 import { AtlasSpacerComponent } from '../../components/spacer/atlas-spacer.component';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { required } from '../../util/values';
 
 @Component({
   selector: 'means-of-transport-picker',
@@ -62,9 +63,10 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   get formControl() {
-    const ctrl = this.formGroup.get(this.controlName);
-    if (!ctrl) throw new Error('mean of transport control must be defined');
-    return ctrl;
+    return required(
+      this.formGroup.get(this.controlName),
+      'mean of transport control must be defined'
+    );
   }
 
   clicked(meanOfTransport: MeanOfTransport) {

@@ -25,6 +25,8 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "CreateServicePointVersion")
 public class CreateServicePointVersionModel extends UpdateServicePointVersionModel implements IdCheckable {
 
+  public static final String ATLAS_CONSTRAINT_VALID_SERVICE_POINT_NUMBER = "{atlas.constraint.validServicePointNumber}";
+
   @Schema(description = "Five digits number. Represent service point ID.", example = "34505")
   @Min(AtlasFieldLengths.MIN_NUMBER)
   @Max(AtlasFieldLengths.MAX_FIVE_DIGITS_NUMBER)
@@ -41,7 +43,7 @@ public class CreateServicePointVersionModel extends UpdateServicePointVersionMod
   }
 
   @JsonIgnore
-  @AssertTrue(message = "{atlas.constraint.validServicePointNumber}")
+  @AssertTrue(message = ATLAS_CONSTRAINT_VALID_SERVICE_POINT_NUMBER)
   // NumberShort should not be given if it is generated but has to be given on foreign countries
   public boolean isValidServicePointNumber() {
     if (getCountry() == null) {

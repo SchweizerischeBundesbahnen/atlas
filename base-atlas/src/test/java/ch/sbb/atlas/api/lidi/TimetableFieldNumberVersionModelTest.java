@@ -3,12 +3,10 @@ package ch.sbb.atlas.api.lidi;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel.TimetableFieldNumberVersionModelBuilder;
+import ch.sbb.atlas.model.BaseValidatorTest;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -23,9 +21,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.EnumSource.Mode;
 import org.junit.jupiter.params.provider.FieldSource;
 
-class TimetableFieldNumberVersionModelTest {
-
-  private final Validator validator;
+class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
 
   private static TimetableFieldNumberVersionModelBuilder<?, ?> versionModel() {
     return TimetableFieldNumberVersionModel.builder()
@@ -37,12 +33,6 @@ class TimetableFieldNumberVersionModelTest {
         .businessOrganisation("sbb")
         .descriptionOutwardLine1("test")
         .meanOfTransport(MeanOfTransport.TRAIN);
-  }
-
-  TimetableFieldNumberVersionModelTest() {
-    try (ValidatorFactory vf = Validation.buildDefaultValidatorFactory()) {
-      validator = vf.getValidator();
-    }
   }
 
   @Test

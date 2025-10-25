@@ -17,7 +17,9 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {CreateIdCheck.Validator.class})
 public @interface CreateIdCheck {
 
-  String message() default "{atlas.constraint.createIdCheck}";
+  String ATLAS_CONSTRAINT_CREATE_ID_CHECK = "{atlas.constraint.createIdCheck}";
+
+  String message() default ATLAS_CONSTRAINT_CREATE_ID_CHECK;
 
   Class<?>[] groups() default {};
 

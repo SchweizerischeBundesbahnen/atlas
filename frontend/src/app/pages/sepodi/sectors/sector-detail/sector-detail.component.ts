@@ -27,9 +27,9 @@ import { MatDivider } from '@angular/material/divider';
 import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import {
-  DetailHelperService,
+  DetailDialogHelperService,
   DetailWithCancelEdit,
-} from '../../../../core/detail/detail-helper.service';
+} from '../../../../core/detail/detail-dialog-helper.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { CreateSectorVersion } from '../../../../api/model/createSectorVersion';
@@ -69,7 +69,7 @@ export class SectorDetailComponent
   private readonly trafficPointMapService = inject(TrafficPointMapService);
   private readonly sectorService = inject(SectorService);
   private readonly validityService = inject(ValidityService);
-  private readonly detailHelperService = inject(DetailHelperService);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
   private readonly notificationService = inject(NotificationService);
   private readonly mapService = inject(MapService);
 

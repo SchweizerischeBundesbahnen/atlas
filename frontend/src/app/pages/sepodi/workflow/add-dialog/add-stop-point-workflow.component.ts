@@ -4,7 +4,7 @@ import { StopPointAddWorkflow, StopPointPerson } from '../../../../api';
 import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
 import { FormGroup } from '@angular/forms';
 import { ValidationService } from '../../../../core/validation/validation.service';
-import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { Router } from '@angular/router';
 import { Pages } from '../../../pages';
@@ -36,7 +36,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AddStopPointWorkflowComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddStopPointWorkflowDialogData,
-    private detailHelperService: DetailHelperService,
+    private detailHelperService: DetailDialogHelperService,
     private stopPointWorkflowService: StopPointWorkflowService,
     private notificationService: NotificationService,
     private userService: UserService,

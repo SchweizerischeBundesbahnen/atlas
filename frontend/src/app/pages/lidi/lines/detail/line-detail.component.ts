@@ -24,7 +24,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { DateRange } from '../../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
-import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SublineShorteningDialogComponent } from '../../dialog/subline-shortening-dialog/subline-shortening-dialog.component';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
@@ -119,7 +119,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
     private permissionService: PermissionService,
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
-    private detailHelperService: DetailHelperService,
+    private detailHelperService: DetailDialogHelperService,
     private dialog: MatDialog
   ) {}
 
