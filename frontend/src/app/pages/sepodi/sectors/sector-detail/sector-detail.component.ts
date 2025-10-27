@@ -39,6 +39,8 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { MapService } from '../../map/map.service';
 import { filter } from 'rxjs/operators';
 import { TrafficPointMapService } from '../../map/traffic-point-map.service';
+import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
 
 @Component({
   selector: 'app-sector-detail',
@@ -68,10 +70,12 @@ export class SectorDetailComponent
   private readonly sectorMapService = inject(SectorMapService);
   private readonly trafficPointMapService = inject(TrafficPointMapService);
   private readonly sectorService = inject(SectorService);
+  private readonly sectorInternalService = inject(SectorInternalService);
   private readonly validityService = inject(ValidityService);
   private readonly detailHelperService = inject(DetailDialogHelperService);
   private readonly notificationService = inject(NotificationService);
   private readonly mapService = inject(MapService);
+  private readonly dialogService = inject(DialogService);
 
   sectorVersions!: ReadSectorVersion[];
   selectedVersion!: ReadSectorVersion;
@@ -226,5 +230,32 @@ export class SectorDetailComponent
       this.form.enable();
       return EMPTY;
     };
+  }
+
+  revoke() {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.sectorInternalService
+            .revokeSector(this.selectedVersion.sloid!)
+            .pipe(catchError(this.handleError()))
+            .subscribe(() => {
+              this.notificationService.success(
+                'SEPODI.SECTORS.NOTIFICATION.REVOKE_SUCCESS'
+              );
+              this.router
+                .navigate(['..', this.selectedVersion.sloid], {
+                  relativeTo: this.route,
+                })
+                .then(() => this.ngOnInit());
+            });
+        }
+      });
   }
 }

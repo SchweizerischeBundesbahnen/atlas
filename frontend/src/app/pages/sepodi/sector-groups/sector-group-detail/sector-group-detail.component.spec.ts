@@ -24,6 +24,8 @@ import {
 } from '../../../../../test/data/sector';
 import { MapService } from '../../map/map.service';
 import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
 
 describe('SectorGroupDetailComponent', () => {
   let component: SectorGroupDetailComponent;
@@ -70,6 +72,13 @@ describe('SectorGroupDetailComponent', () => {
     'updateSectorGroup',
     'getSectorsBySectorGroupSloid',
   ]);
+  const sectorGroupInternalService =
+    jasmine.createSpyObj<SectorGroupInternalService>({
+      revokeSectorGroup: of(),
+    });
+  const dialogService = jasmine.createSpyObj<DialogService>({
+    confirm: of(true),
+  });
 
   describe('new mode', () => {
     beforeEach(() => {
@@ -191,6 +200,14 @@ describe('SectorGroupDetailComponent', () => {
         jasmine.any(Object)
       );
     });
+
+    it('should revoke sector group', () => {
+      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+
+      component.revoke();
+
+      expect(sectorGroupInternalService.revokeSectorGroup).toHaveBeenCalled();
+    });
   });
 
   async function setupTestBed(activatedRoute: ActivatedRouteMockType) {
@@ -203,6 +220,11 @@ describe('SectorGroupDetailComponent', () => {
         { provide: SectorGroupService, useValue: sectorGroupService },
         { provide: SectorInternalService, useValue: sectorInternalService },
         { provide: MapService, useValue: mapService },
+        {
+          provide: SectorGroupInternalService,
+          useValue: sectorGroupInternalService,
+        },
+        { provide: DialogService, useValue: dialogService },
       ],
     })
       .overrideComponent(SectorGroupDetailComponent, {

@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
-import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -14,6 +13,7 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { SectorPermissionService } from '../sector-permission.service';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
+import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVersion';
 
 @Component({
   selector: 'app-sector-group-overview',
@@ -37,12 +37,12 @@ export class SectorGroupOverviewComponent implements OnInit {
 
   trafficPointSloid!: string;
 
-  sectorGroups: SectorGroupVersion[] = [];
+  sectorGroups: ReadSectorGroupVersion[] = [];
   totalSectorGroups = 0;
 
   tableFilterConfig!: TableFilter<unknown>[][];
 
-  tableColumnsSectorGroups: TableColumn<SectorGroupVersion>[] = [
+  tableColumnsSectorGroups: TableColumn<ReadSectorGroupVersion>[] = [
     {
       headerTitle: 'SEPODI.SECTORS.DESIGNATION',
       value: 'designation',
@@ -78,7 +78,7 @@ export class SectorGroupOverviewComponent implements OnInit {
       });
   }
 
-  editSectorGroup(clickedRow: SectorGroupVersion) {
+  editSectorGroup(clickedRow: ReadSectorGroupVersion) {
     this.router
       .navigate([clickedRow.sloid], {
         relativeTo: this.route,

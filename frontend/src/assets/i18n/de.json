@@ -1277,7 +1277,8 @@
       "EDGE_HEIGHT": "Kantenhöhe [cm]",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Der Sektor wurde erfolgreich hinzugefügt.",
-        "EDIT_SUCCESS": "Der Sektor wurde erfolgreich gespeichert."
+        "EDIT_SUCCESS": "Der Sektor wurde erfolgreich gespeichert.",
+        "REVOKE_SUCCESS": "Der Sektor wurde erfolgreich als Fehlerfassung gekennzeichnet."
       },
       "TRAFFIC_POINT_VALIDITY_ERROR": "Die Haltekantengültigkeit von {{from}} bis {{to}} darf nicht überschritten werden.",
       "MEANS_OF_TRANSPORT_ERROR": "Es wird mindestens eine Dienststellen Version erwartet, die eine Haltestelle ist und nur Zug als Transportmittel hat.",
@@ -1287,7 +1288,12 @@
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Sektorengruppen",
       "SECTOR_GROUP": "Sektorengruppe",
-      "NEW": "Sektorengruppe erfassen"
+      "NEW": "Sektorengruppe erfassen",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Sektorengruppe wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Sektorengruppe wurde erfolgreich gespeichert.",
+        "REVOKE_SUCCESS": "Die Sektorengruppe wurde erfolgreich als Fehlerfassung gekennzeichnet."
+      }
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen",

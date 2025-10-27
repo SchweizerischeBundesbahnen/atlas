@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
-import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
 import { SectorGroupService } from '../../../../api/service/sepodi/sector-group.service';
+import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVersion';
 
 @Injectable({ providedIn: 'root' })
 export class SectorGroupDetailResolver {
@@ -12,7 +12,7 @@ export class SectorGroupDetailResolver {
 
   resolve(
     route: ActivatedRouteSnapshot
-  ): Observable<Array<SectorGroupVersion>> {
+  ): Observable<Array<ReadSectorGroupVersion>> {
     const sectorGroupSloid = route.paramMap.get('sectorGroupSloid') ?? '';
     return sectorGroupSloid === 'add'
       ? of([])
@@ -28,6 +28,6 @@ export class SectorGroupDetailResolver {
   }
 }
 
-export const sectorGroupResolver: ResolveFn<Array<SectorGroupVersion>> = (
+export const sectorGroupResolver: ResolveFn<Array<ReadSectorGroupVersion>> = (
   route: ActivatedRouteSnapshot
 ) => inject(SectorGroupDetailResolver).resolve(route);

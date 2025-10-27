@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CreateSectorGroupVersion } from '../../model/createSectorGroupVersion';
 import { ReadSectorVersion } from '../../model/readSectorVersion';
 import { ReadSectorGroupVersion } from '../../model/readSectorGroupVersion';
+import { UpdateSectorGroupVersion } from '../../model/updateSectorGroupVersion';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class SectorGroupService {
     return this.atlasApiService.post(this.BASE_PATH, sectorGroupVersion);
   }
 
-  public updateSectorGroup(id: number, sectorGroupVersion: ReadSectorGroupVersion): Observable<ReadSectorGroupVersion[]> {
+  public updateSectorGroup(id: number, sectorGroupVersion: UpdateSectorGroupVersion): Observable<ReadSectorGroupVersion[]> {
     this.atlasApiService.validateParams({ id, sectorGroupVersion: sectorGroupVersion });
     return this.atlasApiService.put(
       `${this.BASE_PATH}/${encodeURIComponent(String(id))}`, sectorGroupVersion);

@@ -28,7 +28,6 @@ import { VersionsHandlingService } from '../../../../core/versioning/versions-ha
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { catchError, EMPTY } from 'rxjs';
 import { SectorGroupService } from '../../../../api/service/sepodi/sector-group.service';
-import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
 import {
   SectorGroupDetailFormGroup,
   SectorGroupFormGroupBuilder,
@@ -49,6 +48,9 @@ import { SectorInternalService } from '../../../../api/service/sepodi/sector-int
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVersion';
+import { UpdateSectorGroupVersion } from '../../../../api/model/updateSectorGroupVersion';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
 
 @Component({
   selector: 'app-sector-group-detail',
@@ -84,7 +86,11 @@ export class SectorGroupDetailComponent
   private readonly detailHelperService = inject(DetailDialogHelperService);
   private readonly notificationService = inject(NotificationService);
   private readonly sectorGroupService = inject(SectorGroupService);
+  private readonly sectorGroupInternalService = inject(
+    SectorGroupInternalService
+  );
   private readonly sectorInternalService = inject(SectorInternalService);
+  private readonly dialogService = inject(DialogService);
 
   tableColumns: TableColumn<ReadSectorVersion>[] = [
     { headerTitle: 'SEPODI.SECTORS.DESIGNATION', value: 'designation' },
@@ -223,7 +229,7 @@ export class SectorGroupDetailComponent
       .pipe(catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success(
-          'SEPODI.SECTORS.NOTIFICATION.ADD_SUCCESS'
+          'SEPODI.SECTOR_GROUPS.NOTIFICATION.ADD_SUCCESS'
         );
         this.router
           .navigate(['..', version.sloid], { relativeTo: this.route })
@@ -231,13 +237,16 @@ export class SectorGroupDetailComponent
       });
   }
 
-  private update(id: number, sectorGroupVersion: SectorGroupVersion): void {
+  private update(
+    id: number,
+    sectorGroupVersion: UpdateSectorGroupVersion
+  ): void {
     this.sectorGroupService
       .updateSectorGroup(id, sectorGroupVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success(
-          'SEPODI.SECTORS.NOTIFICATION.EDIT_SUCCESS'
+          'SEPODI.SECTOR_GROUPS.NOTIFICATION.EDIT_SUCCESS'
         );
         this.router
           .navigate(['..', this.selectedVersion.sloid], {
@@ -293,6 +302,33 @@ export class SectorGroupDetailComponent
       .getSectors(trafficPointSloid)
       .subscribe((sectors) => {
         this.allSectorVersionsOfTrafficPoint = sectors.objects ?? [];
+      });
+  }
+
+  revoke() {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.sectorGroupInternalService
+            .revokeSectorGroup(this.selectedVersion.sloid!)
+            .pipe(catchError(this.handleError()))
+            .subscribe(() => {
+              this.notificationService.success(
+                'SEPODI.SECTOR_GROUPS.NOTIFICATION.REVOKE_SUCCESS'
+              );
+              this.router
+                .navigate(['..', this.selectedVersion.sloid], {
+                  relativeTo: this.route,
+                })
+                .then(() => this.ngOnInit());
+            });
+        }
       });
   }
 }

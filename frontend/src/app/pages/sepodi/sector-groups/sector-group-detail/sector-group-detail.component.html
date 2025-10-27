@@ -80,14 +80,14 @@
             {{ 'COMMON.VERSION' | translate }}
             {{ selectedVersionIndex + 1 }}
           </h2>
-        </div>
-        <div>
-          <span class="font-bold-lg color-gray-900"
-            >{{ 'COMMON.STATUS' | translate }}
-          </span>
-          <span class="color-gray-900">{{
-            'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
-          }}</span>
+          <div>
+            <span class="font-bold-lg color-gray-900"
+              >{{ 'COMMON.STATUS' | translate }}
+            </span>
+            <span class="color-gray-900">{{
+              'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
+            }}</span>
+          </div>
         </div>
       </div>
     }
@@ -189,7 +189,7 @@
       [footerEdit]="form.enabled"
     >
     </atlas-button>
-    @if (form.disabled) {
+    @if (form.disabled && selectedVersion.status !== 'REVOKED') {
       <atlas-button
         (buttonClicked)="toggleEdit()"
         applicationType="SEPODI"
@@ -219,5 +219,16 @@
       wrapperStyleClass="ms-3 sector-save"
     >
     </atlas-button>
+    @if (!isNew && selectedVersion.status !== 'REVOKED') {
+      <atlas-button
+        (buttonClicked)="revoke()"
+        [applicationType]="'SEPODI'"
+        buttonDataCy="revoke-sector-group"
+        buttonText="COMMON.REVOKE"
+        buttonType="revoke"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    }
   </atlas-detail-footer>
 </atlas-detail-page-container>
