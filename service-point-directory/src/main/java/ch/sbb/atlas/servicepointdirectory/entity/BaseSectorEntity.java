@@ -1,10 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -51,4 +54,8 @@ public abstract class BaseSectorEntity extends BaseEntity {
   @Schema(description = "Length of the Sector", example = "18.000")
   @AtlasVersionableProperty
   private Double length;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private Status status;
 }

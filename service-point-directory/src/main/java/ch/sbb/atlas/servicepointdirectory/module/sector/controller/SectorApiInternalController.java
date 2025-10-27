@@ -19,6 +19,11 @@ public class SectorApiInternalController implements SectorApiInternal {
   private final SectorService sectorService;
 
   @Override
+  public void revokeSector(String sloid) {
+    sectorService.revoke(sloid);
+  }
+
+  @Override
   public Container<ReadSectorVersionModel> getSectorsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
     return sectorService.getSectorsOfTrafficPoint(trafficPointSloid, pageable);
   }

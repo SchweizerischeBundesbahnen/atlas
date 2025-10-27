@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.sepodi.sectorgroup.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_GROUP_JSON_JOB_NAME;
 
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.processor.SectorGroupJsonProcessor;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.sql.SectorGroupSqlQueryUtil;
@@ -80,7 +80,7 @@ public class SectorGroupExportBatchConfig {
   public Step exportSectorGroupJsonStep(ItemReader<SectorGroupVersion> itemReader) {
     String stepName = "exportSectorGroupJsonStep";
     return new StepBuilder(stepName, jobRepository)
-        .<SectorGroupVersion, SectorGroupVersionModel>chunk(StepUtil.CHUNK_SIZE, transactionManager)
+        .<SectorGroupVersion, ReadSectorGroupVersionModel>chunk(StepUtil.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(sectorGroupJsonProcessor())
         .writer(sectorGroupJsonFileItemWriter(null))
@@ -98,7 +98,7 @@ public class SectorGroupExportBatchConfig {
 
   @Bean
   @StepScope
-  public JsonFileItemWriter<SectorGroupVersionModel> sectorGroupJsonFileItemWriter(
+  public JsonFileItemWriter<ReadSectorGroupVersionModel> sectorGroupJsonFileItemWriter(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     return jsonSectorGroupVersionWriter.getWriter(ExportObjectV2.SECTOR_GROUP, exportTypeV2);
   }

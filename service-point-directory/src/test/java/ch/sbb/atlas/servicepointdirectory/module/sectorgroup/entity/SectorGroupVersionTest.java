@@ -2,16 +2,14 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.BaseValidatorTest;
+import ch.sbb.atlas.model.Status;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class SectorGroupVersionTest {
-
-  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+class SectorGroupVersionTest extends BaseValidatorTest {
 
   @Test
   void shouldNotAcceptSectorGroupWithoutRequiredTrafficPointSloid() {
@@ -22,6 +20,7 @@ class SectorGroupVersionTest {
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .version(1)
+        .status(Status.VALIDATED)
         .build();
     //when
     Set<ConstraintViolation<SectorGroupVersion>> constraintViolations = validator.validate(sectorGroupVersion);
@@ -39,6 +38,7 @@ class SectorGroupVersionTest {
         .designation("off")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
+        .status(Status.VALIDATED)
         .version(1)
         .build();
     //when

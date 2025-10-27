@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "CreateSectorGroupVersion")
-public class CreateSectorGroupVersionModel extends SectorGroupVersionModel implements IdCheckable {
+public class CreateSectorGroupVersionModel extends BaseSectorModel implements IdCheckable {
 
   @Size(min = 2)
   @NotNull

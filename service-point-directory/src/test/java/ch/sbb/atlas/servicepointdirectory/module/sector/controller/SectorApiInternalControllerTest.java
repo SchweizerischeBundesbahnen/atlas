@@ -1,17 +1,21 @@
 package ch.sbb.atlas.servicepointdirectory.module.sector.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.servicepoint.sector.BaseSectorModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel.Fields;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.module.sector.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +37,7 @@ class SectorApiInternalControllerTest extends BaseControllerApiTest {
   @BeforeEach
   void createDefaultVersion() {
     sectorVersion = SectorTestData.getNewBasicSectorVersion();
-    this.sectorVersion = sectorVersionRepository.save(sectorVersion);
+    this.sectorVersion = sectorVersionRepository.saveAndFlush(sectorVersion);
   }
 
   @AfterEach
@@ -53,6 +57,16 @@ class SectorApiInternalControllerTest extends BaseControllerApiTest {
     mvc.perform(get(BASE_PATH + "/actual-date/" + sectorVersion.getTrafficPointSloid())).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + BaseSectorModel.Fields.sloid, is("ch:1:sloid:sector:1111")))
         .andExpect(jsonPath("$[0]." + Fields.sectorGeolocation + ".wgs84", is(notNullValue())));
+  }
+
+  @Test
+  void shouldRevokeSector() throws Exception {
+    mvc.perform(post(BASE_PATH + "/" + sectorVersion.getSloid() + "/revoke")).andExpect(status().isOk());
+
+    List<SectorVersion> sector = sectorVersionRepository.findAllBySloidOrderByValidFrom(
+        sectorVersion.getSloid());
+    assertThat(sector).hasSize(1);
+    assertThat(sector.getFirst().getStatus()).isEqualTo(Status.REVOKED);
   }
 
 }

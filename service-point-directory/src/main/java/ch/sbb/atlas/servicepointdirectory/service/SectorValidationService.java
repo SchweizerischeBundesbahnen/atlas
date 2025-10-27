@@ -1,11 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.entity.BaseSectorEntity;
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.MissingTrainStopPointException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.RevokedException;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServicePointStatusRevokedChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
 import java.util.List;
@@ -55,6 +58,12 @@ public class SectorValidationService {
 
     if (!validitySector.isDateRangeContainedIn(validityTrafficPoint)) {
       throw new SectorValidityException(validityTrafficPoint);
+    }
+  }
+
+  public  <T extends BaseSectorEntity>  void checkIfStatusRevoked(T version) {
+    if (version.getStatus().equals(Status.REVOKED)) {
+      throw new RevokedException(version.getSloid());
     }
   }
 }

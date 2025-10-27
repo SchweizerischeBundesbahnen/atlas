@@ -110,7 +110,8 @@
         "ALREADY_ADDED": "Le fichier {{filename}} a déjà été ajouté.",
         "NOT_A_PDF": "Les documents {{documents}} ne sont pas des fichiers PDF valides."
       }
-    }
+    },
+    "REVOKED": "L’objet portant {{field}} {{value}} a le statut de saisie des erreurs. Il ne peut plus être modifié."
   },
   "DETAIL_USER_EDITION": {
     "LATEST_EDITION_DATE": "Dernière modification à {{editionDate}}",

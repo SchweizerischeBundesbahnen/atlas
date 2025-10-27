@@ -7,7 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -119,7 +119,7 @@ class SectorGroupServiceTest {
     sectorGroupVersion.setDesignation("A");
     sectorGroupVersionRepository.save(sectorGroupVersion);
 
-    Container<SectorGroupVersionModel> overview = sectorGroupService.getSectorGroupsOfTrafficPoint(
+    Container<ReadSectorGroupVersionModel> overview = sectorGroupService.getSectorGroupsOfTrafficPoint(
         sectorGroupVersion.getTrafficPointSloid(),
         PageRequest.of(0, 1, Sort.by("designation").ascending()));
     assertThat(overview.getTotalCount()).isEqualTo(1);
@@ -210,7 +210,7 @@ class SectorGroupServiceTest {
     doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
         toCreate.getTrafficPointSloid());
 
-    SectorGroupVersionModel result =
+    ReadSectorGroupVersionModel result =
         sectorGroupService.createSectorGroup(toCreate, sloids, List.of(ServicePointTestData.getBern()));
 
     assertThat(sectorGroupVersionRepository.findById(result.getId())).isPresent();

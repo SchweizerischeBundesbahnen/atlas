@@ -1,16 +1,16 @@
 package ch.sbb.exportservice.job.sepodi.sectorgroup.processor;
 
-import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.exportservice.job.sepodi.BaseSepodiProcessor;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.entity.SectorGroupVersion;
 import org.springframework.batch.item.ItemProcessor;
 
 public class SectorGroupJsonProcessor extends BaseSepodiProcessor implements
-    ItemProcessor<SectorGroupVersion, SectorGroupVersionModel> {
+    ItemProcessor<SectorGroupVersion, ReadSectorGroupVersionModel> {
 
   @Override
-  public SectorGroupVersionModel process(SectorGroupVersion version) throws Exception {
-    return SectorGroupVersionModel.builder()
+  public ReadSectorGroupVersionModel process(SectorGroupVersion version) throws Exception {
+    return ReadSectorGroupVersionModel.builder()
         .id(version.getId())
         .designation(version.getDesignation())
         .length(version.getLength())

@@ -1,0 +1,4 @@
+ALTER TABLE sector_version
+    add COLUMN status VARCHAR(50) NOT NULL DEFAULT 'VALIDATED';
+ALTER TABLE sector_group_version
+    add COLUMN status VARCHAR(50) NOT NULL DEFAULT 'VALIDATED';;

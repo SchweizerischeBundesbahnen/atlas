@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.BaseValidatorTest;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -10,17 +11,13 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
-class ServicePointVersionTest {
-
-  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+class ServicePointVersionTest extends BaseValidatorTest {
 
   @Test
   void shouldAcceptStopPointWithType() {

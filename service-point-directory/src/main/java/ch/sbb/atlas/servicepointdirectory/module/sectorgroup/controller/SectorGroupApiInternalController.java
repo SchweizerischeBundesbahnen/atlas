@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api.SectorGroupApiInternal;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.service.SectorGroupService;
 import java.util.List;
@@ -19,7 +19,12 @@ public class SectorGroupApiInternalController implements SectorGroupApiInternal 
   private final SectorGroupService sectorGroupService;
 
   @Override
-  public Container<SectorGroupVersionModel> getSectorGroupsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
+  public void revokeSector(String sloid) {
+    sectorGroupService.revoke(sloid);
+  }
+
+  @Override
+  public Container<ReadSectorGroupVersionModel> getSectorGroupsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
     return sectorGroupService.getSectorGroupsOfTrafficPoint(trafficPointSloid, pageable);
   }
 

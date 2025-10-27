@@ -24,6 +24,7 @@ public class SectorMapper {
         .sectorGeolocation(toGeolocation(sectorVersion))
         .length(sectorVersion.getLength())
         .edgeHeight(sectorVersion.getEdgeHeight())
+        .status(sectorVersion.getStatus())
         .creator(sectorVersion.getCreator())
         .creationDate(sectorVersion.getCreationDate())
         .editor(sectorVersion.getEditor())
