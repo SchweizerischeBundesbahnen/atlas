@@ -81,14 +81,14 @@ class SectorsAndSectorGroupsSqlIntegrationTest extends BaseSqlIntegrationTest {
   protected void insertSectorWithGroupRelation(String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
     final String insertSql = """
         INSERT INTO sector_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, north,
-                                    east, height, spatial_reference, length, edge_height, creation_date,
+                                    east, height, spatial_reference, length, edge_height, status, creation_date,
                                     creator, edition_date, editor, version)
         VALUES (nextval('sector_version_seq'), '%s', 'ch:1:sloid:6602:0:7110', '%s', '%s', 'test1', 225738.00000000000,
-                681821.00000000000, 540.20000, 'LV95', 150.000, 120, '2025-09-09 11:06:36.541447',
+                681821.00000000000, 540.20000, 'LV95', 150.000, 120, 'VALIDATED', '2025-09-09 11:06:36.541447',
                 'abab81fb-6ba0-4153-af93-8fb3dc910210', '2025-09-09 11:06:36.541447', 'abab81fb-6ba0-4153-af93-8fb3dc910210', 0);
-        INSERT INTO sector_group_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, creation_date,
+        INSERT INTO sector_group_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, status, creation_date,
                                     creator, edition_date, editor, version)
-        VALUES (nextval('sector_group_version_seq'), '%s1', 'ch:1:sloid:6602:0:7110', '%s', '%s', 'Group', '2025-09-09 11:06:36.541447',
+        VALUES (nextval('sector_group_version_seq'), '%s1', 'ch:1:sloid:6602:0:7110', '%s', '%s', 'Group', 'VALIDATED', '2025-09-09 11:06:36.541447',
                 'abab81fb-6ba0-4153-af93-8fb3dc910210', '2025-09-09 11:06:36.541447', 'abab81fb-6ba0-4153-af93-8fb3dc910210', 0);
         INSERT INTO sector_group_relations (sector_sloid, sector_group_sloid) VALUES ('%s', '%s1');
         """

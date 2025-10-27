@@ -16,6 +16,7 @@ public class SectorGroupJsonProcessor extends BaseSepodiProcessor implements
         .length(version.getLength())
         .sloid(version.getSloid())
         .trafficPointSloid(version.getTrafficPointSloid())
+        .status(version.getStatus())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
         .etagVersion(version.getVersion())

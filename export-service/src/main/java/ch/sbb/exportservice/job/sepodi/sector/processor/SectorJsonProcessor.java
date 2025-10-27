@@ -18,6 +18,7 @@ public class SectorJsonProcessor extends BaseSepodiProcessor implements ItemProc
         .length(version.getLength())
         .sloid(version.getSloid())
         .trafficPointSloid(version.getTrafficPointSloid())
+        .status(version.getStatus())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
         .etagVersion(version.getVersion())

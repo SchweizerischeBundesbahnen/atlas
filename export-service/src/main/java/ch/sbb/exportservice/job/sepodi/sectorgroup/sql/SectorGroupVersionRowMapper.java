@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.sectorgroup.sql;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.entity.SectorGroupVersion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ public class SectorGroupVersionRowMapper implements RowMapper<SectorGroupVersion
     return SectorGroupVersion.builder()
         .id(rs.getLong("id"))
         .sloid(rs.getString("sloid"))
+        .status(Status.valueOf(rs.getString("status")))
         .validFrom(rs.getDate("valid_from").toLocalDate())
         .validTo(rs.getDate("valid_to").toLocalDate())
         .length(rs.getDouble("length"))

@@ -3,6 +3,7 @@ package ch.sbb.exportservice.integration.sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.sql.SectorGroupSqlQueryUtil;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.sql.SectorGroupVersionRowMapper;
@@ -31,6 +32,7 @@ class SectorGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
         .length(150.000)
         .trafficPointSloid("ch:1:sloid:6602:0:7110")
         .designation("test1")
+        .status(Status.VALIDATED)
         .creationDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
         .creator("abab81fb-6ba0-4153-af93-8fb3dc910210")
         .editionDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
@@ -60,6 +62,7 @@ class SectorGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
         .length(150.000)
         .trafficPointSloid("ch:1:sloid:6602:0:7110")
         .designation("test1")
+        .status(Status.VALIDATED)
         .creationDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
         .creator("abab81fb-6ba0-4153-af93-8fb3dc910210")
         .editionDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
@@ -94,6 +97,7 @@ class SectorGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
         .length(150.000)
         .trafficPointSloid("ch:1:sloid:6602:0:7110")
         .designation("test1")
+        .status(Status.VALIDATED)
         .creationDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
         .creator("abab81fb-6ba0-4153-af93-8fb3dc910210")
         .editionDate(LocalDateTime.of(2025, 9, 9, 11, 6, 36, 541_447_000))
@@ -120,9 +124,9 @@ class SectorGroupSqlIntegrationTest extends BaseSqlIntegrationTest {
 
   protected void insertSectorGroup(String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
     final String insertSql = """
-        INSERT INTO sector_group_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, length, creation_date,
+        INSERT INTO sector_group_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, length, status, creation_date,
                                     creator, edition_date, editor, version)
-        VALUES (nextval('sector_group_version_seq'), '%s', 'ch:1:sloid:6602:0:7110', '%s', '%s', 'test1', 150.000, '2025-09-09 11:06:36.541447',
+        VALUES (nextval('sector_group_version_seq'), '%s', 'ch:1:sloid:6602:0:7110', '%s', '%s', 'test1', 150.000, 'VALIDATED', '2025-09-09 11:06:36.541447',
                 'abab81fb-6ba0-4153-af93-8fb3dc910210', '2025-09-09 11:06:36.541447', 'abab81fb-6ba0-4153-af93-8fb3dc910210', 0);
         """
         .formatted(sloid, formatDate(validFrom), formatDate(validTo));

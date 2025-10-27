@@ -26,6 +26,7 @@ public class SectorsAndSectorGroupsCsvProcessor extends BaseSepodiProcessor impl
         .edgeHeight(version.getEdgeHeight())
         .relatedGroups(version.getRelatedGroups())
         .relatedSectors(version.getRelatedSectors())
+        .status(version.getStatus())
         .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
         .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(version.getEditionDate()));
     if (version.getSpatialReference() != null) {
