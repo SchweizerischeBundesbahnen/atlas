@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.mapper;
 
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
 import lombok.experimental.UtilityClass;
 
@@ -42,7 +43,7 @@ public class SectorGroupMapper {
         .build();
   }
 
-  public static SectorGroupVersion toEntity(ReadSectorGroupVersionModel updateSectorGroupVersionModel) {
+  public static SectorGroupVersion toEntity(UpdateSectorGroupVersionModel updateSectorGroupVersionModel) {
     return SectorGroupVersion.builder()
         .designation(updateSectorGroupVersionModel.getDesignation())
         .validFrom(updateSectorGroupVersionModel.getValidFrom())

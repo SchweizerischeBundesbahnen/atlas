@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api.SectorGroupApiV1;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.mapper.SectorGroupMapper;
@@ -47,7 +48,7 @@ public class SectorGroupApiV1Controller implements SectorGroupApiV1 {
 
   @Override
   public List<ReadSectorGroupVersionModel> updateSectorGroupVersion(Long id,
-      ReadSectorGroupVersionModel updateSectorGroupVersionModel) {
+      UpdateSectorGroupVersionModel updateSectorGroupVersionModel) {
     SectorGroupVersion sectorGroupVersionToUpdate = sectorGroupService.getSectorGroupVersionById(id);
     SectorGroupVersion editedVersion = SectorGroupMapper.toEntity(updateSectorGroupVersionModel);
 

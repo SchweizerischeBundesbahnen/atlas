@@ -31,4 +31,11 @@ describe('SectorInternalService', () => {
       '/service-point-directory/internal/sectors/ch%3A1%3Asloid%3A7000%3A1/overview', jasmine.any(HttpParams));
   });
 
+  it('should revoke sector', () => {
+    service.revokeSector('ch:1:sloid:7000:1');
+
+    expect(apiService.post).toHaveBeenCalledOnceWith(
+      '/service-point-directory/internal/sectors/ch%3A1%3Asloid%3A7000%3A1/revoke');
+  });
+
 });

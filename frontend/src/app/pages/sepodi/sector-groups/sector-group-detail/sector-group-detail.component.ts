@@ -48,6 +48,7 @@ import { SelectComponent } from '../../../../core/form-components/select/select.
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVersion';
 
 @Component({
   selector: 'app-sector-group-detail',
@@ -97,8 +98,8 @@ export class SectorGroupDetailComponent
   ];
   tableFilterConfig!: TableFilter<unknown>[][];
 
-  sectorGroupVersions!: SectorGroupVersion[];
-  selectedVersion!: SectorGroupVersion;
+  sectorGroupVersions!: ReadSectorGroupVersion[];
+  selectedVersion!: ReadSectorGroupVersion;
   selectedVersionIndex!: number;
   sectorVersions: ReadSectorVersion[] = [];
   allSectorVersionsOfTrafficPoint: ReadSectorVersion[] = [];

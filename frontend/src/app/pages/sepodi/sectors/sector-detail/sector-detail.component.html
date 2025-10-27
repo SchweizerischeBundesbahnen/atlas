@@ -63,6 +63,14 @@
             {{ selectedVersionIndex + 1 }}
           </h2>
         </div>
+        <div>
+          <span class="font-bold-lg color-gray-900"
+            >{{ 'COMMON.STATUS' | translate }}
+          </span>
+          <span class="color-gray-900">{{
+            'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
+          }}</span>
+        </div>
       </div>
     }
 

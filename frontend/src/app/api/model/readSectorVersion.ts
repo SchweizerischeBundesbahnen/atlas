@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { Geolocation } from './geolocation';
 
 
@@ -58,5 +59,9 @@ export interface ReadSectorVersion {
      */
     edgeHeight?: number;
     sectorGeolocation?: Geolocation;
+    status?: Status;
 }
+export namespace ReadSectorVersion {
+}
+
 

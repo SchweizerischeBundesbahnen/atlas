@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api;
 
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,6 +34,6 @@ public interface SectorGroupApiV1 {
   @PutMapping(path = "{id}")
   List<ReadSectorGroupVersionModel> updateSectorGroupVersion(
       @PathVariable Long id,
-      @Valid @RequestBody ReadSectorGroupVersionModel updateSectorGroupVersionModel
+      @Valid @RequestBody UpdateSectorGroupVersionModel updateSectorGroupVersionModel
   );
 }

@@ -1,9 +1,9 @@
-import {inject, Injectable} from '@angular/core';
-import {AtlasApiService} from '../atlas-api.service';
-import {Observable} from 'rxjs';
-import {SectorGroupVersion} from "../../model/sectorGroupVersion";
-import {CreateSectorGroupVersion} from "../../model/createSectorGroupVersion";
-import {ReadSectorVersion} from "../../model/readSectorVersion";
+import { inject, Injectable } from '@angular/core';
+import { AtlasApiService } from '../atlas-api.service';
+import { Observable } from 'rxjs';
+import { CreateSectorGroupVersion } from '../../model/createSectorGroupVersion';
+import { ReadSectorVersion } from '../../model/readSectorVersion';
+import { ReadSectorGroupVersion } from '../../model/readSectorGroupVersion';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class SectorGroupService {
   private readonly atlasApiService = inject(AtlasApiService);
 
 
-  public getSectorGroup(sectorGroupSloid: string): Observable<Array<SectorGroupVersion>> {
+  public getSectorGroup(sectorGroupSloid: string): Observable<Array<ReadSectorGroupVersion>> {
     return this.atlasApiService.get(`${this.BASE_PATH}/${encodeURIComponent(sectorGroupSloid)}`);
   }
 
@@ -22,12 +22,12 @@ export class SectorGroupService {
     return this.atlasApiService.get(`${this.BASE_PATH_INTERNAL}/${encodeURIComponent(sectorGroupSloid)}/sectors`);
   }
 
-  public createSectorGroup(sectorGroupVersion: CreateSectorGroupVersion): Observable<SectorGroupVersion> {
+  public createSectorGroup(sectorGroupVersion: CreateSectorGroupVersion): Observable<ReadSectorGroupVersion> {
     this.atlasApiService.validateParams({ sectorGroupVersion });
     return this.atlasApiService.post(this.BASE_PATH, sectorGroupVersion);
   }
 
-  public updateSectorGroup(id: number, sectorGroupVersion: SectorGroupVersion): Observable<SectorGroupVersion[]> {
+  public updateSectorGroup(id: number, sectorGroupVersion: ReadSectorGroupVersion): Observable<ReadSectorGroupVersion[]> {
     this.atlasApiService.validateParams({ id, sectorGroupVersion: sectorGroupVersion });
     return this.atlasApiService.put(
       `${this.BASE_PATH}/${encodeURIComponent(String(id))}`, sectorGroupVersion);
