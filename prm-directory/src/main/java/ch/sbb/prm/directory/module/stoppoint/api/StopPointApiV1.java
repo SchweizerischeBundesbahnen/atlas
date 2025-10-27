@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -65,4 +66,10 @@ public interface StopPointApiV1 {
   List<ReadStopPointVersionModel> updateStopPoint(@PathVariable Long id,
       @RequestBody @Valid StopPointVersionModel stopPointVersionModel);
 
+  @PutMapping("/terminate/{sloid}/{validTo}")
+  List<ReadStopPointVersionModel> terminateStopPoint(
+      @Parameter(description = "Sloid in the format 'ch:1:sloid:1400015'", example = "ch:1:sloid:1400015")
+      @PathVariable String sloid,
+      @Parameter(description = "ValidTo date in the format 'YYYY-MM-DD'", example = "2024-03-03")
+      @PathVariable LocalDate validTo);
 }

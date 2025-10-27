@@ -5,7 +5,10 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
+import ch.sbb.atlas.helper.TerminationHelper;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.platform.service.PlatformService;
 import ch.sbb.prm.directory.module.stoppoint.api.StopPointApiV1;
 import ch.sbb.prm.directory.module.stoppoint.controller.model.StopPointRequestParams;
@@ -15,6 +18,7 @@ import ch.sbb.prm.directory.module.stoppoint.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.module.stoppoint.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.module.stoppoint.service.PrmChangeRecordingVariantService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,4 +83,27 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
         .map(StopPointVersionMapper::toModel).toList();
   }
 
+  @Override
+  public List<ReadStopPointVersionModel> terminateStopPoint(String sloid, LocalDate validTo) {
+    List<StopPointVersion> currentVersions = stopPointService.findAllBySloidOrderByValidFrom(sloid);
+
+    if (currentVersions.isEmpty()) {
+      throw new SloidNotFoundException(sloid);
+    }
+
+    StopPointVersion latestVersion = currentVersions.getLast();
+    StopPointVersion editedVersion = latestVersion.toBuilder().build();
+    editedVersion.setValidTo(validTo);
+
+    terminate(latestVersion, editedVersion);
+
+    return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream().map(StopPointVersionMapper::toModel).toList();
+  }
+
+  private void terminate(StopPointVersion latestVersion, StopPointVersion editedVersion) {
+    DateRange dateRange = new DateRange(latestVersion.getValidFrom(), latestVersion.getValidTo());
+
+    TerminationHelper.isValidToInLastVersionRange(latestVersion.getSloid(), dateRange, editedVersion.getValidTo());
+    stopPointService.updateStopPointVersion(latestVersion, editedVersion);
+  }
 }
