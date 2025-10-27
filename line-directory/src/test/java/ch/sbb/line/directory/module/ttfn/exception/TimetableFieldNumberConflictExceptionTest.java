@@ -2,8 +2,8 @@ package ch.sbb.line.directory.module.ttfn.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ class TimetableFieldNumberConflictExceptionTest {
         .ttfnid("ch:1:ttfnid:100000")
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX")
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 12, 12))

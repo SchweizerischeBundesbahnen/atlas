@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.module.ttfn.service;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
@@ -51,7 +51,7 @@ abstract class BaseTimetableFieldNumberServiceTest {
     return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX1")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")
@@ -64,7 +64,7 @@ abstract class BaseTimetableFieldNumberServiceTest {
     return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX2")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")
@@ -77,7 +77,7 @@ abstract class BaseTimetableFieldNumberServiceTest {
     return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX3")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")
@@ -90,7 +90,7 @@ abstract class BaseTimetableFieldNumberServiceTest {
     return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX4")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")
@@ -103,7 +103,7 @@ abstract class BaseTimetableFieldNumberServiceTest {
     return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX5")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")

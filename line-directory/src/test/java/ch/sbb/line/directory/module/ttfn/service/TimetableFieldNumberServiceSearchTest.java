@@ -2,9 +2,9 @@ package ch.sbb.line.directory.module.ttfn.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
@@ -50,7 +50,7 @@ class TimetableFieldNumberServiceSearchTest {
             .ttfnid("ch:1:ttfnid:100000")
             .descriptionOutwardLine1("TimetableFieldNumberVersion 1")
             .descriptionReturnLine1("TimetableFieldNumberVersion 1")
-            .meanOfTransport(MeanOfTransport.TRAIN)
+            .meanOfTransport(TtfnMeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.1")
             .status(Status.VALIDATED)
             .number("1.0")
@@ -107,7 +107,7 @@ class TimetableFieldNumberServiceSearchTest {
             .ttfnid("ch:1:ttfnid:100011")
             .descriptionOutwardLine1("_bls")
             .descriptionReturnLine1("_bls")
-            .meanOfTransport(MeanOfTransport.TRAIN)
+            .meanOfTransport(TtfnMeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.2")
             .status(Status.VALIDATED)
             .number("1.0")
@@ -136,7 +136,7 @@ class TimetableFieldNumberServiceSearchTest {
             .ttfnid("ch:1:ttfnid:100011")
             .descriptionOutwardLine1("__bls")
             .descriptionReturnLine1("__bls")
-            .meanOfTransport(MeanOfTransport.TRAIN)
+            .meanOfTransport(TtfnMeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.2")
             .status(Status.VALIDATED)
             .number("1.0")
@@ -165,7 +165,7 @@ class TimetableFieldNumberServiceSearchTest {
             .ttfnid("ch:1:ttfnid:100011")
             .descriptionOutwardLine1("%bls")
             .descriptionReturnLine1("%bls")
-            .meanOfTransport(MeanOfTransport.TRAIN)
+            .meanOfTransport(TtfnMeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.2")
             .status(Status.VALIDATED)
             .number("1.0")
@@ -194,7 +194,7 @@ class TimetableFieldNumberServiceSearchTest {
             .ttfnid("ch:1:ttfnid:100011")
             .descriptionOutwardLine1("%%bls")
             .descriptionReturnLine1("%%bls")
-            .meanOfTransport(MeanOfTransport.TRAIN)
+            .meanOfTransport(TtfnMeanOfTransport.TRAIN)
             .swissTimetableFieldNumber("a.2")
             .status(Status.VALIDATED)
             .number("1.0")

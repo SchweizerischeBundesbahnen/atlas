@@ -3,9 +3,9 @@ package ch.sbb.atlas.api.lidi;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel.TimetableFieldNumberVersionModelBuilder;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.BaseValidatorTest;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import jakarta.validation.ConstraintViolation;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,8 +17,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.EnumSource.Mode;
 import org.junit.jupiter.params.provider.FieldSource;
 
 class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
@@ -32,7 +30,7 @@ class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
         .validTo(LocalDate.of(2022, 12, 1))
         .businessOrganisation("sbb")
         .descriptionOutwardLine1("test")
-        .meanOfTransport(MeanOfTransport.TRAIN);
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN);
   }
 
   @Test
@@ -270,29 +268,6 @@ class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
     // Then
     assertThat(constraintViolations).hasSize(1);
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(fieldName);
-  }
-
-  @ParameterizedTest
-  @EnumSource(value = MeanOfTransport.class, names = {"ELEVATOR", "UNKNOWN"})
-  void shouldNotAllowMeanOfTransport(MeanOfTransport meanOfTransport) {
-    // Given
-    TimetableFieldNumberVersionModel version = versionModel().meanOfTransport(meanOfTransport).build();
-    // When
-    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(version);
-    // Then
-    assertThat(constraintViolations).hasSize(1);
-    assertThat(constraintViolations.iterator().next().getMessage()).isEqualTo("{atlas.constraint.allowedMeanOfTransport}");
-  }
-
-  @ParameterizedTest
-  @EnumSource(value = MeanOfTransport.class, names = {"ELEVATOR", "UNKNOWN"}, mode = Mode.EXCLUDE)
-  void shouldAllowMeanOfTransport(MeanOfTransport meanOfTransport) {
-    // Given
-    TimetableFieldNumberVersionModel version = versionModel().meanOfTransport(meanOfTransport).build();
-    // When
-    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(version);
-    // Then
-    assertThat(constraintViolations).isEmpty();
   }
 
   @Test

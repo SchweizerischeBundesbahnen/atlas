@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
@@ -18,7 +19,6 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
@@ -472,7 +472,7 @@ class TimetableHearingStatementServiceTest {
         .number("5678")
         .descriptionOutwardLine1("Description")
         .descriptionReturnLine1("Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())
@@ -525,7 +525,7 @@ class TimetableHearingStatementServiceTest {
         .number("5678")
         .descriptionOutwardLine1("Description")
         .descriptionReturnLine1("Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())

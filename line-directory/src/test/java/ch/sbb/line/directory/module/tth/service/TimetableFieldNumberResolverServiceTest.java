@@ -5,11 +5,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
@@ -79,7 +79,7 @@ class TimetableFieldNumberResolverServiceTest {
         .number("1.1")
         .descriptionOutwardLine1("Bern - Ostermundigen")
         .descriptionReturnLine1("Bern - Ostermundigen")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .build();
     when(timetableFieldNumberService.getVersionsValidAt(any(), any())).thenReturn(Collections.singletonList(version));
 

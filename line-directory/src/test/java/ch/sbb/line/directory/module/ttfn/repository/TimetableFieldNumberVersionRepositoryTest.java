@@ -2,10 +2,10 @@ package ch.sbb.line.directory.module.ttfn.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.controller.WithAdminMockJwtAuthentication;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ class TimetableFieldNumberVersionRepositoryTest {
         .ttfnid("ch:1:ttfnid:100000")
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX")
@@ -153,7 +153,7 @@ class TimetableFieldNumberVersionRepositoryTest {
         .ttfnid("ch:1:ttfnid:100000")
         .descriptionOutwardLine1("FPFN Description2")
         .descriptionReturnLine1("FPFN Description2")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX2")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX2")

@@ -7,10 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
@@ -46,7 +46,7 @@ class TimetableFieldNumberControllerInternalApiTest extends BaseControllerApiTes
           .ttfnid("ch:1:ttfnid:100000")
           .descriptionOutwardLine1("FPFN Outward Line Desc")
           .descriptionReturnLine1("FPFN Return Line Desc")
-          .meanOfTransport(MeanOfTransport.TRAIN)
+          .meanOfTransport(TtfnMeanOfTransport.TRAIN)
           .number("10.100")
           .status(Status.VALIDATED)
           .swissTimetableFieldNumber("b0.100")
