@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
@@ -38,7 +39,6 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
@@ -174,7 +174,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .number("5678")
         .descriptionOutwardLine1("Description")
         .descriptionReturnLine1("Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())
@@ -200,7 +200,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .number("5678")
         .descriptionOutwardLine1("Description")
         .descriptionReturnLine1("Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())
@@ -238,7 +238,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .number("5678")
         .descriptionOutwardLine1("Description")
         .descriptionReturnLine1("Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .status(Status.VALIDATED)
         .businessOrganisation("Business Organisation")
         .validFrom(LocalDate.now())

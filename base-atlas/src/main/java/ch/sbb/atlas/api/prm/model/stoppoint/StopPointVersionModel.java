@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -28,11 +27,8 @@ import lombok.experimental.SuperBuilder;
 public class StopPointVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @NotEmpty
-  @ArraySchema(
-      arraySchema = @Schema(description = "Means of transport. Indicates for which means of transport a stop is " 
-          + "intended/equipped. Mandatory for StopPoints"),
-      schema = @Schema(enumAsRef = true)
-  )
+  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for " 
+      + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
   @Size(max = AtlasFieldLengths.LENGTH_2000)

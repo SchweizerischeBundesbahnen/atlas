@@ -6,7 +6,7 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Schema(example = "BUS")
+@Schema(enumAsRef = true, example = "BUS")
 @Getter
 @RequiredArgsConstructor
 public enum MeanOfTransport {

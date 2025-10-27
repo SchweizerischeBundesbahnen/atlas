@@ -11,7 +11,6 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.AssertTrue;
@@ -91,11 +90,8 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
 
-  @ArraySchema(
-      arraySchema = @Schema(description = "Means of transport. Indicates for which means of transport a stop is "
-          + "intended/equipped. Mandatory for StopPoints"),
-      schema = @Schema(enumAsRef = true)
-  )
+  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for " 
+      + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
   @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.")

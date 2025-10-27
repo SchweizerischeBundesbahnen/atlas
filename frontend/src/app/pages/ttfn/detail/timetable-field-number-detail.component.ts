@@ -55,6 +55,7 @@ import {
   DetailWithCancelEdit,
 } from '../../../core/detail/detail-dialog-helper.service';
 import { ValidationService } from '../../../core/validation/validation.service';
+import { TtfnMeanOfTransport } from '../../../api/model/ttfnMeanOfTransport';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -101,9 +102,8 @@ export class TimetableFieldNumberDetailComponent
   protected readonly isAtLeastSupervisor =
     this.permissionService.isAtLeastSupervisor(ApplicationType.Ttfn);
 
-  protected readonly allowableMeansOfTransport = Object.values(
-    TimetableFieldNumberVersion.MeanOfTransportEnum
-  );
+  protected readonly allowableMeansOfTransport =
+    Object.values(TtfnMeanOfTransport);
 
   protected displayOutwardLine2$ = of(false);
   protected displayOutwardLine3$ = of(false);

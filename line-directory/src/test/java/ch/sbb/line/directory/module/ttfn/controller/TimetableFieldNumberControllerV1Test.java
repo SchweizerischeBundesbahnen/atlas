@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ class TimetableFieldNumberControllerV1Test {
         .ttfnid("ch:1:ttfnid:100000")
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX")
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 12, 12))

@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
+import { TtfnMeanOfTransport } from './ttfnMeanOfTransport';
 
 
 export interface TimetableFieldNumberVersion { 
@@ -60,10 +61,7 @@ export interface TimetableFieldNumberVersion {
      * Description return line three
      */
     descriptionReturnLine3?: string;
-    /**
-     * Mean of transport
-     */
-    meanOfTransport: TimetableFieldNumberVersion.MeanOfTransportEnum;
+    meanOfTransport: TtfnMeanOfTransport;
     /**
      * Number
      */
@@ -90,18 +88,6 @@ export interface TimetableFieldNumberVersion {
     etagVersion?: number;
 }
 export namespace TimetableFieldNumberVersion {
-    export type MeanOfTransportEnum = 'TRAIN' | 'BUS' | 'TRAM' | 'BOAT' | 'CABLE_CAR' | 'CHAIRLIFT' | 'CABLE_RAILWAY' | 'RACK_RAILWAY' | 'METRO';
-    export const MeanOfTransportEnum = {
-        Train: 'TRAIN' as MeanOfTransportEnum,
-        Bus: 'BUS' as MeanOfTransportEnum,
-        Tram: 'TRAM' as MeanOfTransportEnum,
-        Boat: 'BOAT' as MeanOfTransportEnum,
-        CableCar: 'CABLE_CAR' as MeanOfTransportEnum,
-        Chairlift: 'CHAIRLIFT' as MeanOfTransportEnum,
-        CableRailway: 'CABLE_RAILWAY' as MeanOfTransportEnum,
-        RackRailway: 'RACK_RAILWAY' as MeanOfTransportEnum,
-        Metro: 'METRO' as MeanOfTransportEnum
-    };
 }
 
 

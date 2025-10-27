@@ -2,9 +2,9 @@ package ch.sbb.line.directory.module.ttfn.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
@@ -39,7 +39,7 @@ class TimetableFieldNumberRepositoryTest {
         .ttfnid(TTFNID)
         .descriptionOutwardLine1("Last Year")
         .descriptionReturnLine1("Last Year")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
@@ -53,7 +53,7 @@ class TimetableFieldNumberRepositoryTest {
         .ttfnid(TTFNID)
         .descriptionOutwardLine1("Today")
         .descriptionReturnLine1("Today")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
@@ -67,7 +67,7 @@ class TimetableFieldNumberRepositoryTest {
         .ttfnid(TTFNID)
         .descriptionOutwardLine1("Next Year")
         .descriptionReturnLine1("Next Year")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
@@ -102,7 +102,7 @@ class TimetableFieldNumberRepositoryTest {
         .ttfnid(TTFNID)
         .descriptionOutwardLine1("Last Year")
         .descriptionReturnLine1("Last Year")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
@@ -116,7 +116,7 @@ class TimetableFieldNumberRepositoryTest {
         .ttfnid(TTFNID)
         .descriptionOutwardLine1("Next Year")
         .descriptionReturnLine1("Next Year")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
@@ -130,7 +130,7 @@ class TimetableFieldNumberRepositoryTest {
         .ttfnid(TTFNID)
         .descriptionOutwardLine1("Later")
         .descriptionReturnLine1("Later")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
@@ -165,7 +165,7 @@ class TimetableFieldNumberRepositoryTest {
         .ttfnid(TTFNID)
         .descriptionOutwardLine1("Earlier")
         .descriptionReturnLine1("Earlier")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
@@ -179,7 +179,7 @@ class TimetableFieldNumberRepositoryTest {
         .ttfnid(TTFNID)
         .descriptionOutwardLine1("Last Year")
         .descriptionReturnLine1("Last Year")
-        .meanOfTransport(MeanOfTransport.TRAIN)
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")

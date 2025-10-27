@@ -1,22 +1,11 @@
 package ch.sbb.atlas.api.lidi;
 
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.BOAT;
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.BUS;
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.CABLE_CAR;
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.CABLE_RAILWAY;
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.CHAIRLIFT;
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.METRO;
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.RACK_RAILWAY;
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAIN;
-import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAM;
-
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.IdCheckable;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.validation.AllowedMeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.validation.TrimmedNotBlank;
 import ch.sbb.atlas.validation.ValidTtfnDescription;
@@ -89,30 +78,9 @@ public class TimetableFieldNumberVersionModel extends BaseVersionModel implement
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String descriptionReturnLine3;
 
-  @Schema(description = "Mean of transport", example = "TRAIN", allowableValues = {
-      "TRAIN",
-      "BUS",
-      "TRAM",
-      "BOAT",
-      "CABLE_CAR",
-      "CHAIRLIFT",
-      "CABLE_RAILWAY",
-      "RACK_RAILWAY",
-      "METRO"
-  })
+  @Schema(description = "Mean of transport")
   @NotNull
-  @AllowedMeanOfTransport(allowed = {
-      TRAIN,
-      BUS,
-      TRAM,
-      BOAT,
-      CABLE_CAR,
-      CHAIRLIFT,
-      CABLE_RAILWAY,
-      RACK_RAILWAY,
-      METRO
-  })
-  private MeanOfTransport meanOfTransport;
+  private TtfnMeanOfTransport meanOfTransport;
 
   @Schema(description = "Number", example = "100; 80.099; 2700")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
