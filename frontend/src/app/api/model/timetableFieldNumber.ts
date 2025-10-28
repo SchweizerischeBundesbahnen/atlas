@@ -24,9 +24,9 @@ export interface TimetableFieldNumber {
      */
     ttfnid?: string;
     /**
-     * Description
+     * Description outward line one
      */
-    description?: string;
+    descriptionOutwardLine1?: string;
     status: Status;
     /**
      * BusinessOrganisation SBOID

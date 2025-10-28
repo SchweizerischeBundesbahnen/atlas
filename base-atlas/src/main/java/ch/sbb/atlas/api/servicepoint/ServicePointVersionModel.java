@@ -52,13 +52,13 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @NotNull
   @Size(min = 2, max = AtlasFieldLengths.LENGTH_30)
   @Schema(description = "Official designation of a location that must be used by all recipients"
-          , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
+      , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_6)
   @Pattern(regexp = AtlasCharacterSetsRegex.ABBREVIATION_PATTERN)
   @Schema(description = "Location abbreviation. Mainly used by the railways. Abbreviations may not be used as a code for "
-          + "identifying locations.", example = "BIBD", minLength = 2, maxLength = 6)
+      + "identifying locations.", example = "BIBD", minLength = 2, maxLength = 6)
   private String abbreviation;
 
   @Schema(description = "Indicates if this a Service Point for freights.")
@@ -84,14 +84,14 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
   @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point." +
-          "At most one of OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
+      "At most one of OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
 
-  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
-          + "StopPoints")
+  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for " 
+      + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
   @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.")

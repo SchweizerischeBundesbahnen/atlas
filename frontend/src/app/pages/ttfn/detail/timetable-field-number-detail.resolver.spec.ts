@@ -4,9 +4,7 @@ import {
   convertToParamMap,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Status,
-  TimetableFieldNumberVersion,
-} from '../../../api';
+import { Status, TimetableFieldNumberVersion } from '../../../api';
 import {
   TimetableFieldNumberDetailResolver,
   timetableFieldNumberResolver,
@@ -18,13 +16,14 @@ import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable
 const version: TimetableFieldNumberVersion = {
   id: 1234,
   ttfnid: 'ttfnid',
-  description: 'description',
   swissTimetableFieldNumber: 'asdf',
   status: 'VALIDATED',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   number: '1.1',
   businessOrganisation: 'sbb',
+  descriptionOutwardLine1: 'desc outward 1',
+  meanOfTransport: 'TRAIN',
 };
 
 describe('TimetableFieldNumberDetailResolver', () => {

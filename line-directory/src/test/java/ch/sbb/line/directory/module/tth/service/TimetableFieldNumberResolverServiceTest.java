@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -76,7 +77,9 @@ class TimetableFieldNumberResolverServiceTest {
     TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:12341241")
         .number("1.1")
-        .description("Bern - Ostermundigen")
+        .descriptionOutwardLine1("Bern - Ostermundigen")
+        .descriptionReturnLine1("Bern - Ostermundigen")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .build();
     when(timetableFieldNumberService.getVersionsValidAt(any(), any())).thenReturn(Collections.singletonList(version));
 

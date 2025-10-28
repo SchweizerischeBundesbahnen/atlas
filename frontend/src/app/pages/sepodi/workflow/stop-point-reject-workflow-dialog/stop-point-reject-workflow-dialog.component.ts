@@ -11,7 +11,7 @@ import { StopPointRejectWorkflow } from '../../../../api';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { Pages } from '../../../pages';
 import { Router } from '@angular/router';
-import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
 import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
@@ -40,13 +40,13 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
   formGroup!: FormGroup<StopPointRejectWorkflowFormGroup>;
 
   constructor(
-    public dialogRef: MatDialogRef<StopPointRejectWorkflowDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StopPointRejectWorkflowDialogData,
+    @Inject(MAT_DIALOG_DATA) readonly data: StopPointRejectWorkflowDialogData,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
-    private userAdministrationService: UserAdministrationService,
-    private notificationService: NotificationService,
-    private detailHelperService: DetailHelperService,
-    private router: Router
+    private readonly dialogRef: MatDialogRef<StopPointRejectWorkflowDialogComponent>,
+    private readonly userAdministrationService: UserAdministrationService,
+    private readonly notificationService: NotificationService,
+    private readonly detailHelperService: DetailDialogHelperService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {

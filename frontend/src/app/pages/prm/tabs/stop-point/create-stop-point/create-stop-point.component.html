@@ -18,7 +18,6 @@
             [formGroup]="formMeanOfTransport"
             controlName="meansOfTransport"
             [disabled]="false"
-            label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
             [showInfo]="true"
             [meansOfTransportToShow]="meansOfTransportToShow"
           ></means-of-transport-picker>
@@ -37,7 +36,9 @@
       </div>
     </mat-step>
     <mat-step [stepControl]="form" state="edit">
-      <ng-template matStepLabel>{{ 'PRM.STOP_POINTS.POPULATE_DATA' | translate }}</ng-template>
+      <ng-template matStepLabel>{{
+        'PRM.STOP_POINTS.POPULATE_DATA' | translate
+      }}</ng-template>
       <ng-container *ngIf="isDataEditable">
         <div class="d-flex mb-2">
           <atlas-button

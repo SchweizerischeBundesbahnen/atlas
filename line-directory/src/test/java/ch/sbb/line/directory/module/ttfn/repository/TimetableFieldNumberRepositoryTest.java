@@ -2,6 +2,7 @@ package ch.sbb.line.directory.module.ttfn.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
@@ -36,56 +37,43 @@ class TimetableFieldNumberRepositoryTest {
     // Given
     TimetableFieldNumberVersion validLastYear = TimetableFieldNumberVersion.builder()
         .ttfnid(TTFNID)
-        .description("Last Year")
-        .swissTimetableFieldNumber(
-            "a.100")
+        .descriptionOutwardLine1("Last Year")
+        .descriptionReturnLine1("Last Year")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
+        .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
-        .validFrom(
-            LocalDate.now()
-                .minusYears(
-                    2))
-        .validTo(LocalDate.now()
-            .minusYears(
-                1))
-        .businessOrganisation(
-            "sbb")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validLastYear);
 
     TimetableFieldNumberVersion validToday = TimetableFieldNumberVersion.builder()
         .ttfnid(TTFNID)
-        .description("Today")
-        .swissTimetableFieldNumber(
-            "a.100")
+        .descriptionOutwardLine1("Today")
+        .descriptionReturnLine1("Today")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
+        .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
-        .validFrom(LocalDate.now()
-            .minusDays(
-                1))
-        .validTo(LocalDate.now()
-            .plusDays(
-                1))
+        .validFrom(LocalDate.now().minusDays(1))
+        .validTo(LocalDate.now().plusDays(1))
         .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validToday);
 
     TimetableFieldNumberVersion validNextYear = TimetableFieldNumberVersion.builder()
         .ttfnid(TTFNID)
-        .description("Next Year")
-        .swissTimetableFieldNumber(
-            "a.100")
+        .descriptionOutwardLine1("Next Year")
+        .descriptionReturnLine1("Next Year")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
+        .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
-        .validFrom(
-            LocalDate.now()
-                .plusYears(
-                    1))
-        .validTo(LocalDate.now()
-            .plusYears(
-                2))
-        .businessOrganisation(
-            "sbb")
+        .validFrom(LocalDate.now().plusYears(1))
+        .validTo(LocalDate.now().plusYears(2))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validNextYear);
 
@@ -96,7 +84,7 @@ class TimetableFieldNumberRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(1L);
     assertThat(result.getContent()).hasSize(1);
 
-    TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
+    TimetableFieldNumber timetableFieldNumber = result.getContent().getFirst();
     assertThat(timetableFieldNumber).usingRecursiveComparison()
         .ignoringFields("validFrom", "validTo")
         .isEqualTo(validToday);
@@ -112,59 +100,43 @@ class TimetableFieldNumberRepositoryTest {
     // Given
     TimetableFieldNumberVersion validLastYear = TimetableFieldNumberVersion.builder()
         .ttfnid(TTFNID)
-        .description("Last Year")
-        .swissTimetableFieldNumber(
-            "a.100")
+        .descriptionOutwardLine1("Last Year")
+        .descriptionReturnLine1("Last Year")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
+        .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
-        .validFrom(
-            LocalDate.now()
-                .minusYears(
-                    2))
-        .validTo(LocalDate.now()
-            .minusYears(
-                1))
-        .businessOrganisation(
-            "sbb")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validLastYear);
 
     TimetableFieldNumberVersion validNextYear = TimetableFieldNumberVersion.builder()
         .ttfnid(TTFNID)
-        .description("Next Year")
-        .swissTimetableFieldNumber(
-            "a.100")
+        .descriptionOutwardLine1("Next Year")
+        .descriptionReturnLine1("Next Year")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
+        .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
-        .validFrom(
-            LocalDate.now()
-                .plusYears(
-                    1))
-        .validTo(LocalDate.now()
-            .plusYears(
-                2))
-        .businessOrganisation(
-            "sbb")
+        .validFrom(LocalDate.now().plusYears(1))
+        .validTo(LocalDate.now().plusYears(2))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validNextYear);
 
     TimetableFieldNumberVersion validInTwoYears = TimetableFieldNumberVersion.builder()
         .ttfnid(TTFNID)
-        .description("Later")
-        .swissTimetableFieldNumber(
-            "a.100")
+        .descriptionOutwardLine1("Later")
+        .descriptionReturnLine1("Later")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
+        .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
-        .validFrom(
-            LocalDate.now()
-                .plusYears(
-                    3))
-        .validTo(
-            LocalDate.now()
-                .plusYears(
-                    4))
-        .businessOrganisation(
-            "sbb")
+        .validFrom(LocalDate.now().plusYears(3))
+        .validTo(LocalDate.now().plusYears(4))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validInTwoYears);
 
@@ -175,7 +147,7 @@ class TimetableFieldNumberRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(1L);
     assertThat(result.getContent()).hasSize(1);
 
-    TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
+    TimetableFieldNumber timetableFieldNumber = result.getContent().getFirst();
     assertThat(timetableFieldNumber).usingRecursiveComparison()
         .ignoringFields("validFrom", "validTo")
         .isEqualTo(validNextYear);
@@ -191,38 +163,29 @@ class TimetableFieldNumberRepositoryTest {
     // Given
     TimetableFieldNumberVersion validEarlier = TimetableFieldNumberVersion.builder()
         .ttfnid(TTFNID)
-        .description("Earlier")
-        .swissTimetableFieldNumber(
-            "a.100")
+        .descriptionOutwardLine1("Earlier")
+        .descriptionReturnLine1("Earlier")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
+        .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
-        .validFrom(LocalDate.now()
-            .minusYears(
-                4))
-        .validTo(LocalDate.now()
-            .minusYears(
-                3))
-        .businessOrganisation(
-            "sbb")
+        .validFrom(LocalDate.now().minusYears(4))
+        .validTo(LocalDate.now().minusYears(3))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validEarlier);
 
     TimetableFieldNumberVersion validLastYear = TimetableFieldNumberVersion.builder()
         .ttfnid(TTFNID)
-        .description("Last Year")
-        .swissTimetableFieldNumber(
-            "a.100")
+        .descriptionOutwardLine1("Last Year")
+        .descriptionReturnLine1("Last Year")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
+        .swissTimetableFieldNumber("a.100")
         .status(Status.VALIDATED)
         .number("10.100")
-        .validFrom(
-            LocalDate.now()
-                .minusYears(
-                    2))
-        .validTo(LocalDate.now()
-            .minusYears(
-                1))
-        .businessOrganisation(
-            "sbb")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validLastYear);
 
@@ -233,7 +196,7 @@ class TimetableFieldNumberRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(1L);
     assertThat(result.getContent()).hasSize(1);
 
-    TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
+    TimetableFieldNumber timetableFieldNumber = result.getContent().getFirst();
     assertThat(timetableFieldNumber).usingRecursiveComparison()
         .ignoringFields("validFrom", "validTo")
         .isEqualTo(validLastYear);

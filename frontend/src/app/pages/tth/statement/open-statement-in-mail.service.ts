@@ -82,7 +82,7 @@ export class OpenStatementInMailService {
   private buildTtfnInfo(resolvedTtfn: TimetableFieldNumber | undefined) {
     const ttfnLabel = this.translatePipe.transform('TTH.STATEMENT.TTFN');
     return resolvedTtfn
-      ? `${ttfnLabel}: ${resolvedTtfn.number} ${resolvedTtfn.description}\r\r`
+      ? `${ttfnLabel}: ${resolvedTtfn.number} ${resolvedTtfn.descriptionOutwardLine1}\r\r`
       : '';
   }
 

@@ -18,7 +18,9 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {ValidStopPointType.Validator.class})
 public @interface ValidStopPointType {
 
-  String message() default "{atlas.constraint.validStopPointType}";
+  String ATLAS_CONSTRAINT_VALID_STOP_POINT_TYPE = "{atlas.constraint.validStopPointType}";
+
+  String message() default ATLAS_CONSTRAINT_VALID_STOP_POINT_TYPE;
 
   Class<?>[] groups() default {};
 

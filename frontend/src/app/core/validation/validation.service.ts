@@ -30,6 +30,7 @@ export class ValidationService {
             max: controlErrors[keyError]['max'],
             min: controlErrors[keyError]['min'],
             number: controlErrors[keyError]['number'],
+            reqSelections: controlErrors[keyError]['reqSelections'],
           },
         });
       });

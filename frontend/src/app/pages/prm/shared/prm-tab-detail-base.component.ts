@@ -2,9 +2,9 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  DetailHelperService,
+  DetailDialogHelperService,
   DetailWithCancelEdit,
-} from '../../../core/detail/detail-helper.service';
+} from '../../../core/detail/detail-dialog-helper.service';
 import { FormGroup } from '@angular/forms';
 import { ValidityService } from '../../sepodi/validity/validity.service';
 import { catchError, EMPTY, finalize, from, Observable, take } from 'rxjs';
@@ -21,8 +21,9 @@ export abstract class PrmTabDetailBaseComponent<T>
     inject(NotificationService);
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
-  protected readonly detailHelperService: DetailHelperService =
-    inject(DetailHelperService);
+  protected readonly detailHelperService: DetailDialogHelperService = inject(
+    DetailDialogHelperService
+  );
   protected readonly validityService: ValidityService = inject(ValidityService);
 
   form: FormGroup = new FormGroup({});

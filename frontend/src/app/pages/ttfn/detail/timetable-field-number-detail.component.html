@@ -1,20 +1,70 @@
-<app-detail-wrapper
-  [controller]="this"
-  formDetailHeading="TTFN.DETAIL_TIMETABLE_INFORMATION"
-  headingNew="TTFN.NEW"
->
-  <form [formGroup]="form">
-    <h2 *ngIf="isNewRecord()" class="font-bold-2xl mb-4">
-      {{ 'TTFN.NEW_TIMETABLE_INFORMATION' | translate }}
-    </h2>
+<atlas-detail-page-container scrollToTop>
+  <atlas-detail-page-content>
+    @if (selectedVersion) {
+      <div class="font-bold-4xl detail-title mb-3">
+        {{ getDetailHeading(selectedVersion) }}
+      </div>
+      <div class="font-bold-xl mb-2">
+        <span data-cy="detail-subheading-id">{{
+          getDetailSubheading(selectedVersion)
+        }}</span>
+        <span data-cy="total-range">
+          -
+          <date-range-text [dateRange]="maxValidity!"></date-range-text>
+        </span>
+      </div>
+    } @else {
+      <h1 class="font-bold-4xl mb-5">
+        {{ 'TTFN.NEW' | translate }}
+      </h1>
+    }
+    @if (showSwitch) {
+      <div class="col-6 mt-3">
+        <app-switch-version
+          (switchVersion)="switchVersion($event)"
+          [currentRecord]="selectedVersion!"
+          [records]="versions"
+          [switchDisabled]="form.enabled"
+        ></app-switch-version>
+      </div>
+    }
 
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-6 pe-3">
+    @if (selectedVersion) {
+      <div class="form-title-section mt-4">
+        <h2 class="font-bold-2xl color-gray-900">
+          {{ 'TTFN.DETAIL_TIMETABLE_INFORMATION' | translate }} -
+          {{ 'COMMON.VERSION' | translate }}
+          {{ selectedVersionIndex! + 1 }}
+        </h2>
+        <p>
+          <span class="font-bold-lg color-gray-900"
+            >{{ 'COMMON.STATUS' | translate }}
+          </span>
+          <span class="color-gray-900">{{
+            'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
+          }}</span>
+        </p>
+      </div>
+    }
+
+    <form [formGroup]="form">
+      @if (!selectedVersion) {
+        <h2 class="font-bold-2xl mb-4">
+          {{ 'TTFN.NEW_TIMETABLE_INFORMATION' | translate }}
+        </h2>
+      }
+
+      <div class="col-12 d-flex gap-4">
         <atlas-text-field
+          class="flex-50"
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '30.003 |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+            { label: ' 30.003 | ', translate: false },
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '50' },
+            },
           ]"
           [formGroup]="form"
           [required]="true"
@@ -22,13 +72,16 @@
           fieldLabel="TTFN.NUMBER"
         >
         </atlas-text-field>
-      </div>
-      <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
+          class="flex-50"
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '30.003 |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+            { label: ' 30.003 | ', translate: false },
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '50' },
+            },
           ]"
           [formGroup]="form"
           [required]="true"
@@ -37,49 +90,193 @@
         >
         </atlas-text-field>
       </div>
-    </div>
 
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-12 pe-3">
+      <div class="col-12 d-flex gap-4">
         <atlas-text-field
+          class="flex-grow-1"
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'Bern Bahnhof - Eigerplatz - Weissenbühl |', translate: false },
+            {
+              label: ' Abtwil - Spisegg - St. Gallen Bahnhof | ',
+              translate: false,
+            },
             {
               label: 'FORM.MAX_CHARS',
               translate: true,
-              arg: { key: 'numberOfChars', value: '255' }
-            }
+              arg: { key: 'numberOfChars', value: '255' },
+            },
           ]"
           [formGroup]="form"
-          controlName="description"
-          fieldLabel="TTFN.DESCRIPTION"
+          [required]="true"
+          controlName="descriptionOutwardLine1"
+          fieldLabel="TTFN.DESCRIPTION_OUTWARD"
+        >
+        </atlas-text-field>
+        <atlas-text-field
+          class="flex-grow-1"
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            {
+              label: ' St. Gallen Bahnhof - Spisegg - Abtwil | ',
+              translate: false,
+            },
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '255' },
+            },
+          ]"
+          [formGroup]="form"
+          [required]="false"
+          controlName="descriptionReturnLine1"
+          fieldLabel="TTFN.DESCRIPTION_RETURN"
         >
         </atlas-text-field>
       </div>
-    </div>
-
-    <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
-    <div class="w-50">
-      <form-date-range [formGroup]="form"></form-date-range>
-    </div>
-
-    <div class="col-12 d-flex pb-3">
-      <div class="d-flex flex-column col-6 pt-3">
-        <bo-select
-          [formGroup]="form"
-          [sboidsRestrictions]="getBoSboidRestriction()"
-          controlName="businessOrganisation"
-          data-cy="businessOrganisation"
-        ></bo-select>
+      <div class="col-12 d-flex gap-4">
+        <div class="flex-50">
+          @if (displayOutwardLine2$ | async) {
+            <atlas-text-field
+              [fieldExamples]="[]"
+              [formGroup]="form"
+              controlName="descriptionOutwardLine2"
+            >
+            </atlas-text-field>
+          }
+        </div>
+        <div class="flex-50">
+          @if (displayReturnLine2$ | async) {
+            <atlas-text-field
+              [fieldExamples]="[]"
+              [formGroup]="form"
+              controlName="descriptionReturnLine2"
+            >
+            </atlas-text-field>
+          }
+        </div>
       </div>
-    </div>
-
-    <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-    <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-6">
-        <form-comment [formGroup]="form"></form-comment>
+      <div class="col-12 d-flex gap-4">
+        <div class="flex-50">
+          @if (displayOutwardLine3$ | async) {
+            <atlas-text-field
+              class="flex-grow-1"
+              [fieldExamples]="[]"
+              [formGroup]="form"
+              controlName="descriptionOutwardLine3"
+            >
+            </atlas-text-field>
+          }
+        </div>
+        <div class="flex-50">
+          @if (displayReturnLine3$ | async) {
+            <atlas-text-field
+              class="flex-grow-1"
+              [fieldExamples]="[]"
+              [formGroup]="form"
+              controlName="descriptionReturnLine3"
+            >
+            </atlas-text-field>
+          }
+        </div>
       </div>
-    </div>
-  </form>
-</app-detail-wrapper>
+
+      <means-of-transport-picker
+        [formGroup]="form"
+        controlName="meanOfTransport"
+        [disabled]="form.disabled"
+        [meansOfTransportToShow]="allowableMeansOfTransport"
+        [multiSelectMode]="false"
+      ></means-of-transport-picker>
+
+      <span class="font-bold-2xl d-block mt-4">{{
+        'FORM.KEY_DATA' | translate
+      }}</span>
+      <div class="w-50">
+        <form-date-range [formGroup]="form"></form-date-range>
+      </div>
+
+      <div class="col-12 d-flex pb-3">
+        <div class="d-flex flex-column col-6 pt-3">
+          <bo-select
+            [formGroup]="form"
+            [sboidsRestrictions]="boSboidRestriction"
+            controlName="businessOrganisation"
+            data-cy="businessOrganisation"
+          ></bo-select>
+        </div>
+      </div>
+    </form>
+
+    @if (selectedVersion) {
+      <div class="mt-5">
+        <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
+      </div>
+    }
+  </atlas-detail-page-content>
+
+  <atlas-detail-footer>
+    <atlas-button
+      (buttonClicked)="back()"
+      [footerEdit]="form.enabled"
+      buttonDataCy="back-to-overview"
+      buttonText="COMMON.BACK_TO_OVERVIEW"
+      buttonType="whiteFooterNonEdit"
+    >
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="toggleEdit()"
+      [footerEdit]="form.enabled"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="save()"
+      [disabled]="!form.dirty"
+      [footerEdit]="form.enabled"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+    >
+    </atlas-button>
+    @if (selectedVersion) {
+      <ng-container>
+        @if (selectedVersion.status !== 'IN_REVIEW' || isAtLeastSupervisor) {
+          <atlas-button
+            (buttonClicked)="toggleEdit()"
+            applicationType="TTFN"
+            [businessOrganisation]="selectedVersion.businessOrganisation"
+            [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+            buttonDataCy="edit-item"
+            buttonText="COMMON.EDIT"
+            buttonType="edit"
+            wrapperStyleClass="ms-3"
+          ></atlas-button>
+        }
+
+        <atlas-button
+          (buttonClicked)="revoke()"
+          applicationType="TTFN"
+          [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+          buttonDataCy="revoke-item"
+          buttonText="COMMON.REVOKE"
+          buttonType="revoke"
+          wrapperStyleClass="ms-3"
+        >
+        </atlas-button>
+        <atlas-button
+          (buttonClicked)="delete()"
+          [disabled]="form.enabled"
+          buttonDataCy="delete-item"
+          buttonText="COMMON.DELETE"
+          buttonType="delete"
+          wrapperStyleClass="ms-3"
+        >
+        </atlas-button>
+      </ng-container>
+    }
+  </atlas-detail-footer>
+</atlas-detail-page-container>

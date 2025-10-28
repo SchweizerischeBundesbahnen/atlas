@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import java.time.LocalDate;
@@ -31,7 +32,9 @@ class TimetableFieldNumberControllerV1Test {
   private static TimetableFieldNumberVersionModel createModel() {
     return TimetableFieldNumberVersionModel.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("BEX")
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 12, 12))
@@ -42,8 +45,7 @@ class TimetableFieldNumberControllerV1Test {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    when(timetableFieldNumberService.create(any())).then(
-        i -> i.getArgument(0, TimetableFieldNumberVersion.class));
+    when(timetableFieldNumberService.create(any())).then(i -> i.getArgument(0, TimetableFieldNumberVersion.class));
   }
 
   @Test

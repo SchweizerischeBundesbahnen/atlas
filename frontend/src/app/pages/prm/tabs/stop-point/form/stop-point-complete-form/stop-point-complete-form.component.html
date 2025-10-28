@@ -4,7 +4,6 @@
       [formGroup]="form"
       controlName="meansOfTransport"
       [disabled]="isNew || !form.enabled"
-      label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
       [showInfo]="true"
       [meansOfTransportToShow]="meansOfTransportToShow"
     ></means-of-transport-picker>
@@ -13,7 +12,10 @@
     <mat-checkbox formControlName="interoperable" data-cy="interoperable">
       {{ 'PRM.STOP_POINTS.FORM.INTEROPERABLE' | translate }}
     </mat-checkbox>
-    <app-atlas-field-error [form]="form" controlName="interoperable"></app-atlas-field-error>
+    <app-atlas-field-error
+      [form]="form"
+      controlName="interoperable"
+    ></app-atlas-field-error>
   </div>
 </div>
 <div class="col-12 d-flex mt-4">
@@ -29,7 +31,11 @@
   <div class="d-flex flex-column col-6">
     <atlas-text-field
       [fieldExamples]="[
-        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '500' } }
+        {
+          label: 'FORM.MAX_CHARS',
+          translate: true,
+          arg: { key: 'numberOfChars', value: '500' },
+        },
       ]"
       [formGroup]="form"
       controlName="url"
@@ -42,12 +48,18 @@
 <div class="col-6 pb-3">
   <form-date-range [formGroup]="form"></form-date-range>
 </div>
-<div class="font-bold-2xl mt-3">{{ 'PRM.STOP_POINTS.FORM.ADDRESS_KEY_DATA' | translate }}</div>
+<div class="font-bold-2xl mt-3">
+  {{ 'PRM.STOP_POINTS.FORM.ADDRESS_KEY_DATA' | translate }}
+</div>
 <div class="col-12 d-flex mt-3">
   <div class="d-flex flex-column col-6 pe-3">
     <atlas-text-field
       [fieldExamples]="[
-        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '2000' } }
+        {
+          label: 'FORM.MAX_CHARS',
+          translate: true,
+          arg: { key: 'numberOfChars', value: '2000' },
+        },
       ]"
       [formGroup]="form"
       controlName="address"
@@ -58,7 +70,11 @@
   <div class="d-flex flex-column col-3 pe-2">
     <atlas-text-field
       [fieldExamples]="[
-        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+        {
+          label: 'FORM.MAX_CHARS',
+          translate: true,
+          arg: { key: 'numberOfChars', value: '50' },
+        },
       ]"
       [formGroup]="form"
       controlName="zipCode"
@@ -69,7 +85,11 @@
   <div class="d-flex flex-column col-3 ps-2">
     <atlas-text-field
       [fieldExamples]="[
-        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '75' } }
+        {
+          label: 'FORM.MAX_CHARS',
+          translate: true,
+          arg: { key: 'numberOfChars', value: '75' },
+        },
       ]"
       [formGroup]="form"
       controlName="city"
@@ -78,7 +98,9 @@
     </atlas-text-field>
   </div>
 </div>
-<div class="font-bold-2xl mt-3">{{ 'PRM.STOP_POINTS.CUSTOMER_INFORMATION' | translate }}</div>
+<div class="font-bold-2xl mt-3">
+  {{ 'PRM.STOP_POINTS.CUSTOMER_INFORMATION' | translate }}
+</div>
 <div class="col-12 d-flex mt-3">
   <atlas-select
     class="col-4 pe-3"
@@ -127,7 +149,9 @@
     ></form-comment>
   </div>
 </div>
-<div class="font-bold-2xl mt-3">{{ 'PRM.STOP_POINTS.AUTOMATIC_TICKET' | translate }}</div>
+<div class="font-bold-2xl mt-3">
+  {{ 'PRM.STOP_POINTS.AUTOMATIC_TICKET' | translate }}
+</div>
 <div class="col-12 d-flex mt-3">
   <atlas-select
     class="col-4 pe-3"
@@ -176,7 +200,9 @@
   </div>
 </div>
 
-<div class="font-bold-2xl mt-3">{{ 'PRM.STOP_POINTS.AUTONOMUS_USABILITY' | translate }}</div>
+<div class="font-bold-2xl mt-3">
+  {{ 'PRM.STOP_POINTS.AUTONOMUS_USABILITY' | translate }}
+</div>
 <div class="col-12 d-flex mt-3">
   <atlas-select
     class="col-4 pe-2"

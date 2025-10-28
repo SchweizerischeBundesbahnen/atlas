@@ -3,8 +3,6 @@ package ch.sbb.atlas.servicepoint.enumeration;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -35,14 +33,7 @@ public enum MeanOfTransport {
 
   public static MeanOfTransport from(String code) {
     return Arrays.stream(MeanOfTransport.values()).filter(meanOfTransport -> Objects.equals(meanOfTransport.getCode(), code))
-            .findFirst().orElse(null);
+        .findFirst().orElse(null);
   }
 
-  public static Set<MeanOfTransport> fromCode(
-      String meansOfTransportCode) {
-    return Arrays.stream(Objects.nonNull(meansOfTransportCode) ? meansOfTransportCode.split("~") : new String[]{})
-        .map(MeanOfTransport::from)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toSet());
-  }
 }

@@ -2,10 +2,13 @@ package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.IdCheckable;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.atlas.validation.TrimmedNotBlank;
+import ch.sbb.atlas.validation.ValidTtfnDescription;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
+@ValidTtfnDescription
 @Schema(name = "TimetableFieldNumberVersion")
 public class TimetableFieldNumberVersionModel extends BaseVersionModel implements DatesValidator, IdCheckable {
 
@@ -37,10 +41,46 @@ public class TimetableFieldNumberVersionModel extends BaseVersionModel implement
   @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000", accessMode = AccessMode.READ_ONLY)
   private String ttfnid;
 
-  @Schema(description = "Description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
+  @Schema(description = "Description outward line one", example = "Como - Chiasso - Mendrisio - Varese (S40)")
+  @NotNull
+  @TrimmedNotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String description;
+  private String descriptionOutwardLine1;
+
+  @Schema(description = "Description outward line two", example = "Bellinzona - Mendrisio - Varese - Malpensa Aeroporto (S50)")
+  @TrimmedNotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String descriptionOutwardLine2;
+
+  @Schema(description = "Description outward line three", example = "(Ferrovia - Regionale TILO-Linea S40, S50)")
+  @TrimmedNotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String descriptionOutwardLine3;
+
+  @Schema(description = "Description return line one", example = "Varese - Mendrisio - Chiasso - Como (S40)")
+  @TrimmedNotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String descriptionReturnLine1;
+
+  @Schema(description = "Description return line two", example = "Malpensa Aeroporto - Varese - Mendrisio - Bellinzona (S50)")
+  @TrimmedNotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String descriptionReturnLine2;
+
+  @Schema(description = "Description return line three", example = "(Ferrovia - Regionale TILO-Linea S40, S50)")
+  @TrimmedNotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String descriptionReturnLine3;
+
+  @Schema(description = "Mean of transport")
+  @NotNull
+  private TtfnMeanOfTransport meanOfTransport;
 
   @Schema(description = "Number", example = "100; 80.099; 2700")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
@@ -70,12 +110,6 @@ public class TimetableFieldNumberVersionModel extends BaseVersionModel implement
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;
-
-  @Schema(description = "Additional comment", example = "Hier kann für interne Zwecke ein Kommentar welcher das Fahrplanfeld "
-      + "betrifft erfasst werden.")
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String comment;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;

@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.module.ttfn.service;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -25,7 +26,9 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
   private final TimetableFieldNumberVersionRepository versionRepository;
 
   private TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder().ttfnid("ch:1:ttfnid:100000")
-      .description("FPFN Description")
+      .descriptionOutwardLine1("FPFN Description")
+      .descriptionReturnLine1("FPFN Description")
+      .meanOfTransport(TtfnMeanOfTransport.TRAIN)
       .number("10.100")
       .status(Status.VALIDATED)
       .swissTimetableFieldNumber("b0.100")
@@ -52,7 +55,9 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
     // Given
     TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("10.100")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.100")
@@ -71,7 +76,9 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
     // Given
     TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100001")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("10.100")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.101")
@@ -88,7 +95,9 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
     // Given
     TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100001")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("10.101")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("B0.100")
@@ -104,7 +113,9 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
   void shouldThrowConflictExceptionIfBothNotUnique() {
     // Given
     versionRepository.save(TimetableFieldNumberVersion.builder().ttfnid("ch:1:ttfnid:100000")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("10.100")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.100")
@@ -114,7 +125,9 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
         .build());
     TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100001")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("10.100")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.100")
@@ -131,7 +144,9 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
     // Given
     TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100001")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("10.100")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.101")
@@ -150,7 +165,9 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
 
     TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .description("FPFN Description")
+        .descriptionOutwardLine1("FPFN Description")
+        .descriptionReturnLine1("FPFN Description")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("10.100")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.100")
