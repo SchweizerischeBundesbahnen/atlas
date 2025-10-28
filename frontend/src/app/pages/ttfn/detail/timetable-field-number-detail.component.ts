@@ -266,7 +266,7 @@ export class TimetableFieldNumberDetailComponent
         message: 'DIALOG.REVOKE',
         confirmText: 'DIALOG.CONFIRM_REVOKE',
       },
-      this.revokeRecord
+      () => this.revokeRecord()
     );
   }
 
@@ -276,7 +276,7 @@ export class TimetableFieldNumberDetailComponent
         message: 'DIALOG.DELETE',
         confirmText: 'DIALOG.CONFIRM_DELETE',
       },
-      this.deleteRecord
+      () => this.deleteRecord()
     );
   }
 
@@ -437,7 +437,7 @@ export class TimetableFieldNumberDetailComponent
     }
   }
 
-  private handleError = () => {
+  private readonly handleError = () => {
     this.form.enable();
     return EMPTY;
   };

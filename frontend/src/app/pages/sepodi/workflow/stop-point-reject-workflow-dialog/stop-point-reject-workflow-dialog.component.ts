@@ -40,13 +40,13 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
   formGroup!: FormGroup<StopPointRejectWorkflowFormGroup>;
 
   constructor(
-    public dialogRef: MatDialogRef<StopPointRejectWorkflowDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StopPointRejectWorkflowDialogData,
+    @Inject(MAT_DIALOG_DATA) readonly data: StopPointRejectWorkflowDialogData,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
-    private userAdministrationService: UserAdministrationService,
-    private notificationService: NotificationService,
-    private detailHelperService: DetailDialogHelperService,
-    private router: Router
+    private readonly dialogRef: MatDialogRef<StopPointRejectWorkflowDialogComponent>,
+    private readonly userAdministrationService: UserAdministrationService,
+    private readonly notificationService: NotificationService,
+    private readonly detailHelperService: DetailDialogHelperService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
