@@ -5,8 +5,6 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
-import ch.sbb.atlas.helper.TerminationHelper;
-import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.platform.service.PlatformService;
@@ -91,19 +89,10 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
       throw new SloidNotFoundException(sloid);
     }
 
-    StopPointVersion latestVersion = currentVersions.getLast();
-    StopPointVersion editedVersion = latestVersion.toBuilder().build();
-    editedVersion.setValidTo(validTo);
+    StopPointVersion currentVersion = currentVersions.getLast();
 
-    terminate(latestVersion, editedVersion);
-
+    stopPointService.terminate(currentVersion, validTo);
     return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream().map(StopPointVersionMapper::toModel).toList();
   }
 
-  private void terminate(StopPointVersion latestVersion, StopPointVersion editedVersion) {
-    DateRange dateRange = new DateRange(latestVersion.getValidFrom(), latestVersion.getValidTo());
-
-    TerminationHelper.isValidToInLastVersionRange(latestVersion.getSloid(), dateRange, editedVersion.getValidTo());
-    stopPointService.updateStopPointVersion(latestVersion, editedVersion);
-  }
 }

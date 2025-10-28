@@ -6,6 +6,8 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.helper.TerminationHelper;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -26,6 +28,7 @@ import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.service.PrmRelatableVersionableService;
 import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointService;
 import ch.sbb.prm.directory.util.PrmMeansOfTransportHelper;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -175,5 +178,16 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
         platformVersion.setAttentionField(null);
       }
     }
+  }
+
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#currentVersion)")
+  public void terminate(PlatformVersion currentVersion, LocalDate validTo) {
+    PlatformVersion editedVersion = currentVersion.toBuilder().build();
+    DateRange dateRange = new DateRange(currentVersion.getValidFrom(), currentVersion.getValidTo());
+
+    editedVersion.setValidTo(validTo);
+
+    TerminationHelper.isValidToInLastVersionRange(currentVersion.getSloid(), dateRange, editedVersion.getValidTo());
+    updatePlatformVersion(currentVersion, editedVersion);
   }
 }
