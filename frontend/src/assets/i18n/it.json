@@ -111,7 +111,7 @@
         "NOT_A_PDF": "I documenti {{documents}} non sono file PDF validi."
       }
     },
-    "REVOKED": "L’objet portant {{field}} {{value}} a le statut de saisie des erreurs. Il ne peut plus être modifié."
+    "REVOKED": "L’oggetto con {{field}} {{value}} ha lo stato di rilevamento degli errori. Non può più essere modificato."
   },
   "DETAIL_USER_EDITION": {
     "LATEST_EDITION_DATE": "Ultima modifica alle {{editionDate}}",
