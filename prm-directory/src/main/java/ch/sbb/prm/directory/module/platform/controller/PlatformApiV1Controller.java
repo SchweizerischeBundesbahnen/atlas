@@ -70,9 +70,9 @@ public class PlatformApiV1Controller implements PlatformApiV1 {
     }
 
     PlatformVersion currentVersion = currentVersions.getLast();
-    platformService.terminate(currentVersion, validTo);
+    PlatformVersion platformVersion = platformService.terminate(currentVersion, validTo);
 
-    return platformService.getAllVersions(sloid).stream().map(PlatformVersionMapper::toModel).toList();
+    return platformService.getAllVersions(platformVersion.getSloid()).stream().map(PlatformVersionMapper::toModel).toList();
   }
 
 }

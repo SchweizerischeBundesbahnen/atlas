@@ -121,14 +121,14 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#currentVersion)")
-  public void terminate(StopPointVersion currentVersion, LocalDate validTo) {
+  public StopPointVersion terminate(StopPointVersion currentVersion, LocalDate validTo) {
     StopPointVersion editedVersion = currentVersion.toBuilder().build();
     DateRange dateRange = new DateRange(currentVersion.getValidFrom(), currentVersion.getValidTo());
 
     editedVersion.setValidTo(validTo);
 
     TerminationHelper.isValidToInLastVersionRange(currentVersion.getSloid(), dateRange, editedVersion.getValidTo());
-    updateStopPointVersion(currentVersion, editedVersion);
+    return updateStopPointVersion(currentVersion, editedVersion);
   }
 
   public Page<StopPointVersion> findAll(StopPointSearchRestrictions searchRestrictions) {

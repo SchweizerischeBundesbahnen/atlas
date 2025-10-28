@@ -1,14 +1,13 @@
 package ch.sbb.prm.directory.module.stoppoint.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
@@ -23,7 +22,6 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -153,20 +151,32 @@ class StopPointServiceTest {
 
   @Test
   void shouldTerminateStopPoint() {
+    //given
     StopPointVersion currentVersion = StopPointTestData.builderVersion1()
         .version(0)
         .build();
     LocalDate terminationValidTo = LocalDate.of(2000, 12, 1);
 
-    StopPointService stopPointServiceSpy = spy(stopPointService);
+    //when
+    StopPointVersion result = stopPointService.terminate(currentVersion, terminationValidTo);
 
-    stopPointServiceSpy.terminate(currentVersion, terminationValidTo);
+    //then
+    assertThat(terminationValidTo).isEqualTo(result.getValidTo());
+  }
 
-    ArgumentCaptor<StopPointVersion> newVersionCaptor = ArgumentCaptor.forClass(StopPointVersion.class);
-    verify(stopPointServiceSpy).updateStopPointVersion(eq(currentVersion), newVersionCaptor.capture());
+  @Test
+  void shouldThrowExceptionWhenValidToIsNotInLastVersionTerminateStopPoint() {
+    //given
+    StopPointVersion version2 = StopPointTestData.builderVersion2()
+        .version(0)
+        .build();
+    LocalDate terminationValidTo = LocalDate.of(2000, 12, 1);
 
-    StopPointVersion editedVersion = newVersionCaptor.getValue();
-    assertThat(terminationValidTo).isEqualTo(editedVersion.getValidTo());
+    //when
+
+    //then
+    assertThatExceptionOfType(TerminationNotAllowedValidToNotWithinLastVersionRangeException.class).isThrownBy(
+        () -> stopPointService.terminate(version2, terminationValidTo));
   }
 
 }

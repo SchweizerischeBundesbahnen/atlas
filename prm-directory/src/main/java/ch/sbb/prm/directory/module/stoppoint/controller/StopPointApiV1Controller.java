@@ -91,8 +91,9 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
 
     StopPointVersion currentVersion = currentVersions.getLast();
 
-    stopPointService.terminate(currentVersion, validTo);
-    return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream().map(StopPointVersionMapper::toModel).toList();
+    StopPointVersion stopPointVersion = stopPointService.terminate(currentVersion, validTo);
+    return stopPointService.findAllBySloidOrderByValidFrom(stopPointVersion.getSloid()).stream()
+        .map(StopPointVersionMapper::toModel).toList();
   }
 
 }

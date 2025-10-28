@@ -109,8 +109,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
-  public void updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
-    updateVersion(currentVersion, editedVersion);
+  public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
+    return updateVersion(currentVersion, editedVersion);
   }
 
   public Optional<PlatformVersion> getPlatformVersionById(Long id) {
@@ -181,13 +181,13 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#currentVersion)")
-  public void terminate(PlatformVersion currentVersion, LocalDate validTo) {
+  public PlatformVersion terminate(PlatformVersion currentVersion, LocalDate validTo) {
     PlatformVersion editedVersion = currentVersion.toBuilder().build();
     DateRange dateRange = new DateRange(currentVersion.getValidFrom(), currentVersion.getValidTo());
 
     editedVersion.setValidTo(validTo);
 
     TerminationHelper.isValidToInLastVersionRange(currentVersion.getSloid(), dateRange, editedVersion.getValidTo());
-    updatePlatformVersion(currentVersion, editedVersion);
+    return updatePlatformVersion(currentVersion, editedVersion);
   }
 }
