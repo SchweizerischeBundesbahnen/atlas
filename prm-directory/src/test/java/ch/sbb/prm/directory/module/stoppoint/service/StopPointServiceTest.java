@@ -1,19 +1,22 @@
 package ch.sbb.prm.directory.module.stoppoint.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.module.stoppoint.repository.StopPointRepository;
 import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointService;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -115,7 +118,7 @@ class StopPointServiceTest {
   }
 
   @Test
-  void testCheckStopPointExists_Exists() {
+  void shouldCheckStopPointExists() {
     String sloid = "ch:1:sloid:12345";
     when(stopPointRepository.existsBySloid(sloid)).thenReturn(true);
 
@@ -123,7 +126,7 @@ class StopPointServiceTest {
   }
 
   @Test
-  void testCheckStopPointExists_DoesNotExist() {
+  void shouldCheckStopPointDoesNotExist() {
     String sloid = "ch:1:sloid:12345";
     when(stopPointRepository.existsBySloid(sloid)).thenReturn(false);
 
@@ -144,6 +147,36 @@ class StopPointServiceTest {
 
     //then
     assertThat(meanOfTransports).containsExactlyInAnyOrder(MeanOfTransport.TRAM, MeanOfTransport.BOAT);
+  }
+
+  @Test
+  void shouldTerminateStopPoint() {
+    //given
+    StopPointVersion currentVersion = StopPointTestData.builderVersion1()
+        .version(0)
+        .build();
+    LocalDate terminationValidTo = LocalDate.of(2000, 12, 1);
+
+    //when
+    StopPointVersion result = stopPointService.terminate(currentVersion, terminationValidTo);
+
+    //then
+    assertThat(terminationValidTo).isEqualTo(result.getValidTo());
+  }
+
+  @Test
+  void shouldThrowExceptionWhenValidToIsNotInLastVersionTerminateStopPoint() {
+    //given
+    StopPointVersion version2 = StopPointTestData.builderVersion2()
+        .version(0)
+        .build();
+    LocalDate terminationValidTo = LocalDate.of(2000, 12, 1);
+
+    //when
+
+    //then
+    assertThatExceptionOfType(TerminationNotAllowedValidToNotWithinLastVersionRangeException.class).isThrownBy(
+        () -> stopPointService.terminate(version2, terminationValidTo));
   }
 
 }

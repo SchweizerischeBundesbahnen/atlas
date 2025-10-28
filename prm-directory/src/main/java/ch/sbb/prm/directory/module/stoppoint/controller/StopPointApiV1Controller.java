@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.platform.service.PlatformService;
 import ch.sbb.prm.directory.module.stoppoint.api.StopPointApiV1;
 import ch.sbb.prm.directory.module.stoppoint.controller.model.StopPointRequestParams;
@@ -15,6 +16,7 @@ import ch.sbb.prm.directory.module.stoppoint.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.module.stoppoint.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.module.stoppoint.service.PrmChangeRecordingVariantService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +78,21 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
       platformService.updateAttentionFieldByParentSloid(stopPointVersionToUpdate.getSloid(), editedVersion.getMeansOfTransport());
     }
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
+        .map(StopPointVersionMapper::toModel).toList();
+  }
+
+  @Override
+  public List<ReadStopPointVersionModel> terminateStopPoint(String sloid, LocalDate validTo) {
+    List<StopPointVersion> currentVersions = stopPointService.findAllBySloidOrderByValidFrom(sloid);
+
+    if (currentVersions.isEmpty()) {
+      throw new SloidNotFoundException(sloid);
+    }
+
+    StopPointVersion currentVersion = currentVersions.getLast();
+
+    StopPointVersion stopPointVersion = stopPointService.terminate(currentVersion, validTo);
+    return stopPointService.findAllBySloidOrderByValidFrom(stopPointVersion.getSloid()).stream()
         .map(StopPointVersionMapper::toModel).toList();
   }
 

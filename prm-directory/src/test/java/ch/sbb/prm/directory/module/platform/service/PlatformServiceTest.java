@@ -2,28 +2,30 @@ package ch.sbb.prm.directory.module.platform.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.BasePrmServiceTest;
-import ch.sbb.prm.directory.module.platform.PlatformTestData;
-import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
-import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.module.platform.PlatformTestData;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.exception.PlatformAlreadyExistsException;
 import ch.sbb.prm.directory.module.platform.repository.PlatformRepository;
 import ch.sbb.prm.directory.module.platform.search.PlatformSearchRestrictions;
+import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
 import ch.sbb.prm.directory.module.referencepoint.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.module.referencepoint.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.repository.RelationRepository;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.module.stoppoint.repository.StopPointRepository;
@@ -81,6 +83,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
   @AfterEach
   void tearDown() {
     platformRepository.deleteAll();
+    stopPointRepository.deleteAll();
   }
 
   @Test
@@ -379,5 +382,51 @@ class PlatformServiceTest extends BasePrmServiceTest {
     List<PlatformVersion> updatedPlatform = platformService.getAllVersions(platformVersion.getSloid());
     assertThat(updatedPlatform).hasSize(1);
     assertThat(updatedPlatform.getFirst().getAttentionField()).isNull();
+  }
+
+  @Test
+  void shouldTerminatePlatform() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.TRAM));
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    PlatformVersion currentVersion = platformService.createPlatformVersion(platformVersion);
+
+    LocalDate terminationValidTo = LocalDate.of(2000, 12, 1);
+
+    //when
+    PlatformVersion result = platformService.terminate(currentVersion, terminationValidTo);
+
+    //then
+    assertThat(terminationValidTo).isEqualTo(result.getValidTo());
+  }
+
+  @Test
+  void shouldThrowExceptionWhenValidToIsNotInLastVersionTerminatePlatform() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.TRAM));
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    platformVersion.setValidFrom(LocalDate.of(2000, 12, 1));
+    platformVersion.setValidTo(LocalDate.of(9999, 12, 1));
+    platformService.createPlatformVersion(platformVersion);
+
+    LocalDate terminationValidTo = LocalDate.of(1999, 12, 1);
+
+    //when
+
+    //then
+    assertThatExceptionOfType(TerminationNotAllowedValidToNotWithinLastVersionRangeException.class).isThrownBy(
+        () -> platformService.terminate(platformVersion, terminationValidTo));
   }
 }

@@ -1,17 +1,20 @@
 package ch.sbb.prm.directory.module.stoppoint.service;
 
+import ch.sbb.atlas.helper.TerminationHelper;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
-import ch.sbb.prm.directory.service.PrmVersionableService;
-import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointService;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.module.stoppoint.repository.StopPointRepository;
 import ch.sbb.prm.directory.module.stoppoint.search.StopPointSearchRestrictions;
+import ch.sbb.prm.directory.service.PrmVersionableService;
+import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointService;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -117,8 +120,18 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return updateVersion(currentVersion, editedVersion);
   }
 
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#currentVersion)")
+  public StopPointVersion terminate(StopPointVersion currentVersion, LocalDate validTo) {
+    StopPointVersion editedVersion = currentVersion.toBuilder().build();
+    DateRange dateRange = new DateRange(currentVersion.getValidFrom(), currentVersion.getValidTo());
+
+    editedVersion.setValidTo(validTo);
+
+    TerminationHelper.isValidToInLastVersionRange(currentVersion.getSloid(), dateRange, editedVersion.getValidTo());
+    return updateStopPointVersion(currentVersion, editedVersion);
+  }
+
   public Page<StopPointVersion> findAll(StopPointSearchRestrictions searchRestrictions) {
     return stopPointRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
-
 }

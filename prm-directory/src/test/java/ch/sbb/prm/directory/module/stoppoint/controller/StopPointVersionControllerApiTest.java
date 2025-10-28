@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -49,6 +50,11 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.stopPointRepository = stopPointRepository;
     this.prmChangeRecordingVariantService = prmChangeRecordingVariantService;
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   @Test
@@ -386,5 +392,43 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/stop-points?size=5000"))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is("The page size is limited to 2000")));
+  }
+
+  @Test
+  void shouldTerminateStopPoint() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointRepository.saveAndFlush(stopPointVersion);
+
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345",
+        Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+
+    mvc.perform(put("/v1/stop-points/terminate/" + stopPointVersion.getSloid() + "/" + LocalDate.of(2000, 2, 28))
+            .contentType(contentType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$.[0].validTo", is("2000-02-28")));
+  }
+
+  @Test
+  void shouldNotTerminatePlatformIfNotInLastVersion() throws Exception {
+    //given
+    StopPointVersion version1 = StopPointTestData.builderVersion1().build();
+    stopPointRepository.saveAndFlush(version1);
+
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345",
+        Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+
+    StopPointVersion version2 = StopPointTestData.builderVersion2().build();
+    stopPointRepository.saveAndFlush(version2);
+
+    //when & then
+    mvc.perform(put("/v1/stop-points/terminate/" + version1.getSloid() + "/" + LocalDate.of(2000, 2, 28)).contentType(contentType)
+            .contentType(contentType))
+        .andExpect(status().isForbidden());
   }
 }
