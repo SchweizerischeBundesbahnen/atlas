@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
   OnChanges,
@@ -7,12 +8,13 @@ import {
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
-import { NgClass, NgFor, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgClass, NgFor, NgOptimizedImage } from '@angular/common';
 import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
-import { AtlasSpacerComponent } from '../../components/spacer/atlas-spacer.component';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { required } from '../../util/values';
+import { GetIconPipe } from './get-icon.pipe';
+import { distinctUntilChanged, of, startWith } from 'rxjs';
 
 @Component({
   selector: 'means-of-transport-picker',
@@ -21,14 +23,16 @@ import { required } from '../../util/values';
   imports: [
     ReactiveFormsModule,
     AtlasLabelFieldComponent,
-    AtlasSpacerComponent,
     NgFor,
     NgClass,
     AtlasFieldErrorComponent,
     TranslatePipe,
     NgOptimizedImage,
+    GetIconPipe,
+    AsyncPipe,
   ],
   providers: [TranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   @Input() controlName!: string;
@@ -37,42 +41,42 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   @Input() showInfo = false;
   @Input() meansOfTransportToShow: MeanOfTransport[] | undefined;
   @Input() showSectorWarning = false;
+  @Input() multiSelectMode = true;
 
-  means!: MeanOfTransport[];
-  sectorWarning = false;
+  protected selectedMeans$ = of([]);
+  protected means!: MeanOfTransport[];
+  protected sectorWarning = false;
 
   ngOnInit(): void {
-    this.getMeansOfTransportToShow();
+    this.initMeansOfTransportToShow();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.formGroup) {
       this.sectorWarning = false;
+      this.selectedMeans$ = this.formControl.valueChanges.pipe(
+        startWith(this.formControl.value ?? []),
+        distinctUntilChanged()
+      );
     }
   }
 
-  private getMeansOfTransportToShow() {
+  private initMeansOfTransportToShow() {
     this.means = this.meansOfTransportToShow
       ? this.meansOfTransportToShow
       : Object.values(MeanOfTransport);
   }
 
-  get currentlySelectedMeans() {
-    if (!this.formControl.value) return [];
-    return this.formControl.value as MeanOfTransport[];
-  }
-
-  get formControl() {
-    return required(
-      this.formGroup.get(this.controlName),
-      'mean of transport control must be defined'
-    );
-  }
-
-  clicked(meanOfTransport: MeanOfTransport) {
-    if (this.disabled) {
-      return;
+  protected onSelection(meanOfTransport: MeanOfTransport) {
+    if (this.multiSelectMode) {
+      this.setControlForMultiSelect(meanOfTransport);
+    } else {
+      this.setControlForSingleSelect(meanOfTransport);
     }
+    this.formControl.markAsDirty();
+  }
+
+  private setControlForMultiSelect(meanOfTransport: MeanOfTransport) {
     if (this.currentlySelectedMeans.includes(meanOfTransport)) {
       if (meanOfTransport === MeanOfTransport.Train) {
         this.sectorWarning = true;
@@ -86,12 +90,25 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
         meanOfTransport,
       ]);
     }
-    this.formControl.markAsDirty();
   }
 
-  getIcon(mean: MeanOfTransport) {
-    if (this.currentlySelectedMeans.includes(mean)) {
-      return mean;
-    } else return mean + '_GRAY';
+  private setControlForSingleSelect(meanOfTransport: MeanOfTransport) {
+    if (!this.currentlySelectedMeans.includes(meanOfTransport)) {
+      this.formControl.setValue([meanOfTransport]);
+    } else {
+      this.formControl.setValue([]);
+    }
+  }
+
+  private get currentlySelectedMeans() {
+    if (!this.formControl.value) return [];
+    return this.formControl.value as MeanOfTransport[];
+  }
+
+  private get formControl() {
+    return required(
+      this.formGroup.get(this.controlName),
+      'mean of transport control must be defined'
+    );
   }
 }

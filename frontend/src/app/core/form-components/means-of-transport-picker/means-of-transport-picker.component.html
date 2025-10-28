@@ -8,25 +8,29 @@
       }}"
     >
     </app-atlas-label-field>
-    <atlas-spacer height="5px"></atlas-spacer>
-    <div class="means-of-transport-wrapper">
+    <div class="means-of-transport-wrapper mt-2">
       <ng-container *ngFor="let mean of means">
-        <img
-          [ngClass]="{ 'icon-image': !disabled }"
-          [title]="
-            'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate
-          "
-          ngSrc="../../../../assets/images/means-of-transport/{{
-            getIcon(mean)
-          }}.svg"
-          width="35"
-          height="35"
-          (click)="clicked(mean)"
-          (keydown.enter)="clicked(mean)"
-          (keydown.space)="clicked(mean)"
-          [attr.data-cy]="mean"
-          [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
-        />
+        <button
+          class="border-0 p-0"
+          [disabled]="disabled"
+          (click)="onSelection(mean)"
+        >
+          <img
+            [ngClass]="{ 'icon-image': !disabled }"
+            [title]="
+              'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate
+            "
+            ngSrc="../../../../assets/images/means-of-transport/{{
+              mean | getIcon: (selectedMeans$ | async)!
+            }}.svg"
+            width="35"
+            height="35"
+            [attr.data-cy]="mean"
+            [alt]="
+              'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate
+            "
+          />
+        </button>
       </ng-container>
     </div>
     <app-atlas-field-error

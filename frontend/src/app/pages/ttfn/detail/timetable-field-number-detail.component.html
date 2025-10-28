@@ -185,6 +185,7 @@
         controlName="meanOfTransport"
         [disabled]="form.disabled"
         [meansOfTransportToShow]="allowableMeansOfTransport"
+        [multiSelectMode]="false"
       ></means-of-transport-picker>
 
       <span class="font-bold-2xl d-block mt-4">{{
@@ -215,7 +216,7 @@
 
   <atlas-detail-footer>
     <atlas-button
-      (click)="back()"
+      (buttonClicked)="back()"
       [footerEdit]="form.enabled"
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
@@ -232,7 +233,7 @@
     >
     </atlas-button>
     <atlas-button
-      (click)="save()"
+      (buttonClicked)="save()"
       [disabled]="!form.dirty"
       [footerEdit]="form.enabled"
       [submitButton]="true"

@@ -47,12 +47,12 @@ export class AddExaminantsComponent implements OnInit {
   ];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: AddExaminantsDialogData,
-    public dialogRef: MatDialogRef<AddExaminantsComponent>,
-    private detailHelperService: DetailDialogHelperService,
-    private stopPointWorkflowService: StopPointWorkflowService,
-    private notificationService: NotificationService,
-    private router: Router
+    @Inject(MAT_DIALOG_DATA) readonly data: AddExaminantsDialogData,
+    private readonly dialogRef: MatDialogRef<AddExaminantsComponent>,
+    private readonly detailHelperService: DetailDialogHelperService,
+    private readonly stopPointWorkflowService: StopPointWorkflowService,
+    private readonly notificationService: NotificationService,
+    private readonly router: Router
   ) {}
 
   form!: FormGroup<AddExaminantsFormGroup>;

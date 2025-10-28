@@ -2,10 +2,6 @@
   display: flex;
   gap: 0.5rem;
 
-  .icon-image {
-    cursor: pointer;
-  }
-
   .icon-image:hover {
     border: 2px hsl(236, 47%, 33%) solid;
     border-radius: 5px;

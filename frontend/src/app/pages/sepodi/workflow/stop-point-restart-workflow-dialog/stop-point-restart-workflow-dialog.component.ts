@@ -40,13 +40,14 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
   formGroup!: FormGroup<StopPointRestartWorkflowFormGroup>;
 
   constructor(
-    public dialogRef: MatDialogRef<StopPointRestartWorkflowDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StopPointRejectWorkflowDialogData,
-    private detailHelperService: DetailDialogHelperService,
-    private router: Router,
-    private notificationService: NotificationService,
-    private stopPointWorkflowService: StopPointWorkflowService,
-    private userAdministrationService: UserAdministrationService
+    @Inject(MAT_DIALOG_DATA)
+    private readonly data: StopPointRejectWorkflowDialogData,
+    private readonly dialogRef: MatDialogRef<StopPointRestartWorkflowDialogComponent>,
+    private readonly detailHelperService: DetailDialogHelperService,
+    private readonly router: Router,
+    private readonly notificationService: NotificationService,
+    private readonly stopPointWorkflowService: StopPointWorkflowService,
+    private readonly userAdministrationService: UserAdministrationService
   ) {}
 
   ngOnInit(): void {

@@ -34,13 +34,13 @@ import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-
 })
 export class AddStopPointWorkflowComponent implements OnInit {
   constructor(
-    public dialogRef: MatDialogRef<AddStopPointWorkflowComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AddStopPointWorkflowDialogData,
-    private detailHelperService: DetailDialogHelperService,
-    private stopPointWorkflowService: StopPointWorkflowService,
-    private notificationService: NotificationService,
-    private userService: UserService,
-    private router: Router
+    @Inject(MAT_DIALOG_DATA) readonly data: AddStopPointWorkflowDialogData,
+    private readonly dialogRef: MatDialogRef<AddStopPointWorkflowComponent>,
+    private readonly detailHelperService: DetailDialogHelperService,
+    private readonly stopPointWorkflowService: StopPointWorkflowService,
+    private readonly notificationService: NotificationService,
+    private readonly userService: UserService,
+    private readonly router: Router
   ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;

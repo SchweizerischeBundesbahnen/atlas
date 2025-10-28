@@ -67,23 +67,22 @@ import { LineInternalService } from '../../../../api/service/lidi/line-internal.
   ],
 })
 export class LineDetailComponent implements OnInit, OnDestroy {
-  private onDestroy$ = new Subject<boolean>();
-  eventSubject = new Subject<boolean>();
+  private readonly onDestroy$ = new Subject<boolean>();
+  readonly eventSubject = new Subject<boolean>();
 
   selectedVersionIndex!: number;
   selectedVersion!: LineVersionV2;
   versions!: Array<LineVersionV2>;
 
   form!: FormGroup<LineDetailFormGroup>;
-  initForm!: FormGroup<LineDetailFormGroup>;
+  private initForm!: FormGroup<LineDetailFormGroup>;
 
-  isValidFromShortened!: boolean;
-  isValidToShortened!: boolean;
+  private isValidFromShortened!: boolean;
+  private isValidToShortened!: boolean;
 
   isNew = false;
 
   showVersionSwitch = false;
-  isSwitchVersionDisabled = false;
   showWorkflow = false;
 
   maxValidity!: DateRange;
@@ -91,7 +90,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
 
   isShowLineSnapshotHistory = false;
 
-  _lineType!: LineType;
+  private _lineType!: LineType;
   get lineType(): LineType {
     return this._lineType;
   }
@@ -100,7 +99,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
     this._lineType = lineType;
   }
 
-  _isLineConcessionTypeRequired = false;
+  private _isLineConcessionTypeRequired = false;
 
   get isLineConcessionTypeRequired(): boolean {
     return this._isLineConcessionTypeRequired;
@@ -111,16 +110,16 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private router: Router,
-    private lineService: LineService,
-    private lineInternalService: LineInternalService,
-    private notificationService: NotificationService,
-    private dialogService: DialogService,
-    private permissionService: PermissionService,
-    private activatedRoute: ActivatedRoute,
-    private validityService: ValidityService,
-    private detailHelperService: DetailDialogHelperService,
-    private dialog: MatDialog
+    private readonly router: Router,
+    private readonly lineService: LineService,
+    private readonly lineInternalService: LineInternalService,
+    private readonly notificationService: NotificationService,
+    private readonly dialogService: DialogService,
+    private readonly permissionService: PermissionService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly validityService: ValidityService,
+    private readonly detailHelperService: DetailDialogHelperService,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -138,7 +137,6 @@ export class LineDetailComponent implements OnInit, OnDestroy {
           this.versions
         );
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
-
       this.initSelectedVersion();
     }
 
@@ -437,7 +435,6 @@ export class LineDetailComponent implements OnInit, OnDestroy {
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
-      this.isSwitchVersionDisabled = true;
       this.validityService.initValidity(this.form);
       this.form.enable({ emitEvent: false });
 
