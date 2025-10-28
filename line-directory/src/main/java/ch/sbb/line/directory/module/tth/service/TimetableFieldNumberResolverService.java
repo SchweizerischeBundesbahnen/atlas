@@ -37,7 +37,7 @@ public class TimetableFieldNumberResolverService {
               .build());
 
       if (timetableFieldNumbers.getTotalElements() == 1) {
-        String ttfnid = timetableFieldNumbers.getContent().get(0).getTtfnid();
+        String ttfnid = timetableFieldNumbers.getContent().getFirst().getTtfnid();
         log.info("Resolved timetableFieldNumber={} at {} to ttfnid {}", timetableFieldNumber, beginningOfNextTimetableYear,
             ttfnid);
         return ttfnid;
@@ -69,7 +69,7 @@ public class TimetableFieldNumberResolverService {
 
           resolvedVersion.ifPresent(version -> {
             statement.setTimetableFieldNumber(version.getNumber());
-            statement.setTimetableFieldDescription(version.getDescription());
+            statement.setTimetableFieldDescription(version.getDescriptionOutwardLine1());
           });
         });
 
@@ -80,7 +80,7 @@ public class TimetableFieldNumberResolverService {
     if (statements.stream().map(TimetableHearingStatementModelV2::getTimetableYear).distinct().count() != 1) {
       throw new IllegalArgumentException("Statements should be from the same year for this");
     }
-    return FutureTimetableHelper.getFirstDayOfTimetableYear(statements.get(0).getTimetableYear());
+    return FutureTimetableHelper.getFirstDayOfTimetableYear(statements.getFirst().getTimetableYear());
   }
 
 }

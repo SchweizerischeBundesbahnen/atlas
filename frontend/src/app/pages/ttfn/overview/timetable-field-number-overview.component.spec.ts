@@ -21,8 +21,8 @@ const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [
     {
       ttfnid: 'ttfnid',
-      description: 'description',
       swissTimetableFieldNumber: 'asdf',
+      descriptionOutwardLine1: 'desc outward 1',
       number: 'number',
       businessOrganisation: 'businessOrganisation',
       status: 'VALIDATED',

@@ -12,9 +12,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {
-  DetailHelperService,
+  DetailDialogHelperService,
   DetailWithCancelEdit,
-} from '../../../../core/detail/detail-helper.service';
+} from '../../../../core/detail/detail-dialog-helper.service';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { ValidityService } from '../../validity/validity.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
@@ -80,7 +80,7 @@ export class SectorGroupDetailComponent
   private readonly sectorMapService = inject(SectorMapService);
   private readonly trafficPointMapService = inject(TrafficPointMapService);
   private readonly validityService = inject(ValidityService);
-  private readonly detailHelperService = inject(DetailHelperService);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
   private readonly notificationService = inject(NotificationService);
   private readonly sectorGroupService = inject(SectorGroupService);
   private readonly sectorInternalService = inject(SectorInternalService);

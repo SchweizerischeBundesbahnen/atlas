@@ -5,9 +5,9 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
+import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -72,12 +72,9 @@ public class TimetableFieldNumberService {
     return versionRepository.saveAndFlush(newVersion);
   }
 
-  public Page<TimetableFieldNumber> getVersionsSearched(
-      TimetableFieldNumberSearchRestrictions searchRestrictions) {
+  public Page<TimetableFieldNumber> getVersionsSearched(TimetableFieldNumberSearchRestrictions searchRestrictions) {
     log.info("Loading TimetableFieldNumbers with searchRestrictions={}", searchRestrictions);
-
-    return timetableFieldNumberRepository.findAll(searchRestrictions.getSpecification(),
-        searchRestrictions.getPageable());
+    return timetableFieldNumberRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
   public List<TimetableFieldNumberVersion> getVersionsValidAt(Set<String> ttfids, LocalDate validAt) {

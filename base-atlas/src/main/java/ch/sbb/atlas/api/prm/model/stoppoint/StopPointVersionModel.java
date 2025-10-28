@@ -9,14 +9,13 @@ import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +27,7 @@ import java.util.List;
 public class StopPointVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @NotEmpty
-  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
+  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for " 
       + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 

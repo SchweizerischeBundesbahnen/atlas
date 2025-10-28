@@ -30,9 +30,9 @@ import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-fo
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../../core/versioning/date-range';
 import {
-  DetailHelperService,
+  DetailDialogHelperService,
   DetailWithCancelEdit,
-} from '../../../../core/detail/detail-helper.service';
+} from '../../../../core/detail/detail-dialog-helper.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { SublineService } from '../../../../api/service/lidi/subline.service';
 import { SublineInternalService } from '../../../../api/service/lidi/subline-internal.service';
@@ -119,7 +119,7 @@ export class SublineDetailComponent
     private readonly permissionService: PermissionService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly validityService: ValidityService,
-    private readonly detailHelperService: DetailHelperService,
+    private readonly detailHelperService: DetailDialogHelperService,
     private readonly dialogService: DialogService
   ) {}
 

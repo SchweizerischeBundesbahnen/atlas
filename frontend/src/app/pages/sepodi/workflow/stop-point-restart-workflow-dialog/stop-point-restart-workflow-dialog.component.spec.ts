@@ -11,7 +11,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { FormModule } from '../../../../core/module/form.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
@@ -105,7 +105,7 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
           provide: UserAdministrationService,
           useValue: userAdministrationServiceMock,
         },
-        { provide: DetailHelperService, useValue: detailHelperService },
+        { provide: DetailDialogHelperService, useValue: detailHelperService },
         { provide: Router, useValue: router },
         { provide: TranslatePipe },
       ],

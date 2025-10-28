@@ -1,16 +1,19 @@
 package ch.sbb.line.directory.module.ttfn.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
-import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -64,7 +67,37 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
 
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
-  private String description;
+  @Column(name = "description_outward_line_1")
+  private String descriptionOutwardLine1;
+
+  @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Column(name = "description_outward_line_2")
+  private String descriptionOutwardLine2;
+
+  @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Column(name = "description_outward_line_3")
+  private String descriptionOutwardLine3;
+
+  @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Column(name = "description_return_line_1")
+  private String descriptionReturnLine1;
+
+  @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Column(name = "description_return_line_2")
+  private String descriptionReturnLine2;
+
+  @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Column(name = "description_return_line_3")
+  private String descriptionReturnLine3;
+
+  @AtlasVersionableProperty
+  @Enumerated(value = EnumType.STRING)
+  private TtfnMeanOfTransport meanOfTransport;
 
   @AtlasVersionableProperty
   @NotNull
@@ -88,9 +121,5 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
   private String businessOrganisation;
-
-  @AtlasVersionableProperty
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
-  private String comment;
 
 }

@@ -1,7 +1,8 @@
-import { Injectable, OnInit } from '@angular/core';
+import { inject, Injectable, OnInit } from '@angular/core';
 import { Observable, of, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { DialogService } from '../components/dialog/dialog.service';
+import { filter } from 'rxjs/operators';
 
 export interface DetailWithCancelEdit extends OnInit {
   isNew: boolean;
@@ -12,10 +13,10 @@ export interface DetailWithCancelEdit extends OnInit {
 @Injectable({
   providedIn: 'root',
 })
-export class DetailHelperService {
-  constructor(private dialogService: DialogService) {}
+export class DetailDialogHelperService {
+  private readonly dialogService = inject(DialogService);
 
-  public showCancelEditDialog(detail: DetailWithCancelEdit) {
+  showCancelEditDialog(detail: DetailWithCancelEdit) {
     this.confirmLeave(detail)
       .pipe(take(1))
       .subscribe((confirmed) => {
@@ -31,11 +32,11 @@ export class DetailHelperService {
       });
   }
 
-  public confirmLeave(detail: DetailWithCancelEdit): Observable<boolean> {
+  confirmLeave(detail: DetailWithCancelEdit): Observable<boolean> {
     return this.confirmLeaveDirtyForm(detail.form);
   }
 
-  public confirmLeaveDirtyForm(form: FormGroup): Observable<boolean> {
+  confirmLeaveDirtyForm(form: FormGroup): Observable<boolean> {
     if (form.dirty) {
       return this.dialogService.confirm({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
@@ -43,5 +44,22 @@ export class DetailHelperService {
       });
     }
     return of(true);
+  }
+
+  confirmWarning(
+    labels: { message: string; confirmText: string },
+    onConfirm: () => void
+  ) {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        cancelText: 'DIALOG.BACK',
+        ...labels,
+      })
+      .pipe(
+        take(1),
+        filter((confirmed) => confirmed)
+      )
+      .subscribe(onConfirm);
   }
 }

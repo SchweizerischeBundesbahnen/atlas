@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -36,15 +37,16 @@ class TimetableFieldNumberControllerInternalApiTest extends BaseControllerApiTes
   private final TimetableFieldNumberVersionRepository versionRepository;
 
   @Autowired
-  TimetableFieldNumberControllerInternalApiTest(
-      TimetableFieldNumberVersionRepository versionRepository) {
+  TimetableFieldNumberControllerInternalApiTest(TimetableFieldNumberVersionRepository versionRepository) {
     this.versionRepository = versionRepository;
   }
 
   private TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
           .ttfnid("ch:1:ttfnid:100000")
-          .description("FPFN Description")
+          .descriptionOutwardLine1("FPFN Outward Line Desc")
+          .descriptionReturnLine1("FPFN Return Line Desc")
+          .meanOfTransport(TtfnMeanOfTransport.TRAIN)
           .number("10.100")
           .status(Status.VALIDATED)
           .swissTimetableFieldNumber("b0.100")

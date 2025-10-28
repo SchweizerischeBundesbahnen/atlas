@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { PrmVariantInfoService } from '../../prm-variant-info.service';
-import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { MeansOfTransportPickerComponent } from '../../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { DateRangeComponent } from '../../../../../../core/form-components/date-range/date-range.component';
 import { TranslatePipe } from '@ngx-translate/core';

@@ -45,7 +45,7 @@ import { DecimalNumberPipe } from '../pipe/decimal-number.pipe';
 import { SearchServicePointComponent } from '../search-service-point/search-service-point.component';
 import { SearchResultHighlightPipe } from '../search-service-point/search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
-import { MeansOfTransportPickerComponent } from '../../pages/sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { MeansOfTransportPickerComponent } from '../form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { DetailPageContentComponent } from '../components/detail-page-content/detail-page-content.component';
 import { StringListComponent } from '../form-components/string-list/string-list.component';
 import { DialogContentComponent } from '../components/dialog/content/dialog-content.component';
