@@ -12,4 +12,4 @@ describe('GetIconPipe', () => {
     expect(icon).toEqual('BUS_GRAY');
   });
 });
-// todo: test servicepoint means selection
+
