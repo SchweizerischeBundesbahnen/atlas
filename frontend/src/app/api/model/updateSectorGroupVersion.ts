@@ -7,11 +7,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Status } from './status';
-import { Geolocation } from './geolocation';
 
 
-export interface ReadSectorVersion { 
+export interface UpdateSectorGroupVersion { 
     /**
      * Object creation date
      */
@@ -54,14 +52,5 @@ export interface ReadSectorVersion {
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */
     etagVersion?: number;
-    /**
-     * Height of edge in cm
-     */
-    edgeHeight?: number;
-    sectorGeolocation?: Geolocation;
-    status?: Status;
 }
-export namespace ReadSectorVersion {
-}
-
 

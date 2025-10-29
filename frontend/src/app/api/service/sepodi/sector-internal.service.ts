@@ -26,4 +26,8 @@ export class SectorInternalService {
     return this.atlasApiService.get(`${this.BASE_PATH}/actual-date/${encodeURIComponent(trafficPointSloid)}`);
   }
 
+  public revokeSector(sectorSloid: string): Observable<void> {
+    return this.atlasApiService.post(`${this.BASE_PATH}/${encodeURIComponent(sectorSloid)}/revoke`);
+  }
+
 }

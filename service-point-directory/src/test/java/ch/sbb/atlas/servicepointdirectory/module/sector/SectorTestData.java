@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.module.sector;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public class SectorTestData {
         .spatialReference(SpatialReference.LV95)
         .height(19.0)
         .edgeHeight(20.0)
+        .status(Status.VALIDATED)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
@@ -44,6 +46,7 @@ public class SectorTestData {
         .spatialReference(SpatialReference.LV95)
         .height(19.0)
         .edgeHeight(20.0)
+        .status(Status.VALIDATED)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
@@ -80,6 +83,7 @@ public class SectorTestData {
         .validTo(LocalDate.of(2024, 1, 1))
         .designation("test")
         .length(18.00)
+        .status(Status.VALIDATED)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))

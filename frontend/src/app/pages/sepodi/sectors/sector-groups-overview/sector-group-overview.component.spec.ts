@@ -12,7 +12,6 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
 import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
-import { ContainerSectorGroupVersion } from '../../../../api/model/containerSectorGroupVersion';
 
 describe('SectorGroupOverviewComponent', () => {
   let component: SectorGroupOverviewComponent;
@@ -35,7 +34,7 @@ describe('SectorGroupOverviewComponent', () => {
     'SectorGroupInternalService',
     ['getSectorGroups']
   );
-  const sectorGroupOverview: ContainerSectorGroupVersion = {
+  const sectorGroupOverview: ContainerReadSectorVersion = {
     objects: [],
     totalCount: 0,
   };

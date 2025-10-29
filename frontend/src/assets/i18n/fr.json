@@ -110,7 +110,8 @@
         "ALREADY_ADDED": "Le fichier {{filename}} a déjà été ajouté.",
         "NOT_A_PDF": "Les documents {{documents}} ne sont pas des fichiers PDF valides."
       }
-    }
+    },
+    "REVOKED": "L’objet portant {{field}} {{value}} a le statut de saisie des erreurs. Il ne peut plus être modifié."
   },
   "DETAIL_USER_EDITION": {
     "LATEST_EDITION_DATE": "Dernière modification à {{editionDate}}",
@@ -1276,7 +1277,8 @@
       "EDGE_HEIGHT": "Hauteur des arêtes [cm]",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le secteur a été ajouté avec succès.",
-        "EDIT_SUCCESS": "Le secteur a été enregistré avec succès."
+        "EDIT_SUCCESS": "Le secteur a été enregistré avec succès.",
+        "REVOKE_SUCCESS": "Le secteur a été marqué comme saisie d’erreur avec succès."
       },
       "TRAFFIC_POINT_VALIDITY_ERROR": "La validité de la bordure d’arrêt de {{from}} à {{to}} ne doit pas être dépassée.",
       "MEANS_OF_TRANSPORT_ERROR": "Au moins une version du service est attendue qui correspond à un arrêt avec uniquement le train comme moyen de transport.",
@@ -1286,7 +1288,12 @@
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Groupes de secteurs",
       "SECTOR_GROUP": "Groupe de secteurs",
-      "NEW": "Saisir un groupe de secteurs"
+      "NEW": "Saisir un groupe de secteurs",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le groupe de secteurs a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le groupe de secteurs a été enregistré avec succès.",
+        "REVOKE_SUCCESS": "Le groupe de secteurs a été marqué avec succès comme saisie d’erreur."
+      }
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",

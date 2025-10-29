@@ -2,7 +2,7 @@ package ch.sbb.exportservice.job.sepodi.sector.processor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.processor.SectorGroupJsonProcessor;
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ class SectorGroupJsonProcessorTest {
         .version(0)
         .build();
 
-    SectorGroupVersionModel sectorGroupVersionModel = SectorGroupVersionModel.builder()
+    ReadSectorGroupVersionModel sectorGroupVersionModel = ReadSectorGroupVersionModel.builder()
         .id(1L)
         .length(150.000)
         .length(120.000)
@@ -40,7 +40,7 @@ class SectorGroupJsonProcessorTest {
         .etagVersion(0)
         .build();
 
-    SectorGroupVersionModel result = new SectorGroupJsonProcessor().process(sectorGroupVersion);
+    ReadSectorGroupVersionModel result = new SectorGroupJsonProcessor().process(sectorGroupVersion);
     assertThat(result).usingRecursiveComparison().isEqualTo(sectorGroupVersionModel);
   }
 

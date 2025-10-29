@@ -2,9 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.service;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.location.LocationService;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -52,12 +53,12 @@ public class SectorGroupService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  public SectorGroupVersionModel create(SectorGroupVersion sectorGroupVersion,
+  public ReadSectorGroupVersionModel create(SectorGroupVersion sectorGroupVersion,
       List<String> sloids, List<ServicePointVersion> servicePointVersions) {
     return createSectorGroup(sectorGroupVersion, sloids, servicePointVersions);
   }
 
-  public SectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion, List<String> sloids,
+  public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion, List<String> sloids,
       List<ServicePointVersion> servicePointVersions) {
 
     trafficPointElementService.doesTrafficPointExist(sectorGroupVersion.getTrafficPointSloid());
@@ -128,6 +129,7 @@ public class SectorGroupService {
   }
 
   private SectorGroupVersion save(SectorGroupVersion sectorGroupVersion) {
+    sectorGroupVersion.setStatus(Status.VALIDATED);
     return sectorGroupVersionRepository.saveAndFlush(sectorGroupVersion);
   }
 
@@ -141,6 +143,7 @@ public class SectorGroupService {
   }
 
   public void updateSectorGroup(SectorGroupVersion currentVersion, SectorGroupVersion editedVersion) {
+    sectorValidationService.checkIfStatusRevoked(currentVersion);
     sectorGroupVersionRepository.incrementVersion(currentVersion.getSloid());
 
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
@@ -174,13 +177,13 @@ public class SectorGroupService {
     return sectorGroupVersions;
   }
 
-  public Container<SectorGroupVersionModel> getSectorGroupsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
+  public Container<ReadSectorGroupVersionModel> getSectorGroupsOfTrafficPoint(String trafficPointSloid, Pageable pageable) {
     List<SectorGroupVersion> sectorGroupVersions = sectorGroupVersionRepository.findAllByTrafficPointSloid(trafficPointSloid,
         pageable.getSort());
 
-    List<SectorGroupVersionModel> overviewModels = sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
-    List<SectorGroupVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
-        SectorGroupVersionModel::getSloid);
+    List<ReadSectorGroupVersionModel> overviewModels = sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
+    List<ReadSectorGroupVersionModel> displayableModels = OverviewDisplayBuilder.mergeVersionsForDisplay(overviewModels,
+        ReadSectorGroupVersionModel::getSloid);
     return OverviewDisplayBuilder.toPagedContainer(displayableModels, pageable);
   }
 
@@ -206,6 +209,13 @@ public class SectorGroupService {
     return sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(sectorGroupSloid)
         .stream()
         .map(r -> r.getSectorGroupRelationId().getSectorSloid()).toList();
+  }
+
+  @Transactional
+  public void revoke(String sloid) {
+    List<SectorGroupVersion> sectorGroup = findAllBySloidOrderByValidFrom(sloid);
+    sectorGroup.forEach(sectorGroupVersion -> sectorGroupVersion.setStatus(Status.REVOKED));
+    sectorGroupVersionRepository.saveAll(sectorGroup);
   }
 
 }

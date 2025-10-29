@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.sectorgroup.entity;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.BaseEntity;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,7 @@ public class SectorGroupVersion extends BaseEntity {
   private String designation;
 
   private Double length;
+
+  private Status status;
 
 }

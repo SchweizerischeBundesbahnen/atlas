@@ -3,17 +3,15 @@ package ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.model.BaseValidatorTest;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class SectorVersionTest {
-
-  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+class SectorVersionTest extends BaseValidatorTest {
 
   @Test
   void shouldNotAcceptSectorWithoutRequiredTrafficPointSloid() {
@@ -24,6 +22,7 @@ class SectorVersionTest {
         .east(22.222)
         .spatialReference(SpatialReference.LV95)
         .designation("off")
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .version(1)
@@ -42,6 +41,7 @@ class SectorVersionTest {
         .sloid("abc")
         .trafficPointSloid("traffic")
         .designation("off")
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .version(1)

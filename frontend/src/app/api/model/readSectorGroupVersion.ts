@@ -7,9 +7,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 
 
-export interface SectorGroupVersion { 
+export interface ReadSectorGroupVersion { 
     /**
      * Object creation date
      */
@@ -52,5 +53,9 @@ export interface SectorGroupVersion {
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */
     etagVersion?: number;
+    status?: Status;
 }
+export namespace ReadSectorGroupVersion {
+}
+
 

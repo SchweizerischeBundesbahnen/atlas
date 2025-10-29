@@ -5,12 +5,14 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
 import ch.sbb.atlas.servicepointdirectory.service.SectorValidationService;
@@ -67,6 +69,7 @@ public class SectorService {
   }
 
   void updateSector(SectorVersion currentVersion, SectorVersion editedVersion) {
+    sectorValidationService.checkIfStatusRevoked(currentVersion);
     sectorVersionRepository.incrementVersion(currentVersion.getSloid());
 
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
@@ -117,7 +120,14 @@ public class SectorService {
   }
 
   private SectorVersion save(SectorVersion sectorVersion) {
+    sectorVersion.setStatus(Status.VALIDATED);
     return sectorVersionRepository.saveAndFlush(sectorVersion);
   }
 
+  @Transactional
+  public void revoke(String sloid) {
+    List<SectorVersion> sector = getSector(sloid);
+    sector.forEach(sectorVersion -> sectorVersion.setStatus(Status.REVOKED));
+    sectorVersionRepository.saveAll(sector);
+  }
 }

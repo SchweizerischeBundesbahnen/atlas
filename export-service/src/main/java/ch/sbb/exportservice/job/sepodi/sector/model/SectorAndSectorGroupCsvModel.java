@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.job.sepodi.sector.model;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -49,6 +50,8 @@ public class SectorAndSectorGroupCsvModel {
   private String relatedGroups;
 
   private String relatedSectors;
+
+  private Status status;
 
   private String creationDate;
 

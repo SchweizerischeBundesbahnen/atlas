@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.job.sepodi.sector.sql;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.sepodi.sector.entity.SectorAndSectorGroup;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ public class SectorsAndSectorGroupsRowMapper implements RowMapper<SectorAndSecto
         .sloid(rs.getString("sloid"))
         .type(rs.getString("type"))
         .trafficPointSloid(rs.getString("traffic_point_sloid"))
+        .status(Status.valueOf(rs.getString("status")))
         .validFrom(rs.getDate("valid_from").toLocalDate())
         .validTo(rs.getDate("valid_to").toLocalDate())
         .designation(rs.getString("designation"))

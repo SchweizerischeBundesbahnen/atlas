@@ -110,7 +110,8 @@
         "ALREADY_ADDED": "Il file {{filename}} è già stato aggiunto.",
         "NOT_A_PDF": "I documenti {{documents}} non sono file PDF validi."
       }
-    }
+    },
+    "REVOKED": "L’oggetto con {{field}} {{value}} ha lo stato di rilevamento degli errori. Non può più essere modificato."
   },
   "DETAIL_USER_EDITION": {
     "LATEST_EDITION_DATE": "Ultima modifica alle {{editionDate}}",
@@ -1276,7 +1277,8 @@
       "EDGE_HEIGHT": "Altezza spigolo [cm]",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Settore aggiunto con successo.",
-        "EDIT_SUCCESS": "Settore salvato correttamente."
+        "EDIT_SUCCESS": "Settore salvato correttamente.",
+        "REVOKE_SUCCESS": "Il settore è stato contrassegnato correttamente come registrazione dell’errore."
       },
       "TRAFFIC_POINT_VALIDITY_ERROR": "La validità del bordo di fermata da {{from}} a {{to}} non può essere superata.",
       "MEANS_OF_TRANSPORT_ERROR": "Si attende almeno una versione del posto di servizio che è una fermata e ha solo il treno come mezzo di trasporto",
@@ -1286,7 +1288,12 @@
     "SECTOR_GROUPS": {
       "SECTOR_GROUPS": "Gruppi di settori",
       "SECTOR_GROUP": "Gruppo di settori",
-      "NEW": "Inserire un gruppo di settori"
+      "NEW": "Inserire un gruppo di settori",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Gruppo di settori aggiunto con successo.",
+        "EDIT_SUCCESS": "Gruppo di settori salvato correttamente.",
+        "REVOKE_SUCCESS": "Il gruppo di settore è stato contrassegnato correttamente come registrazione di errore."
+      }
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Posti di carico",

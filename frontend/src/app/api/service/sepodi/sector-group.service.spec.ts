@@ -5,7 +5,7 @@ import { AtlasApiService } from '../atlas-api.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../../core/auth/user/user.service';
 import { CreateSectorGroupVersion } from '../../model/createSectorGroupVersion';
-import { SectorGroupVersion } from '../../model/sectorGroupVersion';
+import { ReadSectorGroupVersion } from '../../model/readSectorGroupVersion';
 
 describe('SectorGroupService', () => {
   let service: SectorGroupService;
@@ -43,7 +43,7 @@ describe('SectorGroupService', () => {
   });
 
   it('should updateSectorGroup', () => {
-    service.updateSectorGroup(123, {} as SectorGroupVersion);
+    service.updateSectorGroup(123, {} as ReadSectorGroupVersion);
 
     expect(apiService.put).toHaveBeenCalledOnceWith(
       '/service-point-directory/v1/sector-groups/123',

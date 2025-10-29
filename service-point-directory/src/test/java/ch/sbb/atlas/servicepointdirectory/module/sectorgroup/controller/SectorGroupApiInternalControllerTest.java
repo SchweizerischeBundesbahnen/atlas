@@ -1,10 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.module.sector.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
@@ -18,6 +21,7 @@ import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPoin
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.repository.TrafficPointElementVersionRepository;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,6 +107,16 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].designation", is("dese")))
         .andExpect(jsonPath("$[1].sloid", is(sector2)))
         .andExpect(jsonPath("$[1].designation", is("hehe")));
+  }
+
+  @Test
+  void shouldRevokeSectorGroup() throws Exception {
+    mvc.perform(post(BASE_PATH + "/" + sectorGroupVersion.getSloid() + "/revoke")).andExpect(status().isOk());
+
+    List<SectorGroupVersion> sectorGroup = sectorGroupVersionRepository.findAllBySloidOrderByValidFrom(
+        sectorGroupVersion.getSloid());
+    assertThat(sectorGroup).hasSize(1);
+    assertThat(sectorGroup.getFirst().getStatus()).isEqualTo(Status.REVOKED);
   }
 
 }

@@ -21,7 +21,7 @@ public class CsvSectorsAndSectorGroupsVersionWriter extends BaseCsvWriter<Sector
         Fields.lv95East, Fields.lv95North,
         Fields.wgs84East, Fields.wgs84North,
         Fields.height, Fields.spatialReference,
-        Fields.relatedGroups, Fields.relatedSectors,
+        Fields.relatedGroups, Fields.relatedSectors, Fields.status,
         Fields.creationDate, Fields.editionDate
     };
   }

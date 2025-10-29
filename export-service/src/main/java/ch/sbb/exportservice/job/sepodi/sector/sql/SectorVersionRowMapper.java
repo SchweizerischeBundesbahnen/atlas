@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.job.sepodi.sector.sql;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.sepodi.sector.entity.SectorVersion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ public class SectorVersionRowMapper implements RowMapper<SectorVersion> {
     return SectorVersion.builder()
         .id(rs.getLong("id"))
         .sloid(rs.getString("sloid"))
+        .status(Status.valueOf(rs.getString("status")))
         .validFrom(rs.getDate("valid_from").toLocalDate())
         .validTo(rs.getDate("valid_to").toLocalDate())
         .east(rs.getDouble("east"))

@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -137,7 +137,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
         .andReturn();
 
     String responseContent = mvcResult.getResponse().getContentAsString();
-    SectorGroupVersionModel createdSectorGroup = mapper.readValue(responseContent, SectorGroupVersionModel.class);
+    ReadSectorGroupVersionModel createdSectorGroup = mapper.readValue(responseContent, ReadSectorGroupVersionModel.class);
 
     Set<SectorGroupRelation> relations = sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(
         createdSectorGroup.getSloid());
@@ -207,7 +207,7 @@ class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
     sectorGroupRelationRepository.saveAndFlush(
         SectorGroupRelation.builder().sectorGroupRelationId(sectorGroupRelationId2).build());
 
-    SectorGroupVersionModel updateDto = SectorGroupVersionModel.builder()
+    ReadSectorGroupVersionModel updateDto = ReadSectorGroupVersionModel.builder()
         .etagVersion(sectorGroupVersion.getVersion())
         .sloid(sectorVersion.getSloid())
         .trafficPointSloid(sectorVersion.getTrafficPointSloid())

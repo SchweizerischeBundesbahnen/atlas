@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.module.sector.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
@@ -50,6 +51,7 @@ class SectorGroupVersionRepositoryTest {
         .north(1.0)
         .edgeHeight(1.0)
         .spatialReference(SpatialReference.LV95)
+        .status(Status.VALIDATED)
         .build();
 
     SectorVersion sectorVersion2 = SectorVersion.builder()
@@ -62,6 +64,7 @@ class SectorGroupVersionRepositoryTest {
         .north(1.0)
         .edgeHeight(1.0)
         .spatialReference(SpatialReference.LV95)
+        .status(Status.VALIDATED)
         .build();
 
     List<SectorVersion> list = List.of(sectorVersion, sectorVersion2);
@@ -72,6 +75,7 @@ class SectorGroupVersionRepositoryTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .designation("Test")
+        .status(Status.VALIDATED)
         .build();
 
     SectorGroupVersion savedVersion = sectorGroupVersionRepository.save(sectorGroupVersion);

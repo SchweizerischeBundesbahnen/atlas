@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-@Schema(name = "SectorGroupVersion")
-public class SectorGroupVersionModel extends BaseSectorModel {
+@Schema(name = "UpdateSectorGroupVersion")
+public class UpdateSectorGroupVersionModel extends BaseSectorModel {
 
 }

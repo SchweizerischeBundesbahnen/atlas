@@ -1,5 +1,5 @@
 import { CreateSectorGroupVersion } from '../../app/api/model/createSectorGroupVersion';
-import { SectorGroupVersion } from '../../app/api/model/sectorGroupVersion';
+import { ReadSectorGroupVersion } from '../../app/api/model/readSectorGroupVersion';
 
 export const CREATE_BERN_PLATFORM_1_SECTORGROUP_A: CreateSectorGroupVersion[] =
   [
@@ -14,7 +14,7 @@ export const CREATE_BERN_PLATFORM_1_SECTORGROUP_A: CreateSectorGroupVersion[] =
     },
   ];
 
-export const BERN_PLATFORM_1_SECTORGROUP_A: SectorGroupVersion[] = [
+export const BERN_PLATFORM_1_SECTORGROUP_A: ReadSectorGroupVersion[] = [
   {
     id: 12345,
     trafficPointSloid: 'ch:1:sloid:7000:1:1',

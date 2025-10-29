@@ -1,7 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.controller;
 
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api.SectorGroupApiV1;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.mapper.SectorGroupMapper;
@@ -25,13 +26,13 @@ public class SectorGroupApiV1Controller implements SectorGroupApiV1 {
   private final ServicePointService servicePointService;
 
   @Override
-  public List<SectorGroupVersionModel> getSectorGroup(String sloid) {
+  public List<ReadSectorGroupVersionModel> getSectorGroup(String sloid) {
     List<SectorGroupVersion> sectorGroupVersions = sectorGroupService.findAllBySloidOrderByValidFrom(sloid);
     return sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
   }
 
   @Override
-  public SectorGroupVersionModel createSectorGroupVersion(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
+  public ReadSectorGroupVersionModel createSectorGroupVersion(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
     SectorGroupVersion sectorGroupVersionToCreate = SectorGroupMapper.toEntity(createSectorGroupVersionModel);
     List<String> sectorSloidsToAdd = createSectorGroupVersionModel.getSectorSloids().stream().toList();
 
@@ -46,8 +47,8 @@ public class SectorGroupApiV1Controller implements SectorGroupApiV1 {
   }
 
   @Override
-  public List<SectorGroupVersionModel> updateSectorGroupVersion(Long id,
-      SectorGroupVersionModel updateSectorGroupVersionModel) {
+  public List<ReadSectorGroupVersionModel> updateSectorGroupVersion(Long id,
+      UpdateSectorGroupVersionModel updateSectorGroupVersionModel) {
     SectorGroupVersion sectorGroupVersionToUpdate = sectorGroupService.getSectorGroupVersionById(id);
     SectorGroupVersion editedVersion = SectorGroupMapper.toEntity(updateSectorGroupVersionModel);
 

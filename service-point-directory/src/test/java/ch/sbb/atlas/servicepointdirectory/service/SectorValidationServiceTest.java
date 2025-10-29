@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.MissingTrainStopPointException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.RevokedException;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service.TrafficPointElementService;
 import java.time.LocalDate;
@@ -76,5 +78,18 @@ class SectorValidationServiceTest {
         List.of(TrafficPointTestData.getBasicTrafficPoint()));
 
     assertThrows(SectorValidityException.class, () -> sectorValidationService.validateValidity(sectorGroupVersion));
+  }
+
+  @Test
+  void shouldCheckForStatusRevoked() {
+    SectorGroupVersion sectorGroupVersion = SectorGroupVersion.builder()
+        .sloid("ch:1:sgid:123456789")
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2003, 1, 1))
+        .designation("test")
+        .status(Status.REVOKED)
+        .build();
+
+    assertThrows(RevokedException.class, () -> sectorValidationService.checkIfStatusRevoked(sectorGroupVersion));
   }
 }

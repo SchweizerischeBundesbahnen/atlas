@@ -22,7 +22,7 @@ class SectorSqlIntegrationTest extends BaseSqlIntegrationTest {
   @Test
   void shouldReturnFullSectors() throws SQLException {
     //given
-    insertSectorPoint("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
+    insertSector("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
     String sqlQuery = SectorSqlQueryUtil.getSqlQuery(ExportTypeV2.FULL);
 
     //when
@@ -36,9 +36,9 @@ class SectorSqlIntegrationTest extends BaseSqlIntegrationTest {
   @Test
   void shouldReturnActualSectors() throws SQLException {
     //given
-    insertSectorPoint("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
+    insertSector("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
 
-    insertSectorPoint("ch:1:sloid:8000:1:200", LocalDate.now(), LocalDate.now().plusMonths(2));
+    insertSector("ch:1:sloid:8000:1:200", LocalDate.now(), LocalDate.now().plusMonths(2));
 
     String sqlQuery = SectorSqlQueryUtil.getSqlQuery(ExportTypeV2.ACTUAL);
 
@@ -54,9 +54,9 @@ class SectorSqlIntegrationTest extends BaseSqlIntegrationTest {
   void shouldReturnTimetableFutureSectors() throws SQLException {
     //given
     DateRange timetableYearsDateRange = ExportYearsTimetableUtil.getTimetableYearsDateRange();
-    insertSectorPoint("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
+    insertSector("ch:1:sloid:8000:1:100", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 1, 1));
 
-    insertSectorPoint("ch:1:sloid:8000:1:200", timetableYearsDateRange.getFrom().plusMonths(1),
+    insertSector("ch:1:sloid:8000:1:200", timetableYearsDateRange.getFrom().plusMonths(1),
         timetableYearsDateRange.getTo().minusMonths(1));
 
     String sqlQuery = SectorSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
@@ -69,13 +69,13 @@ class SectorSqlIntegrationTest extends BaseSqlIntegrationTest {
 
   }
 
-  protected void insertSectorPoint(String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
+  protected void insertSector(String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
     final String insertSql = """
         INSERT INTO sector_version (id, sloid, traffic_point_sloid, valid_from, valid_to, designation, north,
-                                    east, height, spatial_reference, length, edge_height, creation_date,
+                                    east, height, spatial_reference, length, edge_height, status, creation_date,
                                     creator, edition_date, editor, version)
         VALUES (nextval('sector_version_seq'), '%s', 'ch:1:sloid:6602:0:7110', '%s', '%s', 'test1', 225738.00000000000,
-                681821.00000000000, 540.20000, 'LV95', 150.000, 120, '2025-09-09 11:06:36.541447',
+                681821.00000000000, 540.20000, 'LV95', 150.000, 120, 'VALIDATED', '2025-09-09 11:06:36.541447',
                 'abab81fb-6ba0-4153-af93-8fb3dc910210', '2025-09-09 11:06:36.541447', 'abab81fb-6ba0-4153-af93-8fb3dc910210', 0);
         """
         .formatted(sloid, formatDate(validFrom), formatDate(validTo));

@@ -4,7 +4,7 @@ import { BaseDetailFormGroup } from '../../../../core/components/base-detail/bas
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { SelectionValidator } from '../../../../core/validation/min-selected/selection-validator';
-import { SectorGroupVersion } from '../../../../api/model/sectorGroupVersion';
+import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVersion';
 
 export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -15,7 +15,9 @@ export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
 }
 
 export class SectorGroupFormGroupBuilder {
-  private static createBaseControls(sectorGroupVersion?: SectorGroupVersion) {
+  private static createBaseControls(
+    sectorGroupVersion?: ReadSectorGroupVersion
+  ) {
     return {
       sloid: new FormControl(sectorGroupVersion?.sloid),
       trafficPointSloid: new FormControl(sectorGroupVersion?.trafficPointSloid),
@@ -46,7 +48,7 @@ export class SectorGroupFormGroupBuilder {
   }
 
   static buildFormGroupUpdate(
-    sectorGroupVersion?: SectorGroupVersion
+    sectorGroupVersion?: ReadSectorGroupVersion
   ): FormGroup<SectorGroupDetailFormGroup> {
     const controls = this.createBaseControls(sectorGroupVersion);
     return new FormGroup<SectorGroupDetailFormGroup>(

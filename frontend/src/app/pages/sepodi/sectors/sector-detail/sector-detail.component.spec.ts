@@ -14,6 +14,8 @@ import { SectorService } from '../../../../api/service/sepodi/sector.service';
 import { BERN_PLATFORM_1_SECTOR_A } from '../../../../../test/data/sector';
 import moment from 'moment/moment';
 import { ValidityService } from '../../validity/validity.service';
+import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
 
 describe('SectorDetailComponent', () => {
   let component: SectorDetailComponent;
@@ -52,6 +54,12 @@ describe('SectorDetailComponent', () => {
     'createSector',
     'updateSector',
   ]);
+  const sectorInternalService = jasmine.createSpyObj<SectorInternalService>({
+    revokeSector: of(),
+  });
+  const dialogService = jasmine.createSpyObj<DialogService>({
+    confirm: of(true),
+  });
 
   describe('new mode', () => {
     beforeEach(() => {
@@ -161,6 +169,14 @@ describe('SectorDetailComponent', () => {
         jasmine.any(Object)
       );
     });
+
+    it('should revoke sector', () => {
+      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+
+      component.revoke();
+
+      expect(sectorInternalService.revokeSector).toHaveBeenCalled();
+    });
   });
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
@@ -172,6 +188,8 @@ describe('SectorDetailComponent', () => {
         { provide: TrafficPointMapService, useValue: trafficPointMapService },
         { provide: MapService, useValue: mapService },
         { provide: SectorService, useValue: sectorService },
+        { provide: SectorInternalService, useValue: sectorInternalService },
+        { provide: DialogService, useValue: dialogService },
       ],
     })
       .overrideComponent(SectorDetailComponent, {
