@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNumberServiceTest {
 
+  private static final String NUMBER = "10.099";
+
   @Autowired
   TimetableFieldNumberServiceMergeScenarioTest(
       TimetableFieldNumberVersionRepository versionRepository,
@@ -39,19 +41,19 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
   void scenarioMergeTwoVersions() {
     //given
     version1.setDescriptionOutwardLine1("SBB1");
-    version1.setNumber("BEX");
+    version1.setNumber(NUMBER);
     version1 = versionRepository.save(version1);
     version2.setDescriptionOutwardLine1("SBB2");
-    version2.setNumber("BEX");
+    version2.setNumber(NUMBER);
     version2 = versionRepository.save(version2);
     version3.setDescriptionOutwardLine1("SBB3");
-    version3.setNumber("BEX");
+    version3.setNumber(NUMBER);
     version3 = versionRepository.save(version3);
     version4.setDescriptionOutwardLine1("SBB4");
-    version4.setNumber("BEX");
+    version4.setNumber(NUMBER);
     version4 = versionRepository.save(version4);
     TimetableFieldNumberVersion editedVersion = version3Builder().build();
-    editedVersion.setNumber("BEX");
+    editedVersion.setNumber(NUMBER);
     editedVersion.setDescriptionOutwardLine1("SBB2");
     editedVersion.setVersion(version3.getVersion());
 
@@ -70,10 +72,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
 
     // second merged with third
     TimetableFieldNumberVersion secondTemporalVersion = result.get(1);
@@ -81,10 +83,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB2");
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
 
     // third version no changes
     TimetableFieldNumberVersion thirdTemporalVersion = result.get(2);
@@ -93,10 +95,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(thirdTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB4");
     Set<TimetableFieldLineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelationsThirdVersion).isEmpty();
-    assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(thirdTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
   }
 
   /**
@@ -116,17 +118,17 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
   void scenarioMergeAllVersions() {
     //given
     version1.setDescriptionOutwardLine1("SBB1");
-    version1.setNumber("BEX");
+    version1.setNumber(NUMBER);
     version1 = versionRepository.save(version1);
     version2.setDescriptionOutwardLine1("SBB2");
-    version2.setNumber("BEX");
+    version2.setNumber(NUMBER);
     version2 = versionRepository.save(version2);
     version3.setDescriptionOutwardLine1("SBB1");
-    version3.setNumber("BEX");
+    version3.setNumber(NUMBER);
     version3 = versionRepository.save(version3);
     TimetableFieldNumberVersion editedVersion = version2Builder().build();
     editedVersion.setDescriptionOutwardLine1("SBB2");
-    editedVersion.setNumber("BEX");
+    editedVersion.setNumber(NUMBER);
     editedVersion.setDescriptionOutwardLine1("SBB1");
     editedVersion.setVersion(version2.getVersion());
 
@@ -145,10 +147,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
   }
 
   /**
@@ -168,22 +170,22 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
   void scenarioMergeThroughMultipleVersions() {
     //given
     version1.setDescriptionOutwardLine1("SBB1");
-    version1.setNumber("BEX");
+    version1.setNumber(NUMBER);
     version1 = versionRepository.save(version1);
     version2.setDescriptionOutwardLine1("SBB2");
-    version2.setNumber("BEX");
+    version2.setNumber(NUMBER);
     version2 = versionRepository.save(version2);
     version3.setDescriptionOutwardLine1("SBB3");
-    version3.setNumber("BEX");
+    version3.setNumber(NUMBER);
     version3 = versionRepository.save(version3);
     version4.setDescriptionOutwardLine1("SBB1");
-    version4.setNumber("BEX");
+    version4.setNumber(NUMBER);
     version4 = versionRepository.save(version4);
-    version5.setNumber("BEX");
+    version5.setNumber(NUMBER);
     version5.setDescriptionOutwardLine1("SBB4");
     version5 = versionRepository.save(version5);
     TimetableFieldNumberVersion editedVersion = version2Builder().build();
-    editedVersion.setNumber("BEX");
+    editedVersion.setNumber(NUMBER);
     editedVersion.setDescriptionOutwardLine1("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
@@ -203,10 +205,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
 
     //second not touched
     TimetableFieldNumberVersion secondTemporalVersion = result.get(1);
@@ -214,10 +216,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB4");
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
   }
 
   /**
@@ -237,23 +239,23 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
   void scenarioMergeThroughMultipleVersionsWithInterruption() {
     //given
     version1.setDescriptionOutwardLine1("SBB1");
-    version1.setNumber("BEX");
+    version1.setNumber(NUMBER);
     version1 = versionRepository.save(version1);
     version2.setDescriptionOutwardLine1("SBB2");
-    version2.setNumber("BEX");
+    version2.setNumber(NUMBER);
     version2 = versionRepository.save(version2);
     version3.setDescriptionOutwardLine1("SBB3");
-    version3.setNumber("BEX");
+    version3.setNumber(NUMBER);
     version3.setValidTo(LocalDate.of(2024, 6, 1));
     version3 = versionRepository.save(version3);
     version4.setDescriptionOutwardLine1("SBB1");
-    version4.setNumber("BEX");
+    version4.setNumber(NUMBER);
     version4 = versionRepository.save(version4);
-    version5.setNumber("BEX");
+    version5.setNumber(NUMBER);
     version5.setDescriptionOutwardLine1("SBB4");
     version5 = versionRepository.save(version5);
     TimetableFieldNumberVersion editedVersion = version2Builder().build();
-    editedVersion.setNumber("BEX");
+    editedVersion.setNumber(NUMBER);
     editedVersion.setDescriptionOutwardLine1("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
@@ -273,10 +275,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
 
     //second not touched
     TimetableFieldNumberVersion secondTemporalVersion = result.get(1);
@@ -284,10 +286,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
 
     //third not touched
     TimetableFieldNumberVersion thirdTemporalVersion = result.get(2);
@@ -295,10 +297,10 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
     assertThat(thirdTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB4");
     assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX");
+    assertThat(thirdTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
-    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
   }
 
 }

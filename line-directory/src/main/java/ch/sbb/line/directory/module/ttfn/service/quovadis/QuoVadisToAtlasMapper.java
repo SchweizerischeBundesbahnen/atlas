@@ -12,7 +12,12 @@ class QuoVadisToAtlasMapper {
   static TimetableFieldNumberVersion toEntity(TimetableFieldNumberV2 fieldNumber) {
     return TimetableFieldNumberVersion.builder()
         .number(fieldNumber.getNumber())
-        .description(fieldNumber.getDescriptionOutwardLine1())
+        .descriptionOutwardLine1(fieldNumber.getDescriptionOutwardLine1())
+        .descriptionOutwardLine2(fieldNumber.getDescriptionOutwardLine2())
+        .descriptionOutwardLine3(fieldNumber.getDescriptionOutwardLine3())
+        .descriptionReturnLine1(fieldNumber.getDescriptionReturnLine1())
+        .descriptionReturnLine2(fieldNumber.getDescriptionReturnLine2())
+        .descriptionReturnLine3(fieldNumber.getDescriptionReturnLine3())
         .validFrom(QuoVadisDataImportService.FIRST_DAY_OF_FP_2026)
         .validTo(LocalDate.of(9999, 12, 31))
         .status(Status.VALIDATED)
