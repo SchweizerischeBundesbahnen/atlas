@@ -24,7 +24,7 @@ extra["springCloudVersion"] = "2025.0.0"
 subprojects {
     sonar {
         properties {
-            property("sonar.projectKey", "ch.sbb.atlas:atlasgithub")
+            property("sonar.projectKey", "ch.sbb.atlas:atlas-github")
             property("sonar.projectName", "atlas-github")
             property("sonar.projectVersion", project.version)
             property("sonar.dynamicAnalysis", "reuseReports")
@@ -39,7 +39,7 @@ subprojects {
     if (project.name == "frontend") {
         sonar {
             properties {
-                property("sonar.projectKey", "ch.sbb.atlas:atlasgithub")
+                property("sonar.projectKey", "ch.sbb.atlas:atlas-github")
                 property("sonar.projectName", "atlas-github")
                 property("sonar.projectVersion", project.version)
                 property(

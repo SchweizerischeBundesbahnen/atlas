@@ -1,6 +1,6 @@
 {
   "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
-  "productName": "atlas",
+  "productName": "atlas-github",
   "advancedBuildSettings": {
     "buildWorkspaceSize": "12Gi",
     "buildCacheSize": "10Gi",
