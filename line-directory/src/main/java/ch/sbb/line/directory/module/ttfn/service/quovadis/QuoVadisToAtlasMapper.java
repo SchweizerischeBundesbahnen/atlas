@@ -18,6 +18,7 @@ class QuoVadisToAtlasMapper {
         .descriptionReturnLine1(fieldNumber.getDescriptionReturnLine1())
         .descriptionReturnLine2(fieldNumber.getDescriptionReturnLine2())
         .descriptionReturnLine3(fieldNumber.getDescriptionReturnLine3())
+        .meanOfTransport(fieldNumber.getMeanOfTransport())
         .validFrom(QuoVadisDataImportService.FIRST_DAY_OF_FP_2026)
         .validTo(LocalDate.of(9999, 12, 31))
         .status(Status.VALIDATED)

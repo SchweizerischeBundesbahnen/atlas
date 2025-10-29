@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.module.ttfn.service.quovadis;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisCsvReader.QuoVadisDataRow;
 import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisDataMapper.TimetableFieldNumberV2.TimetableFieldNumberV2Builder;
@@ -47,8 +48,9 @@ class QuoVadisDataMapper {
       List<String> descriptionOnward = getDescription(data, "H");
       List<String> descriptionReturn = getDescription(data, "R");
 
-      Optional<MeanOfTransport> meanOfTransport = Arrays.stream(MeanOfTransport.values())
-          .filter(i -> i.getDesignationDe().equals(data.getFirst().getMeanOfTransport())).findFirst();
+      Optional<TtfnMeanOfTransport> meanOfTransport = Arrays.stream(MeanOfTransport.values())
+          .filter(i -> i.getDesignationDe().equals(data.getFirst().getMeanOfTransport())).findFirst()
+          .map(i -> TtfnMeanOfTransport.valueOf(i.name()));
       if (meanOfTransport.isEmpty()) {
         log.error("{} has invalid mot!", number);
         occurredErrors.add(number + " has invalid mot!");
@@ -122,7 +124,7 @@ class QuoVadisDataMapper {
 
     private String number;
 
-    private MeanOfTransport meanOfTransport;
+    private TtfnMeanOfTransport meanOfTransport;
 
     private String descriptionOutwardLine1;
 

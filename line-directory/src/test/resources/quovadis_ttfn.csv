@@ -3807,8 +3807,8 @@ EFA-Linienbezeichnung;Verkehrsmitteltextname;BuchUeberschrift;BuchUeberschrift-Z
 80.4;Bus;Sargans - Sevelen - Buchs SG;1;R;138
 80.401;Bus;Grabs - Industrie - Buchs SG - Räfis-Burgerau;1;H;138
 80.401;Bus;Räfis-Burgerau - Buchs SG - Industrie - Grabs;1;R;138
-80.403;Bus;Räfis-Burgerau - Buchs SG - Buchserberg;1;H;697
-80.403;Bus;Buchserberg - Buchs SG - Räfis-Burgerau;1;R;697
+80.403;Bus;Räfis-Burgerau - Buchs SG - Buchserberg;1;H;138
+80.403;Bus;Buchserberg - Buchs SG - Räfis-Burgerau;1;R;138
 80.411;Bus;Bendern - Gams - Sennwald;1;H;138
 80.411;Bus;Sennwald - Gams - Bendern;1;R;138
 80.412;Bus;Grabs - Grabserberg - Voralp;1;H;138
@@ -4638,8 +4638,8 @@ EFA-Linienbezeichnung;Verkehrsmitteltextname;BuchUeberschrift;BuchUeberschrift-Z
 476.1;Zahnradbahn;Planalp - Brienz;1;R;104
 480;Zug;Luzern - Stans - Engelberg;1;H;86
 480;Zug;Engelberg - Stans - Luzern;1;R;86
-498;Zug;Basel SBB - Saint-Louis (Haut-Rhin);1;H;87000
-498;Zug;Saint-Louis (Haut-Rhin) - Basel SBB;1;R;87000
+498;Zug;Basel SBB - Saint-Louis (Haut-Rhin);1;H;1087
+498;Zug;Saint-Louis (Haut-Rhin) - Basel SBB;1;R;1087
 499;Zug;Basel SBB - Basel Bad Bf;1;H;1080
 499;Zug;Basel Bad Bf - Basel SBB;1;R;1080
 500;Zug;Basel - Olten;1;H;11

@@ -13,6 +13,7 @@ public enum TtfnMeanOfTransport {
   CHAIRLIFT,
   CABLE_RAILWAY,
   RACK_RAILWAY,
-  METRO
+  METRO,
+  ELEVATOR
 
 }
