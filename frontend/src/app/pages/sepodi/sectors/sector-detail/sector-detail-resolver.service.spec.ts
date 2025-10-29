@@ -55,10 +55,6 @@ describe('SectorDetailResolver', () => {
     );
   });
 
-  it('should create', () => {
-    expect(resolver).toBeTruthy();
-  });
-
   it('should get versions from service to display', () => {
     const mockRoute = {
       paramMap: convertToParamMap({
