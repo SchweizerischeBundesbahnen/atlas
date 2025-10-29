@@ -25,6 +25,7 @@ subprojects {
     sonar {
         properties {
             property("sonar.projectKey", "ch.sbb.atlas:atlasgithub")
+            property("sonar.projectName", "atlas-github")
             property("sonar.projectVersion", project.version)
             property("sonar.dynamicAnalysis", "reuseReports")
             property("sonar.java.coveragePlugin", "jacoco")
@@ -39,6 +40,7 @@ subprojects {
         sonar {
             properties {
                 property("sonar.projectKey", "ch.sbb.atlas:atlasgithub")
+                property("sonar.projectName", "atlas-github")
                 property("sonar.projectVersion", project.version)
                 property(
                     "sonar.exclusions",
