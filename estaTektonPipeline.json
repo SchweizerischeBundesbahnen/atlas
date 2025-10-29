@@ -47,7 +47,8 @@
         },
         "buildDockerImage": false,
         "sonarScan": {
-          "enabled": true
+          "enabled": true,
+          "projectKey": "atlas-github"
         },
         "additionalBuildParams": "--parallel",
         "failOnQualityGateFailure": true
@@ -68,7 +69,8 @@
         },
         "buildDockerImage": false,
         "sonarScan": {
-          "enabled": true
+          "enabled": true,
+          "projectKey": "atlas-github"
         },
         "additionalBuildParams": "--parallel",
         "failOnQualityGateFailure": true
