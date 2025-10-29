@@ -8,7 +8,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "atlas"
+rootProject.name = "atlas-github"
 include(":auto-rest-doc")
 include(":kafka")
 include(":base-atlas")
