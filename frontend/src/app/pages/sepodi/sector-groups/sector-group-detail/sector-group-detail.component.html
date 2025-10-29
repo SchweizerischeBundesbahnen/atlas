@@ -189,7 +189,7 @@
       [footerEdit]="form.enabled"
     >
     </atlas-button>
-    @if (form.disabled && selectedVersion.status !== 'REVOKED') {
+    @if (form.disabled && (isNew || selectedVersion.status !== 'REVOKED')) {
       <atlas-button
         (buttonClicked)="toggleEdit()"
         applicationType="SEPODI"
@@ -219,7 +219,7 @@
       wrapperStyleClass="ms-3 sector-save"
     >
     </atlas-button>
-    @if (!isNew && selectedVersion.status !== 'REVOKED') {
+    @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
       <atlas-button
         (buttonClicked)="revoke()"
         [applicationType]="'SEPODI'"
