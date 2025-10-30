@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -52,9 +51,8 @@ public class FileStreamingControllerApiV2 {
       @PathVariable ExportObjectV2 exportObject,
       @PathVariable ExportTypeV2 exportType) {
     isExportSupported(exportObject, exportType);
-    final InputStreamResource body = fileExportService.streamJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
-    return CompletableFuture.supplyAsync(() ->
-        ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
+    InputStreamResource body = fileExportService.streamJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
+    return CompletableFuture.completedFuture(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
   @GetMapping(value = "json/latest/{exportObject}/{exportType}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -71,9 +69,8 @@ public class FileStreamingControllerApiV2 {
       @PathVariable ExportObjectV2 exportObject,
       @PathVariable ExportTypeV2 exportType) {
     isExportSupported(exportObject, exportType);
-    final InputStreamResource body = fileExportService.streamLatestJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
-    return CompletableFuture.supplyAsync(() ->
-        ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
+    InputStreamResource body = fileExportService.streamLatestJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
+    return CompletableFuture.completedFuture(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
   @GetMapping(value = "download-gzip-json/{exportObject}/{exportType}")
@@ -90,10 +87,10 @@ public class FileStreamingControllerApiV2 {
       @PathVariable ExportObjectV2 exportObject,
       @PathVariable ExportTypeV2 exportType) {
     isExportSupported(exportObject, exportType);
-    final ExportFilePathV2 exportFilePath = ExportFilePathV2.buildV2(exportObject, exportType);
-    final HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
-    final InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
-    return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
+    ExportFilePathV2 exportFilePath = ExportFilePathV2.buildV2(exportObject, exportType);
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
+    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body));
   }
 
   @GetMapping(value = "download-gzip-json/latest/{exportObject}/{exportType}")
@@ -110,11 +107,11 @@ public class FileStreamingControllerApiV2 {
       @PathVariable ExportObjectV2 exportObject,
       @PathVariable ExportTypeV2 exportType) {
     isExportSupported(exportObject, exportType);
-    final String latestUploadedFileName = fileExportService.getLatestUploadedFileName(
+    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(
         ExportFilePathV2.buildV2(exportObject, exportType));
-    final HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
-    final InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
-    return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
+    InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body));
   }
 
   private static void isExportSupported(ExportObjectV2 exportObject, ExportTypeV2 exportType) {

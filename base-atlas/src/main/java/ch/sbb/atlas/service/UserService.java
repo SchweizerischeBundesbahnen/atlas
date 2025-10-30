@@ -2,7 +2,9 @@ package ch.sbb.atlas.service;
 
 import ch.sbb.atlas.configuration.Role;
 import java.util.List;
+import java.util.Optional;
 import lombok.experimental.UtilityClass;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -29,13 +31,14 @@ public final class UserService {
   }
 
   public static String getUserIdentifier() {
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (principal instanceof Jwt jwt) {
-      return getUserIdentifierOnJwtAuthentication(jwt);
-    } else if (principal instanceof String stringAuth) {
-      return stringAuth;
-    }
-    throw new IllegalStateException("No Authentication found!");
+    return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+        .map(Authentication::getPrincipal)
+        .map(principal -> switch (principal) {
+          case Jwt jwt -> getUserIdentifierOnJwtAuthentication(jwt);
+          case String stringAuth -> stringAuth;
+          default -> null;
+        })
+        .orElseThrow(() -> new IllegalStateException("No Authentication found!"));
   }
 
   private static String getUserIdentifierOnJwtAuthentication(Jwt jwt) {
