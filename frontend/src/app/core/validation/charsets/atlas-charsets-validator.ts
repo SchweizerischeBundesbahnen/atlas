@@ -14,11 +14,11 @@ export class AtlasCharsetsValidator {
     );
   }
 
-  static numericWithDot(control: AbstractControl): ValidationErrors | null {
+  static ttfnNumber(control: AbstractControl): ValidationErrors | null {
     return AtlasCharsetsValidator.validateAllowedCharacters(
       control,
-      '[.0-9]*',
-      '.0-9'
+      '[.0-9SN]*',
+      '.0-9SN'
     );
   }
 
