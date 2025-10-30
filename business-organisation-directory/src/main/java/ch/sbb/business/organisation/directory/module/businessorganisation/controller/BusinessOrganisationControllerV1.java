@@ -4,32 +4,22 @@ import ch.sbb.atlas.api.bodi.BusinessOrganisationApiV1;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
-import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.module.businessorganisation.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.module.businessorganisation.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.module.businessorganisation.export.BusinessOrganisationAmazonService;
-import ch.sbb.business.organisation.directory.module.businessorganisation.export.BusinessOrganisationVersionExportService;
 import ch.sbb.business.organisation.directory.module.businessorganisation.mapper.BusinessOrganisationMapper;
 import ch.sbb.business.organisation.directory.module.businessorganisation.mapper.BusinessOrganisationVersionMapper;
 import ch.sbb.business.organisation.directory.module.businessorganisation.model.BusinessOrganisationSearchRestrictions;
 import ch.sbb.business.organisation.directory.module.businessorganisation.model.BusinessOrganisationVersionSearchRestrictions;
 import ch.sbb.business.organisation.directory.module.businessorganisation.service.BusinessOrganisationService;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,8 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BusinessOrganisationControllerV1 implements BusinessOrganisationApiV1 {
 
   private final BusinessOrganisationService service;
-  private final BusinessOrganisationVersionExportService exportService;
-  private final BusinessOrganisationAmazonService businessOrganisationAmazonService;
 
   @Override
   public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
@@ -93,39 +81,4 @@ public class BusinessOrganisationControllerV1 implements BusinessOrganisationApi
     }
     return organisationVersionModels;
   }
-
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportFullBusinessOrganisationVersions() {
-    return exportService.exportFullVersionsAllFormats();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportActualBusinessOrganisationVersions() {
-    return exportService.exportActualVersionsAllFormats();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Override
-  public List<URL> exportFutureTimetableBusinessOrganisationVersions() {
-    return exportService.exportFutureTimetableVersionsAllFormats();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Override
-  public ResponseEntity<InputStreamResource> streamGzipFile(ExportType exportType) {
-    String fileName = businessOrganisationAmazonService.getFileName(exportType);
-    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
-    InputStreamResource body = businessOrganisationAmazonService.streamGzipFile(exportType);
-    return ResponseEntity.ok().headers(headers).body(body);
-  }
-
-  @Deprecated(forRemoval = true)
-  @Override
-  public ResponseEntity<InputStreamResource> streamJsonFile(ExportType exportType) {
-    InputStreamResource body = businessOrganisationAmazonService.streamJsonFile(exportType);
-    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
-  }
-
 }
