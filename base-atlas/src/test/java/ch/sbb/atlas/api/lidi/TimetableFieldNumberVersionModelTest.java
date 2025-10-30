@@ -117,16 +117,14 @@ class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
   }
 
   @Test
-  void swissTimetableFieldNumberShouldNotBeNull() {
+  void swissTimetableFieldNumberShouldAllowNull() {
     // Given
     TimetableFieldNumberVersionModel version = versionModel().swissTimetableFieldNumber(null).build();
     // When
     Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
-    assertThat(constraintViolations).hasSize(1);
-    assertThat(constraintViolations.iterator().next().getPropertyPath())
-        .hasToString("swissTimetableFieldNumber");
+    assertThat(constraintViolations).isEmpty();
   }
 
   @Test
@@ -213,20 +211,6 @@ class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
       description.append("test");
     }
     TimetableFieldNumberVersionModel version = modelSupplier.apply(description.toString());
-    // When
-    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(version);
-    // Then
-    long numberOfFieldViolations = constraintViolations.stream()
-        .filter(v -> String.valueOf(v.getPropertyPath()).equals(fieldName))
-        .count();
-    assertThat(numberOfFieldViolations).isEqualTo(1);
-  }
-
-  @ParameterizedTest
-  @FieldSource("descriptionSupplier")
-  void descriptionShouldOnlyAllowISO(Function<String, TimetableFieldNumberVersionModel> modelSupplier, String fieldName) {
-    // Given
-    TimetableFieldNumberVersionModel version = modelSupplier.apply("≠");
     // When
     Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(version);
     // Then

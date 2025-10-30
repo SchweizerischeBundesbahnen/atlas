@@ -265,17 +265,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
   });
 
   describe('Validation swissTimeTableFieldNumber', () => {
-    it('should be required', () => {
-      const swissTimeTableFieldNumber: AbstractControl =
-        fixture.componentInstance.form.controls['swissTimetableFieldNumber'];
-      swissTimeTableFieldNumber.markAsTouched();
-
-      const validationErrors = swissTimeTableFieldNumber.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.required).toBeDefined();
-    });
-
     it('should not be greater then 255', () => {
       const swissTimeTableFieldNumber: AbstractControl =
         fixture.componentInstance.form.controls['swissTimetableFieldNumber'];

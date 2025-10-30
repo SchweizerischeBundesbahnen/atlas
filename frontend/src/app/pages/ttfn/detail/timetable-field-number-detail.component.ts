@@ -1,16 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationRole,
   ApplicationType,
   TimetableFieldNumberVersion,
 } from '../../../api';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 import {
   catchError,
@@ -30,14 +25,11 @@ import { TextFieldComponent } from '../../../core/form-components/text-field/tex
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
 import { BusinessOrganisationSelectComponent } from '../../../core/form-components/bo-select/business-organisation-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
-import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
-import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
-import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
-import moment from 'moment';
+import {
+  DESCRIPTION_MAX_LENGTH,
+  TimetableFieldNumberDetailFormGroupBuilder,
+} from './timetable-field-number-detail-form-group';
 import { MeansOfTransportPickerComponent } from '../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
-import { SelectionValidator } from '../../../core/validation/min-selected/selection-validator';
 import { map, tap } from 'rxjs/operators';
 import { required } from '../../../core/util/values';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
@@ -80,7 +72,7 @@ import { TtfnMeanOfTransport } from '../../../api/model/ttfnMeanOfTransport';
   ],
 })
 export class TimetableFieldNumberDetailComponent
-  implements DetailWithCancelEdit
+  implements DetailWithCancelEdit, OnInit
 {
   // DI
   private readonly permissionService = inject(PermissionService);
@@ -104,6 +96,10 @@ export class TimetableFieldNumberDetailComponent
 
   protected readonly allowableMeansOfTransport =
     Object.values(TtfnMeanOfTransport);
+
+  protected readonly descriptionMaxChars: string = String(
+    DESCRIPTION_MAX_LENGTH
+  );
 
   protected displayOutwardLine2$ = of(false);
   protected displayOutwardLine3$ = of(false);
@@ -150,14 +146,6 @@ export class TimetableFieldNumberDetailComponent
         timetableFieldNumberDetail: TimetableFieldNumberVersion[];
       }
     ).timetableFieldNumberDetail;
-  }
-
-  getDetailHeading(record: TimetableFieldNumberVersion): string {
-    return `${record.number} - ${record.descriptionOutwardLine1}`;
-  }
-
-  getDetailSubheading(record: TimetableFieldNumberVersion): string {
-    return `${record.ttfnid}`;
   }
 
   switchVersion(index: number) {
@@ -281,131 +269,8 @@ export class TimetableFieldNumberDetailComponent
   }
 
   getFormGroup(version?: TimetableFieldNumberVersion): FormGroup {
-    const formGroup = new FormGroup<TimetableFieldNumberDetailFormGroup>(
-      {
-        swissTimetableFieldNumber: new FormControl(
-          version?.swissTimetableFieldNumber,
-          {
-            nonNullable: true,
-            validators: [
-              Validators.required,
-              AtlasFieldLengthValidator.length_50,
-              AtlasCharsetsValidator.sid4pt,
-            ],
-          }
-        ),
-        ttfnid: new FormControl(version?.ttfnid),
-        businessOrganisation: new FormControl(version?.businessOrganisation, {
-          nonNullable: true,
-          validators: [
-            Validators.required,
-            AtlasFieldLengthValidator.length_50,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        }),
-        number: new FormControl(version?.number, {
-          nonNullable: true,
-          validators: [
-            Validators.required,
-            AtlasFieldLengthValidator.length_50,
-            AtlasCharsetsValidator.numericWithDot,
-          ],
-        }),
-        status: new FormControl(version?.status),
-        descriptionOutwardLine1: new FormControl(
-          version?.descriptionOutwardLine1,
-          {
-            nonNullable: true,
-            validators: [
-              AtlasFieldLengthValidator.length_255,
-              WhitespaceValidator.blankOrEmptySpaceSurrounding,
-              AtlasCharsetsValidator.iso88591,
-              Validators.required,
-            ],
-          }
-        ),
-        descriptionOutwardLine2: new FormControl(
-          version?.descriptionOutwardLine2,
-          {
-            nonNullable: true,
-            validators: [
-              AtlasFieldLengthValidator.length_255,
-              WhitespaceValidator.blankOrEmptySpaceSurrounding,
-              AtlasCharsetsValidator.iso88591,
-            ],
-          }
-        ),
-        descriptionOutwardLine3: new FormControl(
-          version?.descriptionOutwardLine3,
-          {
-            nonNullable: true,
-            validators: [
-              AtlasFieldLengthValidator.length_255,
-              WhitespaceValidator.blankOrEmptySpaceSurrounding,
-              AtlasCharsetsValidator.iso88591,
-            ],
-          }
-        ),
-        descriptionReturnLine1: new FormControl(
-          version?.descriptionReturnLine1,
-          {
-            nonNullable: true,
-            validators: [
-              AtlasFieldLengthValidator.length_255,
-              WhitespaceValidator.blankOrEmptySpaceSurrounding,
-              AtlasCharsetsValidator.iso88591,
-            ],
-          }
-        ),
-        descriptionReturnLine2: new FormControl(
-          version?.descriptionReturnLine2,
-          {
-            nonNullable: true,
-            validators: [
-              AtlasFieldLengthValidator.length_255,
-              WhitespaceValidator.blankOrEmptySpaceSurrounding,
-              AtlasCharsetsValidator.iso88591,
-            ],
-          }
-        ),
-        descriptionReturnLine3: new FormControl(
-          version?.descriptionReturnLine3,
-          {
-            nonNullable: true,
-            validators: [
-              AtlasFieldLengthValidator.length_255,
-              WhitespaceValidator.blankOrEmptySpaceSurrounding,
-              AtlasCharsetsValidator.iso88591,
-            ],
-          }
-        ),
-        meanOfTransport: new FormControl(
-          version?.meanOfTransport ? [version.meanOfTransport] : [],
-          {
-            nonNullable: true,
-            validators: [
-              Validators.required,
-              SelectionValidator.requiredSelected(1),
-            ],
-          }
-        ),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
-        etagVersion: new FormControl(version?.etagVersion),
-        creationDate: new FormControl(version?.creationDate),
-        editionDate: new FormControl(version?.editionDate),
-        editor: new FormControl(version?.editor),
-        creator: new FormControl(version?.creator),
-      },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
-    );
+    const formGroup =
+      TimetableFieldNumberDetailFormGroupBuilder.getFormGroup(version);
 
     this.displayOutwardLine2$ = this.getDisplayObs(
       formGroup.controls.descriptionOutwardLine1,

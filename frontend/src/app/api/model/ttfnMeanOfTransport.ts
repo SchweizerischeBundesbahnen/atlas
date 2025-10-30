@@ -9,7 +9,7 @@
  */
 
 
-export type TtfnMeanOfTransport = 'TRAIN' | 'BUS' | 'TRAM' | 'BOAT' | 'CABLE_CAR' | 'CHAIRLIFT' | 'CABLE_RAILWAY' | 'RACK_RAILWAY' | 'METRO';
+export type TtfnMeanOfTransport = 'TRAIN' | 'BUS' | 'TRAM' | 'BOAT' | 'CABLE_CAR' | 'CHAIRLIFT' | 'CABLE_RAILWAY' | 'RACK_RAILWAY' | 'METRO' | 'ELEVATOR';
 
 export const TtfnMeanOfTransport = {
 
@@ -29,6 +29,8 @@ export const TtfnMeanOfTransport = {
 
     RackRailway: 'RACK_RAILWAY' as TtfnMeanOfTransport,
 
-    Metro: 'METRO' as TtfnMeanOfTransport
+    Metro: 'METRO' as TtfnMeanOfTransport,
+
+    Elevator: 'ELEVATOR' as TtfnMeanOfTransport
 };
 

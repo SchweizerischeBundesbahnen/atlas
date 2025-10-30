@@ -25,7 +25,6 @@ public class TimetableFieldNumberModel {
 
   @Schema(description = "Timetable field number", example = "b0.123")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-  @NotNull
   private String swissTimetableFieldNumber;
 
   @Schema(description = "Number", example = "100; 80.099; 2700")
@@ -38,8 +37,7 @@ public class TimetableFieldNumberModel {
   private String ttfnid;
 
   @Schema(description = "Description outward line one", example = "Como - Chiasso - Mendrisio - Varese (S40)")
-  @Size(max = AtlasFieldLengths.LENGTH_255)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(max = AtlasFieldLengths.LENGTH_70)
   private String descriptionOutwardLine1;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
