@@ -30,7 +30,7 @@ public interface StopPointTerminationApiInternal {
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping(value = "/terminate")
-  void terminateStopPoint(@RequestBody @Valid StopPointWorkflowTerminationModel terminationModel);
+  void terminateStopPointByWorkflow(@RequestBody @Valid StopPointWorkflowTerminationModel terminationModel);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping(value = "/change-to-tariff-stop")

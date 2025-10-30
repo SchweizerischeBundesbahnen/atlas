@@ -66,7 +66,7 @@ public class StopPointTerminationApiInternalController implements StopPointTermi
   }
 
   @Override
-  public void terminateStopPoint(StopPointWorkflowTerminationModel terminationModel) {
+  public void terminateStopPointByWorkflow(StopPointWorkflowTerminationModel terminationModel) {
     ServicePointVersion lastVersion = getLastServicePointVersionCheckedForDate(terminationModel);
     ServicePointVersion editedVersion = lastVersion.toBuilder().build();
     if (terminationModel.getTerminationDate().isBefore(editedVersion.getValidTo())) {
