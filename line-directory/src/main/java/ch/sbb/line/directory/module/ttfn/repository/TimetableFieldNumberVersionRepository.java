@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.module.ttfn.repository;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
 import java.util.List;
