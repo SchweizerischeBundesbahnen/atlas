@@ -16,19 +16,11 @@ import ch.sbb.exportservice.job.prm.contactpoint.writer.JsonContactPointVersionW
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePathV1;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.tasklet.RenameTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
@@ -87,10 +79,7 @@ public class ContactPointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportContactPointCsvStep(itemReader))
         .next(uploadContactPointCsvFileStepV2())
-        .next(renameContactPointCsvStep())
-        .next(uploadContactPointCsvFileStepV1())
         .next(deleteContactPointCsvFileStepV2())
-        .next(deleteContactPointCsvFileStepV1())
         .end()
         .build();
   }
@@ -145,48 +134,6 @@ public class ContactPointVersionExportBatchConfig {
   }
   // END: Upload Csv V2
 
-  // BEGIN: Upload Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadContactPointCsvFileStepV1() {
-    return new StepBuilder("uploadCsvFileV1", jobRepository)
-        .tasklet(uploadContactPointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadContactPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
-  }
-  // END: Upload Csv V1
-
-  // BEGIN: Rename Csv
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameContactPointCsvStep() {
-    return new StepBuilder("renameCsv", jobRepository)
-        .tasklet(renameContactPointTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameContactPointTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.CSV_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Csv
-
   // BEGIN: Delete Csv V2
   @Bean
   public Step deleteContactPointCsvFileStepV2() {
@@ -205,26 +152,6 @@ public class ContactPointVersionExportBatchConfig {
   }
   // END: Delete Csv V2
 
-  // BEGIN: Delete Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteContactPointCsvFileStepV1() {
-    return new StepBuilder("deleteCsvFileV1", jobRepository)
-        .tasklet(deleteContactPointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteCsvFileTasklet deleteContactPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new DeleteCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
-  }
-  // END: Delete Csv V1
-
   // --- JSON ---
   @Bean
   @Qualifier(EXPORT_CONTACT_POINT_JSON_JOB_NAME)
@@ -234,10 +161,7 @@ public class ContactPointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportContactPointJsonStep(itemReader))
         .next(uploadContactPointJsonFileStepV2())
-        .next(renameContactPointJsonStep())
-        .next(uploadContactPointJsonFileStepV1())
         .next(deleteContactPointJsonFileStepV2())
-        .next(deleteContactPointJsonFileStepV1())
         .end()
         .build();
   }
@@ -290,48 +214,6 @@ public class ContactPointVersionExportBatchConfig {
   }
   // END: Upload Json V2
 
-  // BEGIN: Rename Json
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameContactPointJsonStep() {
-    return new StepBuilder("renameJson", jobRepository)
-        .tasklet(renameContactPointJsonTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameContactPointJsonTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.JSON_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Json
-
-  // BEGIN: Upload Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadContactPointJsonFileStepV1() {
-    return new StepBuilder("uploadJsonFileV1", jobRepository)
-        .tasklet(uploadContactPointJsonFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadContactPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
-  }
-  // END: Upload Json V1
-
   // BEGIN: Delete Json V2
   @Bean
   public Step deleteContactPointJsonFileStepV2() {
@@ -348,25 +230,5 @@ public class ContactPointVersionExportBatchConfig {
     return new FileDeletingTaskletV2(filePathV2);
   }
   // END: Delete Json V2
-
-  // BEGIN: Delete Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteContactPointJsonFileStepV1() {
-    return new StepBuilder("deleteJsonFileV1", jobRepository)
-        .tasklet(deleteContactPointJsonTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet deleteContactPointJsonTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1) {
-
-    return new DeleteJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
-  }
-  // END: Delete Json V1
 
 }

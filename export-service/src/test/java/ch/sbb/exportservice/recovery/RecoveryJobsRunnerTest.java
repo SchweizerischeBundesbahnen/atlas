@@ -32,7 +32,6 @@ import ch.sbb.exportservice.job.sepodi.sector.service.ExportSectorJobService;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.service.ExportSectorGroupJobService;
 import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.service.ExportTrafficPointElementJobService;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDateTime;
 import java.util.HashMap;

@@ -16,19 +16,11 @@ import ch.sbb.exportservice.job.sepodi.trafficpoint.writer.JsonTrafficPointEleme
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePathV1;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
-import ch.sbb.exportservice.model.SePoDiExportType;
-import ch.sbb.exportservice.tasklet.RenameTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
@@ -87,10 +79,7 @@ public class TrafficPointElementVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportTrafficPointElementCsvStep(itemReader))
         .next(uploadTrafficPointCsvFileStepV2())
-        .next(renameTrafficPointCsvStep())
-        .next(uploadTrafficPointCsvFileStepV1())
         .next(deleteTrafficPointCsvFileStepV2())
-        .next(deleteTrafficPointCsvFileStepV1())
         .end()
         .build();
   }
@@ -144,49 +133,6 @@ public class TrafficPointElementVersionExportBatchConfig {
   }
   // END: Upload Csv V2
 
-  // BEGIN: Upload Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadTrafficPointCsvFileStepV1() {
-    return new StepBuilder("uploadCsvFileV1", jobRepository)
-        .tasklet(uploadTrafficPointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadTrafficPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
-  ) {
-    return new UploadCsvFileTasklet(exportTypeV1, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
-  }
-  // END: Upload Csv V1
-
-  // BEGIN: Rename Csv
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameTrafficPointCsvStep() {
-    return new StepBuilder("renameCsv", jobRepository)
-        .tasklet(renameTrafficPointTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameTrafficPointTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1,
-        SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.CSV_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Csv
-
   // BEGIN: Delete Csv V2
   @Bean
   public Step deleteTrafficPointCsvFileStepV2() {
@@ -205,26 +151,6 @@ public class TrafficPointElementVersionExportBatchConfig {
   }
   // END: Delete Csv V2
 
-  // BEGIN: Delete Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteTrafficPointCsvFileStepV1() {
-    return new StepBuilder("deleteCsvFileV1", jobRepository)
-        .tasklet(deleteTrafficPointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteCsvFileTasklet deleteTrafficPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
-  ) {
-    return new DeleteCsvFileTasklet(exportTypeV1, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
-  }
-  // END: Delete Csv V1
-
   // --- JSON ---
   @Bean
   @Qualifier(EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME)
@@ -234,10 +160,7 @@ public class TrafficPointElementVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportTrafficPointElementJsonStep(itemReader))
         .next(uploadTrafficPointJsonFileStepV2())
-        .next(renameTrafficPointJsonStep())
-        .next(uploadTrafficPointJsonFileStepV1())
         .next(deleteTrafficPointJsonFileStepV2())
-        .next(deleteTrafficPointJsonFileStepV1())
         .end()
         .build();
   }
@@ -290,49 +213,6 @@ public class TrafficPointElementVersionExportBatchConfig {
   }
   // END: Upload Json V2
 
-  // BEGIN: Rename Json
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameTrafficPointJsonStep() {
-    return new StepBuilder("renameJson", jobRepository)
-        .tasklet(renameTrafficPointJsonTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameTrafficPointJsonTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1,
-        SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.JSON_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Json
-
-  // BEGIN: Upload Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadTrafficPointJsonFileStepV1() {
-    return new StepBuilder("uploadJsonFileV1", jobRepository)
-        .tasklet(uploadTrafficPointJsonFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadTrafficPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
-  ) {
-    return new UploadJsonFileTasklet(exportTypeV1, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
-  }
-  // END: Upload Json V1
-
   // BEGIN: Delete Json V2
   @Bean
   public Step deleteTrafficPointJsonFileStepV2() {
@@ -349,25 +229,4 @@ public class TrafficPointElementVersionExportBatchConfig {
     return new FileDeletingTaskletV2(filePathV2);
   }
   // END: Delete Json V2
-
-  // BEGIN: Delete Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteTrafficPointJsonFileStepV1() {
-    return new StepBuilder("deleteJsonFileV1", jobRepository)
-        .tasklet(deleteTrafficPointJsonTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet deleteTrafficPointJsonTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1) {
-
-    return new DeleteJsonFileTasklet(exportTypeV1, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
-  }
-  // END: Delete Json V1
-
 }

@@ -9,7 +9,6 @@ import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.job.BaseExportJobService.JobParams;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;

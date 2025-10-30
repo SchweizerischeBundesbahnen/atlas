@@ -5,30 +5,22 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_STOP_POINT
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
-import ch.sbb.exportservice.job.prm.stoppoint.model.StopPointVersionCsvModel;
-import ch.sbb.exportservice.job.prm.stoppoint.sql.StopPointVersionRowMapper;
-import ch.sbb.exportservice.job.prm.stoppoint.sql.StopPointVersionSqlQueryUtil;
 import ch.sbb.exportservice.job.prm.stoppoint.entity.StopPointVersion;
+import ch.sbb.exportservice.job.prm.stoppoint.model.StopPointVersionCsvModel;
 import ch.sbb.exportservice.job.prm.stoppoint.processor.StopPointVersionCsvProcessor;
 import ch.sbb.exportservice.job.prm.stoppoint.processor.StopPointVersionJsonProcessor;
+import ch.sbb.exportservice.job.prm.stoppoint.sql.StopPointVersionRowMapper;
+import ch.sbb.exportservice.job.prm.stoppoint.sql.StopPointVersionSqlQueryUtil;
 import ch.sbb.exportservice.job.prm.stoppoint.writer.CsvStopPointVersionWriter;
 import ch.sbb.exportservice.job.prm.stoppoint.writer.JsonStopPointVersionWriter;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePathV1;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.tasklet.RenameTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
@@ -87,10 +79,7 @@ public class StopPointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportStopPointCsvStep(itemReader))
         .next(uploadStopPointCsvFileStepV2())
-        .next(renameStopPointCsvStep())
-        .next(uploadStopPointCsvFileStepV1())
         .next(deleteStopPointCsvFileStepV2())
-        .next(deleteStopPointCsvFileStepV1())
         .end()
         .build();
   }
@@ -145,48 +134,6 @@ public class StopPointVersionExportBatchConfig {
   }
   // END: Upload Csv V2
 
-  // BEGIN: Upload Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadStopPointCsvFileStepV1() {
-    return new StepBuilder("uploadCsvFileV1", jobRepository)
-        .tasklet(uploadStopPointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadStopPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION);
-  }
-  // END: Upload Csv V1
-
-  // BEGIN: Rename Csv
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameStopPointCsvStep() {
-    return new StepBuilder("renameCsv", jobRepository)
-        .tasklet(renameStopPointTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameStopPointTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.CSV_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Csv
-
   // BEGIN: Delete Csv V2
   @Bean
   public Step deleteStopPointCsvFileStepV2() {
@@ -205,26 +152,6 @@ public class StopPointVersionExportBatchConfig {
   }
   // END: Delete Csv V2
 
-  // BEGIN: Delete Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteStopPointCsvFileStepV1() {
-    return new StepBuilder("deleteCsvFileV1", jobRepository)
-        .tasklet(deleteStopPointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteCsvFileTasklet deleteStopPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new DeleteCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION);
-  }
-  // END: Delete Csv V1
-
   // --- JSON ---
   @Bean
   @Qualifier(EXPORT_STOP_POINT_JSON_JOB_NAME)
@@ -234,10 +161,7 @@ public class StopPointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportStopPointJsonStep(itemReader))
         .next(uploadStopPointJsonFileStepV2())
-        .next(renameStopPointJsonStep())
-        .next(uploadStopPointJsonFileStepV1())
         .next(deleteStopPointJsonFileStepV2())
-        .next(deleteStopPointJsonFileStepV1())
         .end()
         .build();
   }
@@ -290,48 +214,6 @@ public class StopPointVersionExportBatchConfig {
   }
   // END: Upload Json V2
 
-  // BEGIN: Rename Json
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameStopPointJsonStep() {
-    return new StepBuilder("renameJson", jobRepository)
-        .tasklet(renameStopPointJsonTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameStopPointJsonTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.JSON_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Json
-
-  // BEGIN: Upload Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadStopPointJsonFileStepV1() {
-    return new StepBuilder("uploadJsonFileV1", jobRepository)
-        .tasklet(uploadStopPointJsonFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadStopPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION);
-  }
-  // END: Upload Json V1
-
   // BEGIN: Delete Json V2
   @Bean
   public Step deleteStopPointJsonFileStepV2() {
@@ -348,25 +230,5 @@ public class StopPointVersionExportBatchConfig {
     return new FileDeletingTaskletV2(filePathV2);
   }
   // END: Delete Json V2
-
-  // BEGIN: Delete Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteStopPointJsonFileStepV1() {
-    return new StepBuilder("deleteJsonFileV1", jobRepository)
-        .tasklet(deleteStopPointJsonTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet deleteStopPointJsonTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1) {
-
-    return new DeleteJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION);
-  }
-  // END: Delete Json V1
 
 }

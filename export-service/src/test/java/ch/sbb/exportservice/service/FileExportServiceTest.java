@@ -1,21 +1,17 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.exportservice.model.ExportFilePathV1;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
-import ch.sbb.exportservice.model.SePoDiExportType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
+
+import ch.sbb.atlas.amazon.service.AmazonBucket;
+import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
+import ch.sbb.atlas.amazon.service.AmazonService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 class FileExportServiceTest {
 

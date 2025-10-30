@@ -16,19 +16,11 @@ import ch.sbb.exportservice.job.sepodi.loadingpoint.writer.JsonLoadingPointVersi
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePathV1;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
-import ch.sbb.exportservice.model.SePoDiExportType;
-import ch.sbb.exportservice.tasklet.RenameTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
@@ -87,10 +79,7 @@ public class LoadingPointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportLoadingPointCsvStep(itemReader))
         .next(uploadLoadingPointCsvFileStepV2())
-        .next(renameLoadingPointCsvStep())
-        .next(uploadLoadingPointCsvFileStepV1())
         .next(deleteLoadingPointCsvFileStepV2())
-        .next(deleteLoadingPointCsvFileStepV1())
         .end()
         .build();
   }
@@ -145,48 +134,6 @@ public class LoadingPointVersionExportBatchConfig {
   }
   // END: Upload Csv V2
 
-  // BEGIN: Upload Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadLoadingPointCsvFileStepV1() {
-    return new StepBuilder("uploadCsvFileV1", jobRepository)
-        .tasklet(uploadLoadingPointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadLoadingPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
-  ) {
-    return new UploadCsvFileTasklet(exportTypeV1, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
-  }
-  // END: Upload Csv V1
-
-  // BEGIN: Rename Csv
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameLoadingPointCsvStep() {
-    return new StepBuilder("renameCsv", jobRepository)
-        .tasklet(renameLoadingPointTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameLoadingPointTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, SePoDiBatchExportFileName.LOADING_POINT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.CSV_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Csv
-
   // BEGIN: Delete Csv V2
   @Bean
   public Step deleteLoadingPointCsvFileStepV2() {
@@ -205,26 +152,6 @@ public class LoadingPointVersionExportBatchConfig {
   }
   // END: Delete Csv V2
 
-  // BEGIN: Delete Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteLoadingPointCsvFileStepV1() {
-    return new StepBuilder("deleteCsvFileV1", jobRepository)
-        .tasklet(deleteLoadingPointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteCsvFileTasklet deleteLoadingPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
-  ) {
-    return new DeleteCsvFileTasklet(exportTypeV1, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
-  }
-  // END: Delete Csv V1
-
   // --- JSON ---
   @Bean
   @Qualifier(EXPORT_LOADING_POINT_JSON_JOB_NAME)
@@ -234,10 +161,7 @@ public class LoadingPointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportLoadingPointJsonStep(itemReader))
         .next(uploadLoadingPointJsonFileStepV2())
-        .next(renameLoadingPointJsonStep())
-        .next(uploadLoadingPointJsonFileStepV1())
         .next(deleteLoadingPointJsonFileStepV2())
-        .next(deleteLoadingPointJsonFileStepV1())
         .end()
         .build();
   }
@@ -290,48 +214,6 @@ public class LoadingPointVersionExportBatchConfig {
   }
   // END: Upload Json V2
 
-  // BEGIN: Rename Json
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameLoadingPointJsonStep() {
-    return new StepBuilder("renameJson", jobRepository)
-        .tasklet(renameLoadingPointJsonTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameLoadingPointJsonTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, SePoDiBatchExportFileName.LOADING_POINT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.JSON_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Json
-
-  // BEGIN: Upload Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadLoadingPointJsonFileStepV1() {
-    return new StepBuilder("uploadJsonFileV1", jobRepository)
-        .tasklet(uploadLoadingPointJsonFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadLoadingPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
-  ) {
-    return new UploadJsonFileTasklet(exportTypeV1, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
-  }
-  // END: Upload Json V1
-
   // BEGIN: Delete Json V2
   @Bean
   public Step deleteLoadingPointJsonFileStepV2() {
@@ -348,25 +230,5 @@ public class LoadingPointVersionExportBatchConfig {
     return new FileDeletingTaskletV2(filePathV2);
   }
   // END: Delete Json V2
-
-  // BEGIN: Delete Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteLoadingPointJsonFileStepV1() {
-    return new StepBuilder("deleteJsonFileV1", jobRepository)
-        .tasklet(deleteLoadingPointJsonTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet deleteLoadingPointJsonTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1) {
-
-    return new DeleteJsonFileTasklet(exportTypeV1, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
-  }
-  // END: Delete Json V1
 
 }

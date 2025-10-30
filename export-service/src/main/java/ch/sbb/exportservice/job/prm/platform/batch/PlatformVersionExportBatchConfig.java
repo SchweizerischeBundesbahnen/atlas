@@ -5,26 +5,22 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PLATFORM_J
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
-import ch.sbb.exportservice.job.prm.platform.writer.CsvPlatformVersionWriter;
-import ch.sbb.exportservice.job.prm.platform.writer.JsonPlatformVersionWriter;
 import ch.sbb.exportservice.job.prm.platform.entity.PlatformVersion;
+import ch.sbb.exportservice.job.prm.platform.model.PlatformVersionCsvModel;
 import ch.sbb.exportservice.job.prm.platform.processor.PlatformVersionCsvProcessor;
 import ch.sbb.exportservice.job.prm.platform.processor.PlatformVersionJsonProcessor;
 import ch.sbb.exportservice.job.prm.platform.sql.PlatformVersionRowMapper;
 import ch.sbb.exportservice.job.prm.platform.sql.PlatformVersionSqlQueryUtil;
-import ch.sbb.exportservice.job.prm.platform.model.PlatformVersionCsvModel;
+import ch.sbb.exportservice.job.prm.platform.writer.CsvPlatformVersionWriter;
+import ch.sbb.exportservice.job.prm.platform.writer.JsonPlatformVersionWriter;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
@@ -83,7 +79,6 @@ public class PlatformVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportPlatformCsvStep(itemReader))
         .next(uploadPlatformCsvFileStepV2())
-        .next(uploadPlatformCsvFileStepV1())
         .next(deletePlatformCsvFileStepV2())
         .end()
         .build();
@@ -138,26 +133,6 @@ public class PlatformVersionExportBatchConfig {
   }
   // END: Upload Csv V2
 
-  // BEGIN: Upload Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadPlatformCsvFileStepV1() {
-    return new StepBuilder("uploadCsvFileV1", jobRepository)
-        .tasklet(uploadPlatformCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadPlatformCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.PLATFORM_VERSION);
-  }
-  // END: Upload Csv V1
-
   // BEGIN: Delete Csv V2
   @Bean
   public Step deletePlatformCsvFileStepV2() {
@@ -184,7 +159,6 @@ public class PlatformVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportPlatformJsonStep(itemReader))
         .next(uploadPlatformJsonFileStepV2())
-        .next(uploadPlatformJsonFileStepV1())
         .next(deletePlatformJsonFileStepV2())
         .end()
         .build();
@@ -237,26 +211,6 @@ public class PlatformVersionExportBatchConfig {
     return new UploadJsonFileTaskletV2(filePath);
   }
   // END: Upload Json V2
-
-  // BEGIN: Upload Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadPlatformJsonFileStepV1() {
-    return new StepBuilder("uploadJsonFileV1", jobRepository)
-        .tasklet(uploadPlatformJsonFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadPlatformJsonFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.PLATFORM_VERSION);
-  }
-  // END: Upload Json V1
 
   // BEGIN: Delete Json V2
   @Bean

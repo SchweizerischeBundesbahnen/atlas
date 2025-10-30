@@ -1,16 +1,13 @@
 package ch.sbb.exportservice.job;
 
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_JOB_PARAMETER;
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_V1_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -51,9 +48,6 @@ public abstract class BaseExportJobService {
         .addString(EXPORT_TYPE_JOB_PARAMETER, jobParams.exportTypeV2.toString())
         .addLong(JobDescriptionConstant.START_AT_JOB_PARAMETER, System.currentTimeMillis());
 
-    if (jobParams.exportTypeV1 != null) {
-      jobParametersBuilder.addString(EXPORT_TYPE_V1_JOB_PARAMETER, jobParams.exportTypeV1.toString());
-    }
     return jobParametersBuilder.toJobParameters();
   }
 
@@ -80,15 +74,12 @@ public abstract class BaseExportJobService {
     }
   }
 
-  @RequiredArgsConstructor
   public static class JobParams {
 
     private final ExportTypeV2 exportTypeV2;
-    private final ExportTypeBase exportTypeV1;
 
     public JobParams(ExportTypeV2 exportTypeV2) {
       this.exportTypeV2 = exportTypeV2;
-      this.exportTypeV1 = null;
     }
 
   }

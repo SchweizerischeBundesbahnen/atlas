@@ -9,7 +9,6 @@ import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.job.BaseExportJobService.JobParams;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmExportType;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;

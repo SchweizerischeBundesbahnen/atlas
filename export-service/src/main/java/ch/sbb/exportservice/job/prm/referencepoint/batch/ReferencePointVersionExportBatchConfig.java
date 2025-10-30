@@ -5,30 +5,22 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
-import ch.sbb.exportservice.job.prm.referencepoint.model.ReferencePointVersionCsvModel;
-import ch.sbb.exportservice.job.prm.referencepoint.writer.CsvReferencePointVersionWriter;
-import ch.sbb.exportservice.job.prm.referencepoint.writer.JsonReferencePointVersionWriter;
 import ch.sbb.exportservice.job.prm.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.exportservice.job.prm.referencepoint.model.ReferencePointVersionCsvModel;
 import ch.sbb.exportservice.job.prm.referencepoint.processor.ReferencePointVersionCsvProcessor;
 import ch.sbb.exportservice.job.prm.referencepoint.processor.ReferencePointVersionJsonProcessor;
 import ch.sbb.exportservice.job.prm.referencepoint.sql.ReferencePointVersionRowMapper;
 import ch.sbb.exportservice.job.prm.referencepoint.sql.ReferencePointVersionSqlQueryUtil;
+import ch.sbb.exportservice.job.prm.referencepoint.writer.CsvReferencePointVersionWriter;
+import ch.sbb.exportservice.job.prm.referencepoint.writer.JsonReferencePointVersionWriter;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePathV1;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.tasklet.RenameTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
@@ -87,10 +79,7 @@ public class ReferencePointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportReferencePointCsvStep(itemReader))
         .next(uploadReferencePointCsvFileStepV2())
-        .next(renameReferencePointCsvStep())
-        .next(uploadReferencePointCsvFileStepV1())
         .next(deleteReferencePointCsvFileStepV2())
-        .next(deleteReferencePointCsvFileStepV1())
         .end()
         .build();
   }
@@ -145,48 +134,6 @@ public class ReferencePointVersionExportBatchConfig {
   }
   // END: Upload Csv V2
 
-  // BEGIN: Upload Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadReferencePointCsvFileStepV1() {
-    return new StepBuilder("uploadCsvFileV1", jobRepository)
-        .tasklet(uploadReferencePointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadReferencePointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.REFERENCE_POINT_VERSION);
-  }
-  // END: Upload Csv V1
-
-  // BEGIN: Rename Csv
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameReferencePointCsvStep() {
-    return new StepBuilder("renameCsv", jobRepository)
-        .tasklet(renameReferencePointTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameReferencePointTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.REFERENCE_POINT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.CSV_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Csv
-
   // BEGIN: Delete Csv V2
   @Bean
   public Step deleteReferencePointCsvFileStepV2() {
@@ -205,26 +152,6 @@ public class ReferencePointVersionExportBatchConfig {
   }
   // END: Delete Csv V2
 
-  // BEGIN: Delete Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteReferencePointCsvFileStepV1() {
-    return new StepBuilder("deleteCsvFileV1", jobRepository)
-        .tasklet(deleteReferencePointCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteCsvFileTasklet deleteReferencePointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new DeleteCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.REFERENCE_POINT_VERSION);
-  }
-  // END: Delete Csv V1
-
   // --- JSON ---
   @Bean
   @Qualifier(EXPORT_REFERENCE_POINT_JSON_JOB_NAME)
@@ -234,10 +161,7 @@ public class ReferencePointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportReferencePointJsonStep(itemReader))
         .next(uploadReferencePointJsonFileStepV2())
-        .next(renameReferencePointJsonStep())
-        .next(uploadReferencePointJsonFileStepV1())
         .next(deleteReferencePointJsonFileStepV2())
-        .next(deleteReferencePointJsonFileStepV1())
         .end()
         .build();
   }
@@ -290,48 +214,6 @@ public class ReferencePointVersionExportBatchConfig {
   }
   // END: Upload Json V2
 
-  // BEGIN: Rename Json
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step renameReferencePointJsonStep() {
-    return new StepBuilder("renameJson", jobRepository)
-        .tasklet(renameReferencePointJsonTasklet(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public RenameTasklet renameReferencePointJsonTasklet(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
-      @Value("#{jobExecutionContext[filePathV2]}") ExportFilePathV2 filePathV2) {
-    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.REFERENCE_POINT_VERSION,
-        fileService.getDir(), ExportExtensionFileType.JSON_EXTENSION);
-    return new RenameTasklet(filePathV2, filePathV1);
-  }
-  // END: Rename Json
-
-  // BEGIN: Upload Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadReferencePointJsonFileStepV1() {
-    return new StepBuilder("uploadJsonFileV1", jobRepository)
-        .tasklet(uploadReferencePointJsonFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadReferencePointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.REFERENCE_POINT_VERSION);
-  }
-  // END: Upload Json V1
-
   // BEGIN: Delete Json V2
   @Bean
   public Step deleteReferencePointJsonFileStepV2() {
@@ -348,25 +230,5 @@ public class ReferencePointVersionExportBatchConfig {
     return new FileDeletingTaskletV2(filePathV2);
   }
   // END: Delete Json V2
-
-  // BEGIN: Delete Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step deleteReferencePointJsonFileStepV1() {
-    return new StepBuilder("deleteJsonFileV1", jobRepository)
-        .tasklet(deleteReferencePointJsonTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet deleteReferencePointJsonTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1) {
-
-    return new DeleteJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.REFERENCE_POINT_VERSION);
-  }
-  // END: Delete Json V1
 
 }
