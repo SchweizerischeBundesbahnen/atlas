@@ -27,7 +27,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas.git"
   },
-  "version": "2.925.0",
+  "version": "2.926.0",
   "files": [
     "dist/*"
   ],
