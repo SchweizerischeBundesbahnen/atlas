@@ -1,5 +1,15 @@
 server:
   port: 8087
+  tomcat:
+    accesslog:
+      enabled: false
+      # write access logs to stdout
+      directory: /dev
+      prefix: stdout
+      suffix:
+      file-date-format:
+      buffered: false
+      pattern: combined
 management:
   endpoints:
     web:
