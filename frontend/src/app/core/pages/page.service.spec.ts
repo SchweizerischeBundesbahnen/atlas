@@ -24,7 +24,7 @@ describe('PageService', () => {
 
   it('should provide default pages', (done) => {
     pageService.enabledPages.subscribe((enabledPages) => {
-      expect(enabledPages).toHaveSize(5);
+      expect(enabledPages).toHaveSize(6);
       done();
     });
   });

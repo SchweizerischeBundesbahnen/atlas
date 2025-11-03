@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class TimetableFieldNumberVersionRepositoryTest {
 
+  private static final String SWISS_TIMETABLE_FIELD_NUMBER = "b0.BEX";
+
   private final TimetableFieldNumberVersionRepository versionRepository;
   private TimetableFieldNumberVersion version;
 
@@ -36,9 +38,9 @@ class TimetableFieldNumberVersionRepositoryTest {
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
         .meanOfTransport(TtfnMeanOfTransport.TRAIN)
-        .number("BEX")
+        .number("80.099")
         .status(Status.VALIDATED)
-        .swissTimetableFieldNumber("b0.BEX")
+        .swissTimetableFieldNumber(SWISS_TIMETABLE_FIELD_NUMBER)
         .validFrom(LocalDate.of(2020, 12, 12))
         .validTo(LocalDate.of(2020, 12, 12))
         .businessOrganisation("sbb")
@@ -154,7 +156,7 @@ class TimetableFieldNumberVersionRepositoryTest {
         .descriptionOutwardLine1("FPFN Description2")
         .descriptionReturnLine1("FPFN Description2")
         .meanOfTransport(TtfnMeanOfTransport.TRAIN)
-        .number("BEX2")
+        .number("80.099.2")
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("b0.BEX2")
         .validFrom(LocalDate.of(2021, 12, 12))

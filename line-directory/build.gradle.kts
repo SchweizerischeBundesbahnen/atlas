@@ -23,6 +23,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
 
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
 

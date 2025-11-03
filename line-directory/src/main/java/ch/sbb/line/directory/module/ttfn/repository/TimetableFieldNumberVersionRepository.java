@@ -1,8 +1,10 @@
 package ch.sbb.line.directory.module.ttfn.repository;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,6 +18,18 @@ public interface TimetableFieldNumberVersionRepository extends
 
   @Query(value = "SELECT v FROM timetable_field_number_version v WHERE v.ttfnid = :ttfnid order by v.validFrom asc")
   List<TimetableFieldNumberVersion> getAllVersionsVersioned(@Param("ttfnid") String ttfnid);
+
+  default List<TimetableFieldNumberVersion> findNumberOverlaps(TimetableFieldNumberVersion version) {
+    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndNumberIgnoreCase(
+        version.getValidFrom(), version.getValidTo(), version.getNumber())
+        .stream()
+        .filter(i -> !Objects.equals(i.getTtfnid(), version.getTtfnid()))
+        .filter(i -> i.getStatus() != Status.REVOKED)
+        .toList();
+  }
+
+  List<TimetableFieldNumberVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndNumberIgnoreCase(
+      LocalDate validFrom, LocalDate validTo, String number);
 
   @Query(value = "select v from timetable_field_number_version v "
       + "where (v.number = :number or lower(v.swissTimetableFieldNumber) = :sttfn) "
@@ -37,5 +51,22 @@ public interface TimetableFieldNumberVersionRepository extends
       + " AND tv.ttfnid in :ttfnids"
       + " ORDER BY tv.ttfnid, tv.validFrom ASC")
   List<TimetableFieldNumberVersion> getVersionsValidAt(Set<String> ttfnids, LocalDate validAt);
+
+
+  @Modifying(clearAutomatically = true)
+  @Query("delete from timetable_field_number_version t where t.validFrom >= :validFrom")
+  void deleteVersionsValidFromAfter(LocalDate validFrom);
+
+  @Modifying(clearAutomatically = true)
+  @Query(value = """
+        UPDATE timetable_field_number_version t
+        SET valid_to='2025-12-13'
+        WHERE valid_from = (
+            SELECT MAX(valid_from)
+            FROM timetable_field_number_version
+            WHERE ttfnid = t.ttfnid
+        );
+      """, nativeQuery = true)
+  void updateLastVersionsByTerminating();
 
 }

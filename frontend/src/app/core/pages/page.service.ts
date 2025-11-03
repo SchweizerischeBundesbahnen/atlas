@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class PageService {
   private _viewablePages: BehaviorSubject<Page[]> = new BehaviorSubject([
     ...Pages.pages,
+    ...(environment.ttfnEnabled ? [Pages.TTFN] : []),
   ]);
   enabledPages: Observable<Page[]> = this._viewablePages.asObservable();
 
@@ -21,7 +22,6 @@ export class PageService {
       ...(this.permissionService.mayAccessTimetableHearing()
         ? [Pages.TTH]
         : []),
-      ...(this.permissionService.mayAccessTtfn() ? [Pages.TTFN] : []),
       ...(this.permissionService.mayAccessBulkImport() &&
       environment.bulkImportEnabled
         ? [Pages.BULK_IMPORT]

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   Input,
   OnChanges,
@@ -32,7 +31,6 @@ import { distinctUntilChanged, of, startWith } from 'rxjs';
     AsyncPipe,
   ],
   providers: [TranslatePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   @Input() controlName!: string;

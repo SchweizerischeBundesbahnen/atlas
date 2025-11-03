@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,6 +11,7 @@ import java.util.List;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Timetable Field Numbers")
 @RequestMapping("internal/field-numbers")
@@ -39,5 +42,9 @@ public interface TimetableFieldNumberApiInternal {
 
   @DeleteMapping("/{ttfnid}")
   void deleteVersions(@PathVariable String ttfnid);
+
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @PostMapping("/import-quovadis")
+  void importQuoVadisData(MultipartFile file);
 
 }

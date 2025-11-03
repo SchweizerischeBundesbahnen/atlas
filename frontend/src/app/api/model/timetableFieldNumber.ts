@@ -14,7 +14,7 @@ export interface TimetableFieldNumber {
     /**
      * Timetable field number
      */
-    swissTimetableFieldNumber: string;
+    swissTimetableFieldNumber?: string;
     /**
      * Number
      */

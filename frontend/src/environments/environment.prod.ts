@@ -63,4 +63,5 @@ export const environment: Environment = {
   terminationWorkflowEnabled:
     process.env.TERMINTAION_WORKFLOW_ENABLED !== 'false',
   sectorsEnabled: process.env.SECTORS_ENABLED !== 'false',
+  ttfnEnabled: process.env.TTFN_ENABLED !== 'false',
 };

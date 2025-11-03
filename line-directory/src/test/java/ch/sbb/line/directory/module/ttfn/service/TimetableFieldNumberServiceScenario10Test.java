@@ -55,9 +55,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // second version new version added
@@ -66,9 +66,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description <changed>");
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // second version new version added
@@ -77,9 +77,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(thirdTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
     assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX3");
+    assertThat(thirdTemporalVersion.getNumber()).isEqualTo("80.099.3");
     assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
   }
 
@@ -117,9 +117,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // second version not touched
@@ -128,9 +128,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX3");
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo("80.099.3");
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
   }
 
@@ -169,9 +169,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // second version new version added
@@ -180,9 +180,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description <changed>");
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // third version new version added
@@ -191,9 +191,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
     assertThat(thirdTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description <changed>");
     assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX3");
+    assertThat(thirdTemporalVersion.getNumber()).isEqualTo("80.099.3");
     assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // fourth version new version added
@@ -202,9 +202,9 @@ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumber
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(fourthTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
     assertThat(fourthTemporalVersion.getLineRelations()).isEmpty();
-    assertThat(fourthTemporalVersion.getNumber()).isEqualTo("BEX3");
+    assertThat(fourthTemporalVersion.getNumber()).isEqualTo("80.099.3");
     assertThat(fourthTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-    assertThat(fourthTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(fourthTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo(SWISS_TIMETABLE_FIELD_NUMBER);
     assertThat(fourthTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
   }
 

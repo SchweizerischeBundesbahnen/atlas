@@ -14,4 +14,5 @@ export interface Environment {
   bulkImportEnabled: boolean;
   terminationWorkflowEnabled: boolean;
   sectorsEnabled: boolean;
+  ttfnEnabled: boolean;
 }

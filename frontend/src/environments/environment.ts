@@ -51,4 +51,5 @@ export const environment: Environment = {
   bulkImportEnabled: true,
   terminationWorkflowEnabled: true,
   sectorsEnabled: true,
+  ttfnEnabled: true,
 };

@@ -2,14 +2,15 @@ import { FormControl } from '@angular/forms';
 import { AtlasCharsetsValidator } from './atlas-charsets-validator';
 
 describe('Atlas Charsets Validator', () => {
-  it('should allow numbers and dots', () => {
-    const numericWithDot = AtlasCharsetsValidator.numericWithDot;
+  it('should allow ttfn number', () => {
+    const ttfnNumber = AtlasCharsetsValidator.ttfnNumber;
 
-    expect(numericWithDot(new FormControl('0'))).toBeNull();
-    expect(numericWithDot(new FormControl('0.9'))).toBeNull();
+    expect(ttfnNumber(new FormControl('0'))).toBeNull();
+    expect(ttfnNumber(new FormControl('0.9'))).toBeNull();
+    expect(ttfnNumber(new FormControl('10.SN9'))).toBeNull();
 
-    expect(numericWithDot(new FormControl('0.x9'))).toBeDefined();
-    expect(numericWithDot(new FormControl('a'))).toBeDefined();
+    expect(ttfnNumber(new FormControl('0.x9'))).toBeDefined();
+    expect(ttfnNumber(new FormControl('a'))).toBeDefined();
   });
 
   it('should allow SID4PT charset', () => {
