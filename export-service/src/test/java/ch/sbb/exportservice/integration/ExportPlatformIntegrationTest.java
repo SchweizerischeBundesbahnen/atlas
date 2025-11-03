@@ -36,7 +36,7 @@ class ExportPlatformIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportPlatformCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportPlatformCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -50,7 +50,7 @@ class ExportPlatformIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportPlatformJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportPlatformJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

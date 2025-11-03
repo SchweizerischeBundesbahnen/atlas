@@ -40,7 +40,7 @@ class ExportLoadingPointIntegrationTest {
   void shouldExecuteExportLoadingPointCsvJob() throws Exception {
     // given
     JobParameters jobParameters = BaseExportJobService.buildJobParameters(
-        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
+        new JobParams(ExportTypeV2.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportLoadingPointCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -56,7 +56,7 @@ class ExportLoadingPointIntegrationTest {
     // given
 
     JobParameters jobParameters = BaseExportJobService.buildJobParameters(
-        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
+        new JobParams(ExportTypeV2.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportLoadingPointJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

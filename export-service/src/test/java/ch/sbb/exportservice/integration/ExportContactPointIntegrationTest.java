@@ -49,7 +49,7 @@ class ExportContactPointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportContactPointCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportContactPointCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -63,7 +63,7 @@ class ExportContactPointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportContactPointJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportContactPointJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

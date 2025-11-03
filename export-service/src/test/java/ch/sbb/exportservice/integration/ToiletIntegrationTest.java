@@ -41,7 +41,7 @@ class ToiletIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportToiletCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportToiletCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -55,7 +55,7 @@ class ToiletIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportToiletJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportToiletJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

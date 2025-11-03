@@ -49,7 +49,7 @@ class ExportRelationIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportRelationCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportRelationCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -63,7 +63,7 @@ class ExportRelationIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportRelationJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportRelationJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

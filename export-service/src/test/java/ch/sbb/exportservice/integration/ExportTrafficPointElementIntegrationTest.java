@@ -41,7 +41,7 @@ class ExportTrafficPointElementIntegrationTest {
     // given
 
     JobParameters jobParameters = BaseExportJobService.buildJobParameters(
-        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
+        new JobParams(ExportTypeV2.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportTrafficPointElementCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -57,7 +57,7 @@ class ExportTrafficPointElementIntegrationTest {
     // given
 
     JobParameters jobParameters = BaseExportJobService.buildJobParameters(
-        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
+        new JobParams(ExportTypeV2.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportTrafficPointElementJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

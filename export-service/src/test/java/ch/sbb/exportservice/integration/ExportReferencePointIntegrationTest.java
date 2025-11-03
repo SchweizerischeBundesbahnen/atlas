@@ -49,7 +49,7 @@ class ExportReferencePointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportReferencePointCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportReferencePointCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -63,7 +63,7 @@ class ExportReferencePointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportReferencePointJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportReferencePointJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

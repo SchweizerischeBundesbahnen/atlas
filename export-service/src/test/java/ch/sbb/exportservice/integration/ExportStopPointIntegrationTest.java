@@ -44,7 +44,7 @@ class ExportStopPointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportStopPointCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportStopPointCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -58,7 +58,7 @@ class ExportStopPointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportStopPointJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportStopPointJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
