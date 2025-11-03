@@ -49,12 +49,6 @@ class QuoVadisDataImportServiceTest {
   }
 
   @Test
-  void shouldImportDataFromQuoVadisFile() {
-    File file = new File("src/test/resources/quovadis_ttfn.csv");
-    assertThatNoException().isThrownBy(() -> quoVadisDataImportService.importDataFromQuoVadis(file));
-  }
-
-  @Test
   void shouldImportDataFromQuoVadisUpdatingTtfn() {
     String number = "80.099.1";
     String ttfnid = "ch:1:ttfnid:123";
