@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class QuoVadisDataImportService {
+public class  QuoVadisDataImportService {
 
   static final LocalDate FIRST_DAY_OF_FP_2026 = LocalDate.of(2025, 12, 14);
 
@@ -38,7 +38,7 @@ public class QuoVadisDataImportService {
     performDataMigration(timetableFieldNumbers);
   }
 
-  private void performDataMigration(List<TimetableFieldNumberV2> newTtfns) {
+  void performDataMigration(List<TimetableFieldNumberV2> newTtfns) {
     // Delete all versions which would start on or after Timetable-Year-Change
     timetableFieldNumberVersionRepository.deleteVersionsValidFromAfter(FIRST_DAY_OF_FP_2026);
     // Shorten all last versions to FP 2025 end date
