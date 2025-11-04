@@ -41,35 +41,4 @@ public class BoDiSchedulerService extends BaseSchedulerService {
     return executeRequest(boDiClient::postLoadTransportCompaniesFromBav,
         "Import Companies from BAV");
   }
-
-  @SpanTracing
-  @Retryable(label = "exportFullBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4,
-      backoff = @Backoff(delay = 65000))
-  @Scheduled(cron = "${scheduler.bodi.export.business-organisation.full.chron}", zone = "${scheduler.zone}")
-  @SchedulerLock(name = "exportFullBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
-  public Response exportFullBusinessOrganisationVersions() {
-    return executeRequest(boDiClient::putBoDiBusinessOrganisationExportFull,
-        "Full BusinessOrganisation Versions CSV/ZIP");
-  }
-
-  @SpanTracing
-  @Retryable(label = "exportActualBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4
-      , backoff = @Backoff(delay = 65000))
-  @Scheduled(cron = "${scheduler.bodi.export.business-organisation.actual.chron}", zone = "${scheduler.zone}")
-  @SchedulerLock(name = "exportActualBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
-  public Response exportActualBusinessOrganisationVersions() {
-    return executeRequest(boDiClient::putBoDiBusinessOrganisationExportActual,
-        "Actual BusinessOrganisation Versions CSV/ZIP");
-  }
-
-  @SpanTracing
-  @Retryable(label = "exportFutureBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4
-      , backoff = @Backoff(delay = 65000))
-  @Scheduled(cron = "${scheduler.bodi.export.business-organisation.future.chron}", zone = "${scheduler.zone}")
-  @SchedulerLock(name = "exportFutureBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
-  public Response exportNextTimetableBusinessOrganisationVersions() {
-    return executeRequest(boDiClient::putBoDiBusinessOrganisationExportNextTimetableVersions,
-        "Future Timetable BusinessOrganisation Versions CSV/ZIP");
-  }
-
 }
