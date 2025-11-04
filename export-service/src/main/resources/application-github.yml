@@ -1,5 +1,15 @@
 server:
   port: 8092
+  tomcat:
+    accesslog:
+      enabled: false
+      # write access logs to stdout
+      directory: /dev
+      prefix: stdout
+      suffix:
+      file-date-format:
+      buffered: false
+      pattern: combined
   compression:
     enabled: true
     mime-types: text/html, text/xml, text/plain, text/css, text/javascript, application/javascript, application/json
