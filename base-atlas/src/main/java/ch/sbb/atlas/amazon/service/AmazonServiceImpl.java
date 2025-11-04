@@ -122,14 +122,6 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
-  public List<String> getS3ObjectKeysFromPrefix(AmazonBucket bucket, String dirPath, String prefix) {
-    List<S3Object> result = getClient(bucket).listObjectsV2(ListObjectsV2Request.builder()
-        .bucket(getAmazonBucketConfig(bucket).getBucketName())
-        .prefix(getFilePathName(dirPath, prefix)).build()).contents();
-    return result.stream().map(S3Object::key).toList();
-  }
-
-  @Override
   public String getLatestJsonUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix) {
     List<S3Object> s3Objects = getClient(bucket).listObjectsV2(ListObjectsV2Request.builder()
         .bucket(getAmazonBucketConfig(bucket).getBucketName())

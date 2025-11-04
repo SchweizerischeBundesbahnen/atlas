@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 import org.springframework.core.io.InputStreamResource;
 
 public interface AmazonService {
@@ -22,8 +21,6 @@ public interface AmazonService {
   InputStream pullS3Object(AmazonBucket bucket, String filePath);
 
   void deleteFile(AmazonBucket bucket, String filePath);
-
-  List<String> getS3ObjectKeysFromPrefix(AmazonBucket bucket, String dirPath, String prefix);
 
   String getLatestJsonUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix);
 
