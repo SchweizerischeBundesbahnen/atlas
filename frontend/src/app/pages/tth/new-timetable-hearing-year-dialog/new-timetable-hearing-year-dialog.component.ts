@@ -71,6 +71,9 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
 
   private readonly ngUnsubscribe = new Subject<void>();
 
+  protected readonly EXAMPLE_DATE_FROM = '01.01.2023';
+  protected readonly EXAMPLE_DATE_UNTIL = '31.12.2023';
+
   constructor(
     private dialogRef: MatDialogRef<NewTimetableHearingYearDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: NewTimetableHearingYearDialogData,
