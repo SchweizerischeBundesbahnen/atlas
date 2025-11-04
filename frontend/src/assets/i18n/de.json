@@ -873,10 +873,8 @@
         "PLAN_DROPDOWN_DESCRIPTION": "Jahr auswählen",
         "HEARING_FROM": "Anhörung von",
         "HEARING_FROM_INFO": "Fahrplananhörung von",
-        "HEARING_FROM_EXAMPLE": "01.01.2023.",
         "HEARING_UNTIL": "Anhörung bis",
         "HEARING_UNTIL_INFO": "Fahrplananhörung bis",
-        "HEARING_UNTIL_EXAMPLE": "31.12.2023.",
         "SAVE": "Speichern",
         "NOTIFICATION_SUCCESS": "Fahrplananhörung erfolgreich gespeichert"
       }
