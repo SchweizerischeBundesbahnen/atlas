@@ -3,6 +3,7 @@ package ch.sbb.exportservice.job.lidi.ttfn.processor;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.ttfn.entity.TimetableFieldNumber;
 import java.time.LocalDate;
@@ -15,7 +16,13 @@ class TimetableFieldNumberJsonProcessorTest {
   void shouldMapToJsonCorrectly() {
     TimetableFieldNumber timetableFieldNumber = TimetableFieldNumber.builder()
         .id(1L)
-        .description("description")
+        .descriptionOutwardLine1("outward 1")
+        .descriptionOutwardLine2("outward 2")
+        .descriptionOutwardLine3("outward 3")
+        .descriptionReturnLine1("return 1")
+        .descriptionReturnLine2("return 2")
+        .descriptionReturnLine3("return 3")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("number")
         .ttfnid("ch:1:ttfnid:123")
         .swissTimetableFieldNumber("sttfn")
@@ -32,7 +39,13 @@ class TimetableFieldNumberJsonProcessorTest {
 
     TimetableFieldNumberVersionModel expected = TimetableFieldNumberVersionModel.builder()
         .id(1L)
-        .descriptionOutwardLine1("description")
+        .descriptionOutwardLine1("outward 1")
+        .descriptionOutwardLine2("outward 2")
+        .descriptionOutwardLine3("outward 3")
+        .descriptionReturnLine1("return 1")
+        .descriptionReturnLine2("return 2")
+        .descriptionReturnLine3("return 3")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("number")
         .ttfnid("ch:1:ttfnid:123")
         .swissTimetableFieldNumber("sttfn")

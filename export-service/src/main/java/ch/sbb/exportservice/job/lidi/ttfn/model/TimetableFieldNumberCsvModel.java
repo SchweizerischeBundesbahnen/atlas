@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.job.lidi.ttfn.model;
 
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +26,13 @@ public class TimetableFieldNumberCsvModel {
   private String swissTimetableFieldNumber;
   private String number;
   private String businessOrganisation;
-  private String description;
-  private String comment;
+  private String descriptionOutwardLine1;
+  private String descriptionOutwardLine2;
+  private String descriptionOutwardLine3;
+  private String descriptionReturnLine1;
+  private String descriptionReturnLine2;
+  private String descriptionReturnLine3;
+  private TtfnMeanOfTransport meanOfTransport;
   private String lineRelations;
   private String creationTime;
   private String editionTime;

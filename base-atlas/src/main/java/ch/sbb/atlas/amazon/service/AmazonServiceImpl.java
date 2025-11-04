@@ -31,7 +31,7 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 @RequiredArgsConstructor
 public class AmazonServiceImpl implements AmazonService {
 
-  public static final String JSON_FILE_EXTENSION = "json";
+  public static final String JSON_FILE_EXTENSION = ".json";
   public static final String GZ_EXTENSION = ".gz";
   public static final String CONTENT_TYPE_GZIP = "application/gzip";
   private final List<AmazonBucketClient> amazonBucketClients;
@@ -149,8 +149,7 @@ public class AmazonServiceImpl implements AmazonService {
     if (!fileNameList.isEmpty() && fileNameList.getFirst() != null) {
       return fileNameList.getFirst();
     }
-    throw new FileNotFoundException(
-        "File with path prefix [{" + pathPrefix + "}] does not found on bucket [{" + bucket.getProperty() + "}]");
+    throw new FileNotFoundException("%s/%s<latest date>%s".formatted(pathPrefix, fileTypePrefix, JSON_FILE_EXTENSION));
   }
 
   private URL putFileToBucket(AmazonBucket bucket, File file, String dir) {
