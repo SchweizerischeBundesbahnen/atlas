@@ -58,13 +58,6 @@ public class AmazonServiceImpl implements AmazonService {
     return zipPutResult.url();
   }
 
-  @Override
-  public URL putZipFileCleanupZip(AmazonBucket bucket, File file, String dir) throws IOException {
-    ZipPutResult zipPutResult = zipAndPutFile(bucket, file, dir);
-    Files.deleteIfExists(zipPutResult.zipFile().toPath());
-    return zipPutResult.url();
-  }
-
   private ZipPutResult zipAndPutFile(AmazonBucket bucket, File file, String dir) {
     File zipFile = fileService.zipFile(file);
     String filePathName = getFilePathName(dir, zipFile);
