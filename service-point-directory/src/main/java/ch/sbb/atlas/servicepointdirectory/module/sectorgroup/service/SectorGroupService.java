@@ -214,6 +214,10 @@ public class SectorGroupService {
   @Transactional
   public void revoke(String sloid) {
     List<SectorGroupVersion> sectorGroup = findAllBySloidOrderByValidFrom(sloid);
+
+    SectorGroupVersion lastVersion = sectorGroup.getLast();
+    lastVersion.setValidTo(lastVersion.getValidFrom());
+
     sectorGroup.forEach(sectorGroupVersion -> sectorGroupVersion.setStatus(Status.REVOKED));
     sectorGroupVersionRepository.saveAll(sectorGroup);
   }

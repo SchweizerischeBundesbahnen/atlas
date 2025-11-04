@@ -117,6 +117,7 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
         sectorGroupVersion.getSloid());
     assertThat(sectorGroup).hasSize(1);
     assertThat(sectorGroup.getFirst().getStatus()).isEqualTo(Status.REVOKED);
+    assertThat(sectorGroup.getFirst().getValidFrom()).isEqualTo(sectorGroup.getFirst().getValidTo());
   }
 
 }

@@ -67,6 +67,7 @@ class SectorApiInternalControllerTest extends BaseControllerApiTest {
         sectorVersion.getSloid());
     assertThat(sector).hasSize(1);
     assertThat(sector.getFirst().getStatus()).isEqualTo(Status.REVOKED);
+    assertThat(sector.getFirst().getValidFrom()).isEqualTo(sector.getFirst().getValidTo());
   }
 
 }
