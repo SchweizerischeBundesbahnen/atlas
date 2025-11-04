@@ -9,7 +9,6 @@ import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.job.BaseExportJobService.JobParams;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmExportType;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -42,7 +41,7 @@ class ToiletIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportToiletCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportToiletCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -56,7 +55,7 @@ class ToiletIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportToiletJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportToiletJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

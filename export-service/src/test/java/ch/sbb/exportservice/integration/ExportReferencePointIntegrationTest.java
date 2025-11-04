@@ -9,7 +9,6 @@ import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.job.BaseExportJobService.JobParams;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmExportType;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +49,7 @@ class ExportReferencePointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportReferencePointCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportReferencePointCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -64,7 +63,7 @@ class ExportReferencePointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportReferencePointJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportReferencePointJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

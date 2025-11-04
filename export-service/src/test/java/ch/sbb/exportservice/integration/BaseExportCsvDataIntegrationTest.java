@@ -4,7 +4,7 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,12 +29,12 @@ public abstract class BaseExportCsvDataIntegrationTest {
   @MockitoBean
   protected AmazonService amazonService;
 
-  @MockitoBean
-  @Qualifier("deleteServicePointCsvFileTaskletV1")
-  protected DeleteCsvFileTasklet deleteCsvFileTasklet;
-
   @Captor
   protected ArgumentCaptor<File> fileArgumentCaptor;
+
+  @MockitoBean
+  @Qualifier("deleteServicePointCsvFileTaskletV2")
+  protected FileDeletingTaskletV2 deleteCsvFileTasklet;
 
   protected List<ServicePointVersionCsvModel> parseCsv(File file) throws IOException {
     MappingIterator<ServicePointVersionCsvModel> mappingIterator = AtlasCsvReader.CSV_MAPPER.readerFor(

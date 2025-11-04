@@ -32,7 +32,7 @@ import ch.sbb.exportservice.job.sepodi.sector.service.ExportSectorJobService;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.service.ExportSectorGroupJobService;
 import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.service.ExportTrafficPointElementJobService;
-import ch.sbb.exportservice.model.SePoDiExportType;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -151,7 +151,7 @@ class RecoveryJobsRunnerTest {
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
-    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportTypeV2.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
@@ -180,7 +180,7 @@ class RecoveryJobsRunnerTest {
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
-    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportTypeV2.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
@@ -209,7 +209,7 @@ class RecoveryJobsRunnerTest {
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
-    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportTypeV2.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
@@ -238,7 +238,7 @@ class RecoveryJobsRunnerTest {
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
-    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportTypeV2.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
@@ -267,7 +267,7 @@ class RecoveryJobsRunnerTest {
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
-    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportTypeV2.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
@@ -295,7 +295,7 @@ class RecoveryJobsRunnerTest {
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
-    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportTypeV2.WORLD_FULL.name(), String.class));
 
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
@@ -325,7 +325,7 @@ class RecoveryJobsRunnerTest {
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
-    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportTypeV2.WORLD_FULL.name(), String.class));
 
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
@@ -355,7 +355,7 @@ class RecoveryJobsRunnerTest {
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
-    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportTypeV2.WORLD_FULL.name(), String.class));
 
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);

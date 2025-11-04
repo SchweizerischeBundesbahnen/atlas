@@ -5,12 +5,12 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_J
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
-import ch.sbb.exportservice.job.prm.relation.model.RelationVersionCsvModel;
-import ch.sbb.exportservice.job.prm.relation.sql.RelationVersionRowMapper;
-import ch.sbb.exportservice.job.prm.relation.sql.RelationVersionSqlQueryUtil;
 import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion;
+import ch.sbb.exportservice.job.prm.relation.model.RelationVersionCsvModel;
 import ch.sbb.exportservice.job.prm.relation.processor.RelationVersionCsvProcessor;
 import ch.sbb.exportservice.job.prm.relation.processor.RelationVersionJsonProcessor;
+import ch.sbb.exportservice.job.prm.relation.sql.RelationVersionRowMapper;
+import ch.sbb.exportservice.job.prm.relation.sql.RelationVersionSqlQueryUtil;
 import ch.sbb.exportservice.job.prm.relation.writer.CsvRelationVersionWriter;
 import ch.sbb.exportservice.job.prm.relation.writer.JsonRelationVersionWriter;
 import ch.sbb.exportservice.listener.JobCompletionListener;
@@ -19,12 +19,8 @@ import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
@@ -83,7 +79,6 @@ public class RelationVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportRelationCsvStep(itemReader))
         .next(uploadRelationCsvFileStepV2())
-        .next(uploadRelationCsvFileStepV1())
         .next(deleteRelationCsvFileStepV2())
         .end()
         .build();
@@ -138,26 +133,6 @@ public class RelationVersionExportBatchConfig {
   }
   // END: Upload Csv V2
 
-  // BEGIN: Upload Csv V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadRelationCsvFileStepV1() {
-    return new StepBuilder("uploadCsvFileV1", jobRepository)
-        .tasklet(uploadRelationCsvFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadRelationCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.RELATION_VERSION);
-  }
-  // END: Upload Csv V1
-
   // BEGIN: Delete Csv V2
   @Bean
   public Step deleteRelationCsvFileStepV2() {
@@ -184,7 +159,6 @@ public class RelationVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportRelationJsonStep(itemReader))
         .next(uploadRelationJsonFileStepV2())
-        .next(uploadRelationJsonFileStepV1())
         .next(deleteRelationJsonFileStepV2())
         .end()
         .build();
@@ -237,26 +211,6 @@ public class RelationVersionExportBatchConfig {
     return new UploadJsonFileTaskletV2(filePath);
   }
   // END: Upload Json V2
-
-  // BEGIN: Upload Json V1
-  @Deprecated(forRemoval = true)
-  @Bean
-  public Step uploadRelationJsonFileStepV1() {
-    return new StepBuilder("uploadJsonFileV1", jobRepository)
-        .tasklet(uploadRelationJsonFileTaskletV1(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Deprecated(forRemoval = true)
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadRelationJsonFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
-  ) {
-    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.RELATION_VERSION);
-  }
-  // END: Upload Json V1
 
   // BEGIN: Delete Json V2
   @Bean

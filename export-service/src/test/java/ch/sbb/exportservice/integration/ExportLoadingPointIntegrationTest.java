@@ -9,7 +9,6 @@ import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.job.BaseExportJobService.JobParams;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -41,7 +40,7 @@ class ExportLoadingPointIntegrationTest {
   void shouldExecuteExportLoadingPointCsvJob() throws Exception {
     // given
     JobParameters jobParameters = BaseExportJobService.buildJobParameters(
-        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
+        new JobParams(ExportTypeV2.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportLoadingPointCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -57,7 +56,7 @@ class ExportLoadingPointIntegrationTest {
     // given
 
     JobParameters jobParameters = BaseExportJobService.buildJobParameters(
-        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
+        new JobParams(ExportTypeV2.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportLoadingPointJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

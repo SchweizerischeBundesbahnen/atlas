@@ -223,18 +223,6 @@ class AmazonServiceTest {
   }
 
   @Test
-  void shouldGetObjectKeysByPrefix() {
-    when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(
-        ListObjectsV2Response.builder().contents(S3Object.builder()
-            .key("full-swiss-only-service_point-2024-07-13.csv.zip")
-            .build()).build());
-    //when
-    amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, "service_points/full", "full-swiss-only-service_point-");
-    //then
-    verify(s3Client).listObjectsV2(any(ListObjectsV2Request.class));
-  }
-
-  @Test
   void shouldPutGzipFileToBucket() throws IOException {
     // Fake compress
     when(fileService.gzipCompress(any())).thenAnswer(i -> i.getArgument(0));

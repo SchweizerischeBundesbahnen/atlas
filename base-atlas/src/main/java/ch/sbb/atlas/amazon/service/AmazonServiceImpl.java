@@ -58,13 +58,6 @@ public class AmazonServiceImpl implements AmazonService {
     return zipPutResult.url();
   }
 
-  @Override
-  public URL putZipFileCleanupZip(AmazonBucket bucket, File file, String dir) throws IOException {
-    ZipPutResult zipPutResult = zipAndPutFile(bucket, file, dir);
-    Files.deleteIfExists(zipPutResult.zipFile().toPath());
-    return zipPutResult.url();
-  }
-
   private ZipPutResult zipAndPutFile(AmazonBucket bucket, File file, String dir) {
     File zipFile = fileService.zipFile(file);
     String filePathName = getFilePathName(dir, zipFile);
@@ -126,14 +119,6 @@ public class AmazonServiceImpl implements AmazonService {
     getClient(bucket).deleteObject(DeleteObjectRequest.builder()
         .bucket(getAmazonBucketConfig(bucket).getBucketName())
         .key(filePath).build());
-  }
-
-  @Override
-  public List<String> getS3ObjectKeysFromPrefix(AmazonBucket bucket, String dirPath, String prefix) {
-    List<S3Object> result = getClient(bucket).listObjectsV2(ListObjectsV2Request.builder()
-        .bucket(getAmazonBucketConfig(bucket).getBucketName())
-        .prefix(getFilePathName(dirPath, prefix)).build()).contents();
-    return result.stream().map(S3Object::key).toList();
   }
 
   @Override

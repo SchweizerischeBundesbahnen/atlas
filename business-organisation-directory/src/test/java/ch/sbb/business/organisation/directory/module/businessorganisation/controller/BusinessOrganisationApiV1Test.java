@@ -26,7 +26,6 @@ import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.business.organisation.directory.module.businessorganisation.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.module.businessorganisation.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.module.businessorganisation.repository.BusinessOrganisationVersionRepository;
 import java.time.LocalDate;
@@ -228,60 +227,6 @@ public class BusinessOrganisationApiV1Test extends BaseControllerApiTest {
         .andExpect(jsonPath("$.objects[1]." + abbreviationFr, is("fr1")))
         .andExpect(jsonPath("$.objects[1]." + abbreviationIt, is("it1")))
         .andExpect(jsonPath("$.objects[1]." + abbreviationEn, is("en1")));
-  }
-
-  @Test
-  void shouldExportFullBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-        .validFrom(LocalDate.of(2001, 1, 1))
-        .validTo(LocalDate.of(2001, 12, 31))
-        .build();
-
-    mvc.perform(post("/internal/business-organisations/versions")
-        .contentType(contentType)
-        .content(mapper.writeValueAsString(versionModel))
-    );
-
-    //when and then
-    mvc.perform(post("/v1/business-organisations/export/full"))
-        .andExpect(status().isOk()).andReturn();
-  }
-
-  @Test
-  void shouldExportActualBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-        .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-        .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-        .build();
-
-    mvc.perform(post("/internal/business-organisations/versions")
-        .contentType(contentType)
-        .content(mapper.writeValueAsString(versionModel))
-    );
-
-    //when and then
-    mvc.perform(post("/v1/business-organisations/export/actual"))
-        .andExpect(status().isOk());
-  }
-
-  @Test
-  void shouldExportFutureTimetableBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-        .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-        .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-        .build();
-
-    mvc.perform(post("/internal/business-organisations/versions")
-        .contentType(contentType)
-        .content(mapper.writeValueAsString(versionModel))
-    );
-
-    //when and then
-    mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
-        .andExpect(status().isOk());
   }
 
   @Test

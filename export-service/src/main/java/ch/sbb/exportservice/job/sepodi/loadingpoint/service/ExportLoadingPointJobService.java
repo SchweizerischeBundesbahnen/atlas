@@ -6,7 +6,6 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LOADING_PO
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -27,9 +26,9 @@ public class ExportLoadingPointJobService extends BaseExportJobService {
   @Override
   protected List<JobParams> getExportTypes() {
     return List.of(
-        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL),
-        new JobParams(ExportTypeV2.WORLD_ACTUAL, SePoDiExportType.WORLD_ONLY_ACTUAL),
-        new JobParams(ExportTypeV2.WORLD_FUTURE_TIMETABLE, SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE)
+        new JobParams(ExportTypeV2.WORLD_FULL),
+        new JobParams(ExportTypeV2.WORLD_ACTUAL),
+        new JobParams(ExportTypeV2.WORLD_FUTURE_TIMETABLE)
     );
   }
 

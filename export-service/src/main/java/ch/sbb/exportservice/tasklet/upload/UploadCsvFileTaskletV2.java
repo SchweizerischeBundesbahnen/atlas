@@ -12,7 +12,7 @@ public class UploadCsvFileTaskletV2 extends FileUploadTaskletV2 {
 
   @Override
   protected void putFile() throws IOException {
-    amazonService.putZipFileCleanupZip(AmazonBucket.EXPORT, file(), filePath.s3BucketDirPath());
+    amazonService.putZipFileCleanupBoth(AmazonBucket.EXPORT, file(), filePath.s3BucketDirPath());
   }
 
 }

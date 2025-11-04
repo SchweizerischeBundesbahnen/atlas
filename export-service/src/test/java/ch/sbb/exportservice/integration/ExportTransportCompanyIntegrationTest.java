@@ -50,7 +50,7 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
   @Test
   void shouldExecuteExportTransportCompanyCsvJob() throws Exception {
-    when(amazonService.putZipFileCleanupZip(any(), fileArgumentCaptor.capture(), any())).thenReturn(
+    when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(
         URI.create("https://sbb.ch").toURL());
     when(transportCompanyCsvFileDeletingTasklet.execute(any(), any())).thenReturn(null);
 
