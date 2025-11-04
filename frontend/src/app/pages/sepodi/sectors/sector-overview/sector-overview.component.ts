@@ -46,6 +46,11 @@ export class SectorOverviewComponent implements OnInit {
     },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
     {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+    },
+    {
       headerTitle: 'COMMON.VALID_FROM',
       value: 'validFrom',
       formatAsDate: true,

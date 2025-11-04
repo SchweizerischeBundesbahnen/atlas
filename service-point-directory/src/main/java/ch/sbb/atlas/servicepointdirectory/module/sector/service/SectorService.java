@@ -127,6 +127,10 @@ public class SectorService {
   @Transactional
   public void revoke(String sloid) {
     List<SectorVersion> sector = getSector(sloid);
+
+    SectorVersion lastVersion = sector.getLast();
+    lastVersion.setValidTo(lastVersion.getValidFrom());
+
     sector.forEach(sectorVersion -> sectorVersion.setStatus(Status.REVOKED));
     sectorVersionRepository.saveAll(sector);
   }
