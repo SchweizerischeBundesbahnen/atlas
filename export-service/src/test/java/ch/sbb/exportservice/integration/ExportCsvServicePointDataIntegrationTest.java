@@ -23,6 +23,7 @@ class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrat
   void shouldExportServicePointToCsvWithCorrectData() throws Exception {
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any()))
         .thenReturn(URI.create("https://sbb.ch").toURL());
+    when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     // when
     exportServicePointJobService.startExportJobs();

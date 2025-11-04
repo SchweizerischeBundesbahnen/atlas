@@ -23,6 +23,7 @@ class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
   void shouldExportDataWithoutSemiColonContent() throws Exception {
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any()))
         .thenReturn(URI.create("https://sbb.ch").toURL());
+    when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     // when
     exportServicePointJobService.startExportJobs();
@@ -44,6 +45,7 @@ class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
   void shouldExportDataWithoutNewLine() throws Exception {
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any()))
         .thenReturn(URI.create("https://sbb.ch").toURL());
+    when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     // when
     exportServicePointJobService.startExportJobs();
