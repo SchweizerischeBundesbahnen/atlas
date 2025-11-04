@@ -6,12 +6,11 @@ import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.DateRange;
-import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.line.entity.Line;
+import ch.sbb.exportservice.job.lidi.line.entity.Line.LineBuilder;
 import ch.sbb.exportservice.job.lidi.line.sql.LineRowMapper;
 import ch.sbb.exportservice.job.lidi.line.sql.LineSqlQueryUtil;
-import ch.sbb.exportservice.job.lidi.line.entity.Line.LineBuilder;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.ExportYearsTimetableUtil;
 import java.sql.Connection;
@@ -79,37 +78,6 @@ class LineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
 
     //then
     assertThat(result).hasSize(1);
-
-  }
-
-  @Test
-  void shouldReturnTimetableFutureLines() throws SQLException {
-    //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-
-    Line line = Line.builder()
-        .id(1L)
-        .slnid("ch:1:slnid:100000")
-        .validFrom(actualTimetableYearChangeDate.minusYears(1))
-        .validTo(actualTimetableYearChangeDate.plusYears(1))
-        .status(Status.VALIDATED)
-        .lineType(LineType.ORDERLY)
-        .concessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION)
-        .swissLineNumber("r.01")
-        .description("Linie 1")
-        .number("1")
-        .offerCategory(OfferCategory.B)
-        .businessOrganisation("ch:1:sboid:10000011")
-        .build();
-    insertLineVersion(line);
-    String sqlQuery = LineSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
-
-    //when
-    List<Line> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-
   }
 
   //  @formatter:off
@@ -181,15 +149,15 @@ class LineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
     assertThat(result).extracting(Line::getId).containsExactly(2L, 3L, 4L, 5L, 6L);
   }
 
-  private LineBuilder<?, ?> lineBuilder(int id){
+  private LineBuilder<?, ?> lineBuilder(int id) {
     return Line.builder()
         .id((long) id)
-        .slnid("ch:1:slnid:10000"+id)
+        .slnid("ch:1:slnid:10000" + id)
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
         .concessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION)
-        .swissLineNumber("r.0"+id)
-        .description("Linie "+id)
+        .swissLineNumber("r.0" + id)
+        .description("Linie " + id)
         .number(String.valueOf(id))
         .offerCategory(OfferCategory.B)
         .businessOrganisation("ch:1:sboid:10000011");

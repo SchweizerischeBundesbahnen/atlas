@@ -2,12 +2,14 @@ package ch.sbb.exportservice.integration.sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.FutureTimetableHelper;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.exportservice.job.lidi.ttfn.sql.TimetableFieldNumberRowMapper;
 import ch.sbb.exportservice.job.lidi.ttfn.sql.TimetableFieldNumberSqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.util.ExportYearsTimetableUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +26,13 @@ class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest 
     //given
     TimetableFieldNumber timetableFieldNumber = TimetableFieldNumber.builder()
         .id(1L)
-        .description("description")
+        .descriptionOutwardLine1("outward 1")
+        .descriptionOutwardLine2("outward 2")
+        .descriptionOutwardLine3("outward 3")
+        .descriptionReturnLine1("return 1")
+        .descriptionReturnLine2("return 2")
+        .descriptionReturnLine3("return 3")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("number")
         .ttfnid("ch:1:ttfnid:123")
         .swissTimetableFieldNumber("sttfn")
@@ -32,7 +40,6 @@ class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest 
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .businessOrganisation("ch:1:sboid:100000")
-        .comment("comment")
         .build();
     insertTtfnVersion(timetableFieldNumber);
 
@@ -50,7 +57,13 @@ class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest 
     //given
     TimetableFieldNumber timetableFieldNumber = TimetableFieldNumber.builder()
         .id(1L)
-        .description("description")
+        .descriptionOutwardLine1("outward 1")
+        .descriptionOutwardLine2("outward 2")
+        .descriptionOutwardLine3("outward 3")
+        .descriptionReturnLine1("return 1")
+        .descriptionReturnLine2("return 2")
+        .descriptionReturnLine3("return 3")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("number")
         .ttfnid("ch:1:ttfnid:123")
         .swissTimetableFieldNumber("sttfn")
@@ -58,7 +71,6 @@ class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest 
         .validFrom(LocalDate.now())
         .validTo(LocalDate.now())
         .businessOrganisation("ch:1:sboid:100000")
-        .comment("comment")
         .build();
     insertTtfnVersion(timetableFieldNumber);
 
@@ -72,32 +84,35 @@ class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest 
   }
 
   @Test
-  void shouldReturnTimetableFutureTimetableFieldNumbers() throws SQLException {
+  void shouldReturnTtYearsTimetableFieldNumbers() throws SQLException {
     //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-
+    DateRange timetableYearsDateRange = ExportYearsTimetableUtil.getTimetableYearsDateRange();
     TimetableFieldNumber timetableFieldNumber = TimetableFieldNumber.builder()
         .id(1L)
-        .description("description")
+        .descriptionOutwardLine1("outward 1")
+        .descriptionOutwardLine2("outward 2")
+        .descriptionOutwardLine3("outward 3")
+        .descriptionReturnLine1("return 1")
+        .descriptionReturnLine2("return 2")
+        .descriptionReturnLine3("return 3")
+        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
         .number("number")
         .ttfnid("ch:1:ttfnid:123")
         .swissTimetableFieldNumber("sttfn")
         .status(Status.VALIDATED)
-        .validFrom(actualTimetableYearChangeDate.minusYears(1))
-        .validTo(actualTimetableYearChangeDate.plusYears(1))
+        .validFrom(timetableYearsDateRange.getFrom().minusYears(1))
+        .validTo(timetableYearsDateRange.getTo().minusYears(1))
         .businessOrganisation("ch:1:sboid:100000")
-        .comment("comment")
         .build();
     insertTtfnVersion(timetableFieldNumber);
 
-    String sqlQuery = TimetableFieldNumberSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
+    String sqlQuery = TimetableFieldNumberSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
 
     //when
     List<TimetableFieldNumber> result = executeQuery(sqlQuery);
 
     //then
     assertThat(result).hasSize(1);
-
   }
 
   private List<TimetableFieldNumber> executeQuery(String sqlQuery) throws SQLException {

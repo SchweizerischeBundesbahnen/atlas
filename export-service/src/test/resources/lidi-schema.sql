@@ -62,7 +62,13 @@ create table timetable_field_number_version
     id                           bigint           not null
         primary key,
     ttfnid                       varchar(500)     not null,
-    description                  varchar(255),
+    description_outward_line_1   varchar(255),
+    description_outward_line_2   varchar(255),
+    description_outward_line_3   varchar(255),
+    description_return_line_1    varchar(255),
+    description_return_line_2    varchar(255),
+    description_return_line_3    varchar(255),
+    mean_of_transport            varchar(50),
     number                       varchar(50)      not null,
     swiss_timetable_field_number varchar(50)      not null,
     status                       varchar(50)      not null,
@@ -73,7 +79,6 @@ create table timetable_field_number_version
     valid_from                   date             not null,
     valid_to                     date             not null,
     business_organisation        varchar(50)      not null,
-    comment                      varchar(1500),
     version                      bigint default 0 not null
 );
 

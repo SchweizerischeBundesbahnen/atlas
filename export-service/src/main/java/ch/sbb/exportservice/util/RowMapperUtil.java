@@ -5,10 +5,12 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.Nullable;
 
 @UtilityClass
 public class RowMapperUtil {
@@ -39,6 +41,10 @@ public class RowMapperUtil {
 
   public static <T extends Enum<T>> String enumsToPipedString(Collection<T> collection) {
     return collection.stream().map(Enum::name).sorted().collect(Collectors.joining("|"));
+  }
+
+  public static <T extends Enum<T>> T enumValueElseNull(Class<T> enumClass, @Nullable String enumValue) {
+    return Objects.isNull(enumValue) ? null : Enum.valueOf(enumClass, enumValue);
   }
 
 }

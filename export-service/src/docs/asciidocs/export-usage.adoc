@@ -21,6 +21,7 @@ The Export Service generates nightly the following zipped CSV and gzipped JSON f
 * FULL
 * ACTUAL
 * FUTURE_TIMETABLE
+* TIMETABLE_YEARS
 
 If you want to consume this files you have two options:
 

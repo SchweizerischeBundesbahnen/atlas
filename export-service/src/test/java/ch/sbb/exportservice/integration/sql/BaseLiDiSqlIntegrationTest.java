@@ -64,17 +64,21 @@ public abstract class BaseLiDiSqlIntegrationTest {
   protected void insertTtfnVersion(TimetableFieldNumber timetableFieldNumber) throws SQLException {
     String insertSql = """
         INSERT INTO timetable_field_number_version (id, ttfnid, valid_from, valid_to, status, swiss_timetable_field_number,
-        number, business_organisation, description, comment,
+        number, business_organisation, description_outward_line_1, description_outward_line_2, description_outward_line_3,
+        description_return_line_1, description_return_line_2, description_return_line_3, mean_of_transport,
         creation_date, creator, edition_date, editor, version)
-        VALUES (%d, '%s', '%s','%s','%s','%s','%s','%s','%s','%s',
+        VALUES (%d, '%s', '%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',
         '2022-02-19 09:54:38.000000', 'u123456', '2022-02-19 09:54:38.000000', 'u123456', 0);
         """
         .formatted(timetableFieldNumber.getId(), timetableFieldNumber.getTtfnid(),
             formatDate(timetableFieldNumber.getValidFrom()), formatDate(timetableFieldNumber.getValidTo()),
             timetableFieldNumber.getStatus(), timetableFieldNumber.getSwissTimetableFieldNumber(),
             timetableFieldNumber.getNumber(),
-            timetableFieldNumber.getBusinessOrganisation(), timetableFieldNumber.getDescription(),
-            timetableFieldNumber.getComment());
+            timetableFieldNumber.getBusinessOrganisation(), timetableFieldNumber.getDescriptionOutwardLine1(),
+            timetableFieldNumber.getDescriptionOutwardLine2(), timetableFieldNumber.getDescriptionOutwardLine3(),
+            timetableFieldNumber.getDescriptionReturnLine1(), timetableFieldNumber.getDescriptionReturnLine2(),
+            timetableFieldNumber.getDescriptionReturnLine3(), timetableFieldNumber.getMeanOfTransport()
+        );
     execute(insertSql);
   }
 

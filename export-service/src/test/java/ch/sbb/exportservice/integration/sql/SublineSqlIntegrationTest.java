@@ -7,13 +7,14 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.model.FutureTimetableHelper;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.line.entity.Line;
 import ch.sbb.exportservice.job.lidi.subline.entity.Subline;
 import ch.sbb.exportservice.job.lidi.subline.sql.SublineRowMapper;
 import ch.sbb.exportservice.job.lidi.subline.sql.SublineSqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.util.ExportYearsTimetableUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -108,16 +109,15 @@ class SublineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
   }
 
   @Test
-  void shouldReturnTimetableFutureSublines() throws SQLException {
+  void shouldReturnTtYearsSublines() throws SQLException {
     //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-
+    DateRange timetableYearsDateRange = ExportYearsTimetableUtil.getTimetableYearsDateRange();
     Subline subline = Subline.builder()
         .id(1L)
         .slnid("ch:1:slnid:100000:1")
         .mainlineSlnid(MAIN_LINE_SLNID)
-        .validFrom(actualTimetableYearChangeDate.minusYears(1))
-        .validTo(actualTimetableYearChangeDate.plusYears(1))
+        .validFrom(timetableYearsDateRange.getFrom().minusYears(1))
+        .validTo(timetableYearsDateRange.getTo().minusYears(1))
         .status(Status.VALIDATED)
         .sublineType(SublineType.OPERATIONAL)
         .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
@@ -126,14 +126,13 @@ class SublineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
         .businessOrganisation("ch:1:sboid:10000011")
         .build();
     insertSublineVersion(subline);
-    String sqlQuery = SublineSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
+    String sqlQuery = SublineSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
 
     //when
     List<Subline> result = executeQuery(sqlQuery);
 
     //then
     assertThat(result).hasSize(1);
-
   }
 
   private List<Subline> executeQuery(String sqlQuery) throws SQLException {
