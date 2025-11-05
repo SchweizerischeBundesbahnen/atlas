@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.936.0"
+version = "2.937.0"
 
 description = "Atlas Export Service"
 
