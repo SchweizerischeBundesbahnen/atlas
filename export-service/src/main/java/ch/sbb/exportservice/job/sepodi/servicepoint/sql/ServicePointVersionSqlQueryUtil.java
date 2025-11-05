@@ -2,6 +2,7 @@ package ch.sbb.exportservice.job.sepodi.servicepoint.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.exportservice.job.SqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
@@ -9,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @UtilityClass
 @Slf4j
-public class ServicePointVersionSqlQueryUtil {
+public class ServicePointVersionSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_AND_JOIN_STATEMENT = """
       SELECT spv.id, string_agg(spvmot.means_of_transport, '|') as list_of_transports, string_agg(spvc.categories, '|') as list_of_categories,
@@ -24,42 +25,30 @@ public class ServicePointVersionSqlQueryUtil {
       """;
   private static final String GROUP_BY_STATEMENT = "group by spv.id, spvg.id, sbov.id, spfc.service_point_number";
 
-  private static final String SWISS_ONLY_FULL_WHERE_STATEMENT = "WHERE spv.country "
+  private static final String SWISS_WHERE_STATEMENT = "WHERE spv.country "
       + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') ";
-  private static final String SWISS_ONLY_ACTUAL_WHERE_STATEMENT = "WHERE spv.country "
-      + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') "
-      + "AND '%s' between spv.valid_from and spv.valid_to ";
-  private static final String SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE spv.country "
-      + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') "
-      + "AND '%s' between spv.valid_from and spv.valid_to ";
-
-  private static final String WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE "
-      + "'%s' between spv.valid_from and spv.valid_to ";
-  private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = " WHERE '%s' between spv.valid_from and spv.valid_to ";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     log.info("ExportTypeV2: {}", exportTypeV2);
-    StringBuilder sqlQueryBuilder = new StringBuilder(getFromStatementQuery(exportTypeV2));
-    if (getSqlWhereClause(exportTypeV2) != null) {
-      sqlQueryBuilder.append(getSqlWhereClause(exportTypeV2));
-    }
-    sqlQueryBuilder.append(GROUP_BY_STATEMENT);
-    String sqlQuery = sqlQueryBuilder.toString();
-    log.info("Execution SQL query: {}\n", sqlQuery);
-    return sqlQuery;
+
+    String query = ExportSqlQueryBuilder.builder()
+        .exportType(exportTypeV2)
+        .validFromIdentifier("spv.valid_from")
+        .validToIdentifier("spv.valid_to")
+        .selectStatement(getFromStatementQuery(exportTypeV2))
+        .whereClause(getSqlWhereClause(exportTypeV2))
+        .groupByAndOrderByClause(GROUP_BY_STATEMENT)
+        .build()
+        .getQuery();
+
+    log.info("Execution SQL query: {}\n", query);
+    return query;
   }
 
   private String getSqlWhereClause(ExportTypeV2 exportTypeV2) {
-    LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     return switch (exportTypeV2) {
-      case SWISS_FULL -> SWISS_ONLY_FULL_WHERE_STATEMENT;
-      case SWISS_ACTUAL -> String.format(SWISS_ONLY_ACTUAL_WHERE_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));
-      case SWISS_FUTURE_TIMETABLE ->
-          String.format(SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
-      case WORLD_ACTUAL -> String.format(WORLD_ONLY_ACTUAL_WHERE_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));
-      case WORLD_FUTURE_TIMETABLE ->
-          String.format(WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
-      case WORLD_FULL -> "";
+      case SWISS_FULL, SWISS_ACTUAL, SWISS_FUTURE_TIMETABLE, SWISS_TIMETABLE_YEARS -> SWISS_WHERE_STATEMENT;
+      case WORLD_ACTUAL, WORLD_FUTURE_TIMETABLE, WORLD_FULL, WORLD_TIMETABLE_YEARS -> null;
       default -> throw new IllegalStateException(exportTypeV2.name() + " is not allowed here.");
     };
   }
@@ -67,8 +56,9 @@ public class ServicePointVersionSqlQueryUtil {
   private String getFromStatementQuery(ExportTypeV2 exportTypeV2) {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     return switch (exportTypeV2) {
-      case SWISS_FULL, SWISS_ACTUAL,
-           WORLD_FULL, WORLD_ACTUAL -> String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));
+      case SWISS_FULL, SWISS_ACTUAL, SWISS_TIMETABLE_YEARS,
+           WORLD_FULL, WORLD_ACTUAL, WORLD_TIMETABLE_YEARS -> String.format(SELECT_AND_JOIN_STATEMENT,
+          DateHelper.getDateAsSqlString(LocalDate.now()));
       case WORLD_FUTURE_TIMETABLE, SWISS_FUTURE_TIMETABLE ->
           String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
       default -> throw new IllegalStateException(exportTypeV2.name() + " is not allowed here.");

@@ -81,26 +81,25 @@ public abstract class SqlQueryUtil {
 
     private String buildTypeCondition() {
       return switch (exportType) {
-        case FULL -> "1=1";
-        case ACTUAL -> {
+        case FULL, WORLD_FULL, SWISS_FULL -> "1=1";
+        case ACTUAL, WORLD_ACTUAL, SWISS_ACTUAL -> {
           String today = DateHelper.getDateAsSqlString(LocalDate.now());
           String sqlCondition = "'%s' >= " + validFromIdentifier + " AND '%s' <= " + validToIdentifier;
           yield sqlCondition.formatted(today, today);
         }
-        case FUTURE_TIMETABLE -> {
+        case FUTURE_TIMETABLE, WORLD_FUTURE_TIMETABLE, SWISS_FUTURE_TIMETABLE -> {
           String futureTimetable = DateHelper.getDateAsSqlString(
               FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
           String sqlCondition = "'%s' >= " + validFromIdentifier + " AND '%s' <= " + validToIdentifier;
           yield sqlCondition.formatted(futureTimetable, futureTimetable);
         }
-        case TIMETABLE_YEARS -> {
+        case TIMETABLE_YEARS, WORLD_TIMETABLE_YEARS, SWISS_TIMETABLE_YEARS -> {
           DateRange timetableYearsDateRange = ExportYearsTimetableUtil.getTimetableYearsDateRange();
           String timetableYearsStart = DateHelper.getDateAsSqlString(timetableYearsDateRange.getFrom());
           String timetableYearsEnd = DateHelper.getDateAsSqlString(timetableYearsDateRange.getTo());
           String sqlCondition = "'%s' <= " + validToIdentifier + "  AND " + validFromIdentifier + " <= '%s'";
           yield sqlCondition.formatted(timetableYearsStart, timetableYearsEnd);
         }
-        default -> throw new IllegalArgumentException("Value not allowed: " + exportType);
       };
     }
   }
