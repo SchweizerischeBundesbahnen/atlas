@@ -13,7 +13,6 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { PRM_TABS } from './prm-tabs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PrmTabsService } from './prm-tabs.service';
@@ -24,6 +23,7 @@ import { SplitServicePointNumberPipe } from '../../../core/search-service-point/
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../core/prm-recording-obligation/prm-recording-obligation.component';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
+import { BoSelectionDisplayPipe } from '../../../core/form-components/bo-select/bo-selection-display.pipe';
 
 @Component({
   selector: 'app-prm-panel',
@@ -41,6 +41,7 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
     SplitServicePointNumberPipe,
     TranslatePipe,
     PrmRecordingObligationComponent,
+    BoSelectionDisplayPipe,
   ],
 })
 export class PrmPanelComponent {
@@ -48,7 +49,6 @@ export class PrmPanelComponent {
   selectedBusinessOrganisation?: BusinessOrganisationVersion;
   selectedVersion!: ReadStopPointVersion;
   maxValidity!: DateRange;
-  boDescription!: string;
   isNew!: boolean;
   disableTabNavigation = false;
 
@@ -57,13 +57,8 @@ export class PrmPanelComponent {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly businessOrganisationsService: BusinessOrganisationService,
-    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     private readonly prmTabsService: PrmTabsService
   ) {
-    this.businessOrganisationLanguageService
-      .languageChanged()
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => this.translateBoDescription());
     this.route.data
       .pipe(
         takeUntilDestroyed(),
@@ -107,14 +102,5 @@ export class PrmPanelComponent {
   ) {
     this.selectedBusinessOrganisation =
       VersionsHandlingService.determineDefaultVersionByValidity(bos);
-
-    this.translateBoDescription();
-  }
-
-  private translateBoDescription() {
-    this.boDescription =
-      this.selectedBusinessOrganisation![
-        this.businessOrganisationLanguageService.getCurrentLanguageDescription()
-      ];
   }
 }

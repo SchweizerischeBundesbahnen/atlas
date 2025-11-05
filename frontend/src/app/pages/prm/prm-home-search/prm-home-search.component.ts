@@ -4,7 +4,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Pages } from '../../pages';
 import { SearchServicePointPanelComponent } from '../../../core/search-service-point-panel/search-service-point-panel.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
 
 @Component({
@@ -13,7 +13,6 @@ import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
   styleUrls: ['./prm-home-search.component.scss'],
   imports: [
     SearchServicePointPanelComponent,
-    NgIf,
     PrmInfoBoxComponent,
     NgClass,
     RouterOutlet,
@@ -22,7 +21,7 @@ import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
 export class PrmHomeSearchComponent {
   servicePointSearch = ServicePointSearch.PRM;
   private _showSearchPanel = true;
-  private _isPrmHome = true;
+  private _isPrmHome = false;
 
   get isPrmHome(): boolean {
     return this._isPrmHome;
