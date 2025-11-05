@@ -102,10 +102,10 @@ class AmazonServiceIntegrationTest {
   @Test
   void shouldFindLastJsonUploadCorrectly() {
     String latestJsonKey = amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT,
-        "service_point/full", "full-swiss-only-service_point-");
+        "v2/service-point/full", "full-swiss-service-point-");
 
     String date = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now());
-    assertThat(latestJsonKey).isEqualTo("service_point/full/full-swiss-only-service_point-" + date + ".json.gz");
+    assertThat(latestJsonKey).isEqualTo("v2/service-point/full/full-swiss-service-point-" + date + ".json.gz");
   }
 
   private File getMinimalServicePointCsvFile() throws IOException {
