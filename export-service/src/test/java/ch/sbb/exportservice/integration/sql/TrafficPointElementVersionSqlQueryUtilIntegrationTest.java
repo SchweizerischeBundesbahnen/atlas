@@ -90,6 +90,30 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     result.forEach(t -> assertThat(isDateInRange(now, t.getValidFrom(), t.getValidTo())).isTrue());
   }
 
+  @Test
+  void shouldReturnTimetableYears() throws SQLException {
+    //given
+    final int servicePointNumber = 1205887;
+    final LocalDate now = LocalDate.now();
+    insertServicePoint(servicePointNumber, now, now, Country.SWITZERLAND);
+    final String sloid = "ch:1:sloid:77559:0:2";
+    insertTrafficPoint(sloid, now, now);
+    insertTrafficPoint("ch:1:sloid:1", now.minusMonths(5), now.minusMonths(4));
+    insertTrafficPoint("ch:1:sloid:2", LocalDate.of(2000, 1, 1), LocalDate.of(2010, 1, 1));
+    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_TIMETABLE_YEARS);
+
+    //when
+    final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
+
+    //then
+    assertThat(result).isNotEmpty().hasSize(2);
+    final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> t.getSloid().equals(sloid))
+        .findFirst().orElseThrow();
+    assertThat(trafficPointElementVersion).isNotNull();
+    assertThat(trafficPointElementVersion.getServicePointSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
+        "ch:1:sboid:101999");
+  }
+
   private List<TrafficPointElementVersion> executeQuery(String sqlQuery) throws SQLException {
     List<TrafficPointElementVersion> result = new ArrayList<>();
     Connection connection = servicePointDataSource.getConnection();
