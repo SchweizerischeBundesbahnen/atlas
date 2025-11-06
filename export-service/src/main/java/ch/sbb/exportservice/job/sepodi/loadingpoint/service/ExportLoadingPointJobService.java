@@ -28,7 +28,8 @@ public class ExportLoadingPointJobService extends BaseExportJobService {
     return List.of(
         new JobParams(ExportTypeV2.WORLD_FULL),
         new JobParams(ExportTypeV2.WORLD_ACTUAL),
-        new JobParams(ExportTypeV2.WORLD_FUTURE_TIMETABLE)
+        new JobParams(ExportTypeV2.WORLD_FUTURE_TIMETABLE),
+        new JobParams(ExportTypeV2.WORLD_TIMETABLE_YEARS)
     );
   }
 

@@ -28,9 +28,11 @@ public class ExportServicePointJobService extends BaseExportJobService {
         new JobParams(ExportTypeV2.SWISS_FULL),
         new JobParams(ExportTypeV2.SWISS_ACTUAL),
         new JobParams(ExportTypeV2.SWISS_FUTURE_TIMETABLE),
+        new JobParams(ExportTypeV2.SWISS_TIMETABLE_YEARS),
         new JobParams(ExportTypeV2.WORLD_FULL),
         new JobParams(ExportTypeV2.WORLD_ACTUAL),
-        new JobParams(ExportTypeV2.WORLD_FUTURE_TIMETABLE)
+        new JobParams(ExportTypeV2.WORLD_FUTURE_TIMETABLE),
+        new JobParams(ExportTypeV2.WORLD_TIMETABLE_YEARS)
     );
   }
 
