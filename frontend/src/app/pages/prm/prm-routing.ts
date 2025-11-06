@@ -28,6 +28,16 @@ export const routes: Routes = [
       import('./prm-home-search/prm-home-search.component').then(
         (m) => m.PrmHomeSearchComponent
       ),
+    data: { isHome: true },
+    pathMatch: 'full',
+  },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./prm-home-search/prm-home-search.component').then(
+        (m) => m.PrmHomeSearchComponent
+      ),
+    data: { isHome: false },
     children: [
       {
         path:
