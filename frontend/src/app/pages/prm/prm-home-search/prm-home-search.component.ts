@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ServicePointSearch } from '../../../core/search-service-point/service-point-search';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { Pages } from '../../pages';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { SearchServicePointPanelComponent } from '../../../core/search-service-point-panel/search-service-point-panel.component';
 import { NgClass } from '@angular/common';
 import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
@@ -18,14 +16,12 @@ import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
     RouterOutlet,
   ],
 })
-export class PrmHomeSearchComponent {
+export class PrmHomeSearchComponent implements OnInit {
   servicePointSearch = ServicePointSearch.PRM;
-  private _showSearchPanel = true;
-  private _isPrmHome = false;
+  isPrmHome = false;
 
-  get isPrmHome(): boolean {
-    return this._isPrmHome;
-  }
+  private _showSearchPanel = true;
+  private readonly route = inject(ActivatedRoute);
 
   get showSearchPanel(): boolean {
     return this._showSearchPanel;
@@ -35,15 +31,7 @@ export class PrmHomeSearchComponent {
     this._showSearchPanel = !this._showSearchPanel;
   }
 
-  constructor(private router: Router) {
-    this.navigationEvent();
-  }
-
-  navigationEvent() {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this._isPrmHome = event.url === '/' + Pages.PRM.path;
-      });
+  ngOnInit() {
+    this.isPrmHome = this.route.snapshot.data.isHome;
   }
 }

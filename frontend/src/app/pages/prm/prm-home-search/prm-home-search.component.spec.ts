@@ -33,10 +33,16 @@ describe('PrmHomeSearchComponent', () => {
       providers: [
         { provide: TranslatePipe },
         provideRouter([
-          { path: 'prm-directory', component: PrmHomeSearchComponent },
+          {
+            path: 'prm-directory',
+            component: PrmHomeSearchComponent,
+            data: { isHome: true },
+            pathMatch: 'full',
+          },
           {
             path: 'prm-directory/stop-points',
             component: PrmHomeSearchComponent,
+            data: { isHome: false },
           },
         ]),
       ],
@@ -53,7 +59,10 @@ describe('PrmHomeSearchComponent', () => {
   it('should navigate to prm-directory', async () => {
     const harness = await RouterTestingHarness.create('prm-directory');
     await harness.navigateByUrl('prm-directory');
-    expect(component.isPrmHome).toBeTruthy();
+
+    expect(harness.routeNativeElement?.textContent).toContain(
+      'PRM.INFO_BOX.HEADER'
+    );
   });
 
   it('should navigate to prm-directory/stop-points', async () => {
@@ -61,6 +70,9 @@ describe('PrmHomeSearchComponent', () => {
       'prm-directory/stop-points'
     );
     await harness.navigateByUrl('prm-directory/stop-points');
-    expect(component.isPrmHome).toBeFalsy();
+
+    expect(harness.routeNativeElement?.textContent).not.toContain(
+      'PRM.INFO_BOX.HEADER'
+    );
   });
 });
