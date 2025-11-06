@@ -53,4 +53,7 @@ include::{snippets}/stop-point-version-controller-api-test/should-update-stop-po
 
 include::{snippets}/stop-point-version-controller-api-test/should-change-stop-point-variant/atlas-doc.adoc[]
 
+== Terminate Stop Points - Successfully
+include::{snippets}/stop-point-version-controller-api-test/should-terminate-stop-point/atlas-doc.adoc[]
+
 link:rest-api.html[*< Back to main*]
