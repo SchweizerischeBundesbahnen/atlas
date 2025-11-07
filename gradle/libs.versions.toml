@@ -1,0 +1,46 @@
+[versions]
+okhttpVersion = "5.3.0"
+proj4jVersion = "1.4.1"
+shedlockVersion = "6.10.0"
+protobufVersion = "4.33.0"
+springCloudVersion = "2025.0.0"
+
+[libraries]
+# Java Convention Dependencies
+openapi-starter-common = { group = "org.springdoc", name = "springdoc-openapi-starter-common", version = "2.8.14" }
+springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "2.8.14" }
+
+# Geo Data Libs
+proj4j = { group = "org.locationtech.proj4j", name = "proj4j", version.ref = "proj4jVersion" }
+proj4j-epsg = { group = "org.locationtech.proj4j", name = "proj4j-epsg", version.ref = "proj4jVersion" }
+jts-core = { group = "org.locationtech.jts", name = "jts-core", version = "1.20.0" }
+
+# OK HTTP
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttpVersion" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttpVersion" }
+
+# Shedlock
+shedlock-spring = { group = "net.javacrumbs.shedlock", name = "shedlock-spring", version.ref = "shedlockVersion" }
+shedlock-provider-jdbc-template = { group = "net.javacrumbs.shedlock", name = "shedlock-provider-jdbc-template", version.ref = "shedlockVersion" }
+
+# Protobuf
+protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobufVersion" }
+protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobufVersion" }
+
+# Other
+swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.40" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.38.1" }
+jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
+pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.6" }
+poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.4.1" }
+mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
+tika-core = { group = "org.apache.tika", name = "tika-core", version = "3.2.3" }
+greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version = "2.1.7" }
+microsoft-graph = { group = "com.microsoft.graph", name = "microsoft-graph", version = "6.56.0" }
+azure-identity = { group = "com.azure", name = "azure-identity", version = "1.18.1" }
+
+[bundles]
+okhttp = ["okhttp-mockwebserver", "okhttp"]
+geo-data = ["proj4j", "proj4j-epsg", "jts-core"]
+shedlock = ["shedlock-spring", "shedlock-provider-jdbc-template"]
+protobuf = ["protoc", "protobuf-java"]

@@ -10,7 +10,7 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-logging")
-    implementation("io.swagger.core.v3:swagger-core:${property("swaggerCoreVersion")}")
+    implementation(libs.swagger.core)
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.assertj:assertj-core")

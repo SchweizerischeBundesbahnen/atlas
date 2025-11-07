@@ -20,15 +20,13 @@ dependencies {
     implementation("io.micrometer:micrometer-tracing")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
+    implementation(libs.aws.s3)
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
 
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
 
-    implementation("org.locationtech.proj4j:proj4j:${property("proj4jVersion")}")
-    implementation("org.locationtech.proj4j:proj4j-epsg:${property("proj4jVersion")}")
-    implementation("org.locationtech.jts:jts-core:${property("jtsVersion")}")
+    implementation(libs.bundles.geo.data)
 
     implementation("org.springframework.kafka:spring-kafka")
     implementation(project(":base-atlas"))

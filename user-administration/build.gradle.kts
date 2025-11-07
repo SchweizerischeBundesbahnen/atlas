@@ -9,16 +9,14 @@ group = "ch.sbb.atlas"
 version = "2.944.0"
 
 description = "Atlas User Administration"
-extra["microsoftGraphSdkVersion"] = "6.56.0"
-extra["azureIdentityVersion"] = "1.18.1"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.security:spring-security-oauth2-authorization-server")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("com.microsoft.graph:microsoft-graph:${property("microsoftGraphSdkVersion")}")
-    implementation("com.azure:azure-identity:${property("azureIdentityVersion")}")
+    implementation(libs.microsoft.graph)
+    implementation(libs.azure.identity)
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation(project(":base-atlas"))
@@ -41,7 +39,7 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
 
     testRuntimeOnly("org.postgresql:postgresql")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation(libs.mockito.inline)
 }
 
 springBoot {

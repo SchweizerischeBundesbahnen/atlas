@@ -9,7 +9,6 @@ group = "ch.sbb.atlas"
 version = "2.944.0"
 
 description = "Atlas Scheduling Service"
-extra["shedlockVersion"] = "6.10.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -20,8 +19,7 @@ dependencies {
     implementation("org.springframework.security:spring-security-oauth2-client")
     implementation("org.springframework.retry:spring-retry")
     implementation("org.springframework:spring-aspects")
-    implementation("net.javacrumbs.shedlock:shedlock-spring:${property("shedlockVersion")}")
-    implementation("net.javacrumbs.shedlock:shedlock-provider-jdbc-template:${property("shedlockVersion")}")
+    implementation(libs.bundles.shedlock)
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.flywaydb:flyway-core")
 
@@ -37,7 +35,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation(libs.mockito.inline)
 
 }
 
