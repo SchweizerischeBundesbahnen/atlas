@@ -3,8 +3,8 @@ import java.util.*
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
-    id("org.openapi.generator") version "7.17.0"
-    id("com.google.protobuf") version "0.9.5"
+    alias(libs.plugins.openapi.generator)
+    alias(libs.plugins.protobuf)
 }
 
 group = "ch.sbb.atlas"

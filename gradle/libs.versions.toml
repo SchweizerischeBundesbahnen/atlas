@@ -39,8 +39,19 @@ greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version 
 microsoft-graph = { group = "com.microsoft.graph", name = "microsoft-graph", version = "6.56.0" }
 azure-identity = { group = "com.azure", name = "azure-identity", version = "1.18.1" }
 
+# Gradle Plugin Dependencies
+asciidoctor-gradle-plugin = { group = "org.asciidoctor.jvm.convert", name = "org.asciidoctor.jvm.convert.gradle.plugin", version = "4.0.5" }
+spring-dependency-management-gradle-plugin = { group = "io.spring.dependency-management", name = "io.spring.dependency-management.gradle.plugin", version = "1.1.7" }
+spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "3.5.7" }
+
+
 [bundles]
 okhttp = ["okhttp-mockwebserver", "okhttp"]
 geo-data = ["proj4j", "proj4j-epsg", "jts-core"]
 shedlock = ["shedlock-spring", "shedlock-provider-jdbc-template"]
 protobuf = ["protoc", "protobuf-java"]
+
+[plugins]
+openapi-generator = { id = "org.openapi.generator", version = "7.17.0" }
+protobuf = { id = "com.google.protobuf", version = "0.9.5" }
+wsdl2java = { id = "com.github.bjornvester.wsdl2java", version = "2.0.2" }

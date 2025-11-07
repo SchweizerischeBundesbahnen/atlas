@@ -1,7 +1,7 @@
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
-    id("com.github.bjornvester.wsdl2java") version "2.0.2"
+    alias(libs.plugins.wsdl2java)
 }
 
 group = "ch.sbb.atlas"

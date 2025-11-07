@@ -1,5 +1,5 @@
 plugins {
-    id("org.openapi.generator") version "7.17.0"
+    alias(libs.plugins.openapi.generator)
     id("buildlogic.java-conventions")
 }
 
