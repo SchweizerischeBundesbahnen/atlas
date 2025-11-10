@@ -25,7 +25,7 @@ val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("lib
 dependencyManagement {
     imports {
         mavenBom(SpringBootPlugin.BOM_COORDINATES)
-        mavenBom(artifactString(libs.findLibrary("spring-cloud-dependencies").get()))
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${libs.findVersion("springCloudDependenciesVersion").get()}")
     }
 }
 
@@ -116,8 +116,4 @@ tasks.jacocoTestReport {
     reports {
         xml.required = true
     }
-}
-
-fun artifactString(plugin: Provider<MinimalExternalModuleDependency>): String {
-    return plugin.map { "${it.group}:${it.name}:${it.version}" }.get()
 }
