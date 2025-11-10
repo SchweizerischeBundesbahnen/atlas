@@ -14,7 +14,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("io.swagger.core.v3:swagger-core:${property("swaggerCoreVersion")}")
+    implementation(libs.swagger.core)
 
     implementation(project(":kafka"))
     implementation("org.springframework.kafka:spring-kafka")//get this dependency from :kafka use as api does not work
@@ -28,7 +28,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")//get this dependency from :kafka use as api does not work
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.icegreen:greenmail-junit5:2.1.7")
+    testImplementation(libs.greenmail.junit5)
 
 }
 

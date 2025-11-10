@@ -3,8 +3,8 @@ import java.util.*
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
-    id("org.openapi.generator") version "7.17.0"
-    id("com.google.protobuf") version "0.9.5"
+    alias(libs.plugins.openapi.generator)
+    alias(libs.plugins.protobuf)
 }
 
 group = "ch.sbb.atlas"
@@ -24,18 +24,14 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")//get this dependency from :kafka use as api does not work
     implementation(project(":kafka"))
     implementation(project(":user-administration-security"))
-    implementation("org.locationtech.proj4j:proj4j:${property("proj4jVersion")}") //optional
-    implementation("org.locationtech.proj4j:proj4j-epsg:${property("proj4jVersion")}") //optional
-    implementation("org.locationtech.jts:jts-core:${property("jtsVersion")}") //optional
-    implementation("com.google.protobuf:protoc:4.33.0")
-    implementation("com.google.protobuf:protobuf-java:4.33.0")
+    implementation(libs.bundles.geo.data) //optional
+    implementation(libs.bundles.protobuf)
     implementation("org.springframework.security:spring-security-oauth2-client")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.flywaydb:flyway-core")
 
-    implementation("com.google.protobuf:protobuf-java:4.33.0")
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
 
     runtimeOnly("org.postgresql:postgresql")
@@ -44,7 +40,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation(project(":base-atlas", "test"))
-    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation(libs.mockito.inline)
     testImplementation(project(":auto-rest-doc"))
 
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
@@ -53,7 +49,7 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.33.0"
+        artifact = "com.google.protobuf:protoc:${libs.versions.protobufVersion.get()}"
     }
     generateProtoTasks {
         ofSourceSet("main")

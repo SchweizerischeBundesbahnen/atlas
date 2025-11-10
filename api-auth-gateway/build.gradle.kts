@@ -15,8 +15,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-configuration-processor")//optional
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.squareup.okhttp3:mockwebserver:${property("okhttpVersion")}")
-    testImplementation("com.squareup.okhttp3:okhttp:${property("okhttpVersion")}")
+    testImplementation(libs.bundles.okhttp)
 
 }
 

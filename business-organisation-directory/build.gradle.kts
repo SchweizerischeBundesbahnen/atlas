@@ -1,7 +1,7 @@
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
-    id("com.github.bjornvester.wsdl2java") version "2.0.2"
+    alias(libs.plugins.wsdl2java)
 }
 
 group = "ch.sbb.atlas"
@@ -23,7 +23,7 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
-    implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
+    implementation(libs.aws.s3)
     implementation("org.springframework.kafka:spring-kafka")
     implementation(project(":base-atlas"))
     implementation(project(":kafka"))

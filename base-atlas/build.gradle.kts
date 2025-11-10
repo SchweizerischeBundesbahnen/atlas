@@ -1,5 +1,5 @@
 plugins {
-    id("org.openapi.generator") version "7.17.0"
+    alias(libs.plugins.openapi.generator)
     id("buildlogic.java-conventions")
 }
 
@@ -24,19 +24,17 @@ dependencies {
 // Feign Client Specific Micrometer
     implementation("io.github.openfeign:feign-micrometer")
 // Service Point and ExportService
-    implementation("org.locationtech.proj4j:proj4j:${property("proj4jVersion")}") //optional
-    implementation("org.locationtech.proj4j:proj4j-epsg:${property("proj4jVersion")}") //optional
-    implementation("org.locationtech.jts:jts-core:${property("jtsVersion")}") //optional
+    implementation(libs.bundles.geo.data) //optional
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.security:spring-security-oauth2-client")
 // API
-    implementation("io.swagger.core.v3:swagger-core:${property("swaggerCoreVersion")}")
+    implementation(libs.swagger.core)
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
-    implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
-    implementation("javax.xml.bind:jaxb-api:${property("jaxbApiVersion")}")
-    implementation("org.apache.pdfbox:pdfbox:${property("pdfboxVersion")}")
+    implementation(libs.aws.s3)
+    implementation(libs.jaxb.api)
+    implementation(libs.pdfbox)
 
     implementation("org.springframework.kafka:spring-kafka")//get this dependency from :kafka use as api does not work
     implementation(project(":kafka"))

@@ -20,10 +20,12 @@ java {
     }
 }
 
+val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+
 dependencyManagement {
     imports {
         mavenBom(SpringBootPlugin.BOM_COORDINATES)
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${libs.findVersion("springCloudDependenciesVersion").get()}")
     }
 }
 
@@ -40,17 +42,12 @@ repositories {
 }
 
 dependencies {
-    constraints {
-        implementation("io.swagger.core.v3:swagger-core-jakarta:2.2.40") {
-            because("Previous version has a bug not making attributes required in spec yaml")
-        }
-    }
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testCompileOnly("org.projectlombok:lombok")
 
-    implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
+    implementation(libs.findLibrary("openapi-starter-common").get())
+    implementation(libs.findLibrary("springdoc-openapi-starter-webmvc-ui").get())
 
     testAnnotationProcessor("org.projectlombok:lombok")
     mockitoAgent("org.mockito:mockito-core") {

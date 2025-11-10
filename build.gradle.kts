@@ -5,22 +5,6 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.944.0"
 
-extra["awsS3Version"] = "2.38.2"
-extra["jaxbApiVersion"] = "2.4.0-b180830.0359"
-extra["pdfboxVersion"] = "3.0.6"
-extra["okhttpVersion"] = "5.3.0"
-
-extra["swaggerCoreVersion"] = "2.2.40"
-extra["openapiStarterCommonVersion"] = "2.8.14"
-
-// Geo Data Libs
-extra["proj4jVersion"] = "1.4.1"
-extra["jtsVersion"] = "1.20.0"
-
-// Spring Versions
-extra["springOpenapiUiVersion"] = "2.8.14"
-extra["springCloudVersion"] = "2025.0.0"
-
 subprojects {
     sonar {
         properties {

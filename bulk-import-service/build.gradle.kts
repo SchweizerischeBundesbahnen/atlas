@@ -22,11 +22,11 @@ dependencies {
     implementation("org.springframework.batch:spring-batch-integration")
     implementation("io.micrometer:micrometer-tracing")
     implementation(project(":base-atlas"))
-    implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
+    implementation(libs.aws.s3)
     implementation("org.springframework.kafka:spring-kafka")
     implementation(project(":kafka"))
     implementation(project(":user-administration-security"))
-    implementation("org.apache.poi:poi-ooxml:5.4.1")
+    implementation(libs.poi.ooxml)
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
 
@@ -41,7 +41,7 @@ dependencies {
     testImplementation(project(":auto-rest-doc"))
     testImplementation(project(":base-atlas", "test"))
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation(libs.mockito.inline)
 
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:postgresql")
