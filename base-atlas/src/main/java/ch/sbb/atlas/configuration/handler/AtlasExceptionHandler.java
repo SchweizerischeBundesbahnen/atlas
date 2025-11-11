@@ -45,7 +45,7 @@ public class AtlasExceptionHandler {
     return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
   }
 
-  @ExceptionHandler(value = {AtlasException.class})
+  @ExceptionHandler(value = AtlasException.class)
   public ResponseEntity<ErrorResponse> atlasException(AtlasException atlasException) {
     ErrorResponse errorResponse = ErrorResponseMapper.map(atlasException);
     return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);

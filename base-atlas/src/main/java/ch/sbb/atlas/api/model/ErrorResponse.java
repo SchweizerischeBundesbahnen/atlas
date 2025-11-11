@@ -26,8 +26,6 @@ import org.springframework.lang.NonNull;
 
 @Slf4j
 @Data
-@Builder
-@NoArgsConstructor
 @Schema(name = "ErrorResponse")
 public class ErrorResponse {
 
@@ -48,7 +46,8 @@ public class ErrorResponse {
   @Schema(description = "List of error details", nullable = true)
   private SortedSet<Detail> details;
 
-  public ErrorResponse(int status, String message, String error, SortedSet<Detail> details) {
+  @Builder
+  private ErrorResponse(int status, String message, String error, SortedSet<Detail> details) {
     this.status = status;
     this.message = message;
     this.error = error;

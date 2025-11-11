@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.async.CallableProcessingInterceptor;
 import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
@@ -48,7 +49,7 @@ public class AsyncConfig implements AsyncConfigurer, DisposableBean {
    */
   @Override
   @Bean(name = "asyncExecutor")
-  public AsyncTaskExecutor getAsyncExecutor() {
+  public DelegatingSecurityContextAsyncTaskExecutor getAsyncExecutor() {
     log.debug("Creating Async Task Executor");
     executor = new ThreadPoolTaskExecutor();
     executor.setCorePoolSize(CORE_POOL_SIZE);
@@ -58,7 +59,7 @@ public class AsyncConfig implements AsyncConfigurer, DisposableBean {
     executor.setThreadNamePrefix("async-exec-");
     executor.setKeepAliveSeconds(KEEP_ALIVE_SECONDS);
     executor.initialize();
-    return executor;
+    return new DelegatingSecurityContextAsyncTaskExecutor(executor);
   }
 
   @Bean
