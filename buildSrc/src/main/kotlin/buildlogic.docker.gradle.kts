@@ -7,9 +7,10 @@ tasks.register<Copy>("prepareDockerContext") {
     group = "docker"
     description = "Prepare Docker build context (copies JAR and Dockerfile into build/docker)."
 
-    // Ensure the jar task runs before copying
-    dependsOn(tasks.named("jar"))
-
+    if(project.name != "frontend") {
+        // Ensure the jar task runs before copying
+        dependsOn(tasks.named("jar"))
+    }
     // Where to put files
     into(dockerContextDir)
 
@@ -18,15 +19,27 @@ tasks.register<Copy>("prepareDockerContext") {
         rename { "Dockerfile" }
     }
 
-    // Copy the JAR produced by the jar task
-    from(layout.buildDirectory.dir("libs")) {
-        include("*.jar")
+    if(project.name == "frontend"){
+        from(layout.projectDirectory.dir("dist/atlas-frontend")) {
+            include("**/*")
+        }
+    }else{
+        // Copy the JAR produced by the jar task
+        from(layout.buildDirectory.dir("libs")) {
+            include("*.jar")
+        }
     }
 
-    // Copy other files needed in the context, e.g., application.conf, scripts, etc.
-    from("docker") {
-        into(".")
-        include("**/*")
+    if(project.name == "frontend"){
+        from(layout.projectDirectory.dir("docker")) {
+            include("**/*")
+        }
+    }else{
+        // Copy other files needed in the context, e.g., application.conf, scripts, etc.
+        from("docker") {
+            into(".")
+            include("**/*")
+        }
     }
 
     outputs.dir(dockerContextDir)
@@ -36,7 +49,7 @@ tasks.register<Exec>("buildDocker") {
     group = "docker"
     description = "Build Docker image from build/docker context."
     val dockerImageName = project.name
-    val dockerTag = "${project.version}"
+    val dockerTag = "${project.parent?.version}"
 
     dependsOn(tasks.named("prepareDockerContext"))
 
@@ -64,7 +77,7 @@ tasks.register<Exec>("publishDocker") {
     group = "docker"
     description = "Build Docker image from build/docker context."
     val dockerImageName = project.name
-    val dockerTag = "${project.version}"
+    val dockerTag = "${project.parent?.version}"
 
     dependsOn(tasks.named("buildDocker"))
 
