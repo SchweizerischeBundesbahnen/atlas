@@ -2,6 +2,7 @@ plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
     alias(libs.plugins.wsdl2java)
+    id("buildlogic.docker")
 }
 
 group = "ch.sbb.atlas"
