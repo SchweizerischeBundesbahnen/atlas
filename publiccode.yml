@@ -1,0 +1,50 @@
+publiccodeYmlVersion: 0.5.0
+name: Atlas
+applicationSuite: public transport services
+url: https://github.com/SchweizerischeBundesbahnen/atlas
+landingURL: https://atlas.app.sbb.ch/
+softwareVersion: 2.932.0
+releaseDate: 2025-11-05
+logo: https://atlas-info.app.sbb.ch/static/resources/images/logo-atlas.svg
+platforms:
+  - windows
+  - linux
+categories:
+  - business-process-management
+  - facility-management
+  - productivity-suite
+fundedBy:
+  - name: Federal Office of Transportation
+    uri: https://ld.admin.ch/office/VII.1.2
+developmentStatus: stable
+softwareType: standalone/web
+organisation:
+  uri: https://ld.admin.ch/office/VII.1.2
+  name: Bundesamt für Verkehr
+description:
+  en:
+    localisedName: Atlas
+    shortDescription: ATLAS is the SKI (Systemführerschaft Kundeninformation)
+      business application for public transport in Switzerland.
+    longDescription: >
+      Atlas ist the system to manage lines, transport organisations, stops,
+      tracks and data for accessibility for public transport in Switzerland.
+      Transport operators manage their data on their own.
+    documentation: https://opentransportdata.swiss/en/cookbook/routing-cookbook/ojp-fare/
+    apiDocumentation: https://github.com/SchweizerischeBundesbahnen/atlas/README.md
+    features:
+      - Pricing information for public transport in Switzerland
+      - OJPFare service for OJP 1.0 and OJP 2.0
+      - Can also do OJP 1.0 and OJP 2.0 trip requests
+legal:
+  license: AGPL-1.0-or-later
+maintenance:
+  type: internal
+  contacts:
+    - name: Fachbus Atlas
+      email: atlas@sbb.ch
+      affiliation: Systemführerschaft Kundeninformation, SBB
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - en
