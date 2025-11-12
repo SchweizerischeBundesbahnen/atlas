@@ -7,10 +7,8 @@ tasks.register<Copy>("prepareDockerContext") {
     group = "docker"
     description = "Prepare Docker build context (copies JAR and Dockerfile into build/docker)."
 
-    if(project.name != "frontend") {
-        // Ensure the jar task runs before copying
-        dependsOn(tasks.named("jar"))
-    }
+    // Ensure the jar task runs before copying
+    dependsOn(tasks.named("jar"))
     // Where to put files
     into(dockerContextDir)
 
@@ -19,27 +17,15 @@ tasks.register<Copy>("prepareDockerContext") {
         rename { "Dockerfile" }
     }
 
-    if(project.name == "frontend"){
-        from(layout.projectDirectory.dir("dist/atlas-frontend")) {
-            include("**/*")
-        }
-    }else{
-        // Copy the JAR produced by the jar task
-        from(layout.buildDirectory.dir("libs")) {
-            include("*.jar")
-        }
+    // Copy the JAR produced by the jar task
+    from(layout.buildDirectory.dir("libs")) {
+        include("*.jar")
     }
 
-    if(project.name == "frontend"){
-        from(layout.projectDirectory.dir("docker")) {
-            include("**/*")
-        }
-    }else{
-        // Copy other files needed in the context, e.g., application.conf, scripts, etc.
-        from("docker") {
-            into(".")
-            include("**/*")
-        }
+    // Copy other files needed in the context, e.g., application.conf, scripts, etc.
+    from("docker") {
+        into(".")
+        include("**/*")
     }
 
     outputs.dir(dockerContextDir)
@@ -49,7 +35,7 @@ tasks.register<Exec>("buildDocker") {
     group = "docker"
     description = "Build Docker image from build/docker context."
     val dockerImageName = project.name
-    val dockerTag = "${project.parent?.version}"
+    val dockerTag = "${project.version}"
 
     dependsOn(tasks.named("prepareDockerContext"))
 
@@ -77,7 +63,7 @@ tasks.register<Exec>("publishDocker") {
     group = "docker"
     description = "Build Docker image from build/docker context."
     val dockerImageName = project.name
-    val dockerTag = "${project.parent?.version}"
+    val dockerTag = "${project.version}"
 
     dependsOn(tasks.named("buildDocker"))
 
@@ -92,6 +78,6 @@ tasks.register<Exec>("publishDocker") {
             "$baseImageName$dockerImageName:$dockerTag"
         )
     } else {
-        commandLine = listOf("echo","Publishing Docker images is only allowed on Tekton!")
+        commandLine = listOf("echo", "Publishing Docker images is only allowed on Tekton!")
     }
 }
