@@ -76,8 +76,6 @@ publishing {
                 authentication {
                     create<HttpHeaderAuthentication>("header")
                 }
-            } else {
-                logger.warn("Cannot publish!! No credentials found for Artifactory! Either provide ARTIFACTORY_USER and ARTIFACTORY_PASS or ARTIFACTORY_API_KEY as environment variables.")
             }
         }
     }

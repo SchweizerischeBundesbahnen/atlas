@@ -5,6 +5,7 @@ plugins {
     id("buildlogic.java-restdoc")
     alias(libs.plugins.openapi.generator)
     alias(libs.plugins.protobuf)
+    id("buildlogic.docker")
 }
 
 group = "ch.sbb.atlas"
