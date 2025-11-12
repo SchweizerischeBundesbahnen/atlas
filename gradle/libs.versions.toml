@@ -29,7 +29,7 @@ protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version
 
 # Other
 swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.40" }
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.38.1" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.38.4" }
 jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.6" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.4.1" }
