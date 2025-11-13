@@ -89,18 +89,18 @@ describe('BulkImportOverviewComponent', () => {
 
   it('should remove department', () => {
     //when
-    const result = component.removeDepartment('***REMOVED***');
+    const result = component.removeDepartment('Lastname Firstname (TEST-DEP)');
 
     //then
-    expect(result).toBe('***REMOVED***');
+    expect(result).toBe('Lastname Firstname');
   });
 
   it('should not remove department if not exists', () => {
     //when
-    const result = component.removeDepartment('***REMOVED***');
+    const result = component.removeDepartment('Lastname Firstname');
 
     //then
-    expect(result).toBe('***REMOVED***');
+    expect(result).toBe('Lastname Firstname');
   });
 
   it('should start bulk import', () => {

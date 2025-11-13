@@ -43,16 +43,16 @@ class BulkImportS3BucketServiceTest {
         .application(ApplicationType.SEPODI)
         .objectType(BusinessObjectType.SERVICE_POINT)
         .importType(ImportType.UPDATE)
-        .creator("***REMOVED***")
+        .creator("u123456")
         .build());
 
     verify(amazonService).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class),
-        eq("***REMOVED***/" + todaysDir + "/SEPODI/SERVICE_POINT/UPDATE"));
+        eq("u123456/" + todaysDir + "/SEPODI/SERVICE_POINT/UPDATE"));
   }
 
   @Test
   void shouldDownloadCorrectly() {
-    String filePath = "***REMOVED***/" + todaysDir + "/SEPODI/SERVICE_POINT/UPDATE";
+    String filePath = "u123456/" + todaysDir + "/SEPODI/SERVICE_POINT/UPDATE";
     bulkImportS3BucketService.downloadImportFile(filePath);
     verify(amazonService).pullFile(AmazonBucket.BULK_IMPORT, filePath);
   }

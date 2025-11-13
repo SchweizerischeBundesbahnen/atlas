@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @IntegrationTest
 class UserAdministrationServiceUpdateTest {
 
-  private static final String SBBUID = "***REMOVED***";
+  private static final String SBBUID = "u123456";
 
   @Autowired
   private UserPermissionRepository userPermissionRepository;
@@ -156,5 +156,4 @@ class UserAdministrationServiceUpdateTest {
         ApplicationType.SEPODI).orElseThrow();
     assertThat(sepodiPermission.getRole()).isEqualTo(ApplicationRole.SUPERVISOR);
   }
-
 }

@@ -107,12 +107,12 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //given
     StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
     //when
-    MailNotification result = notificationService.buildPinCodeMail(stopPointWorkflow, "***REMOVED***@bayern.munchen", "648966");
+    MailNotification result = notificationService.buildPinCodeMail(stopPointWorkflow, "öper@bayern.munchen", "648966");
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION);
     assertThat(result.getSubject()).isEqualTo(WorkflowSubject.PINCODE_SUBJECT);
-    assertThat(result.getTo()).hasSize(1).contains("***REMOVED***@bayern.munchen");
+    assertThat(result.getTo()).hasSize(1).contains("öper@bayern.munchen");
     assertThat(result.getCc()).isNull();
     assertThat(result.getTemplateProperties().getFirst()).containsKeys("pincode");
   }

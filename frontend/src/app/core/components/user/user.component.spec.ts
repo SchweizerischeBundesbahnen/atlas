@@ -104,11 +104,11 @@ describe('UserComponent', () => {
     it('should return part before (', () => {
       //when
       const result = component.removeDepartment(
-        '***REMOVED***'
+        'Lastname Firstname (TEST-DEP)'
       );
 
       //then
-      expect(result).toBe('***REMOVED***');
+      expect(result).toBe('Lastname Firstname');
     });
   });
 });

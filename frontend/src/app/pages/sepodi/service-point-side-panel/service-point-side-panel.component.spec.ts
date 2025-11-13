@@ -25,9 +25,9 @@ const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
 const servicePointInGermany: ReadServicePointVersion[] = [
   {
     creationDate: '2024-01-19T09:05:52.782453',
-    creator: '***REMOVED***',
+    creator: 'u123456',
     editionDate: '2024-01-19T09:06:44.773714',
-    editor: '***REMOVED***',
+    editor: 'u123456',
     id: 16730,
     designationOfficial: 'Mauchen',
     freightServicePoint: false,

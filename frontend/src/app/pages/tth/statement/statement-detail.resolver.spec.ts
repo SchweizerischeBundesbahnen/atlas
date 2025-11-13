@@ -15,7 +15,7 @@ const statement: TimetableHearingStatementV2 = {
   swissCanton: SwissCanton.Aargau,
   statement: 'Mehr Busse bitte',
   statementSender: {
-    emails: new Set('***REMOVED***@yb.ch'),
+    emails: new Set('fan@yb.ch'),
   },
 };
 

@@ -44,9 +44,9 @@ import { TimetableHearingYearInternalService } from '../../../api/service/lidi/t
 const existingStatement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
-  statement: '***REMOVED*** isch am yb match gsi',
+  statement: 'Öper isch am YB-Match gsi',
   statementSender: {
-    emails: new Set('***REMOVED***@yb.ch'),
+    emails: new Set('fan@yb.ch'),
   },
 };
 
@@ -287,7 +287,7 @@ describe('StatementDetailComponent for new statement', () => {
       component.form.controls.swissCanton.setValue(SwissCanton.Bern);
       component.form.controls.statement.setValue('my yb busses');
       component.form.controls.statementSender.controls.emails.setValue([
-        '***REMOVED***@yb.ch',
+        'fan@yb.ch',
       ]);
       fixture.detectChanges();
 

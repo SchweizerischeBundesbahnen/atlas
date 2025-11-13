@@ -268,7 +268,7 @@ class LineVersionSnapshotSearchTest {
   @Test
   void shouldFindVersionWithMultipleTexts() {
     // Given
-    version1.setDescription("***REMOVED*** ist der grösste YB-Fan");
+    version1.setDescription("Öper ist der grösste YB-Fan");
     lineVersionSnapshotRepository.saveAndFlush(version1);
     lineVersionSnapshotRepository.saveAndFlush(version2);
     lineVersionSnapshotRepository.saveAndFlush(version3);
@@ -276,7 +276,7 @@ class LineVersionSnapshotSearchTest {
     Page<LineVersionSnapshot> result = lineVersionSnapshotService.findAll(LineVersionSnapshotSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
         .searchCriterias(
-            List.of("***REMOVED***", "Fan",
+            List.of("Öper", "Fan",
                 "yb", "grösste"))
         .build());
 
@@ -301,7 +301,7 @@ class LineVersionSnapshotSearchTest {
   @Test
   void shouldFindVersionWithStatus() {
     // Given
-    version1.setDescription("***REMOVED*** ist der grösste YB-Fan");
+    version1.setDescription("Öper ist der grösste YB-Fan");
     version1.setWorkflowStatus(WorkflowStatus.APPROVED);
     lineVersionSnapshotRepository.saveAndFlush(version1);
     lineVersionSnapshotRepository.saveAndFlush(version2);

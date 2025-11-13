@@ -42,8 +42,7 @@ class OverrideDecisionModelTest extends BaseValidatorTest {
 
   private static OverrideDecisionModelBuilder<?, ?> getOverrideDecisionBuilder() {
     return OverrideDecisionModel.builder()
-        .firstName("***REMOVED***")
+        .firstName("Uwe")
         .lastName("Berlin");
   }
-
 }

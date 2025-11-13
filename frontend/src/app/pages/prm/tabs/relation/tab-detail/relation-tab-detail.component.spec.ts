@@ -27,9 +27,9 @@ import { ReferencePointInternalService } from '../../../../../api/service/prm/re
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
     creationDate: '2024-01-22T13:52:30.598026',
-    creator: '***REMOVED***',
+    creator: 'u123456',
     editionDate: '2024-01-22T13:52:30.598026',
-    editor: '***REMOVED***',
+    editor: 'u123456',
     id: 1000,
     sloid: 'ch:1:sloid:12345:1',
     validFrom: new Date('2000-01-01'),
@@ -52,9 +52,9 @@ const referencePointOverview: ReadReferencePointVersion[] = [
 const relations: ReadRelationVersion[] = [
   {
     creationDate: '2024-01-22T13:52:30.598026',
-    creator: '***REMOVED***',
+    creator: 'u123456',
     editionDate: '2024-01-22T13:52:30.598026',
-    editor: '***REMOVED***',
+    editor: 'u123456',
     id: 1000,
     validFrom: new Date('2000-01-01'),
     validTo: new Date('2000-12-31'),
@@ -75,9 +75,9 @@ const relations: ReadRelationVersion[] = [
   },
   {
     creationDate: '2024-01-22T13:52:30.598026',
-    creator: '***REMOVED***',
+    creator: 'u123456',
     editionDate: '2024-01-22T13:52:30.598026',
-    editor: '***REMOVED***',
+    editor: 'u123456',
     id: 1001,
     validFrom: new Date('2001-01-01'),
     validTo: new Date('2001-12-31'),

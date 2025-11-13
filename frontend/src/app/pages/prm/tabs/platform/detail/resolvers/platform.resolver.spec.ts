@@ -14,9 +14,9 @@ import { PlatformService } from '../../../../../../api/service/prm/platform/plat
 const platform: ReadPlatformVersion[] = [
   {
     creationDate: '2024-01-11T10:08:28.446803',
-    creator: '***REMOVED***',
+    creator: 'u123456',
     editionDate: '2024-01-11T10:08:28.446803',
-    editor: '***REMOVED***',
+    editor: 'u123456',
     id: 1002,
     sloid: 'ch:1:sloid:7000:0:100000',
     validFrom: new Date('2024-01-01'),

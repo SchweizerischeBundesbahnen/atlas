@@ -108,7 +108,7 @@ class TrafficPointElementServiceTest {
         TrafficPointElementSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
             .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                .sloids(List.of("***REMOVED*** hat ferien"))
+                .sloids(List.of("Uwe hat Ferien"))
                 .build())
             .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
@@ -680,5 +680,4 @@ class TrafficPointElementServiceTest {
     assertThat(second.getValidFrom()).isEqualTo(LocalDate.now().minusDays(15));
     assertThat(second.getValidTo()).isEqualTo(LocalDate.now().plusDays(5));
   }
-
 }
