@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class DecisionServiceTest {
 
-  private static final String NAME = "Uwe";
+  private static final String NAME = "Bruno";
   private static final String SBOID = "ch:1:sboid:666";
 
   @Autowired
@@ -56,7 +56,7 @@ class DecisionServiceTest {
         .lastName("Hamsik")
         .function("Centrocampista")
         .mail("mail@hamsik.cc").build();
-    Person uwe = Person.builder()
+    Person bruno = Person.builder()
         .firstName(NAME)
         .lastName("King")
         .function("Gymbro")
@@ -67,31 +67,31 @@ class DecisionServiceTest {
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .localityName("Biel/Bienne")
         .workflowComment("WF comment")
-        .examinants(Set.of(marek, uwe))
+        .examinants(Set.of(marek, bruno))
         .startDate(LocalDate.of(2000, 1, 1))
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(123456L)
         .status(WorkflowStatus.HEARING)
         .build();
     marek.setStopPointWorkflow(workflow);
-    uwe.setStopPointWorkflow(workflow);
+    bruno.setStopPointWorkflow(workflow);
 
     workflowInHearing = workflowRepository.saveAndFlush(workflow);
   }
 
   @Test
   void shouldGetDecision() {
-    Person uwe = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
+    Person bruno = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
         .orElseThrow();
     Decision decision = Decision.builder()
         .judgement(JudgementType.YES)
         .motivation("Good Name!")
         .motivationDate(LocalDateTime.now())
-        .examinant(uwe)
+        .examinant(bruno)
         .build();
     decisionRepository.saveAndFlush(decision);
 
-    decision = decisionService.getDecisionByExaminantId(uwe.getId(), SBOID);
+    decision = decisionService.getDecisionByExaminantId(bruno.getId(), SBOID);
     assertThat(decision).isNotNull();
   }
 
@@ -113,14 +113,14 @@ class DecisionServiceTest {
   }
 
   @Test
-  void shouldAddCalculatedJudgementWithFotPriorityToExaminantsWithDecisionsByExaminantUwe() {
-    Person uwe = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
+  void shouldAddCalculatedJudgementWithFotPriorityToExaminantsWithDecisionsByExaminantBruno() {
+    Person bruno = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
         .orElseThrow();
     Decision decision = Decision.builder()
         .judgement(JudgementType.YES)
         .motivation("Good Name!")
         .motivationDate(LocalDateTime.now())
-        .examinant(uwe)
+        .examinant(bruno)
         .build();
     decisionRepository.save(decision);
 
@@ -135,14 +135,14 @@ class DecisionServiceTest {
   }
 
   @Test
-  void shouldAddCalculatedJudgementWithFotPriorityToExaminantsWithDecisionsByExaminantUweAndOverride() {
-    Person uwe = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
+  void shouldAddCalculatedJudgementWithFotPriorityToExaminantsWithDecisionsByExaminantBrunoAndOverride() {
+    Person bruno = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
         .orElseThrow();
     Decision decision = Decision.builder()
         .judgement(JudgementType.YES)
         .motivation("Good Name!")
         .motivationDate(LocalDateTime.now())
-        .examinant(uwe)
+        .examinant(bruno)
         .fotJudgement(JudgementType.NO)
         .fotMotivation("No, is no!")
         .build();

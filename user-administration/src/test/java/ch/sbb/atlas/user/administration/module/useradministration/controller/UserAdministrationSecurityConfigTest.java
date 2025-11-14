@@ -28,7 +28,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -41,7 +40,7 @@ class UserAdministrationSecurityConfigTest {
   @Autowired
   private MockMvc mvc;
 
-  @MockitoBean
+  @Autowired
   private GraphServiceClient graphClient;
 
   @BeforeEach

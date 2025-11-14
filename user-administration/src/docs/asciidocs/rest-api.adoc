@@ -12,7 +12,7 @@ include::{snippets}/user-administration-controller-api-test/should-get-user/atla
 
 == Update User Permissions - Successfully
 
-include::{snippets}/user-administration-controller-api-test/should-update-user/atlas-doc.adoc[]
+include::{snippets}/user-administration-controller-api-test/should-update-user-permission/atlas-doc.adoc[]
 
 == Get Users filtered with applicationTypes and sboids
 
