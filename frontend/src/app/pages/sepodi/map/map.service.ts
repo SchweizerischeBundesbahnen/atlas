@@ -7,6 +7,7 @@ import maplibregl, {
   MapGeoJSONFeature,
   MapMouseEvent,
   Popup,
+  VectorTileSource,
 } from 'maplibre-gl';
 import {
   MAP_SECTOR_LAYER_NAME,
@@ -104,8 +105,8 @@ export class MapService {
   }
 
   refreshMap() {
-    this.map.style.sourceCaches[MAP_SOURCE_NAME].clearTiles();
-    this.map.style.sourceCaches[MAP_SOURCE_NAME].update(this.map.transform);
+    const source: VectorTileSource = this.map.getSource(MAP_SOURCE_NAME)!;
+    source.setSourceProperty(() => {});
     this.map.triggerRepaint();
   }
 
