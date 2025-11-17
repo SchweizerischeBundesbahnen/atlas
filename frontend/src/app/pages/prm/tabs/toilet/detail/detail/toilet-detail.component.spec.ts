@@ -28,7 +28,7 @@ import { DateRangeTextComponent } from '../../../../../../core/versioning/date-r
 import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
 import { DateRangeComponent } from '../../../../../../core/form-components/date-range/date-range.component';
 import { DateIconComponent } from '../../../../../../core/form-components/date-icon/date-icon.component';
-import { UserDetailInfoComponent } from '../../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailPageContainerComponent } from '../../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';

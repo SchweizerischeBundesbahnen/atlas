@@ -16,7 +16,7 @@ import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/lin
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';

@@ -28,7 +28,7 @@ import moment from 'moment/moment';
 import { LoadingPointsDetailComponent } from './loading-points-detail.component';
 import { LOADING_POINT } from '../../../../test/data/loading-point';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
-import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';

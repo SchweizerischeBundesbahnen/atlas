@@ -24,7 +24,7 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { GeographyComponent } from '../../geography/geography.component';
 import { MatDivider } from '@angular/material/divider';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import {
   DetailDialogHelperService,

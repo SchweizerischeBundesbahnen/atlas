@@ -39,7 +39,7 @@ import { NavigationSepodiPrmComponent } from '../../../../../core/navigation-sep
 import { StopPointReducedFormComponent } from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
 import { StopPointCompleteFormComponent } from '../form/stop-point-complete-form/stop-point-complete-form.component';
 import { MatDivider } from '@angular/material/divider';
-import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';

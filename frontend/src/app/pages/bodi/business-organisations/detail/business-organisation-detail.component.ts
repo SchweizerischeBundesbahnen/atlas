@@ -1,111 +1,165 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ApplicationType,
-  BusinessOrganisationVersion,
-  BusinessType,
-} from '../../../../api';
-import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
+import { BusinessOrganisationVersion, BusinessType } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { catchError } from 'rxjs';
-import moment from 'moment';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
+import { catchError, EMPTY } from 'rxjs';
 import { Pages } from '../../../pages';
-import { Page } from 'src/app/core/model/page';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
+import {
+  BusinessOrganisationDetailFormGroup,
+  BusinessOrganisationDetailFormGroupBuilder,
+} from './business-organisation-detail-form-group';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { BaseDetailComponent } from '../../../../core/components/base-detail/base-detail.component';
 import { NgIf } from '@angular/common';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
+import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
+import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
+import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
+import { DateRange } from '../../../../core/versioning/date-range';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ValidationService } from '../../../../core/validation/validation.service';
+import {
+  DetailDialogHelperService,
+  DetailWithCancelEdit,
+} from '../../../../core/detail/detail-dialog-helper.service';
+import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
   styleUrls: ['./business-organisation-detail.component.scss'],
   providers: [ValidityService, TranslatePipe],
   imports: [
-    BaseDetailComponent,
     ReactiveFormsModule,
     NgIf,
     TextFieldComponent,
     DateRangeComponent,
     SelectComponent,
     TranslatePipe,
+    DateRangeTextComponent,
+    DetailPageContainerComponent,
+    DetailPageContentComponent,
+    ScrollToTopDirective,
+    SwitchVersionComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    UserDetailInfoComponent,
   ],
 })
 export class BusinessOrganisationDetailComponent
-  extends BaseDetailController<BusinessOrganisationVersion>
-  implements OnInit
+  implements OnInit, DetailFormComponent, DetailWithCancelEdit
 {
   BUSINESS_TYPES = Object.values(BusinessType);
+  versions!: BusinessOrganisationVersion[];
+  selectedVersion!: BusinessOrganisationVersion;
+  maxValidity!: DateRange;
+
+  form!: FormGroup<BusinessOrganisationDetailFormGroup>;
+  isNew = false;
+  showVersionSwitch = false;
+  isSwitchVersionDisabled = false;
+  selectedVersionIndex!: number;
 
   constructor(
     private readonly businessOrganisationInternalService: BusinessOrganisationInternalService,
     private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    protected readonly router: Router,
-    protected readonly notificationService: NotificationService,
-    protected readonly dialogService: DialogService,
-    protected readonly permissionService: PermissionService,
-    protected readonly activatedRoute: ActivatedRoute,
-    protected readonly validityService: ValidityService
-  ) {
-    super(
-      router,
-      dialogService,
-      notificationService,
-      permissionService,
-      activatedRoute,
-      validityService
-    );
-  }
+    private readonly router: Router,
+    private readonly notificationService: NotificationService,
+    private readonly dialogService: DialogService,
+    private readonly permissionService: PermissionService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly validityService: ValidityService,
+    private readonly detailHelperService: DetailDialogHelperService
+  ) {}
 
   ngOnInit() {
-    super.ngOnInit();
+    this.versions =
+      this.activatedRoute.snapshot.data.businessOrganisationDetail;
+    if (this.versions.length == 0) {
+      this.isNew = true;
+      this.form = BusinessOrganisationDetailFormGroupBuilder.getFormGroup();
+    } else {
+      VersionsHandlingService.addVersionNumbers(this.versions);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
+      this.selectedVersion =
+        VersionsHandlingService.determineDefaultVersionByValidity(
+          this.versions
+        );
+      this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
+      this.initSelectedVersion();
+    }
   }
 
-  getPageType(): Page {
-    return Pages.BUSINESS_ORGANISATIONS;
+  private initSelectedVersion() {
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
+      this.versions
+    );
+    this.form = BusinessOrganisationDetailFormGroupBuilder.getFormGroup(
+      this.selectedVersion
+    );
+    if (!this.isNew) {
+      this.form.disable();
+    }
   }
 
-  getApplicationType(): ApplicationType {
-    return ApplicationType.Bodi;
-  }
-
-  readRecord(): BusinessOrganisationVersion {
-    return this.activatedRoute.snapshot.data.businessOrganisationDetail;
-  }
-
-  getDetailHeading(record: BusinessOrganisationVersion): string {
-    return `${record[this.displayedAbbreviation()] ?? ''} - ${record.organisationNumber ?? ''}`;
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.detailHelperService.showCancelEditDialog(this);
+    } else {
+      this.isSwitchVersionDisabled = true;
+      this.validityService.initValidity(this.form);
+      this.form.enable();
+    }
   }
 
   displayedAbbreviation() {
     return this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation();
   }
 
-  getDetailSubheading(record: BusinessOrganisationVersion): string {
-    return record.sboid!;
+  switchVersion(newIndex: number) {
+    this.selectedVersionIndex = newIndex;
+    this.selectedVersion = this.versions[newIndex];
+    this.initSelectedVersion();
   }
 
-  updateRecord(): void {
+  save() {
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      const sublineVersion =
+        this.form.getRawValue() as unknown as BusinessOrganisationVersion;
+      this.form.disable();
+      if (this.isNew) {
+        this.create(sublineVersion);
+      } else {
+        this.validityService.updateValidity(this.form);
+        this.validityService.validate().subscribe((confirmed) => {
+          if (confirmed) {
+            this.form.disable();
+            this.update(this.selectedVersion.id!, sublineVersion);
+          }
+        });
+      }
+    }
+  }
+
+  update(
+    id: number,
+    businessOrganisationVersion: BusinessOrganisationVersion
+  ): void {
     this.businessOrganisationInternalService
-      .updateBusinessOrganisationVersion(this.getId(), this.form.value)
-      .pipe(catchError(this.handleError))
+      .updateBusinessOrganisationVersion(id, businessOrganisationVersion)
+      .pipe(catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success(
           'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
@@ -114,17 +168,17 @@ export class BusinessOrganisationDetailComponent
           .navigate([
             Pages.BODI.path,
             Pages.BUSINESS_ORGANISATIONS.path,
-            this.record.sboid,
+            this.selectedVersion.sboid,
           ])
           .then(() => this.ngOnInit());
       });
   }
 
-  createRecord(): void {
+  create(businessOrganisationVersion: BusinessOrganisationVersion): void {
     this.form.disable();
     this.businessOrganisationInternalService
-      .createBusinessOrganisationVersion(this.form.value)
-      .pipe(catchError(this.handleError))
+      .createBusinessOrganisationVersion(businessOrganisationVersion)
+      .pipe(catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success(
           'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS'
@@ -139,114 +193,68 @@ export class BusinessOrganisationDetailComponent
       });
   }
 
-  revokeRecord(): void {
-    const selectedRecord = this.getSelectedRecord();
-    if (selectedRecord.sboid) {
-      this.businessOrganisationInternalService
-        .revokeBusinessOrganisation(selectedRecord.sboid)
-        .subscribe(() => {
-          this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
-          );
-          this.router
-            .navigate([
-              Pages.BODI.path,
-              Pages.BUSINESS_ORGANISATIONS.path,
-              selectedRecord.sboid,
-            ])
-            .then(() => this.ngOnInit());
-        });
-    }
+  private handleError() {
+    return () => {
+      this.form.enable();
+      return EMPTY;
+    };
   }
 
-  deleteRecord(): void {
-    const selectedVersion: BusinessOrganisationVersion =
-      this.getSelectedRecord();
-    if (selectedVersion.sboid != null) {
-      this.businessOrganisationInternalService
-        .deleteBusinessOrganisation(selectedVersion.sboid)
-        .subscribe(() => {
-          this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
-          );
-          this.backToOverview();
-        });
-    }
+  revoke(): void {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.selectedVersion.sboid) {
+            this.businessOrganisationInternalService
+              .revokeBusinessOrganisation(this.selectedVersion.sboid)
+              .subscribe(() => {
+                this.notificationService.success(
+                  'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
+                );
+                this.router
+                  .navigate([
+                    Pages.BODI.path,
+                    Pages.BUSINESS_ORGANISATIONS.path,
+                    this.selectedVersion.sboid,
+                  ])
+                  .then(() => this.ngOnInit());
+              });
+          }
+        }
+      });
   }
 
-  getFormGroup(version: BusinessOrganisationVersion): FormGroup {
-    return new FormGroup<BusinessOrganisationDetailFormGroup>(
-      {
-        descriptionDe: new FormControl(version.descriptionDe, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_60,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        descriptionFr: new FormControl(version.descriptionFr, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_60,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        descriptionIt: new FormControl(version.descriptionIt, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_60,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        descriptionEn: new FormControl(version.descriptionEn, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_60,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        abbreviationDe: new FormControl(version.abbreviationDe, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_10,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        abbreviationFr: new FormControl(version.abbreviationFr, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_10,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        abbreviationIt: new FormControl(version.abbreviationIt, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_10,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        abbreviationEn: new FormControl(version.abbreviationEn, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_10,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        organisationNumber: new FormControl(version.organisationNumber, [
-          Validators.required,
-          AtlasCharsetsValidator.numeric,
-          Validators.min(0),
-          Validators.max(99999),
-        ]),
-        contactEnterpriseEmail: new FormControl(
-          version.contactEnterpriseEmail,
-          [AtlasFieldLengthValidator.length_255, AtlasCharsetsValidator.email]
-        ),
-        businessTypes: new FormControl(version.businessTypes),
-        validFrom: new FormControl(
-          version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required]
-        ),
-        etagVersion: new FormControl(version.etagVersion),
-        creationDate: new FormControl(version.creationDate),
-        editionDate: new FormControl(version.editionDate),
-        editor: new FormControl(version.editor),
-        creator: new FormControl(version.creator),
-      },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
-    );
+  delete(): void {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.DELETE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_DELETE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.selectedVersion.sboid != null) {
+            this.businessOrganisationInternalService
+              .deleteBusinessOrganisation(this.selectedVersion.sboid)
+              .subscribe(() => {
+                this.notificationService.success(
+                  'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
+                );
+                this.back();
+              });
+          }
+        }
+      });
+  }
+
+  back() {
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute }).then();
   }
 }

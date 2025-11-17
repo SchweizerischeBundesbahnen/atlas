@@ -11,7 +11,7 @@ import {
 } from '../../../../../app.testing.mocks';
 import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../../core/components/user-edit-info/user-detail-info.component';
 import { StopPointCompleteFormComponent } from '../form/stop-point-complete-form/stop-point-complete-form.component';
 import { StopPointReducedFormComponent } from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';

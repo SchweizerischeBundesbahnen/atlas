@@ -30,7 +30,7 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../test/data/traffic-point-element';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';

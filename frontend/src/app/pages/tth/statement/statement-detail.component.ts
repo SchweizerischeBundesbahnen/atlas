@@ -50,7 +50,7 @@ import { ScrollToTopDirective } from '../../../core/scroll-to-top/scroll-to-top.
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../core/components/user-edit-info/user-detail-info.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { TimetableFieldNumberSelectComponent } from '../../../core/form-components/ttfn-select/timetable-field-number-select.component';
 import { TransportCompanySelectComponent } from '../../../core/form-components/tu-select/transport-company-select.component';

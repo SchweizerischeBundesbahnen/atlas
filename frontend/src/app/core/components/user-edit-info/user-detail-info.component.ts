@@ -3,13 +3,13 @@ import moment from 'moment';
 import {
   DATE_PATTERN,
   DATE_TIME_FORMAT_WITHOUT_SECONDS,
-} from '../../../date/date.service';
+} from '../../date/date.service';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { CreationEditionRecord } from './creation-edition-record';
 import { map } from 'rxjs/operators';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'app-user-detail-info [record]',

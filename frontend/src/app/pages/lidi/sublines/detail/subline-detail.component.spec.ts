@@ -32,7 +32,7 @@ import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';

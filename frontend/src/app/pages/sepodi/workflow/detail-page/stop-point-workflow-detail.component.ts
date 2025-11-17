@@ -29,7 +29,7 @@ import { AddExaminantsDialogService } from './add-examinants-dialog/add-examinan
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { StopPointWorkflowDetailFormComponent } from './detail-form/stop-point-workflow-detail-form.component';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';

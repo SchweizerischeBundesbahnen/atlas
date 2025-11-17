@@ -29,7 +29,7 @@ import { DateRangeComponent } from '../../../../../../core/form-components/date-
 import { PlatformReducedFormComponent } from '../form/platform-reduced-form/platform-reduced-form.component';
 import { PlatformCompleteFormComponent } from '../form/platform-complete-form/platform-complete-form.component';
 import { MatDivider } from '@angular/material/divider';
-import { UserDetailInfoComponent } from '../../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';

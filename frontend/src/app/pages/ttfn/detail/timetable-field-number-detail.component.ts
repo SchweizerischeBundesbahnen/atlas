@@ -39,7 +39,7 @@ import { AtlasButtonComponent } from '../../../core/components/button/atlas-butt
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
-import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../core/components/user-edit-info/user-detail-info.component';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import {

@@ -1,7 +1,7 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
+import { CreationEditionRecord } from '../../../../../core/components/user-edit-info/creation-edition-record';
 import { User } from '../../../../../api';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
@@ -14,7 +14,7 @@ import { UserPermissionGivenUserService } from './user-permission-given-user.ser
 import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/components/permissions/form/application-permission-form-group';
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 import { ConvertUserPermissionToRecordHelper } from '../../../../../core/components/permissions/helper/convert-user-permission-to-record-helper';
-import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../../core/components/user-edit-info/user-detail-info.component';
 
 @Component({
   selector: 'app-user-administration-user-edit',
