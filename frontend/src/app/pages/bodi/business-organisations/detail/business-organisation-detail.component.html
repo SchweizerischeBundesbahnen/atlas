@@ -290,7 +290,7 @@
 
   <atlas-detail-footer>
     <atlas-button
-      (click)="back()"
+      (buttonClicked)="back()"
       [footerEdit]="form.enabled"
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
@@ -307,7 +307,7 @@
     >
     </atlas-button>
     <atlas-button
-      (click)="save()"
+      (buttonClicked)="save()"
       [disabled]="!form.dirty"
       [footerEdit]="form.enabled"
       [submitButton]="true"
@@ -320,7 +320,7 @@
       <atlas-button
         (buttonClicked)="toggleEdit()"
         applicationType="BODI"
-        [disabled]="form.enabled"
+        [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
         buttonDataCy="edit-item"
         buttonText="COMMON.EDIT"
         buttonType="edit"
@@ -329,7 +329,7 @@
       <atlas-button
         (buttonClicked)="revoke()"
         applicationType="BODI"
-        [disabled]="form.enabled"
+        [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
         buttonDataCy="revoke-item"
         buttonText="COMMON.REVOKE"
         buttonType="revoke"

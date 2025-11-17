@@ -29,7 +29,7 @@ import {
   MockSelectComponent,
 } from '../../../app.testing.mocks';
 import { Component, Input } from '@angular/core';
-import { CreationEditionRecord } from '../../../core/components/base-detail/user-edit-info/creation-edition-record';
+import { CreationEditionRecord } from '../../../core/components/user-edit-info/creation-edition-record';
 import { By } from '@angular/platform-browser';
 import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
 import { FileSizePipe } from '../../../core/components/file-upload/file-size/file-size.pipe';

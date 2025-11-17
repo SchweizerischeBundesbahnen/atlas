@@ -11,8 +11,7 @@ import { TablePagination } from './core/components/table/table-pagination';
 import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/atlas-field-custom-error';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TableFilter } from './core/components/table-filter/config/table-filter';
-import { CreationEditionRecord } from './core/components/base-detail/user-edit-info/creation-edition-record';
-import { BaseDetailController } from './core/components/base-detail/base-detail-controller';
+import { CreationEditionRecord } from './core/components/user-edit-info/creation-edition-record';
 import { Record } from './core/components/base-detail/record';
 import { AuthService } from './core/auth/auth.service';
 import { UserService } from './core/auth/user/user.service';
@@ -36,15 +35,6 @@ export class MockSwitchVersionComponent {
   @Input() switchDisabled = false;
   @Input() showStatus = true;
   @Output() switchVersion = new EventEmitter<number>();
-}
-
-@Component({
-  selector: 'app-detail-wrapper [controller][headingNew]',
-  template: '<p>Mock Product Editor Component</p>',
-})
-export class MockAppDetailWrapperComponent {
-  @Input() controller!: BaseDetailController<Record>;
-  @Input() headingNew!: string;
 }
 
 @Component({

@@ -13,7 +13,6 @@ import { ErrorNotificationComponent } from '../../../core/notification/error/err
 import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import {
   adminPermissionServiceMock,
-  MockAppDetailWrapperComponent,
   MockBoSelectComponent,
 } from '../../../app.testing.mocks';
 import { CommentComponent } from '../../../core/form-components/comment/comment.component';
@@ -95,7 +94,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
       imports: [
         AppTestingModule,
         TimetableFieldNumberDetailComponent,
-        MockAppDetailWrapperComponent,
         MockBoSelectComponent,
         ErrorNotificationComponent,
         InfoIconComponent,
@@ -207,7 +205,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         AppTestingModule,
         FormModule,
         TimetableFieldNumberDetailComponent,
-        MockAppDetailWrapperComponent,
         ErrorNotificationComponent,
         InfoIconComponent,
       ],

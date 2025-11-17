@@ -14,7 +14,6 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import {
   adminPermissionServiceMock,
-  MockAppDetailWrapperComponent,
   MockBoSelectComponent,
 } from '../../../../app.testing.mocks';
 import { MainlineDescriptionPipe } from './mainline-description.pipe';
@@ -332,7 +331,6 @@ function setupTestBed(
     imports: [
       AppTestingModule,
       SublineDetailComponent,
-      MockAppDetailWrapperComponent,
       MockBoSelectComponent,
       InfoIconComponent,
       LinkIconComponent,

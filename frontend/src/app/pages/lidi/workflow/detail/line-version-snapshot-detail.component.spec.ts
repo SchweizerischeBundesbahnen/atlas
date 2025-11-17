@@ -8,7 +8,6 @@ import { ErrorNotificationComponent } from '../../../../core/notification/error/
 import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import {
   adminPermissionServiceMock,
-  MockAppDetailWrapperComponent,
   MockAtlasButtonComponent,
   MockBoSelectComponent,
 } from '../../../../app.testing.mocks';
@@ -112,7 +111,6 @@ function setupTestBed(
       AppTestingModule,
       NgOptimizedImage,
       LineVersionSnapshotDetailComponent,
-      MockAppDetailWrapperComponent,
       LineDetailFormComponent,
       MockBoSelectComponent,
       ErrorNotificationComponent,

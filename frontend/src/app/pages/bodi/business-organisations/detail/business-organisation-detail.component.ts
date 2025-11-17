@@ -12,7 +12,6 @@ import {
 } from './business-organisation-detail-form-group';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
-import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { NgIf } from '@angular/common';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
@@ -77,7 +76,6 @@ export class BusinessOrganisationDetailComponent
     private readonly router: Router,
     private readonly notificationService: NotificationService,
     private readonly dialogService: DialogService,
-    private readonly permissionService: PermissionService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly validityService: ValidityService,
     private readonly detailHelperService: DetailDialogHelperService
@@ -90,6 +88,7 @@ export class BusinessOrganisationDetailComponent
       this.isNew = true;
       this.form = BusinessOrganisationDetailFormGroupBuilder.getFormGroup();
     } else {
+      this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.versions);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
       this.selectedVersion =
@@ -136,17 +135,17 @@ export class BusinessOrganisationDetailComponent
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const sublineVersion =
+      const businessOrganisationVersion =
         this.form.getRawValue() as unknown as BusinessOrganisationVersion;
       this.form.disable();
       if (this.isNew) {
-        this.create(sublineVersion);
+        this.create(businessOrganisationVersion);
       } else {
         this.validityService.updateValidity(this.form);
         this.validityService.validate().subscribe((confirmed) => {
           if (confirmed) {
             this.form.disable();
-            this.update(this.selectedVersion.id!, sublineVersion);
+            this.update(this.selectedVersion.id!, businessOrganisationVersion);
           }
         });
       }
@@ -175,7 +174,6 @@ export class BusinessOrganisationDetailComponent
   }
 
   create(businessOrganisationVersion: BusinessOrganisationVersion): void {
-    this.form.disable();
     this.businessOrganisationInternalService
       .createBusinessOrganisationVersion(businessOrganisationVersion)
       .pipe(catchError(this.handleError()))
