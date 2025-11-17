@@ -1,14 +1,15 @@
 import org.gradle.api.tasks.Copy
 
 val dockerContextDir: Provider<Directory> = layout.buildDirectory.dir("docker")
-val baseImageName: String = "atlas.docker.bin.sbb.ch/atlas/"
+val projectName = project.name
+val baseImageName: String = "atlas.docker.bin.sbb.ch/atlas/${projectName}"
 
 tasks.register<Copy>("prepareDockerContext") {
     group = "docker"
     description = "Prepare Docker build context (copies JAR and Dockerfile into build/docker)."
 
     // Ensure the jar task runs before copying
-    dependsOn(tasks.named("jar"))
+    dependsOn(tasks.named("bootJar"))
     // Where to put files
     into(dockerContextDir)
 
@@ -34,25 +35,25 @@ tasks.register<Copy>("prepareDockerContext") {
 tasks.register<Exec>("buildDocker") {
     group = "docker"
     description = "Build Docker image from build/docker context."
-    val dockerImageName = project.name
     val dockerTag = "${project.version}"
-
+    val imageName = "$baseImageName:$dockerTag"
     dependsOn(tasks.named("prepareDockerContext"))
 
     // set working dir to the prepared context
     workingDir = dockerContextDir.get().asFile
+
     if (!project.hasProperty("buildOnTekton")) {
-        println("Runnig docker build from local machine wiht docker cli...")
-        commandLine = listOf("docker", "build", "-t", "$baseImageName$dockerImageName:$dockerTag", ".")
+        println("Runnig docker build from local machine whit docker cli for project ${projectName}...")
+        commandLine = listOf("docker", "build", "-t", imageName, ".")
         isIgnoreExitValue = false
     } else {
-        println("Runnig docker build from tekton buildah...")
+        println("Runnig build docker from tekton buildah for project ${projectName}...")
         commandLine = listOf(
             "buildah",
             "bud",
             "--cert-dir",
             "--tls-verify=false",
-            "-t", "$baseImageName$dockerImageName:$dockerTag",
+            "-t", imageName,
             "--no-cache",
             "."
         )
@@ -62,21 +63,23 @@ tasks.register<Exec>("buildDocker") {
 tasks.register<Exec>("publishDocker") {
     group = "docker"
     description = "Build Docker image from build/docker context."
-    val dockerImageName = project.name
+
     val dockerTag = "${project.version}"
+    val imageName = "$baseImageName:$dockerTag"
 
     dependsOn(tasks.named("buildDocker"))
 
     if (project.hasProperty("buildOnTekton")) {
-        println("Runnig docker build from tekton buildah...")
+        println("Runnig publish docker from tekton buildah for project ${projectName}...")
         commandLine = listOf(
             "buildah",
             "push",
             "--format",
             "v2s2",
             "--tls-verify=false",
-            "$baseImageName$dockerImageName:$dockerTag"
+            imageName
         )
+        isIgnoreExitValue = false
     } else {
         commandLine = listOf("echo", "Publishing Docker images is only allowed on Tekton!")
     }
