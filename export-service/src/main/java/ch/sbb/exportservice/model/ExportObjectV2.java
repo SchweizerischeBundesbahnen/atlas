@@ -47,9 +47,11 @@ public enum ExportObjectV2 {
         ExportTypeV2.SWISS_FULL,
         ExportTypeV2.SWISS_ACTUAL,
         ExportTypeV2.SWISS_FUTURE_TIMETABLE,
+        ExportTypeV2.SWISS_TIMETABLE_YEARS,
         ExportTypeV2.WORLD_FULL,
         ExportTypeV2.WORLD_ACTUAL,
-        ExportTypeV2.WORLD_FUTURE_TIMETABLE
+        ExportTypeV2.WORLD_FUTURE_TIMETABLE,
+        ExportTypeV2.WORLD_TIMETABLE_YEARS
     );
 
   }
