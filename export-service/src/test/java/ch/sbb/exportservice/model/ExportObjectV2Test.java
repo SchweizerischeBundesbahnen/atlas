@@ -2,34 +2,29 @@ package ch.sbb.exportservice.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.EnumSource.Mode;
 
 class ExportObjectV2Test {
 
-  @Test
-  void shouldSupportSwissAndWorldTimetableYearsVariantsForSwissWorldObjects() {
-    List<ExportObjectV2> swissWorldObjects = List.of(
-        ExportObjectV2.SERVICE_POINT,
-        ExportObjectV2.TRAFFIC_POINT,
-        ExportObjectV2.LOADING_POINT
-    );
-
-    for (ExportObjectV2 exportObject : swissWorldObjects) {
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FULL)).isTrue();
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_ACTUAL)).isTrue();
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FUTURE_TIMETABLE)).isTrue();
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_TIMETABLE_YEARS)).isTrue();
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FULL)).isTrue();
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_ACTUAL)).isTrue();
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FUTURE_TIMETABLE)).isTrue();
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_TIMETABLE_YEARS)).isTrue();
-    }
+  @ParameterizedTest
+  @EnumSource(value = ExportObjectV2.class, names = {"SERVICE_POINT", "TRAFFIC_POINT", "LOADING_POINT"})
+  void shouldSupportSwissAndWorldTimetableYearsVariantsForSwissWorldObjects(ExportObjectV2 exportObject) {
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FULL)).isTrue();
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_ACTUAL)).isTrue();
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FUTURE_TIMETABLE)).isTrue();
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_TIMETABLE_YEARS)).isTrue();
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FULL)).isTrue();
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_ACTUAL)).isTrue();
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FUTURE_TIMETABLE)).isTrue();
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_TIMETABLE_YEARS)).isTrue();
   }
 
   @Test
-  void shouldContainExactSwissWorldTypes() {
+  void shouldContainExactSwissAndWorld() {
     Set<ExportTypeV2> exportTypes = Set.of(
         ExportTypeV2.SWISS_FULL,
         ExportTypeV2.SWISS_ACTUAL,
@@ -50,44 +45,31 @@ class ExportObjectV2Test {
   }
 
   @Test
-  void shouldNotAllowTimetableYearsForSwissWorldObjects() {
+  void shouldNotAllowTimetableYearsForServicePoint() {
     ExportObjectV2 exportObject = ExportObjectV2.SERVICE_POINT;
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.TIMETABLE_YEARS))
         .isFalse();
   }
 
-  @Test
-  void shouldSupportExactlyDefaultTypesForDefaultObjects() {
+  @ParameterizedTest
+  @EnumSource(value = ExportObjectV2.class, names = {
+      "LOADING_POINT",
+      "TRAFFIC_POINT",
+      "SERVICE_POINT",
+      "TRANSPORT_COMPANY",
+      "RECORDING_OBLIGATION",
+  }, mode = Mode.EXCLUDE)
+  void shouldSupportExactlyDefaultTypesForDefaultObjects(ExportObjectV2 exportObject) {
     Set<ExportTypeV2> expectedDefault = Set.of(
         ExportTypeV2.FULL,
         ExportTypeV2.ACTUAL,
         ExportTypeV2.FUTURE_TIMETABLE,
         ExportTypeV2.TIMETABLE_YEARS
     );
-
-    List<ExportObjectV2> defaultObjects = List.of(
-        ExportObjectV2.BUSINESS_ORGANISATION,
-        ExportObjectV2.CONTACT_POINT,
-        ExportObjectV2.LINE,
-        ExportObjectV2.PARKING_LOT,
-        ExportObjectV2.PLATFORM,
-        ExportObjectV2.REFERENCE_POINT,
-        ExportObjectV2.RELATION,
-        ExportObjectV2.STOP_POINT,
-        ExportObjectV2.SUBLINE,
-        ExportObjectV2.TIMETABLE_FIELD_NUMBER,
-        ExportObjectV2.TOILET,
-        ExportObjectV2.SECTOR,
-        ExportObjectV2.SECTOR_GROUP,
-        ExportObjectV2.SECTORS_AND_SECTORGROUPS
-    );
-
-    for (ExportObjectV2 exportObject : defaultObjects) {
-      Set<ExportTypeV2> actual = Set.copyOf(exportObject.getSupportedExportTypes());
-      assertThat(actual).isEqualTo(expectedDefault);
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FULL)).isFalse();
-      assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FULL)).isFalse();
-    }
+    Set<ExportTypeV2> actual = Set.copyOf(exportObject.getSupportedExportTypes());
+    assertThat(actual).isEqualTo(expectedDefault);
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FULL)).isFalse();
+    assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FULL)).isFalse();
   }
 
   @Test
