@@ -1,5 +1,9 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+plugins {
+  id("buildlogic.docker-nginx")
+}
+
 tasks.register<Exec>("execNpmCi", fun Exec.() {
   doFirst {
     println("[Angular] Run atlas npm ci")
