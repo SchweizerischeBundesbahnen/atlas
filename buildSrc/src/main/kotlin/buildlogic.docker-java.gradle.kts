@@ -5,9 +5,10 @@ import docker.registerPublishDockerTask
 val dockerContextDir: Provider<Directory> = layout.buildDirectory.dir("docker")
 val projectName = project.name
 val baseImageName: String = "atlas.docker.bin.sbb.ch/atlas/${projectName}"
+val groupDescription: String = "docker-java"
 
-val prepareDockerContext = tasks.register<Copy>("prepareDockerContext") {
-    group = "docker"
+val prepareDockerContext = tasks.register<Copy>("prepareJavaDockerContext") {
+    group = groupDescription
     description = "Prepare Docker build context (copies JAR and Dockerfile into build/docker)."
 
     // Ensure the jar task runs before copying
@@ -35,16 +36,18 @@ val prepareDockerContext = tasks.register<Copy>("prepareDockerContext") {
 }
 
 val buildDocker = registerBuildDockerTask(
+    groupDescription = groupDescription,
     project = project,
-    taskName = "buildDocker",
+    taskName = "buildDockerJava",
     dockerContextDir = dockerContextDir,
     baseImageName = baseImageName,
     prepareDockerContext = prepareDockerContext
 )
 
 registerPublishDockerTask(
+    groupDescription = groupDescription,
     project = project,
-    taskName = "publishDocker",
+    taskName = "publishDockerJava",
     baseImageName = baseImageName,
     buildDocker = buildDocker,
 )

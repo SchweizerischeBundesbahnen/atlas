@@ -5,10 +5,11 @@ import docker.registerPublishDockerTask
 val dockerContextDir: Provider<Directory> = layout.buildDirectory.dir("docker")
 val projectName = project.name
 val baseImageName: String = "atlas.docker.bin.sbb.ch/atlas/atlas-${projectName}"
+val groupDescription: String = "docker-nginx"
 
 tasks.register<Copy>("copyDockerDir") {
     val dockerContextDir: Provider<Directory> = layout.buildDirectory.dir("docker/docker")
-    group = "docker"
+    group = groupDescription
     description = "Copy docker directory."
 
     into(dockerContextDir)
@@ -24,11 +25,12 @@ tasks.register<Copy>("copyDockerDir") {
 
 tasks.register<Copy>("copyFrontendDist") {
     val dockerContextDir: Provider<Directory> = layout.buildDirectory.dir("docker/dist/atlas-frontend")
-    group = "docker"
+    group = groupDescription
     description = "Copy frontent distribution directory."
+
     dependsOn("copyDockerDir")
+
     into(dockerContextDir)
-    //TODO: depends on execNpmBuild ?
 
     from(layout.projectDirectory.dir("dist/atlas-frontend")) {
         include("**/*")
@@ -38,9 +40,8 @@ tasks.register<Copy>("copyFrontendDist") {
 }
 
 val prepareNginxDockerContext = tasks.register<Copy>("prepareNginxDockerContext") {
-
     val dockerContextDir: Provider<Directory> = layout.buildDirectory.dir("docker")
-    group = "docker"
+    group = groupDescription
     description = "Copy Dockerfile."
 
     dependsOn("copyFrontendDist")
@@ -55,6 +56,7 @@ val prepareNginxDockerContext = tasks.register<Copy>("prepareNginxDockerContext"
 }
 
 val buildDocker = registerBuildDockerTask(
+    groupDescription = groupDescription,
     project = project,
     taskName = "buildDockerNginx",
     dockerContextDir = dockerContextDir,
@@ -63,6 +65,7 @@ val buildDocker = registerBuildDockerTask(
 )
 
 registerPublishDockerTask(
+    groupDescription = groupDescription,
     project = project,
     taskName = "publishDockerNginx",
     baseImageName = baseImageName,

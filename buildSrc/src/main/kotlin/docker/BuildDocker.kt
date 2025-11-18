@@ -9,6 +9,7 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.register
 
 fun registerBuildDockerTask(
+    groupDescription: String,
     project: Project,
     taskName: String = "buildDocker",
     dockerContextDir: Provider<Directory>,
@@ -16,7 +17,7 @@ fun registerBuildDockerTask(
     prepareDockerContext: TaskProvider<Copy>
 ): TaskProvider<Exec> {
     return project.tasks.register<Exec>(taskName) {
-        group = "docker"
+        group = groupDescription
         description = "Build Docker image from build/docker context."
         val dockerTag = "${project.parent?.version}"
         val imageName = "$baseImageName:$dockerTag"

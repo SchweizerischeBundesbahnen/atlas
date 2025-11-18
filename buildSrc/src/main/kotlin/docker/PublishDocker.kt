@@ -9,13 +9,14 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.register
 
 fun registerPublishDockerTask(
+    groupDescription: String,
     project: Project,
     taskName: String = "publishDocker",
     baseImageName: String,
     buildDocker: TaskProvider<Exec>
 ): TaskProvider<Exec> {
     return project.tasks.register<Exec>(taskName) {
-        group = "docker"
+        group = groupDescription
         description = "Publish Docker image to registry"
         val dockerTag = "${project.parent?.version}"
         val imageName = "$baseImageName:$dockerTag"
