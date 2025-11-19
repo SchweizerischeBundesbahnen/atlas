@@ -35,16 +35,7 @@ The biggest part of the release tests are the REST-API tests. They are very stab
 ### Export API-Tests
 
 The export-tests need to be connected with the TEST-stage/-environment, to be able to succeed, because they rely on normal levels of exported objects (similar to the PROD stage), hence when run locally the cypress.env.json needs to be adjusted accordingly.
-
-So far there are 2 versions of export-JSON-APIs that atlas provides. All these export-tests have a similar structure:
-
-* Start a downloadGZip()-call using
-    * Export file name (and type of the object to be downloaded)
-    * ExportType (can be version 2)
-    * minimalObjectCount (this is the minimal expected amount of objects that the export-API-endpoint should return, otherwise it fails)
-    * URL (this is the middle section of the API which contains its version and is always the latest endpoint so that at each time data is returned also when the last export didn't succeed, because than the pervious is used)
-
-This downloadGZip()-call uses 7za to extract the *.gz-files temporarily and count the objects inside.
+The export tests assert a minimum file size, which is expected per export type. They further assert, that the FULL file is at least as large as all the others.
 
 #### API-version-1 Export API-Tests
 
