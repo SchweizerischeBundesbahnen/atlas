@@ -2,7 +2,7 @@ import java.util.*
 
 plugins {
     id("buildlogic.java-conventions")
-    id("buildlogic.docker")
+    id("buildlogic.docker-java")
 }
 
 group = "ch.sbb.atlas"
