@@ -28,7 +28,8 @@ tasks.register<Copy>("copyFrontendDist") {
     group = groupDescription
     description = "Copy frontent distribution directory."
 
-    dependsOn("copyDockerDir")
+    dependsOn("execNpmBuild")
+        .dependsOn("copyDockerDir")
 
     into(dockerContextDir)
 
