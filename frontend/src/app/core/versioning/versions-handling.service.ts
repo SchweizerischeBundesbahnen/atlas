@@ -1,4 +1,4 @@
-import { Record } from '../components/base-detail/record';
+import { Record } from '../model/record';
 import { DateRange } from './date-range';
 import moment from 'moment';
 

@@ -12,7 +12,7 @@ import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/
 import { SelectionModel } from '@angular/cdk/collections';
 import { TableFilter } from './core/components/table-filter/config/table-filter';
 import { CreationEditionRecord } from './core/components/user-edit-info/creation-edition-record';
-import { Record } from './core/components/base-detail/record';
+import { Record } from './core/model/record';
 import { AuthService } from './core/auth/auth.service';
 import { UserService } from './core/auth/user/user.service';
 import { Observable, of, ReplaySubject } from 'rxjs';

@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
-import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../core/model/base-detail-form-group';
 import {
   GeographyFormGroup,
   GeographyFormGroupBuilder,

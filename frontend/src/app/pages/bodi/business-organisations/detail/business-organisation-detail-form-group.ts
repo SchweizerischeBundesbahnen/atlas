@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BusinessOrganisationVersion, BusinessType } from '../../../../api';
-import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../core/model/base-detail-form-group';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
