@@ -23,11 +23,9 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
@@ -268,24 +266,6 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .andExpect(jsonPath("$.error", is("Constraint violation")))
         .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
         .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
-  }
-
-  @Test
-  void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
-    TimetableHearingStatementModelV1 statement = TimetableHearingStatementModelV1.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModelV1.builder()
-            .build())
-        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-        .build();
-
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
-
-    mvc.perform(multipart(HttpMethod.POST, "/internal/timetable-hearing/statements")
-            .file(statementJson))
-        .andExpect(status().isBadRequest());
   }
 
   @Test

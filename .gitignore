@@ -123,6 +123,7 @@ frontend/jsonZipDirectory/
 .idea/kubernetes-settings.xml
 .idea/gradle.xml
 .idea/kotlinc.xml
+.idea/copilot*.xml
 
 /line-directory/export/
 /.export/

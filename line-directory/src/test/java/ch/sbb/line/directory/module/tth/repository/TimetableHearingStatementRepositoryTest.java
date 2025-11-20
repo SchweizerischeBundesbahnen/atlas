@@ -71,11 +71,11 @@ class TimetableHearingStatementRepositoryTest {
             .city("Algund")
             .emails(List.of("mike@thebike.com"))
             .build())
-        .comment(
+        .cantonTransferComment(
             "Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die "
                 + "Editierrechte für diese Stellungnahme.")
         .statement("Ich mag bitte mehr Bös fahren")
-        .justification("Weil ich mag")
+        .publicComment("Weil ich mag")
         .build();
     statement.setDocuments(Set.of(StatementDocument.builder()
             .statement(statement)
@@ -118,7 +118,7 @@ class TimetableHearingStatementRepositoryTest {
   @Test
   void shouldThrowExceptionWhenCommentLengthIsGreaterThan280Characters() {
     TimetableHearingStatement statement = getMinimalTimetableHearingStatement();
-    statement.setComment(
+    statement.setCantonTransferComment(
         "Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte "
             + "für diese Stellungnahme. Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung "
             + "verlieren Sie die Editierrechte für diese Stellungnahme.");

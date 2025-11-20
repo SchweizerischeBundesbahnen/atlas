@@ -3,11 +3,14 @@ package ch.sbb.atlas.api.timetable.hearing;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,11 +26,37 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "TimetableHearingStatementSenderV2")
-public class TimetableHearingStatementSenderModelV2 extends TimetableHearingStatementSenderModel {
+public class TimetableHearingStatementSenderModelV2 {
+
+  @Schema(description = "First Name", example = "Fabienne")
+  @Size(max = AtlasFieldLengths.LENGTH_100)
+  private String firstName;
+
+  @Schema(description = "Last Name", example = "Maurer")
+  @Size(max = AtlasFieldLengths.LENGTH_100)
+  private String lastName;
+
+  @Schema(description = "Organisation", example = "Post AG")
+  @Size(max = AtlasFieldLengths.LENGTH_100)
+  private String organisation;
+
+  @Schema(description = "Street", example = "Bahnhofstrasse 12")
+  @Size(max = AtlasFieldLengths.LENGTH_100)
+  private String street;
+
+  @Schema(description = "ZIP Code", example = "3000")
+  @Min(1000)
+  @Max(99999)
+  private Integer zip;
+
+  @Schema(description = "City", example = "Bern")
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  private String city;
 
   @Schema(description = "E-Mail addresses")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10, message = "Minimum 1 email address is required and maximum 10 email "
       + "addresses are allowed")
+  @Builder.Default
   private Set<@Size(max = AtlasFieldLengths.LENGTH_100) @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS) String> emails = new HashSet<>();
 
 }

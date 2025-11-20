@@ -22,6 +22,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -86,6 +87,8 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String statement;
 
+  private boolean statementAnonymous;
+
   @ToString.Exclude
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
   @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -93,10 +96,17 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
 
   // FoT Justification field for comments
   @Size(max = AtlasFieldLengths.LENGTH_5000)
-  private String justification;
+  private String publicComment;
+
+  // Canton internal comment
+  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  private String internalComment;
 
   @Size(max = AtlasFieldLengths.LENGTH_280)
-  private String comment;
+  private String cantonTransferComment;
+
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  private String topic;
 
   public void removeDocument(String documentFilename) {
     Optional<StatementDocument> optionalStatementDocument = documents.stream()
@@ -111,6 +121,16 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
 
   public boolean checkIfStatementDocumentExists(String documentFilename) {
     return documents.stream().anyMatch(document -> Objects.equals(documentFilename, document.getFileName()));
+  }
+
+  public String getTransportCompaniesCommaSeparated() {
+    List<String> sorted = getResponsibleTransportCompanies()
+        .stream()
+        .map(SharedTransportCompany::getAbbreviation)
+        .filter(Objects::nonNull)
+        .sorted()
+        .toList();
+    return String.join(", ", sorted);
   }
 
 }

@@ -6,11 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -83,17 +81,6 @@ class TimetableHearingStatementServiceTest {
         .build();
   }
 
-  private static TimetableHearingStatementModelV1 buildTimetableHearingStatementModelV1() {
-    return TimetableHearingStatementModelV1.builder()
-        .timetableYear(YEAR)
-        .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModelV1.builder()
-            .email("fabienne.mueller@sbb.ch")
-            .build())
-        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-        .build();
-  }
-
   private static TimetableHearingStatementModelV2 buildTimetableHearingStatementModelV2() {
     return TimetableHearingStatementModelV2.builder()
         .timetableYear(YEAR)
@@ -118,22 +105,6 @@ class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
-        timetableHearingStatementModel, Collections.emptyList());
-
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.getTimetableHearingStatementById(
-        createdStatement.getId());
-
-    assertThat(hearingStatement).isNotNull();
-    assertThat(hearingStatement.getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
-    assertThat(hearingStatement.getStatement()).isEqualTo(createdStatement.getStatement());
-  }
-
-  @Test
-  void shouldGetHearingStatementCreatedWithV1() {
-    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
-
-    TimetableHearingStatementModelV1 timetableHearingStatementModel = buildTimetableHearingStatementModelV1();
-    TimetableHearingStatementModelV1 createdStatement = timetableHearingStatementService.createHearingStatementV1(
         timetableHearingStatementModel, Collections.emptyList());
 
     TimetableHearingStatement hearingStatement = timetableHearingStatementService.getTimetableHearingStatementById(
