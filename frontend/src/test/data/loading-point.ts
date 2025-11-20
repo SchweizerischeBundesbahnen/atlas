@@ -1,14 +1,11 @@
-import {
-  CreateLoadingPointVersion,
-  ReadLoadingPointVersion,
-} from '../../app/api';
+import { ReadLoadingPointVersion } from '../../app/api';
 
 export const LOADING_POINT: ReadLoadingPointVersion[] = [
   {
     creationDate: '2023-11-10T10:38:22.727356',
-    creator: '***REMOVED***',
+    creator: 'u123456',
     editionDate: '2023-11-10T10:38:22.727356',
-    editor: '***REMOVED***',
+    editor: 'u123456',
     id: 1255,
     number: 1231,
     designation: '12342',
@@ -27,9 +24,9 @@ export const LOADING_POINT: ReadLoadingPointVersion[] = [
   },
   {
     creationDate: '2023-11-10T10:38:38.715492',
-    creator: '***REMOVED***',
+    creator: 'u123456',
     editionDate: '2023-11-10T10:38:22.727356',
-    editor: '***REMOVED***',
+    editor: 'u123456',
     id: 1256,
     number: 1231,
     designation: '1234',
@@ -47,19 +44,3 @@ export const LOADING_POINT: ReadLoadingPointVersion[] = [
     servicePointSloid: 'ch:1:sloid:4414',
   },
 ];
-
-export const LOADING_POINT_CREATE: CreateLoadingPointVersion = {
-  creationDate: '2023-11-10T10:38:38.715492',
-  creator: '***REMOVED***',
-  editionDate: '2023-11-10T10:38:22.727356',
-  editor: '***REMOVED***',
-  id: 1256,
-  number: 1231,
-  designation: '1234',
-  designationLong: undefined,
-  connectionPoint: false,
-  validFrom: new Date('2023-11-02'),
-  validTo: new Date('2099-11-07'),
-  etagVersion: 7,
-  servicePointNumber: 1234567,
-};

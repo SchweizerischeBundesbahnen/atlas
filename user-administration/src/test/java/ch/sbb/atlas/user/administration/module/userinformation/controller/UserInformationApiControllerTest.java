@@ -31,15 +31,15 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
   @Test
   void shoudSearchUserInAD() throws Exception {
     UserModel userModel = UserModel.builder()
-        .sbbUserId("***REMOVED***")
-        .firstName("***REMOVED***")
-        .lastName("***REMOVED***")
-        .mail("***REMOVED***")
+        .sbbUserId("u999999")
+        .firstName("Uwe")
+        .lastName("König")
+        .mail("uwe.koenig@sbb.ch")
         .accountStatus(UserAccountStatus.ACTIVE)
         .build();
 
     UserModel userModel2 = UserModel.builder()
-        .sbbUserId("u239097")
+        .sbbUserId("u123456")
         .firstName("hans")
         .lastName("müller")
         .mail("hans.müller@sbb.ch")
@@ -60,15 +60,15 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
   @Test
   void shouldSearchUserInAtlas() throws Exception {
     UserModel userModel = UserModel.builder()
-        .sbbUserId("***REMOVED***")
-        .firstName("***REMOVED***")
-        .lastName("***REMOVED***")
-        .mail("***REMOVED***")
+        .sbbUserId("u999999")
+        .firstName("Uwe")
+        .lastName("König")
+        .mail("uwe.koenig@sbb.ch")
         .accountStatus(UserAccountStatus.ACTIVE)
         .build();
 
     UserModel userModel2 = UserModel.builder()
-        .sbbUserId("u239097")
+        .sbbUserId("u123456")
         .firstName("hans")
         .lastName("müller")
         .mail("hans.müller@sbb.ch")
@@ -88,7 +88,7 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
             .param("applicationType", "SEPODI"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.length()").value(1))
-        .andExpect(jsonPath("$[0].sbbUserId").value("***REMOVED***"));
+        .andExpect(jsonPath("$[0].sbbUserId").value("u999999"));
 
     verify(graphApiService, times(1)).searchUsers("testQuery");
     verify(userAdministrationService, times(1)).filterForPermittedUserInAtlas(userModels, ApplicationType.SEPODI);

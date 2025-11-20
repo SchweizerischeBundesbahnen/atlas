@@ -42,12 +42,11 @@ class DecisionModelTest extends BaseValidatorTest {
 
   private static DecisionModelBuilder<?, ?> getDecisionBuilder() {
     return DecisionModel.builder()
-        .firstName("***REMOVED***")
+        .firstName("Uwe")
         .lastName("Berlin")
         .organisation("Regierung")
         .personFunction("Cheffe")
-        .examinantMail("***REMOVED***@berlin.com")
+        .examinantMail("uwe@berlin.com")
         .pinCode("1246");
   }
-
 }

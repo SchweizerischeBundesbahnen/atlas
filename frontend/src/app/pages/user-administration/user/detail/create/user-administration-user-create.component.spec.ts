@@ -102,29 +102,29 @@ describe('UserAdministrationUserCreateComponent', () => {
       })
     );
     component.selectUser({
-      sbbUserId: '***REMOVED***',
+      sbbUserId: 'user1',
       permissions: new Set(),
     });
     expect(component.selectedUserHasNoUserId).toBe(false);
     expect(component.userHasAlreadyPermissions).toBe(false);
     expect(component.selectedUser).toEqual({
-      sbbUserId: '***REMOVED***',
+      sbbUserId: 'user1',
       permissions: new Set(),
     });
     expect(userAdministrationServiceSpy.getUser).toHaveBeenCalledOnceWith(
-      '***REMOVED***'
+      'user1'
     );
   });
 
   it('test createUser', fakeAsync(() => {
     const router = TestBed.inject(Router);
     component.selectedUser = {
-      sbbUserId: '***REMOVED***',
+      sbbUserId: 'user1',
       permissions: new Set(),
     };
     userAdministrationServiceSpy.createUserPermission.and.returnValue(
       of({
-        sbbUserId: '***REMOVED***',
+        sbbUserId: 'user1',
         permissions: new Set<Permission>(),
       })
     );

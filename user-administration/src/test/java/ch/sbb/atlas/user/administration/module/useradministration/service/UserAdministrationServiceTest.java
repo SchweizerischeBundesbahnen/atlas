@@ -57,10 +57,10 @@ class UserAdministrationServiceTest {
         .permissionRestrictions(Collections.emptyList()).build();
 
     UserModel user1 = UserModel.builder()
-        .sbbUserId("***REMOVED***")
-        .firstName("***REMOVED***")
-        .lastName("***REMOVED***")
-        .mail("***REMOVED***")
+        .sbbUserId("u999999")
+        .firstName("Uwe")
+        .lastName("König")
+        .mail("uwe@uwe.com")
         .accountStatus(UserAccountStatus.ACTIVE)
         .permissions(Set.of(permissionModel))
         .build();

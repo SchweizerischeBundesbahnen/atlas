@@ -18,9 +18,9 @@ import { ToiletInternalService } from '../../../../api/service/prm/toilet/toilet
 const toiletOverview: ToiletOverview[] = [
   {
     creationDate: '2024-01-22T13:52:30.598026',
-    creator: '***REMOVED***',
+    creator: 'u123456',
     editionDate: '2024-01-22T13:52:30.598026',
-    editor: '***REMOVED***',
+    editor: 'u123456',
     id: 1000,
     sloid: 'ch:1:sloid:12345:1',
     validFrom: new Date('2000-01-01'),

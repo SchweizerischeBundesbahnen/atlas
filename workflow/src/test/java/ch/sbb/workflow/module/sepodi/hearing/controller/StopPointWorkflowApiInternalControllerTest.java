@@ -487,7 +487,7 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
     workflowRepository.saveAndFlush(workflow);
 
     OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
-        .firstName("***REMOVED***")
+        .firstName("Firtsname")
         .lastName("Fix")
         .fotJudgement(JudgementType.NO)
         .fotMotivation("Ja save")
@@ -550,7 +550,7 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
     decision.setExaminant(person);
     decisionRepository.save(decision);
     OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
-        .firstName("***REMOVED***")
+        .firstName("Firtsname")
         .lastName("Fix")
         .fotJudgement(JudgementType.NO)
         .fotMotivation("Ja save")

@@ -11,6 +11,7 @@ import com.microsoft.graph.users.UsersRequestBuilder;
 import com.microsoft.graph.users.UsersRequestBuilder.GetRequestConfiguration;
 import java.util.List;
 import java.util.function.Consumer;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -29,28 +30,35 @@ class GraphApiServiceTest {
   @Mock
   private UserCollectionResponse userCollectionResponse;
 
-  private GraphApiService graphApiService;
-
   @Captor
   private ArgumentCaptor<Consumer<GetRequestConfiguration>> getRequestConfigCaptor;
 
+  private GraphApiService graphApiService;
+
+  private AutoCloseable mockCloseable;
+
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
+    mockCloseable = MockitoAnnotations.openMocks(this);
     graphApiService = new GraphApiService(graphClient);
 
     when(graphClient.users()).thenReturn(usersRequestBuilder);
     when(usersRequestBuilder.get(any())).thenReturn(userCollectionResponse);
   }
 
+  @AfterEach
+  void tearDown() throws Exception {
+    mockCloseable.close();
+  }
+
   @Test
   void shouldSearchUsers() {
-    graphApiService.searchUsers("***REMOVED***");
+    graphApiService.searchUsers("user1");
 
     GetRequestConfiguration configuration = verifyGetAndReturnConfiguration();
 
     String expectedSearchFilter = """
-        "onPremisesSamAccountName:***REMOVED***" OR "mail:***REMOVED***" OR "displayName:***REMOVED***"
+        "onPremisesSamAccountName:user1" OR "mail:user1" OR "displayName:user1"
         """;
     assertThat(configuration.queryParameters).isNotNull();
     assertThat(configuration.queryParameters.search).isEqualTo(expectedSearchFilter);
@@ -63,12 +71,12 @@ class GraphApiServiceTest {
 
   @Test
   void shouldResolveUsers() {
-    graphApiService.resolveUsers(List.of("***REMOVED***", "e502999"));
+    graphApiService.resolveUsers(List.of("user1", "user2"));
 
     GetRequestConfiguration configuration = verifyGetAndReturnConfiguration();
 
     assertThat(configuration.queryParameters).isNotNull();
-    assertThat(configuration.queryParameters.filter).isEqualTo("onPremisesSamAccountName in ('***REMOVED***', 'e502999')");
+    assertThat(configuration.queryParameters.filter).isEqualTo("onPremisesSamAccountName in ('user1', 'user2')");
     assertThat(configuration.queryParameters.count).isEqualTo(true);
 
     assertThat(configuration.headers).isNotNull();

@@ -275,7 +275,7 @@ class LineServiceSearchTest {
   @Test
   void shouldFindVersionWithMultipleTexts() {
     // Given
-    version1.setDescription("***REMOVED*** ist der grösste YB-Fan");
+    version1.setDescription("Öper ist der grösste YB-Fan");
     lineVersionRepository.saveAndFlush(version1);
     lineVersionRepository.saveAndFlush(version2);
     lineVersionRepository.saveAndFlush(version3);
@@ -306,7 +306,7 @@ class LineServiceSearchTest {
   @Test
   void shouldFindVersionWithStatus() {
     // Given
-    version1.setDescription("***REMOVED*** ist der grösste YB-Fan");
+    version1.setDescription("Öper ist der grösste YB-Fan");
     lineVersionRepository.saveAndFlush(version1);
     lineVersionRepository.saveAndFlush(version2);
     lineVersionRepository.saveAndFlush(version3);
@@ -345,7 +345,7 @@ class LineServiceSearchTest {
   @Test
   void shouldFindVersionWithType() {
     // Given
-    version1.setDescription("***REMOVED*** ist der grösste YB-Fan");
+    version1.setDescription("Öper ist der grösste YB-Fan");
     lineVersionRepository.saveAndFlush(version1);
     lineVersionRepository.saveAndFlush(version2);
     lineVersionRepository.saveAndFlush(version3);

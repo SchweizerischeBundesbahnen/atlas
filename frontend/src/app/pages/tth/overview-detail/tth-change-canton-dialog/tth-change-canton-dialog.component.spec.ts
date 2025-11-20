@@ -18,10 +18,10 @@ import { TimetableHearingStatementInternalService } from '../../../../api/servic
 const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
-  statement: '***REMOVED*** is am yb match gsi',
+  statement: 'Öper isch am YB-Match gsi',
   justification: 'Napoli ist besser als YB',
   statementSender: {
-    emails: new Set('***REMOVED***@yb.ch'),
+    emails: new Set('fan@yb.ch'),
   },
 };
 const dialogRefSpy = jasmine.createSpyObj(['close']);

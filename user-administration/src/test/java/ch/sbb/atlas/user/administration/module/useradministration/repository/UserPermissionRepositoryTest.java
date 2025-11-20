@@ -34,7 +34,7 @@ class UserPermissionRepositoryTest {
         .build();
 
     UserPermission userPermissionInPRM = UserPermission.builder()
-        .sbbUserId("***REMOVED***")
+        .sbbUserId("u999999")
         .role(ApplicationRole.SUPERVISOR)
         .application(ApplicationType.PRM)
         .build();
@@ -45,8 +45,8 @@ class UserPermissionRepositoryTest {
 
   @Test
   void findBySbbUserIdIgnoreCase() {
-    List<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCase("***REMOVED***");
-    List<UserPermission> userPermission2 = userPermissionRepository.findBySbbUserIdIgnoreCase("***REMOVED***");
+    List<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCase("u999999");
+    List<UserPermission> userPermission2 = userPermissionRepository.findBySbbUserIdIgnoreCase("U999999");
     assertThat(userPermission).hasSize(1);
     assertThat(userPermission2).hasSize(1);
   }

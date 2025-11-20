@@ -60,7 +60,7 @@ describe('UserSelectComponent', () => {
     userAdministrationServiceSpy.searchUsers.and.returnValue(
       of([
         {
-          sbbUserId: '***REMOVED***',
+          sbbUserId: 'user1',
           permissions: new Set<Permission>(),
         },
       ])
@@ -74,7 +74,7 @@ describe('UserSelectComponent', () => {
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
-          sbbUserId: '***REMOVED***',
+          sbbUserId: 'user1',
           permissions: new Set<Permission>(),
         },
       ]);
@@ -86,7 +86,7 @@ describe('UserSelectComponent', () => {
     userAdministrationServiceSpy.searchUsersInAtlas.and.returnValue(
       of([
         {
-          sbbUserId: '***REMOVED***',
+          sbbUserId: 'user1',
           permissions: new Set<Permission>(),
         },
       ])
@@ -101,7 +101,7 @@ describe('UserSelectComponent', () => {
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
-          sbbUserId: '***REMOVED***',
+          sbbUserId: 'user1',
           permissions: new Set<Permission>(),
         },
       ]);

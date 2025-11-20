@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class DecisionServiceTest {
 
-  private static final String ***REMOVED*** = "***REMOVED***";
+  private static final String NAME = "Bruno";
   private static final String SBOID = "ch:1:sboid:666";
 
   @Autowired
@@ -56,9 +56,9 @@ class DecisionServiceTest {
         .lastName("Hamsik")
         .function("Centrocampista")
         .mail("mail@hamsik.cc").build();
-    Person ***REMOVED*** = Person.builder()
-        .firstName(***REMOVED***)
-        .lastName("***REMOVED***")
+    Person bruno = Person.builder()
+        .firstName(NAME)
+        .lastName("King")
         .function("Gymbro")
         .mail("bro@gym.cc").build();
     StopPointWorkflow workflow = StopPointWorkflow.builder()
@@ -67,31 +67,31 @@ class DecisionServiceTest {
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .localityName("Biel/Bienne")
         .workflowComment("WF comment")
-        .examinants(Set.of(marek, ***REMOVED***))
+        .examinants(Set.of(marek, bruno))
         .startDate(LocalDate.of(2000, 1, 1))
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(123456L)
         .status(WorkflowStatus.HEARING)
         .build();
     marek.setStopPointWorkflow(workflow);
-    ***REMOVED***.setStopPointWorkflow(workflow);
+    bruno.setStopPointWorkflow(workflow);
 
     workflowInHearing = workflowRepository.saveAndFlush(workflow);
   }
 
   @Test
   void shouldGetDecision() {
-    Person ***REMOVED*** = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(***REMOVED***)).findFirst()
+    Person bruno = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
         .orElseThrow();
     Decision decision = Decision.builder()
         .judgement(JudgementType.YES)
         .motivation("Good Name!")
         .motivationDate(LocalDateTime.now())
-        .examinant(***REMOVED***)
+        .examinant(bruno)
         .build();
     decisionRepository.saveAndFlush(decision);
 
-    decision = decisionService.getDecisionByExaminantId(***REMOVED***.getId(), SBOID);
+    decision = decisionService.getDecisionByExaminantId(bruno.getId(), SBOID);
     assertThat(decision).isNotNull();
   }
 
@@ -113,14 +113,14 @@ class DecisionServiceTest {
   }
 
   @Test
-  void shouldAddCalculatedJudgementWithFotPriorityToExaminantsWithDecisionsByExaminant***REMOVED***() {
-    Person ***REMOVED*** = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(***REMOVED***)).findFirst()
+  void shouldAddCalculatedJudgementWithFotPriorityToExaminantsWithDecisionsByExaminantBruno() {
+    Person bruno = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
         .orElseThrow();
     Decision decision = Decision.builder()
         .judgement(JudgementType.YES)
         .motivation("Good Name!")
         .motivationDate(LocalDateTime.now())
-        .examinant(***REMOVED***)
+        .examinant(bruno)
         .build();
     decisionRepository.save(decision);
 
@@ -135,14 +135,14 @@ class DecisionServiceTest {
   }
 
   @Test
-  void shouldAddCalculatedJudgementWithFotPriorityToExaminantsWithDecisionsByExaminant***REMOVED***AndOverride() {
-    Person ***REMOVED*** = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(***REMOVED***)).findFirst()
+  void shouldAddCalculatedJudgementWithFotPriorityToExaminantsWithDecisionsByExaminantBrunoAndOverride() {
+    Person bruno = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals(NAME)).findFirst()
         .orElseThrow();
     Decision decision = Decision.builder()
         .judgement(JudgementType.YES)
         .motivation("Good Name!")
         .motivationDate(LocalDateTime.now())
-        .examinant(***REMOVED***)
+        .examinant(bruno)
         .fotJudgement(JudgementType.NO)
         .fotMotivation("No, is no!")
         .build();
