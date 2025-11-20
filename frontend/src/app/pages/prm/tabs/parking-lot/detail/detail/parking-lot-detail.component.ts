@@ -18,7 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
 import { ParkingLotFormComponent } from '../form/parking-lot-form/parking-lot-form.component';
 import { MatDivider } from '@angular/material/divider';
-import { UserDetailInfoComponent } from '../../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';

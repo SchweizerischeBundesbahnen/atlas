@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { Record } from '../../../../core/components/base-detail/record';
+import { Record } from '../../../../core/model/record';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,

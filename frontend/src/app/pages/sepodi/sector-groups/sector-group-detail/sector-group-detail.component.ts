@@ -9,7 +9,7 @@ import { MatDivider } from '@angular/material/divider';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {
   DetailDialogHelperService,

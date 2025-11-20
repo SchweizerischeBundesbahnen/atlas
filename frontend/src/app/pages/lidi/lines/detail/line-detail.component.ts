@@ -38,7 +38,7 @@ import { SublineTableComponent } from './subline-table/subline-table.component';
 import { LineWorkflowComponent } from '../../../../core/workflow/line-workflow.component';
 import { LinkComponent } from '../../../../core/form-components/link/link.component';
 import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';

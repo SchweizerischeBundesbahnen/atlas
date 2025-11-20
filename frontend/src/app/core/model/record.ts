@@ -1,5 +1,5 @@
-import { Status } from '../../../api';
-import { CreationEditionRecord } from './user-edit-info/creation-edition-record';
+import { Status } from '../../api';
+import { CreationEditionRecord } from '../components/user-edit-info/creation-edition-record';
 
 export interface Record extends CreationEditionRecord {
   id?: number;

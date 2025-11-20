@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
-import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../core/model/base-detail-form-group';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { SelectionValidator } from '../../../../core/validation/min-selected/selection-validator';

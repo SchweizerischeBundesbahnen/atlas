@@ -1,4 +1,4 @@
-import { Record } from '../components/base-detail/record';
+import { Record } from '../model/record';
 import moment from 'moment';
 import { VersionsHandlingService } from './versions-handling.service';
 

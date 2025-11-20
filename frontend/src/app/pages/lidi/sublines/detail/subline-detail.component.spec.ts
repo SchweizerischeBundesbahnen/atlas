@@ -14,7 +14,6 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import {
   adminPermissionServiceMock,
-  MockAppDetailWrapperComponent,
   MockBoSelectComponent,
 } from '../../../../app.testing.mocks';
 import { MainlineDescriptionPipe } from './mainline-description.pipe';
@@ -32,7 +31,7 @@ import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
@@ -332,7 +331,6 @@ function setupTestBed(
     imports: [
       AppTestingModule,
       SublineDetailComponent,
-      MockAppDetailWrapperComponent,
       MockBoSelectComponent,
       InfoIconComponent,
       LinkIconComponent,

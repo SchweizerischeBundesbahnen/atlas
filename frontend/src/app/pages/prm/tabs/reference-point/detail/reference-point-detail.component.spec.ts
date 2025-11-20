@@ -29,7 +29,7 @@ import {
 import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
-import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../../core/components/user-edit-info/user-detail-info.component';
 import { ReferencePointCompleteFormComponent } from './form/reference-point-complete-form/reference-point-complete-form.component';
 import { SloidComponent } from '../../../../../core/form-components/sloid/sloid.component';
 import { AtlasSlideToggleComponent } from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserDetailInfoComponent } from './user-detail-info.component';
-import { AppTestingModule } from '../../../../app.testing.module';
+import { AppTestingModule } from '../../../app.testing.module';
 import { of } from 'rxjs';
-import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
-import { translateServiceProvider } from '../../../../app.testing.mocks';
+import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 describe('UserDetailComponent', () => {
   let component: UserDetailInfoComponent;

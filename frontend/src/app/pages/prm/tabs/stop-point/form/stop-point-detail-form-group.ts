@@ -1,4 +1,4 @@
-import { BaseDetailFormGroup } from '../../../../../core/components/base-detail/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../../core/model/base-detail-form-group';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';

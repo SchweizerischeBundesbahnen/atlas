@@ -16,7 +16,7 @@ import { LineWorkflowFormComponent } from '../../../../core/workflow/workflow-fo
 import { NgIf } from '@angular/common';
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/line-detail-form.component';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';

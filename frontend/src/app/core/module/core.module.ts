@@ -6,7 +6,6 @@ import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-s
 import { LanguageSwitcherComponent } from '../components/language-switcher/language-switcher.component';
 import { UserComponent } from '../components/user/user.component';
 import { TableComponent } from '../components/table/table.component';
-import { BaseDetailComponent } from '../components/base-detail/base-detail.component';
 import { SideNavComponent } from '../components/side-nav/side-nav.component';
 import { RouterModule } from '@angular/router';
 import { TrimInputDirective } from '../text-input/trim-input';
@@ -16,7 +15,7 @@ import { ErrorNotificationComponent } from '../notification/error/error-notifica
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
 import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
-import { UserDetailInfoComponent } from '../components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../components/user-edit-info/user-detail-info.component';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 import { LineWorkflowComponent } from '../workflow/line-workflow.component';
 import { LineWorkflowFormComponent } from '../workflow/workflow-form/line-workflow-form.component';
@@ -59,7 +58,6 @@ const coreComponents = [
   LineWorkflowCheckFormComponent,
   LineWorkflowComponent,
   LineWorkflowDialogComponent,
-  BaseDetailComponent,
   DetailPageContainerComponent,
   DetailPageContentComponent,
   DialogContentComponent,

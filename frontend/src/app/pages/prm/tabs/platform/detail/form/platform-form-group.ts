@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
-import { BaseDetailFormGroup } from '../../../../../../core/components/base-detail/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../../../core/model/base-detail-form-group';
 import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
@@ -24,7 +24,9 @@ export interface PlatformFormGroup extends BaseDetailFormGroup {
 export interface ReducedPlatformFormGroup extends PlatformFormGroup {
   height: FormControl<number | null | undefined>;
   inclinationLongitudinal: FormControl<number | null | undefined>;
-  infoOpportunities: FormControl<Array<InfoOpportunityAttributeType> | null | undefined>;
+  infoOpportunities: FormControl<
+    Array<InfoOpportunityAttributeType> | null | undefined
+  >;
   partialElevation: FormControl<boolean | null | undefined>;
   tactileSystem: FormControl<BooleanOptionalAttributeType | null | undefined>;
   attentionField: FormControl<BooleanOptionalAttributeType | null | undefined>;
@@ -36,7 +38,9 @@ export interface ReducedPlatformFormGroup extends PlatformFormGroup {
 export interface CompletePlatformFormGroup extends PlatformFormGroup {
   boardingDevice: FormControl<BoardingDeviceAttributeType | null | undefined>;
   adviceAccessInfo: FormControl<string | null | undefined>;
-  contrastingAreas: FormControl<BooleanOptionalAttributeType | null | undefined>;
+  contrastingAreas: FormControl<
+    BooleanOptionalAttributeType | null | undefined
+  >;
   dynamicAudio: FormControl<BasicAttributeType | null | undefined>;
   dynamicVisual: FormControl<BasicAttributeType | null | undefined>;
   inclination: FormControl<number | null | undefined>;
@@ -54,8 +58,10 @@ export class PlatformFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        shuttle: new FormControl(version?.shuttle ?? BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required]),
+        shuttle: new FormControl(
+          version?.shuttle ?? BooleanOptionalAttributeType.ToBeCompleted,
+          [Validators.required]
+        ),
         boardingDevice: new FormControl(
           version?.boardingDevice ?? BoardingDeviceAttributeType.ToBeCompleted,
           [Validators.required]
@@ -117,8 +123,10 @@ export class PlatformFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        shuttle: new FormControl(version?.shuttle ?? BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required]),
+        shuttle: new FormControl(
+          version?.shuttle ?? BooleanOptionalAttributeType.ToBeCompleted,
+          [Validators.required]
+        ),
         height: new FormControl(version?.height, [
           AtlasCharsetsValidator.decimalWithDigits(7, 3),
           Validators.min(0),

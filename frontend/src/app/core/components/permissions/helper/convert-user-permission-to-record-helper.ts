@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { Permission } from '../../../../api';
-import { CreationEditionRecord } from '../../base-detail/user-edit-info/creation-edition-record';
+import { CreationEditionRecord } from '../../user-edit-info/creation-edition-record';
 
 export class ConvertUserPermissionToRecordHelper {
   static convertUserPermissionToRecord(

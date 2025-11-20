@@ -1,200 +1,350 @@
-<app-detail-wrapper
-  [controller]="this"
-  formDetailHeading="BODI.BUSINESS_ORGANISATION.DETAIL_INFORMATION"
-  headingNew="BODI.BUSINESS_ORGANISATION.NEW"
->
-  <form [formGroup]="form">
-    <h2 *ngIf="isNewRecord()" class="font-bold-2xl mb-4">
-      {{ 'BODI.BUSINESS_ORGANISATION.NEW_INFORMATION' | translate }}
-    </h2>
+<atlas-detail-page-container scrollToTop>
+  <atlas-detail-page-content>
+    <div class="detail-wrapper mt-5">
+      @if (isNew) {
+        <h1 class="font-bold-4xl mb-5">
+          {{ 'BODI.BUSINESS_ORGANISATION.NEW' | translate }}
+        </h1>
 
-    <!-- Organisation Number -->
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-3 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '146', translate: false },
-            { label: ' |', translate: false },
-            { label: 'max. 99999', translate: false }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="organisationNumber"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER"
-        >
-        </atlas-text-field>
+        <h2 class="font-bold-2xl mb-4">
+          {{ 'BODI.BUSINESS_ORGANISATION.NEW_INFORMATION' | translate }}
+        </h2>
+      } @else {
+        <div class="font-bold-4xl detail-title mb-3">
+          {{ selectedVersion[this.displayedAbbreviation()] }} -
+          {{ selectedVersion.organisationNumber }}
+        </div>
+        <div class="font-bold-xl mb-2">
+          <span data-cy="detail-subheading-id">{{
+            selectedVersion.sboid
+          }}</span>
+          <span data-cy="total-range">
+            -
+            <date-range-text [dateRange]="maxValidity"></date-range-text>
+          </span>
+        </div>
+
+        <div class="col-12 d-flex mt-3">
+          <div class="d-flex flex-column col-6 pe-3">
+            <app-switch-version
+              (switchVersion)="switchVersion($event)"
+              *ngIf="showVersionSwitch"
+              [currentRecord]="selectedVersion!"
+              [records]="versions!"
+              [switchDisabled]="form.enabled"
+            ></app-switch-version>
+          </div>
+        </div>
+
+        <div class="form-title-section my-5">
+          <h2 class="font-bold-2xl color-gray-900">
+            {{ 'BODI.BUSINESS_ORGANISATION.DETAIL_INFORMATION' | translate }} -
+            {{ 'COMMON.VERSION' | translate }}
+            {{ selectedVersionIndex + 1 }}
+          </h2>
+          <div>
+            <span class="font-bold-lg color-gray-900"
+              >{{ 'COMMON.STATUS' | translate }}
+            </span>
+            <span class="color-gray-900">{{
+              'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
+            }}</span>
+          </div>
+        </div>
+      }
+
+      <form [formGroup]="form">
+        <!-- Organisation Number -->
+        <div class="col-12 d-flex">
+          <div class="d-flex flex-column col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: '146', translate: false },
+                { label: ' |', translate: false },
+                { label: 'max. 99999', translate: false },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="organisationNumber"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER"
+            >
+            </atlas-text-field>
+          </div>
+        </div>
+
+        <div class="col-12 d-flex">
+          <div class="d-flex flex-column col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'STI', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '10' },
+                },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="abbreviationDe"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_DE"
+            ></atlas-text-field>
+          </div>
+
+          <div class="d-flex flex-column col-9">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'Verkehrsbetriebe STI AG', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '60' },
+                },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="descriptionDe"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_DE"
+            ></atlas-text-field>
+          </div>
+        </div>
+
+        <div class="col-12 d-flex">
+          <div class="d-flex flex-column col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'STI', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '10' },
+                },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="abbreviationFr"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_FR"
+            ></atlas-text-field>
+          </div>
+
+          <div class="d-flex flex-column col-9">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'Verkehrsbetriebe STI AG', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '60' },
+                },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="descriptionFr"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_FR"
+            ></atlas-text-field>
+          </div>
+        </div>
+
+        <div class="col-12 d-flex">
+          <div class="d-flex flex-column col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'STI', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '10' },
+                },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="abbreviationIt"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_IT"
+            ></atlas-text-field>
+          </div>
+
+          <div class="d-flex flex-column col-9">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'Verkehrsbetriebe STI AG', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '60' },
+                },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="descriptionIt"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_IT"
+            ></atlas-text-field>
+          </div>
+        </div>
+
+        <div class="col-12 d-flex">
+          <div class="d-flex flex-column col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'STI', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '10' },
+                },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="abbreviationEn"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_EN"
+            ></atlas-text-field>
+          </div>
+
+          <div class="d-flex flex-column col-9">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'Verkehrsbetriebe STI AG', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '60' },
+                },
+              ]"
+              [formGroup]="form"
+              [required]="true"
+              controlName="descriptionEn"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_EN"
+            ></atlas-text-field>
+          </div>
+        </div>
+
+        <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
+        <div class="w-50">
+          <form-date-range [formGroup]="form"></form-date-range>
+        </div>
+
+        <div class="col-12 d-flex mt-3 mb-4">
+          <div class="d-flex flex-column col-12">
+            <atlas-select
+              [formGroup]="form"
+              controlName="businessTypes"
+              dataCy="businessTypes"
+              label="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE"
+              [additionalLabelspace]="0"
+              optionTranslateLabelPrefix="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES."
+              [options]="BUSINESS_TYPES"
+              [multiple]="true"
+            >
+            </atlas-select>
+          </div>
+        </div>
+        <span class="font-bold-2xl">{{
+          'FORM.SUPPLEMENTARY_INFORMATION' | translate
+        }}</span>
+        <!-- E-Mail -->
+        <div class="col-12 d-flex">
+          <div class="d-flex flex-column col-12 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'hans.muster@enterprise.ch', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '255' },
+                },
+              ]"
+              [formGroup]="form"
+              controlName="contactEnterpriseEmail"
+              fieldLabel="BODI.BUSINESS_ORGANISATION.CONTACT"
+            ></atlas-text-field>
+          </div>
+        </div>
+      </form>
+
+      <div class="mt-5">
+        @if (!isNew) {
+          <app-user-detail-info
+            [record]="selectedVersion"
+          ></app-user-detail-info>
+        }
       </div>
     </div>
+  </atlas-detail-page-content>
 
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-3 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'STI', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="abbreviationDe"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_DE"
-        ></atlas-text-field>
-      </div>
-
-      <div class="d-flex flex-column col-9">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'Verkehrsbetriebe STI AG', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '60' } }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="descriptionDe"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_DE"
-        ></atlas-text-field>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-3 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'STI', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="abbreviationFr"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_FR"
-        ></atlas-text-field>
-      </div>
-
-      <div class="d-flex flex-column col-9">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'Verkehrsbetriebe STI AG', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '60' } }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="descriptionFr"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_FR"
-        ></atlas-text-field>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-3 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'STI', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="abbreviationIt"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_IT"
-        ></atlas-text-field>
-      </div>
-
-      <div class="d-flex flex-column col-9">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'Verkehrsbetriebe STI AG', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '60' } }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="descriptionIt"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_IT"
-        ></atlas-text-field>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-3 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'STI', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="abbreviationEn"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_EN"
-        ></atlas-text-field>
-      </div>
-
-      <div class="d-flex flex-column col-9">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'Verkehrsbetriebe STI AG', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '60' } }
-          ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="descriptionEn"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_EN"
-        ></atlas-text-field>
-      </div>
-    </div>
-
-    <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
-    <div class="w-50">
-      <form-date-range [formGroup]="form"></form-date-range>
-    </div>
-
-    <div class="col-12 d-flex mt-3 mb-4">
-      <div class="d-flex flex-column col-12">
-        <atlas-select
-          [formGroup]="form"
-          controlName="businessTypes"
-          dataCy="businessTypes"
-          label="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE"
-          [additionalLabelspace]="0"
-          optionTranslateLabelPrefix="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES."
-          [options]="BUSINESS_TYPES"
-          [multiple]="true"
-        >
-        </atlas-select>
-      </div>
-    </div>
-    <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-    <!-- E-Mail -->
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-12 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'hans.muster@enterprise.ch', translate: false },
-            { label: ' |', translate: false },
-            {
-              label: 'FORM.MAX_CHARS',
-              translate: true,
-              arg: { key: 'numberOfChars', value: '255' }
-            }
-          ]"
-          [formGroup]="form"
-          controlName="contactEnterpriseEmail"
-          fieldLabel="BODI.BUSINESS_ORGANISATION.CONTACT"
-        ></atlas-text-field>
-      </div>
-    </div>
-  </form>
-</app-detail-wrapper>
+  <atlas-detail-footer>
+    <atlas-button
+      (buttonClicked)="back()"
+      [footerEdit]="form.enabled"
+      buttonDataCy="back-to-overview"
+      buttonText="COMMON.BACK_TO_OVERVIEW"
+      buttonType="whiteFooterNonEdit"
+    >
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="toggleEdit()"
+      [footerEdit]="form.enabled"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="save()"
+      [disabled]="!form.dirty"
+      [footerEdit]="form.enabled"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+    >
+    </atlas-button>
+    @if (!isNew) {
+      <atlas-button
+        (buttonClicked)="toggleEdit()"
+        applicationType="BODI"
+        [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+        buttonDataCy="edit-item"
+        buttonText="COMMON.EDIT"
+        buttonType="edit"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        (buttonClicked)="revoke()"
+        applicationType="BODI"
+        [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+        buttonDataCy="revoke-item"
+        buttonText="COMMON.REVOKE"
+        buttonType="revoke"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+      <atlas-button
+        (buttonClicked)="delete()"
+        [disabled]="form.enabled"
+        buttonDataCy="delete-item"
+        buttonText="COMMON.DELETE"
+        buttonType="delete"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    }
+  </atlas-detail-footer>
+</atlas-detail-page-container>

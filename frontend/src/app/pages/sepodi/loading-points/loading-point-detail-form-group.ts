@@ -1,7 +1,7 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReadLoadingPointVersion } from '../../../api';
 import moment from 'moment';
-import { BaseDetailFormGroup } from '../../../core/components/base-detail/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../core/model/base-detail-form-group';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';

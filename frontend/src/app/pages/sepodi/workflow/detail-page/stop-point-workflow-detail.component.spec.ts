@@ -28,7 +28,7 @@ import { DetailPageContainerComponent } from '../../../../core/components/detail
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StopPointWorkflowDetailFormComponent } from './detail-form/stop-point-workflow-detail-form.component';

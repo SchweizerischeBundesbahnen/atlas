@@ -10,7 +10,7 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { Record } from '../base-detail/record';
+import { Record } from '../../model/record';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { Status } from '../../../api';
