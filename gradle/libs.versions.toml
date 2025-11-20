@@ -1,7 +1,7 @@
 [versions]
 okhttpVersion = "5.3.2"
 proj4jVersion = "1.4.1"
-shedlockVersion = "6.10.0"
+shedlockVersion = "7.1.0"
 protobufVersion = "4.33.1"
 springCloudDependenciesVersion = "2025.0.0"
 
