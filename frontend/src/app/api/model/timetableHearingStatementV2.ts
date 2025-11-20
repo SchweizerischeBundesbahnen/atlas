@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Status } from './status';
 import { TimetableHearingStatementDocument } from './timetableHearingStatementDocument';
 import { TimetableHearingStatementSenderV2 } from './timetableHearingStatementSenderV2';
 import { SwissCanton } from './swissCanton';
@@ -32,7 +31,6 @@ export interface TimetableHearingStatementV2 {
      * User editor
      */
     readonly editor?: string;
-    status?: Status;
     /**
      * Technical identifier
      */
@@ -70,17 +68,29 @@ export interface TimetableHearingStatementV2 {
      */
     statement: string;
     /**
+     * Statement does not contain personal data
+     */
+    statementAnonymous?: boolean;
+    /**
      * List of uploaded documents
      */
     documents?: Array<TimetableHearingStatementDocument>;
     /**
      * Statement of Federal office of transport
      */
-    justification?: string;
+    publicComment?: string;
     /**
-     * Statement comment
+     * Canton internal comment
      */
-    comment?: string;
+    internalComment?: string;
+    /**
+     * Canton transfer comment
+     */
+    cantonTransferComment?: string;
+    /**
+     * Topic of the statement
+     */
+    topic?: string;
     /**
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */

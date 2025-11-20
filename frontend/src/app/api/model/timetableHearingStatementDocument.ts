@@ -22,5 +22,9 @@ export interface TimetableHearingStatementDocument {
      * Content length
      */
     readonly fileSize: number;
+    /**
+     * Document does not contain personal data
+     */
+    anonymous?: boolean;
 }
 
