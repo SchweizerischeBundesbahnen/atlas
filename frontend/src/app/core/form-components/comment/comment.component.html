@@ -2,8 +2,12 @@
   <app-atlas-label-field
     [fieldExamples]="[
       { label: subLabel, translate: true },
-      { label: ' |', translate: false },
-      { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: maxChars } }
+      { label: ' | ', translate: false },
+      {
+        label: 'FORM.MAX_CHARS',
+        translate: true,
+        arg: { key: 'numberOfChars', value: maxChars },
+      },
     ]"
     [required]="required"
     fieldLabel="{{ label }}"
@@ -16,5 +20,8 @@
     matInput
     rows="7"
   ></textarea>
-  <app-atlas-field-error [form]="formGroup" controlName="{{ controlName }}"></app-atlas-field-error>
+  <app-atlas-field-error
+    [form]="formGroup"
+    controlName="{{ controlName }}"
+  ></app-atlas-field-error>
 </div>

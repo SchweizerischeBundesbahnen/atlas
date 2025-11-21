@@ -1035,8 +1035,8 @@
       "E_MAIL": "E-Mail",
       "E_MAIL_TEXT": "Falls keine E-Mail vorhanden ist, reicht eine fiktive Eingabe z.B. xxx@xxx.ch",
       "E_MAIL_ITEMS_LIMIT_REACHED": "Es sind bereits 10 E-Mails erfasst",
-      "JUSTIFICATION": "Begründung",
-      "COMMENT": "Kommentar zur Kantonsübergabe",
+      "PUBLIC_COMMENT": "Begründung",
+      "CANTON_TRANSFER_COMMENT": "Kommentar zur Kantonsübergabe",
       "ATTACHMENT_INFO": "Sie können die Stellungnahme mit PDF-Anhang einreichen. Es sind 3 PDFs bis zu 20 MB möglich.",
       "ATTACHMENTS": "Bestehende Anhänge",
       "ORGANISATION": "Organisation/Vereinigung",
@@ -1051,7 +1051,7 @@
       "DIALOG": {
         "TITLE": "Kanton editieren",
         "TEXT": "Sie editieren den verantwortlichen Kanton dieser Stellungnahme. Nach der Kantonsübergabe können Sie diese Stellungnahme nicht mehr editieren.",
-        "COMMENT_LABEL": "Kommentar zur Kantonsübergabe",
+        "CANTON_TRANSFER_COMMENT_LABEL": "Kommentar zur Kantonsübergabe",
         "CANCEL": "Zurück",
         "CONFIRM": "Kanton editieren"
       },

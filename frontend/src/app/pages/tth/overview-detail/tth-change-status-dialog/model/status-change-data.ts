@@ -7,7 +7,7 @@ import {
 export interface StatusChangeData extends DialogData {
   tths: TimetableHearingStatementV2[];
   statementStatus: StatementStatus;
-  justification: string | undefined;
+  publicComment: string | undefined;
   type: StatusChangeDataType;
 }
 

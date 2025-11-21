@@ -32,7 +32,7 @@ const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Öper isch am YB-Match gsi',
-  justification: 'Napoli ist besser als YB',
+  publicComment: 'Napoli ist besser als YB',
   statementSender: {
     emails: new Set('fan@yb.ch'),
   },
@@ -108,7 +108,7 @@ describe('TthChangeStatusDialogComponent', () => {
       By.css('app-base-change-dialog')
     );
     expect(baseDialog).not.toBeNull();
-    expect(baseDialog.attributes['controlName']).toBe('justification');
+    expect(baseDialog.attributes['controlName']).toBe('publicComment');
     expect(baseDialog.attributes['maxChars']).toBe('5000');
   });
 });

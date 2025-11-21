@@ -20,17 +20,24 @@
           <p *ngIf="statement?.oldSwissCanton">
             {{
               'TTH.STATEMENT.STATEMENT_TRANSFER_COUNTRY'
-                | translate: { oldSwissCanton: (statement?.oldSwissCanton! | displayCanton) }
+                | translate
+                  : {
+                      oldSwissCanton:
+                        (statement?.oldSwissCanton! | displayCanton),
+                    }
             }}
           </p>
 
-          <div *ngIf="statement && statement.comment" class="d-flex flex-row col-12 mb-5">
+          <div
+            *ngIf="statement && statement.cantonTransferComment"
+            class="d-flex flex-row col-12 mb-5"
+          >
             <div class="d-flex flex-column col-12">
               <br />
               <span class="font-bold-lg">
-                {{ 'TTH.STATEMENT.COMMENT' | translate }}
+                {{ 'TTH.STATEMENT.CANTON_TRANSFER_COMMENT' | translate }}
               </span>
-              <span>{{ statement.comment }}</span>
+              <span>{{ statement.cantonTransferComment }}</span>
             </div>
           </div>
 
@@ -65,7 +72,9 @@
                     alt="canton-logo"
                     class="pe-1"
                     height="28"
-                    src="assets/images/cantons/{{ canton.short.toUpperCase() }}.svg"
+                    src="assets/images/cantons/{{
+                      canton.short.toUpperCase()
+                    }}.svg"
                     width="28"
                   />
                 </ng-template>
@@ -228,8 +237,13 @@
             </div>
           </div>
 
-          <div *ngIf="form.value.documents && form.value.documents.length > 0" class="mb-3">
-            <app-atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS"></app-atlas-label-field>
+          <div
+            *ngIf="form.value.documents && form.value.documents.length > 0"
+            class="mb-3"
+          >
+            <app-atlas-label-field
+              fieldLabel="TTH.STATEMENT.ATTACHMENTS"
+            ></app-atlas-label-field>
             <ng-container *ngFor="let document of form.value.documents">
               <atlas-file
                 (downloadFile)="downloadFile($event.name)"
@@ -301,8 +315,8 @@
             <div class="d-flex flex-column col-12">
               <form-comment
                 [formGroup]="form"
-                controlName="justification"
-                label="TTH.STATEMENT.JUSTIFICATION"
+                controlName="publicComment"
+                label="TTH.STATEMENT.PUBLIC_COMMENT"
                 maxChars="5000"
               >
               </form-comment>
@@ -335,7 +349,11 @@
       </atlas-button>
       <atlas-button
         (click)="toggleEdit()"
-        *ngIf="!isHearingStatusArchived && !form.enabled && (isStatementEditable | async) === true"
+        *ngIf="
+          !isHearingStatusArchived &&
+          !form.enabled &&
+          (isStatementEditable | async) === true
+        "
         [canton]="cantonShort"
         applicationType="TIMETABLE_HEARING"
         buttonDataCy="edit"

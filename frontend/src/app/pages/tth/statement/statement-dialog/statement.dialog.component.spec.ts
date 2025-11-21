@@ -22,15 +22,15 @@ const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Canton change statement.',
-  justification: 'This is justification.',
-  comment: 'This is canton change comment.',
+  publicComment: 'This is justification.',
+  cantonTransferComment: 'This is canton change comment.',
   statementSender: {
     emails: new Set('atlas@sbb.ch'),
   },
 };
 const form = new FormGroup({
   swissCanton: new FormControl(SwissCanton.Bern),
-  comment: new FormControl('Changing canton.'),
+  cantonTransferComment: new FormControl('Changing canton.'),
 });
 
 describe('StatementDialogComponent', () => {

@@ -19,7 +19,7 @@ const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Öper isch am YB-Match gsi',
-  justification: 'Napoli ist besser als YB',
+  publicComment: 'Napoli ist besser als YB',
   statementSender: {
     emails: new Set('fan@yb.ch'),
   },
