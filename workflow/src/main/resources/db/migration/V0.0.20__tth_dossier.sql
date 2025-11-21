@@ -1,0 +1,32 @@
+CREATE SEQUENCE tth_dossier_seq START WITH 1000 INCREMENT BY 1;
+
+create table tth_dossier
+(
+    id                    BIGINT       NOT NULL PRIMARY KEY,
+    topic                 VARCHAR(500) not null,
+    dossier_status        VARCHAR(50)  not null,
+    internal_comment      VARCHAR(5000),
+    public_comment        VARCHAR(5000),
+    bo_contact_mail       VARCHAR(255) NOT NULL,
+    bo_deadline_to_answer DATE         NOT NULL,
+    creation_date         TIMESTAMP    NOT NULL,
+    creator               VARCHAR(50)  NOT NULL,
+    edition_date          TIMESTAMP    NOT NULL,
+    editor                VARCHAR(50)  NOT NULL
+);
+
+CREATE SEQUENCE tth_dossier_question_seq START WITH 1000 INCREMENT BY 1;
+create table tth_dossier_question
+(
+    id               BIGINT      NOT NULL PRIMARY KEY,
+    tth_dossier_id   BIGINT      NOT NULL,
+    answer_to_canton VARCHAR(5000),
+    creation_date    TIMESTAMP   NOT NULL,
+    creator          VARCHAR(50) NOT NULL,
+    edition_date     TIMESTAMP   NOT NULL,
+    editor           VARCHAR(50) NOT NULL,
+
+    CONSTRAINT fk_follow_up_workflow
+        FOREIGN KEY (tth_dossier_id)
+            REFERENCES tth_dossier (id)
+);
