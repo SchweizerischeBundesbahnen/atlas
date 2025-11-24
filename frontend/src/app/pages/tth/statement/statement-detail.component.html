@@ -328,7 +328,7 @@
 
     <atlas-detail-footer>
       <atlas-button
-        (click)="previous()"
+        (buttonClicked)="previous()"
         [footerEdit]="form.enabled"
         buttonDataCy="previous-item"
         buttonType="whiteFooterNonEdit"
@@ -339,7 +339,7 @@
         </ng-template>
       </atlas-button>
       <atlas-button
-        (click)="backToOverview()"
+        (buttonClicked)="backToOverview()"
         [footerEdit]="form.enabled"
         buttonDataCy="back-to-overview"
         buttonText="COMMON.BACK_TO_OVERVIEW"
@@ -348,7 +348,7 @@
       >
       </atlas-button>
       <atlas-button
-        (click)="toggleEdit()"
+        (buttonClicked)="toggleEdit()"
         *ngIf="
           !isHearingStatusArchived &&
           !form.enabled &&
@@ -364,7 +364,7 @@
       >
       </atlas-button>
       <atlas-button
-        (click)="next()"
+        (buttonClicked)="next()"
         [footerEdit]="form.enabled"
         buttonDataCy="next-item"
         buttonType="whiteFooterNonEdit"
@@ -374,7 +374,7 @@
         </ng-template>
       </atlas-button>
       <atlas-button
-        (click)="toggleEdit()"
+        (buttonClicked)="toggleEdit()"
         [footerEdit]="form.enabled"
         buttonDataCy="cancel"
         buttonText="COMMON.CANCEL"
@@ -383,7 +383,7 @@
       >
       </atlas-button>
       <atlas-button
-        (click)="save()"
+        (buttonClicked)="save()"
         [disabled]="!(form.dirty || uploadedFiles.length > 0)"
         [footerEdit]="form.enabled"
         [submitButton]="true"
