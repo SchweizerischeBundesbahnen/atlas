@@ -2,10 +2,10 @@ package ch.sbb.workflow.module.lidi.tth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.workflow.module.lidi.tth.entity.TthDossier;
 import ch.sbb.workflow.module.lidi.tth.entity.TthDossierQuestion;
+import ch.sbb.workflow.module.lidi.tth.model.DossierStatus;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -23,8 +23,9 @@ class TthDossierServiceTest {
         .topic("Bern, Salem - Takt")
         .internalComment("Noch mit Bernmobil abklären")
         .publicComment("In Abklärung mit TU")
+        .statementIds(List.of(132L, 145L))
         .boContactMail("bern@mobil.be")
-        .dossierStatus(StatementStatus.RECEIVED)
+        .dossierStatus(DossierStatus.ADDED)
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
         .build());
     assertThat(dossier.getId()).isNotNull();
@@ -37,11 +38,13 @@ class TthDossierServiceTest {
         .internalComment("Noch mit Bernmobil abklären")
         .publicComment("In Abklärung mit TU")
         .boContactMail("bern@mobil.be")
-        .dossierStatus(StatementStatus.RECEIVED)
+        .dossierStatus(DossierStatus.DOSSIER_BO_CHECK)
+        .statementIds(List.of(132L, 145L))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
         .build();
     dossier.setDossierQuestions(List.of(TthDossierQuestion.builder()
         .tthDossier(dossier)
+        .question("Kann der Takt erhöht werden?")
         .answerToCanton("Wir können den Takt nicht erhöhen.")
         .build()));
 

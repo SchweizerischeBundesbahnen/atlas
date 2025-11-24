@@ -1,7 +1,6 @@
 package ch.sbb.workflow.module.lidi.tth.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.workflow.entity.BaseWorkflowEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +36,10 @@ public class TthDossierQuestion extends BaseWorkflowEntity {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
+
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  private String question;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_5000)
   private String answerToCanton;
