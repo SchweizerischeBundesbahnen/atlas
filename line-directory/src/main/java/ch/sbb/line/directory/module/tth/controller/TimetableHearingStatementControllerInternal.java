@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiInternal;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.model.exception.BadRequestException;
@@ -31,6 +32,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
@@ -199,6 +201,19 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
   public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid, Long year) {
     LocalDate validOn = LocalDate.of(year.intValue(), 1, 1);
     return responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(ttfnid, validOn);
+  }
+
+  @Override
+  public void updateStatements(BatchUpdateTimetableHearingStatementsModel batchUpdateModel) {
+    List<TimetableHearingStatement> timetableHearingStatements =
+        timetableHearingStatementService.getTimetableHearingStatementsByIds(batchUpdateModel.getIds());
+    if (!timetableHearingStatements.stream().map(TimetableHearingStatement::getId).collect(Collectors.toSet())
+        .containsAll(batchUpdateModel.getIds())) {
+      throw new IllegalStateException("Not all statements could be found for the given ids");
+    }
+    timetableHearingStatements.forEach(
+        timetableHearingStatement -> timetableHearingStatementService.updateStatemen(timetableHearingStatement,
+            batchUpdateModel.getStatementStatus(), batchUpdateModel.getDossierId(), batchUpdateModel.getDossierContactMail()));
   }
 
 }

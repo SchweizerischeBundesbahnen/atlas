@@ -103,6 +103,9 @@ public class TimetableHearingStatementModelV2 extends AuditableVersionModel impl
   @Schema(description = "Topic of the statement", example = "Frequency increase line S1")
   private String topic;
 
+  @Schema(description = "Linked Dossier", accessMode = AccessMode.READ_ONLY)
+  private Long dossierId;
+
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 

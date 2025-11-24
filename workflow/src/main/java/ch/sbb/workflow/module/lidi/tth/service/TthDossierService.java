@@ -1,35 +1,33 @@
 package ch.sbb.workflow.module.lidi.tth.service;
 
+import ch.sbb.atlas.api.client.line.workflow.TimetableHearingStatementClient;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
+import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
 import ch.sbb.workflow.module.lidi.tth.entity.TthDossier;
 import ch.sbb.workflow.module.lidi.tth.repository.TthDossierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class TthDossierService {
 
   private final TthDossierRepository dossierRepository;
+  private final TimetableHearingStatementClient timetableHearingStatementClient;
 
-  /**
-   * Dossier:
-   * - Thema
-   * - Statements mit IDs
-   * - Dossierstatus
-   * - Frist zur Beantwortung
-   * - Kommentare
-   * (LIDI)
-   * Statement:
-   * - Statement
-   * - Kantonskommentar
-   * - Dossier-ID => wenn vorhanden editieren verboten => noch hinzufügen
-   * (LIDI-WF-Communication)
-   * Statusübergänge im Dossier -> Statements entsprechend updaten
-   *
-   * Mockups prüfen und attribute checken
-   */
+  @Transactional
   public TthDossier createDossier(TthDossier dossier) {
-    return dossierRepository.save(dossier);
+    dossier.setDossierStatus(DossierStatus.ADDED);
+    TthDossier tthDossier = dossierRepository.saveAndFlush(dossier);
+    timetableHearingStatementClient.updateStatements(BatchUpdateTimetableHearingStatementsModel.builder()
+        .ids(tthDossier.getStatementIds())
+        .statementStatus(StatementStatus.IN_REVIEW)
+        .dossierId(tthDossier.getId())
+        .dossierContactMail(tthDossier.getBoContactMail())
+        .build());
+    return tthDossier;
   }
 
   /**

@@ -10,5 +10,10 @@ alter table timetable_hearing_statement
 alter table timetable_hearing_statement
     add column internal_comment varchar(5000);
 
+alter table timetable_hearing_statement
+    add column dossier_id BIGINT;
+alter table timetable_hearing_statement
+    add column dossier_contact_mail varchar(255);
+
 alter table statement_document
     add column anonymous boolean default false not null;

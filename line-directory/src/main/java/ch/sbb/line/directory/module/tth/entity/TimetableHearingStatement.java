@@ -51,7 +51,6 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  // Information regarding subject
   @NotNull
   private Long timetableYear;
 
@@ -107,6 +106,10 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
 
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String topic;
+
+  private Long dossierId;
+
+  private String dossierContactMail;
 
   public void removeDocument(String documentFilename) {
     Optional<StatementDocument> optionalStatementDocument = documents.stream()

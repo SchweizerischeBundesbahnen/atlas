@@ -7,6 +7,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMEN
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
@@ -29,21 +30,23 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "[INTERNAL] Timetable Hearing Statements")
-@RequestMapping("internal/timetable-hearing/statements")
 @Validated
 public interface TimetableHearingStatementApiInternal {
 
+  String BASE_PATH = "internal/timetable-hearing/statements";
+
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping(path = "/update-statement-status")
+  @PutMapping(path = BASE_PATH + "/update-statement-status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -56,7 +59,7 @@ public interface TimetableHearingStatementApiInternal {
       @org.springframework.web.bind.annotation.RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus);
 
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping(path = "/update-canton")
+  @PutMapping(path = BASE_PATH + "/update-canton")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -68,7 +71,7 @@ public interface TimetableHearingStatementApiInternal {
   void updateHearingCanton(
       @org.springframework.web.bind.annotation.RequestBody UpdateHearingCantonModel updateHearingCantonModel);
 
-  @GetMapping
+  @GetMapping(BASE_PATH)
   @PageableAsQueryParam
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
@@ -77,18 +80,18 @@ public interface TimetableHearingStatementApiInternal {
           TimetableHearingStatementModelV2.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
-  @GetMapping(path = "csv/{language}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+  @GetMapping(path = BASE_PATH + "/csv/{language}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   Resource getStatementsAsCsv(@PathVariable String language,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
-  @GetMapping(path = "{id}")
+  @GetMapping(path = BASE_PATH + "/{id}")
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingStatementModelV2 getStatement(@PathVariable Long id);
 
-  @GetMapping(path = "{id}/previous")
+  @GetMapping(path = BASE_PATH + "/{id}/previous")
   @PageableAsQueryParam
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
@@ -98,7 +101,7 @@ public interface TimetableHearingStatementApiInternal {
           TimetableHearingStatementModelV2.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
-  @GetMapping(path = "{id}/next")
+  @GetMapping(path = BASE_PATH + "/{id}/next")
   @PageableAsQueryParam
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
@@ -108,17 +111,17 @@ public interface TimetableHearingStatementApiInternal {
           TimetableHearingStatementModelV2.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
-  @GetMapping(path = "{id}/documents/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
+  @GetMapping(path = BASE_PATH + "/{id}/documents/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   Resource getStatementDocument(@PathVariable Long id, @PathVariable String filename);
 
-  @DeleteMapping(path = "{id}/documents/{filename}")
+  @DeleteMapping(path = BASE_PATH + "/{id}/documents/{filename}")
   void deleteStatementDocument(@PathVariable Long id, @PathVariable String filename);
 
   // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(path = BASE_PATH, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModelV2 createStatement(
@@ -127,7 +130,7 @@ public interface TimetableHearingStatementApiInternal {
 
   // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping(path = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PutMapping(path = BASE_PATH + "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -142,7 +145,11 @@ public interface TimetableHearingStatementApiInternal {
       @RequestPart(required = false) List<MultipartFile> documents
   );
 
-  @GetMapping(path = "responsible-transport-companies/{ttfnid}/{year}")
+  @GetMapping(path = BASE_PATH + "/responsible-transport-companies/{ttfnid}/{year}")
   List<TransportCompanyModel> getResponsibleTransportCompanies(@PathVariable String ttfnid, @PathVariable Long year);
+
+
+  @PostMapping(path = BASE_PATH + "/batch-update-statements")
+  void updateStatements(@Valid @RequestBody BatchUpdateTimetableHearingStatementsModel batchUpdateModel);
 
 }

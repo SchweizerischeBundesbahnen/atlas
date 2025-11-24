@@ -278,4 +278,14 @@ public class TimetableHearingStatementService {
     }
     timetableHearingStatementRepository.save(statement);
   }
+
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+  public void updateStatemen(TimetableHearingStatement statement, StatementStatus statementStatus, Long dossierId,
+      String dossierContactMail) {
+    statement.setStatementStatus(statementStatus);
+    statement.setDossierId(dossierId);
+    statement.setDossierContactMail(dossierContactMail);
+    timetableHearingStatementRepository.save(statement);
+  }
 }

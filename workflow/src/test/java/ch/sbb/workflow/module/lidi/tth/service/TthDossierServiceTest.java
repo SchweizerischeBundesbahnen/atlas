@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.workflow.module.lidi.tth.entity.TthDossier;
 import ch.sbb.workflow.module.lidi.tth.entity.TthDossierQuestion;
-import ch.sbb.workflow.module.lidi.tth.model.DossierStatus;
+import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;

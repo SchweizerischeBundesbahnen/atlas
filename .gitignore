@@ -124,6 +124,7 @@ frontend/jsonZipDirectory/
 .idea/gradle.xml
 .idea/kotlinc.xml
 .idea/copilot*.xml
+.idea/data_source_mapping.xml
 
 /line-directory/export/
 /.export/
