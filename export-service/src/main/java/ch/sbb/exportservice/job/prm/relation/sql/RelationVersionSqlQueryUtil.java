@@ -13,11 +13,14 @@ public class RelationVersionSqlQueryUtil extends SqlQueryUtil {
       SELECT rv.*
       FROM relation_version rv
       """;
-  private static final String WHERE_STATEMENT = "WHERE '%s' between rv.valid_from and rv.valid_to";
   private static final String GROUP_BY_STATEMENT = "GROUP BY rv.id";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, getWhereClause(exportTypeV2, WHERE_STATEMENT), GROUP_BY_STATEMENT);
+    String sqlQuery = ExportSqlQueryBuilder.builder()
+        .exportType(exportTypeV2)
+        .selectStatement(SELECT_STATEMENT)
+        .groupByAndOrderByClause(GROUP_BY_STATEMENT)
+        .build().getQuery();
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;

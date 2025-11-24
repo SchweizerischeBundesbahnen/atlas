@@ -14,11 +14,14 @@ public class PlatformVersionSqlQueryUtil extends SqlQueryUtil {
       FROM platform_version pv
       LEFT JOIN platform_version_info_opportunities pvio on pv.id = pvio.platform_version_id
       """;
-  private static final String WHERE_STATEMENT = "WHERE '%s' between pv.valid_from and pv.valid_to";
   private static final String GROUP_BY_STATEMENT = "GROUP BY pv.id";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, getWhereClause(exportTypeV2, WHERE_STATEMENT), GROUP_BY_STATEMENT);
+    String sqlQuery = ExportSqlQueryBuilder.builder()
+        .exportType(exportTypeV2)
+        .selectStatement(SELECT_STATEMENT)
+        .groupByAndOrderByClause(GROUP_BY_STATEMENT)
+        .build().getQuery();
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;
