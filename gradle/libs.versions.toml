@@ -1,7 +1,7 @@
 [versions]
 okhttpVersion = "5.3.2"
 proj4jVersion = "1.4.1"
-shedlockVersion = "7.1.0"
+shedlockVersion = "7.2.0"
 protobufVersion = "4.33.1"
 springCloudDependenciesVersion = "2025.0.0"
 
@@ -29,7 +29,7 @@ protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version
 
 # Other
 swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.40" }
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.39.1" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.39.2" }
 jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.6" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.5.0" }
