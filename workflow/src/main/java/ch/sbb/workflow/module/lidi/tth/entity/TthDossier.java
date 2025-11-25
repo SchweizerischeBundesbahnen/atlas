@@ -3,6 +3,7 @@ package ch.sbb.workflow.module.lidi.tth.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
 import ch.sbb.workflow.entity.BaseWorkflowEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,14 +12,17 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -62,10 +66,13 @@ public class TthDossier extends BaseWorkflowEntity {
   private List<Long> statementIds;
 
   @NotBlank
-  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   private String boContactMail;
 
   @NotNull
   private LocalDate boDeadlineToAnswer;
 
+  @Builder.Default
+  @OneToMany(mappedBy = "tthDossier", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private List<TthDossierQuestion> dossierQuestions = new ArrayList<>();
 }

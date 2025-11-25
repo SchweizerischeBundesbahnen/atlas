@@ -13,7 +13,6 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "TthDossier")
 public class TthDossierModel extends AuditableVersionModel {
 
-  @Schema(description = "Dossier Id: the generated DB id", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Generated DB id", accessMode = AccessMode.READ_ONLY)
   private Long id;
 
   @Schema(description = "Topic of the dossier", example = "Increase frequency on line S1 during peak hours")
@@ -55,7 +54,7 @@ public class TthDossierModel extends AuditableVersionModel {
   @Schema(description = "Mail of the business partner at the transport company")
   @NotBlank
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
-  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   private String boContactMail;
 
   @Schema(description = "Deadline for the dossier to be answered")
