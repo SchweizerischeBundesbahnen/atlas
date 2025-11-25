@@ -72,6 +72,10 @@ export interface TimetableHearingStatementV2 {
      */
     statementAnonymous?: boolean;
     /**
+     * Statement anonymized by canton
+     */
+    anonymousStatement?: string;
+    /**
      * List of uploaded documents
      */
     documents?: Array<TimetableHearingStatementDocument>;
@@ -91,6 +95,10 @@ export interface TimetableHearingStatementV2 {
      * Topic of the statement
      */
     topic?: string;
+    /**
+     * Linked Dossier
+     */
+    readonly dossierId?: number;
     /**
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */

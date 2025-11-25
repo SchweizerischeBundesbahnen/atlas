@@ -6,6 +6,8 @@ alter table timetable_hearing_statement
 alter table timetable_hearing_statement
     add column statement_anonymous boolean default false not null;
 alter table timetable_hearing_statement
+    add column anonymous_statement varchar(5000);
+alter table timetable_hearing_statement
     add column topic varchar(255);
 alter table timetable_hearing_statement
     add column internal_comment varchar(5000);

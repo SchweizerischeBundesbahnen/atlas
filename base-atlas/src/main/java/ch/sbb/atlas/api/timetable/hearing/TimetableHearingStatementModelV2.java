@@ -6,9 +6,11 @@ import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.IdCheckable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -83,6 +85,10 @@ public class TimetableHearingStatementModelV2 extends AuditableVersionModel impl
   @Schema(description = "Statement does not contain personal data")
   private boolean statementAnonymous;
 
+  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  @Schema(description = "Statement anonymized by canton", example = "I need some more busses please.")
+  private String anonymousStatement;
+
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
   @Schema(description = "List of uploaded documents")
   private List<TimetableHearingStatementDocumentModel> documents;
@@ -96,7 +102,8 @@ public class TimetableHearingStatementModelV2 extends AuditableVersionModel impl
   private String internalComment;
 
   @Size(max = AtlasFieldLengths.LENGTH_280)
-  @Schema(description = "Canton transfer comment", example = "I am changing my statement from the canton Geneva to the canton Bern.")
+  @Schema(description = "Canton transfer comment", example = "I am changing my statement from the canton Geneva to the canton "
+      + "Bern.")
   private String cantonTransferComment;
 
   @Size(max = AtlasFieldLengths.LENGTH_255)
@@ -121,4 +128,9 @@ public class TimetableHearingStatementModelV2 extends AuditableVersionModel impl
   @Valid
   private TimetableHearingStatementSenderModelV2 statementSender;
 
+  @JsonIgnore
+  @AssertTrue
+  public boolean isWithValidAnonymousStatement() {
+    return !statementAnonymous || anonymousStatement == null;
+  }
 }

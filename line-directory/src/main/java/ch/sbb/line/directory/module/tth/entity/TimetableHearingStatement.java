@@ -81,12 +81,16 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Valid
   private StatementSender statementSender;
 
-  // Statement
+  // Statement made by citizen
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String statement;
 
   private boolean statementAnonymous;
+
+  // Statement anonymized by canton
+  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  private String anonymousStatement;
 
   @ToString.Exclude
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)

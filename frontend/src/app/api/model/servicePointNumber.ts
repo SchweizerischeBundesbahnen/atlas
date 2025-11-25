@@ -11,17 +11,17 @@
 
 export interface ServicePointNumber { 
     /**
-     * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
+     * NumberShort - 5 chars identifying number. Range: 1-99.999
      */
-    number: number;
+    numberShort: number;
     /**
      * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
      */
     uicCountryCode: number;
     /**
-     * NumberShort - 5 chars identifying number. Range: 1-99.999
+     * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
      */
-    numberShort: number;
+    number: number;
     /**
      * Calculated value formed from the numberShort. Range: 0-9
      */
