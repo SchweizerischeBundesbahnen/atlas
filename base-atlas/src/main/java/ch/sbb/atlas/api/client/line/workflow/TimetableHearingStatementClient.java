@@ -1,7 +1,6 @@
 package ch.sbb.atlas.api.client.line.workflow;
 
 import ch.sbb.atlas.api.client.TokenPassingFeignClientConfig;
-import ch.sbb.atlas.api.lidi.workflow.LineWorkflowApi;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiInternal;
 import org.springframework.cloud.openfeign.FeignClient;
 

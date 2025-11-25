@@ -30,7 +30,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -147,7 +146,6 @@ public interface TimetableHearingStatementApiInternal {
 
   @GetMapping(path = BASE_PATH + "/responsible-transport-companies/{ttfnid}/{year}")
   List<TransportCompanyModel> getResponsibleTransportCompanies(@PathVariable String ttfnid, @PathVariable Long year);
-
 
   @PostMapping(path = BASE_PATH + "/batch-update-statements")
   void updateStatements(@Valid @RequestBody BatchUpdateTimetableHearingStatementsModel batchUpdateModel);

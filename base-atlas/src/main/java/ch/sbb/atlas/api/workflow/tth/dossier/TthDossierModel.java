@@ -11,8 +11,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -60,5 +62,9 @@ public class TthDossierModel extends AuditableVersionModel {
   @Schema(description = "Deadline for the dossier to be answered")
   @NotNull
   private LocalDate boDeadlineToAnswer;
+
+  @Builder.Default
+  @Schema(description = "Questions for the BO to answer")
+  private List<TthDossierQuestionModel> questions = new ArrayList<>();
 
 }
