@@ -26,7 +26,7 @@ public interface TimetableHearingStatementApiV2 {
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModelV2 createStatementExternal(
-      @RequestPart @Valid TimetableHearingStatementModelV2 statement,
+      @RequestPart @Valid ExternalTimetableHearingStatementCreateModel statement,
       @RequestPart(required = false) List<MultipartFile> documents);
 
 }

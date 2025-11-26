@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.module.tth.mapper;
 
+import ch.sbb.atlas.api.timetable.hearing.ExternalTimetableHearingStatementCreateModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement;
@@ -39,6 +40,17 @@ public class TimetableHearingStatementMapperV2 {
             .collect(Collectors.toSet()));
     timetableHearingStatement.setResponsibleTransportCompaniesDisplay(timetableHearingStatement.getTransportCompaniesCommaSeparated());
     return timetableHearingStatement;
+  }
+
+  public static TimetableHearingStatementModelV2 fromExternalModel(ExternalTimetableHearingStatementCreateModel statement) {
+    return TimetableHearingStatementModelV2.builder()
+        .ttfnid(statement.getTtfnid())
+        .timetableFieldNumber(statement.getTimetableFieldNumber())
+        .swissCanton(statement.getSwissCanton())
+        .stopPlace(statement.getStopPlace())
+        .statement(statement.getStatement())
+        .statementSender(statement.getStatementSender())
+        .build();
   }
 
   public static TimetableHearingStatementModelV2 toModel(TimetableHearingStatement statement) {

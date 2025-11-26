@@ -23,7 +23,7 @@ public interface TthDossierApiInternal {
   @PostMapping
   TthDossierModel createDossier(@Valid @RequestBody TthDossierModel dossierModel);
 
-  @PostMapping("{dossierId}/send-to-tu")
+  @PostMapping("{dossierId}/send-to-bo")
   void sendDossierToBo(@PathVariable Long dossierId, @Valid @RequestBody TthDossierQuestionModel questionModel);
 
 }

@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Schema(name = "TthDossier")
-public class TthDossierModel extends AuditableVersionModel {
+public class TthDossierModel extends AuditableVersionModel implements StatementDossierLinked {
 
   @Schema(description = "Generated DB id", accessMode = AccessMode.READ_ONLY)
   private Long id;

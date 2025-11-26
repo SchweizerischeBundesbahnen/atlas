@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.AuditableVersionModel;
 import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.workflow.tth.dossier.StatementDossierLinked;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.IdCheckable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,7 +37,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
 @Schema(name = "TimetableHearingStatementV2")
-public class TimetableHearingStatementModelV2 extends AuditableVersionModel implements CantonAssociated, IdCheckable {
+public class TimetableHearingStatementModelV2 extends AuditableVersionModel implements TimetableHearingStatement,
+    CantonAssociated, IdCheckable, StatementDossierLinked {
 
   @Schema(description = "Technical identifier",
       example = "1", accessMode = AccessMode.READ_ONLY)
