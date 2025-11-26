@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.workflow.tth.dossier.StatementDossierLinked;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
@@ -22,6 +23,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -41,7 +43,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @FieldNameConstants
 @Entity(name = "timetable_hearing_statement")
-public class TimetableHearingStatement extends BaseEntity implements CantonAssociated {
+public class TimetableHearingStatement extends BaseEntity implements CantonAssociated, StatementDossierLinked {
 
   private static final String VERSION_SEQ = "timetable_hearing_statement_seq";
 
@@ -50,7 +52,6 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  // Information regarding subject
   @NotNull
   private Long timetableYear;
 
@@ -81,10 +82,16 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Valid
   private StatementSender statementSender;
 
-  // Statement
+  // Statement made by citizen
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String statement;
+
+  private boolean statementAnonymous;
+
+  // Statement anonymized by canton
+  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  private String anonymousStatement;
 
   @ToString.Exclude
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
@@ -93,10 +100,21 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
 
   // FoT Justification field for comments
   @Size(max = AtlasFieldLengths.LENGTH_5000)
-  private String justification;
+  private String publicComment;
+
+  // Canton internal comment
+  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  private String internalComment;
 
   @Size(max = AtlasFieldLengths.LENGTH_280)
-  private String comment;
+  private String cantonTransferComment;
+
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  private String topic;
+
+  private Long dossierId;
+
+  private String dossierContactMail;
 
   public void removeDocument(String documentFilename) {
     Optional<StatementDocument> optionalStatementDocument = documents.stream()
@@ -111,6 +129,16 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
 
   public boolean checkIfStatementDocumentExists(String documentFilename) {
     return documents.stream().anyMatch(document -> Objects.equals(documentFilename, document.getFileName()));
+  }
+
+  public String getTransportCompaniesCommaSeparated() {
+    List<String> sorted = getResponsibleTransportCompanies()
+        .stream()
+        .map(SharedTransportCompany::getAbbreviation)
+        .filter(Objects::nonNull)
+        .sorted()
+        .toList();
+    return String.join(", ", sorted);
   }
 
 }

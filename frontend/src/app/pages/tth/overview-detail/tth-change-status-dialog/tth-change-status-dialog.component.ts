@@ -17,7 +17,7 @@ import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dia
 })
 export class TthChangeStatusDialogComponent {
   formGroup = new FormGroup<TthChangeStatusFormGroup>({
-    justification: new FormControl(this.data.justification, [
+    publicComment: new FormControl(this.data.publicComment, [
       AtlasFieldLengthValidator.statement,
     ]),
   });
@@ -34,8 +34,8 @@ export class TthChangeStatusDialogComponent {
     let justification: string | undefined;
     ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
-      if (this.formGroup.controls['justification'].value) {
-        justification = this.formGroup.controls['justification'].value;
+      if (this.formGroup.controls['publicComment'].value) {
+        justification = this.formGroup.controls['publicComment'].value;
       }
       this.timetableHearingStatementsService
         .updateHearingStatementStatus({

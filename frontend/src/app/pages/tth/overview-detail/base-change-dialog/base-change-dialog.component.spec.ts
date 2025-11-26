@@ -22,7 +22,7 @@ const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Öper isch am YB-Match gsi',
-  justification: 'Napoli ist besser als YB',
+  publicComment: 'Napoli ist besser als YB',
   statementSender: {
     emails: new Set('fan@yb.ch'),
   },
@@ -61,10 +61,10 @@ describe('BaseChangeDialogComponent', () => {
 
     fixture = TestBed.createComponent(BaseChangeDialogComponent);
     component = fixture.componentInstance;
-    component.controlName = 'justification';
+    component.controlName = 'publicComment';
     component.dialogRef = dialogRefSpy;
     component.formGroup = new FormGroup<TthChangeStatusFormGroup>({
-      justification: new FormControl('', [
+      publicComment: new FormControl('', [
         AtlasFieldLengthValidator.statement,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
@@ -93,7 +93,7 @@ describe('BaseChangeDialogComponent', () => {
   });
 
   it('should render tth change status dialog', () => {
-    component.formGroup.controls['justification'].setValue('Forza Napoli');
+    component.formGroup.controls['publicComment'].setValue('Forza Napoli');
 
     const title = fixture.debugElement.query(
       By.css('div.dialog > div.mb-5 > span.font-bold-4xl')
@@ -105,10 +105,10 @@ describe('BaseChangeDialogComponent', () => {
     );
     expect(content.nativeElement.innerText).toBe('message');
 
-    const justification = fixture.debugElement.query(By.css('form-comment'));
-    const justificationValue =
-      justification.nativeNode.querySelector('textarea').value;
-    expect(justificationValue).toBe('Forza Napoli');
+    const publicComment = fixture.debugElement.query(By.css('form-comment'));
+    const publicCommentValue =
+      publicComment.nativeNode.querySelector('textarea').value;
+    expect(publicCommentValue).toBe('Forza Napoli');
 
     const cancelButton = fixture.debugElement.query(
       By.css('mat-dialog-actions button.me-3')

@@ -65,7 +65,7 @@ public class TimetableHearingStatementCsvModel {
         .statement(timetableHearingStatementModel.getStatement())
         .documentsPresent(!timetableHearingStatementModel.getDocuments().isEmpty())
         .status(timetableHearingStatementModel.getStatementStatus())
-        .justification(timetableHearingStatementModel.getJustification())
+        .justification(timetableHearingStatementModel.getPublicComment())
         .firstName(timetableHearingStatementModel.getStatementSender().getFirstName())
         .lastName(timetableHearingStatementModel.getStatementSender().getLastName())
         .organisation(timetableHearingStatementModel.getStatementSender().getOrganisation())

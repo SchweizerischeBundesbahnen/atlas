@@ -18,7 +18,9 @@ import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dia
 })
 export class TthChangeCantonDialogComponent {
   formGroup = new FormGroup<TthChangeCantonFormGroup>({
-    comment: new FormControl('', [AtlasFieldLengthValidator.length_280]),
+    cantonChangeComment: new FormControl('', [
+      AtlasFieldLengthValidator.length_280,
+    ]),
   });
 
   private ngUnsubscribe = new Subject<void>();
@@ -34,8 +36,8 @@ export class TthChangeCantonDialogComponent {
     let comment: string | undefined;
     ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
-      if (this.formGroup.controls['comment'].value) {
-        comment = this.formGroup.controls['comment'].value;
+      if (this.formGroup.controls['cantonChangeComment'].value) {
+        comment = this.formGroup.controls['cantonChangeComment'].value;
       }
       this.timetableHearingStatementsServiceV2
         .updateHearingCanton({

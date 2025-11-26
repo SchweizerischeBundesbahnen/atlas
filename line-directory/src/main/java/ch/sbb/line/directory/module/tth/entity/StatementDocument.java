@@ -46,5 +46,7 @@ public class StatementDocument {
 
   @NotNull
   private Long fileSize;
+
+  private boolean anonymous;
   
 }

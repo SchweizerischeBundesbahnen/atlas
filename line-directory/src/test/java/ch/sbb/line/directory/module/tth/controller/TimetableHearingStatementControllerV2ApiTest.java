@@ -17,7 +17,7 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.Status;

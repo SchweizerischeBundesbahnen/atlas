@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
 
 export interface TthChangeCantonFormGroup {
-  comment: FormControl<string | null | undefined>;
+  cantonChangeComment: FormControl<string | null | undefined>;
 }

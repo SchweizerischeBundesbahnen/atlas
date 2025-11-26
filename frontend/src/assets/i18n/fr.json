@@ -1035,8 +1035,8 @@
       "E_MAIL": "E-Mail",
       "E_MAIL_TEXT": "Si aucun e-mail n'est disponible, une entrée fictive, par exemple xxx@xxx.ch, suffit.",
       "E_MAIL_ITEMS_LIMIT_REACHED": "10 emails ont déjà été enregistrés",
-      "JUSTIFICATION": "Justification",
-      "COMMENT": "Commentaire sur la cession de canton",
+      "PUBLIC_COMMENT": "Justification",
+      "CANTON_TRANSFER_COMMENT": "Commentaire sur la cession de canton",
       "ATTACHMENT_INFO": "Vous pouvez envoyer votre prise de position avec une annexe PDF. Il est possible d'envoyer 3 PDF jusqu'à 20 MB.",
       "ATTACHMENTS": "Pièces jointes actuelles",
       "ORGANISATION": "Organisation/Association",
@@ -1051,7 +1051,7 @@
       "DIALOG": {
         "TITLE": "Modifier le canton",
         "TEXT": "Vous modifiez le canton responsable de cette déclaration. Vous ne pouvez plus modifier ce relevé après sa remise au canton.",
-        "COMMENT_LABEL": "Commentaire sur la cession de canton",
+        "CANTON_TRANSFER_COMMENT_LABEL": "Commentaire sur la cession de canton",
         "CANCEL": "Retour",
         "CONFIRM": "Modifier le canton"
       },

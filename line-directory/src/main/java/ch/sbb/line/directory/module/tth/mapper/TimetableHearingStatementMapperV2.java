@@ -1,11 +1,10 @@
 package ch.sbb.line.directory.module.tth.mapper;
 
+import ch.sbb.atlas.api.timetable.hearing.ExternalTimetableHearingStatementCreateModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
 import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,17 +25,32 @@ public class TimetableHearingStatementMapperV2 {
         .stopPlace(statementModel.getStopPlace())
         .statementSender(StatementSenderMapperV2.toEntity(statementModel.getStatementSender()))
         .statement(statementModel.getStatement())
+        .statementAnonymous(statementModel.isStatementAnonymous())
+        .anonymousStatement(statementModel.getAnonymousStatement())
         .documents(statementModel.getDocuments().stream().map(StatementDocumentMapper::toEntity).collect(Collectors.toSet()))
-        .justification(statementModel.getJustification())
-        .comment(statementModel.getComment())
+        .publicComment(statementModel.getPublicComment())
+        .internalComment(statementModel.getInternalComment())
+        .topic(statementModel.getTopic())
+        .cantonTransferComment(statementModel.getCantonTransferComment())
         .version(statementModel.getEtagVersion())
         .build();
     timetableHearingStatement.setResponsibleTransportCompanies(
         statementModel.getResponsibleTransportCompanies().stream()
             .map(responsibleTransportCompanyMapper::toEntity)
             .collect(Collectors.toSet()));
-    timetableHearingStatement.setResponsibleTransportCompaniesDisplay(transformToCommaSeparated(timetableHearingStatement));
+    timetableHearingStatement.setResponsibleTransportCompaniesDisplay(timetableHearingStatement.getTransportCompaniesCommaSeparated());
     return timetableHearingStatement;
+  }
+
+  public static TimetableHearingStatementModelV2 fromExternalModel(ExternalTimetableHearingStatementCreateModel statement) {
+    return TimetableHearingStatementModelV2.builder()
+        .ttfnid(statement.getTtfnid())
+        .timetableFieldNumber(statement.getTimetableFieldNumber())
+        .swissCanton(statement.getSwissCanton())
+        .stopPlace(statement.getStopPlace())
+        .statement(statement.getStatement())
+        .statementSender(statement.getStatementSender())
+        .build();
   }
 
   public static TimetableHearingStatementModelV2 toModel(TimetableHearingStatement statement) {
@@ -51,25 +65,19 @@ public class TimetableHearingStatementMapperV2 {
         .responsibleTransportCompaniesDisplay(statement.getResponsibleTransportCompaniesDisplay())
         .statementSender(StatementSenderMapperV2.toModel(statement.getStatementSender()))
         .statement(statement.getStatement())
+        .statementAnonymous(statement.isStatementAnonymous())
+        .anonymousStatement(statement.getAnonymousStatement())
         .documents(statement.getDocuments().stream().map(StatementDocumentMapper::toModel).toList())
-        .justification(statement.getJustification())
-        .comment(statement.getComment())
+        .publicComment(statement.getPublicComment())
+        .internalComment(statement.getInternalComment())
+        .cantonTransferComment(statement.getCantonTransferComment())
+        .dossierId(statement.getDossierId())
         .creationDate(statement.getCreationDate())
         .creator(statement.getCreator())
         .editionDate(statement.getEditionDate())
         .editor(statement.getEditor())
         .etagVersion(statement.getVersion())
         .build();
-  }
-
-  public static String transformToCommaSeparated(TimetableHearingStatement statement) {
-    List<String> sorted = statement.getResponsibleTransportCompanies()
-        .stream()
-        .map(SharedTransportCompany::getAbbreviation)
-        .filter(Objects::nonNull)
-        .sorted()
-        .toList();
-    return String.join(", ", sorted);
   }
 
   private static List<TimetableHearingStatementResponsibleTransportCompanyModel> getResponsibleTransportCompanies(

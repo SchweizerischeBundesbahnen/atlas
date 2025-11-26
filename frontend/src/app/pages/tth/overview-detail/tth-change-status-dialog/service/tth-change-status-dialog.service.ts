@@ -23,7 +23,7 @@ export class TthChangeStatusDialogService {
   onClick(
     changedStatus: StatementStatus,
     tths: TimetableHearingStatementV2[],
-    justification: string | undefined,
+    publicComment: string | undefined,
     statusChangeDataType: StatusChangeDataType
   ): Observable<boolean> {
     const statusChangeData: StatusChangeData = {
@@ -36,7 +36,7 @@ export class TthChangeStatusDialogService {
       confirmText: 'TTH.DIALOG.STATUS_CHANGE',
       tths: tths,
       statementStatus: changedStatus,
-      justification: justification,
+      publicComment: publicComment,
       type: statusChangeDataType,
     };
     this.changeStatusDialog = this.dialog.open(TthChangeStatusDialogComponent, {

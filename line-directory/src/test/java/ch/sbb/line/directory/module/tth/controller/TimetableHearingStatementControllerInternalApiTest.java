@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,14 +24,13 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.export.CsvExportWriter;
@@ -268,24 +268,6 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .andExpect(jsonPath("$.error", is("Constraint violation")))
         .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
         .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
-  }
-
-  @Test
-  void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
-    TimetableHearingStatementModelV1 statement = TimetableHearingStatementModelV1.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModelV1.builder()
-            .build())
-        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-        .build();
-
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
-
-    mvc.perform(multipart(HttpMethod.POST, "/internal/timetable-hearing/statements")
-            .file(statementJson))
-        .andExpect(status().isBadRequest());
   }
 
   @Test
@@ -931,5 +913,39 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.responsibleTransportCompanies, hasSize(1)))
         .andExpect(jsonPath("$." + Fields.responsibleTransportCompanies + "[0].id", is(2)));
+  }
+
+  @Test
+  void shouldUpdateStatementsInBatchForDossier() throws Exception {
+    //given
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .emails(List.of("mike@thebike.com"))
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    statement = timetableHearingStatementRepository.saveAndFlush(statement);
+    BatchUpdateTimetableHearingStatementsModel updateModel =
+        BatchUpdateTimetableHearingStatementsModel.builder()
+            .ids(List.of(statement.getId()))
+            .dossierId(1L)
+            .dossierContactMail("uerli@bernmobil.ch")
+            .statementStatus(StatementStatus.IN_REVIEW)
+            .build();
+
+    //when
+    mvc.perform(post("/internal/timetable-hearing/statements/batch-update-statements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateModel)))
+        .andExpect(status().isOk());
+
+    TimetableHearingStatement statementAfterUpdate = timetableHearingStatementRepository.findById(statement.getId())
+        .orElseThrow();
+    assertThat(statementAfterUpdate.getDossierId()).isEqualTo(1L);
+    assertThat(statementAfterUpdate.getDossierContactMail()).isEqualTo("uerli@bernmobil.ch");
+    assertThat(statementAfterUpdate.getStatementStatus()).isEqualTo(StatementStatus.IN_REVIEW);
   }
 }

@@ -200,7 +200,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         const hearingStatement = this.form.value as TimetableHearingStatementV2;
         this.navigateToStatementDetail(hearingStatement);
       } else {
-        this.form.controls.comment.setValue(this.statement?.comment);
+        this.form.controls.cantonTransferComment.setValue(
+          this.statement?.cantonTransferComment
+        );
       }
     });
   }
@@ -303,11 +305,18 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         Validators.required,
         AtlasFieldLengthValidator.statement,
       ]),
-      justification: new FormControl(statement?.justification, [
+      statementAnonymous: new FormControl(statement?.statementAnonymous),
+      publicComment: new FormControl(statement?.publicComment, [
         AtlasFieldLengthValidator.statement,
       ]),
-      comment: new FormControl(statement?.comment, [
+      internalComment: new FormControl(statement?.internalComment, [
+        AtlasFieldLengthValidator.statement,
+      ]),
+      cantonTransferComment: new FormControl(statement?.cantonTransferComment, [
         AtlasFieldLengthValidator.length_280,
+      ]),
+      topic: new FormControl(statement?.topic, [
+        AtlasFieldLengthValidator.length_255,
       ]),
       documents: new FormArray(
         statement?.documents?.map((document) => new FormControl(document)) ?? []

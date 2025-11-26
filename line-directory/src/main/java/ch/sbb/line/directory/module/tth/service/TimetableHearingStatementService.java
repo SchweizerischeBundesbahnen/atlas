@@ -1,11 +1,9 @@
 package ch.sbb.line.directory.module.tth.service;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
-import static ch.sbb.line.directory.module.tth.mapper.TimetableHearingStatementMapperV1.transformToCommaSeparated;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
@@ -13,18 +11,17 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.pdf.sanitize.PdfCdr;
-import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
+import ch.sbb.line.directory.exception.TtfnidNotFoundException;
+import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.module.tth.entity.StatementDocument;
 import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement;
-import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.module.tth.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.module.tth.mapper.StatementSenderMapperV2;
-import ch.sbb.line.directory.module.tth.mapper.TimetableHearingStatementMapperV1;
 import ch.sbb.line.directory.module.tth.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.module.tth.model.TimetableHearingStatementSearchRestrictions;
-import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingYearRepository;
+import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +51,6 @@ public class TimetableHearingStatementService {
   private final TimetableHearingPdfsAmazonService pdfsUploadAmazonService;
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
   private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
-  private final TimetableHearingStatementMapperV1 timetableHearingStatementMapperV1;
   private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
@@ -91,12 +87,6 @@ public class TimetableHearingStatementService {
     pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
 
     return timetableHearingStatement;
-  }
-
-  public TimetableHearingStatementModelV1 createHearingStatementV1(TimetableHearingStatementModelV1 statement,
-      List<MultipartFile> documents) {
-    TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV1.toEntity(statement);
-    return TimetableHearingStatementMapperV1.toModel(createHearingStatement(statementToCreate, documents));
   }
 
   public TimetableHearingStatementModelV2 createHearingStatementV2(TimetableHearingStatementModelV2 statement,
@@ -205,14 +195,13 @@ public class TimetableHearingStatementService {
 
     timetableHearingStatementInDb.setStopPlace(timetableHearingStatementModel.getStopPlace());
     timetableHearingStatementInDb.setStatement(timetableHearingStatementModel.getStatement());
-    timetableHearingStatementInDb.setJustification(timetableHearingStatementModel.getJustification());
-    timetableHearingStatementInDb.setComment(timetableHearingStatementModel.getComment());
+    timetableHearingStatementInDb.setPublicComment(timetableHearingStatementModel.getPublicComment());
+    timetableHearingStatementInDb.setCantonTransferComment(timetableHearingStatementModel.getCantonTransferComment());
     timetableHearingStatementInDb.setStatementSender(
         StatementSenderMapperV2.toEntity(timetableHearingStatementModel.getStatementSender()));
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
-    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(
-        transformToCommaSeparated(timetableHearingStatementInDb));
+    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(timetableHearingStatementInDb.getTransportCompaniesCommaSeparated());
 
     return timetableHearingStatementInDb;
   }
@@ -275,7 +264,7 @@ public class TimetableHearingStatementService {
       String justification) {
     statement.setStatementStatus(statementStatus);
     if (justification != null) {
-      statement.setJustification(justification);
+      statement.setPublicComment(justification);
     }
     timetableHearingStatementRepository.save(statement);
   }
@@ -285,8 +274,18 @@ public class TimetableHearingStatementService {
   public void updateHearingCanton(TimetableHearingStatement statement, SwissCanton swissCanton, String comment) {
     statement.setSwissCanton(swissCanton);
     if (comment != null) {
-      statement.setComment(comment);
+      statement.setCantonTransferComment(comment);
     }
+    timetableHearingStatementRepository.save(statement);
+  }
+
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+  public void updateStatement(TimetableHearingStatement statement, StatementStatus statementStatus, Long dossierId,
+      String dossierContactMail) {
+    statement.setStatementStatus(statementStatus);
+    statement.setDossierId(dossierId);
+    statement.setDossierContactMail(dossierContactMail);
     timetableHearingStatementRepository.save(statement);
   }
 }

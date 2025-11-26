@@ -19,9 +19,12 @@ export interface StatementDetailFormGroup {
   oldSwissCanton: FormControl<SwissCanton | null | undefined>;
   stopPlace: FormControl<string | null | undefined>;
   statement: FormControl<string | null | undefined>;
+  statementAnonymous: FormControl<boolean | null | undefined>;
   statementSender: FormGroup<StatementSenderFormGroup>;
-  justification: FormControl<string | null | undefined>;
-  comment: FormControl<string | null | undefined>;
+  publicComment: FormControl<string | null | undefined>;
+  internalComment: FormControl<string | null | undefined>;
+  cantonTransferComment: FormControl<string | null | undefined>;
+  topic: FormControl<string | null | undefined>;
   documents: FormArray;
   etagVersion: FormControl<number | null | undefined>;
   editor: FormControl<string | null | undefined>;

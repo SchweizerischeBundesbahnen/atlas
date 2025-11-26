@@ -43,7 +43,7 @@ class TimetableHearingStatementTest {
             .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
-        .justification("Weil ich mag")
+        .publicComment("Weil ich mag")
         .documents(Set.of(StatementDocument.builder()
                 .fileName("doc1")
                 .fileSize(6454L)

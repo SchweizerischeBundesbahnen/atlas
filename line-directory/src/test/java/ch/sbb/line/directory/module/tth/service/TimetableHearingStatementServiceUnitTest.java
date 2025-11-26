@@ -6,7 +6,6 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.module.tth.mapper.ResponsibleTransportCompanyMapper;
-import ch.sbb.line.directory.module.tth.mapper.TimetableHearingStatementMapperV1;
 import ch.sbb.line.directory.module.tth.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingYearRepository;
@@ -35,8 +34,6 @@ class TimetableHearingStatementServiceUnitTest {
   @Mock
   private TimetableFieldNumberRepository timetableFieldNumberRepository;
   @Mock
-  private TimetableHearingStatementMapperV1 timetableHearingStatementMapperV1;
-  @Mock
   private TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   @BeforeEach
@@ -50,7 +47,6 @@ class TimetableHearingStatementServiceUnitTest {
         timetableHearingPdfsAmazonServiceMock,
         statementDocumentFilesValidationServiceMock,
         responsibleTransportCompanyMapper,
-        timetableHearingStatementMapperV1,
         timetableHearingStatementMapperV2
     );
   }
