@@ -4,8 +4,8 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.job.BaseExportType;
 import ch.sbb.exportservice.model.ExportObjectV2;
-import ch.sbb.exportservice.model.ExportTypeV2;
 import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -24,12 +24,7 @@ public class ExportReferencePointJobService extends BaseExportJobService {
 
   @Override
   protected List<JobParams> getExportTypes() {
-    return List.of(
-        new JobParams(ExportTypeV2.FULL),
-        new JobParams(ExportTypeV2.ACTUAL),
-        new JobParams(ExportTypeV2.FUTURE_TIMETABLE),
-        new JobParams(ExportTypeV2.TIMETABLE_YEARS)
-    );
+    return BaseExportType.getBaseExportTypesWithFutureTimetable();
   }
 
   @Override
