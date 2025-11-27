@@ -25,7 +25,8 @@ public abstract class BasePrmSqlIntegrationTest {
   @Qualifier("prmDataSource")
   protected DataSource prmDataSource;
 
-  protected void insertStopPoint(Integer number, String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
+  protected void insertStopPoint(int id, Integer number, String sloid, LocalDate validFrom, LocalDate validTo)
+      throws SQLException {
     final String insertSql = """
         INSERT INTO stop_point_version (id, sloid, number, free_text, address, zip_code, city, alternative_transport,
                                               alternative_transport_condition, assistance_availability, assistance_condition,
@@ -34,12 +35,12 @@ public abstract class BasePrmSqlIntegrationTest {
                                               visual_info, wheelchair_ticket_machine, assistance_request_fulfilled,
                                               ticket_machine, valid_from, valid_to, creation_date, creator, edition_date, editor,
                                               version, status)
-        VALUES (1000, '%s', %d, null, 'Diessenhoferstrasse 21', '8245', 'Feuerthalen', 'NO', null, 'NOT_APPLICABLE',
+        VALUES (%d, '%s', %d, null, 'Diessenhoferstrasse 21', '8245', 'Feuerthalen', 'NO', null, 'NOT_APPLICABLE',
         null, 'NO', 'NO', null, 'YES', 'NO', 'Hilfestellung für Sehbehinderte unter Telefon 0800 11 44 77', true, 'sbb.ch', 'YES',
         'YES', 'NO', 'YES', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
         '2022-02-19 09:54:38.000000', 'u123456', 0, 'VALIDATED');
         """
-        .formatted(sloid, number, formatDate(validFrom), formatDate(validTo));
+        .formatted(id, sloid, number, formatDate(validFrom), formatDate(validTo));
     execute(insertSql);
     insertMeansOfTransport();
   }

@@ -52,6 +52,29 @@ class ContactPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
   }
 
   @Test
+  void shouldReturnTimetableYears() throws SQLException {
+    // given
+    final LocalDate now = LocalDate.now();
+
+    insertContactPoint(2, "ch:1:sloid:7001:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), now, now);
+    insertContactPoint(20, "ch:1:sloid:7001:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), now.minusMonths(5),
+        now.minusMonths(4));
+    insertContactPoint(200, "ch:1:sloid:7001:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), now.plusMonths(4),
+        now.plusMonths(5));
+    insertContactPoint(2000, "ch:1:sloid:7001:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), LocalDate.of(1999, 1, 1),
+        LocalDate.of(2010, 1, 1));
+
+    final String sqlQuery = ContactPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
+
+    // when
+    final List<ContactPointVersion> result = executeQuery(sqlQuery);
+
+    // then
+    assertThat(result).isNotEmpty().hasSize(3);
+    assertThat(result.getFirst().getParentServicePointSloid()).isEqualTo("ch:1:sloid:7000");
+  }
+
+  @Test
   void shouldReturnTimetableFutureContactPoints() throws SQLException {
     //given
     LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());

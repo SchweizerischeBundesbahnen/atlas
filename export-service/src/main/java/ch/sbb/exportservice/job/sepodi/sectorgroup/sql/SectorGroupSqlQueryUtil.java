@@ -13,11 +13,7 @@ public class SectorGroupSqlQueryUtil extends SqlQueryUtil {
   private static final String ORDER_BY_STATEMENT = "order by sec.sloid, sec.valid_from ASC";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    String sqlQuery = ExportSqlQueryBuilder.builder()
-        .exportType(exportTypeV2)
-        .selectStatement(SELECT_STATEMENT)
-        .groupByAndOrderByClause(ORDER_BY_STATEMENT)
-        .build().getQuery();
+    String sqlQuery = buildSqlQuery(SELECT_STATEMENT, ORDER_BY_STATEMENT, exportTypeV2);
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;

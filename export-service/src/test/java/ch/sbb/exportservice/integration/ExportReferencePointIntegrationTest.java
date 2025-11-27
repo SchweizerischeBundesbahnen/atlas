@@ -43,7 +43,7 @@ class ExportReferencePointIntegrationTest extends BasePrmSqlIntegrationTest {
 
   @BeforeEach
   void initData() throws SQLException {
-    insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.now(), LocalDate.now());
+    insertStopPoint(1000, 8507000, "ch:1:sloid:70000", LocalDate.now(), LocalDate.now());
   }
 
   @Test

@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.job.bodi.businessorganisation.service;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.job.BaseExportType;
 import ch.sbb.exportservice.model.ExportObjectV2;
-import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
 import org.springframework.batch.core.Job;
@@ -22,12 +22,7 @@ public class ExportBusinessOrganisationJobService extends BaseExportJobService {
 
   @Override
   protected List<JobParams> getExportTypes() {
-    return List.of(
-        new JobParams(ExportTypeV2.FULL),
-        new JobParams(ExportTypeV2.ACTUAL),
-        new JobParams(ExportTypeV2.FUTURE_TIMETABLE),
-        new JobParams(ExportTypeV2.TIMETABLE_YEARS)
-    );
+    return BaseExportType.BASE_WITH_FUTURE;
   }
 
   @Override

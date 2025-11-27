@@ -13,11 +13,10 @@ public class ToiletVersionSqlQueryUtil extends SqlQueryUtil {
       SELECT toi.*
       FROM toilet_version toi
       """;
-  private static final String WHERE_STATEMENT = "WHERE '%s' between toi.valid_from and toi.valid_to";
   private static final String GROUP_BY_STATEMENT = "GROUP BY toi.id";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, getWhereClause(exportTypeV2, WHERE_STATEMENT), GROUP_BY_STATEMENT);
+    String sqlQuery = buildSqlQuery(SELECT_STATEMENT, GROUP_BY_STATEMENT, exportTypeV2);
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;
