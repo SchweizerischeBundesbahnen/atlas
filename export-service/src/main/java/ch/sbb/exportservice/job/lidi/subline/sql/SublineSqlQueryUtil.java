@@ -16,7 +16,7 @@ public class SublineSqlQueryUtil extends SqlQueryUtil {
   private static final String ORDER_BY_STATEMENT = "ORDER BY sv.slnid, sv.valid_from";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    String sqlQuery = getBaseSqlQuery(SELECT_STATEMENT, ORDER_BY_STATEMENT, exportTypeV2);
+    String sqlQuery = buildSqlQuery(SELECT_STATEMENT, ORDER_BY_STATEMENT, exportTypeV2);
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;

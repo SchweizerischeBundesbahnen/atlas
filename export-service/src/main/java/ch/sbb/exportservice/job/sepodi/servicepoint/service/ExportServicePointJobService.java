@@ -24,7 +24,7 @@ public class ExportServicePointJobService extends BaseExportJobService {
 
   @Override
   protected List<JobParams> getExportTypes() {
-    return BaseExportType.getSwissAndWorldExportTypes();
+    return BaseExportType.SWISS_WORLD;
   }
 
   @Override

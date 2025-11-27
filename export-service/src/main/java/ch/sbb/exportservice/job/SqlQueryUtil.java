@@ -54,7 +54,7 @@ public abstract class SqlQueryUtil {
     return String.join(" ", parts) + ";";
   }
 
-  public static String getBaseSqlQuery(String selectStatement, String groupByAndOrderByClause, ExportTypeV2 exportTypeV2) {
+  public static String buildSqlQuery(String selectStatement, String groupByAndOrderByClause, ExportTypeV2 exportTypeV2) {
     return ExportSqlQueryBuilder.builder()
         .exportType(exportTypeV2)
         .selectStatement(selectStatement)

@@ -16,7 +16,7 @@ public class ContactPointVersionSqlQueryUtil extends SqlQueryUtil {
   private static final String GROUP_BY_STATEMENT = "GROUP BY cpv.id";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    String sqlQuery = getBaseSqlQuery(SELECT_STATEMENT, GROUP_BY_STATEMENT, exportTypeV2);
+    String sqlQuery = buildSqlQuery(SELECT_STATEMENT, GROUP_BY_STATEMENT, exportTypeV2);
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;

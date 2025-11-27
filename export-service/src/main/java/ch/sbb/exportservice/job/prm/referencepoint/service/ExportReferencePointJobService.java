@@ -24,7 +24,7 @@ public class ExportReferencePointJobService extends BaseExportJobService {
 
   @Override
   protected List<JobParams> getExportTypes() {
-    return BaseExportType.getBaseExportTypesWithFutureTimetable();
+    return BaseExportType.BASE_WITH_FUTURE;
   }
 
   @Override

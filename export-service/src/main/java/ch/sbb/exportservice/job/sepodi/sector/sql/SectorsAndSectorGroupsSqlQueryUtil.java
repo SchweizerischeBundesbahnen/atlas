@@ -60,7 +60,7 @@ public class SectorsAndSectorGroupsSqlQueryUtil extends SqlQueryUtil {
   private static final String ORDER_BY_STATEMENT = "order by type, sloid, valid_from ASC";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    String sqlQuery = getBaseSqlQuery(SELECT_STATEMENT, ORDER_BY_STATEMENT, exportTypeV2);
+    String sqlQuery = buildSqlQuery(SELECT_STATEMENT, ORDER_BY_STATEMENT, exportTypeV2);
 
     log.info("Execution SQL query:");
     log.info(sqlQuery);

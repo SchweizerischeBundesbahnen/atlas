@@ -74,6 +74,7 @@ public abstract class BaseExportJobService {
     }
   }
 
+  @Getter
   public static class JobParams {
 
     private final ExportTypeV2 exportTypeV2;

@@ -25,7 +25,7 @@ public class ExportLoadingPointJobService extends BaseExportJobService {
 
   @Override
   protected List<JobParams> getExportTypes() {
-    return BaseExportType.getWorldExportTypes();
+    return BaseExportType.WORLD;
   }
 
   @Override

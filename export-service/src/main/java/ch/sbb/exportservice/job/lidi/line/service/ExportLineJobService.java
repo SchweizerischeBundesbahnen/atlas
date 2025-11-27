@@ -25,7 +25,7 @@ public class ExportLineJobService extends BaseExportJobService {
 
   @Override
   protected List<JobParams> getExportTypes() {
-    return BaseExportType.getBaseExportTypes();
+    return BaseExportType.BASE;
   }
 
   @Override
