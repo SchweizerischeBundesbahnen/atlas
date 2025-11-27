@@ -36,7 +36,7 @@ public final class BaseExportType {
    * @deprecated This constant is deprecated and marked for removal.
    *     Use {@link #BASE} instead.
    */
-  @Deprecated(forRemoval = true)
+  @Deprecated(forRemoval = true, since = "2025-05-01")
   public static final List<JobParams> BASE_WITH_FUTURE = Stream.concat(
       BASE.stream(), Stream.of(new JobParams(ExportTypeV2.FUTURE_TIMETABLE))).toList();
 
