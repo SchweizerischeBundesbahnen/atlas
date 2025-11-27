@@ -32,6 +32,10 @@ public final class BaseExportType {
   public static final List<JobParams> SWISS_WORLD = Stream.concat(
       WORLD.stream(), SWISS.stream()).toList();
 
+  /**
+   * @deprecated This constant is deprecated and marked for removal.
+   *     Use {@link #BASE} instead.
+   */
   @Deprecated(forRemoval = true)
   public static final List<JobParams> BASE_WITH_FUTURE = Stream.concat(
       BASE.stream(), Stream.of(new JobParams(ExportTypeV2.FUTURE_TIMETABLE))).toList();
