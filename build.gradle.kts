@@ -3,17 +3,18 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.978.0"
+version = "2.979.0"
 
 subprojects {
     sonar {
         properties {
-            property("sonar.projectKey", "ch.sbb.atlas:atlas")
+            property("sonar.projectKey", "ch.sbb.atlas:atlas-github-playground")
             property("sonar.projectVersion", project.version)
             property("sonar.dynamicAnalysis", "reuseReports")
             property("sonar.java.coveragePlugin", "jacoco")
             property(
                 "sonar.exclusions",
+"components/coverage/**/*,coverage/**,build/**/*," +
                 "**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js," +
                         "**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*,**/*.kts"
             )
@@ -22,10 +23,11 @@ subprojects {
     if (project.name == "frontend") {
         sonar {
             properties {
-                property("sonar.projectKey", "ch.sbb.atlas:atlas")
+                property("sonar.projectKey", "ch.sbb.atlas:atlas-github-playground")
                 property("sonar.projectVersion", project.version)
                 property(
                     "sonar.exclusions",
+"components/coverage/**/*,coverage/**,build/**/*," +
                     "**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
                 )
                 property("sonar.sources", "./")

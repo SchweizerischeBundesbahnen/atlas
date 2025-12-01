@@ -8,7 +8,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "atlas"
+rootProject.name = "atlas-github-playground"
 include(":auto-rest-doc")
 include(":kafka")
 include(":base-atlas")
@@ -26,7 +26,6 @@ include(":user-administration")
 include(":workflow")
 include(":location")
 
-include(":apim-configuration")
 include(":api-auth-gateway")
 include(":gateway")
 include(":frontend")
