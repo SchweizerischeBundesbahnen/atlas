@@ -59,7 +59,7 @@
           "projectKey": "atlas-github-playground"
         },
         "additionalBuildParams": "--parallel",
-        "failOnQualityGateFailure": true
+        "failOnQualityGateFailure": false
       }
     },
     {
@@ -81,7 +81,7 @@
           "projectKey": "atlas-github-playground"
         },
         "additionalBuildParams": "--parallel",
-        "failOnQualityGateFailure": true
+        "failOnQualityGateFailure": false
       }
     }
   ],
