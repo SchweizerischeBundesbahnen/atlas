@@ -78,7 +78,7 @@
     "@angular-eslint/eslint-plugin-template": "^20.0.0",
     "@angular-eslint/schematics": "^20.0.0",
     "@angular-eslint/template-parser": "^20.0.0",
-    "@angular/cli": "20.3.12",
+    "@angular/cli": "20.3.13",
     "@angular/localize": "20.3.14",
     "@cypress/schematic": "^4.0.0",
     "@cypress/skip-test": "^2.6.1",
