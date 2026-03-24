@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { ServicePointDetailComponent } from './service-point-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
@@ -66,7 +66,9 @@ describe('ServicePointDetailComponent', () => {
   let fixture: ComponentFixture<ServicePointDetailComponent>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
 
-  let dialogServiceSpy: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogServiceSpy: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
   let servicePointServiceSpy: Mocked<
     Pick<ServicePointService, 'updateServicePoint'>
   >;
@@ -98,7 +100,7 @@ describe('ServicePointDetailComponent', () => {
   beforeEach(async () => {
     Element.prototype.scrollIntoView = vi.fn();
 
-    dialogServiceSpy = { confirm: vi.fn() };
+    dialogServiceSpy = { openDialogDataWithConfirmationResult: vi.fn() };
     servicePointServiceSpy = { updateServicePoint: vi.fn() };
     servicePointInternalServiceSpy = {
       validateServicePoint: vi.fn(),
@@ -274,7 +276,9 @@ describe('ServicePointDetailComponent', () => {
     component.form?.markAsDirty();
     expect(component.form?.dirty).toBe(true);
 
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     // when & then
     component.toggleEdit();
@@ -290,7 +294,9 @@ describe('ServicePointDetailComponent', () => {
     component.form?.markAsDirty();
     expect(component.form?.dirty).toBe(true);
 
-    dialogServiceSpy.confirm.mockReturnValue(of(false));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(false)
+    );
 
     // when & then
     component.toggleEdit();
@@ -415,7 +421,9 @@ describe('ServicePointDetailComponent', () => {
   });
 
   it('should validate service point on validate', () => {
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
     servicePointInternalServiceSpy.validateServicePoint.mockReturnValue(
       of(BERN[0])
     );
@@ -428,7 +436,9 @@ describe('ServicePointDetailComponent', () => {
   });
 
   it('should revoke service points on revoke', () => {
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
     servicePointInternalServiceSpy.revokeServicePoint.mockReturnValue(of(BERN));
 
     component.revoke();
@@ -445,7 +455,9 @@ describe('ServicePointDetailComponent', () => {
       of(true)
     );
 
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
     servicePointServiceSpy.updateServicePoint.mockReturnValue(of(BERN[0]));
 
     component.toggleEdit();

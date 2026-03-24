@@ -35,7 +35,9 @@ describe('DialogService', () => {
   });
 
   it('should open confirmation dialog and pass success value - true', async () => {
-    const result = await firstValueFrom(service.confirm(dialogData));
+    const result = await firstValueFrom(
+      service.openDialogDataWithConfirmationResult(dialogData)
+    );
     expect(result).toBe(true);
     expect(matDialog.open).toHaveBeenCalled();
   });
@@ -43,7 +45,9 @@ describe('DialogService', () => {
   it('should open confirmation dialog and pass cancel value - false', async () => {
     matDialogRef.afterClosed.mockReturnValue(of(false));
 
-    const result = await firstValueFrom(service.confirm(dialogData));
+    const result = await firstValueFrom(
+      service.openDialogDataWithConfirmationResult(dialogData)
+    );
     expect(result).toBe(false);
     expect(matDialog.open).toHaveBeenCalled();
   });

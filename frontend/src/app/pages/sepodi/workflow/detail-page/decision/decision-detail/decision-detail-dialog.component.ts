@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DecisionDetailDialogData } from './decision-detail-dialog.service';
 import { DecisionOverrideComponent } from './override/decision-override.component';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
 import { DecisionType, ReadDecision, WorkflowStatus } from 'src/app/api';
-import { SPECIAL_DECISION_TYPES } from '../../detail-form/stop-point-workflow-detail-form-group';
+import {
+  ExaminantFormGroup,
+  SPECIAL_DECISION_TYPES,
+} from '../../detail-form/stop-point-workflow-detail-form-group';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
@@ -12,6 +14,14 @@ import { DialogFooterComponent } from '../../../../../../core/components/dialog/
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
+import { DialogData } from '../../../../../../core/components/dialog/dialog.data';
+import { FormGroup } from '@angular/forms';
+
+export interface DecisionDetailDialogData extends DialogData {
+  workflowId: number;
+  workflowStatus: WorkflowStatus;
+  examinant: FormGroup<ExaminantFormGroup>;
+}
 
 @Component({
   selector: 'atlas-decision-detail-dialog',

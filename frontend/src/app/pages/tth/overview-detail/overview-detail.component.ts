@@ -357,7 +357,7 @@ export class OverviewDetailComponent {
 
   startTimetableHearing() {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'TTH.START_HEARING_DIALOG.TITLE',
         message: 'TTH.START_HEARING_DIALOG.TEXT',
         confirmText: 'TTH.START_HEARING_DIALOG.CONFIRM',

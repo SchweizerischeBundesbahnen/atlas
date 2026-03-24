@@ -40,7 +40,9 @@ describe('StopPointDetailComponent', () => {
     routerMock = mock<Router>();
 
     dialogServiceMock = mock<DialogService>();
-    dialogServiceMock.confirm.mockReturnValue(of(true));
+    dialogServiceMock.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     stopPointServiceMock = mock<StopPointService>();
     stopPointServiceMock.createStopPoint.mockReturnValue(of(STOP_POINT));

@@ -25,7 +25,6 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { StopPointRestartWorkflowDialogService } from '../stop-point-restart-workflow-dialog/stop-point-restart-workflow-dialog.service';
-import { AddExaminantsDialogService } from './add-examinants-dialog/add-examinants-dialog.service';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { StopPointWorkflowDetailFormComponent } from './detail-form/stop-point-workflow-detail-form.component';
@@ -36,6 +35,8 @@ import { BackButtonDirective } from '../../../../core/components/button/back-but
 import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
+import { AddExaminantsDialogData } from './add-examinants-dialog/add-examinants-dialog-data';
+import { AddExaminantsComponent } from './add-examinants-dialog/add-examinants.component';
 
 @Component({
   selector: 'atlas-stop-point-workflow-detail',
@@ -65,7 +66,6 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly notificationService: NotificationService,
     private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
     private readonly stopPointRestartWorkflowDialogService: StopPointRestartWorkflowDialogService,
-    private readonly addExaminantsDialogService: AddExaminantsDialogService,
     private dialogService: DialogService,
     private permissionService: PermissionService
   ) {}
@@ -215,7 +215,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   confirmLeave(): Observable<boolean> {
     if (this.form?.dirty) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
       });
@@ -259,8 +259,17 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   };
 
   addExaminants() {
-    this.addExaminantsDialogService
-      .openDialog(this.workflow.id!)
+    this.dialogService
+      .openDialogDataWithConfirmationResult(
+        {
+          workflowId: this.workflow.id!,
+          title: 'WORKFLOW.ADD_EXAMINANT',
+          message: '',
+          cancelText: 'DIALOG.CANCEL',
+          confirmText: 'WORKFLOW.BUTTON.SEND',
+        } satisfies AddExaminantsDialogData,
+        AddExaminantsComponent
+      )
       .subscribe((saved) => {
         if (saved) {
           this._reloadDetail('WORKFLOW.NOTIFICATION.ADD_EXAMINANT.SUCCESS');

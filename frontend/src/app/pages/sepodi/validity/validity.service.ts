@@ -29,7 +29,7 @@ export class ValidityService {
 
   confirmValidityDialog() {
     if (this.isValidityNotChanged()) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE',
         message: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED',
       });

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { OverviewDetailComponent } from './overview-detail.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -68,8 +68,10 @@ const tthChangeCantonDialogService: Mocked<
 };
 const dialogSpy: Mocked<Pick<MatDialog, 'open'>> = { open: vi.fn() };
 
-const dialogServiceSpy: Mocked<Pick<DialogService, 'confirm'>> = {
-  confirm: vi.fn(),
+const dialogServiceSpy: Mocked<
+  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+> = {
+  openDialogDataWithConfirmationResult: vi.fn(),
 };
 
 const hearingYear2000: TimetableHearingYear = {
@@ -506,7 +508,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       overviewToTabService.setTimetableHearingYear(hearingYear2000);
       overviewToTabService.setTimetableHearingYearLoading(false);
       overviewToTabService.setTimetableHearingYearFound(false);
-      dialogServiceSpy.confirm.mockReturnValue(of(true));
+      dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+        of(true)
+      );
 
       component = fixture.componentInstance;
       fixture.detectChanges();

@@ -3,6 +3,7 @@ import { DialogService } from '../../components/dialog/dialog.service';
 import { Observable } from 'rxjs';
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
 import { ApplicationType } from '../../../api';
+import { DialogData } from '../../components/dialog/dialog.data';
 
 export interface Revokable {
   revoke: () => void;
@@ -22,12 +23,12 @@ export class RevokeButton {
 
   revoke() {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'DIALOG.WARNING',
         message: 'DIALOG.REVOKE',
         cancelText: 'DIALOG.BACK',
         confirmText: 'DIALOG.CONFIRM_REVOKE',
-      })
+      } satisfies DialogData)
       .subscribe((confirmed) => {
         if (confirmed) {
           this.revokeClicked.emit();

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ReferencePointCreationHintService } from './reference-point-creation-hint.service';
@@ -10,11 +10,13 @@ import { Router } from '@angular/router';
 describe('ReferencePointCreationHintService', () => {
   let referencePointCreationHintService: ReferencePointCreationHintService;
   let router: Router;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   beforeEach(() => {
     dialogService = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -30,14 +32,18 @@ describe('ReferencePointCreationHintService', () => {
   });
 
   it('should route to new reference point on confirmation', () => {
-    dialogService.confirm.mockReturnValue(of(true));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     referencePointCreationHintService.showHint();
     expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should do nothing on cancel', () => {
-    dialogService.confirm.mockReturnValue(of(false));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(false)
+    );
 
     referencePointCreationHintService.showHint();
     expect(router.navigate).not.toHaveBeenCalled();

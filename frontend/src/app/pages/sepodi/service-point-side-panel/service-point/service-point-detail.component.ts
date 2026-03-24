@@ -291,7 +291,7 @@ export class ServicePointDetailComponent
 
   confirmLeave(): Observable<boolean> {
     if (this.form?.dirty) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
       });
@@ -312,7 +312,7 @@ export class ServicePointDetailComponent
         currentlySelectedBo
       )
     ) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',
         message: 'DIALOG.CONFIRM_BO_TRANSFER',
       });
@@ -436,7 +436,7 @@ export class ServicePointDetailComponent
 
   validate() {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'DIALOG.WARNING',
         message: 'DIALOG.VALIDATE',
         cancelText: 'DIALOG.BACK',

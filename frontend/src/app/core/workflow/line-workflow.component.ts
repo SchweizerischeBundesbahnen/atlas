@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
@@ -8,10 +9,11 @@ import {
 } from '@angular/core';
 import { LineRecord } from './model/line-record';
 import { LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
-import { LineWorkflowDialogService } from './dialog/line-workflow-dialog.service';
 import { LineInternalService } from '../../api/service/lidi/line-internal.service';
-
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
+import { DialogService } from '../components/dialog/dialog.service';
+import { LineWorkflowDialogData } from './dialog/line-workflow-dialog-data';
+import { LineWorkflowDialogComponent } from './dialog/line-workflow-dialog.component';
 
 @Component({
   selector: 'atlas-workflow [lineRecord]',
@@ -20,6 +22,9 @@ import { AtlasButtonComponent } from '../components/button/atlas-button.componen
   imports: [AtlasButtonComponent],
 })
 export class LineWorkflowComponent implements OnInit, OnChanges {
+  private readonly lineInternalService = inject(LineInternalService);
+  private readonly dialogService = inject(DialogService);
+
   @Input() lineRecord!: LineRecord;
   @Input() descriptionForWorkflow!: string;
 
@@ -27,11 +32,6 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
 
   workflowInProgress = false;
   workflowId: number | undefined;
-
-  constructor(
-    private readonly lineInternalService: LineInternalService,
-    private readonly workflowDialogService: LineWorkflowDialogService
-  ) {}
 
   ngOnInit(): void {
     this.initWorkflowButtons();
@@ -65,8 +65,20 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
   }
 
   newWorkflow() {
-    this.workflowDialogService
-      .openNew(this.lineRecord, this.descriptionForWorkflow)
+    const dialogData: LineWorkflowDialogData = {
+      title: 'WORKFLOW.BUTTON.ADD',
+      message: '',
+      cancelText: 'WORKFLOW.BUTTON.CANCEL',
+      confirmText: 'WORKFLOW.BUTTON.START',
+      lineRecord: this.lineRecord,
+      descriptionForWorkflow: this.descriptionForWorkflow,
+      number: this.lineRecord.number,
+    };
+    this.dialogService
+      .openDialogDataWithConfirmationResult(
+        dialogData,
+        LineWorkflowDialogComponent
+      )
       .subscribe((workflowEvent) => {
         if (workflowEvent) {
           this.workflowEvent.emit();
@@ -75,8 +87,21 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
   }
 
   openWorkflow() {
-    this.workflowDialogService
-      .openExisting(this.lineRecord, this.descriptionForWorkflow)
+    const dialogData: LineWorkflowDialogData = {
+      title: 'WORKFLOW.TITLE',
+      message: '',
+      cancelText: 'COMMON.BACK',
+      confirmText: 'WORKFLOW.BUTTON.START',
+      lineRecord: this.lineRecord,
+      descriptionForWorkflow: this.descriptionForWorkflow,
+      number: this.lineRecord.number,
+    };
+
+    this.dialogService
+      .openDialogDataWithConfirmationResult(
+        dialogData,
+        LineWorkflowDialogComponent
+      )
       .subscribe((workflowEvent) => {
         if (workflowEvent) {
           this.workflowEvent.emit();

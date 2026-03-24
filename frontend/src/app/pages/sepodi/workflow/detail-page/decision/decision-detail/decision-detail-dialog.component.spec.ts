@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
-
-import { DecisionDetailDialogComponent } from './decision-detail-dialog.component';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import {
+  DecisionDetailDialogComponent,
+  DecisionDetailDialogData,
+} from './decision-detail-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DecisionDetailDialogData } from './decision-detail-dialog.service';
 import { StopPointWorkflowDetailFormGroupBuilder } from '../../detail-form/stop-point-workflow-detail-form-group';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { of } from 'rxjs';
@@ -27,18 +28,23 @@ import { MockAtlasButtonComponent } from '../../../../../../app.testing.mocks';
 import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
 
 describe('DecisionDetailDialogComponent', () => {
-  let dialogRefSpy: Mocked<Pick<MatDialogRef<DecisionDetailDialogComponent>, 'close'>>;
-  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'getDecision'>>;
+  let dialogRefSpy: Mocked<
+    Pick<MatDialogRef<DecisionDetailDialogComponent>, 'close'>
+  >;
+  let stopPointWorkflowService: Mocked<
+    Pick<StopPointWorkflowService, 'getDecision'>
+  >;
 
   const dialogData: DecisionDetailDialogData = {
     title: '',
     message: '',
     workflowId: 123,
     workflowStatus: WorkflowStatus.Hearing,
-    examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(),
+    examinant:
+      StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(),
   };
 
-  const dialogDataWithExisitingExaminant: DecisionDetailDialogData = {
+  const dialogDataWithExistingExaminant: DecisionDetailDialogData = {
     title: '',
     message: '',
     workflowId: 123,
@@ -128,7 +134,7 @@ describe('DecisionDetailDialogComponent', () => {
   describe('with existing decision', () => {
     beforeEach(() => {
       TestBed.overrideProvider(MAT_DIALOG_DATA, {
-        useValue: dialogDataWithExisitingExaminant,
+        useValue: dialogDataWithExistingExaminant,
       });
       fixture = TestBed.createComponent(DecisionDetailDialogComponent);
       component = fixture.componentInstance;

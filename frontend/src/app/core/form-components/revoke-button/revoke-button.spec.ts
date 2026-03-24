@@ -9,11 +9,13 @@ import { ApplicationType } from '../../../api';
 describe('RevokeButton', () => {
   let component: RevokeButton;
   let fixture: ComponentFixture<RevokeButton>;
-  let dialogServiceMock: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogServiceMock: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   beforeEach(() => {
     dialogServiceMock = {
-      confirm: vi.fn().mockReturnValue(of(true)),
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
     };
 
     TestBed.configureTestingModule({
@@ -39,7 +41,9 @@ describe('RevokeButton', () => {
     //when
     component.revoke();
     //then
-    expect(dialogServiceMock.confirm).toHaveBeenCalled();
+    expect(
+      dialogServiceMock.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalled();
     expect(component.revokeClicked.emit).toHaveBeenCalled();
   });
 });

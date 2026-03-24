@@ -21,13 +21,17 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 describe('CreateStopPointComponent', () => {
   let component: CreateStopPointComponent;
   let fixture: ComponentFixture<CreateStopPointComponent>;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   beforeEach(() => {
     dialogService = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.confirm.mockReturnValue(of(true));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     TestBed.configureTestingModule({
       imports: [MatStepperModule, CreateStopPointComponent],
@@ -100,7 +104,9 @@ describe('CreateStopPointComponent', () => {
 
     component.checkSelection();
 
-    expect(dialogService.confirm).toHaveBeenCalled();
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalled();
     expect(resetDataFormSpy).toHaveBeenCalled();
     expect(initFormSpy).toHaveBeenCalled();
     expect(addCompleteRecordingValidationSpy).toHaveBeenCalled();
@@ -135,7 +141,9 @@ describe('CreateStopPointComponent', () => {
 
     component.checkSelection();
 
-    expect(dialogService.confirm).toHaveBeenCalled();
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalled();
     expect(resetDataFormSpy).toHaveBeenCalled();
     expect(initFormSpy).toHaveBeenCalled();
     expect(addCompleteRecordingValidationSpy).not.toHaveBeenCalled();

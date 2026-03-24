@@ -11,14 +11,18 @@ describe('LeaveDirtyFormGuard', () => {
     title: 'DIALOG.DISCARD_CHANGES_TITLE',
     message: 'DIALOG.LEAVE_SITE',
   } as const;
-  type DialogServiceMock = Mocked<Pick<DialogService, 'confirm'>>;
+  type DialogServiceMock = Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
   let dialogService: DialogServiceMock;
   let leaveDirtyFormGuard: LeaveDirtyFormGuard;
 
   beforeEach(() => {
     // Mocking: create the DialogService stub with only the used member
     dialogService = {
-      confirm: vi.fn().mockName('DialogService.confirm'),
+      openDialogDataWithConfirmationResult: vi
+        .fn()
+        .mockName('DialogService.confirm'),
     };
 
     // Config: provide the guard and mocked dependencies via TestBed
@@ -95,9 +99,9 @@ describe('LeaveDirtyFormGuard', () => {
       currentState,
       nextState
     );
-    expect(dialogService.confirm).toHaveBeenCalledExactlyOnceWith(
-      confirmPayload
-    );
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledExactlyOnceWith(confirmPayload);
   });
 
   it('should display confirmation dialog when leaving dirty service point creation', () => {
@@ -117,9 +121,9 @@ describe('LeaveDirtyFormGuard', () => {
       currentState,
       nextState
     );
-    expect(dialogService.confirm).toHaveBeenCalledExactlyOnceWith(
-      confirmPayload
-    );
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledExactlyOnceWith(confirmPayload);
   });
 
   it('should not display confirmation dialog when creating service point', () => {
@@ -139,7 +143,9 @@ describe('LeaveDirtyFormGuard', () => {
       currentState,
       nextState
     );
-    expect(dialogService.confirm).not.toHaveBeenCalled();
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).not.toHaveBeenCalled();
   });
 
   it('should display confirmation dialog when leaving dirty contact point creation with detail subtab', () => {
@@ -157,8 +163,8 @@ describe('LeaveDirtyFormGuard', () => {
       currentState,
       nextState
     );
-    expect(dialogService.confirm).toHaveBeenCalledExactlyOnceWith(
-      confirmPayload
-    );
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledExactlyOnceWith(confirmPayload);
   });
 });

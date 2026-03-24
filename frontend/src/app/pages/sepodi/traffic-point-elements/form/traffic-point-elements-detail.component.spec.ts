@@ -90,7 +90,9 @@ describe('TrafficPointElementsDetailComponent', () => {
       'getAreasOfServicePoint' | 'revokeTrafficPoint'
     >
   >;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   beforeEach(() => {
     authService = {};
@@ -128,7 +130,7 @@ describe('TrafficPointElementsDetailComponent', () => {
       revokeTrafficPoint: vi.fn().mockReturnValue(of(undefined)),
     };
     dialogService = {
-      confirm: vi.fn().mockReturnValue(of(true)),
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
     };
   });
 

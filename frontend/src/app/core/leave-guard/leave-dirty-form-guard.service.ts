@@ -6,6 +6,7 @@ import {
 } from '@angular/router';
 import { DialogService } from '../components/dialog/dialog.service';
 import { FormGroup } from '@angular/forms';
+import { DialogData } from '../components/dialog/dialog.data';
 
 export interface DetailFormComponent {
   form?: FormGroup;
@@ -15,7 +16,7 @@ export interface DetailFormComponent {
   providedIn: 'root',
 })
 export class LeaveDirtyFormGuard {
-  constructor(private dialogService: DialogService) {}
+  private readonly dialogService = inject(DialogService);
 
   canDeactivate(
     component: DetailFormComponent,
@@ -28,16 +29,15 @@ export class LeaveDirtyFormGuard {
     }
 
     if (component.form && component.form.dirty) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
-      });
+      } satisfies DialogData);
     }
-
     return true;
   }
 
-  staysOnSameDetailPage(
+  private staysOnSameDetailPage(
     currentState: RouterStateSnapshot,
     nextState: RouterStateSnapshot
   ) {

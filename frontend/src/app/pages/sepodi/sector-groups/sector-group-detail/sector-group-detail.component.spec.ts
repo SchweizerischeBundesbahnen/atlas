@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { SectorGroupDetailComponent } from './sector-group-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectorMapService } from '../../map/sector-map.service';
@@ -74,7 +74,9 @@ describe('SectorGroupDetailComponent', () => {
   let sectorGroupInternalServiceSpy: Mocked<
     Pick<SectorGroupInternalService, 'revokeSectorGroup'>
   >;
-  let dialogServiceSpy: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogServiceSpy: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   const sectorOverview: ContainerReadSectorVersion = {
     objects: [],
@@ -120,19 +122,26 @@ describe('SectorGroupDetailComponent', () => {
     sectorGroupInternalServiceSpy = {
       revokeSectorGroup: vi.fn(),
     };
-    sectorGroupInternalServiceSpy.revokeSectorGroup.mockReturnValue(of(undefined));
+    sectorGroupInternalServiceSpy.revokeSectorGroup.mockReturnValue(
+      of(undefined)
+    );
 
     dialogServiceSpy = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     return TestBed.configureTestingModule({
       imports: [AppTestingModule, SectorGroupDetailComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: SectorMapService, useValue: sectorMapServiceSpy },
-        { provide: TrafficPointMapService, useValue: trafficPointMapServiceSpy },
+        {
+          provide: TrafficPointMapService,
+          useValue: trafficPointMapServiceSpy,
+        },
         { provide: SectorGroupService, useValue: sectorGroupServiceSpy },
         { provide: SectorInternalService, useValue: sectorInternalServiceSpy },
         { provide: MapService, useValue: mapServiceSpy },
@@ -168,7 +177,9 @@ describe('SectorGroupDetailComponent', () => {
       fixture = TestBed.createComponent(SectorGroupDetailComponent);
       component = fixture.componentInstance;
       sectorInternalServiceSpy.getSectors.mockReturnValue(of(sectorOverview));
-      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of([]));
+      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(
+        of([])
+      );
       fixture.detectChanges();
     });
 
@@ -227,7 +238,9 @@ describe('SectorGroupDetailComponent', () => {
       fixture = TestBed.createComponent(SectorGroupDetailComponent);
       component = fixture.componentInstance;
       sectorInternalServiceSpy.getSectors.mockReturnValue(of(sectorOverview));
-      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of([]));
+      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(
+        of([])
+      );
 
       fixture.detectChanges();
     });
@@ -280,7 +293,9 @@ describe('SectorGroupDetailComponent', () => {
 
       component.revoke();
 
-      expect(sectorGroupInternalServiceSpy.revokeSectorGroup).toHaveBeenCalled();
+      expect(
+        sectorGroupInternalServiceSpy.revokeSectorGroup
+      ).toHaveBeenCalled();
     });
   });
 });

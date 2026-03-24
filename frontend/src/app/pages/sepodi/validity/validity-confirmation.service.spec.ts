@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { ValidityConfirmationService } from './validity-confirmation.service';
 import { of } from 'rxjs';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
@@ -9,11 +9,13 @@ import { BERN } from '../../../../test/data/service-point';
 describe('ValidityConfirmationService', () => {
   let service: ValidityConfirmationService;
 
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   beforeEach(() => {
     dialogService = {
-      confirm: vi.fn().mockReturnValue(of(true)),
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
     };
 
     TestBed.configureTestingModule({
@@ -30,7 +32,9 @@ describe('ValidityConfirmationService', () => {
       moment('2020-01-01')
     );
     //then
-    expect(dialogService.confirm).toHaveBeenCalled();
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalled();
   });
 
   it('should not need confirmation', () => {
@@ -41,6 +45,8 @@ describe('ValidityConfirmationService', () => {
       moment('2020-01-01')
     );
     //then
-    expect(dialogService.confirm).not.toHaveBeenCalled();
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).not.toHaveBeenCalled();
   });
 });

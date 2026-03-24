@@ -50,7 +50,9 @@ describe('ServicePointFormComponent', () => {
       };
     }
   >;
-  let dialogServiceSpy: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogServiceSpy: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
   let geoDataServiceSpy: Mocked<
     Pick<ServicePointGeoDataInternalService, 'getLocationInformation'>
   >;
@@ -70,9 +72,11 @@ describe('ServicePointFormComponent', () => {
       translateService: { onLangChange: { subscribe: vi.fn() } },
     };
     dialogServiceSpy = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
     geoDataServiceSpy = {
       getLocationInformation: vi.fn(),
     };

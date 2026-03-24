@@ -10,7 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
 import { AddToDossierDialogService } from '../../dossier/add-to-dossier-dialog/add-to-dossier-dialog.service';
 import { Pages } from '../../../pages';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 const tthChangeCantonDialogService: Mocked<
   Pick<TthChangeCantonDialogService, 'onClick'>
@@ -22,8 +22,10 @@ const addToDossierDialogService: Mocked<
 > = {
   openDialog: vi.fn().mockReturnValue(of(true)),
 };
-const dialogService: Mocked<Pick<DialogService, 'confirm'>> = {
-  confirm: vi.fn().mockReturnValue(of(true)),
+const dialogService: Mocked<
+  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+> = {
+  openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
 };
 const router: Mocked<Pick<Router, 'navigate'>> = {
   navigate: vi.fn().mockResolvedValue(undefined),

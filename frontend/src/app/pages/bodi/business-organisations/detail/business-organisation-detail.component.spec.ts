@@ -94,7 +94,9 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
       | 'confirmValidityDialog'
     >
   >;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   const mockData = {
     businessOrganisationDetail: [businessOrganisationVersion],
@@ -104,9 +106,11 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     Element.prototype.scrollIntoView = vi.fn();
 
     dialogService = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.confirm.mockReturnValue(of(true));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     validityService = {
       initValidity: vi.fn(),
@@ -299,7 +303,9 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
   let validityService: Mocked<
     Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>
   >;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   const mockData = {
     businessOrganisationDetail: [],
@@ -309,9 +315,11 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     Element.prototype.scrollIntoView = vi.fn();
 
     dialogService = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.confirm.mockReturnValue(of(true));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     validityService = {
       initValidity: vi.fn(),

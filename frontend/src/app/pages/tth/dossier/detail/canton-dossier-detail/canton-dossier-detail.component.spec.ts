@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { CantonDossierDetailComponent } from './canton-dossier-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -68,8 +68,10 @@ const openDossierInMailService: Mocked<
 > = {
   openDossierInMailClient: vi.fn(),
 };
-const dialogService: Mocked<Pick<DialogService, 'confirm'>> = {
-  confirm: vi.fn().mockReturnValue(of(true)),
+const dialogService: Mocked<
+  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+> = {
+  openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
 };
 let router: Mocked<Pick<Router, 'navigate'>>;
 
@@ -186,7 +188,9 @@ describe('DossierDetailComponent', () => {
     it('should complete to bo', () => {
       component.completeDossier(DossierStatus.Canceled);
 
-      expect(dialogService.confirm).toHaveBeenCalledTimes(1);
+      expect(
+        dialogService.openDialogDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
       expect(dossierInternalService.completeDossier).toHaveBeenCalledTimes(1);
     });
 

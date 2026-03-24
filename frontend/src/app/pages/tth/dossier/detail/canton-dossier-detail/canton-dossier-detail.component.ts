@@ -28,7 +28,6 @@ import { catchError, EMPTY } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { toNumberArrayStrict } from '../../../../../core/util/arrays';
 import { StatementSelectComponent } from '../../statement-select/statement-select.component';
-import { StatementSelectDialogService } from '../../statement-select/dialog/statement-select-dialog.service';
 import { SwissCanton } from '../../../../../api';
 import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
@@ -38,6 +37,8 @@ import { DossierStatus } from '../../../../../api/model/dossierStatus';
 import { SelectComponent } from '../../../../../core/form-components/select/select.component';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { OpenCantonDossierInMailService } from './open-canton-dossier-in-mail.service';
+import { StatementSelectDialogComponent } from '../../statement-select/dialog/statement-select-dialog.component';
+import { StatementSelectData } from '../../statement-select-data';
 
 export const DOSSIER_EDITABLE_STATES = [
   DossierStatus.Added,
@@ -80,9 +81,6 @@ export class CantonDossierDetailComponent
   private readonly detailHelperService = inject(DetailDialogHelperService);
   private readonly dossierInternalService = inject(DossierInternalService);
   private readonly notificationService = inject(NotificationService);
-  private readonly statementSelectDialogService = inject(
-    StatementSelectDialogService
-  );
   private readonly timetableHearingStatementInternalService = inject(
     TimetableHearingStatementInternalService
   );
@@ -239,15 +237,26 @@ export class CantonDossierDetailComponent
   }
 
   openAddStatementsDialog() {
-    this.statementSelectDialogService
-      .select(
-        this.selectedStatements,
-        this.swissCanton!,
-        this.timetableHearingYear
-      )
+    const dialogData: StatementSelectData = {
+      title: 'TTH.DIALOG.STATUS_CHANGE',
+      message: 'TTH.DIALOG.STATUS_CHANGE',
+      cancelText: 'COMMON.CANCEL',
+      confirmText: 'COMMON.APPLY',
+      selectedStatements: this.selectedStatements,
+      swissCanton: this.swissCanton!,
+      timetableHearingYear: this.timetableHearingYear,
+    };
+
+    this.dialogService
+      .openDialogDataWithCustomResult<
+        StatementSelectData,
+        number[]
+      >(dialogData, StatementSelectDialogComponent)
       .subscribe((selected) => {
-        this.selectedStatements = selected;
-        this.form.controls.statementIds.markAsDirty();
+        if (selected) {
+          this.selectedStatements = selected;
+          this.form.controls.statementIds.markAsDirty();
+        }
       });
   }
 
@@ -271,7 +280,7 @@ export class CantonDossierDetailComponent
 
   completeDossier(status: DossierStatus) {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'TTH.DOSSIER.NOTIFICATION.COMPLETE_TITLE',
         message: 'TTH.DOSSIER.NOTIFICATION.COMPLETE_MESSAGE',
         confirmText: 'DIALOG.OK',

@@ -22,7 +22,7 @@ export class ValidityConfirmationService {
         validFrom.isBefore(servicePointValidity.validFrom) ||
         validTo.isAfter(servicePointValidity.validTo)
       ) {
-        return this.dialogService.confirm({
+        return this.dialogService.openDialogDataWithConfirmationResult({
           title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
           message:
             'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',

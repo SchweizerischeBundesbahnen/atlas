@@ -209,7 +209,7 @@ export class DecisionStepperComponent {
       return;
     }
     this._dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'DIALOG.CANCEL_DECISION_TITLE',
         message: 'DIALOG.CANCEL_DECISION',
       })

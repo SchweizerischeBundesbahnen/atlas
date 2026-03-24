@@ -19,7 +19,6 @@ import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ValidationService } from '../../../../../core/validation/validation.service';
 import { TthUtils } from '../../../util/tth-utils';
-import { StatementDialogService } from '../../statement-dialog/service/statement.dialog.service';
 import { OpenStatementInMailService } from '../../open-statement-in-mail.service';
 import { StatementShareService } from '../../../overview-detail/statement-share-service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
@@ -49,6 +48,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { FileUploadComponent } from '../../../../../core/components/file-upload/file-upload.component';
 import { StatementDetailBaseComponent } from '../statement-detail-base.component';
 import { TimetableHearingYearInternalService } from '../../../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { DialogData } from '../../../../../core/components/dialog/dialog.data';
+import { StatementDialogComponent } from '../../statement-dialog/statement.dialog.component';
 
 @Component({
   selector: 'atlas-statement-detail',
@@ -107,7 +108,6 @@ export class CantonStatementDetailComponent
   private readonly timetableHearingYearsService = inject(
     TimetableHearingYearInternalService
   );
-  private readonly statementDialogService = inject(StatementDialogService);
   private readonly openStatementInMailService = inject(
     OpenStatementInMailService
   );
@@ -165,16 +165,20 @@ export class CantonStatementDetailComponent
   cantonSelectionChanged() {
     this.form.controls.editor.setValue(this.statement?.editor);
     this.form.controls.oldSwissCanton.setValue(this.initialValueForCanton);
-    this.statementDialogService.openDialog(this.form).subscribe((result) => {
-      if (result) {
-        const hearingStatement = this.form.value as TimetableHearingStatementV2;
-        this.navigateToStatementDetail(hearingStatement);
-      } else {
-        this.form.controls.cantonTransferComment.setValue(
-          this.statement?.cantonTransferComment
-        );
-      }
-    });
+
+    this.dialogService
+      .openCustomDataWithConfirmationResult(this.form, StatementDialogComponent)
+      .subscribe((result) => {
+        if (result) {
+          const hearingStatement = this.form
+            .value as TimetableHearingStatementV2;
+          this.navigateToStatementDetail(hearingStatement);
+        } else {
+          this.form.controls.cantonTransferComment.setValue(
+            this.statement?.cantonTransferComment
+          );
+        }
+      });
   }
 
   save() {
@@ -407,10 +411,10 @@ export class CantonStatementDetailComponent
 
   private confirmLeave(): Observable<boolean> {
     if (this.form.dirty) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
-      });
+      } satisfies DialogData);
     }
     return of(true);
   }

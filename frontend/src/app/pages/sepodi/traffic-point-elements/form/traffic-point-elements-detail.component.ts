@@ -364,7 +364,7 @@ export class TrafficPointElementsDetailComponent
 
   private confirmLeave(): Observable<boolean> {
     if (this.form.dirty) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
       });

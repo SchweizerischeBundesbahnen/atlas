@@ -87,7 +87,9 @@ const error = new HttpErrorResponse({
 let validityService: Mocked<
   Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>
 >;
-let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+let dialogService: Mocked<
+  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+>;
 
 function createSharedMocks() {
   validityService = {
@@ -98,9 +100,9 @@ function createSharedMocks() {
   validityService.validate.mockReturnValue(of(true));
 
   dialogService = {
-    confirm: vi.fn(),
+    openDialogDataWithConfirmationResult: vi.fn(),
   };
-  dialogService.confirm.mockReturnValue(of(true));
+  dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 }
 
 function setupTestBed(

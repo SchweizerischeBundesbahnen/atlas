@@ -94,7 +94,7 @@ export class CreateStopPointComponent implements DetailFormComponent {
 
   private confirmChangingRecodingVariant() {
     return this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'PRM.STOP_POINTS.DIALOG.RECORDING_VARIANT_CHANGES',
         message: 'PRM.STOP_POINTS.DIALOG.CONFIRM_RECORDING_VARIANT_CHANGES',
       })

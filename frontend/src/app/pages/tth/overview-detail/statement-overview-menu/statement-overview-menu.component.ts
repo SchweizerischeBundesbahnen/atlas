@@ -11,6 +11,7 @@ import { StatementShareService } from '../statement-share-service';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { AddToDossierDialogService } from '../../dossier/add-to-dossier-dialog/add-to-dossier-dialog.service';
+import { DialogData } from '../../../../core/components/dialog/dialog.data';
 
 @Component({
   selector: 'atlas-statement-overview-menu',
@@ -46,12 +47,12 @@ export class StatementOverviewMenuComponent {
 
   duplicate($event: TimetableHearingStatementV2) {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'TTH.DUPLICATE.DIALOG.TITLE',
         message: 'TTH.DUPLICATE.DIALOG.MESSAGE',
         cancelText: 'TTH.DUPLICATE.DIALOG.CANCEL',
         confirmText: 'TTH.DUPLICATE.DIALOG.CONFIRM',
-      })
+      } satisfies DialogData)
       .subscribe((confirmed) => {
         if (confirmed) {
           this.duplicateStatement($event);

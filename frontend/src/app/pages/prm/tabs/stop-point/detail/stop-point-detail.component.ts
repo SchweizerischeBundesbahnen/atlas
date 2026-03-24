@@ -329,7 +329,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   private confirmLeave(): Observable<boolean> {
     if (this.form.dirty) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
       });
@@ -338,7 +338,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private confirmPrmVariantChange(): Observable<boolean> {
-    return this.dialogService.confirm({
+    return this.dialogService.openDialogDataWithConfirmationResult({
       title: 'PRM.DIALOG.PRM_VARIANT_CHANGES_TITLE',
       message: 'PRM.DIALOG.PRM_VARIANT_CHANGES_MSG',
     });
