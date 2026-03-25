@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TerminationDecisionDetailDialogData } from './termination-decision-detail-dialog.service';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
@@ -25,7 +24,17 @@ import { MIN_DATE } from '../../../../../../core/date/date.service';
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
+import { DialogData } from '../../../../../../core/components/dialog/dialog.data';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
+
+export interface TerminationDecisionDetailDialogData extends DialogData {
+  workflowId: number;
+  readOnly: boolean;
+  workflowStatus: TerminationWorkflowStatus;
+  examinant: TerminationDecisionPersonEnum;
+  decision: FormGroup<TerminationDecisionFormGroup>;
+  versionValidTo: Date;
+}
 
 @Component({
   selector: 'atlas-termination-decision-detail-dialog',

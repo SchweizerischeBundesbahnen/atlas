@@ -12,7 +12,6 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
 import { environment } from '../../../../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, catchError, EMPTY, Observable, of, take } from 'rxjs';
@@ -24,7 +23,6 @@ import { DecisionStepperComponent } from './decision/decision-stepper/decision-s
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { StopPointRestartWorkflowDialogService } from '../stop-point-restart-workflow-dialog/stop-point-restart-workflow-dialog.service';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { StopPointWorkflowDetailFormComponent } from './detail-form/stop-point-workflow-detail-form.component';
@@ -37,6 +35,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 import { AddExaminantsDialogData } from './add-examinants-dialog/add-examinants-dialog-data';
 import { AddExaminantsComponent } from './add-examinants-dialog/add-examinants.component';
+import { StopPointRejectWorkflowDialogData } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data';
+import { StopPointRestartWorkflowDialogComponent } from '../stop-point-restart-workflow-dialog/stop-point-restart-workflow-dialog.component';
+import { StopPointRejectWorkflowDialogComponent } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.component';
 
 @Component({
   selector: 'atlas-stop-point-workflow-detail',
@@ -64,8 +65,6 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
-    private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
-    private readonly stopPointRestartWorkflowDialogService: StopPointRestartWorkflowDialogService,
     private dialogService: DialogService,
     private permissionService: PermissionService
   ) {}
@@ -130,23 +129,57 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   rejectWorkflow() {
-    this.stopPointRejectWorkflowDialogService.openDialog(
-      this.workflow.id!,
-      'REJECT'
+    const dialogData: StopPointRejectWorkflowDialogData = {
+      title: '',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      workflowId: this.workflow.id!,
+      rejectType: 'REJECT',
+    };
+
+    this.dialogService.openWithoutResult(
+      StopPointRejectWorkflowDialogComponent,
+      dialogData,
+      {
+        minWidth: '50vw',
+      }
     );
   }
 
   restartWorkflow() {
-    this.stopPointRestartWorkflowDialogService.openDialog(
-      this.workflow.id!,
-      'RESTART'
+    const dialogData: StopPointRejectWorkflowDialogData = {
+      title: 'WORKFLOW.BUTTON.RESTART',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      confirmText: 'WORKFLOW.BUTTON.RESTART',
+      workflowId: this.workflow.id!,
+      rejectType: 'RESTART',
+    };
+
+    this.dialogService.openWithoutResult(
+      StopPointRestartWorkflowDialogComponent,
+      dialogData,
+      {
+        minWidth: '50vw',
+      }
     );
   }
 
   cancelWorkflow() {
-    this.stopPointRejectWorkflowDialogService.openDialog(
-      this.workflow.id!,
-      'CANCEL'
+    const dialogData: StopPointRejectWorkflowDialogData = {
+      title: '',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      workflowId: this.workflow.id!,
+      rejectType: 'CANCEL',
+    };
+
+    this.dialogService.openWithoutResult(
+      StopPointRejectWorkflowDialogComponent,
+      dialogData,
+      {
+        minWidth: '50vw',
+      }
     );
   }
 

@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
-import { AddToDossierDialogComponent } from './add-to-dossier-dialog.component';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import {
+  AddToDossierData,
+  AddToDossierDialogComponent,
+} from './add-to-dossier-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
-import { AddToDossierData } from './add-to-dossier-dialog.service';
 import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
 
 const statement: TimetableHearingStatementV2 = {

@@ -5,7 +5,10 @@ import {
 } from './stop-point-reject-workflow-form-group';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { StopPointRejectWorkflowDialogData } from './stop-point-reject-workflow-dialog-data';
+import {
+  RejectType,
+  StopPointRejectWorkflowDialogData,
+} from './stop-point-reject-workflow-dialog-data';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StopPointRejectWorkflow } from '../../../../api';
 import { ValidationService } from '../../../../core/validation/validation.service';
@@ -20,6 +23,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+
+type DialogAction = Extract<RejectType, 'REJECT' | 'CANCEL'>;
+const titleTranslationKeys: Record<DialogAction, string> = {
+  REJECT: 'WORKFLOW.BUTTON.REJECT',
+  CANCEL: 'WORKFLOW.BUTTON.CANCEL',
+} as const;
 
 @Component({
   selector: 'atlas-stop-point-reject-workflow-dialog',
@@ -38,6 +47,7 @@ import { CommentComponent } from '../../../../core/form-components/comment/comme
 })
 export class StopPointRejectWorkflowDialogComponent implements OnInit {
   formGroup!: FormGroup<StopPointRejectWorkflowFormGroup>;
+  protected readonly titleTranslationKey: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) readonly data: StopPointRejectWorkflowDialogData,
@@ -47,7 +57,14 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
     private readonly notificationService: NotificationService,
     private readonly detailHelperService: DetailDialogHelperService,
     private readonly router: Router
-  ) {}
+  ) {
+    if (data.rejectType === 'RESTART') {
+      throw new Error(
+        'Restart is not supported in StopPointRejectWorkflowDialogComponent'
+      );
+    }
+    this.titleTranslationKey = titleTranslationKeys[data.rejectType];
+  }
 
   ngOnInit(): void {
     this.formGroup = StopPointRejectWorkflowFormGroupBuilder.initFormGroup();

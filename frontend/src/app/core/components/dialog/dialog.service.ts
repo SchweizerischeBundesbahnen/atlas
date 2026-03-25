@@ -1,14 +1,21 @@
 import { inject, Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, take } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DialogData } from './dialog.data';
 import { ComponentType } from '@angular/cdk/portal';
 import { DialogComponent } from './dialog.component';
 
+const basicDialogConfig: Readonly<
+  Pick<MatDialogConfig, 'disableClose' | 'panelClass' | 'backdropClass'>
+> = {
+  disableClose: true,
+  panelClass: 'atlas-dialog-panel',
+  backdropClass: 'atlas-dialog-backdrop',
+};
+
 @Injectable({
   providedIn: 'root',
-  deps: [DialogService],
 })
 export class DialogService {
   private readonly matDialog = inject(MatDialog);
@@ -17,12 +24,13 @@ export class DialogService {
     dialogData: D,
     dialogComponent: ComponentType<unknown> = DialogComponent
   ): Observable<boolean> {
-    const dialogRef = this.matDialog.open(dialogComponent, {
-      data: dialogData,
-      disableClose: true,
-      panelClass: 'atlas-dialog-panel',
-      backdropClass: 'atlas-dialog-backdrop',
-    });
+    const dialogRef = this.matDialog.open<unknown, D, boolean>(
+      dialogComponent,
+      {
+        data: dialogData,
+        ...(basicDialogConfig satisfies MatDialogConfig<D>),
+      }
+    );
     return dialogRef.afterClosed().pipe(
       take(1),
       map((value) => (value ? value : false))
@@ -33,24 +41,22 @@ export class DialogService {
     dialogData: D,
     dialogComponent: ComponentType<unknown> = DialogComponent
   ): Observable<R | undefined> {
-    const dialogRef = this.matDialog.open(dialogComponent, {
+    const dialogRef = this.matDialog.open<unknown, D, R>(dialogComponent, {
       data: dialogData,
-      disableClose: true,
-      panelClass: 'atlas-dialog-panel',
-      backdropClass: 'atlas-dialog-backdrop',
+      ...(basicDialogConfig satisfies MatDialogConfig<D>),
     });
     return dialogRef.afterClosed().pipe(take(1));
   }
 
   openCustomDataWithConfirmationResult<T, D>(
     data: D,
-    dialogComponent: ComponentType<T>
+    dialogComponent: ComponentType<T>,
+    dialogConfig?: Pick<MatDialogConfig<D>, 'width'>
   ): Observable<boolean> {
-    const dialogRef = this.matDialog.open(dialogComponent, {
+    const dialogRef = this.matDialog.open<T, D, boolean>(dialogComponent, {
       data,
-      disableClose: true,
-      panelClass: 'atlas-dialog-panel',
-      backdropClass: 'atlas-dialog-backdrop',
+      ...(basicDialogConfig satisfies MatDialogConfig<D>),
+      ...(dialogConfig satisfies MatDialogConfig<D> | undefined),
     });
     return dialogRef.afterClosed().pipe(
       take(1),
@@ -60,13 +66,13 @@ export class DialogService {
 
   openWithoutResult<T, D extends DialogData>(
     dialogComponent: ComponentType<T>,
-    dialogData: D
+    dialogData: D,
+    dialogConfig?: Pick<MatDialogConfig<D>, 'minWidth'>
   ) {
-    this.matDialog.open(dialogComponent, {
+    this.matDialog.open<T, D, undefined>(dialogComponent, {
       data: dialogData,
-      disableClose: true,
-      panelClass: 'atlas-dialog-panel',
-      backdropClass: 'atlas-dialog-backdrop',
+      ...(basicDialogConfig satisfies MatDialogConfig<D>),
+      ...(dialogConfig satisfies MatDialogConfig<D> | undefined),
     });
   }
 

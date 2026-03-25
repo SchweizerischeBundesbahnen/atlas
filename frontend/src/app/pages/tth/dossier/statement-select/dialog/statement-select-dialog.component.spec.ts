@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { StatementSelectDialogComponent } from './statement-select-dialog.component';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { of } from 'rxjs';
-import { StatementSelectData } from './statement-select-dialog.service';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
 import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { FormatPipe } from '../../../../../core/components/table/pipe/format.pipe';
 import { Component, input, model } from '@angular/core';
 import { StatementSelectComponent } from '../statement-select.component';
+import { StatementSelectData } from '../../statement-select-data';
 
 const dialogData: StatementSelectData = {
   title: 'TTH.DIALOG.STATUS_CHANGE',

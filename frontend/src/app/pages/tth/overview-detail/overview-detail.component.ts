@@ -18,13 +18,10 @@ import { OverviewToTabShareDataService } from '../overview-tab/service/overview-
 import { MatSelectChange } from '@angular/material/select';
 import { TthUtils } from '../util/tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
-import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
 import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth.component';
@@ -48,6 +45,11 @@ import { TthExportAnonymizationChoiceDialogComponent } from './tth-export-anonym
 import { StatementOverviewMenuComponent } from './statement-overview-menu/statement-overview-menu.component';
 import { TableFilterBoolean } from '../../../core/components/table-filter/config/table-filter-boolean';
 import { TthYearInternalService } from '../../../api/service/workflow/tth-year-internal.service';
+import { ChangeCantonData } from './tth-change-canton-dialog/model/change-canton-data';
+import { TthChangeCantonDialogComponent } from './tth-change-canton-dialog/tth-change-canton-dialog.component';
+import { StatusChangeData } from './tth-change-status-dialog/model/status-change-data';
+import { TthChangeStatusDialogComponent } from './tth-change-status-dialog/tth-change-status-dialog.component';
+import { NewTimetableHearingYearDialogComponent } from '../new-timetable-hearing-year-dialog/new-timetable-hearing-year-dialog.component';
 
 @Component({
   selector: 'atlas-timetable-hearing-overview-detail',
@@ -104,7 +106,6 @@ export class OverviewDetailComponent {
 
   isTableColumnsInitialized = false;
 
-  statementEditable = false;
   selectedItems: TimetableHearingStatementV2[] = [];
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatementV2>(true, []);
@@ -120,11 +121,8 @@ export class OverviewDetailComponent {
     private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
     private readonly tthYearInternalService: TthYearInternalService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly tthStatusChangeDialogService: TthChangeStatusDialogService,
-    private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,
     private readonly dialogService: DialogService,
     private readonly tableService: TableService,
-    private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
     private readonly translateService: TranslateService,
     private readonly permissionService: PermissionService,
     private readonly matDialog: MatDialog
@@ -340,8 +338,14 @@ export class OverviewDetailComponent {
   }
 
   addNewTimetableHearing() {
-    this.newTimetableHearingYearDialogService
-      .openDialog()
+    this.dialogService
+      .openCustomDataWithConfirmationResult(
+        {},
+        NewTimetableHearingYearDialogComponent,
+        {
+          width: '40%',
+        }
+      )
       .subscribe((result) => {
         if (result) {
           this.overviewToTabService.setTimetableHearingYearFound(false);
@@ -394,12 +398,21 @@ export class OverviewDetailComponent {
   }
 
   changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
-    this.tthStatusChangeDialogService
-      .onClick(
-        changedStatus.$event.value,
-        [changedStatus.value],
-        changedStatus.value.justification,
-        'SINGLE'
+    const dialogData: StatusChangeData = {
+      title: 'TTH.DIALOG.STATUS_CHANGE',
+      message: 'TTH.DIALOG.STATUS_CHANGE_MESSAGE',
+      cancelText: 'TTH.DIALOG.BACK',
+      confirmText: 'TTH.DIALOG.STATUS_CHANGE',
+      tths: [changedStatus.value],
+      statementStatus: changedStatus.$event.value,
+      publicComment: changedStatus.value.justification,
+      type: 'SINGLE',
+    };
+
+    this.dialogService
+      .openDialogDataWithConfirmationResult(
+        dialogData,
+        TthChangeStatusDialogComponent
       )
       .subscribe(() => {
         this.loadData();
@@ -413,8 +426,21 @@ export class OverviewDetailComponent {
 
   collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
     if (this.selectedItems.length > 0) {
-      this.tthStatusChangeDialogService
-        .onClick(changedStatus.value, this.selectedItems, undefined, 'MULTIPLE')
+      const dialogData: StatusChangeData = {
+        title: 'TTH.DIALOG.STATUS_CHANGE',
+        message: 'TTH.DIALOG.MULTIPLE_STATUS_CHANGE_MESSAGE',
+        cancelText: 'TTH.DIALOG.BACK',
+        confirmText: 'TTH.DIALOG.STATUS_CHANGE',
+        tths: this.selectedItems,
+        statementStatus: changedStatus.value,
+        type: 'MULTIPLE',
+      };
+
+      this.dialogService
+        .openDialogDataWithConfirmationResult(
+          dialogData,
+          TthChangeStatusDialogComponent
+        )
         .subscribe((result) => {
           if (result) {
             this.statusChangeCollectingActionsEnabled = false;
@@ -430,8 +456,19 @@ export class OverviewDetailComponent {
 
   collectingCantonDeliveryAction($event: MatSelectChange) {
     if (this.selectedItems.length > 0) {
-      this.tthChangeCantonDialogService
-        .onClick(Cantons.getSwissCantonEnum($event.value)!, this.selectedItems)
+      const dialogData: ChangeCantonData = {
+        title: 'TTH.STATEMENT.DIALOG.TITLE',
+        message: 'TTH.DIALOG.MULTIPLE_STATUS_CHANGE_MESSAGE',
+        cancelText: 'TTH.DIALOG.BACK',
+        confirmText: 'TTH.DIALOG.CANTON_CHANGE',
+        tths: this.selectedItems,
+        swissCanton: Cantons.getSwissCantonEnum($event.value),
+      };
+      this.dialogService
+        .openDialogDataWithConfirmationResult(
+          dialogData,
+          TthChangeCantonDialogComponent
+        )
         .subscribe((result) => {
           if (result) {
             this.cantonDeliveryCollectingActionsEnabled = false;

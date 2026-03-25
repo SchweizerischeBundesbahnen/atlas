@@ -29,7 +29,10 @@ import { StartTerminationStopPointAddWorkflow } from '../../../../../../api/mode
 })
 export class StopPointTerminationDialogComponent implements OnInit {
   constructor(
-    private readonly dialogRef: MatDialogRef<StopPointTerminationDialogComponent>,
+    private readonly dialogRef: MatDialogRef<
+      StopPointTerminationDialogComponent,
+      boolean
+    >,
     @Inject(MAT_DIALOG_DATA)
     public readonly data: StopPointTerminationDialogData,
     private readonly detailHelperService: DetailDialogHelperService,

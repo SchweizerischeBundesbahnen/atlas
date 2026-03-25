@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
-
+import { beforeEach, describe, expect, it, Mocked, vi } from 'vitest';
 import { StopPointTerminationWorkflowDetail } from './stop-point-termination-workflow-detail';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
@@ -10,26 +9,27 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
 import { of } from 'rxjs';
-import { TerminationDecisionDetailDialogService } from './decision/decision-detail/termination-decision-detail-dialog.service';
 import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
-import { FormGroup } from '@angular/forms';
 import { StopPointTerminationWorkflowDetailFormGroupBuilder } from './stop-point-termination-workflow-detail-form-group';
 import moment from 'moment/moment';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { TerminationDecisionDetailDialogComponent } from './decision/decision-detail/termination-decision-detail-dialog.component';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 describe('StopPointTerminationWorkflowDetail', () => {
   let component: StopPointTerminationWorkflowDetail;
   let fixture: ComponentFixture<StopPointTerminationWorkflowDetail>;
 
-  let terminationDecisionDetailDialogServiceMock: Mocked<Pick<TerminationDecisionDetailDialogService, 'openDialog'>>;
+  let dialogServiceSpy: Mocked<
+    Pick<
+      DialogService,
+      'openWithoutResult' | 'openDialogDataWithConfirmationResult'
+    >
+  >;
 
-  beforeEach(async () => {
-    terminationDecisionDetailDialogServiceMock = {
-      openDialog: vi.fn().mockReturnValue(of(true)),
-    };
-
+  beforeEach(() => {
     const workflow: TerminationStopPointWorkflowModel = {
       id: 10,
       sloid: 'ch:1sloid:700',
@@ -52,7 +52,12 @@ describe('StopPointTerminationWorkflowDetail', () => {
       }),
     };
 
-    await TestBed.configureTestingModule({
+    dialogServiceSpy = {
+      openWithoutResult: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+    };
+
+    TestBed.configureTestingModule({
       imports: [StopPointTerminationWorkflowDetail, TranslateModule.forRoot()],
       providers: [
         provideHttpClient(),
@@ -61,12 +66,9 @@ describe('StopPointTerminationWorkflowDetail', () => {
         { provide: TranslatePipe },
         { provide: BoSelectionDisplayPipe },
         { provide: Router },
-        {
-          provide: TerminationDecisionDetailDialogService,
-          useValue: terminationDecisionDetailDialogServiceMock,
-        },
+        { provide: DialogService, useValue: dialogServiceSpy },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StopPointTerminationWorkflowDetail);
     component = fixture.componentInstance;
@@ -90,16 +92,14 @@ describe('StopPointTerminationWorkflowDetail', () => {
 
   it('should open decision', () => {
     component.onOpenDecision(component.form.controls.examinants.at(0));
-    expect(
-      terminationDecisionDetailDialogServiceMock.openDialog
-    ).toHaveBeenCalled();
+    expect(dialogServiceSpy.openWithoutResult).toHaveBeenCalledTimes(1);
   });
 
   it('should open decision dialog', () => {
     component.openDecisionDialog();
     expect(
-      terminationDecisionDetailDialogServiceMock.openDialog
-    ).toHaveBeenCalled();
+      dialogServiceSpy.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('should open decision dialog on nova revote with an extra day and judgement prefilled', () => {
@@ -118,14 +118,10 @@ describe('StopPointTerminationWorkflowDetail', () => {
 
     component.openDecisionDialog();
     expect(
-      terminationDecisionDetailDialogServiceMock.openDialog
-    ).toHaveBeenCalledWith(
-      10,
-      false,
-      TerminationWorkflowStatus.TerminationNotApproved,
-      TerminationDecisionPersonEnum.Nova,
-      expect.any(FormGroup),
-      new Date('9999-06-01')
+      dialogServiceSpy.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ workflowId: 10 }),
+      TerminationDecisionDetailDialogComponent
     );
   });
 });

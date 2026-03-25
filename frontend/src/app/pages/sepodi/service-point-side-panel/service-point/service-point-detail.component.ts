@@ -29,7 +29,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidityService } from '../../validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { AddStopPointWorkflowDialogService } from '../../workflow/add-dialog/add-stop-point-workflow-dialog.service';
 import { takeUntil } from 'rxjs/operators';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
@@ -43,7 +42,6 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-obligation/prm-recording-obligation.component';
-import { StopPointTerminationDialogService } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
 import { StopPointTerminationInfoComponent } from './stop-point-termination/stop-point-termination-info/stop-point-termination-info.component';
 import { TerminationService } from './stop-point-termination/termination.service';
 import {
@@ -54,6 +52,10 @@ import { TranslationSortingService } from '../../../../core/translation/translat
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 import { ServicePointInternalService } from '../../../../api/service/sepodi/service-point-internal.service';
 import { RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
+import { StopPointTerminationDialogData } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog-data';
+import { StopPointTerminationDialogComponent } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.component';
+import { AddStopPointWorkflowDialogData } from '../../workflow/add-dialog/add-stop-point-workflow-dialog-data';
+import { AddStopPointWorkflowComponent } from '../../workflow/add-dialog/add-stop-point-workflow.component';
 
 export type StopPointTypeNotUnknown = Exclude<StopPointType, 'UNKNOWN'>;
 export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] =
@@ -138,8 +140,6 @@ export class ServicePointDetailComponent
     private readonly mapService: MapService,
     private readonly permissionService: PermissionService,
     private readonly validityService: ValidityService,
-    private readonly addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
-    private readonly terminationDialogService: StopPointTerminationDialogService,
     private readonly terminationService: TerminationService,
     protected readonly activatedRoute: ActivatedRoute
   ) {
@@ -343,11 +343,22 @@ export class ServicePointDetailComponent
   }
 
   private startTermination() {
-    this.terminationDialogService
-      .openDialog(
-        this.selectedVersion!,
-        this.form!.controls.validityGroup.controls.validTo.value!
-      )
+    const dialogData: StopPointTerminationDialogData = {
+      title: 'TERMINATION_WORKFLOW.DIALOG.START_TERMINATION_TITLE',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      confirmText: 'COMMON.SAVE',
+      versionId: this.selectedVersion!.id,
+      sloid: this.selectedVersion!.sloid,
+      boTerminationDate:
+        this.form!.controls.validityGroup.controls.validTo.value!.toDate(),
+    };
+
+    this.dialogService
+      .openDialogDataWithCustomResult<
+        StopPointTerminationDialogData,
+        boolean
+      >(dialogData, StopPointTerminationDialogComponent)
       .subscribe((saved) => {
         if (saved) {
           this.router
@@ -467,6 +478,17 @@ export class ServicePointDetailComponent
   }
 
   addWorkflow() {
-    this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
+    const dialogData: AddStopPointWorkflowDialogData = {
+      title: 'WORKFLOW.BUTTON.ADD',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      confirmText: 'WORKFLOW.BUTTON.SEND',
+      stopPoint: this.selectedVersion!,
+    };
+
+    this.dialogService.openWithoutResult(
+      AddStopPointWorkflowComponent,
+      dialogData
+    );
   }
 }

@@ -32,7 +32,7 @@ export class StatementDialogComponent {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    public dialogRef: MatDialogRef<StatementDialogComponent>,
+    public dialogRef: MatDialogRef<StatementDialogComponent, boolean>,
     @Inject(MAT_DIALOG_DATA) public form: FormGroup<StatementDetailFormGroup>,
     private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService,
     private readonly notificationService: NotificationService

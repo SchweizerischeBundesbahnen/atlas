@@ -16,7 +16,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
 import { ValidationService } from '../../../../core/validation/validation.service';
@@ -49,10 +48,6 @@ describe('StopPointWorkflowDetailComponent', () => {
 
   let component: StopPointWorkflowDetailComponent;
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
-
-  let stopPointRejectWorkflowDialogServiceSpy: Mocked<
-    Pick<StopPointRejectWorkflowDialogService, 'openDialog'>
-  >;
   let dialogSpy: Mocked<Pick<MatDialog, 'open'>>;
   let spWfServiceSpy: Mocked<
     Pick<
@@ -62,13 +57,13 @@ describe('StopPointWorkflowDetailComponent', () => {
   >;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
   let dialogServiceSpy: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+    Pick<
+      DialogService,
+      'openWithoutResult' | 'openDialogDataWithConfirmationResult'
+    >
   >;
 
   beforeEach(() => {
-    stopPointRejectWorkflowDialogServiceSpy = {
-      openDialog: vi.fn(),
-    };
     dialogSpy = {
       open: vi.fn(),
     };
@@ -80,6 +75,7 @@ describe('StopPointWorkflowDetailComponent', () => {
       success: vi.fn(),
     };
     dialogServiceSpy = {
+      openWithoutResult: vi.fn(),
       openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
     };
 
@@ -93,10 +89,6 @@ describe('StopPointWorkflowDetailComponent', () => {
         { provide: StopPointWorkflowService, useValue: spWfServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: ValidationService, useClass: ValidationService },
-        {
-          provide: StopPointRejectWorkflowDialogService,
-          useValue: stopPointRejectWorkflowDialogServiceSpy,
-        },
         {
           provide: MatDialog,
           useValue: dialogSpy,
@@ -281,9 +273,7 @@ describe('StopPointWorkflowDetailComponent', () => {
   it('should reject workflow', () => {
     component.rejectWorkflow();
 
-    expect(
-      stopPointRejectWorkflowDialogServiceSpy.openDialog
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogServiceSpy.openWithoutResult).toHaveBeenCalledTimes(1);
   });
 
   it('should open add examinants dialog for workflow in hearing', () => {
@@ -297,9 +287,7 @@ describe('StopPointWorkflowDetailComponent', () => {
   it('should cancel workflow', () => {
     component.cancelWorkflow();
 
-    expect(
-      stopPointRejectWorkflowDialogServiceSpy.openDialog
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogServiceSpy.openWithoutResult).toHaveBeenCalledTimes(1);
   });
 
   it('should open decision dialog and cancel', () => {

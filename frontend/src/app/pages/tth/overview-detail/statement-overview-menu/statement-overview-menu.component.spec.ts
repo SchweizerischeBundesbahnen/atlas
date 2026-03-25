@@ -2,31 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { SwissCanton, TimetableHearingStatementV2 } from 'src/app/api';
 import { StatementOverviewMenuComponent } from './statement-overview-menu.component';
-import { TthChangeCantonDialogService } from '../tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { StatementShareService } from '../statement-share-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
-import { AddToDossierDialogService } from '../../dossier/add-to-dossier-dialog/add-to-dossier-dialog.service';
 import { Pages } from '../../../pages';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
-const tthChangeCantonDialogService: Mocked<
-  Pick<TthChangeCantonDialogService, 'onClick'>
-> = {
-  onClick: vi.fn().mockReturnValue(of(true)),
-};
-const addToDossierDialogService: Mocked<
-  Pick<AddToDossierDialogService, 'openDialog'>
-> = {
-  openDialog: vi.fn().mockReturnValue(of(true)),
-};
-const dialogService: Mocked<
-  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-> = {
-  openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
-};
 const router: Mocked<Pick<Router, 'navigate'>> = {
   navigate: vi.fn().mockResolvedValue(undefined),
 };
@@ -70,18 +53,17 @@ describe('StatementOverviewMenuComponent', () => {
   let component: StatementOverviewMenuComponent;
   let fixture: ComponentFixture<StatementOverviewMenuComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [StatementOverviewMenuComponent],
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
+
+  beforeEach(() => {
+    dialogService = {
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+    };
+
+    TestBed.configureTestingModule({
       providers: [
-        {
-          provide: TthChangeCantonDialogService,
-          useValue: tthChangeCantonDialogService,
-        },
-        {
-          provide: AddToDossierDialogService,
-          useValue: addToDossierDialogService,
-        },
         {
           provide: DialogService,
           useValue: dialogService,
@@ -98,7 +80,7 @@ describe('StatementOverviewMenuComponent', () => {
         { provide: TranslatePipe },
         translateServiceProvider,
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StatementOverviewMenuComponent);
     component = fixture.componentInstance;
@@ -151,7 +133,9 @@ describe('StatementOverviewMenuComponent', () => {
     } as TimetableHearingStatementV2;
     component.addToDossier(statement);
 
-    expect(addToDossierDialogService.openDialog).toHaveBeenCalledTimes(1);
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('should change canton via dialog', () => {
@@ -164,6 +148,8 @@ describe('StatementOverviewMenuComponent', () => {
     } as TimetableHearingStatementV2;
     component.switchCanton(statement);
 
-    expect(tthChangeCantonDialogService.onClick).toHaveBeenCalledTimes(1);
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledTimes(1);
   });
 });

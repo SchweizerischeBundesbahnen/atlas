@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
-
-import { TerminationDecisionDetailDialogComponent } from './termination-decision-detail-dialog.component';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import {
+  TerminationDecisionDetailDialogComponent,
+  TerminationDecisionDetailDialogData,
+} from './termination-decision-detail-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TerminationDecisionDetailDialogData } from './termination-decision-detail-dialog.service';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { EMPTY } from 'rxjs';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
@@ -27,10 +28,19 @@ describe('TerminationDecisionDetailDialogComponent', () => {
   let component: TerminationDecisionDetailDialogComponent;
   let fixture: ComponentFixture<TerminationDecisionDetailDialogComponent>;
 
-  let dialogRefMock: Mocked<Pick<MatDialogRef<TerminationDecisionDetailDialogComponent>, 'close'>>;
-  let terminationWorkflowServiceMock: Mocked<Pick<StopPointTerminationWorkflowService, 'decisionInfoPlus' | 'decisionNova'>>;
+  let dialogRefMock: Mocked<
+    Pick<MatDialogRef<TerminationDecisionDetailDialogComponent>, 'close'>
+  >;
+  let terminationWorkflowServiceMock: Mocked<
+    Pick<
+      StopPointTerminationWorkflowService,
+      'decisionInfoPlus' | 'decisionNova'
+    >
+  >;
 
-  const buildDecisionDialogData = (readOnly: boolean): TerminationDecisionDetailDialogData => ({
+  const buildDecisionDialogData = (
+    readOnly: boolean
+  ): TerminationDecisionDetailDialogData => ({
     versionValidTo: new Date('9999-12-14'),
     title: '',
     message: '',
@@ -112,7 +122,9 @@ describe('TerminationDecisionDetailDialogComponent', () => {
     it('should decide', () => {
       component.decide();
 
-      expect(terminationWorkflowServiceMock.decisionInfoPlus).toHaveBeenCalled();
+      expect(
+        terminationWorkflowServiceMock.decisionInfoPlus
+      ).toHaveBeenCalled();
     });
   });
 

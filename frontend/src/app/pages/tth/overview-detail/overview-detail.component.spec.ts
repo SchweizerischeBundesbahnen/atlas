@@ -30,7 +30,6 @@ import { PermissionService } from '../../../core/auth/permission/permission.serv
 import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
@@ -60,11 +59,6 @@ const mockTimetableHearingStatementsService: Mocked<
   Pick<TimetableHearingStatementInternalService, 'getStatements'>
 > = {
   getStatements: vi.fn(),
-};
-const tthChangeCantonDialogService: Mocked<
-  Pick<TthChangeCantonDialogService, 'onClick'>
-> = {
-  onClick: vi.fn().mockReturnValue(of(true)),
 };
 const dialogSpy: Mocked<Pick<MatDialog, 'open'>> = { open: vi.fn() };
 
@@ -168,10 +162,6 @@ async function baseTestConfiguration() {
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: MatDialog, useValue: dialogSpy },
       { provide: DialogService, useValue: dialogServiceSpy },
-      {
-        provide: TthChangeCantonDialogService,
-        useValue: tthChangeCantonDialogService,
-      },
     ],
   })
     .overrideComponent(OverviewDetailComponent, {
