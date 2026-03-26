@@ -62,11 +62,13 @@ const mockTimetableHearingStatementsService: Mocked<
 };
 const dialogSpy: Mocked<Pick<MatDialog, 'open'>> = { open: vi.fn() };
 
-const dialogServiceSpy: Mocked<
-  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-> = {
-  openDialogDataWithConfirmationResult: vi.fn(),
-};
+let dialogServiceSpy: Mocked<
+  Pick<
+    DialogService,
+    | 'openDialogDataWithConfirmationResult'
+    | 'openCustomDataWithConfirmationResult'
+  >
+>;
 
 const hearingYear2000: TimetableHearingYear = {
   timetableYear: 2000,
@@ -130,6 +132,11 @@ async function baseTestConfiguration() {
   mockTimetableHearingYearsService.getHearingYears.mockReturnValue(
     of([hearingYear2000, hearingYear2001])
   );
+
+  dialogServiceSpy = {
+    openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+    openCustomDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+  };
 
   await TestBed.configureTestingModule({
     imports: [
@@ -197,6 +204,48 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    it('should open dialog on addNewTimetableHearing()', () => {
+      component.addNewTimetableHearing();
+
+      expect(
+        dialogServiceSpy.openCustomDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should open dialog on changeSelectedStatus()', () => {
+      component.changeSelectedStatus({
+        value: {},
+        $event: {},
+      });
+
+      expect(
+        dialogServiceSpy.openDialogDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should open dialog on collectingStatusChangeAction()', () => {
+      component.selectedItems = [{} as TimetableHearingStatementV2];
+      component.collectingStatusChangeAction({
+        $event: {},
+        value: {},
+      });
+
+      expect(
+        dialogServiceSpy.openDialogDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should open dialog on collectingCantonDeliveryAction()', () => {
+      component.selectedItems = [{} as TimetableHearingStatementV2];
+      component.collectingCantonDeliveryAction({
+        value: null,
+      } as MatSelectChange);
+
+      expect(
+        dialogServiceSpy.openDialogDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
     });
 
     it('isSwissCanton false', () => {

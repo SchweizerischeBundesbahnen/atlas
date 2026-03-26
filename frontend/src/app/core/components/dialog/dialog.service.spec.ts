@@ -5,7 +5,7 @@ import { translateServiceProvider } from '../../../app.testing.mocks';
 import { DialogService } from './dialog.service';
 import { firstValueFrom, of } from 'rxjs';
 import { DialogData } from './dialog.data';
-import { mock } from 'vitest-mock-extended';
+import { mock, mockClear } from 'vitest-mock-extended';
 import { DialogComponent } from './dialog.component';
 
 describe('DialogService', () => {
@@ -20,8 +20,12 @@ describe('DialogService', () => {
   const matDialogRef = mock<MatDialogRef<DialogComponent>>();
 
   beforeEach(() => {
+    mockClear(matDialog);
+    mockClear(matDialogRef);
+
     matDialogRef.afterClosed.mockReturnValue(of(true));
     matDialog.open.mockReturnValue(matDialogRef);
+
     // Config
     TestBed.configureTestingModule({
       providers: [
@@ -38,6 +42,7 @@ describe('DialogService', () => {
     const result = await firstValueFrom(
       service.openDialogDataWithConfirmationResult(dialogData)
     );
+
     expect(result).toBe(true);
     expect(matDialog.open).toHaveBeenCalled();
   });
@@ -48,6 +53,7 @@ describe('DialogService', () => {
     const result = await firstValueFrom(
       service.openDialogDataWithConfirmationResult(dialogData)
     );
+
     expect(result).toBe(false);
     expect(matDialog.open).toHaveBeenCalled();
   });
@@ -57,7 +63,29 @@ describe('DialogService', () => {
     matDialogRef.afterClosed.mockReturnValue(of(false));
 
     const result = await firstValueFrom(service.showInfo(dialogData));
+
     expect(result).toBe(false);
     expect(matDialog.open).toHaveBeenCalled();
+  });
+
+  it('should confirmLeave()', async () => {
+    const result = await firstValueFrom(service.confirmLeave());
+
+    expect(result).toBe(true);
+  });
+
+  it('should openDialogDataWithCustomResult()', async () => {
+    const result = await firstValueFrom(
+      service.openDialogDataWithCustomResult<DialogData, boolean>(dialogData)
+    );
+
+    expect(result).toBe(true);
+    expect(matDialog.open).toHaveBeenCalledTimes(1);
+  });
+
+  it('should openWithoutResult()', () => {
+    service.openWithoutResult(DialogComponent, dialogData);
+
+    expect(matDialog.open).toHaveBeenCalledTimes(1);
   });
 });
