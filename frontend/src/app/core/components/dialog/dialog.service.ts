@@ -33,7 +33,7 @@ export class DialogService {
     );
     return dialogRef.afterClosed().pipe(
       take(1),
-      map((value) => (value ? value : false))
+      map((value) => value || false)
     );
   }
 
@@ -60,7 +60,7 @@ export class DialogService {
     });
     return dialogRef.afterClosed().pipe(
       take(1),
-      map((value) => (value ? value : false))
+      map((value) => value || false)
     );
   }
 

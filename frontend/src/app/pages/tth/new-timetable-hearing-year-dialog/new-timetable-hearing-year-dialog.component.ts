@@ -75,7 +75,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   protected readonly EXAMPLE_DATE_UNTIL = '31.12.2023';
 
   constructor(
-    private dialogRef: MatDialogRef<
+    private readonly dialogRef: MatDialogRef<
       NewTimetableHearingYearDialogComponent,
       boolean
     >,

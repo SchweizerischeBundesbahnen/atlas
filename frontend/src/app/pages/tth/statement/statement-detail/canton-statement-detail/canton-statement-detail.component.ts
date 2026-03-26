@@ -168,8 +168,8 @@ export class CantonStatementDetailComponent
 
     this.dialogService
       .openCustomDataWithConfirmationResult(this.form, StatementDialogComponent)
-      .subscribe((result) => {
-        if (result) {
+      .subscribe((confirmed) => {
+        if (confirmed) {
           const hearingStatement = this.form
             .value as TimetableHearingStatementV2;
           this.navigateToStatementDetail(hearingStatement);
