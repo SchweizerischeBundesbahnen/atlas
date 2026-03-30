@@ -68,6 +68,7 @@ public class TimetableHearingStatementMapperV2 {
         .statement(statement.getStatement())
         .statementAnonymous(statement.isStatementAnonymous())
         .anonymousStatement(statement.getAnonymousStatement())
+        .dataProtectionChecked(statement.isDataProtectionChecked())
         .documents(statement.getDocuments().stream().map(StatementDocumentMapper::toModel).toList())
         .publicComment(statement.getPublicComment())
         .internalComment(statement.getInternalComment())

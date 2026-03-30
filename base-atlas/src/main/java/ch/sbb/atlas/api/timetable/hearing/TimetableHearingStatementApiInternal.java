@@ -77,7 +77,7 @@ public interface TimetableHearingStatementApiInternal {
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   Container<TimetableHearingStatementModelV2> getStatements(
       @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModelV2.Fields.timetableYear,
-          TimetableHearingStatementModelV2.Fields.id}) Pageable pageable,
+          TimetableHearingStatementDataProtectionModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
   @GetMapping(path = BASE_PATH + "/csv/{language}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -97,7 +97,7 @@ public interface TimetableHearingStatementApiInternal {
   TimetableHearingStatementAlternatingModel getPreviousStatement(
       @PathVariable Long id,
       @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModelV2.Fields.timetableYear,
-          TimetableHearingStatementModelV2.Fields.id}) Pageable pageable,
+          TimetableHearingStatementDataProtectionModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
   @GetMapping(path = BASE_PATH + "/{id}/next")
@@ -107,7 +107,7 @@ public interface TimetableHearingStatementApiInternal {
   TimetableHearingStatementAlternatingModel getNextStatement(
       @PathVariable Long id,
       @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModelV2.Fields.timetableYear,
-          TimetableHearingStatementModelV2.Fields.id}) Pageable pageable,
+          TimetableHearingStatementDataProtectionModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
   @GetMapping(path = BASE_PATH + "/{id}/documents/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -147,4 +147,7 @@ public interface TimetableHearingStatementApiInternal {
 
   @PostMapping(path = BASE_PATH + "/batch-update-statements")
   void updateStatements(@Valid @RequestBody BatchUpdateTimetableHearingStatementsModel batchUpdateModel);
+
+  @PostMapping(path = BASE_PATH + "/check-data-protection")
+  void checkDataProtection(@Valid @RequestBody TimetableHearingStatementDataProtectionModel timetableHearingStatementDataProtectionModel);
 }

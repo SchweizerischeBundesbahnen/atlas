@@ -1,0 +1,1 @@
+alter table timetable_hearing_statement add column data_protection_checked boolean default false not null;

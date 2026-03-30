@@ -127,6 +127,8 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
 
   private String dossierContactSbbuid;
 
+  private boolean dataProtectionChecked;
+
   public void removeDocument(String documentFilename) {
     Optional<StatementDocument> optionalStatementDocument = documents.stream()
         .filter(doc -> Objects.equals(documentFilename, doc.getFileName())).findFirst();

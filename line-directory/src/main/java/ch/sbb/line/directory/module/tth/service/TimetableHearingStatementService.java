@@ -3,6 +3,7 @@ package ch.sbb.line.directory.module.tth.service;
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
 
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
@@ -135,6 +136,9 @@ public class TimetableHearingStatementService {
 
     TimetableHearingStatement updatedObject = updateObject(timetableHearingStatementModel, timetableHearingStatementInDb);
     addFilesToStatement(files, updatedObject);
+    if (!files.isEmpty()) {
+      updatedObject.setDataProtectionChecked(false);
+    }
     checkThatTimetableFieldNumberExists(updatedObject);
 
     TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.save(updatedObject);
@@ -350,5 +354,22 @@ public class TimetableHearingStatementService {
     return statement.isPartOfDossier()
         && updateModel.getDossierId() != null
         && !statement.getDossierId().equals(updateModel.getDossierId());
+  }
+
+  public void checkDataProtection(TimetableHearingStatementDataProtectionModel timetableHearingStatementDataProtectionModel) {
+    TimetableHearingStatement statement = getTimetableHearingStatementById(timetableHearingStatementDataProtectionModel.getId());
+
+    statement.setStatementAnonymous(timetableHearingStatementDataProtectionModel.isStatementAnonymous());
+    statement.setAnonymousStatement(timetableHearingStatementDataProtectionModel.getAnonymousStatement());
+
+    for (StatementDocument currentDocument : statement.getDocuments()) {
+      timetableHearingStatementDataProtectionModel.getDocuments().stream()
+          .filter(i -> i.getId().equals(currentDocument.getId()))
+          .findFirst()
+          .ifPresent(documentModel -> currentDocument.setAnonymous(documentModel.isAnonymous()));
+    }
+
+    statement.setDataProtectionChecked(true);
+    timetableHearingStatementRepository.save(statement);
   }
 }

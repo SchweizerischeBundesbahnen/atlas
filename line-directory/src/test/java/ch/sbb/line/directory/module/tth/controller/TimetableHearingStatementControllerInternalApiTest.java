@@ -22,6 +22,7 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
@@ -223,7 +224,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.ttfnid, is("ch:1:ttfnid:12341241")))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(0)));
   }
 
   @Test
@@ -290,7 +291,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$.creationDate", notNullValue()))
         .andExpect(jsonPath("$.editionDate", notNullValue()))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(2)));
   }
 
   @Test
@@ -376,7 +377,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
             .file(statementJson))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(0)));
   }
 
   @Test
@@ -420,7 +421,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     mvc.perform(multipart(HttpMethod.PUT, "/internal/timetable-hearing/statements/" + statement.getId())
             .file(statementJson))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(0)));
   }
 
   @Test
@@ -675,7 +676,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
                     MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
 
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(1)));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(1)));
   }
 
   @Test
@@ -706,7 +707,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(3)));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(3)));
   }
 
   @Test
@@ -735,8 +736,8 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
                     MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(1)))
-        .andExpect(jsonPath("$." + Fields.documents + "[0].fileName", is(MULTIPART_FILES.get(2).getOriginalFilename())));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(1)))
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents + "[0].fileName", is(MULTIPART_FILES.get(2).getOriginalFilename())));
   }
 
   @Test
@@ -755,7 +756,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     mvc.perform(get("/internal/timetable-hearing/statements/" + statement.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(0)));
   }
 
   @Test

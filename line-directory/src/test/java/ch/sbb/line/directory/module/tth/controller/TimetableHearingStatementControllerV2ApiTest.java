@@ -17,6 +17,7 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
@@ -225,8 +226,8 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
                     MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
-        .andExpect(jsonPath("$." + Fields.documents + "[0].id", notNullValue()));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(2)))
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents + "[0].id", notNullValue()));
   }
 
   private static @NotNull MockMultipartFile getMockMultipartFile() {
