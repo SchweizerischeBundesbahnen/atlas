@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { PermissionRestriction } from './permissionRestriction';
-import { PermissionRestrictionType } from './permissionRestrictionType';
 
 
-export interface TransportCompanyDossierAnswerPermissionRestrictionModel extends PermissionRestriction { 
+export interface TransportCompanyDossierAnswerPermissionRestrictionModel extends PermissionRestriction {
 }
 export namespace TransportCompanyDossierAnswerPermissionRestrictionModel {
 }

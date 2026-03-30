@@ -1059,4 +1059,30 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     assertThat(statementAfterUpdate.getDossierContactSbbuid()).isEqualTo("u123456");
     assertThat(statementAfterUpdate.getStatementStatus()).isEqualTo(StatementStatus.IN_REVIEW);
   }
+
+  @Test
+  void shouldCheckDataProtectionForExistingStatement() {
+    // Given
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
+        TimetableHearingStatementModelV2.builder()
+            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
+                .build())
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+            .build(),
+        Collections.emptyList());
+    assertThat(statement.isDataProtectionChecked()).isFalse();
+
+    // when
+    timetableHearingStatementControllerInternal.checkDataProtection(TimetableHearingStatementDataProtectionModel.builder()
+            .id(statement.getId())
+            .statementAnonymous(true)
+        .build());
+
+    // then
+    TimetableHearingStatementModelV2 updatedStatement = timetableHearingStatementControllerInternal.getStatement(statement.getId());
+    assertThat(updatedStatement.isDataProtectionChecked()).isTrue();
+  }
 }
