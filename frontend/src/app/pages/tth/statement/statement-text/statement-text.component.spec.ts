@@ -79,32 +79,6 @@ describe('StatementText', () => {
     expect(component.form().getRawValue().anonymousStatement).toBeNull();
   });
 
-  it('should anonymizeStatement', () => {
-    //when
-    component.statementText.anonymizeStatementButtonActive = true;
-    component.anonymizeStatement();
-    fixture.detectChanges();
-    //then
-    expect(component.statementText.anonymizeStatementButtonActive).toBe(false);
-    expect(component.form().controls.anonymousStatement.getRawValue()).toEqual(
-      'Statement original text'
-    );
-    expect(component.form().dirty).toBe(true);
-  });
-
-  it('should uncheck anonymizeStatement', () => {
-    //when
-    component.statementText.anonymizeStatementButtonActive = false;
-    component.anonymizeStatement();
-    fixture.detectChanges();
-    //then
-    expect(component.statementText.anonymizeStatementButtonActive).toBe(true);
-    expect(component.form().controls.anonymousStatement.getRawValue()).toEqual(
-      'Statement original text'
-    );
-    expect(component.form().dirty).toBe(true);
-  });
-
   it('should not show original text', () => {
     //when
     component.statementText.showOriginalStatementText = false;

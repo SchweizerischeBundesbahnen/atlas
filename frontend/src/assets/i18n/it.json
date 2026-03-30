@@ -1089,7 +1089,12 @@
       "STATEMENT_TRANSFER_CANTON": "Trasferimento in un altro cantone",
       "STATEMENT_TRANSFER_CANTON_INFO": "Selezionare il cantone a cui inviare la dichiarazione.",
       "STATEMENT_PDF_ANONYMOUS_CHECKBOX": "L'allegato può essere inoltrato (ad esempio a un'azienda di trasporti).",
-      "DOSSIER_LINK": "La presente presa di posizione fa parte del dossier {{dossierId}}."
+      "DOSSIER_LINK": "La presente presa di posizione fa parte del dossier {{dossierId}}.",
+      "DATA_PROTECTION_CHECKED": "Verifica della protezione dei dati completata",
+      "DATA_PROTECTION_NOT_CHECKED": "Verifica della protezione dei dati in sospeso",
+      "CITIZEN_CONCERN": "Parere del cittadino / della cittadina",
+      "ORIGINAL_STATEMENT": "Presa di posizione originale",
+      "ANONYMOUS_STATEMENT": "Presa di posizione anonimizzata"
     },
     "DOSSIER": {
       "DOSSIER": "Dossier",

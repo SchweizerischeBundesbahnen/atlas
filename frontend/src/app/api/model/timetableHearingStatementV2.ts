@@ -36,6 +36,18 @@ export interface TimetableHearingStatementV2 {
      */
     readonly id?: number;
     /**
+     * Statement does not contain personal data
+     */
+    statementAnonymous?: boolean;
+    /**
+     * Statement anonymized by canton
+     */
+    anonymousStatement?: string;
+    /**
+     * List of uploaded documents
+     */
+    documents?: Array<TimetableHearingStatementDocument>;
+    /**
      * TimetableYear
      */
     timetableYear?: number;
@@ -68,18 +80,6 @@ export interface TimetableHearingStatementV2 {
      */
     statement: string;
     /**
-     * Statement does not contain personal data
-     */
-    statementAnonymous?: boolean;
-    /**
-     * Statement anonymized by canton
-     */
-    anonymousStatement?: string;
-    /**
-     * List of uploaded documents
-     */
-    documents?: Array<TimetableHearingStatementDocument>;
-    /**
      * Statement of Federal office of transport
      */
     publicComment?: string;
@@ -104,6 +104,7 @@ export interface TimetableHearingStatementV2 {
      */
     etagVersion?: number;
     statementSender: TimetableHearingStatementSenderV2;
+    dataProtectionChecked?: boolean;
 }
 export namespace TimetableHearingStatementV2 {
 }

@@ -8,6 +8,7 @@ import { StringListComponent } from '../../../../core/form-components/string-lis
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { TimetableHearingStatementV2 } from '../../../../api';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 
 @Component({
   selector: 'atlas-statement-personal-information',
@@ -16,6 +17,7 @@ import { TimetableHearingStatementV2 } from '../../../../api';
     TranslatePipe,
     AtlasClipboardComponent,
     StringListComponent,
+    AtlasSpacerComponent,
   ],
   templateUrl: './statement-personal-information.component.html',
 })

@@ -14,8 +14,8 @@ export interface GenerateSloidRequestModel {
     sloidType: GenerateSloidRequestModel.SloidTypeEnum;
     sloidPrefix?: string;
     country?: Country;
-    sloidPrefixSet?: boolean;
     validCountry?: boolean;
+    sloidPrefixSet?: boolean;
 }
 export namespace GenerateSloidRequestModel {
     export type SloidTypeEnum = 'SERVICE_POINT' | 'AREA' | 'PLATFORM' | 'REFERENCE_POINT' | 'TOILET' | 'PARKING_LOT' | 'CONTACT_POINT' | 'SECTOR' | 'SECTOR_GROUP';

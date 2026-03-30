@@ -7,11 +7,11 @@ import {
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StatementDetailFormGroup } from '../statement-detail/statement-detail-form-group';
 import { StatementText } from './stetement-text';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 
 export const HIDE_ORIGINAL_TEXT_LABEL = 'TTH.STATEMENT.HIDE_ORIGINAL_TEXT';
 export const SHOW_ORIGINAL_TEXT_LABEL = 'TTH.STATEMENT.SHOW_ORIGINAL_TEXT';
@@ -24,9 +24,9 @@ export const LOCK_ICON = 'bi-lock-fill';
     AtlasButtonComponent,
     AtlasLabelFieldComponent,
     CommentComponent,
-    MatCheckbox,
     ReactiveFormsModule,
     TranslatePipe,
+    AtlasSpacerComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './statement-text.component.html',
@@ -49,11 +49,9 @@ export class StatementTextComponent implements OnInit {
     this.statementText.checkboxStatementAnonymous =
       formGroup.getRawValue().statementAnonymous!;
     if (formGroup.getRawValue().anonymousStatement) {
-      this.statementText.anonymizeStatementButtonActive = true;
       this.statementText.showOriginalStatementText = false;
       this.statementText.showOriginalTextButton = true;
     } else {
-      this.statementText.anonymizeStatementButtonActive = false;
       this.statementText.showOriginalStatementText = true;
       this.statementText.showOriginalTextButton = false;
     }
@@ -72,15 +70,6 @@ export class StatementTextComponent implements OnInit {
         this.statementText.currentAnonymousStatement
       );
     }
-  }
-
-  anonymizeStatement() {
-    this.statementText.anonymizeStatementButtonActive =
-      !this.statementText.anonymizeStatementButtonActive;
-    this.form().controls.anonymousStatement.setValue(
-      this.form().getRawValue().statement
-    );
-    this.form().markAsDirty();
   }
 
   showOriginalText() {

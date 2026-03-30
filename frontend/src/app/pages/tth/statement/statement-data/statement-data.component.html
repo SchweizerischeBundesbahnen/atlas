@@ -6,15 +6,26 @@
   }}
 </h1>
 
-@if (!isNew() && statement().dossierId) {
-  <atlas-link
-    label="{{
-      'TTH.STATEMENT.DOSSIER_LINK'
-        | translate: { dossierId: statement().dossierId }
-    }}"
-    (linkClicked)="goToDossier(statement().dossierId!)"
-  >
-  </atlas-link>
+@if (!isNew()) {
+  @if (statement().dossierId) {
+    <atlas-link
+      label="{{
+        'TTH.STATEMENT.DOSSIER_LINK'
+          | translate: { dossierId: statement().dossierId }
+      }}"
+      (linkClicked)="goToDossier(statement().dossierId!)"
+    >
+    </atlas-link>
+  }
+  @if (statement().dataProtectionChecked) {
+    <div class="data-protection-checked">
+      {{ 'TTH.STATEMENT.DATA_PROTECTION_CHECKED' | translate }}
+    </div>
+  } @else {
+    <div class="data-protection-not-checked">
+      {{ 'TTH.STATEMENT.DATA_PROTECTION_NOT_CHECKED' | translate }}
+    </div>
+  }
 }
 
 <div class="d-flex flex-column col-8 mt-3 mb-5">

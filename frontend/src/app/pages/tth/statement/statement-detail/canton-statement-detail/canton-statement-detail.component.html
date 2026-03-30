@@ -12,11 +12,6 @@
 
           <atlas-statement-text [form]="form" [isNew]="isNew" />
 
-          <atlas-statement-personal-information
-            [form]="form"
-            [statement]="statement!"
-          ></atlas-statement-personal-information>
-
           @if (form.value.documents && form.value.documents.length > 0) {
             <div class="mb-3 mt-4">
               <atlas-label-field
@@ -36,14 +31,6 @@
                     size: document.getRawValue().fileSize!,
                   }"
                 >
-                  <ng-template #checkBox [formGroup]="document">
-                    <mat-checkbox formControlName="anonymous">
-                      {{
-                        'TTH.STATEMENT.STATEMENT_PDF_ANONYMOUS_CHECKBOX'
-                          | translate
-                      }}
-                    </mat-checkbox>
-                  </ng-template>
                 </atlas-file>
               }
             </div>
@@ -64,6 +51,11 @@
               ></atlas-file-upload>
             </ng-container>
           }
+
+          <atlas-statement-personal-information
+            [form]="form"
+            [statement]="statement!"
+          ></atlas-statement-personal-information>
 
           <div class="mt-5">
             <span class="font-bold-xl">

@@ -13,6 +13,7 @@ import { OfferCategory } from './offerCategory';
 
 export interface LineUpdateCsvModel { 
     slnid?: string;
+    linienId?: string;
     validFrom?: Date;
     validTo?: Date;
     description?: string;

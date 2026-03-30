@@ -1,16 +1,24 @@
 <ng-container [formGroup]="form()">
+  <h1 class="font-bold-xl pt-2">
+    {{ 'TTH.STATEMENT.CITIZEN_CONCERN' | translate }}
+    <atlas-spacer [divider]="true" height="10px"></atlas-spacer>
+  </h1>
+
   <div class="flex-row mb-4">
     <atlas-label-field fieldLabel="TTH.STATEMENT.STATEMENT_TEXT" />
-    <div class="d-flex flex-row col-12 mt-2 mb-2">
-      <mat-checkbox
-        formControlName="statementAnonymous"
-        (change)="checkStatementAnonymous($event.checked)"
-        data-cy="statementAnonymous"
-      >
-        {{ 'TTH.STATEMENT.STATEMENT_ANONYMOUS' | translate }}
-      </mat-checkbox>
-    </div>
 
+    @if (!statementText.checkboxStatementAnonymous) {
+      <div class="d-flex flex-column col-12">
+        <atlas-form-comment
+          subLabel="TTH.STATEMENT.ANONYMOUS_STATEMENT"
+          [formGroup]="form()"
+          [displayLabel]="true"
+          label=""
+          controlName="anonymousStatement"
+        >
+        </atlas-form-comment>
+      </div>
+    }
     @if (statementText.showOriginalTextButton) {
       <atlas-button
         buttonDataCy="showOriginalStatementText"
@@ -28,6 +36,7 @@
     @if (statementText.showOriginalStatementText) {
       <div class="pt-2 d-flex flex-column col-12">
         <atlas-form-comment
+          subLabel="TTH.STATEMENT.ORIGINAL_STATEMENT"
           [formGroup]="form()"
           [displayLabel]="true"
           label=""
@@ -35,34 +44,6 @@
         >
         </atlas-form-comment>
       </div>
-    }
-    @if (!statementText.checkboxStatementAnonymous) {
-      <div class="mb-3 mt-3">
-        @if (!statementText.anonymizeStatementButtonActive) {
-          <atlas-button
-            [disabled]="form().disabled"
-            (click)="anonymizeStatement()"
-            buttonDataCy="anonymizeStatementButton"
-            buttonText="TTH.STATEMENT.ANONIMYZE_BUTTON"
-            buttonType="whiteFooterNonEdit"
-          >
-            <ng-template #rightIcon>
-              <i class="ps-1 bi bi-card-text h5"></i>
-            </ng-template>
-          </atlas-button>
-        }
-      </div>
-      @if (statementText.anonymizeStatementButtonActive) {
-        <div class="d-flex flex-column col-12">
-          <atlas-form-comment
-            [formGroup]="form()"
-            [displayLabel]="true"
-            label=""
-            controlName="anonymousStatement"
-          >
-          </atlas-form-comment>
-        </div>
-      }
     }
   </div>
 </ng-container>

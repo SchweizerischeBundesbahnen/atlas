@@ -1,5 +1,4 @@
 export class StatementText {
-  private _anonymizeStatementButtonActive = false;
   private _checkboxStatementAnonymous = false;
   private _showOriginalStatementText = false;
   private _showOriginalTextButton = false;
@@ -45,14 +44,6 @@ export class StatementText {
 
   set checkboxStatementAnonymous(value: boolean) {
     this._checkboxStatementAnonymous = value;
-  }
-
-  get anonymizeStatementButtonActive(): boolean {
-    return this._anonymizeStatementButtonActive;
-  }
-
-  set anonymizeStatementButtonActive(value: boolean) {
-    this._anonymizeStatementButtonActive = value;
   }
 
   get currentAnonymousStatement(): string {

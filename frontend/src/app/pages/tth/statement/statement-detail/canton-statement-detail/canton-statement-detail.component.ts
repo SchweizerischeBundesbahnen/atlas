@@ -44,7 +44,6 @@ import { StatementPersonalInformationComponent } from '../../statement-personal-
 import { StatementDataComponent } from '../../statement-data/statement-data.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { FileComponent } from '../../../../../core/components/file-upload/file/file.component';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { FileUploadComponent } from '../../../../../core/components/file-upload/file-upload.component';
 import { StatementDetailBaseComponent } from '../statement-detail-base.component';
 import { TimetableHearingYearInternalService } from '../../../../../api/service/lidi/timetable-hearing-year-internal.service';
@@ -75,7 +74,6 @@ import { StatementDialogComponent } from '../../statement-dialog/statement.dialo
     StatementDataComponent,
     AtlasLabelFieldComponent,
     FileComponent,
-    MatCheckbox,
     FileUploadComponent,
   ],
   providers: [OpenStatementInMailService, TranslatePipe],

@@ -9,3 +9,11 @@ atlas-label-field {
   align-items: center;
   gap: 0.5rem;
 }
+
+.data-protection-checked {
+  color: variables.$successColor;
+}
+
+.data-protection-not-checked {
+  color: variables.$errorColor;
+}
