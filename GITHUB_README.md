@@ -30,6 +30,7 @@ Thanks to the modular structure implemented using state-of-the-art technologies,
   * [Prerequisite](#prerequisite)
   * [Development](#development)
   * [Start atlas locally](#start-atlas-locally)
+  * [Start frontend locally](#start-frontend-locally)
   * [Transfer Pull Request from GitHub to BitBucket](#transfer-pull-request-from-github-to-bitbucket)
     + [Setup](#setup)
     + [Transfer Pull Request](#transfer-pull-request)
@@ -37,6 +38,8 @@ Thanks to the modular structure implemented using state-of-the-art technologies,
   * [SMTP Server](#smtp-server)
   * [Wiremock](#wiremock)
   * [DB local](#db-local)
+- [Sync forked project to atlas](#sync-forked-project-to-atlas)
+  * [Trubleshooting](#trubleshooting)
 
 <!-- tocstop -->
 
@@ -126,8 +129,8 @@ ATLAS Angular App.
 
 To run atlas locally, the following tools are required:
 
-1. [Java JDK 21](https://bell-sw.com/pages/downloads/#jdk-21-lts)
-2. [Node 20](https://nodejs.org/en/download)
+1. [Java JDK 25](https://jdk.java.net/25/)
+2. [Node 24](https://nodejs.org/en/download)
 3. [Docker](https://docs.docker.com/engine/install/)
 4. [docker-compose](https://docs.docker.com/compose/install/)
 
@@ -156,6 +159,13 @@ Atlas uses [Gradle](https://gradle.org/).
 4. Change dir to frontend: ```cd frontend```
 5. ```npm start```
 
+### Start frontend locally
+
+1. Change dir: ```cd frontend```
+2. Install dependencies: ```npm install```
+3. Run atlas: ```npm start```
+
+For a complete list of available commands, see [package.json](frontend/package.json)
 
 ### Transfer Pull Request from GitHub to BitBucket
 
@@ -201,3 +211,45 @@ To run atlas locally, the Wiremock image must be started:
 To run atlas locally, the DB images must be started: 
 
 ```docker-compose up -d```
+
+## Sync the forked project with atlas
+
+```bash
+# Make sure the upstream is set
+git remote add upstream https://github.com/SchweizerischeBundesbahnen/atlas.git
+# Fetch all commits from upstream
+git fetch upstream main
+# Create a new branch sync-branch 
+git checkout -b sync-branch
+# Apply the upstream commits to the branch sync-branch 
+git reset --hard upstream/main
+# Optional: push the branch sync-branch to origin
+git push -u origin sync-branch
+
+# Now you can merge or rebase the sync-branch to your main branch:
+# Option 1: Rebase if there are not too many conflicts
+# Option 2: Merge if there are too many conflicts
+
+# Option 1: Rebase
+git rebase origin main
+# Resolve conflicts
+# Push to sync-branch
+git push -f
+# Merge to the main branch or open PR and merge to main
+# Done!
+
+# Option 2: Merge
+git merge origin/main --allow-unrelated-histories
+# Accept the upstream changes
+git checkout --theirs .
+# Add, commit and push the changes 
+git add .
+git commit -m "Merge upstream with --allow-unrelated-histories"
+git push
+# Merge to the main branch or open PR and merge to main
+# Done!
+```
+
+### Trubleshooting
+
+1. **npm install errors**: delete the package-lock.json and re run npm install
