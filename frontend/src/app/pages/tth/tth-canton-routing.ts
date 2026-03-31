@@ -49,7 +49,6 @@ export const TTH_CANTON_BO_ROUTES: Routes = [
       },
     ],
   },
-
   {
     path: Pages.TTH_ARCHIVED.path,
     loadComponent: () =>
@@ -77,6 +76,5 @@ export const TTH_CANTON_BO_ROUTES: Routes = [
       },
     ],
   },
-
   { path: '**', redirectTo: Pages.TTH_ACTIVE.path },
 ];
