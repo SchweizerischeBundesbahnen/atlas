@@ -43,6 +43,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { map } from 'rxjs/operators';
+import { DialogData } from '../../../../core/components/dialog/dialog.data';
 
 type TransportCompanyRelationTableEntry = {
   abbreviation?: string;
@@ -272,12 +273,12 @@ export class BusinessOrganisationDetailComponent
 
   delete(): void {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'DIALOG.WARNING',
         message: 'DIALOG.DELETE',
         cancelText: 'DIALOG.BACK',
         confirmText: 'DIALOG.CONFIRM_DELETE',
-      })
+      } satisfies DialogData)
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.sboid != null) {

@@ -15,7 +15,7 @@ export class ReferencePointCreationHintService {
 
   showHint() {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'PRM.REFERENCE_POINTS.HINT_DIALOG.TITLE',
         message: 'PRM.REFERENCE_POINTS.HINT_DIALOG.MESSAGE',
         cancelText: 'PRM.REFERENCE_POINTS.HINT_DIALOG.CANCEL_TEXT',

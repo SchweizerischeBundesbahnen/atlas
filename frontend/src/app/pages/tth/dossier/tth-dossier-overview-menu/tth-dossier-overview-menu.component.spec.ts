@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { TthDossierOverviewMenuComponent } from './tth-dossier-overview-menu.component';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -13,8 +13,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
 import { SwissCanton } from '../../../../api';
 
-const dialogService: Mocked<Pick<DialogService, 'confirm'>> = {
-  confirm: vi.fn().mockReturnValue(of(true)),
+const dialogService: Mocked<
+  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+> = {
+  openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
 };
 const dossierInternalService: Mocked<
   Pick<DossierInternalService, 'completeDossier'>
@@ -64,7 +66,7 @@ describe('TthDossierOverviewMenuComponent', () => {
 
     fixture.detectChanges();
     router.navigate.mockClear();
-    dialogService.confirm.mockClear();
+    dialogService.openDialogDataWithConfirmationResult.mockClear();
   });
 
   it('should create', () => {
@@ -74,7 +76,9 @@ describe('TthDossierOverviewMenuComponent', () => {
   it('should open dialog when completeDossier is called', () => {
     component.completeDossier(DossierStatus.Accepted);
 
-    expect(dialogService.confirm).toHaveBeenCalledWith({
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledWith({
       title: 'TTH.DOSSIER.NOTIFICATION.COMPLETE_TITLE',
       message: 'TTH.DOSSIER.NOTIFICATION.COMPLETE_MESSAGE',
       confirmText: 'DIALOG.OK',
@@ -83,7 +87,9 @@ describe('TthDossierOverviewMenuComponent', () => {
   });
 
   it('should call service when dialog is confirmed', () => {
-    dialogService.confirm.mockReturnValue(of(true));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     component.completeDossier(DossierStatus.Accepted);
 
@@ -100,7 +106,9 @@ describe('TthDossierOverviewMenuComponent', () => {
   });
 
   it('should not call service when dialog is canceled', () => {
-    dialogService.confirm.mockReturnValue(of(false));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(false)
+    );
     dossierInternalService.completeDossier.mockClear();
 
     component.completeDossier(DossierStatus.Accepted);

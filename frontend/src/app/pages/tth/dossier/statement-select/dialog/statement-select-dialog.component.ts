@@ -8,7 +8,6 @@ import {
 } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StatementSelectComponent } from '../statement-select.component';
-import { StatementSelectData } from './statement-select-dialog.service';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import {
   TimetableHearingStatementDocument,
@@ -27,6 +26,7 @@ import { TthTableFilterSettingsService } from '../../../tth-table-filter-setting
 import { Pages } from '../../../../pages';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TthUtils } from '../../../util/tth-utils';
+import { StatementSelectData } from '../../statement-select-data';
 
 @Component({
   selector: 'atlas-statement-select-dialog',
@@ -46,7 +46,9 @@ import { TthUtils } from '../../../util/tth-utils';
 })
 export class StatementSelectDialogComponent implements OnInit {
   private readonly dialogRef =
-    inject<MatDialogRef<StatementSelectDialogComponent>>(MatDialogRef);
+    inject<MatDialogRef<StatementSelectDialogComponent, number[]>>(
+      MatDialogRef
+    );
   private readonly timetableHearingStatementsService = inject(
     TimetableHearingStatementInternalService
   );

@@ -63,7 +63,7 @@ export class TthDossierOverviewMenuComponent {
 
   completeDossier(status: DossierStatus) {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'TTH.DOSSIER.NOTIFICATION.COMPLETE_TITLE',
         message: 'TTH.DOSSIER.NOTIFICATION.COMPLETE_MESSAGE',
         confirmText: 'DIALOG.OK',

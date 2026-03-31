@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { StopPointWorkflowDetailComponent } from './stop-point-workflow-detail.component';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { FormModule } from '../../../../core/module/form.module';
 import { ActivatedRoute } from '@angular/router';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import {
@@ -14,29 +12,18 @@ import {
   ReadStopPointWorkflow,
   Status,
 } from '../../../../api';
-import { StringListComponent } from '../../../../core/form-components/string-list/string-list.component';
-import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
-import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
-import { SplitServicePointNumberPipe } from '../../../../core/search-service-point/split-service-point-number.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
-import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
-import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
-import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { StopPointWorkflowDetailFormComponent } from './detail-form/stop-point-workflow-detail-form.component';
-import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { StopPointWorkflowExaminantsTableComponent } from './examinant-table/stop-point-workflow-examinants-table.component';
 import { StopPointWorkflowDetailFormGroupBuilder } from './detail-form/stop-point-workflow-detail-form-group';
-import { AddExaminantsDialogService } from './add-examinants-dialog/add-examinants-dialog.service';
 import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
+import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
 
 describe('StopPointWorkflowDetailComponent', () => {
   const workflow: ReadStopPointWorkflow = {
@@ -61,10 +48,6 @@ describe('StopPointWorkflowDetailComponent', () => {
 
   let component: StopPointWorkflowDetailComponent;
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
-
-  let stopPointRejectWorkflowDialogServiceSpy: Mocked<
-    Pick<StopPointRejectWorkflowDialogService, 'openDialog'>
-  >;
   let dialogSpy: Mocked<Pick<MatDialog, 'open'>>;
   let spWfServiceSpy: Mocked<
     Pick<
@@ -73,15 +56,14 @@ describe('StopPointWorkflowDetailComponent', () => {
     >
   >;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
-  let dialogServiceSpy: Mocked<Pick<DialogService, 'confirm'>>;
-  let addExaminantsDialogService: Mocked<
-    Pick<AddExaminantsDialogService, 'openDialog'>
+  let dialogServiceSpy: Mocked<
+    Pick<
+      DialogService,
+      'openWithoutResult' | 'openDialogDataWithConfirmationResult'
+    >
   >;
 
-  beforeEach(async () => {
-    stopPointRejectWorkflowDialogServiceSpy = {
-      openDialog: vi.fn(),
-    };
+  beforeEach(() => {
     dialogSpy = {
       open: vi.fn(),
     };
@@ -93,30 +75,14 @@ describe('StopPointWorkflowDetailComponent', () => {
       success: vi.fn(),
     };
     dialogServiceSpy = {
-      confirm: vi.fn(),
-    };
-    addExaminantsDialogService = {
-      openDialog: vi.fn().mockReturnValue(of(true)),
+      openWithoutResult: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        FormModule,
-        StopPointWorkflowDetailComponent,
-        StopPointWorkflowDetailFormComponent,
-        StopPointWorkflowExaminantsTableComponent,
-        StringListComponent,
-        MockAtlasButtonComponent,
-        DisplayDatePipe,
-        SplitServicePointNumberPipe,
-        DetailPageContentComponent,
-        DetailPageContainerComponent,
-        DetailFooterComponent,
-        AtlasSpacerComponent,
-        UserDetailInfoComponent,
-      ],
       providers: [
+        translateServiceProvider,
+        BoSelectionDisplayPipe,
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: TranslatePipe },
         { provide: DialogService, useValue: dialogServiceSpy },
@@ -124,21 +90,11 @@ describe('StopPointWorkflowDetailComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: ValidationService, useClass: ValidationService },
         {
-          provide: AddExaminantsDialogService,
-          useValue: addExaminantsDialogService,
-        },
-        {
-          provide: StopPointRejectWorkflowDialogService,
-          useValue: stopPointRejectWorkflowDialogServiceSpy,
-        },
-        {
           provide: MatDialog,
           useValue: dialogSpy,
         },
       ],
-    })
-      .compileComponents()
-      .then();
+    });
 
     fixture = TestBed.createComponent(StopPointWorkflowDetailComponent);
     component = fixture.componentInstance;
@@ -249,7 +205,9 @@ describe('StopPointWorkflowDetailComponent', () => {
     component.form?.markAsDirty();
     expect(component.form?.dirty).toBe(true);
 
-    dialogServiceSpy.confirm.mockReturnValue(of(false));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(false)
+    );
 
     // when & then
     component.toggleEdit();
@@ -279,7 +237,9 @@ describe('StopPointWorkflowDetailComponent', () => {
     );
     component.form.controls['ccEmails'].setValue(['test@atlas.ch']);
 
-    spWfServiceSpy.editStopPointWorkflow.mockReturnValue(of({ id: 1 } as ReadStopPointWorkflow));
+    spWfServiceSpy.editStopPointWorkflow.mockReturnValue(
+      of({ id: 1 } as ReadStopPointWorkflow)
+    );
 
     component.save();
 
@@ -313,23 +273,21 @@ describe('StopPointWorkflowDetailComponent', () => {
   it('should reject workflow', () => {
     component.rejectWorkflow();
 
-    expect(
-      stopPointRejectWorkflowDialogServiceSpy.openDialog
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogServiceSpy.openWithoutResult).toHaveBeenCalledTimes(1);
   });
 
   it('should open add examinants dialog for workflow in hearing', () => {
     component.addExaminants();
 
-    expect(addExaminantsDialogService.openDialog).toHaveBeenCalledTimes(1);
+    expect(
+      dialogServiceSpy.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('should cancel workflow', () => {
     component.cancelWorkflow();
 
-    expect(
-      stopPointRejectWorkflowDialogServiceSpy.openDialog
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogServiceSpy.openWithoutResult).toHaveBeenCalledTimes(1);
   });
 
   it('should open decision dialog and cancel', () => {
@@ -339,11 +297,14 @@ describe('StopPointWorkflowDetailComponent', () => {
 
     component.openDecisionDialog();
 
-    expect(dialogSpy.open).toHaveBeenCalledExactlyOnceWith(DecisionStepperComponent, {
-      data: 1,
-      disableClose: true,
-      panelClass: 'atlas-dialog-panel',
-      backdropClass: 'atlas-dialog-backdrop',
-    });
+    expect(dialogSpy.open).toHaveBeenCalledExactlyOnceWith(
+      DecisionStepperComponent,
+      {
+        data: 1,
+        disableClose: true,
+        panelClass: 'atlas-dialog-panel',
+        backdropClass: 'atlas-dialog-backdrop',
+      }
+    );
   });
 });

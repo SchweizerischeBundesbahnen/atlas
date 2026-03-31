@@ -1,7 +1,7 @@
 <atlas-dialog-close (clicked)="closeDialog()"></atlas-dialog-close>
 <atlas-dialog-content>
   <div class="mb-5 dialog-title">
-    <span class="font-bold-4xl">{{ data.title | translate }}</span>
+    <span class="font-bold-4xl">{{ titleTranslationKey | translate }}</span>
   </div>
   <form [formGroup]="formGroup">
     <div class="col-12 px-5 mt-3">
@@ -69,6 +69,6 @@
     class="atlas-primary-btn primary-color-btn"
     data-cy="dialog-confirm-button"
   >
-    {{ data.confirmText ?? 'DIALOG.OK' | translate }}
+    {{ titleTranslationKey | translate }}
   </button>
 </atlas-dialog-footer>

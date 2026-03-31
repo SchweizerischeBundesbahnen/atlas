@@ -2,7 +2,6 @@ import { Component, inject, input, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatIconButton } from '@angular/material/button';
-import { TthChangeCantonDialogService } from '../tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { HearingStatus, TimetableHearingStatementV2 } from '../../../../api';
 import { Pages } from '../../../pages';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,7 +9,13 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { StatementShareService } from '../statement-share-service';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import { AddToDossierDialogService } from '../../dossier/add-to-dossier-dialog/add-to-dossier-dialog.service';
+import { DialogData } from '../../../../core/components/dialog/dialog.data';
+import { ChangeCantonData } from '../tth-change-canton-dialog/model/change-canton-data';
+import { TthChangeCantonDialogComponent } from '../tth-change-canton-dialog/tth-change-canton-dialog.component';
+import {
+  AddToDossierData,
+  AddToDossierDialogComponent,
+} from '../../dossier/add-to-dossier-dialog/add-to-dossier-dialog.component';
 
 @Component({
   selector: 'atlas-statement-overview-menu',
@@ -31,12 +36,6 @@ export class StatementOverviewMenuComponent {
   private readonly router = inject(Router);
   private readonly dialogService = inject(DialogService);
   private readonly statementShareService = inject(StatementShareService);
-  private readonly tthChangeCantonDialogService = inject(
-    TthChangeCantonDialogService
-  );
-  private readonly addToDossierDialogService = inject(
-    AddToDossierDialogService
-  );
 
   hearingStatus = input(HearingStatus.Active);
   row = input.required<TimetableHearingStatementV2>();
@@ -46,12 +45,12 @@ export class StatementOverviewMenuComponent {
 
   duplicate($event: TimetableHearingStatementV2) {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'TTH.DUPLICATE.DIALOG.TITLE',
         message: 'TTH.DUPLICATE.DIALOG.MESSAGE',
         cancelText: 'TTH.DUPLICATE.DIALOG.CANCEL',
         confirmText: 'TTH.DUPLICATE.DIALOG.CONFIRM',
-      })
+      } satisfies DialogData)
       .subscribe((confirmed) => {
         if (confirmed) {
           this.duplicateStatement($event);
@@ -78,16 +77,39 @@ export class StatementOverviewMenuComponent {
   }
 
   addToDossier(statement: TimetableHearingStatementV2) {
-    this.addToDossierDialogService.openDialog(statement).subscribe((result) => {
-      if (result) {
-        this.reloadTable.emit();
-      }
-    });
+    const dialogData: AddToDossierData = {
+      title: 'TTH.BUTTON.ADD_TO_DOSSIER',
+      message: 'TTH.DOSSIER.ADD_TO_DOSSIER_INFO',
+      cancelText: 'COMMON.CANCEL',
+      confirmText: 'COMMON.SAVE',
+      statement: statement,
+    };
+
+    this.dialogService
+      .openDialogDataWithConfirmationResult(
+        dialogData,
+        AddToDossierDialogComponent
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.reloadTable.emit();
+        }
+      });
   }
 
   switchCanton(statement: TimetableHearingStatementV2) {
-    this.tthChangeCantonDialogService
-      .onClick(undefined, [statement])
+    const dialogData: ChangeCantonData = {
+      title: 'TTH.STATEMENT.DIALOG.TITLE',
+      message: 'TTH.DIALOG.MULTIPLE_STATUS_CHANGE_MESSAGE',
+      cancelText: 'TTH.DIALOG.BACK',
+      confirmText: 'TTH.DIALOG.CANTON_CHANGE',
+      tths: [statement],
+    };
+    this.dialogService
+      .openDialogDataWithConfirmationResult(
+        dialogData,
+        TthChangeCantonDialogComponent
+      )
       .subscribe((result) => {
         if (result) {
           this.reloadTable.emit();

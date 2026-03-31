@@ -7,13 +7,18 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AddToDossierData } from './add-to-dossier-dialog.service';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { DossierSelectComponent } from './dossier-select/dossier-select.component';
 import { TthDossier } from '../../../../api/model/tthDossier';
 import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DOSSIER_EDITABLE_STATES } from '../detail/canton-dossier-detail/canton-dossier-detail.component';
+import { DialogData } from '../../../../core/components/dialog/dialog.data';
+import { TimetableHearingStatementV2 } from '../../../../api';
+
+export interface AddToDossierData extends DialogData {
+  statement: TimetableHearingStatementV2;
+}
 
 @Component({
   selector: 'atlas-statement-select-dialog',
@@ -30,7 +35,7 @@ import { DOSSIER_EDITABLE_STATES } from '../detail/canton-dossier-detail/canton-
 })
 export class AddToDossierDialogComponent {
   private readonly dialogRef =
-    inject<MatDialogRef<AddToDossierDialogComponent>>(MatDialogRef);
+    inject<MatDialogRef<AddToDossierDialogComponent, boolean>>(MatDialogRef);
   private readonly dossierInternalService = inject(DossierInternalService);
   private readonly notificationService = inject(NotificationService);
 

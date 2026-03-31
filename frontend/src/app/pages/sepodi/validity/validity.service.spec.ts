@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { ValidityService } from './validity.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import moment from 'moment';
@@ -8,11 +8,13 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 
 describe('ValidityService', () => {
   let service: ValidityService;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   beforeEach(() => {
     dialogService = {
-      confirm: vi.fn().mockReturnValue(of(true)),
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
     };
 
     TestBed.configureTestingModule({
@@ -73,7 +75,9 @@ describe('ValidityService', () => {
 
     const result = await firstValueFrom(service.confirmValidityDialog());
     expect(result).toBe(true);
-    expect(dialogService.confirm).toHaveBeenCalled();
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalled();
   });
 
   it('should validate and disable form correctly', async () => {
@@ -89,7 +93,9 @@ describe('ValidityService', () => {
 
     expect(form.disabled).toBe(true);
     expect(updateFunctionSpy).toHaveBeenCalled();
-    expect(dialogService.confirm).toHaveBeenCalled();
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalled();
   });
 
   it('should validate and disable function correctly and call update', async () => {
@@ -106,6 +112,8 @@ describe('ValidityService', () => {
 
     expect(updateFunctionSpy).toHaveBeenCalled();
     expect(disableFunctionSpy).toHaveBeenCalled();
-    expect(dialogService.confirm).toHaveBeenCalled();
+    expect(
+      dialogService.openDialogDataWithConfirmationResult
+    ).toHaveBeenCalled();
   });
 });

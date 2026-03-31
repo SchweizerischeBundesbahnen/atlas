@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { SectorDetailComponent } from './sector-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectorMapService } from '../../map/sector-map.service';
@@ -61,7 +61,9 @@ describe('SectorDetailComponent', () => {
   let sectorInternalServiceSpy: Mocked<
     Pick<SectorInternalService, 'revokeSector'>
   >;
-  let dialogServiceSpy: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogServiceSpy: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     Element.prototype.scrollIntoView = vi.fn();
@@ -102,16 +104,21 @@ describe('SectorDetailComponent', () => {
     sectorInternalServiceSpy.revokeSector.mockReturnValue(of(undefined));
 
     dialogServiceSpy = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     return TestBed.configureTestingModule({
       imports: [AppTestingModule, SectorDetailComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: SectorMapService, useValue: sectorMapServiceSpy },
-        { provide: TrafficPointMapService, useValue: trafficPointMapServiceSpy },
+        {
+          provide: TrafficPointMapService,
+          useValue: trafficPointMapServiceSpy,
+        },
         { provide: MapService, useValue: mapServiceSpy },
         { provide: SectorService, useValue: sectorServiceSpy },
         { provide: SectorInternalService, useValue: sectorInternalServiceSpy },
@@ -225,7 +232,9 @@ describe('SectorDetailComponent', () => {
 
     it('should update sector', () => {
       vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
-      sectorServiceSpy.updateSector.mockReturnValue(of(BERN_PLATFORM_1_SECTOR_A));
+      sectorServiceSpy.updateSector.mockReturnValue(
+        of(BERN_PLATFORM_1_SECTOR_A)
+      );
 
       component.toggleEdit();
       component.form.controls.designation.setValue('AAA');

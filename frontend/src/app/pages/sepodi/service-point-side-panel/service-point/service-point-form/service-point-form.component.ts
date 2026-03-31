@@ -232,7 +232,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
             ServicePointType.ServicePoint
           ) {
             this.dialogService
-              .confirm({
+              .openDialogDataWithConfirmationResult({
                 title: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.TITLE',
                 message: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.MESSAGE',
               })

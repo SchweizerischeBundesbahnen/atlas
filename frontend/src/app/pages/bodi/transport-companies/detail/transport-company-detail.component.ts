@@ -38,6 +38,7 @@ import { BackButtonDirective } from '../../../../core/components/button/back-but
 import { TranslatePipe } from '@ngx-translate/core';
 import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
 import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
+import { DialogData } from '../../../../core/components/dialog/dialog.data';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
@@ -187,10 +188,10 @@ export class TransportCompanyDetailComponent
     }
 
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
-      })
+      } satisfies DialogData)
       .subscribe((result) => {
         if (result) {
           this.cancelEdit();

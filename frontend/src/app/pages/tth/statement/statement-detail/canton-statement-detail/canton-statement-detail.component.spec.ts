@@ -12,38 +12,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { BehaviorSubject, EMPTY, of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ErrorNotificationComponent } from '../../../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '@atlas/form';
-import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
-import { LinkIconComponent } from '../../../../../core/form-components/link-icon/link-icon.component';
-import { AppTestingModule } from '../../../../../app.testing.module';
-import { FormModule } from '../../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CantonStatementDetailComponent } from './canton-statement-detail.component';
-import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
-import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import {
   adminPermissionServiceMock,
-  MockAtlasButtonComponent,
-  MockSelectComponent,
+  translateServiceProvider,
 } from '../../../../../app.testing.mocks';
-import { Component, Input } from '@angular/core';
-import { CreationEditionRecord } from '../../../../../core/components/user-edit-info/creation-edition-record';
 import { By } from '@angular/platform-browser';
 import { LoadingSpinnerService } from '../../../../../core/components/loading-spinner/loading-spinner.service';
 import { StatementShareService } from '../../../overview-detail/statement-share-service';
-import { FileUploadComponent } from '../../../../../core/components/file-upload/file-upload.component';
-import { FileSizePipe } from '../../../../../core/components/file-upload/file-size/file-size.pipe';
-import { FileComponent } from '../../../../../core/components/file-upload/file/file.component';
-import { LoadingSpinnerComponent } from '../../../../../core/components/loading-spinner/loading-spinner.component';
-import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
-import { StringListComponent } from '../../../../../core/form-components/string-list/string-list.component';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TimetableHearingYearInternalService } from '../../../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { TimetableYearChangeInternalService } from '../../../../../api/service/lidi/timetable-year-change-internal.service';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 const existingStatement: TimetableHearingStatementV2 = {
   id: 1,
@@ -136,16 +118,6 @@ const blob = 'Blob' as unknown as Blob;
 mockTimetableHearingStatementsService.getStatementDocument.mockReturnValue(
   of(blob)
 );
-
-@Component({
-  selector: 'atlas-user-detail-info',
-  template: '<p>MockUserDetailInfoComponent</p>',
-  imports: [AppTestingModule, FormModule],
-})
-class MockUserDetailInfoComponent {
-  @Input() short = false;
-  @Input() record?: CreationEditionRecord;
-}
 
 describe('StatementDetailComponent for existing statement', () => {
   beforeEach(() => {
@@ -414,28 +386,8 @@ function setupTestBed(activatedRoute: {
   mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of(years));
 
   TestBed.configureTestingModule({
-    imports: [
-      AppTestingModule,
-      FormModule,
-      LoadingSpinnerComponent,
-      CantonStatementDetailComponent,
-      ErrorNotificationComponent,
-      AtlasSpacerComponent,
-      DetailPageContainerComponent,
-      DetailPageContentComponent,
-      DetailFooterComponent,
-      InfoIconComponent,
-      CommentComponent,
-      LinkIconComponent,
-      MockAtlasButtonComponent,
-      MockSelectComponent,
-      MockUserDetailInfoComponent,
-      FileUploadComponent,
-      FileSizePipe,
-      FileComponent,
-      StringListComponent,
-    ],
     providers: [
+      translateServiceProvider,
       { provide: FormBuilder },
       {
         provide: LoadingSpinnerService,
@@ -464,7 +416,5 @@ function setupTestBed(activatedRoute: {
         useValue: activatedRoute,
       },
     ],
-  })
-    .compileComponents()
-    .then();
+  });
 }

@@ -85,7 +85,9 @@ describe('ContactPointDetailComponent', () => {
     Pick<ContactPointService, 'createContactPoint' | 'updateContactPoint'>
   >;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   beforeEach(() => {
     Element.prototype.scrollIntoView = vi.fn();
@@ -102,9 +104,11 @@ describe('ContactPointDetailComponent', () => {
     };
 
     dialogService = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.confirm.mockReturnValue(of(true));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     TestBed.configureTestingModule({
       imports: [

@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { TerminationAbortFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
-import { TerminationAbortDetailDialogData } from '../termination-abort-dialog.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
@@ -11,6 +10,12 @@ import { DialogContentComponent } from '../../../../../../core/components/dialog
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { DialogData } from '../../../../../../core/components/dialog/dialog.data';
+
+export interface TerminationAbortDetailDialogData extends DialogData {
+  workflowId: number;
+  abortComment: FormGroup<TerminationAbortFormGroup>;
+}
 
 @Component({
   selector: 'atlas-termination-abort-detail-dialog',
@@ -24,9 +29,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './termination-abort-detail-dialog.component.html',
 })
 export class TerminationAbortDetailDialogComponent implements OnInit {
-  private readonly dialogRef = inject(
-    MatDialogRef<TerminationAbortDetailDialogComponent>
-  );
+  private readonly dialogRef: MatDialogRef<
+    TerminationAbortDetailDialogComponent,
+    boolean
+  > = inject(MatDialogRef);
   private readonly decisionDetailDialogData: TerminationAbortDetailDialogData =
     inject(MAT_DIALOG_DATA);
 

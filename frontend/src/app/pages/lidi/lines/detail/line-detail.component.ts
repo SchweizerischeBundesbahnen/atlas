@@ -48,6 +48,7 @@ import {
   Revokable,
   RevokeButton,
 } from '../../../../core/form-components/revoke-button/revoke-button';
+import { DialogData } from '../../../../core/components/dialog/dialog.data';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -350,13 +351,12 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
 
   delete(): void {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'DIALOG.WARNING',
         message: 'DIALOG.DELETE',
         cancelText: 'DIALOG.BACK',
         confirmText: 'DIALOG.CONFIRM_DELETE',
-      })
-      .pipe(takeUntil(this.onDestroy$))
+      } satisfies DialogData)
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
@@ -507,9 +507,5 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
       this.form.enable();
       return EMPTY;
     };
-  }
-
-  getPageType() {
-    return Pages.LINES;
   }
 }

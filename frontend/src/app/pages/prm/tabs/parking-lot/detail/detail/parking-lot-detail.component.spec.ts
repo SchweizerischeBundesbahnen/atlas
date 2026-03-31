@@ -72,7 +72,9 @@ describe('ParkingLotDetailComponent', () => {
     Pick<ParkingLotService, 'createParkingLot' | 'updateParkingLot'>
   >;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   const activatedRouteMock = {
     snapshot: {
@@ -100,9 +102,11 @@ describe('ParkingLotDetailComponent', () => {
     };
 
     dialogService = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.confirm.mockReturnValue(of(true));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     TestBed.configureTestingModule({
       imports: [

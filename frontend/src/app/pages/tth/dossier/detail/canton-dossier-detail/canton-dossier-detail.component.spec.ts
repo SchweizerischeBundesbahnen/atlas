@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
-
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { CantonDossierDetailComponent } from './canton-dossier-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppTestingModule } from '../../../../../app.testing.module';
@@ -9,7 +8,6 @@ import { of } from 'rxjs';
 import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TthDossier } from '../../../../../api/model/tthDossier';
 import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
-import { StatementSelectDialogService } from '../../statement-select/dialog/statement-select-dialog.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRouteMockType } from '../../../../../app.testing.mocks';
 import { DossierStatus } from '../../../../../api/model/dossierStatus';
@@ -54,12 +52,6 @@ const dossierInternalService: Mocked<
   completeDossier: vi.fn().mockReturnValue(of(undefined)),
 };
 
-const statementSelectDialogService: Mocked<
-  Pick<StatementSelectDialogService, 'select'>
-> = {
-  select: vi.fn().mockReturnValue(of([1, 2])),
-};
-
 const notificationService: Mocked<Pick<NotificationService, 'success'>> = {
   success: vi.fn(),
 };
@@ -68,8 +60,14 @@ const openDossierInMailService: Mocked<
 > = {
   openDossierInMailClient: vi.fn(),
 };
-const dialogService: Mocked<Pick<DialogService, 'confirm'>> = {
-  confirm: vi.fn().mockReturnValue(of(true)),
+const dialogService: Mocked<
+  Pick<
+    DialogService,
+    'openDialogDataWithConfirmationResult' | 'openDialogDataWithCustomResult'
+  >
+> = {
+  openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+  openDialogDataWithCustomResult: vi.fn().mockReturnValue(of([1, 2])),
 };
 let router: Mocked<Pick<Router, 'navigate'>>;
 
@@ -113,7 +111,9 @@ describe('DossierDetailComponent', () => {
     it('should open statement select dialog', () => {
       component.openAddStatementsDialog();
 
-      expect(statementSelectDialogService.select).toHaveBeenCalledTimes(1);
+      expect(
+        dialogService.openDialogDataWithCustomResult
+      ).toHaveBeenCalledTimes(1);
       expect(component.selectedStatements).toEqual([1, 2]);
     });
   });
@@ -186,7 +186,9 @@ describe('DossierDetailComponent', () => {
     it('should complete to bo', () => {
       component.completeDossier(DossierStatus.Canceled);
 
-      expect(dialogService.confirm).toHaveBeenCalledTimes(1);
+      expect(
+        dialogService.openDialogDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
       expect(dossierInternalService.completeDossier).toHaveBeenCalledTimes(1);
     });
 
@@ -215,10 +217,6 @@ describe('DossierDetailComponent', () => {
         {
           provide: DossierInternalService,
           useValue: dossierInternalService,
-        },
-        {
-          provide: StatementSelectDialogService,
-          useValue: statementSelectDialogService,
         },
         {
           provide: NotificationService,

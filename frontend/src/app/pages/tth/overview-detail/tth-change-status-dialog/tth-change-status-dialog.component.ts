@@ -24,7 +24,7 @@ export class TthChangeStatusDialogComponent {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    public dialogRef: MatDialogRef<TthChangeStatusDialogComponent>,
+    public dialogRef: MatDialogRef<TthChangeStatusDialogComponent, boolean>,
     @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
     private readonly notificationService: NotificationService,
     private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService

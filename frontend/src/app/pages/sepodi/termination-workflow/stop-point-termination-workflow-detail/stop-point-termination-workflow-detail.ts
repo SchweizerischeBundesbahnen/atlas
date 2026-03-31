@@ -21,13 +21,20 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { LinkComponent } from '../../../../core/form-components/link/link.component';
 import { Pages } from '../../../pages';
-import { TerminationDecisionDetailDialogService } from './decision/decision-detail/termination-decision-detail-dialog.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
 import moment from 'moment';
 import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
-import { TerminationAbortDialogService } from './cancel/termination-abort-dialog.service';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
+import {
+  TerminationAbortDetailDialogComponent,
+  TerminationAbortDetailDialogData,
+} from './cancel/termination-abort-detail-dialog/termination-abort-detail-dialog.component';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import {
+  TerminationDecisionDetailDialogComponent,
+  TerminationDecisionDetailDialogData,
+} from './decision/decision-detail/termination-decision-detail-dialog.component';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 @Component({
@@ -57,12 +64,7 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly permissionService = inject(PermissionService);
-  private readonly terminationDecisionDetailDialogService = inject(
-    TerminationDecisionDetailDialogService
-  );
-  private readonly terminationAbortDialogService = inject(
-    TerminationAbortDialogService
-  );
+  private readonly dialogService = inject(DialogService);
 
   stopPoint!: ReadServicePointVersion;
   workflow!: TerminationStopPointWorkflowModel;
@@ -109,13 +111,22 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
   }
 
   onOpenDecision(examinantDecision: FormGroup<TerminationDecisionFormGroup>) {
-    this.terminationDecisionDetailDialogService.openDialog(
-      this.workflow.id!,
-      true,
-      this.workflow.status!,
-      examinantDecision.controls.terminationDecisionPerson.value!,
-      examinantDecision,
-      this.workflow.versionValidTo!
+    const dialogData: TerminationDecisionDetailDialogData = {
+      title: 'WORKFLOW.BUTTON.ADD',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      confirmText: 'WORKFLOW.BUTTON.SEND',
+      workflowId: this.workflow.id!,
+      readOnly: true,
+      workflowStatus: this.workflow.status!,
+      examinant: examinantDecision.controls.terminationDecisionPerson.value!,
+      decision: examinantDecision,
+      versionValidTo: this.workflow.versionValidTo!,
+    };
+
+    this.dialogService.openWithoutResult(
+      TerminationDecisionDetailDialogComponent,
+      dialogData
     );
   }
 
@@ -159,14 +170,23 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
     }
     decisionForm.controls.terminationDate.setValue(terminationDatePrefill);
 
-    this.terminationDecisionDetailDialogService
-      .openDialog(
-        this.workflow.id!,
-        false,
-        this.workflow.status!,
-        this.terminationPermission!,
-        decisionForm,
-        this.workflow.versionValidTo!
+    const dialogData: TerminationDecisionDetailDialogData = {
+      title: 'WORKFLOW.BUTTON.ADD',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      confirmText: 'WORKFLOW.BUTTON.SEND',
+      workflowId: this.workflow.id!,
+      readOnly: false,
+      workflowStatus: this.workflow.status!,
+      examinant: this.terminationPermission!,
+      decision: decisionForm,
+      versionValidTo: this.workflow.versionValidTo!,
+    };
+
+    this.dialogService
+      .openDialogDataWithConfirmationResult(
+        dialogData,
+        TerminationDecisionDetailDialogComponent
       )
       .subscribe((result) => {
         if (result) {
@@ -182,8 +202,21 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
   openAbortTermination() {
     const terminationCancelFormGroupFormGroup =
       StopPointTerminationWorkflowDetailFormGroupBuilder.buildCancelTermination();
-    this.terminationAbortDialogService
-      .openDialog(this.workflow.id!, terminationCancelFormGroupFormGroup)
+
+    const dialogData: TerminationAbortDetailDialogData = {
+      title: 'WORKFLOW.TERMINATION.CANCEL',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      confirmText: 'WORKFLOW.BUTTON.SEND',
+      workflowId: this.workflow.id!,
+      abortComment: terminationCancelFormGroupFormGroup,
+    };
+
+    this.dialogService
+      .openDialogDataWithCustomResult<
+        TerminationAbortDetailDialogData,
+        boolean
+      >(dialogData, TerminationAbortDetailDialogComponent)
       .subscribe((result) => {
         if (result) {
           this.router

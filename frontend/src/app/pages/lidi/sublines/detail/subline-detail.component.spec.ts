@@ -74,7 +74,9 @@ let lineService: Mocked<Pick<LineService, 'getLineVersionsV2'>>;
 let lineInternalService: Mocked<
   Pick<LineInternalService, 'getLine' | 'getLines'>
 >;
-let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+let dialogService: Mocked<
+  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+>;
 
 function createSharedMocks(): void {
   validityService = {
@@ -96,9 +98,9 @@ function createSharedMocks(): void {
   lineInternalService.getLine.mockReturnValue(of({} as Line));
 
   dialogService = {
-    confirm: vi.fn(),
+    openDialogDataWithConfirmationResult: vi.fn(),
   };
-  dialogService.confirm.mockReturnValue(of(true));
+  dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 }
 
 describe('SublineDetailComponent for existing sublineVersion', () => {

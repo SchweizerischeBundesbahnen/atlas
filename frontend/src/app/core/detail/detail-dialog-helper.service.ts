@@ -3,6 +3,7 @@ import { Observable, of, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { DialogService } from '../components/dialog/dialog.service';
 import { filter } from 'rxjs/operators';
+import { DialogData } from '../components/dialog/dialog.data';
 
 export interface DetailWithCancelEdit extends OnInit {
   isNew: boolean;
@@ -38,20 +39,20 @@ export class DetailDialogHelperService {
 
   confirmLeaveDirtyForm(form: FormGroup): Observable<boolean> {
     if (form.dirty) {
-      return this.dialogService.confirm({
+      return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
-      });
+      } satisfies DialogData);
     }
     return of(true);
   }
 
   confirmWarning(
-    labels: { message: string; confirmText: string },
+    labels: Pick<DialogData, 'message' | 'confirmText'>,
     onConfirm: () => void
   ) {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'DIALOG.WARNING',
         cancelText: 'DIALOG.BACK',
         ...labels,

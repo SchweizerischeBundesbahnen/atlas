@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { OverviewDetailComponent } from './overview-detail.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -30,7 +30,6 @@ import { PermissionService } from '../../../core/auth/permission/permission.serv
 import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
@@ -61,16 +60,15 @@ const mockTimetableHearingStatementsService: Mocked<
 > = {
   getStatements: vi.fn(),
 };
-const tthChangeCantonDialogService: Mocked<
-  Pick<TthChangeCantonDialogService, 'onClick'>
-> = {
-  onClick: vi.fn().mockReturnValue(of(true)),
-};
 const dialogSpy: Mocked<Pick<MatDialog, 'open'>> = { open: vi.fn() };
 
-const dialogServiceSpy: Mocked<Pick<DialogService, 'confirm'>> = {
-  confirm: vi.fn(),
-};
+let dialogServiceSpy: Mocked<
+  Pick<
+    DialogService,
+    | 'openDialogDataWithConfirmationResult'
+    | 'openCustomDataWithConfirmationResult'
+  >
+>;
 
 const hearingYear2000: TimetableHearingYear = {
   timetableYear: 2000,
@@ -135,6 +133,11 @@ async function baseTestConfiguration() {
     of([hearingYear2000, hearingYear2001])
   );
 
+  dialogServiceSpy = {
+    openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+    openCustomDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+  };
+
   await TestBed.configureTestingModule({
     imports: [
       AppTestingModule,
@@ -166,10 +169,6 @@ async function baseTestConfiguration() {
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: MatDialog, useValue: dialogSpy },
       { provide: DialogService, useValue: dialogServiceSpy },
-      {
-        provide: TthChangeCantonDialogService,
-        useValue: tthChangeCantonDialogService,
-      },
     ],
   })
     .overrideComponent(OverviewDetailComponent, {
@@ -205,6 +204,48 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    it('should open dialog on addNewTimetableHearing()', () => {
+      component.addNewTimetableHearing();
+
+      expect(
+        dialogServiceSpy.openCustomDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should open dialog on changeSelectedStatus()', () => {
+      component.changeSelectedStatus({
+        value: {},
+        $event: {},
+      });
+
+      expect(
+        dialogServiceSpy.openDialogDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should open dialog on collectingStatusChangeAction()', () => {
+      component.selectedItems = [{} as TimetableHearingStatementV2];
+      component.collectingStatusChangeAction({
+        $event: {},
+        value: {},
+      });
+
+      expect(
+        dialogServiceSpy.openDialogDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should open dialog on collectingCantonDeliveryAction()', () => {
+      component.selectedItems = [{} as TimetableHearingStatementV2];
+      component.collectingCantonDeliveryAction({
+        value: null,
+      } as MatSelectChange);
+
+      expect(
+        dialogServiceSpy.openDialogDataWithConfirmationResult
+      ).toHaveBeenCalledTimes(1);
     });
 
     it('isSwissCanton false', () => {
@@ -506,7 +547,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       overviewToTabService.setTimetableHearingYear(hearingYear2000);
       overviewToTabService.setTimetableHearingYearLoading(false);
       overviewToTabService.setTimetableHearingYearFound(false);
-      dialogServiceSpy.confirm.mockReturnValue(of(true));
+      dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+        of(true)
+      );
 
       component = fixture.componentInstance;
       fixture.detectChanges();

@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import { TerminationAbortDetailDialogComponent } from './termination-abort-detail-dialog.component';
+import {
+  TerminationAbortDetailDialogComponent,
+  TerminationAbortDetailDialogData,
+} from './termination-abort-detail-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TerminationAbortFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
-import { TerminationAbortDetailDialogData } from '../termination-abort-dialog.service';
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { EMPTY } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';

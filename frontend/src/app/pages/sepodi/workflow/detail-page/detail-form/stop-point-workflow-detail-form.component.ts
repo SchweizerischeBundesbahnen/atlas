@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormGroup,
@@ -21,7 +21,6 @@ import {
 } from 'src/app/api';
 import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
-import { DecisionDetailDialogService } from '../decision/decision-detail/decision-detail-dialog.service';
 import { Pages } from 'src/app/pages/pages';
 import { SloidHelper } from '../../../../../core/util/sloidHelper';
 import { LinkComponent } from '../../../../../core/form-components/link/link.component';
@@ -35,6 +34,11 @@ import { StringListComponent } from '../../../../../core/form-components/string-
 import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointWorkflowBasicInfo } from '../../stop-point-workflow-basic-info/stop-point-workflow-basic-info';
 import { StopPointWorkflowService } from '../../../../../api/service/workflow/stop-point-workflow.service';
+import {
+  DecisionDetailDialogComponent,
+  DecisionDetailDialogData,
+} from '../decision/decision-detail/decision-detail-dialog.component';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 
 @Component({
   selector: 'atlas-stop-point-workflow-detail-form',
@@ -56,6 +60,10 @@ import { StopPointWorkflowService } from '../../../../../api/service/workflow/st
   providers: [TranslatePipe],
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  private readonly dialogService = inject(DialogService);
+
   readonly WorkflowStatus = WorkflowStatus;
   readonly emailValidator = [
     AtlasCharsetsValidator.email,
@@ -68,12 +76,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   @Input() currentWorkflow?: ReadStopPointWorkflow;
 
   specialDecision?: StopPointPerson;
-
-  constructor(
-    private router: Router,
-    private decisionDetailDialogService: DecisionDetailDialogService,
-    private stopPointWorkflowService: StopPointWorkflowService
-  ) {}
 
   ngOnInit() {
     if (!this.stopPoint && this.currentWorkflow) {
@@ -161,21 +163,29 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   }
 
   openDecision(index: number) {
-    const examinant = this.form.controls.examinants.at(index);
-    this.decisionDetailDialogService.openDialog(
-      this.currentWorkflow!.id!,
-      this.currentWorkflow!.status!,
-      examinant
-    );
+    this.dialogService.openWithoutResult(DecisionDetailDialogComponent, {
+      title: 'WORKFLOW.BUTTON.ADD',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      confirmText: 'WORKFLOW.BUTTON.SEND',
+      workflowId: this.currentWorkflow!.id!,
+      workflowStatus: this.currentWorkflow!.status!,
+      examinant: this.form.controls.examinants.at(index),
+    } satisfies DecisionDetailDialogData);
   }
 
   openStatusDecision() {
-    this.decisionDetailDialogService.openDialog(
-      this.currentWorkflow!.id!,
-      this.currentWorkflow!.status!,
-      StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(
-        this.specialDecision
-      )
-    );
+    this.dialogService.openWithoutResult(DecisionDetailDialogComponent, {
+      title: 'WORKFLOW.BUTTON.ADD',
+      message: '',
+      cancelText: 'DIALOG.CANCEL',
+      confirmText: 'WORKFLOW.BUTTON.SEND',
+      workflowId: this.currentWorkflow!.id!,
+      workflowStatus: this.currentWorkflow!.status!,
+      examinant:
+        StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(
+          this.specialDecision
+        ),
+    } satisfies DecisionDetailDialogData);
   }
 }

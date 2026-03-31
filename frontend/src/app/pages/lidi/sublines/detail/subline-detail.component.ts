@@ -57,6 +57,7 @@ import { MainlineDescriptionPipe } from './mainline-description.pipe';
 import { LineService } from '../../../../api/service/lidi/line.service';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 import { RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
+import { DialogData } from '../../../../core/components/dialog/dialog.data';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -81,8 +82,8 @@ import { RevokeButton } from '../../../../core/form-components/revoke-button/rev
     AtlasButtonComponent,
     TranslatePipe,
     MainlineDescriptionPipe,
-    RevokeButton
-],
+    RevokeButton,
+  ],
 })
 export class SublineDetailComponent
   implements OnInit, DetailFormComponent, DetailWithCancelEdit
@@ -272,12 +273,12 @@ export class SublineDetailComponent
 
   delete(): void {
     this.dialogService
-      .confirm({
+      .openDialogDataWithConfirmationResult({
         title: 'DIALOG.WARNING',
         message: 'DIALOG.DELETE',
         cancelText: 'DIALOG.BACK',
         confirmText: 'DIALOG.CONFIRM_DELETE',
-      })
+      } satisfies DialogData)
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {

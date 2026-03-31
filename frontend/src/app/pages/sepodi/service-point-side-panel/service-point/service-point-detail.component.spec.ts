@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { ServicePointDetailComponent } from './service-point-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
@@ -24,7 +24,6 @@ import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import { BERN } from '../../../../../test/data/service-point';
 import { ValidityService } from '../../validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { AddStopPointWorkflowDialogService } from '../../workflow/add-dialog/add-stop-point-workflow-dialog.service';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { GeographyComponent } from '../../geography/geography.component';
@@ -34,7 +33,6 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
 import { TerminationService } from './stop-point-termination/termination.service';
 import moment from 'moment';
-import { StopPointTerminationDialogService } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 import { ServicePointInternalService } from '../../../../api/service/sepodi/service-point-internal.service';
 
@@ -66,7 +64,14 @@ describe('ServicePointDetailComponent', () => {
   let fixture: ComponentFixture<ServicePointDetailComponent>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
 
-  let dialogServiceSpy: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogServiceSpy: Mocked<
+    Pick<
+      DialogService,
+      | 'openDialogDataWithConfirmationResult'
+      | 'openDialogDataWithCustomResult'
+      | 'openWithoutResult'
+    >
+  >;
   let servicePointServiceSpy: Mocked<
     Pick<ServicePointService, 'updateServicePoint'>
   >;
@@ -85,20 +90,20 @@ describe('ServicePointDetailComponent', () => {
       mapInitialized: BehaviorSubject<boolean>;
     }
   >;
-  let addStopPointWorkflowDialogServiceSpy: Mocked<
-    Pick<AddStopPointWorkflowDialogService, 'openDialog'>
-  >;
 
   const activatedRouteMock = { parent: { data: of({ servicePoint: BERN }) } };
 
   let validityService: ValidityService;
   let terminationService: TerminationService;
-  let stopPointTerminationDialogService: StopPointTerminationDialogService;
 
   beforeEach(async () => {
     Element.prototype.scrollIntoView = vi.fn();
 
-    dialogServiceSpy = { confirm: vi.fn() };
+    dialogServiceSpy = {
+      openDialogDataWithConfirmationResult: vi.fn(),
+      openDialogDataWithCustomResult: vi.fn().mockReturnValue(of(true)),
+      openWithoutResult: vi.fn(),
+    };
     servicePointServiceSpy = { updateServicePoint: vi.fn() };
     servicePointInternalServiceSpy = {
       validateServicePoint: vi.fn(),
@@ -111,7 +116,6 @@ describe('ServicePointDetailComponent', () => {
       refreshMap: vi.fn(),
       mapInitialized: new BehaviorSubject<boolean>(false),
     };
-    addStopPointWorkflowDialogServiceSpy = { openDialog: vi.fn() };
     routerSpy = { navigate: vi.fn() };
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
@@ -134,10 +138,6 @@ describe('ServicePointDetailComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapServiceSpy },
-        {
-          provide: AddStopPointWorkflowDialogService,
-          useValue: addStopPointWorkflowDialogServiceSpy,
-        },
         { provide: Router, useValue: routerSpy },
       ],
     })
@@ -165,9 +165,6 @@ describe('ServicePointDetailComponent', () => {
     component = fixture.componentInstance;
     validityService = TestBed.inject(ValidityService);
     terminationService = TestBed.inject(TerminationService);
-    stopPointTerminationDialogService = TestBed.inject(
-      StopPointTerminationDialogService
-    );
     fixture.detectChanges();
   });
 
@@ -274,7 +271,9 @@ describe('ServicePointDetailComponent', () => {
     component.form?.markAsDirty();
     expect(component.form?.dirty).toBe(true);
 
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     // when & then
     component.toggleEdit();
@@ -290,7 +289,9 @@ describe('ServicePointDetailComponent', () => {
     component.form?.markAsDirty();
     expect(component.form?.dirty).toBe(true);
 
-    dialogServiceSpy.confirm.mockReturnValue(of(false));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(false)
+    );
 
     // when & then
     component.toggleEdit();
@@ -415,7 +416,9 @@ describe('ServicePointDetailComponent', () => {
   });
 
   it('should validate service point on validate', () => {
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
     servicePointInternalServiceSpy.validateServicePoint.mockReturnValue(
       of(BERN[0])
     );
@@ -428,7 +431,9 @@ describe('ServicePointDetailComponent', () => {
   });
 
   it('should revoke service points on revoke', () => {
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
     servicePointInternalServiceSpy.revokeServicePoint.mockReturnValue(of(BERN));
 
     component.revoke();
@@ -445,7 +450,9 @@ describe('ServicePointDetailComponent', () => {
       of(true)
     );
 
-    dialogServiceSpy.confirm.mockReturnValue(of(true));
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
     servicePointServiceSpy.updateServicePoint.mockReturnValue(of(BERN[0]));
 
     component.toggleEdit();
@@ -459,9 +466,10 @@ describe('ServicePointDetailComponent', () => {
     //given
     vi.spyOn(validityService, 'initValidity');
     vi.spyOn(terminationService, 'isStartingTermination').mockReturnValue(true);
-    vi.spyOn(stopPointTerminationDialogService, 'openDialog').mockReturnValue(
-      of(true)
-    );
+    vi.spyOn(
+      dialogServiceSpy,
+      'openDialogDataWithCustomResult'
+    ).mockReturnValue(of(true));
 
     component.isLatestVersionSelected = true;
 
@@ -472,12 +480,14 @@ describe('ServicePointDetailComponent', () => {
     //when
     component.save();
     //then
-    expect(stopPointTerminationDialogService.openDialog).toHaveBeenCalled();
+    expect(
+      dialogServiceSpy.openDialogDataWithCustomResult
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('should open add workflow dialog', () => {
     component.addWorkflow();
 
-    expect(addStopPointWorkflowDialogServiceSpy.openDialog).toHaveBeenCalled();
+    expect(dialogServiceSpy.openWithoutResult).toHaveBeenCalledTimes(1);
   });
 });

@@ -29,7 +29,9 @@ describe('LoadingPointsDetailComponent', () => {
   let loadingPointService: Mocked<
     Pick<LoadingPointService, 'createLoadingPoint' | 'updateLoadingPoint'>
   >;
-  let dialogService: Mocked<Pick<DialogService, 'confirm'>>;
+  let dialogService: Mocked<
+    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
+  >;
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     servicePointService = {
@@ -49,9 +51,11 @@ describe('LoadingPointsDetailComponent', () => {
     loadingPointService.updateLoadingPoint.mockReturnValue(of(LOADING_POINT));
 
     dialogService = {
-      confirm: vi.fn(),
+      openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.confirm.mockReturnValue(of(true));
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
+      of(true)
+    );
 
     Element.prototype.scrollIntoView = vi.fn();
     TestBed.configureTestingModule({
