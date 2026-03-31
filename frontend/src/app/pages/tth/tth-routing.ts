@@ -64,7 +64,6 @@ export const routes: Routes = [
     },
     runGuardsAndResolvers: 'always',
   },
-
   {
     path: statementPlannedDetailPath,
     loadComponent: () =>
@@ -107,7 +106,6 @@ export const routes: Routes = [
     },
     runGuardsAndResolvers: 'always',
   },
-
   {
     path: `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_ARCHIVED.path}/${Pages.TTH_DOSSIERS.path}/:id`,
     loadComponent: loadDossierDetailRoute,
@@ -121,7 +119,6 @@ export const routes: Routes = [
     },
     runGuardsAndResolvers: 'always',
   },
-
   {
     path: Pages.TTH_OVERVIEW_DETAIL.path,
     loadComponent: () =>

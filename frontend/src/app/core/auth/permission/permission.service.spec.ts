@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from 'vitest';
 import { PermissionService } from './permission.service';
 import {
   ApplicationRole,

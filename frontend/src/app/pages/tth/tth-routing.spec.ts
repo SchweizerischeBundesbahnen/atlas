@@ -1,5 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import {
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  type Mocked,
+  vi,
+} from 'vitest';
 import { provideRouter, Router, Routes } from '@angular/router';
 import {
   loadDossierDetailRoute,
@@ -27,6 +35,16 @@ describe('TTH Routing', () => {
   >;
   let userServiceSpy: Mocked<Pick<UserService, 'onPermissionsLoaded'>>;
 
+  beforeAll(async () => {
+    await Promise.all([
+      import('./overview-tab/overview-tab.component'),
+      import('./tth-canton-routing'),
+      import('./tth-bo-routing'),
+      import('./tth-overview-base/tth-overview-base.component'),
+      import('./overview-detail/overview-detail.component'),
+    ]);
+  }, 20_000);
+
   beforeEach(() => {
     permissionServiceSpy = {
       getTthApplicationUserType: vi.fn(),
@@ -34,7 +52,7 @@ describe('TTH Routing', () => {
     userServiceSpy = {
       onPermissionsLoaded: vi.fn(),
     };
-    userServiceSpy.onPermissionsLoaded.mockReturnValue(of(void 0));
+    userServiceSpy.onPermissionsLoaded.mockReturnValue(of(undefined));
   });
 
   it('should construct router with tth routes', () => {
@@ -155,7 +173,7 @@ describe('TTH Routing', () => {
 
     await router.navigateByUrl('/timetable-hearing/zh/active');
     expect(location.path()).toBe('/timetable-hearing/zh/active/statements');
-  }, 10000);
+  });
 
   it('should redirect archived to statements', async () => {
     permissionServiceSpy.getTthApplicationUserType.mockReturnValue(
