@@ -23,6 +23,7 @@ import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
@@ -737,7 +738,8 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(1)))
-        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents + "[0].fileName", is(MULTIPART_FILES.get(2).getOriginalFilename())));
+        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents + "[0].fileName",
+            is(MULTIPART_FILES.get(2).getOriginalFilename())));
   }
 
   @Test
@@ -1077,12 +1079,48 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     // when
     timetableHearingStatementControllerInternal.checkDataProtection(TimetableHearingStatementDataProtectionModel.builder()
-            .id(statement.getId())
-            .statementAnonymous(true)
+        .id(statement.getId())
+        .statementAnonymous(true)
         .build());
 
     // then
-    TimetableHearingStatementModelV2 updatedStatement = timetableHearingStatementControllerInternal.getStatement(statement.getId());
+    TimetableHearingStatementModelV2 updatedStatement = timetableHearingStatementControllerInternal.getStatement(
+        statement.getId());
     assertThat(updatedStatement.isDataProtectionChecked()).isTrue();
+  }
+
+  @Test
+  void shouldCheckDataProtectionForExistingStatementWithDocuments() {
+    // Given
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
+        TimetableHearingStatementModelV2.builder()
+            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
+                .build())
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+            .build(),
+        List.of(MULTIPART_FILES.getFirst()));
+    assertThat(statement.isDataProtectionChecked()).isFalse();
+
+    // when
+    timetableHearingStatementControllerInternal.checkDataProtection(TimetableHearingStatementDataProtectionModel.builder()
+        .id(statement.getId())
+        .statementAnonymous(false)
+        .anonymousStatement("Anonymisierte Stellungnahme")
+        .documents(List.of(TimetableHearingStatementDocumentModel.builder()
+            .id(statement.getDocuments().getFirst().getId())
+            .anonymous(true)
+            .build()))
+        .build());
+
+    // then
+    TimetableHearingStatementModelV2 updatedStatement = timetableHearingStatementControllerInternal.getStatement(
+        statement.getId());
+    assertThat(updatedStatement.isDataProtectionChecked()).isTrue();
+    assertThat(updatedStatement.getStatementAnonymous()).isFalse();
+    assertThat(updatedStatement.getAnonymousStatement()).isNotNull();
+    assertThat(updatedStatement.getDocuments().getFirst().getAnonymous()).isTrue();
   }
 }

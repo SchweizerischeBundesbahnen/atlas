@@ -23,7 +23,7 @@ import { ValidationService } from '../../../../../../core/validation/validation.
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 
 @Component({
-  selector: 'atlas-dialog',
+  selector: 'atlas-statement-data-protection-check-dialog',
   templateUrl: './statement-data-protection-check.dialog.component.html',
   styleUrls: ['statement-data-protection-check.dialog.component.scss'],
   imports: [
@@ -55,7 +55,7 @@ export class StatementDataProtectionCheckDialogComponent implements OnInit {
   );
   private readonly notificationService = inject(NotificationService);
 
-  private readonly stepper = viewChild.required<MatStepper>('stepper');
+  readonly stepper = viewChild.required<MatStepper>('stepper');
 
   statementFormGroup!: FormGroup<StatementDataProtectionFormGroup>;
   documentFormGroup!: FormGroup<StatementDocumentDataProtectionFormGroup>;
@@ -114,7 +114,7 @@ export class StatementDataProtectionCheckDialogComponent implements OnInit {
 
   downloadFile(fileName: string) {
     this.timetableHearingStatementsService
-      .getStatementDocument(this.statement!.id!, fileName)
+      .getStatementDocument(this.statement.id!, fileName)
       .subscribe((response) =>
         FileDownloadService.downloadFile(fileName, response)
       );

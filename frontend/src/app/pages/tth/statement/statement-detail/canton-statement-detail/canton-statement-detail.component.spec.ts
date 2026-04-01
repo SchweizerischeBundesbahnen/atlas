@@ -26,6 +26,8 @@ import { TimetableHearingStatementInternalService } from '../../../../../api/ser
 import { TimetableHearingYearInternalService } from '../../../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { TimetableYearChangeInternalService } from '../../../../../api/service/lidi/timetable-year-change-internal.service';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { mock, mockClear } from 'vitest-mock-extended';
 
 const existingStatement: TimetableHearingStatementV2 = {
   id: 1,
@@ -118,6 +120,8 @@ const blob = 'Blob' as unknown as Blob;
 mockTimetableHearingStatementsService.getStatementDocument.mockReturnValue(
   of(blob)
 );
+
+const dialogService = mock<DialogService>();
 
 describe('StatementDetailComponent for existing statement', () => {
   beforeEach(() => {
@@ -258,6 +262,18 @@ describe('StatementDetailComponent for existing statement', () => {
     expect(component.uploadedFiles[0].name).toBeDefined();
     expect(component.uploadedFiles[1].name).toBeDefined();
   });
+
+  it('should open data protection dialog and reload on save', () => {
+    //given
+    vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    //when
+    component.openDataProtectionCheck();
+    //then
+    expect(
+      dialogService.openCustomDataWithConfirmationResult
+    ).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('test editButton', () => {
@@ -383,6 +399,9 @@ describe('StatementDetailComponent for new statement', () => {
 function setupTestBed(activatedRoute: {
   snapshot: { data: { statement: undefined | TimetableHearingStatementV2 } };
 }) {
+  mockClear(dialogService);
+  dialogService.openCustomDataWithConfirmationResult.mockReturnValue(of(true));
+
   mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of(years));
 
   TestBed.configureTestingModule({
@@ -408,6 +427,10 @@ function setupTestBed(activatedRoute: {
       {
         provide: StatementShareService,
         useValue: mockStatementShareService,
+      },
+      {
+        provide: DialogService,
+        useValue: dialogService,
       },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: TranslatePipe },

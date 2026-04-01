@@ -9,7 +9,7 @@ import {StatementStatus} from '../../model/statementStatus';
 import {TimetableHearingStatementV2} from '../../model/timetableHearingStatementV2';
 import {TimetableHearingStatementAlternating} from '../../model/timetableHearingStatementAlternating';
 import {TransportCompany} from '../../model/transportCompany';
-import {TimetableHearingStatementDataProtectionModel} from "../../model/timetableHearingStatementDataProtectionModel";
+import {TimetableHearingStatementDataProtection} from "../../model/timetableHearingStatementDataProtection";
 
 @Injectable({
   providedIn: 'root',
@@ -134,7 +134,7 @@ export class TimetableHearingStatementInternalService {
     return this.atlasApiService.get(`${this.STATEMENTS}/responsible-transport-companies/${encodeURIComponent(String(ttfnid))}/${encodeURIComponent(String(year))}`);
   }
 
-  public checkDataProtection(dataProtection: TimetableHearingStatementDataProtectionModel): Observable<void> {
+  public checkDataProtection(dataProtection: TimetableHearingStatementDataProtection): Observable<void> {
     this.atlasApiService.validateParams({ dataProtection });
     return this.atlasApiService.post(`${this.STATEMENTS}/check-data-protection`,dataProtection);
   }

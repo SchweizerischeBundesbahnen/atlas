@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { TimetableHearingStatementV2 } from '../../../../../../api';
-import { TimetableHearingStatementDataProtectionModel } from '../../../../../../api/model/timetableHearingStatementDataProtectionModel';
+import { TimetableHearingStatementDataProtection } from '../../../../../../api/model/timetableHearingStatementDataProtection';
 
 export interface StatementDataProtectionFormGroup {
   id: FormControl<number | null | undefined>;
@@ -87,7 +87,7 @@ export class StatementDataProtectionFormGroupBuilder {
   static toModel(
     documentFormGroup: FormGroup<StatementDocumentDataProtectionFormGroup>,
     statementFormGroup: FormGroup<StatementDataProtectionFormGroup>
-  ): TimetableHearingStatementDataProtectionModel {
+  ): TimetableHearingStatementDataProtection {
     const statementHasPersonalInformation =
       statementFormGroup.controls.hasStatementPersonalInformation.value!;
     return {
