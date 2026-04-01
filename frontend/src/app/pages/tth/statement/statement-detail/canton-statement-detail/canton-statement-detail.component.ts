@@ -49,6 +49,7 @@ import { StatementDetailBaseComponent } from '../statement-detail-base.component
 import { TimetableHearingYearInternalService } from '../../../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { DialogData } from '../../../../../core/components/dialog/dialog.data';
 import { StatementDialogComponent } from '../../statement-dialog/statement.dialog.component';
+import { StatementDataProtectionCheckDialogComponent } from './data-protection-check/statement-data-protection-check.dialog.component';
 
 @Component({
   selector: 'atlas-statement-detail',
@@ -488,5 +489,19 @@ export class CantonStatementDetailComponent
           this.form.controls.responsibleTransportCompanies.setValue(result);
         });
     }
+  }
+
+  openDataProtectionCheck() {
+    this.dialogService
+      .openCustomDataWithConfirmationResult(
+        this.statement!,
+        StatementDataProtectionCheckDialogComponent
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.statement!.dataProtectionChecked = true;
+          this.navigateToStatementDetail(this.statement!);
+        }
+      });
   }
 }

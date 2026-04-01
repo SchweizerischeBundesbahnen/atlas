@@ -322,7 +322,8 @@
     "EXAMINANT_OR_CC_MAIL": "Bitte mindestens einen Empfänger oder eine zusätzliche cc-Mail erfassen.",
     "REQUIREDANDNOTUNKNOWN": "Darf nicht leer oder unspezifiziert sein.",
     "REQ_SELECTED_ERROR": "Anzahl auszuwählender Elemente: {{reqSelections}}",
-    "SEPODIONDEMAND": "Das Verkehrsmittel On Demand darf nur in Kombination mit dem Haltestellentyp On Demand selektioniert werden."
+    "SEPODIONDEMAND": "Das Verkehrsmittel On Demand darf nur in Kombination mit dem Haltestellentyp On Demand selektioniert werden.",
+    "NO_ANONYMIZATION_DETECTED": "Es wurden keine Änderungen identifiziert. Bitte entfernen Sie vor dem Speichern alle personenbezogenen Daten aus dem Text."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
@@ -1094,7 +1095,15 @@
       "DATA_PROTECTION_NOT_CHECKED": "Datenschutzprüfung ausstehend",
       "CITIZEN_CONCERN": "Stellungnahme Bürger*in",
       "ORIGINAL_STATEMENT": "Originaltext",
-      "ANONYMOUS_STATEMENT": "Anonymisierte Stellungnahme"
+      "ANONYMOUS_STATEMENT": "Anonymisierte Stellungnahme",
+      "DATA_PROTECTION_CHECK": "Prüfung Datenschutz",
+      "DATA_PROTECTION_CHECK_TEXT_QUESTION": "Enthält dieser Text personenbezogene Daten?",
+      "DATA_PROTECTION_CHECK_FILE_QUESTION": "Enthält dieses PDF personenbezogene Daten?",
+      "TEXT_CONTAINS_PERSONAL_INFO": "Bitte überarbeiten Sie den Begleittext so, dass keine personenbezogenen Daten mehr enthalten sind und der Inhalt erhalten bleibt.",
+      "TEXT_CONTAINS_NO_PERSONAL_INFO": "Der Begleittext bleibt unverändert und wird an Dritte weitergegeben, wenn die entsprechende Aktion erfolgt (Weiterleiten an Transportunternehmen oder Export als CSV).",
+      "FILE_CONTAINS_PERSONAL_INFO": "Dieses PDF wird nicht an Dritte weitergegeben, wenn die entsprechende Aktion erfolgt (Weiterleiten an Transportunternehmen).",
+      "FILE_CONTAINS_NO_PERSONAL_INFO": "Dieses PDF wird an Dritte weitergegeben, wenn die entsprechende Aktion erfolgt (Weiterleiten an Transportunternehmen).",
+      "DATA_PROTECTION_CHECK_SUCCESS": "Die Prüfung des Datenschutzes wurde erfolgreich durchgeführt."
     },
     "DOSSIER": {
       "DOSSIER": "Dossier",

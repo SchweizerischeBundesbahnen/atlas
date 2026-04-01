@@ -7,7 +7,7 @@
   <div class="flex-row mb-4">
     <atlas-label-field fieldLabel="TTH.STATEMENT.STATEMENT_TEXT" />
 
-    @if (!statementText.checkboxStatementAnonymous) {
+    @if (hasAnonymousText) {
       <div class="d-flex flex-column col-12">
         <atlas-form-comment
           subLabel="TTH.STATEMENT.ANONYMOUS_STATEMENT"
@@ -19,21 +19,27 @@
         </atlas-form-comment>
       </div>
     }
-    @if (statementText.showOriginalTextButton) {
+    @if (!isNew() && hasAnonymousText) {
       <atlas-button
         buttonDataCy="showOriginalStatementText"
-        [buttonText]="statementText.originalTextButtonLabel"
+        [buttonText]="
+          showOriginalText
+            ? 'TTH.STATEMENT.HIDE_ORIGINAL_TEXT'
+            : 'TTH.STATEMENT.SHOW_ORIGINAL_TEXT'
+        "
         buttonType="icon"
-        (buttonClicked)="showOriginalText()"
+        (buttonClicked)="toggleOriginalText()"
         wrapperStyleClass="pt-1"
         buttonStyleClass="atlas-icon-btn font-bold-base"
       >
         <ng-template #rightIcon>
-          <i class="bi {{ statementText.originalTextButtonIcon }} h5"></i>
+          <i
+            class="bi {{ showOriginalText ? 'bi-lock' : 'bi-lock-fill' }} h5"
+          ></i>
         </ng-template>
       </atlas-button>
     }
-    @if (statementText.showOriginalStatementText) {
+    @if (isNew() || showOriginalText) {
       <div class="pt-2 d-flex flex-column col-12">
         <atlas-form-comment
           subLabel="TTH.STATEMENT.ORIGINAL_STATEMENT"

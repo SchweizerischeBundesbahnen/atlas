@@ -322,7 +322,8 @@
     "EXAMINANT_OR_CC_MAIL": "Inserire almeno un destinatario o un indirizzo e-mail aggiuntivo.",
     "REQUIREDANDNOTUNKNOWN": "Non può essere vuoto o non specificato.",
     "REQ_SELECTED_ERROR": "Numero di elementi da selezionare: {{reqSelections}}",
-    "SEPODIONDEMAND": "L'opzione di trasporto On Demand può essere selezionata solo in combinazione con il tipo di fermata On Demand."
+    "SEPODIONDEMAND": "L'opzione di trasporto On Demand può essere selezionata solo in combinazione con il tipo di fermata On Demand.",
+    "NO_ANONYMIZATION_DETECTED": "Non sono state rilevate modifiche. Si prega di rimuovere tutti i dati personali dal testo prima del salvataggio."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
@@ -1094,7 +1095,15 @@
       "DATA_PROTECTION_NOT_CHECKED": "Verifica della protezione dei dati in sospeso",
       "CITIZEN_CONCERN": "Parere del cittadino / della cittadina",
       "ORIGINAL_STATEMENT": "Presa di posizione originale",
-      "ANONYMOUS_STATEMENT": "Presa di posizione anonimizzata"
+      "ANONYMOUS_STATEMENT": "Presa di posizione anonimizzata",
+      "DATA_PROTECTION_CHECK": "Protezione dei dati",
+      "DATA_PROTECTION_CHECK_TEXT_QUESTION": "Il presente testo contiene dati personali?",
+      "DATA_PROTECTION_CHECK_FILE_QUESTION": "Questo PDF contiene dati personali?",
+      "TEXT_CONTAINS_PERSONAL_INFO": "Si prega di rivedere il testo accompagnatorio in modo che non contenga più dati personali e che il contenuto rimanga invariato.",
+      "TEXT_CONTAINS_NO_PERSONAL_INFO": "Il testo di accompagnamento rimane invariato e viene trasmesso a terzi quando viene eseguita l’azione corrispondente (inoltro all’azienda di trasporto o esportazione in formato CSV).",
+      "FILE_CONTAINS_PERSONAL_INFO": "Questo PDF non viene trasmesso a terzi quando viene eseguita l’azione corrispondente (inoltro all’azienda di trasporto).",
+      "FILE_CONTAINS_NO_PERSONAL_INFO": "Questo PDF viene trasmesso a terzi quando viene eseguita l’azione corrispondente (inoltro all’azienda di trasporto).",
+      "DATA_PROTECTION_CHECK_SUCCESS": "La verifica della protezione dei dati è stata effettuata con successo."
     },
     "DOSSIER": {
       "DOSSIER": "Dossier",

@@ -234,16 +234,28 @@
       @if (
         !isHearingStatusArchived &&
         !form.enabled &&
-        (isStatementEditable | async) === true &&
-        !statement?.dossierId
+        (isStatementEditable | async) === true
       ) {
+        @if (!statement?.dossierId) {
+          <atlas-button
+            (buttonClicked)="toggleEdit()"
+            [canton]="cantonShort"
+            applicationType="TIMETABLE_HEARING"
+            buttonDataCy="edit"
+            buttonStyleClass="atlas-primary-btn"
+            buttonText="COMMON.EDIT"
+            buttonType="cantonWritePermission"
+            wrapperStyleClass="me-3"
+          >
+          </atlas-button>
+        }
         <atlas-button
-          (buttonClicked)="toggleEdit()"
+          (buttonClicked)="openDataProtectionCheck()"
           [canton]="cantonShort"
           applicationType="TIMETABLE_HEARING"
-          buttonDataCy="edit"
+          buttonDataCy="data-protection-check"
           buttonStyleClass="atlas-primary-btn"
-          buttonText="COMMON.EDIT"
+          buttonText="TTH.STATEMENT.DATA_PROTECTION_CHECK"
           buttonType="cantonWritePermission"
           wrapperStyleClass="me-3"
         >

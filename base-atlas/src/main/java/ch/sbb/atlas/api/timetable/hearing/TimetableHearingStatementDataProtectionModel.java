@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
-@Schema(name = "TimetableHearingStatementDataProtectionModel")
+@Schema(name = "TimetableHearingStatementDataProtection")
 public class TimetableHearingStatementDataProtectionModel extends AuditableVersionModel {
 
   @Schema(description = "Technical identifier",

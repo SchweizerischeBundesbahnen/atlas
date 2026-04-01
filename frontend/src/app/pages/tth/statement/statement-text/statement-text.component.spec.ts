@@ -1,12 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
-import {
-  HIDE_ORIGINAL_TEXT_LABEL,
-  LOCK_ICON,
-  SHOW_ORIGINAL_TEXT_LABEL,
-  StatementTextComponent,
-  UNLOCK_ICON,
-} from './statement-text.component';
+import { StatementTextComponent } from './statement-text.component';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -15,7 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 const formGroup = new FormGroup({
   statementAnonymous: new FormControl(true),
   statement: new FormControl('Statement original text'),
-  anonymousStatement: new FormControl(false),
+  anonymousStatement: new FormControl('Anonymous statement'),
 });
 
 describe('StatementText', () => {
@@ -43,63 +37,18 @@ describe('StatementText', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should uncheck StatementAnonymous', () => {
-    //when
-    component.checkStatementAnonymous(false);
-    //then
-    expect(component.statementText.checkboxStatementAnonymous).toBe(false);
-    expect(component.statementText.showOriginalStatementText).toBe(true);
-    expect(component.statementText.showOriginalTextButton).toBe(false);
-    expect(component.statementText.currentAnonymousStatement).toBeUndefined();
+  it('should not show original text if anonymous text is present', () => {
+    expect(component.hasAnonymousText).toBe(true);
+    expect(component.showOriginalText).toBe(false);
   });
 
-  it('should uncheck StatementAnonymous when currentAnonymusStatement is already set', () => {
-    //when
-    component.statementText.currentAnonymousStatement =
-      'Statement original text';
-    component.checkStatementAnonymous(false);
-    //then
-    expect(component.statementText.checkboxStatementAnonymous).toBe(false);
-    expect(component.statementText.showOriginalStatementText).toBe(true);
-    expect(component.statementText.showOriginalTextButton).toBe(false);
-    expect(component.form().getRawValue().anonymousStatement).toEqual(
-      'Statement original text'
-    );
-  });
+  it('should toggle showing of original text', () => {
+    expect(component.showOriginalText).toBe(false);
 
-  it('should check StatementAnonymous', () => {
-    //when
-    component.statementText.currentAnonymousStatement =
-      'Statement original text';
-    component.checkStatementAnonymous(true);
-    //then
-    expect(component.statementText.checkboxStatementAnonymous).toBe(true);
-    expect(component.statementText.showOriginalStatementText).toBe(true);
-    expect(component.statementText.showOriginalTextButton).toBe(false);
-    expect(component.form().getRawValue().anonymousStatement).toBeNull();
-  });
+    component.toggleOriginalText();
+    expect(component.showOriginalText).toBe(true);
 
-  it('should not show original text', () => {
-    //when
-    component.statementText.showOriginalStatementText = false;
-    component.showOriginalText();
-    //then
-    expect(component.statementText.showOriginalStatementText).toBe(true);
-    expect(component.statementText.originalTextButtonLabel).toBe(
-      HIDE_ORIGINAL_TEXT_LABEL
-    );
-    expect(component.statementText.originalTextButtonIcon).toBe(UNLOCK_ICON);
-  });
-
-  it('should show original text', () => {
-    //when
-    component.statementText.showOriginalStatementText = true;
-    component.showOriginalText();
-    //then
-    expect(component.statementText.showOriginalStatementText).toBe(false);
-    expect(component.statementText.originalTextButtonLabel).toBe(
-      SHOW_ORIGINAL_TEXT_LABEL
-    );
-    expect(component.statementText.originalTextButtonIcon).toBe(LOCK_ICON);
+    component.toggleOriginalText();
+    expect(component.showOriginalText).toBe(false);
   });
 });
