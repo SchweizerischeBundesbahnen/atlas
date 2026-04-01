@@ -974,7 +974,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     // Then
     String response = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
     assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader);
-    assertThat(statement.isStatementAnonymous()).isTrue();
+    assertThat(statement.getStatementAnonymous()).isTrue();
     assertThat(response).contains(statement.getStatement());
     assertThat(response).doesNotContain("fabienne.mueller@sbb.ch");
     assertThat(response).doesNotContain("flo.mueller@sbb.ch");

@@ -12,7 +12,7 @@ public class StatementDocumentMapper {
         .id(timetableHearingStatementDocumentModel.getId())
         .fileName(timetableHearingStatementDocumentModel.getFileName())
         .fileSize(timetableHearingStatementDocumentModel.getFileSize())
-        .anonymous(timetableHearingStatementDocumentModel.isAnonymous())
+        .anonymous(timetableHearingStatementDocumentModel.getAnonymous())
         .build();
   }
 
@@ -21,7 +21,7 @@ public class StatementDocumentMapper {
         .id(statementDocument.getId())
         .fileName(statementDocument.getFileName())
         .fileSize(statementDocument.getFileSize())
-        .anonymous(statementDocument.isAnonymous())
+        .anonymous(statementDocument.getAnonymous())
         .build();
   }
 }

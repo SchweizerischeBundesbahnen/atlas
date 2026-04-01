@@ -41,7 +41,7 @@ public class TthStatementRedactAspect {
   void redactStatementForBoUser(Object resultObject, Object redactObject) {
 
     if (resultObject instanceof TimetableHearingStatement timetableHearingStatement) {
-      boolean isStatementAnonymous = timetableHearingStatement.isStatementAnonymous();
+      boolean isStatementAnonymous = Boolean.TRUE.equals(timetableHearingStatement.getStatementAnonymous());
       String dossierContactMail = timetableHearingStatement.getDossierContactMail();
       if (dossierContactMail != null && isStatementAnonymous && boUserMailCheckService.isCurrentUserMailAssignedTo(
           timetableHearingStatement)) {

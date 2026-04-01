@@ -29,7 +29,7 @@ public class TimetableHearingAnonymStatementCsvModel extends BaseTimetableHearin
       TimetableHearingStatementModelV2 model
   ) {
     return TimetableHearingAnonymStatementCsvModel.builder()
-        .statement(model.isStatementAnonymous() ? model.getStatement() : model.getAnonymousStatement())
+        .statement(model.getStatementAnonymous() ? model.getStatement() : model.getAnonymousStatement())
         .cantonAbbreviation(model.getSwissCanton().getAbbreviation())
         .timetableFieldNumber(model.getTimetableFieldNumber())
         .timetableFieldNumberDescription(model.getTimetableFieldDescription())

@@ -154,7 +154,7 @@ public class TimetableHearingStatementService {
             .stream()
             .filter(statementDocument -> statementDocument.getId().equals(document.getId()))
             .findFirst()
-            .ifPresent(statementDocument -> statementDocument.setAnonymous(document.isAnonymous())));
+            .ifPresent(statementDocument -> statementDocument.setAnonymous(document.getAnonymous())));
   }
 
   public void deleteSpamMailFromYear(Long timetableHearingYear) {
@@ -233,7 +233,7 @@ public class TimetableHearingStatementService {
     timetableHearingStatementInDb.setStatementSender(
         StatementSenderMapperV2.toEntity(timetableHearingStatementModel.getStatementSender()));
     timetableHearingStatementInDb.setTopic(timetableHearingStatementModel.getTopic());
-    timetableHearingStatementInDb.setStatementAnonymous(timetableHearingStatementModel.isStatementAnonymous());
+    timetableHearingStatementInDb.setStatementAnonymous(timetableHearingStatementModel.getStatementAnonymous());
     timetableHearingStatementInDb.setAnonymousStatement(timetableHearingStatementModel.getAnonymousStatement());
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
@@ -359,14 +359,14 @@ public class TimetableHearingStatementService {
   public void checkDataProtection(TimetableHearingStatementDataProtectionModel timetableHearingStatementDataProtectionModel) {
     TimetableHearingStatement statement = getTimetableHearingStatementById(timetableHearingStatementDataProtectionModel.getId());
 
-    statement.setStatementAnonymous(timetableHearingStatementDataProtectionModel.isStatementAnonymous());
+    statement.setStatementAnonymous(timetableHearingStatementDataProtectionModel.getStatementAnonymous());
     statement.setAnonymousStatement(timetableHearingStatementDataProtectionModel.getAnonymousStatement());
 
     for (StatementDocument currentDocument : statement.getDocuments()) {
       timetableHearingStatementDataProtectionModel.getDocuments().stream()
           .filter(i -> i.getId().equals(currentDocument.getId()))
           .findFirst()
-          .ifPresent(documentModel -> currentDocument.setAnonymous(documentModel.isAnonymous()));
+          .ifPresent(documentModel -> currentDocument.setAnonymous(documentModel.getAnonymous()));
     }
 
     statement.setDataProtectionChecked(true);

@@ -35,7 +35,7 @@ public class TimetableHearingStatementDataProtectionModel extends AuditableVersi
   private Long id;
 
   @Schema(description = "Statement does not contain personal data")
-  private boolean statementAnonymous;
+  private Boolean statementAnonymous;
 
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   @Schema(description = "Statement anonymized by canton", example = "I need some more busses please.")
@@ -52,6 +52,6 @@ public class TimetableHearingStatementDataProtectionModel extends AuditableVersi
   @JsonIgnore
   @AssertTrue
   public boolean isWithValidAnonymousStatement() {
-    return !statementAnonymous || anonymousStatement == null;
+    return Boolean.FALSE.equals(statementAnonymous) || anonymousStatement == null;
   }
 }

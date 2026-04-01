@@ -38,7 +38,7 @@ export class StatementDataProtectionFormGroupBuilder {
             : timetableHearingStatement.statement
         ),
         hasStatementPersonalInformation: new FormControl(
-          timetableHearingStatement.dataProtectionChecked
+          timetableHearingStatement.statementAnonymous !== null
             ? !timetableHearingStatement.statementAnonymous
             : undefined,
           [Validators.required]
@@ -75,9 +75,7 @@ export class StatementDataProtectionFormGroupBuilder {
             new FormGroup<DocumentDataProtectionFormGroup>({
               id: new FormControl(document.id),
               hasDocumentPersonalInformation: new FormControl(
-                timetableHearingStatement.dataProtectionChecked
-                  ? !document.anonymous
-                  : undefined,
+                document.anonymous !== null ? !document.anonymous : undefined,
                 [Validators.required]
               ),
             })

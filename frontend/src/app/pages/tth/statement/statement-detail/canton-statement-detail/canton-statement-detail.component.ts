@@ -499,8 +499,10 @@ export class CantonStatementDetailComponent
       )
       .subscribe((result) => {
         if (result) {
-          this.statement!.dataProtectionChecked = true;
-          this.navigateToStatementDetail(this.statement!);
+          this.isInitializingComponent = true;
+          this.router
+            .navigate(['..', this.statement!.id], { relativeTo: this.route })
+            .then(() => this.ngOnInit());
         }
       });
   }

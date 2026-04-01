@@ -93,7 +93,7 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String statement;
 
-  private boolean statementAnonymous;
+  private Boolean statementAnonymous;
 
   // Statement anonymized by canton
   @Size(max = AtlasFieldLengths.LENGTH_5000)
