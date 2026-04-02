@@ -11,6 +11,7 @@ public class TransportCompanySqlQueryUtil extends SqlQueryUtil {
   private static final String SELECT_STATEMENT = """
       SELECT tc.*
       FROM transport_company tc
+      order by id
       """;
 
   public String getSqlQuery() {
