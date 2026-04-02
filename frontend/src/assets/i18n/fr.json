@@ -51,8 +51,8 @@
     "NODATAFOUND": "Aucune donnée n’a été trouvée.",
     "TYPE_TO_SEARCH": "Entrez au moins 2 caractères pour commencer la recherche.",
     "TYPE_TO_SEARCH_SHORT": "Entrez au moins 2 caractères...",
-    "JA": "Oui",
-    "NEIN": "Non",
+    "YES": "Oui",
+    "NO": "Non",
     "ACHTUNG": "Attention!",
     "DATE": {
       "SELECT_DATERANGE": "Date de... à...*"
@@ -322,7 +322,8 @@
     "EXAMINANT_OR_CC_MAIL": "Veuillez saisir au moins un destinataire ou un cc-mail supplémentaire.",
     "REQUIREDANDNOTUNKNOWN": "Ne peut pas être vide ou sans spécification.",
     "REQ_SELECTED_ERROR": "Nombre d’éléments à sélectionner: {{reqSelections}}",
-    "SEPODIONDEMAND": "Le moyen de transport à la demande ne peut être sélectionné qu'en combinaison avec le type d'arrêt à la demande."
+    "SEPODIONDEMAND": "Le moyen de transport à la demande ne peut être sélectionné qu'en combinaison avec le type d'arrêt à la demande.",
+    "NO_ANONYMIZATION_DETECTED": "Aucune modification n’a été identifiée. Veuillez supprimer toutes les données personnelles du texte avant l’enregistrement."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
@@ -1089,7 +1090,20 @@
       "STATEMENT_TRANSFER_CANTON": "Transfert vers un autre canton",
       "STATEMENT_TRANSFER_CANTON_INFO": "Sélectionnez le canton auquel vous soumettez la déclaration.",
       "STATEMENT_PDF_ANONYMOUS_CHECKBOX": "La pièce jointe peut être transmise (par exemple à une entreprise de transport).",
-      "DOSSIER_LINK": "Cette prise de position fait partie du dossier {{dossierId}}."
+      "DOSSIER_LINK": "Cette prise de position fait partie du dossier {{dossierId}}.",
+      "DATA_PROTECTION_CHECKED": "Vérification de la protection des données terminée",
+      "DATA_PROTECTION_NOT_CHECKED": "Vérification de la protection des données en attente",
+      "CITIZEN_CONCERN": "Prise de position du/de la citoyen·ne",
+      "ORIGINAL_STATEMENT": "Texte d’origine",
+      "ANONYMOUS_STATEMENT": "Prise de position anonymisée",
+      "DATA_PROTECTION_CHECK": "Protection des données",
+      "DATA_PROTECTION_CHECK_TEXT_QUESTION": "Le présent texte contient-il des données personnelles?",
+      "DATA_PROTECTION_CHECK_FILE_QUESTION": "Ce PDF contient-il des données personnelles?",
+      "TEXT_CONTAINS_PERSONAL_INFO": "Veuillez modifier le texte afin de supprimer les données personnelles tout en conservant le contenu.",
+      "TEXT_CONTAINS_NO_PERSONAL_INFO": "Le texte d’accompagnement reste inchangé et est transmis à des tiers lorsque l’action correspondante est effectuée (transfert à une entreprise de transport ou exportation au format CSV).",
+      "FILE_CONTAINS_PERSONAL_INFO": "Ce PDF n’est pas transmis à des tiers lorsque l’action correspondante est effectuée (transfert à une entreprise de transport).",
+      "FILE_CONTAINS_NO_PERSONAL_INFO": "Ce PDF est transmis à des tiers lorsque l’action correspondante est effectuée (transfert à une entreprise de transport).",
+      "DATA_PROTECTION_CHECK_SUCCESS": "L’examen de la protection des données a été effectué avec succès."
     },
     "DOSSIER": {
       "DOSSIER": "Dossier",

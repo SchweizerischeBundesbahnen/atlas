@@ -9,7 +9,6 @@
  */
 import { PermissionRestriction } from './permissionRestriction';
 
-
 export interface TransportCompanyDossierAnswerPermissionRestrictionModel extends PermissionRestriction {
 }
 export namespace TransportCompanyDossierAnswerPermissionRestrictionModel {

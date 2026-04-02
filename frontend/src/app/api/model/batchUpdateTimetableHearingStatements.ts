@@ -20,6 +20,7 @@ export interface BatchUpdateTimetableHearingStatements {
     statementStatus?: StatementStatus;
     dossierId?: number;
     dossierContactMail?: string;
+    dossierContactSbbuid?: string;
     publicComment?: string;
     internalComment?: string;
     topic?: string;

@@ -8,6 +8,7 @@ import { UpdateHearingCanton } from '../../model/updateHearingCanton';
 import { TimetableHearingStatementV2 } from '../../model/timetableHearingStatementV2';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { EMPTY } from 'rxjs';
+import { TimetableHearingStatementDataProtection } from '../../model/timetableHearingStatementDataProtection';
 
 describe('TimetableHearingStatementInternalService', () => {
   let service: TimetableHearingStatementInternalService;
@@ -243,6 +244,20 @@ describe('TimetableHearingStatementInternalService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/responsible-transport-companies/123/2025',
+    );
+  });
+
+  it('should checkDataProtection', () => {
+    const dataProtectionParam = {} as TimetableHearingStatementDataProtection;
+    service.checkDataProtection(dataProtectionParam);
+
+
+    expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
+      dataProtection: dataProtectionParam,
+    });
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
+      '/line-directory/internal/timetable-hearing/statements/check-data-protection',
+      dataProtectionParam,
     );
   });
 });

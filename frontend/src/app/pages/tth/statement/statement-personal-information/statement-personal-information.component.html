@@ -1,5 +1,6 @@
 <h1 class="font-bold-xl pt-2">
   {{ 'TTH.STATEMENT.PERSONAL_INFORMATION' | translate }}
+  <atlas-spacer [divider]="true" height="10px"></atlas-spacer>
 </h1>
 
 <div class="d-flex flex-row col-12 mb-2">
@@ -60,27 +61,27 @@
 </div>
 
 <div class="mb-4">
-    <atlas-text-list
-      [formGroup]="form()"
-      [formGroupEnabled]="form().enabled"
-      [itemValidator]="emailValidator"
-      fieldLabel="TTH.STATEMENT.E_MAIL"
-      [required]="true"
-      placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
-      [fieldExamples]="[
-                  {
-                    label: 'FORM.MAX_ITEMS',
-                    arg: { key: 'numberOfItems', value: '10' },
-                  },
-                  { label: ' | ' },
-                  { label: 'TTH.STATEMENT.E_MAIL_TEXT' },
-                ]"
-      controlName="statementSender.emails"
-    >
-      <atlas-clipboard
-        [value]="emails"
-        [showMe]="form().disabled"
-        class="ps-2 pt-2"
-      ></atlas-clipboard>
-    </atlas-text-list>
+  <atlas-text-list
+    [formGroup]="form()"
+    [formGroupEnabled]="form().enabled"
+    [itemValidator]="emailValidator"
+    fieldLabel="TTH.STATEMENT.E_MAIL"
+    [required]="true"
+    placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
+    [fieldExamples]="[
+      {
+        label: 'FORM.MAX_ITEMS',
+        arg: { key: 'numberOfItems', value: '10' },
+      },
+      { label: ' | ' },
+      { label: 'TTH.STATEMENT.E_MAIL_TEXT' },
+    ]"
+    controlName="statementSender.emails"
+  >
+    <atlas-clipboard
+      [value]="emails"
+      [showMe]="form().disabled"
+      class="ps-2 pt-2"
+    ></atlas-clipboard>
+  </atlas-text-list>
 </div>

@@ -181,6 +181,33 @@ class TthStatementRedactAspectTest {
     assertThat(redactObject).usingRecursiveComparison().isEqualTo(redactedStatement);
   }
 
+  @Test
+  void shouldRedactNonAnonymousFile() {
+    // given
+    TimetableHearingStatement sensitiveStatement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statement("Ich mag bitte mehr Bös fahren")
+        .statementSender(StatementSender.builder()
+            .emails(List.of("mike@thebike.com"))
+            .build())
+        .documents(Set.of(StatementDocument.builder()
+            .fileName("doc1")
+            .fileSize(6454L)
+            .anonymous(false)
+            .build()))
+        .dossierContactMail("mail@tu.ch")
+        .build();
+
+    // when & then
+    //given
+    TimetableHearingStatement redactedObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(sensitiveStatement);
+    doReturn(true).when(boUserMailCheckService).isCurrentUserMailAssignedTo(sensitiveStatement);
+    //when
+    tthStatementRedactAspect.redactStatementForBoUser(sensitiveStatement, redactedObject);
+    assertThat(redactedObject.getDocuments()).isEmpty();
+  }
+
   private TimetableHearingStatement getSensitiveStatement() {
     return TimetableHearingStatement.builder()
         .timetableYear(2023L)

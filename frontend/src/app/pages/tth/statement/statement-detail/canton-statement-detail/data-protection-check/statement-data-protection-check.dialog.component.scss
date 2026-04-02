@@ -1,0 +1,9 @@
+@use 'src/styles/variables' as variables;
+
+.protection-info {
+  color: variables.$errorColor;
+}
+
+.max-text-width {
+  max-width: 600px;
+}

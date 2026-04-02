@@ -4,7 +4,10 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.redact.RedactAspect;
 import ch.sbb.atlas.user.administration.security.service.BoUserMailCheckService;
 import ch.sbb.atlas.user.administration.security.service.CantonBasedUserAdministrationService;
+import ch.sbb.line.directory.module.tth.entity.StatementDocument;
 import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -41,14 +44,19 @@ public class TthStatementRedactAspect {
   void redactStatementForBoUser(Object resultObject, Object redactObject) {
 
     if (resultObject instanceof TimetableHearingStatement timetableHearingStatement) {
-      boolean isStatementAnonymous = timetableHearingStatement.isStatementAnonymous();
-      String dossierContactMail = timetableHearingStatement.getDossierContactMail();
-      if (dossierContactMail != null && isStatementAnonymous && boUserMailCheckService.isCurrentUserMailAssignedTo(
-          timetableHearingStatement)) {
+
+      if (timetableHearingStatement.getDossierContactMail() != null
+          && boUserMailCheckService.isCurrentUserMailAssignedTo(timetableHearingStatement)) {
         String statement = timetableHearingStatement.getStatement();
 
-        if(redactObject instanceof TimetableHearingStatement redactStatement) {
-          redactStatement.setStatement(statement);
+        if (redactObject instanceof TimetableHearingStatement redactedStatement) {
+          if (Boolean.TRUE.equals(timetableHearingStatement.getStatementAnonymous())) {
+            redactedStatement.setStatement(statement);
+          }
+          Set<StatementDocument> anonymousDocuments = timetableHearingStatement.getDocuments().stream()
+              .filter(document -> Boolean.TRUE.equals(document.getAnonymous()))
+              .collect(Collectors.toSet());
+          redactedStatement.setDocuments(anonymousDocuments);
         } else {
           throw new IllegalStateException(redactObject + " is not a TimetableHearingStatement");
         }

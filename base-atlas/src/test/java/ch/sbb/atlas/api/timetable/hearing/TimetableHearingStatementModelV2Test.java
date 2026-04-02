@@ -54,6 +54,7 @@ class TimetableHearingStatementModelV2Test extends BaseValidatorTest {
   void shouldBeValidStatementWithAnonymousStatement() {
     TimetableHearingStatementModelV2 model = TimetableHearingStatementModelV2.builder()
         .statement("Ich möchte gerne mehr Sitzplätze im Bus.")
+        .statementAnonymous(false)
         .anonymousStatement("Jemand möchte mehr Plätze")
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("urs@home.ch"))

@@ -44,12 +44,12 @@ import { StatementPersonalInformationComponent } from '../../statement-personal-
 import { StatementDataComponent } from '../../statement-data/statement-data.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { FileComponent } from '../../../../../core/components/file-upload/file/file.component';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { FileUploadComponent } from '../../../../../core/components/file-upload/file-upload.component';
 import { StatementDetailBaseComponent } from '../statement-detail-base.component';
 import { TimetableHearingYearInternalService } from '../../../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { DialogData } from '../../../../../core/components/dialog/dialog.data';
 import { StatementDialogComponent } from '../../statement-dialog/statement.dialog.component';
+import { StatementDataProtectionCheckDialogComponent } from './data-protection-check/statement-data-protection-check.dialog.component';
 
 @Component({
   selector: 'atlas-statement-detail',
@@ -75,7 +75,6 @@ import { StatementDialogComponent } from '../../statement-dialog/statement.dialo
     StatementDataComponent,
     AtlasLabelFieldComponent,
     FileComponent,
-    MatCheckbox,
     FileUploadComponent,
   ],
   providers: [OpenStatementInMailService, TranslatePipe],
@@ -231,7 +230,6 @@ export class CantonStatementDetailComponent
     documents: Array<TimetableHearingStatementDocument> | undefined
   ) {
     if (documents!.length > 0) {
-      this.loadingSpinnerService.loading.next(true);
       for (let i = 0; i < documents!.length!; i++) {
         this.timetableHearingStatementsService
           .getStatementDocument(id, documents![i].fileName)
@@ -240,9 +238,6 @@ export class CantonStatementDetailComponent
             this.uploadedFiles.push(
               new File([response], documents![i].fileName)
             );
-            if (i === documents!.length! - 1) {
-              this.loadingSpinnerService.loading.next(false);
-            }
           });
       }
     }
@@ -490,5 +485,21 @@ export class CantonStatementDetailComponent
           this.form.controls.responsibleTransportCompanies.setValue(result);
         });
     }
+  }
+
+  openDataProtectionCheck() {
+    this.dialogService
+      .openCustomDataWithConfirmationResult(
+        this.statement!,
+        StatementDataProtectionCheckDialogComponent
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.isInitializingComponent = true;
+          this.router
+            .navigate(['..', this.statement!.id], { relativeTo: this.route })
+            .then(() => this.ngOnInit());
+        }
+      });
   }
 }

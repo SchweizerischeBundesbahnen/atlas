@@ -1,0 +1,145 @@
+<atlas-dialog-close class="pe-2" (clicked)="closeDialog()"></atlas-dialog-close>
+<atlas-dialog-content>
+  <h1 class="font-bold-4xl">
+    {{ 'TTH.STATEMENT.DATA_PROTECTION_CHECK' | translate }}
+  </h1>
+
+  <ng-template #statementForm>
+    <div [formGroup]="statementFormGroup">
+      @let hasStatementPersonalInformationControl =
+        statementFormGroup.controls.hasStatementPersonalInformation;
+      <div>
+        {{ 'TTH.STATEMENT.DATA_PROTECTION_CHECK_TEXT_QUESTION' | translate }}
+      </div>
+      <mat-radio-group formControlName="hasStatementPersonalInformation">
+        <mat-radio-button [value]="true">
+          {{ 'COMMON.YES' | translate }}
+        </mat-radio-button>
+        <mat-radio-button [value]="false">
+          {{ 'COMMON.NO' | translate }}
+        </mat-radio-button>
+        <atlas-field-error
+          [control]="hasStatementPersonalInformationControl"
+        ></atlas-field-error>
+      </mat-radio-group>
+
+      @if (hasStatementPersonalInformationControl.value !== null) {
+        <div class="protection-info max-text-width mb-3">
+          @if (hasStatementPersonalInformationControl.value) {
+            {{ 'TTH.STATEMENT.TEXT_CONTAINS_PERSONAL_INFO' | translate }}
+          } @else {
+            {{ 'TTH.STATEMENT.TEXT_CONTAINS_NO_PERSONAL_INFO' | translate }}
+          }
+        </div>
+      }
+
+      <atlas-form-comment
+        [formGroup]="statementFormGroup"
+        controlName="anonymousStatement"
+        [displayLabel]="false"
+        maxChars="5000"
+        [readonly]="!hasStatementPersonalInformationControl.value"
+      >
+      </atlas-form-comment>
+
+      <div class="d-flex max-text-width">
+        <atlas-field-error [control]="statementFormGroup"></atlas-field-error>
+      </div>
+
+      <div class="d-flex justify-content-center mt-5">
+        <atlas-button
+          buttonText="COMMON.CANCEL"
+          buttonType="defaultPrimary"
+          wrapperStyleClass="me-3"
+          (buttonClicked)="closeDialog()"
+        />
+        <atlas-button
+          [buttonText]="hasDocuments ? 'DIALOG.OK' : 'COMMON.SAVE_AND_CLOSE'"
+          buttonType="defaultPrimary"
+          (buttonClicked)="completeTextDataProtection()"
+        />
+      </div>
+    </div>
+  </ng-template>
+
+  @if (hasDocuments) {
+    <mat-stepper [linear]="true" labelPosition="bottom" #stepper>
+      <ng-template matStepperIcon="edit">
+        <i class="bi bi-check2-circle"></i>
+      </ng-template>
+      <mat-step
+        [formGroup]="statementFormGroup"
+        [label]="'TTH.STATEMENT.STATEMENT_TEXT' | translate"
+      >
+        <ng-container *ngTemplateOutlet="statementForm"></ng-container>
+      </mat-step>
+
+      <mat-step
+        [label]="'TTH.STATEMENT.ATTACHMENTS' | translate"
+        [formGroup]="statementFormGroup"
+      >
+        @for (document of statement.documents!; track document) {
+          <div [formGroup]="documentFormGroup.controls.documents.at($index)">
+            @let hasDocumentPersonalInformationControl =
+              documentFormGroup.controls.documents.at($index).controls
+                .hasDocumentPersonalInformation;
+            <div>
+              {{
+                'TTH.STATEMENT.DATA_PROTECTION_CHECK_FILE_QUESTION' | translate
+              }}
+            </div>
+            <atlas-file
+              (downloadFile)="downloadFile($event.name)"
+              [deleteEnabled]="false"
+              [downloadEnabled]="true"
+              [file]="{
+                name: document.fileName!,
+                size: document.fileSize!,
+              }"
+            >
+            </atlas-file>
+            <mat-radio-group formControlName="hasDocumentPersonalInformation">
+              <mat-radio-button [value]="true">
+                {{ 'COMMON.YES' | translate }}
+              </mat-radio-button>
+              <mat-radio-button [value]="false">
+                {{ 'COMMON.NO' | translate }}
+              </mat-radio-button>
+              <atlas-field-error
+                [control]="hasDocumentPersonalInformationControl"
+              ></atlas-field-error>
+            </mat-radio-group>
+
+            @if (hasDocumentPersonalInformationControl.value !== null) {
+              <div class="protection-info max-text-width mb-3">
+                @if (hasDocumentPersonalInformationControl.value) {
+                  {{ 'TTH.STATEMENT.FILE_CONTAINS_PERSONAL_INFO' | translate }}
+                } @else {
+                  {{
+                    'TTH.STATEMENT.FILE_CONTAINS_NO_PERSONAL_INFO' | translate
+                  }}
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <div class="d-flex justify-content-center mt-5">
+          <atlas-button
+            buttonText="COMMON.CANCEL"
+            buttonType="defaultPrimary"
+            wrapperStyleClass="me-3"
+            (buttonClicked)="closeDialog()"
+          />
+          <atlas-button
+            buttonText="COMMON.SAVE_AND_CLOSE"
+            buttonType="defaultPrimary"
+            (buttonClicked)="completeFileDataProtection()"
+          />
+        </div>
+      </mat-step>
+    </mat-stepper>
+  } @else {
+    <ng-container *ngTemplateOutlet="statementForm"></ng-container>
+  }
+</atlas-dialog-content>

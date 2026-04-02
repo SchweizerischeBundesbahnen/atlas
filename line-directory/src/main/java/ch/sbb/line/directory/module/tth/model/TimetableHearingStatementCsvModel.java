@@ -62,7 +62,7 @@ public class TimetableHearingStatementCsvModel extends BaseTimetableHearingState
         .documentsPresent(!statementModelV2.getDocuments().isEmpty())
         .status(statementModelV2.getStatementStatus())
         .timetableHearingYear(statementModelV2.getTimetableYear())
-        .statementAnonymous(statementModelV2.isStatementAnonymous())
+        .statementAnonymous(statementModelV2.getStatementAnonymous())
         .topic(statementModelV2.getTopic());
   }
   

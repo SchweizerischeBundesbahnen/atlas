@@ -1,17 +1,14 @@
 package ch.sbb.atlas.api.timetable.hearing;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.model.AuditableVersionModel;
 import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.workflow.tth.dossier.StatementDossierLinked;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.IdCheckable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -37,12 +34,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
 @Schema(name = "TimetableHearingStatementV2")
-public class TimetableHearingStatementModelV2 extends AuditableVersionModel implements TimetableHearingStatement,
+public class TimetableHearingStatementModelV2 extends TimetableHearingStatementDataProtectionModel implements TimetableHearingStatement,
     CantonAssociated, IdCheckable, StatementDossierLinked {
-
-  @Schema(description = "Technical identifier",
-      example = "1", accessMode = AccessMode.READ_ONLY)
-  private Long id;
 
   @Min(TimetableHearingConstants.MIN_YEAR)
   @Max(TimetableHearingConstants.MAX_YEAR)
@@ -84,17 +77,6 @@ public class TimetableHearingStatementModelV2 extends AuditableVersionModel impl
   @Schema(description = "Statement of citizen", example = "I need some more busses please.")
   private String statement;
 
-  @Schema(description = "Statement does not contain personal data")
-  private boolean statementAnonymous;
-
-  @Size(max = AtlasFieldLengths.LENGTH_5000)
-  @Schema(description = "Statement anonymized by canton", example = "I need some more busses please.")
-  private String anonymousStatement;
-
-  @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
-  @Schema(description = "List of uploaded documents")
-  private List<TimetableHearingStatementDocumentModel> documents;
-
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   @Schema(description = "Statement of Federal office of transport", example = "We can absolutely do that.")
   private String publicComment;
@@ -122,17 +104,10 @@ public class TimetableHearingStatementModelV2 extends AuditableVersionModel impl
     return Objects.requireNonNullElseGet(responsibleTransportCompanies, ArrayList::new);
   }
 
-  public List<TimetableHearingStatementDocumentModel> getDocuments() {
-    return Objects.requireNonNullElseGet(documents, ArrayList::new);
-  }
-
   @NotNull
   @Valid
   private TimetableHearingStatementSenderModelV2 statementSender;
 
-  @JsonIgnore
-  @AssertTrue
-  public boolean isWithValidAnonymousStatement() {
-    return !statementAnonymous || anonymousStatement == null;
-  }
+  private boolean dataProtectionChecked;
+
 }

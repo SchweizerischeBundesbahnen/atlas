@@ -36,6 +36,6 @@ public class TimetableHearingStatementDocumentModel {
   private Long fileSize;
 
   @Schema(description = "Document does not contain personal data", example = "true")
-  private boolean anonymous;
+  private Boolean anonymous;
 
 }

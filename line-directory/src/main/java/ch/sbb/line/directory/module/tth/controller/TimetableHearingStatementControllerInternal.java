@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiInternal;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
@@ -213,5 +214,10 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
       TimetableHearingStatement statement = timetableHearingStatementService.getTimetableHearingStatementsById(id);
       timetableHearingStatementService.updateStatementFromDossier(statement, batchUpdateModel);
     });
+  }
+
+  @Override
+  public void checkDataProtection(TimetableHearingStatementDataProtectionModel timetableHearingStatementDataProtectionModel) {
+      timetableHearingStatementService.checkDataProtection(timetableHearingStatementDataProtectionModel);
   }
 }
