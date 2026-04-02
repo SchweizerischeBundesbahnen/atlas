@@ -9,10 +9,7 @@ import { NotificationService } from '../../../../../../core/notification/notific
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StatementDataProtectionCheckDialogComponent } from './statement-data-protection-check.dialog.component';
 import { TimetableHearingStatementInternalService } from '../../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
-import {
-  MockAtlasButtonComponent,
-  translateServiceProvider,
-} from '../../../../../../app.testing.mocks';
+import { translateServiceProvider } from '../../../../../../app.testing.mocks';
 import { TranslatePipe } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -55,7 +52,6 @@ describe('StatementDataProtectionCheckDialogComponent', () => {
     mockClear(timetableHearingStatementsService);
 
     TestBed.configureTestingModule({
-      imports: [MockAtlasButtonComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: statement },
         { provide: NotificationService, useValue: notificationService },

@@ -6,31 +6,26 @@
 
   <ng-template #statementForm>
     <div [formGroup]="statementFormGroup">
+      @let hasStatementPersonalInformationControl =
+        statementFormGroup.controls.hasStatementPersonalInformation;
       <div>
         {{ 'TTH.STATEMENT.DATA_PROTECTION_CHECK_TEXT_QUESTION' | translate }}
       </div>
       <mat-radio-group formControlName="hasStatementPersonalInformation">
         <mat-radio-button [value]="true">
-          {{ 'COMMON.JA' | translate }}
+          {{ 'COMMON.YES' | translate }}
         </mat-radio-button>
         <mat-radio-button [value]="false">
-          {{ 'COMMON.NEIN' | translate }}
+          {{ 'COMMON.NO' | translate }}
         </mat-radio-button>
         <atlas-field-error
-          [control]="
-            statementFormGroup.controls.hasStatementPersonalInformation
-          "
+          [control]="hasStatementPersonalInformationControl"
         ></atlas-field-error>
       </mat-radio-group>
 
-      @if (
-        statementFormGroup.controls.hasStatementPersonalInformation.value !==
-        null
-      ) {
-        <div class="protection-info mb-3">
-          @if (
-            statementFormGroup.controls.hasStatementPersonalInformation.value
-          ) {
+      @if (hasStatementPersonalInformationControl.value !== null) {
+        <div class="protection-info max-text-width mb-3">
+          @if (hasStatementPersonalInformationControl.value) {
             {{ 'TTH.STATEMENT.TEXT_CONTAINS_PERSONAL_INFO' | translate }}
           } @else {
             {{ 'TTH.STATEMENT.TEXT_CONTAINS_NO_PERSONAL_INFO' | translate }}
@@ -43,13 +38,11 @@
         controlName="anonymousStatement"
         [displayLabel]="false"
         maxChars="5000"
-        [readonly]="
-          !statementFormGroup.controls.hasStatementPersonalInformation.value
-        "
+        [readonly]="!hasStatementPersonalInformationControl.value"
       >
       </atlas-form-comment>
 
-      <div class="d-flex">
+      <div class="d-flex max-text-width">
         <atlas-field-error [control]="statementFormGroup"></atlas-field-error>
       </div>
 
@@ -87,6 +80,9 @@
       >
         @for (document of statement.documents!; track document) {
           <div [formGroup]="documentFormGroup.controls.documents.at($index)">
+            @let hasDocumentPersonalInformationControl =
+              documentFormGroup.controls.documents.at($index).controls
+                .hasDocumentPersonalInformation;
             <div>
               {{
                 'TTH.STATEMENT.DATA_PROTECTION_CHECK_FILE_QUESTION' | translate
@@ -104,28 +100,19 @@
             </atlas-file>
             <mat-radio-group formControlName="hasDocumentPersonalInformation">
               <mat-radio-button [value]="true">
-                {{ 'COMMON.JA' | translate }}
+                {{ 'COMMON.YES' | translate }}
               </mat-radio-button>
               <mat-radio-button [value]="false">
-                {{ 'COMMON.NEIN' | translate }}
+                {{ 'COMMON.NO' | translate }}
               </mat-radio-button>
               <atlas-field-error
-                [control]="
-                  documentFormGroup.controls.documents.at($index).controls
-                    .hasDocumentPersonalInformation
-                "
+                [control]="hasDocumentPersonalInformationControl"
               ></atlas-field-error>
             </mat-radio-group>
 
-            @if (
-              documentFormGroup.controls.documents.at($index).controls
-                .hasDocumentPersonalInformation.value !== null
-            ) {
-              <div class="protection-info mb-3">
-                @if (
-                  documentFormGroup.controls.documents.at($index).controls
-                    .hasDocumentPersonalInformation.value
-                ) {
+            @if (hasDocumentPersonalInformationControl.value !== null) {
+              <div class="protection-info max-text-width mb-3">
+                @if (hasDocumentPersonalInformationControl.value) {
                   {{ 'TTH.STATEMENT.FILE_CONTAINS_PERSONAL_INFO' | translate }}
                 } @else {
                   {{

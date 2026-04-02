@@ -230,7 +230,6 @@ export class CantonStatementDetailComponent
     documents: Array<TimetableHearingStatementDocument> | undefined
   ) {
     if (documents!.length > 0) {
-      this.loadingSpinnerService.loading.next(true);
       for (let i = 0; i < documents!.length!; i++) {
         this.timetableHearingStatementsService
           .getStatementDocument(id, documents![i].fileName)
@@ -239,9 +238,6 @@ export class CantonStatementDetailComponent
             this.uploadedFiles.push(
               new File([response], documents![i].fileName)
             );
-            if (i === documents!.length! - 1) {
-              this.loadingSpinnerService.loading.next(false);
-            }
           });
       }
     }

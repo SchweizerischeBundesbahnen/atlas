@@ -51,8 +51,8 @@
     "NODATAFOUND": "Es wurden keine Daten gefunden.",
     "TYPE_TO_SEARCH": "Tippen Sie mindestens 2 Zeichen ein, um die Suche zu beginnen.",
     "TYPE_TO_SEARCH_SHORT": "Tippen Sie mindestens 2 Zeichen ein...",
-    "JA": "Ja",
-    "NEIN": "Nein",
+    "YES": "Ja",
+    "NO": "Nein",
     "ACHTUNG": "Achtung!",
     "DATE": {
       "SELECT_DATERANGE": "Datumsbereich*"

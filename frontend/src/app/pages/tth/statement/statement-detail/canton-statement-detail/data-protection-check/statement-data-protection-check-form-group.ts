@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { TimetableHearingStatementV2 } from '../../../../../../api';
 import { TimetableHearingStatementDataProtection } from '../../../../../../api/model/timetableHearingStatementDataProtection';
+import { AtlasFieldLengthValidator } from '../../../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 export interface StatementDataProtectionFormGroup {
   id: FormControl<number | null | undefined>;
@@ -35,7 +36,8 @@ export class StatementDataProtectionFormGroupBuilder {
         anonymousStatement: new FormControl(
           timetableHearingStatement.anonymousStatement
             ? timetableHearingStatement.anonymousStatement
-            : timetableHearingStatement.statement
+            : timetableHearingStatement.statement,
+          [AtlasFieldLengthValidator.statement]
         ),
         hasStatementPersonalInformation: new FormControl(
           timetableHearingStatement.statementAnonymous !== null

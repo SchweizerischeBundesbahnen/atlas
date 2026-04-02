@@ -32,8 +32,6 @@ export class StatementShareService {
         this.statement!.responsibleTransportCompanies,
       statementSender: this.statement!.statementSender,
       statement: this.statement!.statement,
-      statementAnonymous: this.statement!.statementAnonymous,
-      anonymousStatement: this.statement!.anonymousStatement,
       publicComment: this.statement!.publicComment,
       internalComment: this.statement!.internalComment,
       cantonTransferComment: this.statement!.cantonTransferComment,

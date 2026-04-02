@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  OnInit,
-} from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
@@ -11,11 +6,6 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StatementDetailFormGroup } from '../statement-detail/statement-detail-form-group';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
-
-export const HIDE_ORIGINAL_TEXT_LABEL = '';
-export const SHOW_ORIGINAL_TEXT_LABEL = 'TTH.STATEMENT.SHOW_ORIGINAL_TEXT';
-export const UNLOCK_ICON = 'bi-lock';
-export const LOCK_ICON = 'bi-lock-fill';
 
 @Component({
   selector: 'atlas-statement-text',
@@ -27,7 +17,6 @@ export const LOCK_ICON = 'bi-lock-fill';
     TranslatePipe,
     AtlasSpacerComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './statement-text.component.html',
   providers: [TranslatePipe],
 })
