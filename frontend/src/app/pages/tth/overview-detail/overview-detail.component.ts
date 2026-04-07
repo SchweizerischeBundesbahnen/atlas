@@ -5,8 +5,6 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
-  TimetableHearingStatementDocument,
-  TimetableHearingStatementSenderV2,
   TimetableHearingStatementV2,
   TransportCompany,
 } from '../../../api';
@@ -50,6 +48,7 @@ import { TthChangeCantonDialogComponent } from './tth-change-canton-dialog/tth-c
 import { StatusChangeData } from './tth-change-status-dialog/model/status-change-data';
 import { TthChangeStatusDialogComponent } from './tth-change-status-dialog/tth-change-status-dialog.component';
 import { NewTimetableHearingYearDialogComponent } from '../new-timetable-hearing-year-dialog/new-timetable-hearing-year-dialog.component';
+import { StatementTableHandler } from '../util/statement-table-handler';
 
 @Component({
   selector: 'atlas-timetable-hearing-overview-detail',
@@ -67,7 +66,7 @@ import { NewTimetableHearingYearDialogComponent } from '../new-timetable-hearing
     StatementOverviewMenuComponent,
   ],
 })
-export class OverviewDetailComponent {
+export class OverviewDetailComponent extends StatementTableHandler {
   readonly cantonShort = this.overviewToTabService.cantonShort;
   readonly timetableYear = this.overviewToTabService.timetableYear;
   readonly hearingStatus = this.overviewToTabService.hearingStatus;
@@ -127,6 +126,7 @@ export class OverviewDetailComponent {
     private readonly permissionService: PermissionService,
     private readonly matDialog: MatDialog
   ) {
+    super();
     effect(() => {
       if (!this.isYearLoading()) {
         this.loadData();
@@ -556,18 +556,6 @@ export class OverviewDetailComponent {
     }
   }
 
-  mapToShortCanton(canton: SwissCanton) {
-    return Cantons.fromSwissCanton(canton)?.short;
-  }
-
-  mapToLastname(statementSender: TimetableHearingStatementSenderV2) {
-    return statementSender.lastName;
-  }
-
-  isDocumentExisting(documents: Array<TimetableHearingStatementDocument>) {
-    return documents.length > 0;
-  }
-
   private getTableColumns(): TableColumn<TimetableHearingStatementV2>[] {
     return [
       {
@@ -588,39 +576,7 @@ export class OverviewDetailComponent {
         value: 'swissCanton',
         callback: this.mapToShortCanton,
       },
-      { headerTitle: 'ID', value: 'id' },
-      {
-        headerTitle: 'TTH.TIMETABLE_FIELD_LASTNAME',
-        value: 'statementSender',
-        callback: this.mapToLastname,
-      },
-      {
-        headerTitle: 'TTH.TRANSPORT_COMPANY',
-        value: 'responsibleTransportCompaniesDisplay',
-      },
-      {
-        headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER',
-        value: 'timetableFieldNumber',
-        disabled: true,
-      },
-      {
-        headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER_DESCRIPTION',
-        value: 'timetableFieldDescription',
-        disabled: true,
-      },
-      {
-        headerTitle: 'COMMON.EDIT_ON',
-        value: 'editionDate',
-        formatAsDate: true,
-      },
-      {
-        headerTitle: 'TTH.TIMETABLE_FIELD_DOCUMENT',
-        value: 'documents',
-        icon: {
-          icon: 'bi bi-paperclip',
-          callback: this.isDocumentExisting,
-        },
-      },
+      ...this.defaultStatementColumns,
       {
         headerTitle: '',
         value: 'etagVersion',
@@ -643,7 +599,8 @@ export class OverviewDetailComponent {
   private activeTth(col: TableColumn<TimetableHearingStatementV2>): boolean {
     return (
       col.value === 'statementStatus' ||
-      col.value === 'editionDate' ||
+      col.value === 'dataProtectionChecked' ||
+      col.value === 'topic' ||
       col.value === 'etagVersion' ||
       this.plannedOrArchivedTth(col)
     );
