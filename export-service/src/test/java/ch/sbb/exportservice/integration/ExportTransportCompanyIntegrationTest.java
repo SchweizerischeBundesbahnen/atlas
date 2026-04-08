@@ -66,7 +66,6 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
     Files.delete(exportedCsvFile.toPath());
 
     assertThat(fileContent)
-        .withFailMessage("actual fileContent was: %s", fileContent)
         .isEqualToIgnoringNewLines(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + """
         id;number;abbreviation;description;businessRegisterName;transportCompanyStatus;businessRegisterNumber;enterpriseId;ricsCode;businessOrganisationNumbers;comment;creationDate;editionDate
         2893;#20001;#ALCOSUI;;Alcosuisse;OPERATING_PART;;CHE-100.966.104;;;;2022-08-04 16:13:51;2022-08-23 01:00:14
