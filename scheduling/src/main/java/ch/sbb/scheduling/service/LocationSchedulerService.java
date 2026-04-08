@@ -1,7 +1,7 @@
 package ch.sbb.scheduling.service;
 
 import ch.sbb.scheduling.aspect.annotation.SpanTracing;
-import ch.sbb.scheduling.client.LocationClient;
+import ch.sbb.scheduling.client.LocationSloidClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class LocationSchedulerService extends BaseSchedulerService {
 
-  private final LocationClient locationClient;
+  private final LocationSloidClient locationClient;
 
-  public LocationSchedulerService(LocationClient locationClient) {
+  public LocationSchedulerService(LocationSloidClient locationClient) {
     this.locationClient = locationClient;
     this.clientName = "Location-Client";
   }

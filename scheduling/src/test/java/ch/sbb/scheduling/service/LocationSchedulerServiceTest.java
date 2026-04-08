@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.scheduling.client.LocationClient;
+import ch.sbb.scheduling.client.LocationSloidClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Request;
 import feign.Request.HttpMethod;
@@ -22,7 +22,7 @@ class LocationSchedulerServiceTest {
   private LocationSchedulerService locationSchedulerService;
 
   @Mock
-  private LocationClient locationClient;
+  private LocationSloidClient locationClient;
 
   @BeforeEach
   void setUp() {

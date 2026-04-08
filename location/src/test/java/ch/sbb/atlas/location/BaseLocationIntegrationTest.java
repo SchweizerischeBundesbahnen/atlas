@@ -1,7 +1,7 @@
 package ch.sbb.atlas.location;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.location.repository.SloidRepository;
+import ch.sbb.atlas.location.module.sloid.repository.SloidRepository;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import java.util.Arrays;
 import java.util.Set;

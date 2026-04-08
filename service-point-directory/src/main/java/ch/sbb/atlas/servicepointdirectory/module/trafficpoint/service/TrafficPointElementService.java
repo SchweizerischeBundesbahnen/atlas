@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.module.trafficpoint.service;
 
+import ch.sbb.atlas.api.client.location.GeoAdminHeightResponse;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -8,6 +9,8 @@ import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.revoke.service.RevokeService;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.TrafficPointElementGeolocation;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.mapper.TrafficPointElementVersionMapper;
@@ -38,14 +41,16 @@ public class TrafficPointElementService extends RevokeService<TrafficPointElemen
   private final VersionableService versionableService;
   private final TrafficPointElementValidationService trafficPointElementValidationService;
   private final LocationService locationService;
+  private final ServicePointGeoDataService servicePointGeoDataService;
 
   public TrafficPointElementService(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
       VersionableService versionableService, TrafficPointElementValidationService trafficPointElementValidationService,
-      LocationService locationService) {
+      LocationService locationService, ServicePointGeoDataService servicePointGeoDataService) {
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
     this.versionableService = versionableService;
     this.trafficPointElementValidationService = trafficPointElementValidationService;
     this.locationService = locationService;
+    this.servicePointGeoDataService = servicePointGeoDataService;
   }
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
@@ -161,4 +166,13 @@ public class TrafficPointElementService extends RevokeService<TrafficPointElemen
     trafficPointElementVersionRepository.saveAll(trafficPointElementVersions);
   }
 
+  public void addHeightToTrafficPoints(TrafficPointElementVersion trafficPointElementVersion) {
+    TrafficPointElementGeolocation trafficPointElementGeolocation =
+        trafficPointElementVersion.getTrafficPointElementGeolocation();
+    if (trafficPointElementGeolocation != null && trafficPointElementGeolocation.getHeight() == null) {
+      GeoAdminHeightResponse geoAdminHeightResponse = servicePointGeoDataService.getHeight(
+          trafficPointElementGeolocation.asCoordinatePair());
+      trafficPointElementGeolocation.setHeight(geoAdminHeightResponse.getHeight());
+    }
+  }
 }

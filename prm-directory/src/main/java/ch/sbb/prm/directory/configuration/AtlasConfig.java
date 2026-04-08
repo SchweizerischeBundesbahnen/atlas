@@ -5,7 +5,7 @@ import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
-import ch.sbb.prm.directory.location.client.LocationClient;
+import ch.sbb.prm.directory.location.client.LocationSloidClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class AtlasConfig {
   }
 
   @Bean
-  public LocationService locationService(LocationClient locationClient) {
+  public LocationService locationService(LocationSloidClient locationClient) {
     return new LocationService(locationClient);
   }
 

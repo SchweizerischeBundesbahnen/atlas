@@ -3,7 +3,6 @@ import java.util.*
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
-    alias(libs.plugins.openapi.generator)
     alias(libs.plugins.protobuf)
     id("buildlogic.docker-java")
 }
@@ -72,38 +71,14 @@ protobuf {
     }
 }
 
-openApiGenerate {
-    generatorName.set("spring")
-    inputSpec.set("${projectDir}/src/main/resources/journey-pois.yaml")
-    apiPackage.set("org.openapitools.api")
-    outputDir.set("${project.layout.buildDirectory.get()}/generated-sources/openapi")
-    configOptions.putAll(
-        mapOf(
-            Pair("interfaceOnly", "true"),
-            Pair("modelPackage", "ch.sbb.atlas.journey.poi.model"),
-            Pair("apiPackage", "ch.sbb.atlas.journey.poi.api"),
-            Pair("useSpringBoot3", "true"),
-            Pair("generatedConstructorWithRequiredArgs", "false"),
-            Pair("openApiNullable", "false"),
-        )
-    )
-    library.set("spring-cloud")
-    generateApiTests.set(false)
-}
-
 sourceSets {
     main {
-        java {
-            srcDir(files("${project.layout.buildDirectory.get()}/generated-sources/openapi"))
-        }
         proto {
             // In addition to the default 'src/main/proto'
             srcDir("${projectDir}/src/main/resources/protobuf")
         }
     }
 }
-
-tasks.compileJava.get().dependsOn(tasks.openApiGenerate)
 
 springBoot {
     buildInfo {

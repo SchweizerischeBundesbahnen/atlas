@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.config;
 import ch.sbb.atlas.business.organisation.SharedBusinessOrganisationConfig;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.location.LocationService;
-import ch.sbb.atlas.servicepointdirectory.client.LocationClient;
+import ch.sbb.atlas.servicepointdirectory.client.LocationSloidClient;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
@@ -31,7 +31,7 @@ public class AtlasConfig {
   }
 
   @Bean
-  public LocationService locationService(LocationClient locationClient) {
+  public LocationService locationService(LocationSloidClient locationClient) {
     return new LocationService(locationClient);
   }
 

@@ -9,7 +9,6 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.api.TrafficPointElementApiV1;
@@ -37,7 +36,6 @@ public class TrafficPointElementApiV1Controller implements TrafficPointElementAp
   private final ServicePointService servicePointService;
   private final CrossValidationService crossValidationService;
   private final ServicePointDistributor servicePointDistributor;
-  private final GeoReferenceService geoReferenceService;
 
   @Override
   public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable,
@@ -135,7 +133,7 @@ public class TrafficPointElementApiV1Controller implements TrafficPointElementAp
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(servicePointNumber);
-    geoReferenceService.addHeightToTrafficPoints(trafficPointElementVersion);
+    trafficPointElementService.addHeightToTrafficPoints(trafficPointElementVersion);
     return trafficPointElementService.create(trafficPointElementVersion,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
@@ -144,7 +142,7 @@ public class TrafficPointElementApiV1Controller implements TrafficPointElementAp
     ServicePointNumber servicePointNumber = editedVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(editedVersion.getServicePointNumber());
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
-    geoReferenceService.addHeightToTrafficPoints(editedVersion);
+    trafficPointElementService.addHeightToTrafficPoints(editedVersion);
     trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
   }
 

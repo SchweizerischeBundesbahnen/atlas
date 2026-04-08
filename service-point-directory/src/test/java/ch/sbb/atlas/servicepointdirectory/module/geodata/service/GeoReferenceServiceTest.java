@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.client.location.GeoAdminHeightResponse;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.journey.poi.model.CountryCode;
@@ -15,7 +16,6 @@ import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.client.geoadmin.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.client.journepoy.JourneyPoiClientBase;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;

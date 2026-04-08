@@ -7,7 +7,7 @@ import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServicePointNumberNotFoundException;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServicePointApiV1Controller implements ServicePointApiV1 {
 
   private final ServicePointService servicePointService;
-  private final GeoReferenceService geoReferenceService;
+  private final ServicePointGeoDataService servicePointGeoDataService;
   private final CreateServicePointMapper createServicePointMapper;
 
   @Override
@@ -76,10 +76,14 @@ public class ServicePointApiV1Controller implements ServicePointApiV1 {
   }
 
   @Override
-  public ReadServicePointVersionModel createServicePoint(
-      CreateServicePointVersionModel createServicePointVersionModel) {
+  public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersion = createServicePointMapper.toEntity(createServicePointVersionModel);
-    geoReferenceService.addGeoReferenceInformation(servicePointVersion);
+
+    if (servicePointVersion.hasGeolocation()) {
+      servicePointVersion.setServicePointGeolocation(
+          servicePointGeoDataService.getGeoReferenceInformation(servicePointVersion.getServicePointGeolocation()));
+    }
+
     ServicePointVersion createdVersion = servicePointService.createAndPublish(servicePointVersion, Optional.empty(), List.of());
     return ServicePointVersionMapper.toModel(createdVersion);
   }
@@ -95,7 +99,10 @@ public class ServicePointApiV1Controller implements ServicePointApiV1 {
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
         servicePointVersionToUpdate.getNumber());
 
-    geoReferenceService.addGeoReferenceInformation(editedVersion);
+    if (editedVersion.hasGeolocation()) {
+      editedVersion.setServicePointGeolocation(
+          servicePointGeoDataService.getGeoReferenceInformation(editedVersion.getServicePointGeolocation()));
+    }
 
     return servicePointService.updateAndPublish(servicePointVersionToUpdate, editedVersion, currentVersions);
   }
