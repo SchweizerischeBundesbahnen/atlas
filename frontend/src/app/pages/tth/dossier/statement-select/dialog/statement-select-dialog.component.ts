@@ -10,8 +10,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { StatementSelectComponent } from '../statement-select.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import {
-  TimetableHearingStatementDocument,
-  TimetableHearingStatementSenderV2,
   TimetableHearingStatementV2,
   TransportCompany,
 } from '../../../../../api';
@@ -27,6 +25,7 @@ import { Pages } from '../../../../pages';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TthUtils } from '../../../util/tth-utils';
 import { StatementSelectData } from '../../statement-select-data';
+import { StatementTableHandler } from '../../../util/statement-table-handler';
 
 @Component({
   selector: 'atlas-statement-select-dialog',
@@ -44,7 +43,10 @@ import { StatementSelectData } from '../../statement-select-data';
   ],
   providers: [TranslatePipe, TableService],
 })
-export class StatementSelectDialogComponent implements OnInit {
+export class StatementSelectDialogComponent
+  extends StatementTableHandler
+  implements OnInit
+{
   private readonly dialogRef =
     inject<MatDialogRef<StatementSelectDialogComponent, number[]>>(
       MatDialogRef
@@ -55,39 +57,7 @@ export class StatementSelectDialogComponent implements OnInit {
   private readonly tableService = inject(TableService);
 
   readonly tableColumns: TableColumn<TimetableHearingStatementV2>[] = [
-    { headerTitle: 'ID', value: 'id' },
-    {
-      headerTitle: 'TTH.TIMETABLE_FIELD_LASTNAME',
-      value: 'statementSender',
-      callback: this.mapToLastname,
-    },
-    {
-      headerTitle: 'TTH.TRANSPORT_COMPANY',
-      value: 'responsibleTransportCompaniesDisplay',
-    },
-    {
-      headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER',
-      value: 'timetableFieldNumber',
-      disabled: true,
-    },
-    {
-      headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER_DESCRIPTION',
-      value: 'timetableFieldDescription',
-      disabled: true,
-    },
-    {
-      headerTitle: 'COMMON.EDIT_ON',
-      value: 'editionDate',
-      formatAsDate: true,
-    },
-    {
-      headerTitle: 'TTH.TIMETABLE_FIELD_DOCUMENT',
-      value: 'documents',
-      icon: {
-        icon: 'bi bi-paperclip',
-        callback: this.isDocumentExisting,
-      },
-    },
+    ...this.defaultStatementColumns,
     {
       headerTitle: '',
       value: 'etagVersion',
@@ -109,14 +79,6 @@ export class StatementSelectDialogComponent implements OnInit {
 
   selectedIncludes(row: TimetableHearingStatementV2) {
     return this.selectedStatements.includes(row.id!);
-  }
-
-  mapToLastname(statementSender: TimetableHearingStatementSenderV2) {
-    return statementSender.lastName;
-  }
-
-  isDocumentExisting(documents: Array<TimetableHearingStatementDocument>) {
-    return documents.length > 0;
   }
 
   statements: TimetableHearingStatementV2[] = [];
@@ -160,11 +122,7 @@ export class StatementSelectDialogComponent implements OnInit {
         false,
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(
-          pagination.sort,
-          'ttfnid,ASC',
-          'id,ASC'
-        )
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'id,ASC')
       )
       .subscribe((container) => {
         this.statements = container.objects!;

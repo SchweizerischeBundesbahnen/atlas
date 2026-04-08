@@ -141,6 +141,13 @@
             @if (column.icon.callback(value[column.value])) {
               <i [class]="'icon ' + column.icon.icon"></i>
             }
+            @if (column.icon.iconCallback) {
+              <i
+                [class]="
+                  'icon ' + column.icon.iconCallback(value[column.value])
+                "
+              ></i>
+            }
           </td>
         }
       </ng-container>

@@ -50,5 +50,6 @@ export interface Button {
 
 export interface Icon {
   icon?: string;
+  iconCallback?: (...args: any) => string;
   callback: (...args: any[]) => any;
 }

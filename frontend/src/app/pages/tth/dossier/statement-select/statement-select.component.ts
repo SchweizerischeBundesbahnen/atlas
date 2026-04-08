@@ -1,9 +1,6 @@
 import { Component, effect, inject, input, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  TimetableHearingStatementDocument,
-  TimetableHearingStatementV2,
-} from '../../../../api';
+import { TimetableHearingStatementV2 } from '../../../../api';
 import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TableColumn } from '../../../../core/components/table/table-column';
@@ -12,13 +9,14 @@ import { Pages } from '../../../pages';
 import { Cantons } from '../../../../core/cantons/Cantons';
 import { TranslatePipe } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
+import { StatementTableHandler } from '../../util/statement-table-handler';
 
 @Component({
   selector: 'atlas-statement-select',
   imports: [FormsModule, ReactiveFormsModule, TableComponent, TranslatePipe],
   templateUrl: './statement-select.component.html',
 })
-export class StatementSelectComponent {
+export class StatementSelectComponent extends StatementTableHandler {
   selectedStatements = model.required<number[]>();
   removeOptionEnabled = input(true);
   showRemoveOption = input(true);
@@ -29,29 +27,7 @@ export class StatementSelectComponent {
   private readonly router = inject(Router);
 
   defaultTableColumns: TableColumn<TimetableHearingStatementV2>[] = [
-    { headerTitle: 'ID', value: 'id' },
-    {
-      headerTitle: 'TTH.TRANSPORT_COMPANY',
-      value: 'responsibleTransportCompaniesDisplay',
-    },
-    {
-      headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER_DESCRIPTION',
-      value: 'timetableFieldDescription',
-      disabled: true,
-    },
-    {
-      headerTitle: 'COMMON.EDIT_ON',
-      value: 'editionDate',
-      formatAsDate: true,
-    },
-    {
-      headerTitle: 'TTH.TIMETABLE_FIELD_DOCUMENT',
-      value: 'documents',
-      icon: {
-        icon: 'bi bi-paperclip',
-        callback: this.isDocumentExisting,
-      },
-    },
+    ...this.defaultStatementColumns,
     {
       headerTitle: '',
       value: 'etagVersion',
@@ -77,13 +53,10 @@ export class StatementSelectComponent {
   }
 
   constructor() {
+    super();
     effect(() => {
       this.loadStatementsToTable();
     });
-  }
-
-  isDocumentExisting(documents: Array<TimetableHearingStatementDocument>) {
-    return documents.length > 0;
   }
 
   removeStatement(statement: TimetableHearingStatementV2) {
