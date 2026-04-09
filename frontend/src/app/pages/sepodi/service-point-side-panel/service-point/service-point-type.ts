@@ -1,12 +1,9 @@
-export type ServicePointType =
-  | 'SERVICE_POINT'
-  | 'OPERATING_POINT'
-  | 'STOP_POINT'
-  | 'FARE_STOP';
-
 export const ServicePointType = {
-  ServicePoint: 'SERVICE_POINT' as ServicePointType,
-  OperatingPoint: 'OPERATING_POINT' as ServicePointType,
-  StopPoint: 'STOP_POINT' as ServicePointType,
-  FareStop: 'FARE_STOP' as ServicePointType,
-};
+  ServicePoint: 'SERVICE_POINT',
+  OperatingPoint: 'OPERATING_POINT',
+  StopPoint: 'STOP_POINT',
+  FareStop: 'FARE_STOP',
+} as const;
+
+export type ServicePointType =
+  (typeof ServicePointType)[keyof typeof ServicePointType];
