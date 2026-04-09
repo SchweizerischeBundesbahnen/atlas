@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-// todo: automatic tests + manual tests + send request directly from frontend
-// todo: check if e2e tests need change
+// todo: manual test of update job
 @RequestMapping("/internal/geo-reference")
 public interface GeoReferenceApiInternal {
 

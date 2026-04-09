@@ -1,3 +1,6 @@
+TRUNCATE transport_company_relation, transport_company, 
+         business_organisation_version_business_types, business_organisation_version CASCADE;
+
 INSERT INTO business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr, abbreviation_it, abbreviation_en, description_de, description_fr, description_it, description_en, organisation_number, contact_enterprise_email, status, valid_from, valid_to, creation_date, creator, edition_date, editor, version) VALUES (1000, 'ch:1:sboid:1100000', 'SBB', 'SBB', 'SBB', 'SBB', 'SBB', 'SBB', 'SBB', 'SBB', 11, null, 'VALIDATED', '2025-02-01', '9999-12-31', '2025-02-14 16:02:57.619911', 'u123456', '2025-02-14 16:02:57.619976', 'u123456', 0);
 INSERT INTO business_organisation_version_business_types (business_organisation_version_id, business_types) VALUES (1000, 'STREET');
 

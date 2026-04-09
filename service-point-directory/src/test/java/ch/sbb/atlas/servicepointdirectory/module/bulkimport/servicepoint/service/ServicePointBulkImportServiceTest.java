@@ -20,7 +20,8 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServicePointNumberNotFoundException;
@@ -50,10 +51,10 @@ class ServicePointBulkImportServiceTest {
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @MockitoBean
-  private GeoReferenceService geoReferenceService;
+  private LocationService locationService;
 
   @MockitoBean
-  private LocationService locationService;
+  private ServicePointGeoDataService servicePointGeoDataService;
 
   @Autowired
   private ServicePointVersionRepository servicePointVersionRepository;
@@ -68,6 +69,12 @@ class ServicePointBulkImportServiceTest {
     doReturn(true).when(administrationService).hasUserPermissionsToUpdateCountryBased(any(), any(), any());
     doReturn(true).when(businessOrganisationBasedUserAdministrationService).isAtLeastSupervisor(any());
     doReturn(true).when(administrationService).hasUserPermissionsToCreate(any(), any());
+    ServicePointGeolocation servicePointGeolocation = ServicePointTestData.getServicePointGeolocationBernMittelland()
+        .toBuilder()
+        .height(null)
+        .build();
+    doReturn(servicePointGeolocation).when(servicePointGeoDataService)
+        .getGeoReferenceInformation(any());
 
     bernWyleregg = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
   }

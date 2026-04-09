@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.client.location.GeoAdminHeightResponse;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -23,7 +24,7 @@ import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.SloidNotValidException;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointVersionRepository;
@@ -47,10 +48,10 @@ class TrafficPointElementBulkImportServiceTest {
   private CountryAndBusinessOrganisationBasedUserAdministrationService administrationService;
 
   @MockitoBean
-  private GeoReferenceService geoReferenceService;
+  private LocationService locationService;
 
   @MockitoBean
-  private LocationService locationService;
+  private ServicePointGeoDataService servicePointGeoDataService;
 
   @Autowired
   private TrafficPointElementVersionRepository trafficPointElementVersionRepository;
@@ -68,6 +69,7 @@ class TrafficPointElementBulkImportServiceTest {
   @BeforeEach
   void setUp() {
     doReturn(true).when(administrationService).hasUserPermissionsToCreateOrEditServicePointDependentObject(any(), any());
+    doReturn(GeoAdminHeightResponse.builder().height(null).build()).when(servicePointGeoDataService).getHeight(any());
     bernWylereggPlatform = trafficPointElementVersionRepository.save(TrafficPointTestData.getWylerEggPlatform());
     servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
   }

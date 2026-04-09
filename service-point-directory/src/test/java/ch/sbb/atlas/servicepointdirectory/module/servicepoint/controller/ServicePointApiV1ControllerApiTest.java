@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,15 +18,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.client.location.LocationGeoClient;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.journey.poi.model.CountryCode;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.Status;
@@ -34,9 +37,6 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
-import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.client.journepoy.JourneyPoiClientBase;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointGeolocationMapper;
@@ -55,7 +55,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -63,13 +62,7 @@ import org.springframework.test.web.servlet.ResultActions;
 class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
 
   @MockitoBean
-  private JourneyPoiConfig journeyPoiConfig;
-
-  @MockitoBean
-  private OAuthFeignConfig oAuthFeignConfig;
-
-  @MockitoBean
-  private JourneyPoiClientBase journeyPoiClient;
+  private LocationGeoClient locationGeoClient;
 
   @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -91,12 +84,19 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
   @BeforeEach
   void createDefaultVersion() {
     servicePointVersion = repository.save(ServicePointTestData.getBernWyleregg());
-
-    ResponseEntity<ch.sbb.atlas.journey.poi.model.Country> poiResponse =
-        ResponseEntity.ofNullable(
-            new ch.sbb.atlas.journey.poi.model.Country().countryCode(new CountryCode().isoCountryCode("RO")));
-    when(journeyPoiClient.closestCountry(any(), any())).thenReturn(poiResponse);
     when(locationService.generateSloid(any(), any(Country.class))).thenReturn("ch:1:sloid:1");
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(
+        GeoReference.builder()
+            .country(Country.SWITZERLAND)
+            .swissCanton(SwissCanton.BERN)
+            .swissDistrictNumber(246)
+            .swissDistrictName("Bern-Mittelland")
+            .swissMunicipalityNumber(351)
+            .swissMunicipalityName("Bern")
+            .swissLocalityName("Bern")
+            .height(555D)
+            .build()
+    );
   }
 
   @AfterEach

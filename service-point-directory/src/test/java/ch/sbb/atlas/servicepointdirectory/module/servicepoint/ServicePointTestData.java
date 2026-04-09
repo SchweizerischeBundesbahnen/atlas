@@ -223,7 +223,7 @@ public class ServicePointTestData {
   }
 
   public static ServicePointGeolocation getServicePointGeolocationBernMittelland() {
-    ServicePointGeolocation geolocation = ServicePointGeolocation
+    return ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
         .east(2600783D)
@@ -241,11 +241,10 @@ public class ServicePointTestData {
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
         .editor("fs45117")
         .build();
-    return geolocation;
   }
 
   public static ServicePointGeolocation getAargauServicePointGeolocation() {
-    ServicePointGeolocation geolocation = ServicePointGeolocation
+    return ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
         .east(2600000D)
@@ -261,11 +260,10 @@ public class ServicePointTestData {
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
         .editor("fs45117")
         .build();
-    return geolocation;
   }
 
   public static ServicePointGeolocation getZurichServicePointGeolocation() {
-    ServicePointGeolocation geolocation = ServicePointGeolocation
+    return ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
         .east(2571984.26107)
@@ -281,7 +279,6 @@ public class ServicePointTestData {
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
         .editor("fs45117")
         .build();
-    return geolocation;
   }
 
   public static ServicePointVersion createServicePointVersionWithCountryBorder() {
@@ -348,7 +345,7 @@ public class ServicePointTestData {
   }
 
   private static ServicePointGeolocation getServicePointGeolocation() {
-    ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation
+    return ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
         .east(2604525D)
@@ -360,7 +357,6 @@ public class ServicePointTestData {
         .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
         .editor("fs45117")
         .build();
-    return servicePointGeolocation;
   }
 
   public static ServicePointVersion createServicePointVersionWithoutServicePointGeolocation() {
@@ -513,5 +509,4 @@ public class ServicePointTestData {
     createServicePointVersionModel.setOperatingPointRouteNetwork(false);
     return createServicePointVersionModel;
   }
-
 }

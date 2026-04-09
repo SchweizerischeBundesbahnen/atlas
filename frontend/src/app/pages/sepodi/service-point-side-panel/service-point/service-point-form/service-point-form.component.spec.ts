@@ -34,7 +34,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
-import { ServicePointGeoDataInternalService } from '../../../../../api/service/sepodi/service-point-geo-data-internal.service';
+import { LocationGeoInternalService } from '../../../../../api/service/location/location-geo-internal.service';
 import { ServicePointFormGroupBuilder } from './form-group/service-point-detail-form-group';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { StationGroup } from './form-group/station-form-group';
@@ -54,7 +54,7 @@ describe('ServicePointFormComponent', () => {
     Pick<DialogService, 'openDialogDataWithConfirmationResult'>
   >;
   let geoDataServiceSpy: Mocked<
-    Pick<ServicePointGeoDataInternalService, 'getLocationInformation'>
+    Pick<LocationGeoInternalService, 'getLocationInformation'>
   >;
 
   let isAdmin = true;
@@ -107,7 +107,7 @@ describe('ServicePointFormComponent', () => {
         },
         { provide: DialogService, useValue: dialogServiceSpy },
         {
-          provide: ServicePointGeoDataInternalService,
+          provide: LocationGeoInternalService,
           useValue: geoDataServiceSpy,
         },
         { provide: PermissionService, useValue: permissionServiceMock },

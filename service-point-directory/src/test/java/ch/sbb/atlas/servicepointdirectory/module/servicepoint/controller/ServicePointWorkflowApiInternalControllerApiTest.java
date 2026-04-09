@@ -18,14 +18,12 @@ import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.journey.poi.model.CountryCode;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
-import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.client.journepoy.JourneyPoiClientBase;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointGeolocationMapper;
@@ -37,25 +35,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class ServicePointWorkflowApiInternalControllerApiTest extends BaseControllerApiTest {
-
-  @MockitoBean
-  private JourneyPoiConfig journeyPoiConfig;
-
-  @MockitoBean
-  private OAuthFeignConfig oAuthFeignConfig;
-
-  @MockitoBean
-  private JourneyPoiClientBase journeyPoiClient;
 
   @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @MockitoBean
   private LocationService locationService;
+
+  @MockitoBean
+  private ServicePointGeoDataService servicePointGeoDataService;
 
   @Autowired
   private ServicePointVersionRepository repository;
@@ -69,12 +60,9 @@ class ServicePointWorkflowApiInternalControllerApiTest extends BaseControllerApi
   @BeforeEach
   void createDefaultVersion() {
     servicePointVersion = repository.save(ServicePointTestData.getBernWyleregg());
-
-    ResponseEntity<ch.sbb.atlas.journey.poi.model.Country> poiResponse =
-        ResponseEntity.ofNullable(
-            new ch.sbb.atlas.journey.poi.model.Country().countryCode(new CountryCode().isoCountryCode("RO")));
-    when(journeyPoiClient.closestCountry(any(), any())).thenReturn(poiResponse);
     when(locationService.generateSloid(any(), any(Country.class))).thenReturn("ch:1:sloid:1");
+    when(servicePointGeoDataService.getGeoReferenceInformation(any(ServicePointGeolocation.class))).thenAnswer(
+        invocation -> ServicePointTestData.getServicePointGeolocationBernMittelland());
   }
 
   @AfterEach
@@ -486,5 +474,4 @@ class ServicePointWorkflowApiInternalControllerApiTest extends BaseControllerApi
                 is("Update affects one or more versions that have status: IN_REVIEW.")));
 
   }
-
 }

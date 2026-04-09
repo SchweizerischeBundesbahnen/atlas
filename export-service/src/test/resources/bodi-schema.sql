@@ -1,5 +1,5 @@
 -- Business Organisation
-create table business_organisation_version
+create table if not exists business_organisation_version
 (
     id                       bigint           not null
         primary key,
@@ -24,14 +24,14 @@ create table business_organisation_version
     version                  bigint default 0 not null
 );
 
-create table business_organisation_version_business_types
+create table if not exists business_organisation_version_business_types
 (
     business_organisation_version_id bigint      not null,
     business_types                   varchar(50) not null
 );
 
 -- Transport Company
-create table transport_company
+create table if not exists transport_company
 (
     id                            bigint    not null primary key,
     number                        varchar(50),
@@ -48,7 +48,7 @@ create table transport_company
     edition_date                  timestamp not null
 );
 
-create table transport_company_relation
+create table if not exists transport_company_relation
 (
     id                   bigint           not null
         primary key,

@@ -28,7 +28,7 @@ import { TextFieldComponent } from '../../../core/form-components/text-field/tex
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ServicePointGeoDataInternalService } from '../../../api/service/sepodi/service-point-geo-data-internal.service';
+import { LocationGeoInternalService } from '../../../api/service/location/location-geo-internal.service';
 
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
@@ -100,7 +100,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
-    private readonly servicePointGeoDataInternalService: ServicePointGeoDataInternalService
+    private readonly locationGeoInternalService: LocationGeoInternalService
   ) {
     this.mapService.clickedGeographyCoordinates
       .pipe(takeUntilDestroyed())
@@ -243,8 +243,8 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     updateHeight: boolean
   ) {
     if (coordinatePair && updateHeight) {
-      this.servicePointGeoDataInternalService
-        .getLocationInformation(coordinatePair)
+      this.locationGeoInternalService
+        .getHeight(coordinatePair)
         .subscribe((value) => {
           this._form?.patchValue({
             height: value.height,

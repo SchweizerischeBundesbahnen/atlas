@@ -19,14 +19,15 @@ import org.springframework.stereotype.Service;
 public class GeoReferenceJobService {
 
   private final ServicePointService servicePointService;
+  private final ServicePointGeoDataService servicePointGeoDataService;
 
   public UpdateGeoLocationResultContainer updateGeoLocation(Long id) {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.getServicePointVersionById(id);
     ServicePointGeolocation currentServicePointGeolocation = servicePointVersionToUpdate.getServicePointGeolocation();
-    ServicePointGeolocation updatedServicePointGeolocation = getGeoReferenceInformation(currentServicePointGeolocation);
+    ServicePointGeolocation updatedServicePointGeolocation = servicePointGeoDataService.getGeoReferenceInformation(
+        currentServicePointGeolocation);
 
     if (hasDiffServicePointGeolocation(currentServicePointGeolocation, updatedServicePointGeolocation)) {
-
       List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
           servicePointVersionToUpdate.getNumber());
       ServicePointVersion editedVersion = servicePointVersionToUpdate.toBuilder()

@@ -42,7 +42,7 @@ import { MeansOfTransportPickerComponent } from '../../../../../core/form-compon
 import { KilometerMasterSearchComponent } from '../search/kilometer-master-search.component';
 import { DisplayCantonPipe } from '../../../../../core/cantons/display-canton.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ServicePointGeoDataInternalService } from '../../../../../api/service/sepodi/service-point-geo-data-internal.service';
+import { LocationGeoInternalService } from '../../../../../api/service/location/location-geo-internal.service';
 import { StationGroup } from './form-group/station-form-group';
 
 @Component({
@@ -146,7 +146,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translationSortingService: TranslationSortingService,
     private readonly dialogService: DialogService,
-    private readonly servicePointGeoDataInternalService: ServicePointGeoDataInternalService,
+    private readonly locationGeoInternalService: LocationGeoInternalService,
     private readonly permissionService: PermissionService
   ) {}
 
@@ -158,7 +158,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       this.geographyComponent?.coordinatesChanged.subscribe(
         (coordinatePair) => {
           if (coordinatePair.north && coordinatePair.east) {
-            this.locationInformation$ = this.servicePointGeoDataInternalService
+            this.locationInformation$ = this.locationGeoInternalService
               .getLocationInformation(coordinatePair)
               .pipe(
                 map((geoReference) => ({

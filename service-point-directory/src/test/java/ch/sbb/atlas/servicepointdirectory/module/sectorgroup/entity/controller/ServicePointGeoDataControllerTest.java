@@ -2,30 +2,27 @@ package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.entity.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.api.servicepoint.GeoReference;
-import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.atlas.imports.ItemProcessResponseStatus;
-import ch.sbb.atlas.servicepoint.CoordinatePair;
-import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.controller.ServicePointGeoDataApiInternalController;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.model.UpdateGeoLocationResultContainer;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceJobService;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
+import java.time.LocalDate;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ServicePointGeoDataControllerTest {
-
-  @Mock
-  private GeoReferenceService geoReferenceService;
 
   @Mock
   private GeoReferenceJobService geoReferenceJobService;
@@ -37,25 +34,17 @@ class ServicePointGeoDataControllerTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
-    geoReferenceController = new ServicePointGeoDataApiInternalController(geoReferenceService, geoReferenceJobService,
-        servicePointGeoDataService);
+    geoReferenceController = new ServicePointGeoDataApiInternalController(geoReferenceJobService, servicePointGeoDataService);
   }
 
   @Test
   void shouldCallService() {
-    CoordinatePair coordinate = CoordinatePair.builder()
-        .spatialReference(SpatialReference.LV95)
-        .east(2568989.30320000000)
-        .north(1141633.69605000000)
-        .build();
-    GeoReference geoReference = GeoReference.builder().country(Country.SWITZERLAND).build();
-    when(geoReferenceService.getGeoReference(coordinate)).thenReturn(geoReference);
+    Tile expectedTile = Tile.getDefaultInstance();
+    when(servicePointGeoDataService.getGeoData(eq(5), eq(7), eq(10), any(LocalDate.class))).thenReturn(expectedTile);
 
-    GeoReference locationInformation = geoReferenceController.getLocationInformation(coordinate);
+    Tile tile = geoReferenceController.getServicePointsGeoData(5, 7, 10, Optional.empty());
 
-    assertThat(locationInformation).isEqualTo(geoReference);
-    verify(geoReferenceService).getGeoReference(coordinate);
+    assertThat(tile).isEqualTo(expectedTile);
   }
 
   @Test
@@ -107,5 +96,4 @@ class ServicePointGeoDataControllerTest {
     assertThat(result.getId()).isEqualTo(id);
     assertThat(result.getMessage()).isEqualTo("Exception");
   }
-
 }
