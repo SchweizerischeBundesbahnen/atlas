@@ -16,7 +16,7 @@ export const AtlasButtonType = {
   MANAGE_TIMETABLE_HEARING: 'manageTimetableHearing',
   CANCEL: 'cancel',
   CONFIRM: 'confirm',
-};
+} as const;
 
 export type AtlasButtonType =
   (typeof AtlasButtonType)[keyof typeof AtlasButtonType];

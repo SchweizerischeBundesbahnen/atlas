@@ -55,12 +55,14 @@ export class AtlasButtonComponent {
       return this.mayEditServicePointDependentObject();
     }
     if (
-      [
-        AtlasButtonType.REVOKE,
-        AtlasButtonType.SKIP_WORKFLOW,
-        AtlasButtonType.SUPERVISOR_BUTTON,
-        AtlasButtonType.MANAGE_TIMETABLE_HEARING,
-      ].includes(this.buttonType)
+      (
+        [
+          AtlasButtonType.REVOKE,
+          AtlasButtonType.SKIP_WORKFLOW,
+          AtlasButtonType.SUPERVISOR_BUTTON,
+          AtlasButtonType.MANAGE_TIMETABLE_HEARING,
+        ] as readonly AtlasButtonType[]
+      ).includes(this.buttonType)
     ) {
       return this.isAtLeastSupervisor();
     }
@@ -70,10 +72,10 @@ export class AtlasButtonComponent {
     if (this.buttonType === AtlasButtonType.CANTON_WRITE_PERMISSION) {
       return this.hasWritePermissionsForCanton();
     }
-    if ([AtlasButtonType.WHITE_FOOTER_NON_EDIT].includes(this.buttonType)) {
+    if (AtlasButtonType.WHITE_FOOTER_NON_EDIT === this.buttonType) {
       return !this.footerEdit;
     }
-    if ([AtlasButtonType.WHITE_FOOTER_EDIT_MODE].includes(this.buttonType)) {
+    if (AtlasButtonType.WHITE_FOOTER_EDIT_MODE === this.buttonType) {
       return this.footerEdit;
     }
     return true;
@@ -150,12 +152,14 @@ export class AtlasButtonComponent {
       return 'atlas-icon-btn';
     }
     if (
-      [
-        AtlasButtonType.CREATE,
-        AtlasButtonType.CREATE_CHECKING_PERMISSION,
-        AtlasButtonType.CANTON_WRITE_PERMISSION,
-        AtlasButtonType.MANAGE_TIMETABLE_HEARING,
-      ].includes(this.buttonType)
+      (
+        [
+          AtlasButtonType.CREATE,
+          AtlasButtonType.CREATE_CHECKING_PERMISSION,
+          AtlasButtonType.CANTON_WRITE_PERMISSION,
+          AtlasButtonType.MANAGE_TIMETABLE_HEARING,
+        ] as readonly AtlasButtonType[]
+      ).includes(this.buttonType)
     ) {
       return 'atlas-raised-button mat-mdc-raised-button';
     }
