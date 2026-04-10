@@ -12,9 +12,11 @@ import ch.sbb.workflow.otp.repository.OtpRepository;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -59,7 +61,9 @@ public class StopPointWorkflowOtpService {
   private boolean isPinCodeValid(Person person, String pinCode) {
     Otp otp = otpRepository.findByPersonId(person.getId());
     boolean stillValid = ChronoUnit.MINUTES.between(otp.getCreationTime(), LocalDateTime.now()) <= OTP_LIFESPAN_IN_MINUTES;
+    log.info("Validating pin code for {}. OTP still valid: {}", person.getMail(), stillValid);
     boolean codeMatches = otp.getCode().equals(OtpHelper.hashPinCode(pinCode));
+    log.info("Validating pin code for {}. Entered pinCode: {}. Code matches: {}", person.getMail(), pinCode, codeMatches);
     return stillValid && codeMatches;
   }
 
