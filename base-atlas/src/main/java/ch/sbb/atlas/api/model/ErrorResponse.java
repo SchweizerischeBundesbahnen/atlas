@@ -44,10 +44,10 @@ public class ErrorResponse implements Serializable {
   @Schema(description = "Summary of error", example = "Validation error")
   private String message;
 
-  @Schema(description = "Error", example = "Method Not Allowed", nullable = true)
+  @Schema(description = "Error", example = "Method Not Allowed")
   private String error;
 
-  @Schema(description = "List of error details", nullable = true)
+  @Schema(description = "List of error details")
   private SortedSet<Detail> details;
 
   @Builder
