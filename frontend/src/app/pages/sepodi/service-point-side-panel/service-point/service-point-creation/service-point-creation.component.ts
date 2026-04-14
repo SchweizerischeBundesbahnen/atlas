@@ -112,11 +112,13 @@ export class ServicePointCreationComponent
       country &&
       Countries.geolocationCountries.includes(country) &&
       servicePointType &&
-      [
-        ServicePointType.ServicePoint,
-        ServicePointType.OperatingPoint,
-        ServicePointType.StopPoint,
-      ].includes(servicePointType)
+      (
+        [
+          ServicePointType.ServicePoint,
+          ServicePointType.OperatingPoint,
+          ServicePointType.StopPoint,
+        ] as readonly ServicePointType[]
+      ).includes(servicePointType)
     ) {
       this.onGeographyEnabled();
     }
