@@ -43,7 +43,7 @@ class SloidRepositoryTest {
   @Test
   void shouldGetAllocatedSloid() {
     // given
-    when(locationJdbcTemplate.query(eq("select distinct sloid from allocated_sloid where sloid is not null and sloidtype = "
+    when(locationJdbcTemplate.query(eq("select distinct sloid from allocated_sloid where sloid is not null and sloidType = "
             + ":sloidType;"), argThat((ArgumentMatcher<MapSqlParameterSource>) map -> "TOILET".equals(map.getValue("sloidType"))),
         any(RowMapper.class))).thenReturn(List.of("ch:1:sloid:1"));
     // when
@@ -69,7 +69,7 @@ class SloidRepositoryTest {
     // when
     sloidRepository.insertSloid("ch:1:sloid:7000:500", SloidType.PARKING_LOT);
     // then
-    verify(locationJdbcTemplate, times(1)).update(eq("insert into allocated_sloid (sloid, sloidtype) values (:sloid, "
+    verify(locationJdbcTemplate, times(1)).update(eq("insert into allocated_sloid (sloid, sloidType) values (:sloid, "
         + ":sloidType);"), argThat(
         (ArgumentMatcher<MapSqlParameterSource>) map -> "ch:1:sloid:7000:500".equals(map.getValue("sloid")) &&
             "PARKING_LOT".equals(map.getValue("sloidType"))));
@@ -120,7 +120,7 @@ class SloidRepositoryTest {
         SloidType.PARKING_LOT);
     // then
     verify(locationJdbcTemplate, times(1)).update(
-        eq("delete from allocated_sloid where sloid in (:sloids) and sloidtype = :sloidType;"),
+        eq("delete from allocated_sloid where sloid in (:sloids) and sloidType = :sloidType;"),
         argThat((ArgumentMatcher<MapSqlParameterSource>) map ->
             new HashSet<>(List.of("ch:1:sloid:7000:500", "ch:1:sloid:20:700")).equals(map.getValue("sloids"))
                 && "PARKING_LOT".equals(map.getValue("sloidType"))));
@@ -185,14 +185,14 @@ class SloidRepositoryTest {
         SloidType.PARKING_LOT);
     // then
     verify(jdbcTemplate, times(1)).batchUpdate(
-        eq("insert into allocated_sloid (sloid, sloidtype) values (?, ?);"),
+        eq("insert into allocated_sloid (sloid, sloidType) values (?, ?);"),
         any(BatchPreparedStatementSetter.class));
   }
 
   @Test
   void shouldGetloids() {
     // given
-    when(locationJdbcTemplate.query(eq("select sloid, sloidtype from allocated_sloid where sloid = :sloid;"),
+    when(locationJdbcTemplate.query(eq("select sloid, sloidType from allocated_sloid where sloid = :sloid;"),
         argThat((ArgumentMatcher<MapSqlParameterSource>) map -> "ch:1:sloid:1".equals(map.getValue("sloid"))),
         any(RowMapper.class))).thenReturn(List.of(new SloidLocationModel("ch:1:sloid:1", SloidType.PLATFORM)));
     // when
