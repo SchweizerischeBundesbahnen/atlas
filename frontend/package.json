@@ -13,7 +13,7 @@
     "test:atlas-frontend": "ng test atlas-frontend",
     "test-debug:atlas-frontend": "ng test atlas-frontend --watch=true",
     "lint": "ng lint",
-    "format": "prettier --write src/**/*.ts",
+    "format": "prettier --write src/**/*.{ts,html}",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
@@ -33,7 +33,17 @@
   "prettier": {
     "singleQuote": true,
     "trailingComma": "es5",
-    "endOfLine": "crlf"
+    "endOfLine": "crlf",
+    "printWidth": 120,
+    "htmlWhitespaceSensitivity": "strict",
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
   },
   "lint-staged": {
     "frontend/src/**/*": "frontend/node_modules/prettier/bin/prettier.cjs --write --ignore-unknown"
