@@ -73,6 +73,7 @@ public class StopPointWorkflowOtpService {
       otpRepository.save(Otp.builder()
           .person(examinant)
           .code(OtpHelper.hashPinCode(pinCode))
+          .creationTime(LocalDateTime.now())
           .build());
     } else {
       existingOtp.setCode(OtpHelper.hashPinCode(pinCode));

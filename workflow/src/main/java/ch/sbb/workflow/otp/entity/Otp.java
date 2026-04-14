@@ -18,7 +18,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,7 +43,6 @@ public class Otp {
   @JoinColumn(name = "person_id", referencedColumnName = "id")
   private Person person;
 
-  @CreationTimestamp
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime creationTime;
 
