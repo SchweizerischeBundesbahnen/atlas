@@ -107,6 +107,7 @@ frontend/jsonZipDirectory/
 
 # IntelliJ
 .idea/aws.xml
+.idea/awsToolkit.xml
 .idea/csv-editor.xml
 .idea/compiler.xml
 .idea/dataSources.xml

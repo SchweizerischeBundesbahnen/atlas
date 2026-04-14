@@ -121,10 +121,6 @@ logging:
         atlas:
           versioning: ERROR
 
-journeyPoi:
-  client:
-    url: http://localhost:8666
-
 atlas:
   client:
     gateway:
