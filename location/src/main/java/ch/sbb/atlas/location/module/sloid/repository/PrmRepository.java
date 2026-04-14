@@ -2,6 +2,7 @@ package ch.sbb.atlas.location.module.sloid.repository;
 
 import ch.sbb.atlas.api.location.SloidType;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,27 +13,28 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class PrmRepository {
 
+  private static final String QUERY_TEMPLATE = "select distinct sloid from %s where sloid is not null;";
+
+  private static final Map<SloidType, String> ALLOWED_TABLE_NAMES = Map.of(
+      SloidType.CONTACT_POINT, "contact_point_version",
+      SloidType.PARKING_LOT, "parking_lot_version",
+      SloidType.REFERENCE_POINT, "reference_point_version",
+      SloidType.TOILET, "toilet_version"
+  );
+
   @Qualifier("prmJdbcTemplate")
   private final NamedParameterJdbcTemplate prmJdbcTemplate;
 
   public Set<String> getAlreadyDistributedSloids(SloidType sloidType) {
-    String entityName = getEntityName(sloidType);
-    String sqlQuery = "select distinct sloid from " + entityName + " where sloid is not null;";
+    String tableName = ALLOWED_TABLE_NAMES.get(sloidType);
+    if (tableName == null) {
+      throw new IllegalArgumentException("Wrong sloidType " + sloidType + " provided! Please"
+          + " use only PRM SloidTypes!");
+    }
+    String sqlQuery = String.format(QUERY_TEMPLATE, tableName);
     return new HashSet<>(prmJdbcTemplate.query(sqlQuery,
         (rs, rowNum) -> rs.getString("sloid")
     ));
-  }
-
-  private String getEntityName(SloidType sloidType) {
-    return switch (sloidType) {
-      case PLATFORM, AREA, SERVICE_POINT, SECTOR, SECTOR_GROUP ->
-          throw new IllegalArgumentException("Wrong sloidType " + sloidType + " provided! Please"
-              + " use only PRM SloidTypes!");
-      case CONTACT_POINT -> "contact_point_version";
-      case PARKING_LOT -> "parking_lot_version";
-      case REFERENCE_POINT -> "reference_point_version";
-      case TOILET -> "toilet_version";
-    };
   }
 
 }

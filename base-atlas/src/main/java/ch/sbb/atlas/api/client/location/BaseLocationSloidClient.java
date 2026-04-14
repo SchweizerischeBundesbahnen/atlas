@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public interface LocationSloidClient {
+public interface BaseLocationSloidClient {
 
   @PostMapping("/location/v1/sloid/generate")
   String generateSloid(@RequestBody @Valid GenerateSloidRequestModel generateSloidRequestModel);

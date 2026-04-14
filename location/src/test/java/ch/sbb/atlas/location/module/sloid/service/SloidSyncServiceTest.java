@@ -11,7 +11,6 @@ import ch.sbb.atlas.location.module.sloid.repository.PrmRepository;
 import ch.sbb.atlas.location.module.sloid.repository.SePoDiRepository;
 import ch.sbb.atlas.location.module.sloid.repository.SloidRepository;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,7 @@ class SloidSyncServiceTest {
   }
 
   @Test
-  void shouldSyncServicePointWhenAlreadyDistributedSloidAreMoreThenAllocated() throws SQLException {
+  void shouldSyncServicePointWhenAlreadyDistributedSloidAreMoreThenAllocated() {
     //given
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
     Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
@@ -84,7 +83,7 @@ class SloidSyncServiceTest {
   }
 
   @Test
-  void shouldSyncServicePointWhenAllocatedSloidAreMoreThenAlreadyDistributed() throws SQLException {
+  void shouldSyncServicePointWhenAllocatedSloidAreMoreThenAlreadyDistributed() {
     //given
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
     Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");

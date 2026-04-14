@@ -45,7 +45,7 @@ class SePoDiRepositoryTest {
     Set<String> distributedSloids = sePoDiRepository.getAlreadyDistributedSloids(SloidType.AREA);
     // then
     assertThat(distributedSloids).hasSize(1);
-    assertThat(distributedSloids.contains("ch:1:sloid:1")).isTrue();
+    assertThat(distributedSloids).contains("ch:1:sloid:1");
   }
 
   @Test
@@ -63,7 +63,7 @@ class SePoDiRepositoryTest {
     Set<String> distributedSloids = sePoDiRepository.getAlreadyDistributedSloids(SloidType.PLATFORM);
     // then
     assertThat(distributedSloids).hasSize(1);
-    assertThat(distributedSloids.contains("ch:1:sloid:1")).isTrue();
+    assertThat(distributedSloids).contains("ch:1:sloid:1");
   }
 
   @Test
@@ -75,7 +75,7 @@ class SePoDiRepositoryTest {
     Set<String> distributedServicePointSloids = sePoDiRepository.getAlreadyDistributedServicePointSloids();
     // then
     assertThat(distributedServicePointSloids).hasSize(1);
-    assertThat(distributedServicePointSloids.contains("ch:1:sloid:1")).isTrue();
+    assertThat(distributedServicePointSloids).contains("ch:1:sloid:1");
   }
 
 }

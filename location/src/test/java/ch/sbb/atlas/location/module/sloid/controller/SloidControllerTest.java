@@ -19,7 +19,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class SloidControllerTest {
+class SloidControllerTest {
 
   @Mock
   private SloidService sloidService;

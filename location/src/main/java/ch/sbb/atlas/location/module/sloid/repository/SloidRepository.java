@@ -29,7 +29,7 @@ public class SloidRepository {
   public static final int BATCH_SIZE = 5_000;
 
   public static final String SLOID = "sloid";
-  public static final String SLOIDTYPE = "sloidtype";
+  public static final String SLOIDTYPE = "sloidType";
 
   @Qualifier("locationJdbcTemplate")
   private final NamedParameterJdbcTemplate locationJdbcTemplate;
@@ -40,9 +40,9 @@ public class SloidRepository {
 
   public Set<String> getAllocatedSloids(SloidType sloidType) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-    mapSqlParameterSource.addValue("sloidType", sloidType.name());
+    mapSqlParameterSource.addValue(SLOIDTYPE, sloidType.name());
     String sqlQuery = "select distinct sloid from allocated_sloid where sloid is not null and "
-        + "sloidtype = :sloidType;";
+        + "sloidType = :sloidType;";
     return new HashSet<>(locationJdbcTemplate.query(sqlQuery, mapSqlParameterSource,
         (rs, row) -> rs.getString(SLOID)));
   }
@@ -64,11 +64,12 @@ public class SloidRepository {
   public String insertSloid(String sloid, SloidType sloidType) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue(SLOID, sloid);
-    mapSqlParameterSource.addValue("sloidType", sloidType.name());
-    String sqlQuery = "insert into allocated_sloid (sloid, sloidtype) values (:sloid, :sloidType);";
+    mapSqlParameterSource.addValue(SLOIDTYPE, sloidType.name());
+    String sqlQuery = "insert into allocated_sloid (sloid, sloidType) values (:sloid, :sloidType);";
     try {
       locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
     } catch (DuplicateKeyException e) {
+      log.warn("Error while inserting sloid {} of type {} into allocated_sloid, it already exists.", sloid, sloidType.name());
       return null;
     }
     return sloid;
@@ -101,6 +102,7 @@ public class SloidRepository {
           (rs, row) -> rs.getBoolean("claimed"));
       return Boolean.FALSE.equals(claimed);
     } catch (DataAccessException e) {
+      log.error("Error while checking availability of Service Point sloid {} in available_service_point_sloid.", sloid, e);
       return false;
     }
   }
@@ -108,8 +110,8 @@ public class SloidRepository {
   public void deleteAllocatedSloids(Set<String> sloids, SloidType sloidType) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);
-    mapSqlParameterSource.addValue("sloidType", sloidType.name());
-    String sqlQuery = "delete from allocated_sloid where sloid in (:sloids) and sloidtype = "
+    mapSqlParameterSource.addValue(SLOIDTYPE, sloidType.name());
+    String sqlQuery = "delete from allocated_sloid where sloid in (:sloids) and sloidType = "
         + ":sloidType;";
     locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
@@ -165,7 +167,7 @@ public class SloidRepository {
 
   public void addMissingAllocatedSloids(Set<String> sloidsToAdd, SloidType sloidType) {
     ArrayList<String> sloids = new ArrayList<>(sloidsToAdd);
-    String sqlQuery = "insert into allocated_sloid (sloid, sloidtype) values (?, ?);";
+    String sqlQuery = "insert into allocated_sloid (sloid, sloidType) values (?, ?);";
     AtlasListUtil.getPartitionedSublists(sloids, BATCH_SIZE).forEach(sloidSubList -> {
       log.info("Execution batching update: provided list size: {}", sloidSubList.size());
       locationJdbcTemplate.getJdbcTemplate()
@@ -189,7 +191,7 @@ public class SloidRepository {
   public List<SloidLocation> getSloid(String sloid) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue(SLOID, sloid);
-    String sqlQuery = "select sloid, sloidtype from allocated_sloid where sloid = :sloid;";
+    String sqlQuery = "select sloid, sloidType from allocated_sloid where sloid = :sloid;";
     return locationJdbcTemplate.query(sqlQuery, mapSqlParameterSource,
         (rs, row) -> new SloidLocation(rs.getString(SLOID), SloidType.valueOf(rs.getString(SLOIDTYPE))));
   }

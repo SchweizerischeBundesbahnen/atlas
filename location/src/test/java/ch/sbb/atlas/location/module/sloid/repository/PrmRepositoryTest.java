@@ -38,7 +38,7 @@ class PrmRepositoryTest {
     Set<String> distributedSloids = prmRepository.getAlreadyDistributedSloids(SloidType.REFERENCE_POINT);
     // then
     assertThat(distributedSloids).hasSize(1);
-    assertThat(distributedSloids.contains("ch:1:sloid:1")).isTrue();
+    assertThat(distributedSloids).contains("ch:1:sloid:1");
   }
 
 }
