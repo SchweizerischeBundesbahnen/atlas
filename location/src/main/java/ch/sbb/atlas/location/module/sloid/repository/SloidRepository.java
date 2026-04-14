@@ -69,7 +69,7 @@ public class SloidRepository {
     try {
       locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
     } catch (DuplicateKeyException e) {
-      log.warn("Error while inserting sloid {} of type {} into allocated_sloid, it already exists.", sloid, sloidType.name());
+      log.warn("Error while inserting sloid {} of type {} into allocated_sloid, it already exists.", sloid, sloidType.name(), e);
       return null;
     }
     return sloid;
