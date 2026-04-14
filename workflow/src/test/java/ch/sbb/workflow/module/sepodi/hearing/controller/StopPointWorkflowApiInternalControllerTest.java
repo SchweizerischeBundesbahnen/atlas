@@ -371,7 +371,7 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.saveAndFlush(workflow);
 
-    Otp otp = Otp.builder().code(OtpHelper.hashPinCode("12345")).person(person).build();
+    Otp otp = Otp.builder().code(OtpHelper.hashPinCode("12345")).person(person).creationTime(LocalDateTime.now()).build();
     otpRepository.saveAndFlush(otp);
     DecisionModel decisionModel = DecisionModel.builder()
         .judgement(JudgementType.NO)
@@ -539,7 +539,7 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.save(workflow);
 
-    Otp otp = Otp.builder().code("12345").person(person).build();
+    Otp otp = Otp.builder().code("12345").person(person).creationTime(LocalDateTime.now()).build();
     otpRepository.save(otp);
     Decision decision = Decision.builder()
         .judgement(JudgementType.YES)

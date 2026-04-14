@@ -177,4 +177,31 @@ class StopPointWorkflowOtpServiceTest {
     assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class).isThrownBy(
         () -> stopPointWorkflowOtpService.validatePinCode(examinant, pincodeCaptor.getValue()));
   }
+
+  @Test
+  void shouldUpdateOtpCreationTimeForNewOne() {
+    //given creation time an hour ago
+    stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+    Person examinant = stopPointWorkflowOtpService.getExaminantByMail(workflowInHearing.getId(),
+        MAIL_ADDRESS);
+
+    Otp otp = otpRepository.findByPersonId(examinant.getId());
+
+    jdbcTemplate.update(
+        "update otp set creation_time = ? where id = ?",
+        LocalDateTime.now().minusHours(1),
+        otp.getId()
+    );
+
+    // obtaining second otp
+    stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+    verify(notificationService, times(2)).sendPinCodeMail(any(), anyString(), pincodeCaptor.capture());
+
+    // when & then
+    assertThatNoException().isThrownBy(
+        () -> stopPointWorkflowOtpService.validatePinCode(examinant, pincodeCaptor.getValue()));
+
+    Otp renewedOtp = otpRepository.findByPersonId(examinant.getId());
+    assertThat(renewedOtp.getCreationTime()).isAfter(LocalDateTime.now().minusMinutes(5));
+  }
 }
