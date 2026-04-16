@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Validated
 public interface StopPointTerminationApiInternal {
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping(path = "/start/{sloid}/{id}")
   ReadServicePointVersionModel startServicePointTermination(@PathVariable String sloid, @PathVariable Long id,
       @RequestBody @Valid UpdateTerminationServicePointModel updateTerminationServicePointModel);
