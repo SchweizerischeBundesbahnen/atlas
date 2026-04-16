@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion;
 import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion.RelationVersionBuilder;
@@ -35,6 +36,7 @@ public class RelationVersionRowMapper implements RowMapper<RelationVersion> {
     builder.creator(rs.getString("creator"));
     builder.editor(rs.getString("editor"));
     builder.version(rs.getInt("version"));
+    builder.status(Status.valueOf(rs.getString("status")));
     return builder.build();
   }
 
