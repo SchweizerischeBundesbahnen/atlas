@@ -87,7 +87,13 @@
           </td>
         }
         @if (column.button) {
-          <td (click)="stopPropagation($event)" (keydown.enter)="stopPropagation($event)" *matCellDef="let row" class="table-cell bordered-cell" mat-cell>
+          <td
+            (click)="stopPropagation($event)"
+            (keydown.enter)="stopPropagation($event)"
+            *matCellDef="let row"
+            class="table-cell bordered-cell"
+            mat-cell
+          >
             <atlas-button
               (buttonClicked)="buttonClickEvent.emit(row)"
               [applicationType]="column.button.applicationType"
@@ -130,7 +136,13 @@
     }
 
     <tr *matHeaderRowDef="getColumnDefs()" mat-header-row></tr>
-    <tr (click)="edit(row)" (keydown.enter)="edit(row)" *matRowDef="let row; columns: getColumnDefs()" class="atlas-table-row" mat-row></tr>
+    <tr
+      (click)="edit(row)"
+      (keydown.enter)="edit(row)"
+      *matRowDef="let row; columns: getColumnDefs()"
+      class="atlas-table-row"
+      mat-row
+    ></tr>
 
     <!-- Row shown when there is no matching data. -->
     <tr *matNoDataRow class="mat-row">

@@ -13,7 +13,7 @@
     "test:atlas-frontend": "ng test atlas-frontend",
     "test-debug:atlas-frontend": "ng test atlas-frontend --watch=true",
     "lint": "ng lint",
-    "format": "prettier --write src/**/*.{ts,html}",
+    "format": "prettier --write {src,cypress}/**/*.{ts,html}",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
