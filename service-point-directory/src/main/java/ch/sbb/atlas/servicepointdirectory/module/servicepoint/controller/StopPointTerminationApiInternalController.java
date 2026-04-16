@@ -15,7 +15,6 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.Terminat
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.helper.ServicePointTerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePointService;
-import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointTerminationApiInternalController implements StopPointTerminationApiInternal {
 
   private final ServicePointService servicePointService;
-  private final TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService;
 
   @Override
   public ReadServicePointVersionModel startServicePointTermination(String sloid, Long id,
       UpdateTerminationServicePointModel updateTerminationServicePointModel) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
     ServicePointVersion servicePointVersion = ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
         servicePointVersions);
@@ -50,7 +47,6 @@ public class StopPointTerminationApiInternalController implements StopPointTermi
 
   @Override
   public ReadServicePointVersionModel stopServicePointTermination(String sloid, Long id) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
     if (servicePointVersions.isEmpty()) {
       throw new SloidNotFoundException(sloid);
@@ -94,8 +90,6 @@ public class StopPointTerminationApiInternalController implements StopPointTermi
   }
 
   private ServicePointVersion getLastServicePointVersionCheckedForDate(StopPointWorkflowTerminationModel terminationModel) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
-
     stopServicePointTermination(terminationModel.getSloid(), terminationModel.getVersionId());
 
     List<ServicePointVersion> currentVersions = servicePointService.findBySloidAndOrderByValidFrom(terminationModel.getSloid());

@@ -3,7 +3,6 @@ package ch.sbb.workflow.module.sepodi.termination.controller;
 import static ch.sbb.workflow.module.sepodi.termination.TerminationWorkflowHelper.calculateTerminationDate;
 
 import ch.sbb.atlas.redact.Redacted;
-import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
 import ch.sbb.workflow.module.sepodi.termination.api.TerminationStopPointWorkflowApiInternal;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
@@ -22,11 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TerminationStopPointWorkflowApiInternalController implements TerminationStopPointWorkflowApiInternal {
 
   private final TerminationStopPointWorkflowService service;
-  private final TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService;
 
   @Override
   public TerminationInfoModel getTerminationInfoBySloid(String sloid) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     TerminationStopPointWorkflow terminationWorkflow = service.getTerminationWorkflowBySloidAndInProgress(sloid);
     return calculateTerminationDate(terminationWorkflow);
   }
@@ -34,7 +31,6 @@ public class TerminationStopPointWorkflowApiInternalController implements Termin
   @Redacted
   @Override
   public TerminationStopPointWorkflowModel decisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     if (decisionModel.getTerminationDecisionPerson() != TerminationDecisionPerson.INFO_PLUS) {
       throw new TerminationDecisionPersonException(TerminationDecisionPerson.INFO_PLUS);
     }
@@ -44,7 +40,6 @@ public class TerminationStopPointWorkflowApiInternalController implements Termin
   @Redacted
   @Override
   public TerminationStopPointWorkflowModel decisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     if (decisionModel.getTerminationDecisionPerson() != TerminationDecisionPerson.NOVA) {
       throw new TerminationDecisionPersonException(TerminationDecisionPerson.NOVA);
     }
@@ -54,7 +49,6 @@ public class TerminationStopPointWorkflowApiInternalController implements Termin
   @Redacted
   @Override
   public TerminationStopPointWorkflowModel abortTermination(TerminationAbortModel abortModel, Long workflowId) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     return TerminationStopPointWorkflowMapper.toModel(service.abortTerminationWorkflow(workflowId, abortModel));
   }
 }
