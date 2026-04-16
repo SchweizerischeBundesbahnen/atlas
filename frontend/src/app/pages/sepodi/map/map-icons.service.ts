@@ -1,6 +1,5 @@
 import { Map } from 'maplibre-gl';
 import { ServicePointIconType } from './service-point-icon-type';
-import { environment } from '../../../../environments/environment';
 
 export interface MapIcon {
   id: string;
@@ -54,10 +53,8 @@ export class MapIconsService {
     const trafficPointIconsForLegend = ['BOARDING_PLATFORM', 'BOARDING_AREA'].map((type) =>
       this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type)
     );
-    let allLegendIcons = servicePointIconsForLegend.concat(trafficPointIconsForLegend);
-    if (environment.sectorsEnabled) {
-      allLegendIcons = allLegendIcons.concat(this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, 'SECTOR'));
-    }
+    const sectorIconForLegend = this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, 'SECTOR');
+    const allLegendIcons = servicePointIconsForLegend.concat(trafficPointIconsForLegend).concat(sectorIconForLegend);
     return Promise.all(allLegendIcons);
   }
 

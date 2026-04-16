@@ -43,10 +43,4 @@ export const environment: Environment = {
   authConfig,
   atlasReleaseNotes,
   journeyMapsApiKey: '6e28a0f7559988d0acf14d450ca29cf9',
-  // feature toggles
-  sepodiWorkflowBavActionEnabled: true,
-  bulkImportEnabled: true,
-  terminationWorkflowEnabled: true,
-  sectorsEnabled: true,
-  ttfnEnabled: true,
 };

@@ -1,10 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { ALLOWED_TERMINATION_COUNTRIES, TerminationService } from './termination.service';
 import { ServicePointFormGroupBuilder } from '../service-point-form/form-group/service-point-detail-form-group';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { Country } from '../../../../../api';
-import { environment } from '../../../../../../environments/environment';
 import { EMPTY } from 'rxjs';
 
 function init() {
@@ -133,33 +132,6 @@ describe('TerminationService', () => {
     });
 
     it('should not start termination when edited validTo is in the future', () => {
-      //given
-      const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
-      const initialForm = ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG, EMPTY);
-      service.initTermination(initialForm);
-
-      servicePoint.validTo = new Date('2022-03-31');
-      const editedForm = ServicePointFormGroupBuilder.buildFormGroup(servicePoint, EMPTY);
-      //when
-      const result = service.isStartingTermination(editedForm);
-      //then
-      expect(result).toBe(false);
-    });
-  });
-
-  describe('TerminationService feature toggle disabled', () => {
-    let service: TerminationService;
-
-    beforeEach(() => {
-      service = init();
-      environment.terminationWorkflowEnabled = false;
-    });
-
-    afterEach(() => {
-      environment.terminationWorkflowEnabled = true;
-    });
-
-    it('should not start when feature is not enabled', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm = ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG, EMPTY);

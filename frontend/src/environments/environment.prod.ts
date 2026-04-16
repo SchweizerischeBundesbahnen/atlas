@@ -54,10 +54,4 @@ export const environment: Environment = {
   authConfig,
   atlasReleaseNotes,
   journeyMapsApiKey: process.env.JOURNEY_MAPS_API_KEY!,
-  // feature toggles
-  sepodiWorkflowBavActionEnabled: process.env.SEPODI_WORKFLOW_BAV_ACTION_ENABLED !== 'false',
-  bulkImportEnabled: process.env.BULK_IMPORT_ENABLED !== 'false',
-  terminationWorkflowEnabled: process.env.TERMINTAION_WORKFLOW_ENABLED !== 'false',
-  sectorsEnabled: process.env.SECTORS_ENABLED !== 'false',
-  ttfnEnabled: process.env.TTFN_ENABLED !== 'false',
 };

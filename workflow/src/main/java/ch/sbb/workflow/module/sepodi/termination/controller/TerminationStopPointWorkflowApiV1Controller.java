@@ -2,7 +2,6 @@ package ch.sbb.workflow.module.sepodi.termination.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.redact.Redacted;
-import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
 import ch.sbb.workflow.module.sepodi.termination.api.TerminationStopPointWorkflowApiV1;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TerminationStopPointWorkflowApiV1Controller implements TerminationStopPointWorkflowApiV1 {
 
   private final TerminationStopPointWorkflowService service;
-  private final TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService;
   private final TerminationExaminants terminationExaminants;
 
   @Override
@@ -47,7 +45,6 @@ public class TerminationStopPointWorkflowApiV1Controller implements TerminationS
   @Redacted
   @Override
   public TerminationStopPointWorkflowModel getTerminationStopPointWorkflow(Long id) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     InfoPlus infoPlus = terminationExaminants.getInfoPlus();
     Nova nova = terminationExaminants.getNova();
     return TerminationStopPointWorkflowMapper.toModel(service.getTerminationWorkflow(id), infoPlus, nova);
@@ -61,7 +58,6 @@ public class TerminationStopPointWorkflowApiV1Controller implements TerminationS
   @Override
   public TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
       StartTerminationStopPointWorkflowModel workflowModel) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     return TerminationStopPointWorkflowMapper.toModel(service.startTerminationWorkflow(workflowModel));
   }
 
