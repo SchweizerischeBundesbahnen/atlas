@@ -5,10 +5,7 @@ import {
 } from './stop-point-reject-workflow-form-group';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  RejectType,
-  StopPointRejectWorkflowDialogData,
-} from './stop-point-reject-workflow-dialog-data';
+import { RejectType, StopPointRejectWorkflowDialogData } from './stop-point-reject-workflow-dialog-data';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StopPointRejectWorkflow } from '../../../../api';
 import { ValidationService } from '../../../../core/validation/validation.service';
@@ -59,9 +56,7 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
     private readonly router: Router
   ) {
     if (data.rejectType === 'RESTART') {
-      throw new Error(
-        'Restart is not supported in StopPointRejectWorkflowDialogComponent'
-      );
+      throw new Error('Restart is not supported in StopPointRejectWorkflowDialogComponent');
     }
     this.titleTranslationKey = titleTranslationKeys[data.rejectType];
   }
@@ -81,22 +76,19 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
   }
 
   closeDialog() {
-    this.detailHelperService
-      .confirmLeaveDirtyForm(this.formGroup)
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.dialogRef.close(true);
-        }
-      });
+    this.detailHelperService.confirmLeaveDirtyForm(this.formGroup).subscribe((confirmed) => {
+      if (confirmed) {
+        this.dialogRef.close(true);
+      }
+    });
   }
 
   rejectWorkflow() {
     ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
-      const stopPointRejectWorkflow =
-        StopPointRejectWorkflowFormGroupBuilder.buildStopPointRejectWorkflow(
-          this.formGroup
-        );
+      const stopPointRejectWorkflow = StopPointRejectWorkflowFormGroupBuilder.buildStopPointRejectWorkflow(
+        this.formGroup
+      );
       this.formGroup.disable();
       if (this.data.rejectType === 'REJECT') {
         this.doReject(stopPointRejectWorkflow);
@@ -111,9 +103,7 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
     this.stopPointWorkflowService
       .cancelStopPointWorkflow(this.data.workflowId, stopPointRejectWorkflow)
       .subscribe(() => {
-        this.notificationService.success(
-          'WORKFLOW.NOTIFICATION.CHECK.CANCELED'
-        );
+        this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.CANCELED');
         this.dialogRef.close();
         this.navigateToWorkflow();
       });
@@ -123,9 +113,7 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
     this.stopPointWorkflowService
       .rejectStopPointWorkflow(this.data.workflowId, stopPointRejectWorkflow)
       .subscribe(() => {
-        this.notificationService.success(
-          'WORKFLOW.NOTIFICATION.CHECK.REJECTED'
-        );
+        this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.REJECTED');
         this.dialogRef.close();
         this.navigateToWorkflow();
       });
@@ -133,13 +121,7 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
 
   private navigateToWorkflow() {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router
-        .navigate([
-          Pages.SEPODI.path,
-          Pages.WORKFLOWS.path,
-          this.data.workflowId,
-        ])
-        .then(() => {});
+      this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.data.workflowId]).then(() => {});
     });
   }
 }

@@ -1,9 +1,4 @@
-import {
-  AbstractControl,
-  FormArray,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class UniqueEmailsValidator {
   private static readonly MAIL = 'mail';
@@ -27,22 +22,14 @@ export class UniqueEmailsValidator {
       });
 
       for (let i = 0; i < formArray.controls.length; i++) {
-        const comparingControl = formArray.controls[i].get(
-          UniqueEmailsValidator.MAIL
-        );
+        const comparingControl = formArray.controls[i].get(UniqueEmailsValidator.MAIL);
         const comparingControlValue = comparingControl?.value?.toLowerCase();
 
         for (let j = i + 1; j < formArray.controls.length; j++) {
-          const comparedControl = formArray.controls[j].get(
-            UniqueEmailsValidator.MAIL
-          );
+          const comparedControl = formArray.controls[j].get(UniqueEmailsValidator.MAIL);
           const comparedControlValue = comparedControl?.value?.toLowerCase();
 
-          if (
-            comparingControlValue &&
-            comparedControlValue &&
-            comparingControlValue === comparedControlValue
-          ) {
+          if (comparingControlValue && comparedControlValue && comparingControlValue === comparedControlValue) {
             const error = {
               [UniqueEmailsValidator.NOT_UNIQUE_EMAIL]: comparingControlValue,
             };

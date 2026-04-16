@@ -1,13 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ServicePointSearchResult } from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -21,18 +12,10 @@ import { ServicePointInternalService } from '../../../../../api/service/sepodi/s
 @Component({
   selector: 'atlas-kilometer-master-search',
   templateUrl: './kilometer-master-search.component.html',
-  imports: [
-    SearchSelectComponent,
-    ReactiveFormsModule,
-    MatLabel,
-    SplitServicePointNumberPipe,
-    TranslatePipe,
-  ],
+  imports: [SearchSelectComponent, ReactiveFormsModule, MatLabel, SplitServicePointNumberPipe, TranslatePipe],
   providers: [TranslatePipe],
 })
-export class KilometerMasterSearchComponent
-  implements OnInit, OnDestroy, OnChanges
-{
+export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'number';
   @Input() controlName!: string;
   @Input() formModus = true;
@@ -45,9 +28,7 @@ export class KilometerMasterSearchComponent
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
   private formSubscription!: Subscription;
 
-  constructor(
-    private readonly servicePointInternalService: ServicePointInternalService
-  ) {}
+  constructor(private readonly servicePointInternalService: ServicePointInternalService) {}
 
   ngOnInit(): void {
     this.init();

@@ -33,10 +33,7 @@ describe('BoDisplayPipe', () => {
   businessOrganisationsService.getVersions.mockReturnValue(of([version]));
 
   beforeEach(() => {
-    boDisplayPipe = new BoDisplayPipe(
-      boSelectionDisplayPipe,
-      businessOrganisationsService
-    );
+    boDisplayPipe = new BoDisplayPipe(boSelectionDisplayPipe, businessOrganisationsService);
   });
 
   it('create an instance', () => {

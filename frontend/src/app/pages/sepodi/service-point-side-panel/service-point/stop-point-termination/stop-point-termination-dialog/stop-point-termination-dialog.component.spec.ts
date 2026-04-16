@@ -39,24 +39,16 @@ describe('StopPointTerminationDialogComponent', () => {
   let component: StopPointTerminationDialogComponent;
   let fixture: ComponentFixture<StopPointTerminationDialogComponent>;
 
-  let dialogRefSpy: Mocked<
-    Pick<MatDialogRef<StopPointTerminationDialogComponent>, 'close'>
-  >;
+  let dialogRefSpy: Mocked<Pick<MatDialogRef<StopPointTerminationDialogComponent>, 'close'>>;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
-  let workflowServiceSpy: Mocked<
-    Pick<StopPointTerminationWorkflowService, 'startTermination'>
-  >;
-  let userAdministrationServiceSpy: Mocked<
-    Pick<UserAdministrationService, 'getCurrentUser'>
-  >;
+  let workflowServiceSpy: Mocked<Pick<StopPointTerminationWorkflowService, 'startTermination'>>;
+  let userAdministrationServiceSpy: Mocked<Pick<UserAdministrationService, 'getCurrentUser'>>;
 
   beforeEach(async () => {
     dialogRefSpy = { close: vi.fn() };
     notificationServiceSpy = { success: vi.fn() };
     workflowServiceSpy = { startTermination: vi.fn() };
-    workflowServiceSpy.startTermination.mockReturnValue(
-      of({} as TerminationStopPointWorkflowModel)
-    );
+    workflowServiceSpy.startTermination.mockReturnValue(of({} as TerminationStopPointWorkflowModel));
     userAdministrationServiceSpy = { getCurrentUser: vi.fn() };
     userAdministrationServiceSpy.getCurrentUser.mockReturnValue(of(user));
 

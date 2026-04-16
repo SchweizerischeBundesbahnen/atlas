@@ -27,12 +27,7 @@ class MockTableComponent {
 describe('StopPointTerminationWorkflowOverviewComponent', () => {
   let fixture: ComponentFixture<StopPointTerminationWorkflowOverviewComponent>;
 
-  let wfServiceMock: Mocked<
-    Pick<
-      StopPointTerminationWorkflowService,
-      'getTerminationStopPointWorkflows'
-    >
-  >;
+  let wfServiceMock: Mocked<Pick<StopPointTerminationWorkflowService, 'getTerminationStopPointWorkflows'>>;
 
   beforeEach(async () => {
     wfServiceMock = {
@@ -49,10 +44,7 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        StopPointTerminationWorkflowOverviewComponent,
-        TranslateModule.forRoot(),
-      ],
+      imports: [StopPointTerminationWorkflowOverviewComponent, TranslateModule.forRoot()],
       providers: [
         {
           provide: StopPointTerminationWorkflowService,
@@ -67,17 +59,13 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
       })
       .compileComponents();
 
-    fixture = TestBed.createComponent(
-      StopPointTerminationWorkflowOverviewComponent
-    );
+    fixture = TestBed.createComponent(StopPointTerminationWorkflowOverviewComponent);
     fixture.detectChanges();
   });
 
   it('should display initial table data', () => {
     // given
-    const mockTableComp: MockTableComponent = fixture.debugElement.query(
-      By.css('atlas-table')
-    ).componentInstance;
+    const mockTableComp: MockTableComponent = fixture.debugElement.query(By.css('atlas-table')).componentInstance;
     // when
     mockTableComp.tableInitialized.emit({
       page: 0,
@@ -106,9 +94,7 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
         totalCount: 2,
       })
     );
-    const mockTableComp: MockTableComponent = fixture.debugElement.query(
-      By.css('atlas-table')
-    ).componentInstance;
+    const mockTableComp: MockTableComponent = fixture.debugElement.query(By.css('atlas-table')).componentInstance;
     // when
     mockTableComp.tableChanged.emit({
       page: 0,

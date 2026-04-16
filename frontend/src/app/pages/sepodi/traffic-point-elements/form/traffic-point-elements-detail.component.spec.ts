@@ -72,27 +72,13 @@ describe('TrafficPointElementsDetailComponent', () => {
       | 'clickedGeographyCoordinates'
     >
   >;
-  let coordinateTransformationService: Mocked<
-    Pick<CoordinateTransformationService, 'transform'>
-  >;
-  let servicePointService: Mocked<
-    Pick<ServicePointService, 'getServicePointVersions'>
-  >;
-  let trafficPointService: Mocked<
-    Pick<
-      TrafficPointElementService,
-      'updateTrafficPoint' | 'createTrafficPoint'
-    >
-  >;
+  let coordinateTransformationService: Mocked<Pick<CoordinateTransformationService, 'transform'>>;
+  let servicePointService: Mocked<Pick<ServicePointService, 'getServicePointVersions'>>;
+  let trafficPointService: Mocked<Pick<TrafficPointElementService, 'updateTrafficPoint' | 'createTrafficPoint'>>;
   let trafficPointInternalService: Mocked<
-    Pick<
-      TrafficPointElementInternalService,
-      'getAreasOfServicePoint' | 'revokeTrafficPoint'
-    >
+    Pick<TrafficPointElementInternalService, 'getAreasOfServicePoint' | 'revokeTrafficPoint'>
   >;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   beforeEach(() => {
     authService = {};
@@ -116,17 +102,11 @@ describe('TrafficPointElementsDetailComponent', () => {
       getServicePointVersions: vi.fn().mockReturnValue(of([BERN_WYLEREGG])),
     };
     trafficPointService = {
-      updateTrafficPoint: vi
-        .fn()
-        .mockReturnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS)),
-      createTrafficPoint: vi
-        .fn()
-        .mockReturnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS[0])),
+      updateTrafficPoint: vi.fn().mockReturnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS)),
+      createTrafficPoint: vi.fn().mockReturnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS[0])),
     };
     trafficPointInternalService = {
-      getAreasOfServicePoint: vi
-        .fn()
-        .mockReturnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER)),
+      getAreasOfServicePoint: vi.fn().mockReturnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER)),
       revokeTrafficPoint: vi.fn().mockReturnValue(of(undefined)),
     };
     dialogService = {
@@ -173,9 +153,7 @@ describe('TrafficPointElementsDetailComponent', () => {
     it('should init selectable areas', () => {
       expect(component.areaOptions).toBeTruthy();
 
-      expect(
-        trafficPointInternalService.getAreasOfServicePoint
-      ).toHaveBeenCalled();
+      expect(trafficPointInternalService.getAreasOfServicePoint).toHaveBeenCalled();
     });
 
     it('should go back to servicepoint', () => {
@@ -209,9 +187,7 @@ describe('TrafficPointElementsDetailComponent', () => {
 
     it('should navigate back on confirm cancel', () => {
       component.isTrafficPointArea = true;
-      vi.spyOn(component, 'backToTrafficPointElements').mockImplementation(
-        () => {}
-      );
+      vi.spyOn(component, 'backToTrafficPointElements').mockImplementation(() => {});
 
       component.confirmCancel();
 
@@ -248,9 +224,7 @@ describe('TrafficPointElementsDetailComponent', () => {
 
     it('should save version', () => {
       component.form.controls.designation.setValue('Designation');
-      component.form.controls.validFrom.setValue(
-        moment(new Date(2000 - 10 - 1))
-      );
+      component.form.controls.validFrom.setValue(moment(new Date(2000 - 10 - 1)));
       component.form.controls.validTo.setValue(moment(new Date(2099 - 10 - 1)));
 
       component.form.controls.trafficPointElementGeolocation?.disable();

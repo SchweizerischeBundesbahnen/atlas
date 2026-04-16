@@ -19,26 +19,14 @@ export interface TerminationAbortDetailDialogData extends DialogData {
 
 @Component({
   selector: 'atlas-termination-abort-detail-dialog',
-  imports: [
-    DialogCloseComponent,
-    DialogContentComponent,
-    CommentComponent,
-    DialogFooterComponent,
-    TranslatePipe,
-  ],
+  imports: [DialogCloseComponent, DialogContentComponent, CommentComponent, DialogFooterComponent, TranslatePipe],
   templateUrl: './termination-abort-detail-dialog.component.html',
 })
 export class TerminationAbortDetailDialogComponent implements OnInit {
-  private readonly dialogRef: MatDialogRef<
-    TerminationAbortDetailDialogComponent,
-    boolean
-  > = inject(MatDialogRef);
-  private readonly decisionDetailDialogData: TerminationAbortDetailDialogData =
-    inject(MAT_DIALOG_DATA);
+  private readonly dialogRef: MatDialogRef<TerminationAbortDetailDialogComponent, boolean> = inject(MatDialogRef);
+  private readonly decisionDetailDialogData: TerminationAbortDetailDialogData = inject(MAT_DIALOG_DATA);
 
-  private readonly stopPointTerminationWorkflowService = inject(
-    StopPointTerminationWorkflowService
-  );
+  private readonly stopPointTerminationWorkflowService = inject(StopPointTerminationWorkflowService);
   private readonly notificationService = inject(NotificationService);
 
   form!: FormGroup<TerminationAbortFormGroup>;
@@ -61,9 +49,7 @@ export class TerminationAbortDetailDialogComponent implements OnInit {
           abortComment: abortComment!,
         })
         .subscribe(() => {
-          this.notificationService.success(
-            'TERMINATION_WORKFLOW.NOTIFICATION.CANCEL.SUCCESS'
-          );
+          this.notificationService.success('TERMINATION_WORKFLOW.NOTIFICATION.CANCEL.SUCCESS');
           this.close(true);
         });
     }

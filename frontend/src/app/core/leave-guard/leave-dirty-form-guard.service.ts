@@ -1,9 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanDeactivateFn,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, CanDeactivateFn, RouterStateSnapshot } from '@angular/router';
 import { DialogService } from '../components/dialog/dialog.service';
 import { FormGroup } from '@angular/forms';
 import { DialogData } from '../components/dialog/dialog.data';
@@ -37,10 +33,7 @@ export class LeaveDirtyFormGuard {
     return true;
   }
 
-  private staysOnSameDetailPage(
-    currentState: RouterStateSnapshot,
-    nextState: RouterStateSnapshot
-  ) {
+  private staysOnSameDetailPage(currentState: RouterStateSnapshot, nextState: RouterStateSnapshot) {
     //if from new to created url
     const indexOfAdd = currentState.url.indexOf('/add');
     const addPresentInUrl = indexOfAdd !== -1;
@@ -60,10 +53,5 @@ export const canLeaveDirtyForm: CanDeactivateFn<DetailFormComponent> = (
   currentState: RouterStateSnapshot,
   nextState: RouterStateSnapshot
 ) => {
-  return inject(LeaveDirtyFormGuard).canDeactivate(
-    component,
-    currentRoute,
-    currentState,
-    nextState
-  );
+  return inject(LeaveDirtyFormGuard).canDeactivate(component, currentRoute, currentState, nextState);
 };

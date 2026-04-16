@@ -17,16 +17,11 @@ describe('TranslationSortingService', () => {
 
   beforeEach(() => {
     translatePipeMock = {
-      transform: vi
-        .fn()
-        .mockImplementation((key: string) => translatePipeMockArguments[key]),
+      transform: vi.fn().mockImplementation((key: string) => translatePipeMockArguments[key]),
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        translateServiceProvider,
-        { provide: TranslatePipe, useValue: translatePipeMock },
-      ],
+      providers: [translateServiceProvider, { provide: TranslatePipe, useValue: translatePipeMock }],
     });
     service = TestBed.inject(TranslationSortingService);
   });

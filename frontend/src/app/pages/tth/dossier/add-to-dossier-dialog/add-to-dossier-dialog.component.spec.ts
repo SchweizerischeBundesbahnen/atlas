@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import {
-  AddToDossierData,
-  AddToDossierDialogComponent,
-} from './add-to-dossier-dialog.component';
+import { AddToDossierData, AddToDossierDialogComponent } from './add-to-dossier-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -28,15 +25,11 @@ const dialogData: AddToDossierData = {
   statement: statement,
 };
 
-const dialogRefSpy: Mocked<
-  Pick<MatDialogRef<AddToDossierDialogComponent>, 'close'>
-> = {
+const dialogRefSpy: Mocked<Pick<MatDialogRef<AddToDossierDialogComponent>, 'close'>> = {
   close: vi.fn(),
 };
 
-const dossierInternalService: Mocked<
-  Pick<DossierInternalService, 'updateDossier'>
-> = {
+const dossierInternalService: Mocked<Pick<DossierInternalService, 'updateDossier'>> = {
   updateDossier: vi.fn().mockReturnValue(of(statement)),
 };
 

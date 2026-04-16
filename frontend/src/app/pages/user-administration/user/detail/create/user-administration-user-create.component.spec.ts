@@ -15,9 +15,7 @@ describe('UserAdministrationUserCreateComponent', () => {
   let component: UserAdministrationUserCreateComponent;
   let fixture: ComponentFixture<UserAdministrationUserCreateComponent>;
 
-  let userAdministrationService: Mocked<
-    Pick<UserAdministrationService, 'getUser' | 'createUserPermission'>
-  >;
+  let userAdministrationService: Mocked<Pick<UserAdministrationService, 'getUser' | 'createUserPermission'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
 
   beforeEach(() => {
@@ -86,9 +84,7 @@ describe('UserAdministrationUserCreateComponent', () => {
       sbbUserId: 'user1',
       permissions: new Set(),
     });
-    expect(userAdministrationService.getUser).toHaveBeenCalledExactlyOnceWith(
-      'user1'
-    );
+    expect(userAdministrationService.getUser).toHaveBeenCalledExactlyOnceWith('user1');
   });
 
   it('test createUser', async () => {
@@ -107,13 +103,9 @@ describe('UserAdministrationUserCreateComponent', () => {
 
     component.createUser();
 
-    expect(
-      userAdministrationService.createUserPermission
-    ).toHaveBeenCalledTimes(1);
+    expect(userAdministrationService.createUserPermission).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
     await fixture.whenStable();
-    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith(
-      'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
-    );
+    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS');
   });
 });

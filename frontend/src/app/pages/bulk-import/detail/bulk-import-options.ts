@@ -24,20 +24,12 @@ export const OPTIONS_OBJECT_TYPE_PRM: string[] = Object.values([
   BusinessObjectType.Relation,
 ]);
 
-export const OPTIONS_OBJECT_TYPE_TIMETABLE_HEARING: string[] = Object.values(
-  []
-);
+export const OPTIONS_OBJECT_TYPE_TIMETABLE_HEARING: string[] = Object.values([]);
 export const OPTIONS_OBJECT_TYPE_BODI: string[] = Object.values([]);
-export const OPTIONS_OBJECT_TYPE_LIDI: string[] = Object.values([
-  BusinessObjectType.Line,
-]);
+export const OPTIONS_OBJECT_TYPE_LIDI: string[] = Object.values([BusinessObjectType.Line]);
 export const OPTIONS_OBJECT_TYPE_TTFN: string[] = Object.values([]);
 
-export const OPTIONS_SCENARIO: string[] = Object.values([
-  ImportType.Create,
-  ImportType.Update,
-  ImportType.Terminate,
-]);
+export const OPTIONS_SCENARIO: string[] = Object.values([ImportType.Create, ImportType.Update, ImportType.Terminate]);
 
 export const ALLOWED_FILE_TYPES_BULK_IMPORT: string[] = [
   'text/csv',

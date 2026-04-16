@@ -11,15 +11,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-user-administration',
   templateUrl: './user-administration-user-detail.component.html',
-  imports: [
-    UserAdministrationUserEditComponent,
-    UserAdministrationUserCreateComponent,
-  ],
+  imports: [UserAdministrationUserEditComponent, UserAdministrationUserCreateComponent],
   providers: [TranslatePipe],
 })
-export class UserAdministrationUserDetailComponent
-  implements OnInit, DetailFormComponent
-{
+export class UserAdministrationUserDetailComponent implements OnInit, DetailFormComponent {
   activatedRoute = inject(ActivatedRoute);
   userPermissionGivenUserService = inject(UserPermissionGivenUserService);
 

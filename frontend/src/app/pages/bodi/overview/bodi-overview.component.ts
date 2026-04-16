@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { Pages } from '../../pages';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLinkActive,
-  RouterLink,
-  RouterOutlet,
-} from '@angular/router';
+import { ActivatedRoute, Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
 
@@ -22,8 +16,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     RouterLink,
     MatTabNavPanel,
     RouterOutlet,
-    TranslatePipe
-],
+    TranslatePipe,
+  ],
 })
 export class BodiOverviewComponent {
   TABS = [
@@ -47,8 +41,6 @@ export class BodiOverviewComponent {
   ) {}
 
   newBusinessOrganisation() {
-    this.router
-      .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, 'add'])
-      .then();
+    this.router.navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, 'add']).then();
   }
 }

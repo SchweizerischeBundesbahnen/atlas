@@ -34,20 +34,10 @@ export class ContactPointFormGroupBuilder {
           Validators.required,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
         ]),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
-        wheelchairAccess: new FormControl(
-          version?.wheelchairAccess ?? StandardAttributeType.ToBeCompleted
-        ),
-        inductionLoop: new FormControl(
-          version?.inductionLoop ?? StandardAttributeType.ToBeCompleted
-        ),
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [Validators.required]),
+        wheelchairAccess: new FormControl(version?.wheelchairAccess ?? StandardAttributeType.ToBeCompleted),
+        inductionLoop: new FormControl(version?.inductionLoop ?? StandardAttributeType.ToBeCompleted),
         openingHours: new FormControl(version?.openingHours, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
@@ -63,10 +53,7 @@ export class ContactPointFormGroupBuilder {
     );
   }
 
-  static getWritableForm(
-    form: FormGroup<ContactPointFormGroup>,
-    parentServicePointSloid: string
-  ): ContactPointVersion {
+  static getWritableForm(form: FormGroup<ContactPointFormGroup>, parentServicePointSloid: string): ContactPointVersion {
     return {
       sloid: form.value.sloid!,
       parentServicePointSloid: parentServicePointSloid,

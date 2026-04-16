@@ -6,11 +6,7 @@
   }
   @if (isNew) {
     <div class="new-sloid d-flex flex-column">
-      <atlas-sloid
-        [formGroup]="form"
-        [givenPrefix]="servicePoint.sloid + ':'"
-        [numberColons]="0"
-      ></atlas-sloid>
+      <atlas-sloid [formGroup]="form" [givenPrefix]="servicePoint.sloid + ':'" [numberColons]="0"></atlas-sloid>
     </div>
   }
   @if (showVersionSwitch) {
@@ -38,10 +34,7 @@
   @if (!isNew) {
     <div>
       <mat-divider class="mt-4 mb-4"></mat-divider>
-      <atlas-user-detail-info
-        [record]="selectedVersion"
-        [applicationType]="'PRM'"
-      ></atlas-user-detail-info>
+      <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'PRM'"></atlas-user-detail-info>
     </div>
   }
 </atlas-detail-page-content>

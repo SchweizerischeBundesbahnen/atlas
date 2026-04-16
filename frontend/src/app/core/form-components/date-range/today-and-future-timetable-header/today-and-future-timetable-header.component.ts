@@ -22,11 +22,9 @@ export class TodayAndFutureTimetableHeaderComponent {
   }
 
   selectFutureTimetable() {
-    this.timetableYearChangeService
-      .getNextTimetablesYearChange(1)
-      .subscribe((dates) => {
-        this.selectPredefinedDate(moment(dates[0]));
-      });
+    this.timetableYearChangeService.getNextTimetablesYearChange(1).subscribe((dates) => {
+      this.selectPredefinedDate(moment(dates[0]));
+    });
   }
 
   selectPredefinedDate(date: Moment) {

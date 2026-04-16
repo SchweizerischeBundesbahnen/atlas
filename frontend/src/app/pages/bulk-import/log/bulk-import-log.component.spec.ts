@@ -9,15 +9,7 @@ import { MockMatPaginatorComponent } from '../../../app.testing.mocks';
 import { By } from '@angular/platform-browser';
 import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
 import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  type Mocked,
-  MockInstance,
-  vi,
-} from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, MockInstance, vi } from 'vitest';
 
 @Pipe({
   name: 'userDisplayName',
@@ -32,12 +24,8 @@ class UserDisplayNamePipeMock implements PipeTransform {
 describe('BulkImportLogComponent', () => {
   let component: BulkImportLogComponent;
   let fixture: ComponentFixture<BulkImportLogComponent>;
-  let bulkImportService: Mocked<
-    Pick<BulkImportService, 'getBulkImportResults'>
-  >;
-  let pageChangedFnSpy: MockInstance<
-    typeof BulkImportLogComponent.prototype.pageChanged
-  >;
+  let bulkImportService: Mocked<Pick<BulkImportService, 'getBulkImportResults'>>;
+  let pageChangedFnSpy: MockInstance<typeof BulkImportLogComponent.prototype.pageChanged>;
 
   beforeEach(() => {
     bulkImportService = {
@@ -113,9 +101,7 @@ describe('BulkImportLogComponent', () => {
     pageChangedFnSpy.mockRestore();
     pageChangedFnSpy = vi.spyOn(component, 'pageChanged');
     fixture.detectChanges();
-    const paginator: MockMatPaginatorComponent = fixture.debugElement.query(
-      By.css('mat-paginator')
-    ).componentInstance;
+    const paginator: MockMatPaginatorComponent = fixture.debugElement.query(By.css('mat-paginator')).componentInstance;
     paginator.page.emit({ pageIndex: 1, pageSize: 2 });
     expect(component.pagedLogEntries).toEqual([
       {

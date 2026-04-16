@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { firstValueFrom, Observable, of } from 'rxjs';
-import {
-  lineVersionSnapshotResolver,
-  LineVersionSnapshotResolver,
-} from './line-version-snapshot.resolver';
+import { lineVersionSnapshotResolver, LineVersionSnapshotResolver } from './line-version-snapshot.resolver';
 import { LineType, LineVersionSnapshot, WorkflowStatus } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
@@ -29,9 +26,7 @@ const version: LineVersionSnapshot = {
 
 describe('LineVersionSnapshotResolver', () => {
   let resolver: LineVersionSnapshotResolver;
-  let lineInternalService: Mocked<
-    Pick<LineInternalService, 'getLineVersionSnapshotById'>
-  >;
+  let lineInternalService: Mocked<Pick<LineInternalService, 'getLineVersionSnapshotById'>>;
 
   beforeEach(() => {
     lineInternalService = {
@@ -41,10 +36,7 @@ describe('LineVersionSnapshotResolver', () => {
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [
-        LineVersionSnapshotResolver,
-        { provide: LineInternalService, useValue: lineInternalService },
-      ],
+      providers: [LineVersionSnapshotResolver, { provide: LineInternalService, useValue: lineInternalService }],
     });
 
     resolver = TestBed.inject(LineVersionSnapshotResolver);

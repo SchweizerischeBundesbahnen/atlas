@@ -7,11 +7,7 @@ export class TableFilterDateSelect extends TableFilter<Date | undefined> {
   formControl: FormControl<Date | null>;
 
   constructor(row: number, elementWidthCssClass: string);
-  constructor(
-    row: number,
-    elementWidthCssClass: string,
-    formControl?: FormControl<Date | null>
-  ) {
+  constructor(row: number, elementWidthCssClass: string, formControl?: FormControl<Date | null>) {
     super(row, elementWidthCssClass);
     this.formControl = formControl ?? new FormControl();
   }

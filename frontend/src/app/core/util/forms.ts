@@ -4,11 +4,7 @@ export function addControlToFormNoEvent<
   T extends {
     [K in keyof T]: AbstractControl;
   },
->(
-  form: FormGroup<T>,
-  controlName: string & keyof T,
-  control: Required<T>[string & keyof T]
-) {
+>(form: FormGroup<T>, controlName: string & keyof T, control: Required<T>[string & keyof T]) {
   form.addControl(controlName, control, { emitEvent: false });
 }
 

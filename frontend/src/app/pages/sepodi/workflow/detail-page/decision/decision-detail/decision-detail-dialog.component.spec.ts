@@ -1,19 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import {
-  DecisionDetailDialogComponent,
-  DecisionDetailDialogData,
-} from './decision-detail-dialog.component';
+import { DecisionDetailDialogComponent, DecisionDetailDialogData } from './decision-detail-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StopPointWorkflowDetailFormGroupBuilder } from '../../detail-form/stop-point-workflow-detail-form-group';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { of } from 'rxjs';
-import {
-  DecisionType,
-  JudgementType,
-  ReadDecision,
-  WorkflowStatus,
-} from '../../../../../../api';
+import { DecisionType, JudgementType, ReadDecision, WorkflowStatus } from '../../../../../../api';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
@@ -28,20 +20,15 @@ import { MockAtlasButtonComponent } from '../../../../../../app.testing.mocks';
 import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
 
 describe('DecisionDetailDialogComponent', () => {
-  let dialogRefSpy: Mocked<
-    Pick<MatDialogRef<DecisionDetailDialogComponent>, 'close'>
-  >;
-  let stopPointWorkflowService: Mocked<
-    Pick<StopPointWorkflowService, 'getDecision'>
-  >;
+  let dialogRefSpy: Mocked<Pick<MatDialogRef<DecisionDetailDialogComponent>, 'close'>>;
+  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'getDecision'>>;
 
   const dialogData: DecisionDetailDialogData = {
     title: '',
     message: '',
     workflowId: 123,
     workflowStatus: WorkflowStatus.Hearing,
-    examinant:
-      StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(),
+    examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(),
   };
 
   const dialogDataWithExistingExaminant: DecisionDetailDialogData = {
@@ -147,9 +134,7 @@ describe('DecisionDetailDialogComponent', () => {
       expect(stopPointWorkflowService.getDecision).toHaveBeenCalled();
 
       expect(component.existingDecision).toBeDefined();
-      expect(component.decisionForm.controls.judgement.value).toEqual(
-        JudgementType.Yes
-      );
+      expect(component.decisionForm.controls.judgement.value).toEqual(JudgementType.Yes);
     });
   });
 

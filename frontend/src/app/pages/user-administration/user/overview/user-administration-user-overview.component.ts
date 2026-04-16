@@ -1,18 +1,8 @@
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import {
-  ApplicationType,
-  PermissionRestrictionType,
-  SwissCanton,
-  User,
-} from '../../../../api';
+import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
 import { tableColumns } from './table-column-definition';
 import { SearchType, SearchTypes } from './search-type';
 import { Cantons } from '../../../../core/cantons/Cantons';
@@ -62,9 +52,7 @@ export class UserAdministrationUserOverviewComponent {
     ApplicationType.Sepodi,
     ApplicationType.Prm,
   ];
-  readonly applicationCantonOptions: ApplicationType[] = [
-    ApplicationType.TimetableHearing,
-  ];
+  readonly applicationCantonOptions: ApplicationType[] = [ApplicationType.TimetableHearing];
   readonly cantonOptions: SwissCanton[] = Object.values(SwissCanton);
   selectedCantonOptions: SwissCanton[] = [];
 
@@ -89,10 +77,7 @@ export class UserAdministrationUserOverviewComponent {
 
   reloadTableWithCurrentSettings(): void {
     if (this.selectedSearch === 'USER') {
-      this.onUserFilterChanged(
-        this.userSearchForm.get(this.userSearchCtrlName)?.value,
-        this.tableService.pageIndex
-      );
+      this.onUserFilterChanged(this.userSearchForm.get(this.userSearchCtrlName)?.value, this.tableService.pageIndex);
     } else {
       this.filterChanged(this.tableService.pageIndex);
     }
@@ -132,17 +117,15 @@ export class UserAdministrationUserOverviewComponent {
       this.userPageResult = { users: [], totalCount: 0 };
       this.tableService.pageIndex = 0;
     } else {
-      this.userAdministrationService
-        .getUser(selectedUser.sbbUserId)
-        .subscribe((user) => {
-          if (Array.from(user.permissions).length > 0) {
-            this.userPageResult = { users: [user], totalCount: 1 };
-            this.tableService.pageIndex = 0;
-          } else {
-            this.userPageResult = { users: [], totalCount: 0 };
-            this.tableService.pageIndex = 0;
-          }
-        });
+      this.userAdministrationService.getUser(selectedUser.sbbUserId).subscribe((user) => {
+        if (Array.from(user.permissions).length > 0) {
+          this.userPageResult = { users: [user], totalCount: 1 };
+          this.tableService.pageIndex = 0;
+        } else {
+          this.userPageResult = { users: [], totalCount: 0 };
+          this.tableService.pageIndex = 0;
+        }
+      });
     }
   }
 
@@ -174,8 +157,7 @@ export class UserAdministrationUserOverviewComponent {
     this.loadUsers({ page: 0, size: 10 });
   }
 
-  readonly getCantonAbbreviation = (canton: SwissCanton) =>
-    Cantons.fromSwissCanton(canton)?.short;
+  readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
 
   applicationChanged($event: MatSelectChange) {
     this.selectedApplicationOptions = $event.value;

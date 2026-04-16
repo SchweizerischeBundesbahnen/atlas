@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import {
-  ReadServicePointVersion,
-  ReadTrafficPointElementVersion,
-} from '../../../../api';
+import { ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
@@ -21,13 +18,7 @@ import { TrafficPointElementInternalService } from '../../../../api/service/sepo
   selector: 'atlas-service-point-traffic-point-elements-table',
   templateUrl: './traffic-point-elements-table.component.html',
   styleUrls: ['./traffic-point-elements-table.component.scss'],
-  imports: [
-    AtlasButtonComponent,
-    NavigationSepodiPrmComponent,
-    TableComponent,
-    DetailFooterComponent,
-    TranslatePipe,
-  ],
+  imports: [AtlasButtonComponent, NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, TranslatePipe],
 })
 export class TrafficPointElementsTableComponent implements OnInit {
   tableColumnsPlatforms: TableColumn<ReadTrafficPointElementVersion>[] = [
@@ -89,16 +80,11 @@ export class TrafficPointElementsTableComponent implements OnInit {
       this.createVisible = this.isParentStopPoint;
       this.tableFilterConfig = this.tableService.initializeFilterConfig(
         {},
-        this.isTrafficPointArea
-          ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
-          : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM
+        this.isTrafficPointArea ? Pages.TRAFFIC_POINT_ELEMENTS_AREA : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM
       );
-      const servicePoints: ReadServicePointVersion[] =
-        this.route.parent!.snapshot.data.servicePoint;
+      const servicePoints: ReadServicePointVersion[] = this.route.parent!.snapshot.data.servicePoint;
       this.servicePointVersion = servicePoints[servicePoints.length - 1];
-      this.servicePointBusinessOrganisations = servicePoints.map(
-        (i) => i.businessOrganisation
-      );
+      this.servicePointBusinessOrganisations = servicePoints.map((i) => i.businessOrganisation);
     });
   }
 
@@ -119,8 +105,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
   }
 
   get isParentStopPoint(): boolean {
-    const servicePointVersions: ReadServicePointVersion[] =
-      this.route.parent!.snapshot.data.servicePoint;
+    const servicePointVersions: ReadServicePointVersion[] = this.route.parent!.snapshot.data.servicePoint;
     return servicePointVersions.filter((sp) => sp.stopPoint).length > 0;
   }
 
@@ -129,16 +114,11 @@ export class TrafficPointElementsTableComponent implements OnInit {
   }
 
   getTrafficPointElements(pagination: TablePagination, isArea: boolean) {
-    const getEndpoint = isArea
-      ? 'getAreasOfServicePoint'
-      : 'getPlatformsOfServicePoint';
+    const getEndpoint = isArea ? 'getAreasOfServicePoint' : 'getPlatformsOfServicePoint';
 
-    this.trafficPointElementInternalService[getEndpoint](
-      this.servicePointNumber,
-      pagination.page,
-      pagination.size,
-      [pagination.sort ?? 'designation,asc']
-    ).subscribe((container) => {
+    this.trafficPointElementInternalService[getEndpoint](this.servicePointNumber, pagination.page, pagination.size, [
+      pagination.sort ?? 'designation,asc',
+    ]).subscribe((container) => {
       this.trafficPointElementRows = container.objects!;
       this.totalCount$ = container.totalCount!;
     });

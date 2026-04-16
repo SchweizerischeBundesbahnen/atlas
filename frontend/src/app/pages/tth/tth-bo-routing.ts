@@ -6,9 +6,7 @@ export const TTH_BO_ROUTES: Routes = [
   {
     path: Pages.TTH_ACTIVE.path,
     loadComponent: () =>
-      import('./tth-overview-base/tth-overview-base.component').then(
-        (m) => m.TthOverviewBaseComponent
-      ),
+      import('./tth-overview-base/tth-overview-base.component').then((m) => m.TthOverviewBaseComponent),
     data: { hearingStatus: HearingStatus.Active },
     children: [
       {

@@ -1,15 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, Input } from '@angular/core';
 import moment from 'moment';
-import {
-  DATE_PATTERN,
-  DATE_TIME_FORMAT_WITHOUT_SECONDS,
-} from '../../date/date.service';
+import { DATE_PATTERN, DATE_TIME_FORMAT_WITHOUT_SECONDS } from '../../date/date.service';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { CreationEditionRecord } from './creation-edition-record';
 import { map } from 'rxjs/operators';
@@ -32,8 +23,7 @@ export class UserDetailInfoComponent {
   showEditor = input(true);
   applicationType = input<ApplicationType>();
 
-  private _record$: Observable<CreationEditionRecord | undefined> =
-    of(undefined);
+  private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
 
   readonly userAdministrationService = inject(UserAdministrationService);
 
@@ -46,25 +36,14 @@ export class UserDetailInfoComponent {
     return this._record$;
   }
 
-  private getProcessedCreationEdition(
-    record: CreationEditionRecord
-  ): Observable<CreationEditionRecord | undefined> {
-    const displayNames$: Observable<string | undefined>[] = [
-      record.editor,
-      record.creator,
-    ].map((value) => {
+  private getProcessedCreationEdition(record: CreationEditionRecord): Observable<CreationEditionRecord | undefined> {
+    const displayNames$: Observable<string | undefined>[] = [record.editor, record.creator].map((value) => {
       if (!value) {
         return of(undefined);
       }
       return this.userAdministrationService
         .getUserDisplayName(value)
-        .pipe(
-          map(
-            (userDisplayName) =>
-              this.formatUserDisplayInformation(userDisplayName.displayName) ??
-              value
-          )
-        );
+        .pipe(map((userDisplayName) => this.formatUserDisplayInformation(userDisplayName.displayName) ?? value));
     });
 
     return forkJoin(displayNames$).pipe(

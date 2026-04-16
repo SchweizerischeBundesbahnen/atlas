@@ -3,12 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { FileUploadComponent } from './file-upload.component';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 
-function getMockFileList(
-  fileName: string,
-  properties: FilePropertyBag,
-  fileBits = '',
-  filecount = 1
-): FileList {
+function getMockFileList(fileName: string, properties: FilePropertyBag, fileBits = '', filecount = 1): FileList {
   const items: Array<File> = [];
   for (let i = 0; i < filecount; i++) {
     items.push(new File([fileBits], fileName, properties));
@@ -51,86 +46,56 @@ describe('FileUploadComponent', () => {
   });
 
   it('should add file validating type', () => {
-    component.addFileListToFile(
-      getMockFileList('test.csv', { type: 'application/csv' }, '')
-    );
+    component.addFileListToFile(getMockFileList('test.csv', { type: 'application/csv' }, ''));
 
     expect(component.uploadedFiles.length).toBe(0);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe(
-      'COMMON.FILEUPLOAD.ERROR.TYPE'
-    );
+    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.TYPE');
   });
 
   it('should add file validating size', () => {
-    component.addFileListToFile(
-      getMockFileList(
-        'test.pdf',
-        { type: 'application/pdf' },
-        'asdfghjklertzui'
-      )
-    );
+    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'asdfghjklertzui'));
 
     expect(component.uploadedFiles.length).toBe(0);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe(
-      'COMMON.FILEUPLOAD.ERROR.FILE_SIZE'
-    );
+    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.FILE_SIZE');
   });
 
   it('should add file validating file count', () => {
-    component.addFileListToFile(
-      getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 2)
-    );
+    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 2));
 
     expect(component.uploadedFiles.length).toBe(1);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe(
-      'COMMON.FILEUPLOAD.ERROR.FILE_COUNT'
-    );
+    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.FILE_COUNT');
   });
 
   it('should add file validating file duplication upload', () => {
     component.maxFileCount = 2;
-    component.addFileListToFile(
-      getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1)
-    );
-    component.addFileListToFile(
-      getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1)
-    );
+    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1));
+    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1));
 
     expect(component.uploadedFiles.length).toBe(1);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe(
-      'COMMON.FILEUPLOAD.ERROR.ALREADY_ADDED'
-    );
+    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.ALREADY_ADDED');
   });
 
   it('should add file validating file duplication already saved', () => {
-    component.addFileListToFile(
-      getMockFileList('savedFile.pdf', { type: 'application/pdf' }, 'as', 1)
-    );
+    component.addFileListToFile(getMockFileList('savedFile.pdf', { type: 'application/pdf' }, 'as', 1));
 
     expect(component.uploadedFiles.length).toBe(0);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe(
-      'COMMON.FILEUPLOAD.ERROR.ALREADY_SAVED'
-    );
+    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.ALREADY_SAVED');
   });
 
   it('should add file successfully and delete it', () => {
-    vi.spyOn(component.uploadedFilesChange, 'emit').mockImplementation(
-      () => {}
-    );
+    vi.spyOn(component.uploadedFilesChange, 'emit').mockImplementation(() => {});
 
-    component.addFileListToFile(
-      getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1)
-    );
+    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1));
     expect(component.uploadedFiles.length).toBe(1);
     expect(component.errorFiles.length).toBe(0);
     expect(component.uploadedFilesChange.emit).toHaveBeenCalled();
@@ -143,18 +108,14 @@ describe('FileUploadComponent', () => {
   it('should display the download button when isDownloadButtonVisible is true', () => {
     component.isDownloadButtonVisible = true;
     fixture.detectChanges();
-    const downloadButton = fixture.nativeElement.querySelector(
-      '[buttonDataCy="download-csv"]'
-    );
+    const downloadButton = fixture.nativeElement.querySelector('[buttonDataCy="download-csv"]');
     expect(downloadButton).toBeTruthy();
   });
 
   it('should not display the download button when isDownloadButtonVisible is false', () => {
     component.isDownloadButtonVisible = false;
     fixture.detectChanges();
-    const downloadButton = fixture.nativeElement.querySelector(
-      '[buttonDataCy="download-csv"]'
-    );
+    const downloadButton = fixture.nativeElement.querySelector('[buttonDataCy="download-csv"]');
     expect(downloadButton).toBeNull();
   });
 

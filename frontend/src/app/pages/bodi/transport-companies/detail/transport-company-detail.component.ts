@@ -1,18 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ApplicationType,
-  BusinessOrganisation,
-  TransportCompany,
-  TransportCompanyBoRelation,
-} from '../../../../api';
+import { ApplicationType, BusinessOrganisation, TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import moment, { Moment } from 'moment';
 import { TableColumn } from '../../../../core/components/table/table-column';
@@ -59,64 +49,57 @@ import { DialogData } from '../../../../core/components/dialog/dialog.data';
     TranslatePipe,
   ],
 })
-export class TransportCompanyDetailComponent
-  implements OnInit, DetailFormComponent
-{
+export class TransportCompanyDetailComponent implements OnInit, DetailFormComponent {
   transportCompany!: TransportCompany;
   transportFormGroup!: FormGroup<TransportCompanyFormGroup>;
   transportCompanyRelations!: TransportCompanyBoRelation[];
-  businessOrganisationSearchResults: Observable<BusinessOrganisation[]> = of(
-    []
-  );
+  businessOrganisationSearchResults: Observable<BusinessOrganisation[]> = of([]);
   selectedTransportCompanyRelationIndex = -1;
   editMode = false;
   totalCountOfFoundBusinessOrganisations = 0;
   isUpdateRelationSelected = false;
   relationId = 0;
   readonly pageSizeForBusinessOrganisationSearch = 100;
-  readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] =
-    [
-      {
-        headerTitle: 'BODI.BUSINESS_ORGANISATION.SBOID',
-        valuePath: 'businessOrganisation.sboid',
-        columnDef: 'sboid',
-      },
-      {
-        headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
-        valuePath: 'businessOrganisation.organisationNumber',
-        columnDef: 'organisationNumber',
-      },
-      {
-        headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
-        valuePath: `businessOrganisation.${this.getCurrentLanguageAbbreviation()}`,
-        columnDef: 'abbreviation',
-      },
-      {
-        headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
-        valuePath: `businessOrganisation.${this.getCurrentLanguageDescription()}`,
-        columnDef: 'description',
-      },
-      {
-        headerTitle: 'COMMON.VALID_FROM',
-        value: 'validFrom',
-        valuePath: 'validFrom',
-        columnDef: 'validFrom',
-        formatAsDate: true,
-      },
-      {
-        headerTitle: 'COMMON.VALID_TO',
-        value: 'validTo',
-        valuePath: 'validTo',
-        columnDef: 'validTo',
-        formatAsDate: true,
-      },
-    ];
+  readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
+    {
+      headerTitle: 'BODI.BUSINESS_ORGANISATION.SBOID',
+      valuePath: 'businessOrganisation.sboid',
+      columnDef: 'sboid',
+    },
+    {
+      headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
+      valuePath: 'businessOrganisation.organisationNumber',
+      columnDef: 'organisationNumber',
+    },
+    {
+      headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
+      valuePath: `businessOrganisation.${this.getCurrentLanguageAbbreviation()}`,
+      columnDef: 'abbreviation',
+    },
+    {
+      headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
+      valuePath: `businessOrganisation.${this.getCurrentLanguageDescription()}`,
+      columnDef: 'description',
+    },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      valuePath: 'validFrom',
+      columnDef: 'validFrom',
+      formatAsDate: true,
+    },
+    {
+      headerTitle: 'COMMON.VALID_TO',
+      value: 'validTo',
+      valuePath: 'validTo',
+      columnDef: 'validTo',
+      formatAsDate: true,
+    },
+  ];
 
   readonly form = new FormGroup(
     {
-      businessOrganisation: new FormControl<BusinessOrganisation | null>(null, [
-        Validators.required,
-      ]),
+      businessOrganisation: new FormControl<BusinessOrganisation | null>(null, [Validators.required]),
       validFrom: new FormControl<Moment | null>(null),
       validTo: new FormControl<Moment | null>(null),
     },
@@ -140,10 +123,8 @@ export class TransportCompanyDetailComponent
   };
 
   ngOnInit() {
-    this.transportCompany =
-      this.activatedRoute.snapshot.data.transportCompanyDetail[0];
-    this.transportCompanyRelations =
-      this.activatedRoute.snapshot.data.transportCompanyDetail[1];
+    this.transportCompany = this.activatedRoute.snapshot.data.transportCompanyDetail[0];
+    this.transportCompanyRelations = this.activatedRoute.snapshot.data.transportCompanyDetail[1];
     this.transportFormGroup = new FormGroup<TransportCompanyFormGroup>({
       id: new FormControl({ value: this.transportCompany.id, disabled: true }),
       number: new FormControl({
@@ -239,9 +220,7 @@ export class TransportCompanyDetailComponent
         tap(() => {
           this.editMode = false;
           this.form.reset();
-          const successMsg = this.isUpdateRelationSelected
-            ? 'RELATION.UPDATE_SUCCESS_MSG'
-            : 'RELATION.ADD_SUCCESS_MSG';
+          const successMsg = this.isUpdateRelationSelected ? 'RELATION.UPDATE_SUCCESS_MSG' : 'RELATION.ADD_SUCCESS_MSG';
           this.notificationService.success(successMsg);
           this.isUpdateRelationSelected = false;
           this.selectedTransportCompanyRelationIndex = -1;
@@ -251,33 +230,27 @@ export class TransportCompanyDetailComponent
   }
 
   private createRelation(validFrom: Date, validTo: Date) {
-    return this.transportCompanyRelationInternalService.createTransportCompanyRelation(
-      {
-        transportCompanyId: this.transportCompany.id!,
-        sboid: this.form.value.businessOrganisation!.sboid!,
-        validFrom,
-        validTo,
-      }
-    );
+    return this.transportCompanyRelationInternalService.createTransportCompanyRelation({
+      transportCompanyId: this.transportCompany.id!,
+      sboid: this.form.value.businessOrganisation!.sboid!,
+      validFrom,
+      validTo,
+    });
   }
 
   private updateExistingRelation(validFrom: Date, validTo: Date) {
-    return this.transportCompanyRelationInternalService.updateTransportCompanyRelation(
-      {
-        id: this.relationId,
-        validFrom,
-        validTo,
-      }
-    );
+    return this.transportCompanyRelationInternalService.updateTransportCompanyRelation({
+      id: this.relationId,
+      validFrom,
+      validTo,
+    });
   }
 
   updateRelation() {
     this.transportCompanyRelationInternalService
       .getTransportCompanyBoRelations(this.transportCompany.id!)
       .subscribe((relations) => {
-        const foundRelation = relations.find(
-          (_, index) => index === this.selectedTransportCompanyRelationIndex
-        )!;
+        const foundRelation = relations.find((_, index) => index === this.selectedTransportCompanyRelationIndex)!;
         this.form.setValue({
           businessOrganisation: foundRelation.businessOrganisation!,
           validFrom: moment(foundRelation.validFrom),
@@ -290,11 +263,7 @@ export class TransportCompanyDetailComponent
 
   deleteRelation(): void {
     this.transportCompanyRelationInternalService
-      .deleteTransportCompanyRelation(
-        this.transportCompanyRelations[
-          this.selectedTransportCompanyRelationIndex
-        ].id!
-      )
+      .deleteTransportCompanyRelation(this.transportCompanyRelations[this.selectedTransportCompanyRelationIndex].id!)
       .pipe(
         switchMap(() =>
           this.reloadRelations().pipe(
@@ -318,12 +287,7 @@ export class TransportCompanyDetailComponent
   private reloadRelations(): Observable<TransportCompanyBoRelation[]> {
     return this.transportCompanyRelationInternalService
       .getTransportCompanyBoRelations(this.transportCompany.id!)
-      .pipe(
-        tap(
-          (transportCompanyRelations) =>
-            (this.transportCompanyRelations = transportCompanyRelations)
-        )
-      );
+      .pipe(tap((transportCompanyRelations) => (this.transportCompanyRelations = transportCompanyRelations)));
   }
 
   private getCurrentLanguageAbbreviation() {

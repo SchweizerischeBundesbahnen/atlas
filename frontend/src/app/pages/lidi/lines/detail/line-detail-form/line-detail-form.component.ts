@@ -1,15 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  LineConcessionType,
-  LineType,
-  MeanOfTransport,
-  OfferCategory,
-} from '../../../../../api';
-import {
-  SelectComponent,
-  SelectOptionGroup,
-} from '../../../../../core/form-components/select/select.component';
+import { LineConcessionType, LineType, MeanOfTransport, OfferCategory } from '../../../../../api';
+import { SelectComponent, SelectOptionGroup } from '../../../../../core/form-components/select/select.component';
 import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
 import { NgOptimizedImage } from '@angular/common';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';

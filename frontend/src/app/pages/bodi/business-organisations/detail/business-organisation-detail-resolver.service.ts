@@ -12,9 +12,7 @@ export class BusinessOrganisationDetailResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<BusinessOrganisationVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<BusinessOrganisationVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
@@ -30,7 +28,6 @@ export class BusinessOrganisationDetailResolver {
   }
 }
 
-export const businessOrganisationResolver: ResolveFn<
-  Array<BusinessOrganisationVersion>
-> = (route: ActivatedRouteSnapshot) =>
-  inject(BusinessOrganisationDetailResolver).resolve(route);
+export const businessOrganisationResolver: ResolveFn<Array<BusinessOrganisationVersion>> = (
+  route: ActivatedRouteSnapshot
+) => inject(BusinessOrganisationDetailResolver).resolve(route);

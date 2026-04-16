@@ -20,8 +20,7 @@ describe('TrafficPointMapService', () => {
   mapServiceSpy.mapInitialized = new BehaviorSubject(true);
   mapServiceSpy.map = mapMock;
 
-  const trafficPointElementInternalService =
-    mock<TrafficPointElementInternalService>();
+  const trafficPointElementInternalService = mock<TrafficPointElementInternalService>();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -54,8 +53,7 @@ describe('TrafficPointMapService', () => {
       },
     ] as unknown as MapGeoJSONFeature[];
 
-    const result =
-      TrafficPointMapService.buildTrafficPointPopupInformation(features);
+    const result = TrafficPointMapService.buildTrafficPointPopupInformation(features);
     expect(result).toEqual(
       '<a href="service-point-directory/service-points/857000/traffic-point-elements/ch:1:sloid:0:245">A - ch:1:sloid:0:245</a> <br/>'
     );
@@ -68,13 +66,9 @@ describe('TrafficPointMapService', () => {
 
     service.displayTrafficPointsOnMap(8507000);
 
-    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith(
-      MAP_TRAFFIC_POINT_LAYER_NAME
-    );
+    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith(MAP_TRAFFIC_POINT_LAYER_NAME);
     expect(sourceMock.setData).toHaveBeenCalled();
-    const data = sourceMock.setData.mock.calls.at(
-      -1
-    )?.[0] as GeoJSON.FeatureCollection;
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
     expect(data.features).toHaveLength(2);
   });
 
@@ -82,9 +76,7 @@ describe('TrafficPointMapService', () => {
     service.clearDisplayedTrafficPoints();
 
     expect(sourceMock.setData).toHaveBeenCalled();
-    const data = sourceMock.setData.mock.calls.at(
-      -1
-    )?.[0] as GeoJSON.FeatureCollection;
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
     expect(data.features).toHaveLength(0);
   });
 
@@ -95,13 +87,9 @@ describe('TrafficPointMapService', () => {
       spatialReference: 'WGS84',
     });
 
-    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith(
-      'current_traffic_point'
-    );
+    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('current_traffic_point');
     expect(sourceMock.setData).toHaveBeenCalled();
-    const data = sourceMock.setData.mock.calls.at(
-      -1
-    )?.[0] as GeoJSON.Feature<Point>;
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
     expect(data.geometry.coordinates).toEqual([7.44908190053, 46.96102079646]);
   });
 });

@@ -42,10 +42,7 @@ describe('AtlasButtonComponent', () => {
   beforeEach(() => {
     // Config
     TestBed.configureTestingModule({
-      providers: [
-        translateServiceProvider,
-        { provide: PermissionService, useValue: permissionServiceMock },
-      ],
+      providers: [translateServiceProvider, { provide: PermissionService, useValue: permissionServiceMock }],
     });
 
     // Arrangement

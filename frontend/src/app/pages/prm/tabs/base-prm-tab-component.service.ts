@@ -35,9 +35,7 @@ export abstract class BasePrmTabComponentService {
       this.redirectToStopPoint(servicePoints);
     } else {
       this._isStopPointExisting = true;
-      const isReduced = PrmMeanOfTransportHelper.isReduced(
-        stopPointVersions[0].meansOfTransport
-      );
+      const isReduced = PrmMeanOfTransportHelper.isReduced(stopPointVersions[0].meansOfTransport);
       if (isReduced && this.canShowTab()) {
         this.redirectToStopPoint(servicePoints);
       }
@@ -50,12 +48,7 @@ export abstract class BasePrmTabComponentService {
 
   redirectToStopPoint(servicePoints: ReadServicePointVersion[]) {
     this.router
-      .navigate([
-        Pages.PRM.path,
-        Pages.STOP_POINTS.path,
-        servicePoints[0].sloid,
-        Pages.PRM_STOP_POINT_TAB.path,
-      ])
+      .navigate([Pages.PRM.path, Pages.STOP_POINTS.path, servicePoints[0].sloid, Pages.PRM_STOP_POINT_TAB.path])
       .then();
   }
 }

@@ -18,8 +18,6 @@ export class HomeComponent {
   readonly enabledPages: Observable<Page[]>;
 
   constructor(private readonly pageService: PageService) {
-    this.enabledPages = pageService.enabledPages.pipe(
-      map((pages) => pages.filter((page) => page !== Pages.HOME))
-    );
+    this.enabledPages = pageService.enabledPages.pipe(map((pages) => pages.filter((page) => page !== Pages.HOME)));
   }
 }

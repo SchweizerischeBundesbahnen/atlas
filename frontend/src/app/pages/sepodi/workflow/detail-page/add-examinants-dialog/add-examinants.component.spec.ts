@@ -27,12 +27,8 @@ describe('AddExaminantsComponent', () => {
   let dialogRefSpy: Mocked<Pick<MatDialogRef<AddExaminantsComponent>, 'close'>>;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
   let router: Mocked<Pick<Router, 'navigate'>>;
-  let detailHelperService: Mocked<
-    Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>
-  >;
-  let stopPointWorkflowService: Mocked<
-    Pick<StopPointWorkflowService, 'addExaminantsToStopPointWorkflow'>
-  >;
+  let detailHelperService: Mocked<Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>>;
+  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'addExaminantsToStopPointWorkflow'>>;
 
   const workflowDialogData: AddExaminantsDialogData = {
     title: '',
@@ -114,9 +110,7 @@ describe('AddExaminantsComponent', () => {
 
     component.addExaminants();
 
-    expect(
-      stopPointWorkflowService.addExaminantsToStopPointWorkflow
-    ).toHaveBeenCalled();
+    expect(stopPointWorkflowService.addExaminantsToStopPointWorkflow).toHaveBeenCalled();
   });
 
   it('should have combined validation', () => {

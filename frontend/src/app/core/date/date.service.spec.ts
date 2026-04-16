@@ -14,29 +14,9 @@ describe('DateService', () => {
   });
 
   it('should calculate difference in days between dates', () => {
-    expect(
-      DateService.differenceInDays(
-        new Date('2020-01-01'),
-        new Date('2019-12-31')
-      )
-    ).toBe(-1);
-    expect(
-      DateService.differenceInDays(
-        new Date('2020-01-01'),
-        new Date('2020-01-01')
-      )
-    ).toBe(0);
-    expect(
-      DateService.differenceInDays(
-        new Date('2020-01-01'),
-        new Date('2020-01-02')
-      )
-    ).toBe(1);
-    expect(
-      DateService.differenceInDays(
-        new Date('2020-01-01'),
-        new Date('2020-01-03')
-      )
-    ).toBe(2);
+    expect(DateService.differenceInDays(new Date('2020-01-01'), new Date('2019-12-31'))).toBe(-1);
+    expect(DateService.differenceInDays(new Date('2020-01-01'), new Date('2020-01-01'))).toBe(0);
+    expect(DateService.differenceInDays(new Date('2020-01-01'), new Date('2020-01-02'))).toBe(1);
+    expect(DateService.differenceInDays(new Date('2020-01-01'), new Date('2020-01-03'))).toBe(2);
   });
 });

@@ -24,10 +24,7 @@ describe('CompanyDetailResolver', () => {
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [
-        CompanyDetailResolver,
-        { provide: CompanyService, useValue: companyService },
-      ],
+      providers: [CompanyDetailResolver, { provide: CompanyService, useValue: companyService }],
     });
 
     resolver = TestBed.inject(CompanyDetailResolver);

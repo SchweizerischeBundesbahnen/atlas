@@ -8,11 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '@atlas/form';
-import {
-  adminPermissionServiceMock,
-  MockSelectComponent,
-  MockTableComponent,
-} from '../../../../app.testing.mocks';
+import { adminPermissionServiceMock, MockSelectComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
@@ -50,8 +46,7 @@ const error = new HttpErrorResponse({
     message: 'Not found',
     details: [
       {
-        message:
-          'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
         field: 'number',
         displayInfo: {
           code: 'TTFN.CONFLICT.NUMBER',
@@ -73,30 +68,18 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
   let router: Router;
 
   let mockBusinessOrganisationsService: Mocked<
-    Pick<
-      BusinessOrganisationInternalService,
-      'updateBusinessOrganisationVersion' | 'deleteBusinessOrganisation'
-    >
+    Pick<BusinessOrganisationInternalService, 'updateBusinessOrganisationVersion' | 'deleteBusinessOrganisation'>
   >;
   let mockTransportCompanyRelationInternalService: Mocked<
-    Pick<
-      TransportCompanyRelationInternalService,
-      'getBoTransportCompanyRelations'
-    >
+    Pick<TransportCompanyRelationInternalService, 'getBoTransportCompanyRelations'>
   >;
   let validityService: Mocked<
     Pick<
       ValidityService,
-      | 'initValidity'
-      | 'updateValidity'
-      | 'validate'
-      | 'validateAndDisableCustom'
-      | 'confirmValidityDialog'
+      'initValidity' | 'updateValidity' | 'validate' | 'validateAndDisableCustom' | 'confirmValidityDialog'
     >
   >;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   const mockData = {
     businessOrganisationDetail: [businessOrganisationVersion],
@@ -108,9 +91,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     dialogService = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     validityService = {
       initValidity: vi.fn(),
@@ -190,9 +171,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
   });
 
   it('should load tu relations', () => {
-    expect(
-      mockTransportCompanyRelationInternalService.getBoTransportCompanyRelations
-    ).toHaveBeenCalled();
+    expect(mockTransportCompanyRelationInternalService.getBoTransportCompanyRelations).toHaveBeenCalled();
   });
 
   it('should update BusinessOrganisationVersion successfully', () => {
@@ -212,22 +191,16 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     component.save();
     fixture.detectChanges();
 
-    const snackBarContainer = document.body.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
 
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer!.textContent.trim()).toEqual(
-      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
-    );
+    expect(snackBarContainer!.textContent.trim()).toEqual('BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS');
     expect(snackBarContainer!.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should not update Version', () => {
-    mockBusinessOrganisationsService.updateBusinessOrganisationVersion.mockReturnValue(
-      throwError(() => error)
-    );
+    mockBusinessOrganisationsService.updateBusinessOrganisationVersion.mockReturnValue(throwError(() => error));
 
     component.toggleEdit();
     expect(component.form.enabled).toBe(true);
@@ -243,22 +216,16 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
   });
 
   it('should delete BusinessOrganisationVersion successfully', () => {
-    mockBusinessOrganisationsService.deleteBusinessOrganisation.mockReturnValue(
-      of(undefined)
-    );
+    mockBusinessOrganisationsService.deleteBusinessOrganisation.mockReturnValue(of(undefined));
     vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.delete();
     fixture.detectChanges();
 
-    const snackBarContainer = document.body.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
 
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer!.textContent.trim()).toBe(
-      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
-    );
+    expect(snackBarContainer!.textContent.trim()).toBe('BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer!.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
@@ -289,23 +256,13 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
   let router: Router;
 
   let mockBusinessOrganisationInternalService: Mocked<
-    Pick<
-      BusinessOrganisationInternalService,
-      'createBusinessOrganisationVersion'
-    >
+    Pick<BusinessOrganisationInternalService, 'createBusinessOrganisationVersion'>
   >;
   let mockTransportCompanyRelationInternalService: Mocked<
-    Pick<
-      TransportCompanyRelationInternalService,
-      'getBoTransportCompanyRelations'
-    >
+    Pick<TransportCompanyRelationInternalService, 'getBoTransportCompanyRelations'>
   >;
-  let validityService: Mocked<
-    Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>
-  >;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let validityService: Mocked<Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>>;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   const mockData = {
     businessOrganisationDetail: [],
@@ -317,9 +274,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     dialogService = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     validityService = {
       initValidity: vi.fn(),
@@ -383,9 +338,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
 
   it('should get tu relations ', () => {
     fixture.detectChanges();
-    expect(
-      mockTransportCompanyRelationInternalService.getBoTransportCompanyRelations
-    ).not.toHaveBeenCalled();
+    expect(mockTransportCompanyRelationInternalService.getBoTransportCompanyRelations).not.toHaveBeenCalled();
   });
 
   describe('create new Version', () => {
@@ -412,13 +365,9 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
       component.save();
       fixture.detectChanges();
 
-      const snackBarContainer = document.body.querySelector(
-        'mat-snack-bar-container'
-      );
+      const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer!.textContent.trim()).toBe(
-        'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS'
-      );
+      expect(snackBarContainer!.textContent.trim()).toBe('BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS');
       expect(snackBarContainer!.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
     });

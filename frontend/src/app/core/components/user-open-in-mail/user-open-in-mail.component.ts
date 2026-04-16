@@ -16,10 +16,8 @@ export class UserOpenInMailComponent {
   readonly permissionService = inject(PermissionService);
 
   openInMail() {
-    this.userAdministrationService
-      .getUser(this.userId())
-      .subscribe((user: User) => {
-        window.open(`mailto:${user.mail}`, '_self');
-      });
+    this.userAdministrationService.getUser(this.userId()).subscribe((user: User) => {
+      window.open(`mailto:${user.mail}`, '_self');
+    });
   }
 }

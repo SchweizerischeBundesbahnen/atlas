@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
@@ -61,9 +54,7 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   private initMeansOfTransportToShow() {
-    this.means = this.meansOfTransportToShow
-      ? this.meansOfTransportToShow
-      : Object.values(MeanOfTransport);
+    this.means = this.meansOfTransportToShow ? this.meansOfTransportToShow : Object.values(MeanOfTransport);
   }
 
   protected onSelection(meanOfTransport: MeanOfTransport) {
@@ -81,14 +72,9 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
       if (meanOfTransport === MeanOfTransport.Train) {
         this.sectorWarning = true;
       }
-      this.formControl.setValue(
-        this.currentlySelectedMeans.filter((i) => i != meanOfTransport)
-      );
+      this.formControl.setValue(this.currentlySelectedMeans.filter((i) => i != meanOfTransport));
     } else {
-      this.formControl.setValue([
-        ...this.currentlySelectedMeans,
-        meanOfTransport,
-      ]);
+      this.formControl.setValue([...this.currentlySelectedMeans, meanOfTransport]);
     }
   }
 
@@ -106,9 +92,6 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   private get formControl() {
-    return required(
-      this.formGroup.get(this.controlName),
-      'mean of transport control must be defined'
-    );
+    return required(this.formGroup.get(this.controlName), 'mean of transport control must be defined');
   }
 }

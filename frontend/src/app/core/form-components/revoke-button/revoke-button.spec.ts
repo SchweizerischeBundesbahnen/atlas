@@ -9,9 +9,7 @@ import { ApplicationType } from '../../../api';
 describe('RevokeButton', () => {
   let component: RevokeButton;
   let fixture: ComponentFixture<RevokeButton>;
-  let dialogServiceMock: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogServiceMock: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   beforeEach(() => {
     dialogServiceMock = {
@@ -19,10 +17,7 @@ describe('RevokeButton', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        translateServiceProvider,
-        { provide: DialogService, useValue: dialogServiceMock },
-      ],
+      providers: [translateServiceProvider, { provide: DialogService, useValue: dialogServiceMock }],
     });
 
     fixture = TestBed.createComponent(RevokeButton);
@@ -41,9 +36,7 @@ describe('RevokeButton', () => {
     //when
     component.revoke();
     //then
-    expect(
-      dialogServiceMock.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalled();
+    expect(dialogServiceMock.openDialogDataWithConfirmationResult).toHaveBeenCalled();
     expect(component.revokeClicked.emit).toHaveBeenCalled();
   });
 });

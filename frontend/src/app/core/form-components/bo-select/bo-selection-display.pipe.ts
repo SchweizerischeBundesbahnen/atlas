@@ -7,20 +7,14 @@ import { BusinessOrganisationLanguageService } from './business-organisation-lan
   pure: false,
 })
 export class BoSelectionDisplayPipe implements PipeTransform {
-  constructor(
-    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService
-  ) {}
+  constructor(private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService) {}
 
   transform(value?: BusinessOrganisation): string {
     if (!value) {
       return '--';
     }
     return `${value.organisationNumber} - ${
-      value[
-        this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation()
-      ]
-    } - ${value[this.businessOrganisationLanguageService.getCurrentLanguageDescription()]} - ${
-      value.sboid
-    }`;
+      value[this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation()]
+    } - ${value[this.businessOrganisationLanguageService.getCurrentLanguageDescription()]} - ${value.sboid}`;
   }
 }

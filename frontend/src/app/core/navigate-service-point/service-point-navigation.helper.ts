@@ -1,16 +1,9 @@
 import { SloidLocationModel } from '../../api/model/sloidLocationModel';
 import { SloidHelper } from '../util/sloidHelper';
-import {
-  PRM_NAVIGATION,
-  SEPODI_NAVIAGATION,
-  SloidContainer,
-} from './service-point-navigation';
+import { PRM_NAVIGATION, SEPODI_NAVIAGATION, SloidContainer } from './service-point-navigation';
 
 export class ServicePointNavigationHelper {
-  static buildPrmNavigation(
-    model: SloidLocationModel,
-    rootNavigationPath: string
-  ): string[] {
+  static buildPrmNavigation(model: SloidLocationModel, rootNavigationPath: string): string[] {
     const commands: string[] = [];
     const navigation = PRM_NAVIGATION.get(model.sloidType!);
     const sloidContainer = this.buildSloidContainer(model);
@@ -37,10 +30,7 @@ export class ServicePointNavigationHelper {
     return commands;
   }
 
-  static buildSepodiNavigation(
-    model: SloidLocationModel,
-    rootNavigationPath: string
-  ): string[] {
+  static buildSepodiNavigation(model: SloidLocationModel, rootNavigationPath: string): string[] {
     const commands: string[] = [];
     const navigation = SEPODI_NAVIAGATION.get(model.sloidType!);
     const sloidContainer = this.buildSloidContainer(model);
@@ -73,9 +63,7 @@ export class ServicePointNavigationHelper {
   }
 
   private static buildServicePointNumber(sloidContainer: SloidContainer) {
-    return SloidHelper.servicePointSloidToNumber(
-      sloidContainer.rootSloid
-    ).toString();
+    return SloidHelper.servicePointSloidToNumber(sloidContainer.rootSloid).toString();
   }
 
   static getRootSloid(sloidLocationModel: SloidLocationModel) {

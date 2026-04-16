@@ -75,10 +75,7 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
         this.tableService.filter.multiSelectStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(
-          pagination.sort,
-          this.getDefaultSort()
-        )
+        addElementsToArrayWhenNotUndefined(pagination.sort, this.getDefaultSort())
       )
       .subscribe((container) => {
         this.businessOrganisations = container.objects!;

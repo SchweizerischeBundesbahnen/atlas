@@ -10,7 +10,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DateRangeValidator } from '../../validation/date-range/date-range-validator';
 import { MatDatepicker } from '@angular/material/datepicker';
 
-
 describe('DateComponent', () => {
   let component: DateComponent;
   let fixture: ComponentFixture<DateComponent>;

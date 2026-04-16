@@ -12,27 +12,21 @@ export class TimetableFieldNumberDetailResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<TimetableFieldNumberVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<TimetableFieldNumberVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.timetableFieldNumbersService
-          .getAllVersionsVersioned(idParameter)
-          .pipe(
-            catchError(() =>
-              this.router
-                .navigate([Pages.TTFN.path], {
-                  state: { notDismissSnackBar: true },
-                })
-                .then(() => [])
-            )
-          );
+      : this.timetableFieldNumbersService.getAllVersionsVersioned(idParameter).pipe(
+          catchError(() =>
+            this.router
+              .navigate([Pages.TTFN.path], {
+                state: { notDismissSnackBar: true },
+              })
+              .then(() => [])
+          )
+        );
   }
 }
 
-export const timetableFieldNumberResolver: ResolveFn<
-  TimetableFieldNumberVersion[]
-> = (route: ActivatedRouteSnapshot) =>
+export const timetableFieldNumberResolver: ResolveFn<TimetableFieldNumberVersion[]> = (route: ActivatedRouteSnapshot) =>
   inject(TimetableFieldNumberDetailResolver).resolve(route);

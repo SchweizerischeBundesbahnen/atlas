@@ -12,9 +12,7 @@ describe('BusinessOrganisationSelectComponent', () => {
   let fixture: ComponentFixture<BusinessOrganisationSelectComponent>;
 
   const businessOrganisationServiceSpy = mock<BusinessOrganisationService>();
-  businessOrganisationServiceSpy.getAllBusinessOrganisations.mockReturnValue(
-    of({ objects: [] })
-  );
+  businessOrganisationServiceSpy.getAllBusinessOrganisations.mockReturnValue(of({ objects: [] }));
 
   beforeEach(() => {
     mockClear(businessOrganisationServiceSpy);
@@ -43,9 +41,7 @@ describe('BusinessOrganisationSelectComponent', () => {
   // To be able to find ch:1:sboid:1 we should sort by sboid instead of organisation number
   it('should search by businessOrganisation sorted by sboid', () => {
     component.searchBusinessOrganisation('ch:1:sboid:1');
-    expect(
-      businessOrganisationServiceSpy.getAllBusinessOrganisations
-    ).toHaveBeenCalledExactlyOnceWith(
+    expect(businessOrganisationServiceSpy.getAllBusinessOrganisations).toHaveBeenCalledExactlyOnceWith(
       ['ch:1:sboid:1'],
       [],
       undefined,

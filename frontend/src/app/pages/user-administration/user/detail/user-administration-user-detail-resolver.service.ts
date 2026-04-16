@@ -32,6 +32,5 @@ export class UserAdministrationUserDetailResolver {
   }
 }
 
-export const userResolver: ResolveFn<User | undefined> = (
-  route: ActivatedRouteSnapshot
-) => inject(UserAdministrationUserDetailResolver).resolve(route);
+export const userResolver: ResolveFn<User | undefined> = (route: ActivatedRouteSnapshot) =>
+  inject(UserAdministrationUserDetailResolver).resolve(route);

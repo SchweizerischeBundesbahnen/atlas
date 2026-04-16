@@ -25,9 +25,7 @@ export class GeographyFormGroupBuilder {
         nonNullable: true,
         validators: [AtlasCharsetsValidator.decimalWithDigits(5, 4)],
       }),
-      spatialReference: new FormControl(
-        geolocation?.spatialReference ?? SpatialReference.Lv95
-      ),
+      spatialReference: new FormControl(geolocation?.spatialReference ?? SpatialReference.Lv95),
     });
     this.initConditionalLocationValidators(formGroup);
     return formGroup;
@@ -40,19 +38,11 @@ export class GeographyFormGroupBuilder {
     return geolocation?.lv95;
   }
 
-  private static initConditionalLocationValidators(
-    formGroup: FormGroup<GeographyFormGroup>
-  ) {
-    formGroup.controls.spatialReference.valueChanges.subscribe(
-      (newSpatialReference) => {
-        formGroup.controls.east.setValidators(
-          this.getValidatorsForCoordinates(newSpatialReference, 'EAST')
-        );
-        formGroup.controls.north.setValidators(
-          this.getValidatorsForCoordinates(newSpatialReference, 'NORTH')
-        );
-      }
-    );
+  private static initConditionalLocationValidators(formGroup: FormGroup<GeographyFormGroup>) {
+    formGroup.controls.spatialReference.valueChanges.subscribe((newSpatialReference) => {
+      formGroup.controls.east.setValidators(this.getValidatorsForCoordinates(newSpatialReference, 'EAST'));
+      formGroup.controls.north.setValidators(this.getValidatorsForCoordinates(newSpatialReference, 'NORTH'));
+    });
   }
 
   private static getValidatorsForCoordinates(
@@ -60,10 +50,7 @@ export class GeographyFormGroupBuilder {
     northOrEast: 'NORTH' | 'EAST'
   ) {
     if (spatialReference === SpatialReference.Lv95) {
-      return [
-        Validators.required,
-        AtlasCharsetsValidator.decimalWithMaxDigits(LV95_MAX_DIGITS),
-      ];
+      return [Validators.required, AtlasCharsetsValidator.decimalWithMaxDigits(LV95_MAX_DIGITS)];
     }
     if (spatialReference === SpatialReference.Wgs84) {
       const minMax = northOrEast === 'NORTH' ? 90 : 180;

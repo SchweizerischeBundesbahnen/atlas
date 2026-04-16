@@ -1,8 +1,4 @@
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
@@ -24,12 +20,8 @@ describe('StopPointWorkflowDetailResolver', () => {
     workflowComment: 'No comment',
   };
 
-  let stopPointWorkflowService: Mocked<
-    Pick<StopPointWorkflowService, 'getStopPointWorkflow'>
-  >;
-  let servicePointsService: Mocked<
-    Pick<ServicePointService, 'getServicePointVersionsBySloid'>
-  >;
+  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'getStopPointWorkflow'>>;
+  let servicePointsService: Mocked<Pick<ServicePointService, 'getServicePointVersionsBySloid'>>;
 
   let resolver: StopPointWorkflowDetailResolver;
 
@@ -38,9 +30,7 @@ describe('StopPointWorkflowDetailResolver', () => {
       getStopPointWorkflow: vi.fn().mockReturnValue(of(workflow)),
     };
     servicePointsService = {
-      getServicePointVersionsBySloid: vi
-        .fn()
-        .mockReturnValue(of([BERN_WYLEREGG])),
+      getServicePointVersionsBySloid: vi.fn().mockReturnValue(of([BERN_WYLEREGG])),
     };
 
     TestBed.configureTestingModule({
@@ -72,8 +62,6 @@ describe('StopPointWorkflowDetailResolver', () => {
 
     const workflowData = await firstValueFrom(resolvedVersion);
     expect(workflowData?.workflow.versionId).toBe(1);
-    expect(workflowData?.servicePoint[0].designationOfficial).toBe(
-      'Bern, Wyleregg'
-    );
+    expect(workflowData?.servicePoint[0].designationOfficial).toBe('Bern, Wyleregg');
   });
 });

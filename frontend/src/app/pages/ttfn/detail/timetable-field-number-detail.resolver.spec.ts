@@ -1,10 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { Status, TimetableFieldNumberVersion } from '../../../api';
 import {
   TimetableFieldNumberDetailResolver,
@@ -27,18 +23,14 @@ describe('TimetableFieldNumberDetailResolver', () => {
     meanOfTransport: 'TRAIN',
   };
 
-  let timetableFieldNumberServiceSpy: Mocked<
-    Pick<TimetableFieldNumberService, 'getAllVersionsVersioned'>
-  >;
+  let timetableFieldNumberServiceSpy: Mocked<Pick<TimetableFieldNumberService, 'getAllVersionsVersioned'>>;
   let resolver: TimetableFieldNumberDetailResolver;
 
   beforeEach(() => {
     timetableFieldNumberServiceSpy = {
       getAllVersionsVersioned: vi.fn(),
     };
-    timetableFieldNumberServiceSpy.getAllVersionsVersioned.mockReturnValue(
-      of([version])
-    );
+    timetableFieldNumberServiceSpy.getAllVersionsVersioned.mockReturnValue(of([version]));
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],

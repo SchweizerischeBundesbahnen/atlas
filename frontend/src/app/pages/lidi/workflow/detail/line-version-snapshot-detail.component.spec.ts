@@ -15,11 +15,7 @@ import { LinkIconComponent } from '../../../../core/form-components/link-icon/li
 import { EMPTY, of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
-import {
-  AtlasLabelFieldComponent,
-  InfoIconComponent,
-  InfoLinkDirective,
-} from '@atlas/form';
+import { AtlasLabelFieldComponent, InfoIconComponent, InfoLinkDirective } from '@atlas/form';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';

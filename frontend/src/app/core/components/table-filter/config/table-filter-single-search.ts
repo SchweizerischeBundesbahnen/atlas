@@ -7,12 +7,7 @@ export class TableFilterSingleSearch extends TableFilter<string | undefined> {
   formControl: FormControl;
   label: string;
 
-  constructor(
-    row: number,
-    label: string,
-    elementWidthCssClass: string,
-    validator?: ValidatorFn
-  ) {
+  constructor(row: number, label: string, elementWidthCssClass: string, validator?: ValidatorFn) {
     super(row, elementWidthCssClass);
     this.label = label;
     this.formControl = new FormControl();

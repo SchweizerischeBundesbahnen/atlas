@@ -29,30 +29,17 @@
       </div>
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-12 pe-3">
-          <atlas-text-field
-            [formGroup]="form"
-            controlName="comment"
-            fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.COMMENT"
-          >
+          <atlas-text-field [formGroup]="form" controlName="comment" fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.COMMENT">
           </atlas-text-field>
         </div>
       </div>
     </atlas-detail-page-content>
 
     <atlas-detail-footer>
-      <button
-        (click)="cancelCreation()"
-        class="atlas-primary-btn"
-        data-cy="cancel"
-      >
+      <button (click)="cancelCreation()" class="atlas-primary-btn" data-cy="cancel">
         {{ 'COMMON.CANCEL' | translate }}
       </button>
-      <button
-        (click)="create()"
-        class="atlas-primary-btn ms-3"
-        data-cy="save"
-        type="submit"
-      >
+      <button (click)="create()" class="atlas-primary-btn ms-3" data-cy="save" type="submit">
         {{ 'COMMON.SAVE' | translate }}
       </button>
     </atlas-detail-footer>

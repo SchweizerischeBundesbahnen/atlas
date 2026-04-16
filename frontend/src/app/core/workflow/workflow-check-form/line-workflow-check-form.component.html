@@ -1,9 +1,7 @@
 @if (permissionService.isAtLeastSupervisor('LIDI')) {
   <div class="mt-5">
     <div class="mb-2">
-      <span class="font-bold-4xl">{{
-        'WORKFLOW.CHECK.CHECK' | translate
-      }}</span>
+      <span class="font-bold-4xl">{{ 'WORKFLOW.CHECK.CHECK' | translate }}</span>
     </div>
     <atlas-workflow-form
       [formGroup]="formGroup"

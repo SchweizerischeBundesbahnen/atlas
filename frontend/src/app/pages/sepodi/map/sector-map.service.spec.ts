@@ -20,9 +20,7 @@ describe('SectorMapService', () => {
   mapServiceSpy.mapInitialized = new BehaviorSubject(true);
   mapServiceSpy.map = mapMock;
 
-  let sectorInternalService: Mocked<
-    Pick<SectorInternalService, 'getSectorsValidToday'>
-  >;
+  let sectorInternalService: Mocked<Pick<SectorInternalService, 'getSectorsValidToday'>>;
 
   beforeEach(() => {
     sectorInternalService = {
@@ -100,13 +98,9 @@ describe('SectorMapService', () => {
 
     service.displaySectorsOnMap(8507000, 'ch:1:sloid:7000:0:1');
 
-    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith(
-      MAP_SECTOR_LAYER_NAME
-    );
+    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith(MAP_SECTOR_LAYER_NAME);
     expect(sourceMock.setData).toHaveBeenCalled();
-    const data = sourceMock.setData.mock.calls.at(
-      -1
-    )?.[0] as GeoJSON.FeatureCollection;
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
     expect(data.features).toHaveLength(1);
   });
 
@@ -114,9 +108,7 @@ describe('SectorMapService', () => {
     service.clearDisplayedSectors();
 
     expect(sourceMock.setData).toHaveBeenCalled();
-    const data = sourceMock.setData.mock.calls.at(
-      -1
-    )?.[0] as GeoJSON.FeatureCollection;
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
     expect(data.features).toHaveLength(0);
   });
 
@@ -129,9 +121,7 @@ describe('SectorMapService', () => {
 
     expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('current_sector');
     expect(sourceMock.setData).toHaveBeenCalled();
-    const data = sourceMock.setData.mock.calls.at(
-      -1
-    )?.[0] as GeoJSON.Feature<Point>;
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
     expect(data.geometry.coordinates).toEqual([7.44908190053, 46.96102079646]);
   });
 
@@ -140,9 +130,7 @@ describe('SectorMapService', () => {
 
     expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('current_sector');
     expect(sourceMock.setData).toHaveBeenCalled();
-    const data = sourceMock.setData.mock.calls.at(
-      -1
-    )?.[0] as GeoJSON.Feature<Point>;
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
     expect(data.geometry.coordinates).toEqual([0, 0]);
   });
 });

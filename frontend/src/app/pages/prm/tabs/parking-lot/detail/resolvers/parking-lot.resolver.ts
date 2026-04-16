@@ -12,9 +12,7 @@ export class PrmParkingLotResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadParkingLotVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadParkingLotVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';
     return sloidParameter === 'add'
       ? of([])
@@ -30,6 +28,5 @@ export class PrmParkingLotResolver {
   }
 }
 
-export const parkingLotResolver: ResolveFn<Array<ReadParkingLotVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(PrmParkingLotResolver).resolve(route);
+export const parkingLotResolver: ResolveFn<Array<ReadParkingLotVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(PrmParkingLotResolver).resolve(route);

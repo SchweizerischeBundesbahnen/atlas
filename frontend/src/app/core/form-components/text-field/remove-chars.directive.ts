@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  HostListener,
-  Input,
-  Self,
-} from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener, Input, Self } from '@angular/core';
 
 @Directive({ selector: '[atlasRemoveChars]' })
 export class RemoveCharsDirective implements AfterViewInit {
@@ -25,10 +18,7 @@ export class RemoveCharsDirective implements AfterViewInit {
     if (this.inputElement) {
       if (this.value !== this.inputElement.value) {
         for (const charToRemove of this.atlasRemoveChars) {
-          this.inputElement.value = this.inputElement.value.replace(
-            charToRemove,
-            ''
-          );
+          this.inputElement.value = this.inputElement.value.replace(charToRemove, '');
         }
         this.inputElement.dispatchEvent(new Event('input'));
       }

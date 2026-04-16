@@ -1,9 +1,4 @@
-import {
-  AbstractControl,
-  FormArray,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class SelectionValidator {
   static minSelected(min: number): ValidatorFn {

@@ -9,11 +9,7 @@ import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
 import { of } from 'rxjs';
-import {
-  DecisionType,
-  JudgementType,
-  ReadStopPointWorkflow,
-} from '../../../../api';
+import { DecisionType, JudgementType, ReadStopPointWorkflow } from '../../../../api';
 import { Router } from '@angular/router';
 import { UserService } from '../../../../core/auth/user/user.service';
 import {
@@ -42,17 +38,11 @@ describe('AddStopPointWorkflowComponent', () => {
   let component: AddStopPointWorkflowComponent;
   let fixture: ComponentFixture<AddStopPointWorkflowComponent>;
 
-  let dialogRefSpy: Mocked<
-    Pick<MatDialogRef<AddStopPointWorkflowComponent>, 'close'>
-  >;
+  let dialogRefSpy: Mocked<Pick<MatDialogRef<AddStopPointWorkflowComponent>, 'close'>>;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
   let router: Mocked<Pick<Router, 'navigate'>>;
-  let detailHelperService: Mocked<
-    Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>
-  >;
-  let stopPointWorkflowService: Mocked<
-    Pick<StopPointWorkflowService, 'addStopPointWorkflow' | 'getExaminants'>
-  >;
+  let detailHelperService: Mocked<Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>>;
+  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'addStopPointWorkflow' | 'getExaminants'>>;
 
   beforeEach(async () => {
     dialogRefSpy = { close: vi.fn() };
@@ -115,12 +105,8 @@ describe('AddStopPointWorkflowComponent', () => {
 
     component.addWorkflow();
 
-    expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalledTimes(
-      1
-    );
-    expect(notificationServiceSpy.success).toHaveBeenCalledExactlyOnceWith(
-      'WORKFLOW.NOTIFICATION.ADD.SUCCESS'
-    );
+    expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalledTimes(1);
+    expect(notificationServiceSpy.success).toHaveBeenCalledExactlyOnceWith('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
     expect(dialogRefSpy.close).toHaveBeenCalledExactlyOnceWith();
   });
 
@@ -138,9 +124,7 @@ describe('AddStopPointWorkflowComponent', () => {
       defaultExaminant: new FormControl(false),
     });
 
-    const formArray = new FormArray<FormGroup<ExaminantFormGroup>>([
-      examinantFormGroup,
-    ]);
+    const formArray = new FormArray<FormGroup<ExaminantFormGroup>>([examinantFormGroup]);
     component.form = new FormGroup<StopPointWorkflowDetailFormGroup>({
       ccEmails: new FormControl<Array<string> | null>(null),
       workflowComment: new FormControl<string | null>('Workflow comment 1'),
@@ -150,9 +134,7 @@ describe('AddStopPointWorkflowComponent', () => {
 
     component.addWorkflow();
 
-    expect(
-      stopPointWorkflowService.addStopPointWorkflow
-    ).toHaveBeenCalledExactlyOnceWith(
+    expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalledExactlyOnceWith(
       expect.objectContaining({
         examinants: [
           expect.objectContaining({
@@ -163,9 +145,7 @@ describe('AddStopPointWorkflowComponent', () => {
       })
     );
 
-    expect(notificationServiceSpy.success).toHaveBeenCalledExactlyOnceWith(
-      'WORKFLOW.NOTIFICATION.ADD.SUCCESS'
-    );
+    expect(notificationServiceSpy.success).toHaveBeenCalledExactlyOnceWith('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
     expect(dialogRefSpy.close).toHaveBeenCalledExactlyOnceWith();
   });
 });

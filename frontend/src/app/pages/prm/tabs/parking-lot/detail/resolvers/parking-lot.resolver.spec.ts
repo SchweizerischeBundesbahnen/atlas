@@ -1,16 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { firstValueFrom, Observable, of } from 'rxjs';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { parkingLotResolver } from './parking-lot.resolver';
-import {
-  BooleanOptionalAttributeType,
-  ReadParkingLotVersion,
-} from '../../../../../../api';
+import { BooleanOptionalAttributeType, ReadParkingLotVersion } from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { ParkingLotService } from '../../../../../../api/service/prm/parking-lot/parking-lot.service';
 
@@ -40,9 +33,7 @@ const parkingLot: ReadParkingLotVersion[] = [
 ];
 
 describe('PrmParkingLotResolver', () => {
-  let parkingLotServiceSpy: Mocked<
-    Pick<ParkingLotService, 'getParkingLotVersions'>
-  >;
+  let parkingLotServiceSpy: Mocked<Pick<ParkingLotService, 'getParkingLotVersions'>>;
 
   beforeEach(() => {
     parkingLotServiceSpy = {

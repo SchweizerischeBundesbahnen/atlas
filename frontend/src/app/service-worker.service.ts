@@ -24,18 +24,12 @@ export class ServiceWorkerService {
 
       swUpdate.versionUpdates.pipe().subscribe((versionEvent) => {
         if (versionEvent.type === 'VERSION_READY') {
-          this.openSWDialog(
-            'SW_DIALOG.UPDATE_TITLE',
-            'SW_DIALOG.UPDATE_MESSAGE'
-          );
+          this.openSWDialog('SW_DIALOG.UPDATE_TITLE', 'SW_DIALOG.UPDATE_MESSAGE');
         }
       });
 
       swUpdate.unrecoverable.subscribe(() => {
-        this.openSWDialog(
-          'SW_DIALOG.UNRECOVERABLE_TITLE',
-          'SW_DIALOG.UNRECOVERABLE_MESSAGE'
-        );
+        this.openSWDialog('SW_DIALOG.UNRECOVERABLE_TITLE', 'SW_DIALOG.UNRECOVERABLE_MESSAGE');
       });
     }
   }

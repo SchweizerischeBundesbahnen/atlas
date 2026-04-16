@@ -1,21 +1,8 @@
-@for (
-  page of pageService.enabledPages | async;
-  track page;
-  let pageIndex = $index
-) {
-  <div
-    class="list-item-wrapper"
-    attr.data-cy="{{ page.path ? 'sidemenu-' + page.path : 'sidemenu-start' }}"
-  >
-    <a
-      mat-list-item
-      [routerLink]="page.path"
-      [class.route-active]="activePageIndex === pageIndex"
-    >
+@for (page of pageService.enabledPages | async; track page; let pageIndex = $index) {
+  <div class="list-item-wrapper" attr.data-cy="{{ page.path ? 'sidemenu-' + page.path : 'sidemenu-start' }}">
+    <a mat-list-item [routerLink]="page.path" [class.route-active]="activePageIndex === pageIndex">
       <div class="list-item-content-wrapper">
-        <span class="font-bold-base link-text">{{
-          page.titleMenu! | translate
-        }}</span>
+        <span class="font-bold-base link-text">{{ page.titleMenu! | translate }}</span>
         <em
           class="bi ms-auto"
           [ngClass]="{
@@ -28,25 +15,15 @@
     </a>
     @if (selectedPage() === page && page.subpages) {
       <div>
-        @for (
-          subPage of page.subpages;
-          track subPage;
-          let subPageIndex = $index
-        ) {
+        @for (subPage of page.subpages; track subPage; let subPageIndex = $index) {
           <div
             class="list-item-wrapper"
-            attr.data-cy="{{
-              subPage.path ? 'sidemenu-' + subPage.path : 'sidemenu-start'
-            }}"
-            [class.route-active]="
-              !activePageIndex && activeSubPageIndex === subPageIndex
-            "
+            attr.data-cy="{{ subPage.path ? 'sidemenu-' + subPage.path : 'sidemenu-start' }}"
+            [class.route-active]="!activePageIndex && activeSubPageIndex === subPageIndex"
           >
             <a mat-list-item [routerLink]="subPageLinks().get(subPage)">
               <div class="list-item-content-wrapper subpage">
-                <span class="font-bold-base link-text">{{
-                  subPage.titleMenu! | translate
-                }}</span>
+                <span class="font-bold-base link-text">{{ subPage.titleMenu! | translate }}</span>
                 <em class="bi bi-arrow-right ms-auto"></em>
               </div>
             </a>
@@ -57,11 +34,7 @@
   </div>
 }
 <div class="github">
-  <a
-    href="https://github.com/SchweizerischeBundesbahnen/atlas"
-    target="_blank"
-    rel="noopener"
-  >
+  <a href="https://github.com/SchweizerischeBundesbahnen/atlas" target="_blank" rel="noopener">
     <i class="bi bi-github fs-4"></i>
   </a>
 </div>

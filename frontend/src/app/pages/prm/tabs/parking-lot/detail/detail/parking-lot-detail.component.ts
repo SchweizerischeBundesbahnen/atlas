@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ParkingLotVersion,
-  ReadParkingLotVersion,
-  ReadServicePointVersion,
-} from '../../../../../../api';
+import { ParkingLotVersion, ReadParkingLotVersion, ReadServicePointVersion } from '../../../../../../api';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ParkingLotFormGroupBuilder } from '../form/parking-lot-form-group';
 import { DateRange } from '../../../../../../core/versioning/date-range';
@@ -41,10 +37,7 @@ import { ParkingLotService } from '../../../../../../api/service/prm/parking-lot
     TranslatePipe,
   ],
 })
-export class ParkingLotDetailComponent
-  extends PrmTabDetailBaseComponent<ReadParkingLotVersion>
-  implements OnInit
-{
+export class ParkingLotDetailComponent extends PrmTabDetailBaseComponent<ReadParkingLotVersion> implements OnInit {
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
   showVersionSwitch = false;
@@ -63,14 +56,9 @@ export class ParkingLotDetailComponent
 
     if (!this.isNew) {
       VersionsHandlingService.addVersionNumbers(this.versions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-        this.versions
-      );
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.versions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
@@ -85,15 +73,10 @@ export class ParkingLotDetailComponent
     }
   }
 
-  protected saveProcess(): Observable<
-    ReadParkingLotVersion | ReadParkingLotVersion[]
-  > {
+  protected saveProcess(): Observable<ReadParkingLotVersion | ReadParkingLotVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      const parkingLotVersion = ParkingLotFormGroupBuilder.getWritableForm(
-        this.form,
-        this.servicePoint.sloid!
-      );
+      const parkingLotVersion = ParkingLotFormGroupBuilder.getWritableForm(this.form, this.servicePoint.sloid!);
       if (this.isNew) {
         return this.create(parkingLotVersion);
       } else {
@@ -114,40 +97,29 @@ export class ParkingLotDetailComponent
     }
   }
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] =
-      this.route.snapshot.parent!.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(
-        servicePointVersions
-      );
-    this.businessOrganisations = [
-      ...new Set(
-        servicePointVersions.map((value) => value.businessOrganisation)
-      ),
-    ];
+    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.parent!.data.servicePoint;
+    this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.businessOrganisations = [...new Set(servicePointVersions.map((value) => value.businessOrganisation))];
   }
 
   private create(parkingLotVersion: ParkingLotVersion) {
     return this.parkingLotService.createParkingLot(parkingLotVersion).pipe(
       switchMap((createdVersion) => {
-        return this.notificateAndNavigate(
-          'PRM.PARKING_LOTS.NOTIFICATION.ADD_SUCCESS',
-          createdVersion.sloid!
-        ).pipe(map(() => createdVersion));
+        return this.notificateAndNavigate('PRM.PARKING_LOTS.NOTIFICATION.ADD_SUCCESS', createdVersion.sloid!).pipe(
+          map(() => createdVersion)
+        );
       })
     );
   }
 
   private update(parkingLotVersion: ParkingLotVersion) {
-    return this.parkingLotService
-      .updateParkingLot(this.selectedVersion.id!, parkingLotVersion)
-      .pipe(
-        switchMap((updatedVersions) => {
-          return this.notificateAndNavigate(
-            'PRM.PARKING_LOTS.NOTIFICATION.EDIT_SUCCESS',
-            this.selectedVersion.sloid!
-          ).pipe(map(() => updatedVersions));
-        })
-      );
+    return this.parkingLotService.updateParkingLot(this.selectedVersion.id!, parkingLotVersion).pipe(
+      switchMap((updatedVersions) => {
+        return this.notificateAndNavigate(
+          'PRM.PARKING_LOTS.NOTIFICATION.EDIT_SUCCESS',
+          this.selectedVersion.sloid!
+        ).pipe(map(() => updatedVersions));
+      })
+    );
   }
 }

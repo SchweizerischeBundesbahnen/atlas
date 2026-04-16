@@ -10,12 +10,7 @@ import { TableFilterSingleSearch } from './config/table-filter-single-search';
 import { TableFilterBoolean } from './config/table-filter-boolean';
 import { NgClass } from '@angular/common';
 import { AtlasLabelFieldComponent } from '@atlas/form';
-import {
-  MatChipGrid,
-  MatChipInput,
-  MatChipRemove,
-  MatChipRow,
-} from '@angular/material/chips';
+import { MatChipGrid, MatChipInput, MatChipRemove, MatChipRow } from '@angular/material/chips';
 import { AtlasSlideToggleComponent } from '../../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,10 +18,7 @@ import { TimetableFieldNumberSelectComponent } from '../../form-components/ttfn-
 import { TransportCompanySelectComponent } from '../../form-components/tu-select/transport-company-select.component';
 import { SelectComponent } from '../../form-components/select/select.component';
 import { MatInput } from '@angular/material/input';
-import {
-  MatDatepicker,
-  MatDatepickerInput,
-} from '@angular/material/datepicker';
+import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
 import { InstanceOfPipe } from './instance-of.pipe';
@@ -72,10 +64,7 @@ export class TableFilterComponent<TFilterConfig> {
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
 
-  handleDateChange(
-    dateSelect: TableFilterDateSelect,
-    value: Moment | null
-  ): void {
+  handleDateChange(dateSelect: TableFilterDateSelect, value: Moment | null): void {
     if (dateSelect.formControl.invalid) {
       return;
     }

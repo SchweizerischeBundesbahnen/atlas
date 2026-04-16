@@ -18,9 +18,7 @@ describe('DecisionOverrideComponent', () => {
   let component: DecisionOverrideComponent;
   let fixture: ComponentFixture<DecisionOverrideComponent>;
 
-  let stopPointWorkflowService: Mocked<
-    Pick<StopPointWorkflowService, 'overrideVoteWorkflow'>
-  >;
+  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'overrideVoteWorkflow'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
 
   beforeEach(async () => {

@@ -10,33 +10,28 @@ import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 export const routes: Routes = [
   {
     path: Pages.TTFN.path,
-    loadChildren: () =>
-      import('./pages/ttfn/ttfn-routing').then((r) => r.routes),
+    loadChildren: () => import('./pages/ttfn/ttfn-routing').then((r) => r.routes),
     data: { headerTitle: Pages.TTFN.headerTitle },
   },
   {
     path: Pages.BULK_IMPORT.path,
-    loadChildren: () =>
-      import('./pages/bulk-import/bulk-import-routing').then((r) => r.routes),
+    loadChildren: () => import('./pages/bulk-import/bulk-import-routing').then((r) => r.routes),
     data: { headerTitle: Pages.BULK_IMPORT.headerTitle },
     canActivate: [autoLoginPartialRoutesGuard],
   },
   {
     path: Pages.LIDI.path,
-    loadChildren: () =>
-      import('./pages/lidi/lidi.routing').then((r) => r.routes),
+    loadChildren: () => import('./pages/lidi/lidi.routing').then((r) => r.routes),
     data: { headerTitle: Pages.LIDI.headerTitle },
   },
   {
     path: Pages.BODI.path,
-    loadChildren: () =>
-      import('./pages/bodi/bodi-routing').then((r) => r.routes),
+    loadChildren: () => import('./pages/bodi/bodi-routing').then((r) => r.routes),
     data: { headerTitle: Pages.BODI.headerTitle },
   },
   {
     path: Pages.SEPODI.path,
-    loadChildren: () =>
-      import('./pages/sepodi/sepodi-routing').then((r) => r.routes),
+    loadChildren: () => import('./pages/sepodi/sepodi-routing').then((r) => r.routes),
     data: { headerTitle: Pages.SEPODI.headerTitle },
   },
   {
@@ -52,27 +47,20 @@ export const routes: Routes = [
   },
   {
     path: Pages.USER_ADMINISTRATION.path,
-    loadChildren: () =>
-      import('./pages/user-administration/user-administration-routing').then(
-        (r) => r.routes
-      ),
+    loadChildren: () => import('./pages/user-administration/user-administration-routing').then((r) => r.routes),
     data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
     canActivate: [autoLoginPartialRoutesGuard, adminUser],
   },
   {
     path: Pages.HOME.path,
-    loadComponent: () =>
-      import('./pages/home/home.component').then((m) => m.HomeComponent),
+    loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
     data: {
       headerTitle: Pages.HOME.headerTitle,
     },
   },
   {
     path: Pages.USER_PROFILE.path,
-    loadComponent: () =>
-      import('./pages/user-profile/user-profile.component').then(
-        (m) => m.UserProfileComponent
-      ),
+    loadComponent: () => import('./pages/user-profile/user-profile.component').then((m) => m.UserProfileComponent),
     data: {
       headerTitle: Pages.USER_PROFILE.headerTitle,
     },

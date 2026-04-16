@@ -14,8 +14,7 @@ const errorResponse = new HttpErrorResponse({
     message: 'Not found',
     details: [
       {
-        message:
-          'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
         field: 'number',
         displayInfo: {
           code: 'TTFN.CONFLICT.NUMBER',
@@ -60,11 +59,7 @@ describe('NotificationService', () => {
 
     // Config
     TestBed.configureTestingModule({
-      imports: [
-        MatSnackBarModule,
-        TranslateModule.forRoot(),
-        RouterModule.forRoot([]),
-      ],
+      imports: [MatSnackBarModule, TranslateModule.forRoot(), RouterModule.forRoot([])],
       providers: [
         { provide: TranslateService, useValue: translateServiceStub },
         { provide: MatSnackBar, useValue: matSnackBarStub },
@@ -108,8 +103,7 @@ describe('NotificationService', () => {
           message: 'Not found',
           details: [
             Object({
-              message:
-                'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+              message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
               field: 'number',
               displayInfo: Object({
                 code: 'TTFN.CONFLICT.NUMBER',

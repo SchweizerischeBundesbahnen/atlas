@@ -6,9 +6,7 @@ import { mock } from 'vitest-mock-extended';
 
 describe('MainlineDescriptionPipe', () => {
   const translatePipe = mock<TranslatePipe>();
-  translatePipe.transform.mockReturnValue(
-    'LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE'
-  );
+  translatePipe.transform.mockReturnValue('LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE');
 
   const pipe = new MainlineDescriptionPipe(translatePipe);
 
@@ -23,8 +21,6 @@ describe('MainlineDescriptionPipe', () => {
 
   it('should return translated fallback if no description', () => {
     const line = { swissLineNumber: 'swissLineNumber' } as Line;
-    expect(pipe.transform(line)).toBe(
-      '(LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE)'
-    );
+    expect(pipe.transform(line)).toBe('(LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE)');
   });
 });

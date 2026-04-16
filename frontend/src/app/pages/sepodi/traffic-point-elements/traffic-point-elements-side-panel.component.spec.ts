@@ -16,9 +16,7 @@ describe('TrafficPointElementsSidePanelComponent', () => {
   let component: TrafficPointElementsSidePanelComponent;
   let fixture: ComponentFixture<TrafficPointElementsSidePanelComponent>;
 
-  let sectorMapService: Mocked<
-    Pick<SectorMapService, 'displaySectorsOnMap' | 'clearDisplayedSectors'>
-  >;
+  let sectorMapService: Mocked<Pick<SectorMapService, 'displaySectorsOnMap' | 'clearDisplayedSectors'>>;
   let trafficPointMapService: Mocked<
     Pick<
       TrafficPointMapService,
@@ -71,11 +69,7 @@ describe('TrafficPointElementsSidePanelComponent', () => {
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     return TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        TrafficPointElementsSidePanelComponent,
-        DetailPageContainerComponent,
-      ],
+      imports: [AppTestingModule, TrafficPointElementsSidePanelComponent, DetailPageContainerComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: SectorMapService, useValue: sectorMapService },

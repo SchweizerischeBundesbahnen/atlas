@@ -10,11 +10,7 @@
       <i class="bi bi-zoom-in"></i>
     </div>
   }
-  <button
-    mat-icon-button
-    class="map-style-selector"
-    (click)="toggleStyleSelection()"
-  >
+  <button mat-icon-button class="map-style-selector" (click)="toggleStyleSelection()">
     <em class="bi bi-stack"></em>
   </button>
   @if (showMapStyleSelection) {
@@ -41,12 +37,7 @@
         @for (row of legend; track row) {
           <div class="legend-row d-flex flex-row align-items-center">
             <div class="image d-flex pe-2">
-              <img
-                [src]="row.icon.src"
-                height="10px"
-                width="10px"
-                [alt]="'SEPODI.MAP_LEGEND.' + row.id | translate"
-              />
+              <img [src]="row.icon.src" height="10px" width="10px" [alt]="'SEPODI.MAP_LEGEND.' + row.id | translate" />
             </div>
             <div class="text d-flex">
               {{ 'SEPODI.MAP_LEGEND.' + row.id | translate }}
@@ -60,19 +51,11 @@
     <em class="bi bi-plus"></em>
   </button>
 
-  <button
-    mat-icon-button
-    class="map-style-selector zoom-out"
-    (click)="zoomOut()"
-  >
+  <button mat-icon-button class="map-style-selector zoom-out" (click)="zoomOut()">
     <em class="bi bi-dash"></em>
   </button>
 
-  <button
-    mat-icon-button
-    class="map-style-selector zoom-home"
-    (click)="goHome()"
-  >
+  <button mat-icon-button class="map-style-selector zoom-home" (click)="goHome()">
     <em class="bi bi-house-door"></em>
   </button>
 </div>

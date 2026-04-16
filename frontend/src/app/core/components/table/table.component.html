@@ -2,10 +2,7 @@
   <atlas-loading-spinner [isLoading]="isLoading"></atlas-loading-spinner>
 
   @if (showTableFilter) {
-    <atlas-table-filter
-      (searchEvent)="searchData()"
-      [filterConfigurations]="tableFilterConfig"
-    ></atlas-table-filter>
+    <atlas-table-filter (searchEvent)="searchData()" [filterConfigurations]="tableFilterConfig"></atlas-table-filter>
   }
 
   <ng-content></ng-content>
@@ -74,9 +71,7 @@
               (selectChanged)="changeDropdownEvent.emit({ $event, value })"
               [additionalLabelspace]="0"
               [disabled]="column.dropdown.disabled"
-              [optionTranslateLabelPrefix]="
-                column.dropdown.translate.withPrefix
-              "
+              [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"
               [options]="column.dropdown.options"
               [value]="value[column.value]"
             ></atlas-select>
@@ -92,28 +87,18 @@
           </td>
         }
         @if (column.button) {
-          <td
-            (click)="stopPropagation($event)"
-            *matCellDef="let row"
-            class="table-cell bordered-cell"
-            mat-cell
-          >
+          <td (click)="stopPropagation($event)" *matCellDef="let row" class="table-cell bordered-cell" mat-cell>
             <atlas-button
               (buttonClicked)="buttonClickEvent.emit(row)"
               [applicationType]="column.button.applicationType"
               [buttonType]="column.button.buttonType"
               [disabled]="column.button.disabled(row)"
               buttonDataCy="{{ column.button.buttonType }}"
-              title="{{
-                !column.button.disabled(row) ? column.button.title : ''
-              }}"
+              title="{{ !column.button.disabled(row) ? column.button.title : '' }}"
               wrapperStyleClass="text-align-center"
             >
               <ng-template #rightIcon>
-                <i
-                  [ngClass]="!column.button.disabled(row) ? 'icon-enabled' : ''"
-                  class=" {{ column.button.icon }}"
-                ></i>
+                <i [ngClass]="!column.button.disabled(row) ? 'icon-enabled' : ''" class=" {{ column.button.icon }}"></i>
               </ng-template>
             </atlas-button>
           </td>
@@ -127,12 +112,7 @@
             class="table-cell bordered-cell"
             mat-cell
           >
-            <ng-container
-              *ngTemplateOutlet="
-                customCell();
-                context: { $implicit: row, column: column }
-              "
-            ></ng-container>
+            <ng-container *ngTemplateOutlet="customCell(); context: { $implicit: row, column: column }"></ng-container>
           </td>
         }
 
@@ -142,11 +122,7 @@
               <i [class]="'icon ' + column.icon.icon"></i>
             }
             @if (column.icon.iconCallback) {
-              <i
-                [class]="
-                  'icon ' + column.icon.iconCallback(value[column.value])
-                "
-              ></i>
+              <i [class]="'icon ' + column.icon.iconCallback(value[column.value])"></i>
             }
           </td>
         }
@@ -154,12 +130,7 @@
     }
 
     <tr *matHeaderRowDef="getColumnDefs()" mat-header-row></tr>
-    <tr
-      (click)="edit(row)"
-      *matRowDef="let row; columns: getColumnDefs()"
-      class="atlas-table-row"
-      mat-row
-    ></tr>
+    <tr (click)="edit(row)" *matRowDef="let row; columns: getColumnDefs()" class="atlas-table-row" mat-row></tr>
 
     <!-- Row shown when there is no matching data. -->
     <tr *matNoDataRow class="mat-row">

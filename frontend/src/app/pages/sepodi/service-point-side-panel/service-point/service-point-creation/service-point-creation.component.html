@@ -33,9 +33,7 @@
         [formGroup]="form"
         controlName="number"
         fieldLabel="SEPODI.SERVICE_POINTS.SERVICE_POINT_ID"
-        [placeholder]="
-          form.controls.number.disabled ? 'COMMON.AUTOMATICALLY_ASSIGNED' : ''
-        "
+        [placeholder]="form.controls.number.disabled ? 'COMMON.AUTOMATICALLY_ASSIGNED' : ''"
       >
       </atlas-text-field>
     </div>
@@ -68,9 +66,7 @@
         geography
         [form]="form.controls.servicePointGeolocation"
         [editMode]="form.enabled"
-        (geographyChanged)="
-          $event ? onGeographyEnabled() : onGeographyDisabled()
-        "
+        (geographyChanged)="$event ? onGeographyEnabled() : onGeographyDisabled()"
       ></atlas-sepodi-geography>
     </atlas-service-point-form>
   </atlas-detail-page-content>

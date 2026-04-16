@@ -8,10 +8,7 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';
 import { MeanOfTransport } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  STOP_POINT,
-  STOP_POINT_COMPLETE,
-} from '../../../util/stop-point-test-data';
+import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../util/stop-point-test-data';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { PrmVariantInfoService } from '../prm-variant-info.service';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
@@ -40,18 +37,14 @@ describe('StopPointDetailComponent', () => {
     routerMock = mock<Router>();
 
     dialogServiceMock = mock<DialogService>();
-    dialogServiceMock.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogServiceMock.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     stopPointServiceMock = mock<StopPointService>();
     stopPointServiceMock.createStopPoint.mockReturnValue(of(STOP_POINT));
     stopPointServiceMock.updateStopPoint.mockReturnValue(of(STOP_POINT));
 
     prmVariantInfoServiceMock = mock<PrmVariantInfoService>();
-    prmVariantInfoServiceMock.getPrmMeansOfTransportToShow.mockReturnValue(
-      Object.values(MeanOfTransport)
-    );
+    prmVariantInfoServiceMock.getPrmMeansOfTransportToShow.mockReturnValue(Object.values(MeanOfTransport));
 
     notificationServiceMock = mock<NotificationService>();
 
@@ -94,9 +87,7 @@ describe('StopPointDetailComponent', () => {
   it('should init when stop point exists', () => {
     component.stopPointVersions = [STOP_POINT];
     vi.spyOn(component, 'initExistingStopPoint').mockImplementation(() => {});
-    vi.spyOn(component, 'initNotExistingStopPoint').mockImplementation(
-      () => {}
-    );
+    vi.spyOn(component, 'initNotExistingStopPoint').mockImplementation(() => {});
     //when
     component.initStopPoint();
     //then
@@ -108,9 +99,7 @@ describe('StopPointDetailComponent', () => {
     //given
     component.stopPointVersions = [];
     vi.spyOn(component, 'initExistingStopPoint').mockImplementation(() => {});
-    vi.spyOn(component, 'initNotExistingStopPoint').mockImplementation(
-      () => {}
-    );
+    vi.spyOn(component, 'initNotExistingStopPoint').mockImplementation(() => {});
     //when
     component.initStopPoint();
     //then
@@ -229,10 +218,7 @@ describe('StopPointDetailComponent', () => {
   it('should update with prm variant change', () => {
     //given
     routerMock.navigate.mockResolvedValue(true);
-    vi.spyOn(
-      component,
-      'showPrmChangeVariantConfirmationDialog'
-    ).mockReturnValue(EMPTY);
+    vi.spyOn(component, 'showPrmChangeVariantConfirmationDialog').mockReturnValue(EMPTY);
 
     component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
     component.selectedVersion = STOP_POINT;
@@ -245,9 +231,7 @@ describe('StopPointDetailComponent', () => {
 
   it('should initNotExistingStopPoint when user is authorized', () => {
     //given
-    vi.spyOn(component, 'hasPermissionToCreateNewStopPoint').mockReturnValue(
-      true
-    );
+    vi.spyOn(component, 'hasPermissionToCreateNewStopPoint').mockReturnValue(true);
     vi.spyOn(component, 'initEmptyForm').mockImplementation(() => {});
     //when
     component.initNotExistingStopPoint();
@@ -259,9 +243,7 @@ describe('StopPointDetailComponent', () => {
 
   it('should initNotExistingStopPoint when user is not authorized', () => {
     //given
-    vi.spyOn(component, 'hasPermissionToCreateNewStopPoint').mockReturnValue(
-      false
-    );
+    vi.spyOn(component, 'hasPermissionToCreateNewStopPoint').mockReturnValue(false);
     vi.spyOn(component, 'initEmptyForm').mockImplementation(() => {});
     //when
     component.initNotExistingStopPoint();
@@ -281,9 +263,7 @@ describe('StopPointDetailComponent', () => {
     //when
     component.initEmptyForm();
     //then
-    expect(component.form.controls.number.value).toEqual(
-      BERN_WYLEREGG.number.number
-    );
+    expect(component.form.controls.number.value).toEqual(BERN_WYLEREGG.number.number);
     expect(component.form.controls.sloid.value).toEqual(BERN_WYLEREGG.sloid);
     expect(buildEmptyWithReducedValidationFormGroupSpy).toHaveBeenCalled();
   });

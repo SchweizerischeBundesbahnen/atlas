@@ -169,21 +169,14 @@
           @if (group.name !== 'ALL') {
             <img
               class="me-2"
-              ngSrc="../../../../assets/images/means-of-transport/{{
-                group.name
-              }}.svg"
+              ngSrc="../../../../assets/images/means-of-transport/{{ group.name }}.svg"
               [attr.data-cy]="group.name"
-              [alt]="
-                'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name
-                  | translate
-              "
+              [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name | translate"
               width="24"
               height="24"
             />
           }
-          {{
-            'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name | translate
-          }}
+          {{ 'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name | translate }}
         </ng-template>
       </atlas-select>
     </div>
@@ -192,10 +185,7 @@
   <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
 
   <div class="w-50">
-    <atlas-form-date-range
-      [formGroup]="form"
-      [showMaxValidityAutoFill]="false"
-    ></atlas-form-date-range>
+    <atlas-form-date-range [formGroup]="form" [showMaxValidityAutoFill]="false"></atlas-form-date-range>
   </div>
 
   <div class="col-12 d-flex mt-3 pb-3">
@@ -209,9 +199,7 @@
     </div>
   </div>
 
-  <span class="font-bold-2xl">{{
-    'FORM.SUPPLEMENTARY_INFORMATION' | translate
-  }}</span>
+  <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-6">
       <atlas-form-comment [formGroup]="form"></atlas-form-comment>

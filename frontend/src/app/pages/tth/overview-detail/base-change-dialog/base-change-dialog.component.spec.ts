@@ -6,10 +6,7 @@ import { of } from 'rxjs';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { FormModule } from '../../../../core/module/form.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  MAT_SNACK_BAR_DATA,
-  MatSnackBarRef,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -94,31 +91,20 @@ describe('BaseChangeDialogComponent', () => {
   it('should render tth change status dialog', () => {
     component.formGroup.controls['publicComment'].setValue('Forza Napoli');
 
-    const title = fixture.debugElement.query(
-      By.css('div.dialog > div.mb-5 > span.font-bold-4xl')
-    );
+    const title = fixture.debugElement.query(By.css('div.dialog > div.mb-5 > span.font-bold-4xl'));
     expect(title.nativeElement.textContent).toBe('Title');
 
-    const content = fixture.debugElement.query(
-      By.css('div.dialog > div > span.message')
-    );
+    const content = fixture.debugElement.query(By.css('div.dialog > div > span.message'));
     expect(content.nativeElement.textContent).toBe('message');
 
-    const publicComment = fixture.debugElement.query(
-      By.css('atlas-form-comment')
-    );
-    const publicCommentValue =
-      publicComment.nativeNode.querySelector('textarea').value;
+    const publicComment = fixture.debugElement.query(By.css('atlas-form-comment'));
+    const publicCommentValue = publicComment.nativeNode.querySelector('textarea').value;
     expect(publicCommentValue).toBe('Forza Napoli');
 
-    const cancelButton = fixture.debugElement.query(
-      By.css('mat-dialog-actions button.me-3')
-    );
+    const cancelButton = fixture.debugElement.query(By.css('mat-dialog-actions button.me-3'));
     expect(cancelButton.nativeElement.textContent).to.contain(' DIALOG.CANCEL');
 
-    const confirmButton = fixture.debugElement.query(
-      By.css('mat-dialog-actions button.primary-color-btn')
-    );
+    const confirmButton = fixture.debugElement.query(By.css('mat-dialog-actions button.primary-color-btn'));
     expect(confirmButton.nativeElement.textContent).to.contain('DIALOG.OK');
   });
 });

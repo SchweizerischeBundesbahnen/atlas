@@ -12,9 +12,7 @@
     <mat-checkbox formControlName="interoperable" data-cy="interoperable">
       {{ 'PRM.STOP_POINTS.FORM.INTEROPERABLE' | translate }}
     </mat-checkbox>
-    <atlas-field-error
-      [control]="form.get('interoperable')"
-    ></atlas-field-error>
+    <atlas-field-error [control]="form.get('interoperable')"></atlas-field-error>
   </div>
 </div>
 <div class="col-12 d-flex mt-4">

@@ -16,13 +16,7 @@ import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
 
 @Component({
   selector: 'atlas-sector-overview',
-  imports: [
-    TranslatePipe,
-    DetailPageContentComponent,
-    TableComponent,
-    AtlasButtonComponent,
-    DetailFooterComponent,
-  ],
+  imports: [TranslatePipe, DetailPageContentComponent, TableComponent, AtlasButtonComponent, DetailFooterComponent],
   templateUrl: './sector-overview.component.html',
   styleUrls: ['./sector-overview.component.scss'],
 })
@@ -61,12 +55,8 @@ export class SectorOverviewComponent implements OnInit {
   showCreateButtons = false;
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.SECTORS
-    );
-    this.trafficPointSloid =
-      this.route.parent!.snapshot.params['trafficPointSloid']!;
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.SECTORS);
+    this.trafficPointSloid = this.route.parent!.snapshot.params['trafficPointSloid']!;
     this.showCreateButtons = this.sectorPermissionService.showCreateButton(
       this.route.parent!.snapshot.data.servicePoint
     );
@@ -78,9 +68,7 @@ export class SectorOverviewComponent implements OnInit {
 
   getSectorOverview(pagination: TablePagination) {
     this.sectorInternalService
-      .getSectors(this.trafficPointSloid, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
+      .getSectors(this.trafficPointSloid, pagination.page, pagination.size, [pagination.sort ?? 'designation,asc'])
       .subscribe((sectors) => {
         this.sectors = sectors.objects!;
         this.totalSectors = sectors.totalCount!;

@@ -19,5 +19,4 @@ export class CanActivateServicePointCreationGuard {
   }
 }
 
-export const canCreateServicePoint: CanActivateFn = () =>
-  inject(CanActivateServicePointCreationGuard).canActivate();
+export const canCreateServicePoint: CanActivateFn = () => inject(CanActivateServicePointCreationGuard).canActivate();

@@ -18,9 +18,7 @@ describe('SectorOverviewComponent', () => {
   let component: SectorOverviewComponent;
   let fixture: ComponentFixture<SectorOverviewComponent>;
 
-  let sectorInternalServiceSpy: Mocked<
-    Pick<SectorInternalService, 'getSectors'>
-  >;
+  let sectorInternalServiceSpy: Mocked<Pick<SectorInternalService, 'getSectors'>>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
 
   const activatedRouteMock = {
@@ -83,12 +81,7 @@ describe('SectorOverviewComponent', () => {
       size: 10,
     });
 
-    expect(sectorInternalServiceSpy.getSectors).toHaveBeenCalledWith(
-      'ch:1:sloid:7000:1',
-      0,
-      10,
-      ['designation,asc']
-    );
+    expect(sectorInternalServiceSpy.getSectors).toHaveBeenCalledWith('ch:1:sloid:7000:1', 0, 10, ['designation,asc']);
   });
 
   it('should navigate to sector detail', () => {
@@ -118,27 +111,18 @@ describe('SectorOverviewComponent', () => {
       sloid: 'ch:1:sloid:7000:1:1',
     });
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['ch:1:sloid:7000:1:1'],
-      expect.any(Object)
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['ch:1:sloid:7000:1:1'], expect.any(Object));
   });
 
   it('should navigate back to service point', () => {
     component.backToServicePoint();
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['../..'],
-      expect.any(Object)
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['../..'], expect.any(Object));
   });
 
   it('should navigate to add sector', () => {
     component.addSector();
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['add'],
-      expect.any(Object)
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['add'], expect.any(Object));
   });
 });

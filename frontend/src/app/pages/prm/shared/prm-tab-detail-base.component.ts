@@ -1,10 +1,7 @@
 import { NotificationService } from '../../../core/notification/notification.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  DetailDialogHelperService,
-  DetailWithCancelEdit,
-} from '../../../core/detail/detail-dialog-helper.service';
+import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../core/detail/detail-dialog-helper.service';
 import { FormGroup } from '@angular/forms';
 import { ValidityService } from '../../sepodi/validity/validity.service';
 import { catchError, EMPTY, finalize, from, Observable, take } from 'rxjs';
@@ -14,16 +11,11 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 @Component({
   template: '',
 })
-export abstract class PrmTabDetailBaseComponent<T>
-  implements OnInit, DetailFormComponent, DetailWithCancelEdit
-{
-  protected readonly notificationService: NotificationService =
-    inject(NotificationService);
+export abstract class PrmTabDetailBaseComponent<T> implements OnInit, DetailFormComponent, DetailWithCancelEdit {
+  protected readonly notificationService: NotificationService = inject(NotificationService);
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
-  protected readonly detailHelperService: DetailDialogHelperService = inject(
-    DetailDialogHelperService
-  );
+  protected readonly detailHelperService: DetailDialogHelperService = inject(DetailDialogHelperService);
   protected readonly validityService: ValidityService = inject(ValidityService);
 
   form: FormGroup = new FormGroup({});
@@ -80,8 +72,7 @@ export abstract class PrmTabDetailBaseComponent<T>
   }
 
   private routeToParent(routeParam: string = '') {
-    const navigation =
-      Array<string>(this.nbrOfBackPaths).fill('../').join('') + routeParam;
+    const navigation = Array<string>(this.nbrOfBackPaths).fill('../').join('') + routeParam;
     const navigationWithoutTrailingSlash = navigation.replace(/\/$/, '');
     return this.router.navigate([navigationWithoutTrailingSlash], {
       relativeTo: this.route,

@@ -46,19 +46,11 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
   };
 
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
-  let stopPointWorkflowService: Mocked<
-    Pick<StopPointWorkflowService, 'restartStopPointWorkflow'>
-  >;
+  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'restartStopPointWorkflow'>>;
   let router: Mocked<Pick<Router, 'navigate' | 'navigateByUrl'>>;
-  let detailHelperService: Mocked<
-    Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>
-  >;
-  let userAdministrationServiceMock: Mocked<
-    Pick<UserAdministrationService, 'getCurrentUser'>
-  >;
-  let dialogRefSpy: Mocked<
-    Pick<MatDialogRef<StopPointRestartWorkflowDialogComponent>, 'close'>
-  >;
+  let detailHelperService: Mocked<Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>>;
+  let userAdministrationServiceMock: Mocked<Pick<UserAdministrationService, 'getCurrentUser'>>;
+  let dialogRefSpy: Mocked<Pick<MatDialogRef<StopPointRestartWorkflowDialogComponent>, 'close'>>;
 
   function formGroup(component: StopPointRestartWorkflowDialogComponent) {
     const formGroup = component.formGroup;
@@ -129,9 +121,7 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
   it('should cancel restart workflow', () => {
     component.closeDialog();
 
-    expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalledWith(
-      component.formGroup
-    );
+    expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalledWith(component.formGroup);
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
@@ -141,9 +131,7 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
     fixture.detectChanges();
     component.restartWorkflow();
 
-    expect(
-      stopPointWorkflowService.restartStopPointWorkflow
-    ).toHaveBeenCalled();
+    expect(stopPointWorkflowService.restartStopPointWorkflow).toHaveBeenCalled();
     expect(notificationServiceSpy.success).toHaveBeenCalled();
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });

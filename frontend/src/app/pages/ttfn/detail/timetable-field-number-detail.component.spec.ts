@@ -8,10 +8,7 @@ import moment from 'moment';
 import { of, throwError } from 'rxjs';
 import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  adminPermissionServiceMock,
-  translateServiceProvider,
-} from '../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../app.testing.mocks';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
@@ -35,8 +32,7 @@ const error = new HttpErrorResponse({
     message: 'Not found',
     details: [
       {
-        message:
-          'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
         field: 'number',
         displayInfo: {
           code: 'TTFN.CONFLICT.NUMBER',
@@ -72,12 +68,8 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   let component: TimetableFieldNumberDetailComponent;
   let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
   let router: Router;
-  let mockTimetableFieldNumberService: Mocked<
-    Pick<TimetableFieldNumberService, 'updateVersionWithVersioning'>
-  >;
-  let mockTimetableFieldNumberInternalService: Mocked<
-    Pick<TimetableFieldNumberInternalService, 'deleteVersions'>
-  >;
+  let mockTimetableFieldNumberService: Mocked<Pick<TimetableFieldNumberService, 'updateVersionWithVersioning'>>;
+  let mockTimetableFieldNumberInternalService: Mocked<Pick<TimetableFieldNumberInternalService, 'deleteVersions'>>;
 
   beforeEach(() => {
     mockTimetableFieldNumberService = {
@@ -119,28 +111,20 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should update Version successfully', () => {
-    mockTimetableFieldNumberService.updateVersionWithVersioning.mockReturnValue(
-      of([version])
-    );
+    mockTimetableFieldNumberService.updateVersionWithVersioning.mockReturnValue(of([version]));
     vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
-    const snackBarContainer = fixture.nativeElement.parentElement.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = fixture.nativeElement.parentElement.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent.trim()).toBe(
-      'TTFN.NOTIFICATION.EDIT_SUCCESS'
-    );
+    expect(snackBarContainer.textContent.trim()).toBe('TTFN.NOTIFICATION.EDIT_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should not update Version', () => {
-    mockTimetableFieldNumberService.updateVersionWithVersioning.mockReturnValue(
-      throwError(() => error)
-    );
+    mockTimetableFieldNumberService.updateVersionWithVersioning.mockReturnValue(throwError(() => error));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
@@ -148,20 +132,14 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should delete Version successfully', () => {
-    mockTimetableFieldNumberInternalService.deleteVersions.mockReturnValue(
-      of(undefined)
-    );
+    mockTimetableFieldNumberInternalService.deleteVersions.mockReturnValue(of(undefined));
     vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
-    const snackBarContainer = fixture.nativeElement.parentElement.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = fixture.nativeElement.parentElement.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent.trim()).toBe(
-      'TTFN.NOTIFICATION.DELETE_SUCCESS'
-    );
+    expect(snackBarContainer.textContent.trim()).toBe('TTFN.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
@@ -173,9 +151,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   let component: TimetableFieldNumberDetailComponent;
   let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
-  let mockTimetableFieldNumbersService: Mocked<
-    Pick<TimetableFieldNumberService, 'createVersion'>
-  >;
+  let mockTimetableFieldNumbersService: Mocked<Pick<TimetableFieldNumberService, 'createVersion'>>;
   let router: Router;
 
   beforeEach(() => {
@@ -184,10 +160,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        RouterModule.forRoot([{ path: '', component: HomeComponent }]),
-        DateModule.forRoot(),
-      ],
+      imports: [RouterModule.forRoot([{ path: '', component: HomeComponent }]), DateModule.forRoot()],
       providers: [
         {
           provide: TimetableFieldNumberService,
@@ -220,10 +193,8 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
   });
 
   it('should validate validFrom and validTrue range', () => {
-    const validFrom: AbstractControl =
-      fixture.componentInstance.form.controls['validFrom'];
-    const validTo: AbstractControl =
-      fixture.componentInstance.form.controls['validTo'];
+    const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
+    const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
     validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
     validFrom.markAsTouched();
     validTo.setValue(moment('31.10.1999', 'dd.MM.yyyy'));
@@ -239,8 +210,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   describe('Validation businessOrganisation', () => {
     it('should be required', () => {
-      const businessOrganisation: AbstractControl =
-        fixture.componentInstance.form.controls['businessOrganisation'];
+      const businessOrganisation: AbstractControl = fixture.componentInstance.form.controls['businessOrganisation'];
       businessOrganisation.markAsTouched();
 
       const validationErrors = businessOrganisation.errors;
@@ -250,8 +220,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
 
     it('should not be greater then 255', () => {
-      const businessOrganisation: AbstractControl =
-        fixture.componentInstance.form.controls['businessOrganisation'];
+      const businessOrganisation: AbstractControl = fixture.componentInstance.form.controls['businessOrganisation'];
       businessOrganisation.setValue(loremIpsum256Chars);
       businessOrganisation.markAsTouched();
 
@@ -264,8 +233,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   describe('Validation number', () => {
     it('should be required', () => {
-      const number: AbstractControl =
-        fixture.componentInstance.form.controls['number'];
+      const number: AbstractControl = fixture.componentInstance.form.controls['number'];
       number.markAsTouched();
 
       const validationErrors = number.errors;
@@ -275,8 +243,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
 
     it('should not be greater then 255', () => {
-      const number: AbstractControl =
-        fixture.componentInstance.form.controls['number'];
+      const number: AbstractControl = fixture.componentInstance.form.controls['number'];
       number.setValue(loremIpsum256Chars);
       number.markAsTouched();
 
@@ -289,8 +256,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   describe('Validation description', () => {
     it('should not be greater then 255', () => {
-      const description: AbstractControl =
-        fixture.componentInstance.form.controls['descriptionOutwardLine1'];
+      const description: AbstractControl = fixture.componentInstance.form.controls['descriptionOutwardLine1'];
       description.setValue(loremIpsum256Chars);
       description.markAsTouched();
 
@@ -303,8 +269,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   describe('Validation validFrom', () => {
     it('should be required', () => {
-      const validFrom: AbstractControl =
-        fixture.componentInstance.form.controls['validFrom'];
+      const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
       validFrom.markAsTouched();
 
       const validationErrors = validFrom.errors;
@@ -314,8 +279,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
 
     it('should not be less then 01.01.1700', () => {
-      const validFrom: AbstractControl =
-        fixture.componentInstance.form.controls['validFrom'];
+      const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
       validFrom.setValue(moment('1699-12-01 00:00:00'));
       validFrom.markAsTouched();
 
@@ -328,8 +292,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   describe('Validation validTo', () => {
     it('should be required', () => {
-      const validTo: AbstractControl =
-        fixture.componentInstance.form.controls['validTo'];
+      const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
       validTo.markAsTouched();
 
       const validationErrors = validTo.errors;
@@ -339,8 +302,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
 
     it('should not be greater than 31.12.9999', () => {
-      const validTo: AbstractControl =
-        fixture.componentInstance.form.controls['validTo'];
+      const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
       validTo.setValue(moment('1.12.10000', 'dd.MM.yyyy'));
       validTo.markAsTouched();
 
@@ -354,28 +316,19 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
   describe('Create new Version', () => {
     it('should create successfully a new record', () => {
       vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
-      mockTimetableFieldNumbersService.createVersion.mockReturnValue(
-        of(version)
-      );
+      mockTimetableFieldNumbersService.createVersion.mockReturnValue(of(version));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
-      const snackBarContainer =
-        fixture.nativeElement.parentElement.querySelector(
-          'mat-snack-bar-container'
-        );
+      const snackBarContainer = fixture.nativeElement.parentElement.querySelector('mat-snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent.trim()).toBe(
-        'TTFN.NOTIFICATION.ADD_SUCCESS'
-      );
+      expect(snackBarContainer.textContent.trim()).toBe('TTFN.NOTIFICATION.ADD_SUCCESS');
       expect(snackBarContainer.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
     });
 
     it('should not create a new record', () => {
-      mockTimetableFieldNumbersService.createVersion.mockReturnValue(
-        throwError(() => error)
-      );
+      mockTimetableFieldNumbersService.createVersion.mockReturnValue(throwError(() => error));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 

@@ -1,9 +1,6 @@
 <atlas-detail-page-container>
   <atlas-detail-page-content>
-    <h1 class="font-bold-4xl">
-      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.WORKFLOW' | translate }} {{ workflow.id
-      }}
-    </h1>
+    <h1 class="font-bold-4xl"> {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.WORKFLOW' | translate }} {{ workflow.id }} </h1>
 
     <atlas-stop-point-workflow-basic-info [stopPoint]="stopPoint" />
 
@@ -30,24 +27,22 @@
         </div>
         <div class="col-4" data-cy="links">
           <span class="font-bold-base">
-            <em class="bi bi-geo-alt-fill"></em>{{
-            'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
+            <em class="bi bi-geo-alt-fill"></em>{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
           </span>
-          <atlas-link
-            label="atlas"
-            (linkClicked)="goToAtlasStopPoint()"
-          ></atlas-link>
+          <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
         </div>
-        @if ([TerminationWorkflowStatus.Canceled,
-        TerminationWorkflowStatus.TerminationNotApprovedClosed].includes(workflow.status!))
-        {
-        <div class="d-flex flex-column col-6 mt-3">
-          <atlas-form-comment
-            [formGroup]="form"
-            label="TERMINATION_WORKFLOW.TERMINATION_ABORT_COMMENT"
-            controlName="abortComment"
-          ></atlas-form-comment>
-        </div>
+        @if (
+          [TerminationWorkflowStatus.Canceled, TerminationWorkflowStatus.TerminationNotApprovedClosed].includes(
+            workflow.status!
+          )
+        ) {
+          <div class="d-flex flex-column col-6 mt-3">
+            <atlas-form-comment
+              [formGroup]="form"
+              label="TERMINATION_WORKFLOW.TERMINATION_ABORT_COMMENT"
+              controlName="abortComment"
+            ></atlas-form-comment>
+          </div>
         }
       </div>
 
@@ -100,58 +95,42 @@
       </div>
 
       @for (formDecision of form.controls.examinants.controls; track $index) {
-      <div class="row">
-        <div class="col" [title]="formDecision.controls.firstName.value ?? ''">
-          <atlas-text-field
-            [formGroup]="formDecision"
-            controlName="firstName"
-          ></atlas-text-field>
+        <div class="row">
+          <div class="col" [title]="formDecision.controls.firstName.value ?? ''">
+            <atlas-text-field [formGroup]="formDecision" controlName="firstName"></atlas-text-field>
+          </div>
+          <div class="col" [title]="formDecision.controls.lastName.value ?? ''">
+            <atlas-text-field [formGroup]="formDecision" controlName="lastName"></atlas-text-field>
+          </div>
+          <div class="col" [title]="formDecision.controls.organisation.value ?? ''">
+            <atlas-text-field [formGroup]="formDecision" controlName="organisation"></atlas-text-field>
+          </div>
+          <div class="col" [title]="formDecision.controls.examinantMail.value ?? ''">
+            <atlas-text-field [formGroup]="formDecision" controlName="examinantMail"></atlas-text-field>
+          </div>
+          <div class="col">
+            @if (
+              formDecision.controls.terminationDecisionPerson.value === TerminationDecisionPersonEnum.InfoPlus ||
+              [
+                TerminationWorkflowStatus.TariffStopApproved,
+                TerminationWorkflowStatus.TerminationApproved,
+                TerminationWorkflowStatus.TerminationNotApproved,
+                TerminationWorkflowStatus.TerminationNotApprovedClosed,
+              ].includes(workflow.status!)
+            ) {
+              <atlas-button
+                (buttonClicked)="onOpenDecision(formDecision)"
+                buttonType="icon"
+                wrapperStyleClass="ps-4 pt-1"
+                buttonStyleClass="bordered-btn px-2 py-1"
+              >
+                <ng-template #rightIcon>
+                  <i class="bi {{ formDecision.controls.judgementIcon.value }}"></i>
+                </ng-template>
+              </atlas-button>
+            }
+          </div>
         </div>
-        <div class="col" [title]="formDecision.controls.lastName.value ?? ''">
-          <atlas-text-field
-            [formGroup]="formDecision"
-            controlName="lastName"
-          ></atlas-text-field>
-        </div>
-        <div
-          class="col"
-          [title]="formDecision.controls.organisation.value ?? ''"
-        >
-          <atlas-text-field
-            [formGroup]="formDecision"
-            controlName="organisation"
-          ></atlas-text-field>
-        </div>
-        <div
-          class="col"
-          [title]="formDecision.controls.examinantMail.value ?? ''"
-        >
-          <atlas-text-field
-            [formGroup]="formDecision"
-            controlName="examinantMail"
-          ></atlas-text-field>
-        </div>
-        <div class="col">
-          @if (formDecision.controls.terminationDecisionPerson.value ===
-          TerminationDecisionPersonEnum.InfoPlus ||
-          ([TerminationWorkflowStatus.TariffStopApproved,
-          TerminationWorkflowStatus.TerminationApproved,
-          TerminationWorkflowStatus.TerminationNotApproved,
-          TerminationWorkflowStatus.TerminationNotApprovedClosed].includes(workflow.status!)))
-          {
-          <atlas-button
-            (buttonClicked)="onOpenDecision(formDecision)"
-            buttonType="icon"
-            wrapperStyleClass="ps-4 pt-1"
-            buttonStyleClass="bordered-btn px-2 py-1"
-          >
-            <ng-template #rightIcon>
-              <i class="bi {{ formDecision.controls.judgementIcon.value }}"></i>
-            </ng-template>
-          </atlas-button>
-          }
-        </div>
-      </div>
       }
     </div>
 
@@ -176,26 +155,30 @@
       wrapperStyleClass="me-3"
     ></atlas-button>
     @if (showDecisionButton) {
-    <atlas-button
-      [footerEdit]="form.enabled"
-      buttonDataCy="decide-btn"
-      buttonText="WORKFLOW.BUTTON.DECIDE"
-      buttonType="whiteFooterNonEdit"
-      (buttonClicked)="openDecisionDialog()"
-    />
-    } @if ([TerminationWorkflowStatus.Started,
-    TerminationWorkflowStatus.TariffStopApproved,
-    TerminationWorkflowStatus.TerminationNotApproved].includes(workflow.status!)
+      <atlas-button
+        [footerEdit]="form.enabled"
+        buttonDataCy="decide-btn"
+        buttonText="WORKFLOW.BUTTON.DECIDE"
+        buttonType="whiteFooterNonEdit"
+        (buttonClicked)="openDecisionDialog()"
+      />
+    }
+    @if (
+      [
+        TerminationWorkflowStatus.Started,
+        TerminationWorkflowStatus.TariffStopApproved,
+        TerminationWorkflowStatus.TerminationNotApproved,
+      ].includes(workflow.status!)
     ) {
-    <atlas-button
-      [footerEdit]="false"
-      buttonDataCy="termination-workflow-abort"
-      buttonText="TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.CONFIRM_BUTTON"
-      buttonType="supervisorButton"
-      applicationType="SEPODI"
-      wrapperStyleClass="ms-3"
-      (buttonClicked)="openAbortTermination()"
-    />
+      <atlas-button
+        [footerEdit]="false"
+        buttonDataCy="termination-workflow-abort"
+        buttonText="TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.CONFIRM_BUTTON"
+        buttonType="supervisorButton"
+        applicationType="SEPODI"
+        wrapperStyleClass="ms-3"
+        (buttonClicked)="openAbortTermination()"
+      />
     }
   </atlas-detail-footer>
 </atlas-detail-page-container>

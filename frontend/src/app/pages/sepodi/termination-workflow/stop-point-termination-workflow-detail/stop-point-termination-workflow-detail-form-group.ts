@@ -29,9 +29,7 @@ export interface TerminationDecisionFormGroup {
   motivation: FormControl<string | null | undefined>;
   judgementIcon: FormControl<string | null | undefined>;
   terminationDate: FormControl<Moment | null | undefined>;
-  terminationDecisionPerson: FormControl<
-    TerminationDecisionPersonEnum | null | undefined
-  >;
+  terminationDecisionPerson: FormControl<TerminationDecisionPersonEnum | null | undefined>;
 }
 
 export interface TerminationAbortFormGroup {
@@ -63,14 +61,11 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
       ),
       workflowComment: new FormControl(workflow.workflowComment),
       abortComment: new FormControl(workflow.abortComment),
-      infoPlus: this.buildTerminationDecisionFormGroup(
-        workflow.infoPlusDecision
-      ),
+      infoPlus: this.buildTerminationDecisionFormGroup(workflow.infoPlusDecision),
       nova: this.buildTerminationDecisionFormGroup(workflow.novaDecision),
       examinants: new FormArray<FormGroup<TerminationDecisionFormGroup>>(
         terminationDecisions.map(
-          (terminationDecision) =>
-            this.buildTerminationDecisionFormGroup(terminationDecision) ?? []
+          (terminationDecision) => this.buildTerminationDecisionFormGroup(terminationDecision) ?? []
         )
       ),
     });
@@ -78,10 +73,7 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
 
   static buildCancelTermination(): FormGroup<TerminationAbortFormGroup> {
     return new FormGroup<TerminationAbortFormGroup>({
-      abortComment: new FormControl('', [
-        Validators.required,
-        AtlasFieldLengthValidator.comments,
-      ]),
+      abortComment: new FormControl('', [Validators.required, AtlasFieldLengthValidator.comments]),
     });
   }
 
@@ -94,46 +86,29 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
         lastName: new FormControl(terminationDecision?.lastName),
         organisation: new FormControl(terminationDecision?.organisation, []),
         examinantMail: new FormControl(terminationDecision?.examinantMail, []),
-        judgement: new FormControl(terminationDecision?.judgement, [
-          Validators.required,
-        ]),
+        judgement: new FormControl(terminationDecision?.judgement, [Validators.required]),
         judgementIcon: new FormControl(
-          StopPointWorkflowDetailFormGroupBuilder.buildJudgementIcon(
-            terminationDecision?.judgement
-          )
+          StopPointWorkflowDetailFormGroupBuilder.buildJudgementIcon(terminationDecision?.judgement)
         ),
         terminationDate: new FormControl(
-          terminationDecision?.terminationDate
-            ? moment(terminationDecision.terminationDate)
-            : null
+          terminationDecision?.terminationDate ? moment(terminationDecision.terminationDate) : null
         ),
-        terminationDecisionPerson: new FormControl(
-          terminationDecision?.terminationDecisionPerson
-        ),
-        motivation: new FormControl(terminationDecision?.motivation, [
-          AtlasFieldLengthValidator.comments,
-        ]),
+        terminationDecisionPerson: new FormControl(terminationDecision?.terminationDecisionPerson),
+        motivation: new FormControl(terminationDecision?.motivation, [AtlasFieldLengthValidator.comments]),
       },
       {
-        validators: DecisionFormGroupBuilder.conditionallyRequired(
-          'judgement',
-          'motivation'
-        ),
+        validators: DecisionFormGroupBuilder.conditionallyRequired('judgement', 'motivation'),
       }
     );
   }
 
-  static getTerminationDecision(
-    form: FormGroup<TerminationDecisionFormGroup>
-  ): TerminationDecision {
+  static getTerminationDecision(form: FormGroup<TerminationDecisionFormGroup>): TerminationDecision {
     return {
       judgement: form.controls.judgement.value!,
       motivation: form.controls.motivation.value!,
       terminationDecisionPerson: form.controls.terminationDecisionPerson.value!,
       terminationDate:
-        form.controls.judgement.value === JudgementType.Yes
-          ? form.controls.terminationDate.value!.toDate()
-          : undefined,
+        form.controls.judgement.value === JudgementType.Yes ? form.controls.terminationDate.value!.toDate() : undefined,
     };
   }
 }

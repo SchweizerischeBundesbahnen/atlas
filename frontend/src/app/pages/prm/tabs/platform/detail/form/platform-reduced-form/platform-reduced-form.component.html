@@ -52,10 +52,7 @@
   </div>
 
   <div class="d-flex flex-column col-6 pe-3">
-    @if (
-      meansOfTransport.includes(MeanOfTransport.Tram) ||
-      meansOfTransport.includes(MeanOfTransport.Bus)
-    ) {
+    @if (meansOfTransport.includes(MeanOfTransport.Tram) || meansOfTransport.includes(MeanOfTransport.Bus)) {
       <atlas-select
         [formGroup]="form"
         controlName="attentionField"
@@ -93,14 +90,10 @@
     <mat-checkbox formControlName="partialElevation" data-cy="partialElevation">
       {{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION' | translate }}
       <atlas-form-info-icon
-        infoTitle="{{
-          'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION_INFO' | translate
-        }}"
+        infoTitle="{{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION_INFO' | translate }}"
       ></atlas-form-info-icon>
     </mat-checkbox>
-    <atlas-field-error
-      [control]="form.get('partialElevation')"
-    ></atlas-field-error>
+    <atlas-field-error [control]="form.get('partialElevation')"></atlas-field-error>
   </div>
 </div>
 <div class="col-12 d-flex mt-4">

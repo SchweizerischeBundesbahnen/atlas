@@ -1,18 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import {
-  LidiElementType,
-  Line,
-  ReadSublineVersionV2,
-  SublineType,
-} from '../../../../api';
+import { LidiElementType, Line, ReadSublineVersionV2, SublineType } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
-import {
-  adminPermissionServiceMock,
-  translateServiceProvider,
-} from '../../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
@@ -47,8 +39,7 @@ const error = new HttpErrorResponse({
     message: 'Not found',
     details: [
       {
-        message:
-          'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
         field: 'number',
         displayInfo: {
           code: 'TTFN.CONFLICT.NUMBER',
@@ -67,16 +58,10 @@ const error = new HttpErrorResponse({
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
 let router: Router;
-let validityService: Mocked<
-  Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>
->;
+let validityService: Mocked<Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>>;
 let lineService: Mocked<Pick<LineService, 'getLineVersionsV2'>>;
-let lineInternalService: Mocked<
-  Pick<LineInternalService, 'getLine' | 'getLines'>
->;
-let dialogService: Mocked<
-  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
->;
+let lineInternalService: Mocked<Pick<LineInternalService, 'getLine' | 'getLines'>>;
+let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
 function createSharedMocks(): void {
   validityService = {
@@ -105,9 +90,7 @@ function createSharedMocks(): void {
 
 describe('SublineDetailComponent for existing sublineVersion', () => {
   let sublineService: Mocked<Pick<SublineService, 'updateSublineVersionV2'>>;
-  let sublineInternalService: Mocked<
-    Pick<SublineInternalService, 'deleteSublines' | 'revokeSubline'>
-  >;
+  let sublineInternalService: Mocked<Pick<SublineInternalService, 'deleteSublines' | 'revokeSubline'>>;
 
   const mockData = { sublineDetail: [readSublineVersion] };
 
@@ -130,12 +113,8 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should update SublineVersion successfully', async () => {
-    sublineService.updateSublineVersionV2.mockReturnValue(
-      of([readSublineVersion])
-    );
-    const navigateSpy = vi
-      .spyOn(router, 'navigate')
-      .mockReturnValue(Promise.resolve(true));
+    sublineService.updateSublineVersionV2.mockReturnValue(of([readSublineVersion]));
+    const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.toggleEdit();
     await fixture.whenStable();
@@ -145,21 +124,15 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     fixture.detectChanges();
 
     expect(sublineService.updateSublineVersionV2).toHaveBeenCalled();
-    const snackBarContainer = document.body.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).not.toBeNull();
-    expect(snackBarContainer!.textContent!.trim()).toBe(
-      'LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS'
-    );
+    expect(snackBarContainer!.textContent!.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
     expect(snackBarContainer!.classList).toContain('success');
     expect(navigateSpy).toHaveBeenCalled();
   });
 
   it('should not update Version', () => {
-    sublineService.updateSublineVersionV2.mockReturnValue(
-      throwError(() => error)
-    );
+    sublineService.updateSublineVersionV2.mockReturnValue(throwError(() => error));
 
     component.toggleEdit();
     component.form.controls.description.setValue('NewDescription');
@@ -170,42 +143,30 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 
   it('should delete SublineVersion successfully', async () => {
     sublineInternalService.deleteSublines.mockReturnValue(of(undefined));
-    const navigateSpy = vi
-      .spyOn(router, 'navigate')
-      .mockReturnValue(Promise.resolve(true));
+    const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.delete();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const snackBarContainer = document.body.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).not.toBeNull();
-    expect(snackBarContainer!.textContent!.trim()).toBe(
-      'LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS'
-    );
+    expect(snackBarContainer!.textContent!.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer!.classList).toContain('success');
     expect(navigateSpy).toHaveBeenCalled();
   });
 
   it('should revoke SublineVersion successfully', async () => {
     sublineInternalService.revokeSubline.mockReturnValue(of(undefined));
-    const navigateSpy = vi
-      .spyOn(router, 'navigate')
-      .mockReturnValue(Promise.resolve(true));
+    const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.revoke();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const snackBarContainer = document.body.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).not.toBeNull();
-    expect(snackBarContainer!.textContent!.trim()).toBe(
-      'LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS'
-    );
+    expect(snackBarContainer!.textContent!.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
     expect(snackBarContainer!.classList).toContain('success');
     expect(navigateSpy).toHaveBeenCalled();
   });
@@ -236,12 +197,8 @@ describe('SublineDetailComponent for new sublineVersion', () => {
 
   describe('create new Version', () => {
     it('successfully', async () => {
-      const navigateSpy = vi
-        .spyOn(router, 'navigate')
-        .mockReturnValue(Promise.resolve(true));
-      sublineService.createSublineVersionV2.mockReturnValue(
-        of(readSublineVersion)
-      );
+      const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+      sublineService.createSublineVersionV2.mockReturnValue(of(readSublineVersion));
 
       component.form.patchValue({
         mainlineSlnid: 'mainlineSlnid',
@@ -258,13 +215,9 @@ describe('SublineDetailComponent for new sublineVersion', () => {
       fixture.detectChanges();
 
       expect(sublineService.createSublineVersionV2).toHaveBeenCalled();
-      const snackBarContainer = document.body.querySelector(
-        'mat-snack-bar-container'
-      );
+      const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
       expect(snackBarContainer).not.toBeNull();
-      expect(snackBarContainer!.textContent!.trim()).toBe(
-        'LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS'
-      );
+      expect(snackBarContainer!.textContent!.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
       expect(snackBarContainer!.classList).toContain('success');
       expect(navigateSpy).toHaveBeenCalled();
     });
@@ -277,10 +230,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
     } as Line;
     component.mainLineChanged(mainLine);
 
-    expect(component.TYPE_OPTIONS).toEqual([
-      SublineType.Concession,
-      SublineType.Technical,
-    ]);
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Concession, SublineType.Technical]);
     expect(component.form.controls.sublineType.value).toBeNull();
 
     component.mainLineChanged(undefined);
@@ -296,9 +246,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
     component.mainLineChanged(mainLine);
 
     expect(component.TYPE_OPTIONS).toEqual([SublineType.Disposition]);
-    expect(component.form.controls.sublineType.value).toBe(
-      SublineType.Disposition
-    );
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Disposition);
   });
 
   it('should handle mainLine selection of type temporary', () => {
@@ -309,9 +257,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
     component.mainLineChanged(mainLine);
 
     expect(component.TYPE_OPTIONS).toEqual([SublineType.Temporary]);
-    expect(component.form.controls.sublineType.value).toBe(
-      SublineType.Temporary
-    );
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Temporary);
   });
 
   it('should handle mainLine selection of type operational', () => {
@@ -322,9 +268,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
     component.mainLineChanged(mainLine);
 
     expect(component.TYPE_OPTIONS).toEqual([SublineType.Operational]);
-    expect(component.form.controls.sublineType.value).toBe(
-      SublineType.Operational
-    );
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Operational);
   });
 });
 
@@ -349,10 +293,7 @@ function setupTestBed(
     ],
   }).overrideComponent(SublineDetailComponent, {
     set: {
-      providers: [
-        { provide: ValidityService, useValue: validityService },
-        TranslatePipe,
-      ],
+      providers: [{ provide: ValidityService, useValue: validityService }, TranslatePipe],
     },
   });
 }

@@ -13,9 +13,7 @@ import { Pages } from '../../../../../pages';
   templateUrl: './stop-point-termination-info.component.html',
 })
 export class StopPointTerminationInfoComponent implements OnInit {
-  private readonly stopPointTerminationWorkflowService = inject(
-    StopPointTerminationWorkflowService
-  );
+  private readonly stopPointTerminationWorkflowService = inject(StopPointTerminationWorkflowService);
   private readonly router = inject(Router);
   readonly sloid = input.required<string>();
 
@@ -39,25 +37,17 @@ export class StopPointTerminationInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.stopPointTerminationWorkflowService
-      .getTerminationInfoBySloid(this.sloid())
-      .subscribe((terminationInfo) => {
-        this.terminationDate = DateService.getDateFormatted(
-          terminationInfo.terminationDate
-        );
-        if (terminationInfo.workflowId != null) {
-          this.workflowId = terminationInfo.workflowId;
-        }
-      });
+    this.stopPointTerminationWorkflowService.getTerminationInfoBySloid(this.sloid()).subscribe((terminationInfo) => {
+      this.terminationDate = DateService.getDateFormatted(terminationInfo.terminationDate);
+      if (terminationInfo.workflowId != null) {
+        this.workflowId = terminationInfo.workflowId;
+      }
+    });
   }
 
   navigate() {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([
-        Pages.SEPODI.path,
-        Pages.TERMINATION_STOP_POINT_WORKFLOWS.path,
-        this.workflowId,
-      ])
+      this.router.createUrlTree([Pages.SEPODI.path, Pages.TERMINATION_STOP_POINT_WORKFLOWS.path, this.workflowId])
     );
     window.open(url, '_blank');
   }

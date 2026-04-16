@@ -12,8 +12,7 @@ export class TranslationSortingService {
 
   sort(enumsValues: string[], translationPrefix: string): string[] {
     return enumsValues.sort((x, y) => {
-      return this.translatePipe.transform(translationPrefix + x) >
-        this.translatePipe.transform(translationPrefix + y)
+      return this.translatePipe.transform(translationPrefix + x) > this.translatePipe.transform(translationPrefix + y)
         ? 1
         : -1;
     });

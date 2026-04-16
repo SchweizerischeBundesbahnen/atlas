@@ -1,18 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { NewTimetableHearingYearDialogData } from './model/new-timetable-hearing-year-dialog.data';
 import { HearingStatus, TimetableHearingYear } from '../../../api';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
@@ -58,11 +48,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     },
     [
       DateRangeValidator.fromGreaterThenTo('hearingFrom', 'hearingTo'),
-      NewHearingYearValidator.fromAndToOneYearBefore(
-        'timetableYear',
-        'hearingFrom',
-        'hearingTo'
-      ),
+      NewHearingYearValidator.fromAndToOneYearBefore('timetableYear', 'hearingFrom', 'hearingTo'),
     ]
   );
   YEAR_OPTIONS: number[] = [];
@@ -75,10 +61,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   protected readonly EXAMPLE_DATE_UNTIL = '31.12.2023';
 
   constructor(
-    private readonly dialogRef: MatDialogRef<
-      NewTimetableHearingYearDialogComponent,
-      boolean
-    >,
+    private readonly dialogRef: MatDialogRef<NewTimetableHearingYearDialogComponent, boolean>,
     @Inject(MAT_DIALOG_DATA) public data: NewTimetableHearingYearDialogData,
     private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
     protected notificationService: NotificationService,
@@ -91,26 +74,14 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
 
   initOverviewOfferedYears() {
     this.timetableHearingYearsService
-      .getHearingYears([
-        HearingStatus.Active,
-        HearingStatus.Planned,
-        HearingStatus.Archived,
-      ])
+      .getHearingYears([HearingStatus.Active, HearingStatus.Planned, HearingStatus.Archived])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
-        const sortedTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
-          timetableHearingYears,
-          false
-        );
+        const sortedTimetableHearingYears = TthUtils.sortByTimetableHearingYear(timetableHearingYears, false);
         if (sortedTimetableHearingYears) {
           const activeYear = this.getActiveYear(sortedTimetableHearingYears);
-          const plannedAndArchivedYears = this.getAllPlanedAndArchivedYears(
-            sortedTimetableHearingYears
-          );
-          this.YEAR_OPTIONS = this.calculateProposedYears(
-            activeYear,
-            plannedAndArchivedYears
-          );
+          const plannedAndArchivedYears = this.getAllPlanedAndArchivedYears(sortedTimetableHearingYears);
+          this.YEAR_OPTIONS = this.calculateProposedYears(activeYear, plannedAndArchivedYears);
           this.defaultYearSelection = this.YEAR_OPTIONS[0];
         }
       });
@@ -126,9 +97,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe({
           next: () => {
-            this.notificationService.success(
-              'TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS'
-            );
+            this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
             this.dialogRef.close(true);
           },
           error: () => (this.saveEnabled = true),
@@ -148,13 +117,9 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     return timetableHearingYear.timetableYear;
   }
 
-  getAllPlanedAndArchivedYears(
-    timetableHearingYears: Array<TimetableHearingYear>
-  ): Array<TimetableHearingYear> {
+  getAllPlanedAndArchivedYears(timetableHearingYears: Array<TimetableHearingYear>): Array<TimetableHearingYear> {
     return timetableHearingYears.filter(
-      (year) =>
-        year.hearingStatus === HearingStatus.Planned ||
-        year.hearingStatus === HearingStatus.Archived
+      (year) => year.hearingStatus === HearingStatus.Planned || year.hearingStatus === HearingStatus.Archived
     );
   }
 
@@ -166,12 +131,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     let counter = 1;
     while (proposedYears.length < 5) {
       const proposedYear = activeYear + counter;
-      if (
-        !this.isYearAlreadyPlannedOrArchived(
-          proposedYear,
-          plannedAndArchivedHearingYears
-        )
-      ) {
+      if (!this.isYearAlreadyPlannedOrArchived(proposedYear, plannedAndArchivedHearingYears)) {
         proposedYears.push(proposedYear);
       }
       counter++;
@@ -179,15 +139,8 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     return proposedYears;
   }
 
-  isYearAlreadyPlannedOrArchived(
-    proposedYear: number,
-    timetableHearingYears: Array<TimetableHearingYear>
-  ): boolean {
-    return (
-      timetableHearingYears.filter(
-        (year) => year.timetableYear === proposedYear
-      ).length > 0
-    );
+  isYearAlreadyPlannedOrArchived(proposedYear: number, timetableHearingYears: Array<TimetableHearingYear>): boolean {
+    return timetableHearingYears.filter((year) => year.timetableYear === proposedYear).length > 0;
   }
 
   closeDialog() {

@@ -18,5 +18,4 @@ export const AtlasButtonType = {
   CONFIRM: 'confirm',
 } as const;
 
-export type AtlasButtonType =
-  (typeof AtlasButtonType)[keyof typeof AtlasButtonType];
+export type AtlasButtonType = (typeof AtlasButtonType)[keyof typeof AtlasButtonType];

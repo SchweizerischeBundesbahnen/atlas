@@ -34,18 +34,10 @@
   </mat-radio-group>
 </atlas-dialog-content>
 <atlas-dialog-footer>
-  <button
-    (click)="close()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-close-button"
-  >
+  <button (click)="close()" class="atlas-primary-btn me-3" data-cy="dialog-close-button">
     {{ 'COMMON.BACK' | translate }}
   </button>
-  <button
-    (click)="confirm()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-confirm-button"
-  >
+  <button (click)="confirm()" class="atlas-primary-btn me-3" data-cy="dialog-confirm-button">
     {{ 'TTH.DIALOG.CONFIRM' | translate }}
   </button>
 </atlas-dialog-footer>

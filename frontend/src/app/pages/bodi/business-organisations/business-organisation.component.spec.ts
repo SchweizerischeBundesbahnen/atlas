@@ -34,17 +34,13 @@ describe('BusinessOrganisationComponent', () => {
   let component: BusinessOrganisationComponent;
   let fixture: ComponentFixture<BusinessOrganisationComponent>;
 
-  let businessOrganisationService: Mocked<
-    Pick<BusinessOrganisationService, 'getAllBusinessOrganisations'>
-  >;
+  let businessOrganisationService: Mocked<Pick<BusinessOrganisationService, 'getAllBusinessOrganisations'>>;
 
   beforeEach(() => {
     businessOrganisationService = {
       getAllBusinessOrganisations: vi.fn(),
     };
-    businessOrganisationService.getAllBusinessOrganisations.mockReturnValue(
-      of(businessOrganisation)
-    );
+    businessOrganisationService.getAllBusinessOrganisations.mockReturnValue(of(businessOrganisation));
 
     TestBed.configureTestingModule({
       imports: [BusinessOrganisationComponent, TranslateModule.forRoot()],
@@ -79,9 +75,7 @@ describe('BusinessOrganisationComponent', () => {
       size: 10,
     });
 
-    expect(
-      businessOrganisationService.getAllBusinessOrganisations
-    ).toHaveBeenCalledExactlyOnceWith(
+    expect(businessOrganisationService.getAllBusinessOrganisations).toHaveBeenCalledExactlyOnceWith(
       [],
       undefined,
       undefined,

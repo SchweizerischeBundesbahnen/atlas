@@ -34,16 +34,12 @@ describe('DecisionFormComponent', () => {
   it('should return hasDecisionTypeVotedExpired', () => {
     component.hasDecisionTypeVotedExpired = true;
     component.hasOverride = false;
-    expect(component.warningChipMessage).toBe(
-      'SEPODI.SERVICE_POINTS.WORKFLOW.VOTED_EXPIRATION'
-    );
+    expect(component.warningChipMessage).toBe('SEPODI.SERVICE_POINTS.WORKFLOW.VOTED_EXPIRATION');
   });
 
   it('should return hasOverride', () => {
     component.hasDecisionTypeVotedExpired = false;
     component.hasOverride = true;
-    expect(component.warningChipMessage).toBe(
-      'SEPODI.SERVICE_POINTS.WORKFLOW.OVERRIDE_HAPPENED_INFO'
-    );
+    expect(component.warningChipMessage).toBe('SEPODI.SERVICE_POINTS.WORKFLOW.OVERRIDE_HAPPENED_INFO');
   });
 });

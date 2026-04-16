@@ -22,10 +22,7 @@ import { ValidationService } from '../../../../core/validation/validation.servic
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { ServicePointAbbreviationAllowList } from './service-point-abbreviation-allow-list';
-import {
-  GeographyFormGroup,
-  GeographyFormGroupBuilder,
-} from '../../geography/geography-form-group';
+import { GeographyFormGroup, GeographyFormGroupBuilder } from '../../geography/geography-form-group';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidityService } from '../../validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
@@ -44,10 +41,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-obligation/prm-recording-obligation.component';
 import { StopPointTerminationInfoComponent } from './stop-point-termination/stop-point-termination-info/stop-point-termination-info.component';
 import { TerminationService } from './stop-point-termination/termination.service';
-import {
-  addControlToFormNoEvent,
-  removeControlFromFormNoEvent,
-} from '../../../../core/util/forms';
+import { addControlToFormNoEvent, removeControlFromFormNoEvent } from '../../../../core/util/forms';
 import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 import { ServicePointInternalService } from '../../../../api/service/sepodi/service-point-internal.service';
@@ -58,8 +52,9 @@ import { AddStopPointWorkflowDialogData } from '../../workflow/add-dialog/add-st
 import { AddStopPointWorkflowComponent } from '../../workflow/add-dialog/add-stop-point-workflow.component';
 
 export type StopPointTypeNotUnknown = Exclude<StopPointType, 'UNKNOWN'>;
-export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] =
-  Object.values(StopPointType).filter((type) => type !== 'UNKNOWN');
+export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] = Object.values(StopPointType).filter(
+  (type) => type !== 'UNKNOWN'
+);
 
 @Component({
   selector: 'atlas-service-point',
@@ -83,9 +78,7 @@ export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] =
     RevokeButton,
   ],
 })
-export class ServicePointDetailComponent
-  implements OnDestroy, DetailFormComponent
-{
+export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   readonly servicePointStatus = Status;
 
   private onDestroy$ = new Subject<boolean>();
@@ -192,27 +185,19 @@ export class ServicePointDetailComponent
       this.preferredId = Number(queryParamId);
     }
     VersionsHandlingService.addVersionNumbers(this.servicePointVersions);
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-      this.servicePointVersions
-    );
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
 
     let selectedVersion: ReadServicePointVersion;
     if (this.preferredId) {
       selectedVersion =
         this.servicePointVersions.find((i) => i.id === this.preferredId) ??
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.servicePointVersions
-        );
+        VersionsHandlingService.determineDefaultVersionByValidity(this.servicePointVersions);
       this.preferredId = undefined;
     } else {
-      selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.servicePointVersions
-        );
+      selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.servicePointVersions);
     }
 
-    this.selectedVersionIndex =
-      this.servicePointVersions.indexOf(selectedVersion);
+    this.selectedVersionIndex = this.servicePointVersions.indexOf(selectedVersion);
     this.initSelectedVersion(selectedVersion);
   }
 
@@ -220,14 +205,9 @@ export class ServicePointDetailComponent
     this.terminationInProgress = version.terminationInProgress!;
     this.initShowRevokeButton(version);
     this.selectableStopPointTypes =
-      version.stopPointType === 'UNKNOWN'
-        ? Object.values(StopPointType)
-        : stopPointTypesWithoutUnknown;
+      version.stopPointType === 'UNKNOWN' ? Object.values(StopPointType) : stopPointTypesWithoutUnknown;
     this.formDestroy$.next();
-    this.form = ServicePointFormGroupBuilder.buildFormGroup(
-      version,
-      this.formDestroy$
-    );
+    this.form = ServicePointFormGroupBuilder.buildFormGroup(version, this.formDestroy$);
     this._savedGeographyForm = undefined;
     this.isSwitchVersionDisabled = false;
     this.selectedVersion = version;
@@ -240,28 +220,20 @@ export class ServicePointDetailComponent
 
   initShowRevokeButton(version: ReadServicePointVersion) {
     this.showRevokeButton = !(
-      this.servicePointVersions
-        .map((value) => value.status)
-        .includes('IN_REVIEW') || version.status === 'REVOKED'
+      this.servicePointVersions.map((value) => value.status).includes('IN_REVIEW') || version.status === 'REVOKED'
     );
   }
 
   private displayAndSelectServicePointOnMap() {
-    this.mapService.mapInitialized
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((initialized) => {
-        if (initialized) {
-          if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
-            this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
-          }
-          this.mapService.centerOn(
-            this.selectedVersion?.servicePointGeolocation?.wgs84
-          );
-          this.mapService.displayCurrentCoordinates(
-            this.selectedVersion?.servicePointGeolocation?.wgs84
-          );
+    this.mapService.mapInitialized.pipe(takeUntil(this.onDestroy$)).subscribe((initialized) => {
+      if (initialized) {
+        if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
+          this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
-      });
+        this.mapService.centerOn(this.selectedVersion?.servicePointGeolocation?.wgs84);
+        this.mapService.displayCurrentCoordinates(this.selectedVersion?.servicePointGeolocation?.wgs84);
+      }
+    });
   }
 
   toggleEdit() {
@@ -301,16 +273,12 @@ export class ServicePointDetailComponent
 
   private confirmBoTransfer(): Observable<boolean> {
     const currentlySelectedBo = this.form?.controls.businessOrganisation.value;
-    const permission = this.permissionService.getApplicationUserPermission(
-      ApplicationType.Sepodi
-    );
+    const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Sepodi);
     if (
       !this.permissionService.isAdmin &&
       permission.role == ApplicationRole.Writer &&
       currentlySelectedBo &&
-      !PermissionService.getSboidRestrictions(permission).includes(
-        currentlySelectedBo
-      )
+      !PermissionService.getSboidRestrictions(permission).includes(currentlySelectedBo)
     ) {
       return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',
@@ -327,10 +295,7 @@ export class ServicePointDetailComponent
       if (this.isStartingTermination(this.form)) {
         this.startTermination();
       } else {
-        const formValue =
-          ServicePointFormGroupBuilder.mapper.getWritableServicePoint(
-            this.form
-          );
+        const formValue = ServicePointFormGroupBuilder.mapper.getWritableServicePoint(this.form);
         this.validityService.validateAndDisableCustom(
           () => this.updateVersion(formValue),
           () => {
@@ -350,8 +315,7 @@ export class ServicePointDetailComponent
       confirmText: 'COMMON.SAVE',
       versionId: this.selectedVersion!.id,
       sloid: this.selectedVersion!.sloid,
-      boTerminationDate:
-        this.form!.controls.validityGroup.controls.validTo.value!.toDate(),
+      boTerminationDate: this.form!.controls.validityGroup.controls.validTo.value!.toDate(),
     };
 
     this.dialogService
@@ -367,20 +331,14 @@ export class ServicePointDetailComponent
             })
             .then();
         } else {
-          const notEditedForm = ServicePointFormGroupBuilder.buildFormGroup(
-            this.selectedVersion!,
-            this.formDestroy$
-          );
+          const notEditedForm = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion!, this.formDestroy$);
           this.terminationService.initTermination(notEditedForm);
         }
       });
   }
 
   private isStartingTermination(form: FormGroup<ServicePointDetailFormGroup>) {
-    return (
-      this.isLatestVersionSelected &&
-      this.terminationService.isStartingTermination(form)
-    );
+    return this.isLatestVersionSelected && this.terminationService.isStartingTermination(form);
   }
 
   update(id: number, servicePointVersion: CreateServicePointVersion) {
@@ -394,9 +352,7 @@ export class ServicePointDetailComponent
             .pipe(catchError(this.handleError))
             .subscribe(() => {
               this.hasAbbreviation = !!this.form?.controls.abbreviation.value;
-              this.notificationService.success(
-                'SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS'
-              );
+              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
               this.router
                 .navigate(['..', this.selectedVersion!.number.number], {
                   relativeTo: this.route,
@@ -415,18 +371,13 @@ export class ServicePointDetailComponent
   };
 
   checkIfAbbreviationIsAllowed() {
-    this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some(
-      (element) => element.includes(this.selectedVersion!.businessOrganisation)
+    this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
+      element.includes(this.selectedVersion!.businessOrganisation)
     );
   }
 
-  isSelectedVersionHighDate(
-    servicePointVersions: ReadServicePointVersion[],
-    selectedVersion: ReadServicePointVersion
-  ) {
-    this.isLatestVersionSelected = !servicePointVersions.some(
-      (obj) => obj.validTo > selectedVersion.validTo
-    );
+  isSelectedVersionHighDate(servicePointVersions: ReadServicePointVersion[], selectedVersion: ReadServicePointVersion) {
+    this.isLatestVersionSelected = !servicePointVersions.some((obj) => obj.validTo > selectedVersion.validTo);
   }
 
   revoke() {
@@ -434,9 +385,7 @@ export class ServicePointDetailComponent
       .revokeServicePoint(this.selectedVersion!.number.number)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
-        this.notificationService.success(
-          'SEPODI.SERVICE_POINTS.NOTIFICATION.REVOKE_SUCCESS'
-        );
+        this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.REVOKE_SUCCESS');
         this.router
           .navigate(['..', this.selectedVersion!.number.number], {
             relativeTo: this.route,
@@ -459,9 +408,7 @@ export class ServicePointDetailComponent
             .validateServicePoint(this.selectedVersion!.id!)
             .pipe(catchError(this.handleError))
             .subscribe(() => {
-              this.notificationService.success(
-                'SEPODI.SERVICE_POINTS.NOTIFICATION.VALIDATE_SUCCESS'
-              );
+              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.VALIDATE_SUCCESS');
               this.router
                 .navigate(['..', this.selectedVersion!.number.number], {
                   relativeTo: this.route,
@@ -486,9 +433,6 @@ export class ServicePointDetailComponent
       stopPoint: this.selectedVersion!,
     };
 
-    this.dialogService.openWithoutResult(
-      AddStopPointWorkflowComponent,
-      dialogData
-    );
+    this.dialogService.openWithoutResult(AddStopPointWorkflowComponent, dialogData);
   }
 }

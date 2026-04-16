@@ -28,19 +28,12 @@ describe('TerminationDecisionDetailDialogComponent', () => {
   let component: TerminationDecisionDetailDialogComponent;
   let fixture: ComponentFixture<TerminationDecisionDetailDialogComponent>;
 
-  let dialogRefMock: Mocked<
-    Pick<MatDialogRef<TerminationDecisionDetailDialogComponent>, 'close'>
-  >;
+  let dialogRefMock: Mocked<Pick<MatDialogRef<TerminationDecisionDetailDialogComponent>, 'close'>>;
   let terminationWorkflowServiceMock: Mocked<
-    Pick<
-      StopPointTerminationWorkflowService,
-      'decisionInfoPlus' | 'decisionNova'
-    >
+    Pick<StopPointTerminationWorkflowService, 'decisionInfoPlus' | 'decisionNova'>
   >;
 
-  const buildDecisionDialogData = (
-    readOnly: boolean
-  ): TerminationDecisionDetailDialogData => ({
+  const buildDecisionDialogData = (readOnly: boolean): TerminationDecisionDetailDialogData => ({
     versionValidTo: new Date('9999-12-14'),
     title: '',
     message: '',
@@ -57,9 +50,7 @@ describe('TerminationDecisionDetailDialogComponent', () => {
       judgement: new FormControl('YES'),
       motivation: new FormControl(),
       terminationDate: new FormControl(moment()),
-      terminationDecisionPerson: new FormControl(
-        TerminationDecisionPersonEnum.InfoPlus
-      ),
+      terminationDecisionPerson: new FormControl(TerminationDecisionPersonEnum.InfoPlus),
     }),
   });
 
@@ -100,9 +91,7 @@ describe('TerminationDecisionDetailDialogComponent', () => {
 
   describe('while deciding', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(
-        TerminationDecisionDetailDialogComponent
-      );
+      fixture = TestBed.createComponent(TerminationDecisionDetailDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -122,9 +111,7 @@ describe('TerminationDecisionDetailDialogComponent', () => {
     it('should decide', () => {
       component.decide();
 
-      expect(
-        terminationWorkflowServiceMock.decisionInfoPlus
-      ).toHaveBeenCalled();
+      expect(terminationWorkflowServiceMock.decisionInfoPlus).toHaveBeenCalled();
     });
   });
 
@@ -133,9 +120,7 @@ describe('TerminationDecisionDetailDialogComponent', () => {
       TestBed.overrideProvider(MAT_DIALOG_DATA, {
         useValue: buildDecisionDialogData(true),
       });
-      fixture = TestBed.createComponent(
-        TerminationDecisionDetailDialogComponent
-      );
+      fixture = TestBed.createComponent(TerminationDecisionDetailDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });

@@ -1,8 +1,4 @@
-import {
-  ApplicationRole,
-  ApplicationType,
-  PermissionRestrictionType,
-} from '../../../../api';
+import { ApplicationRole, ApplicationType, PermissionRestrictionType } from '../../../../api';
 
 export interface ApplicationConfig {
   roles: RoleConfig[];
@@ -23,10 +19,7 @@ export class ApplicationPermissionConfig {
     return this.CONFIG[application];
   }
 
-  public static getByRole(
-    application: ApplicationType,
-    role: ApplicationRole
-  ): RoleConfig {
+  public static getByRole(application: ApplicationType, role: ApplicationRole): RoleConfig {
     return this.get(application).roles.find((i) => i.role === role)!;
   }
 
@@ -99,9 +92,7 @@ export class ApplicationPermissionConfig {
           role: ApplicationRole.Reader,
           permissions: {
             restrictions: [],
-            specialPermissions: [
-              PermissionRestrictionType.TransportCompanyDossierAnswer,
-            ],
+            specialPermissions: [PermissionRestrictionType.TransportCompanyDossierAnswer],
           },
         },
         {
@@ -142,10 +133,7 @@ export class ApplicationPermissionConfig {
         {
           role: ApplicationRole.Writer,
           permissions: {
-            restrictions: [
-              PermissionRestrictionType.Country,
-              PermissionRestrictionType.BusinessOrganisation,
-            ],
+            restrictions: [PermissionRestrictionType.Country, PermissionRestrictionType.BusinessOrganisation],
             specialPermissions: [
               PermissionRestrictionType.BulkImport,
               PermissionRestrictionType.NovaTerminationVote,

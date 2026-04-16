@@ -4,5 +4,4 @@ export const TableFilterSearchType = {
   TRANSPORT_COMPANY: 'TRANSPORT_COMPANY',
 } as const;
 
-export type TableFilterSearchType =
-  (typeof TableFilterSearchType)[keyof typeof TableFilterSearchType];
+export type TableFilterSearchType = (typeof TableFilterSearchType)[keyof typeof TableFilterSearchType];

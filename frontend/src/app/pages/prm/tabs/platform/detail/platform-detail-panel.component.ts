@@ -42,27 +42,17 @@ export class PlatformDetailPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
-      this.servicePoint =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          data.servicePoint
-        );
-      this.trafficPoint =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          data.trafficPoint
-        );
+      this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(data.servicePoint);
+      this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(data.trafficPoint);
 
       this.platform = data.platform;
 
       this.isNew = this.platform.length === 0;
       if (!this.isNew) {
-        this.maxValidity = VersionsHandlingService.getMaxValidity(
-          this.platform
-        );
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.platform);
       }
       this.stopPoint = data.stopPoint;
-      this.isReduced = PrmMeanOfTransportHelper.isReduced(
-        this.stopPoint[0].meansOfTransport
-      );
+      this.isReduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
     });
   }
 }

@@ -9,9 +9,7 @@ import { ClientCredentialAdministrationService } from '../../../../api/service/u
   providedIn: 'root',
 })
 export class ClientCredentialAdministrationResolver {
-  clientCredentialAdministrationService = inject(
-    ClientCredentialAdministrationService
-  );
+  clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
   router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<ClientCredential> {
@@ -19,21 +17,18 @@ export class ClientCredentialAdministrationResolver {
     if (clientIdParam === 'add') {
       return of({});
     }
-    return this.clientCredentialAdministrationService
-      .getClientCredential(clientIdParam!)
-      .pipe(
-        catchError(() => {
-          this.router
-            .navigate([Pages.USER_ADMINISTRATION.path], {
-              state: { notDismissSnackBar: true },
-            })
-            .then();
-          return of({});
-        })
-      );
+    return this.clientCredentialAdministrationService.getClientCredential(clientIdParam!).pipe(
+      catchError(() => {
+        this.router
+          .navigate([Pages.USER_ADMINISTRATION.path], {
+            state: { notDismissSnackBar: true },
+          })
+          .then();
+        return of({});
+      })
+    );
   }
 }
 
-export const clientCredentialResolver: ResolveFn<ClientCredential> = (
-  route: ActivatedRouteSnapshot
-) => inject(ClientCredentialAdministrationResolver).resolve(route);
+export const clientCredentialResolver: ResolveFn<ClientCredential> = (route: ActivatedRouteSnapshot) =>
+  inject(ClientCredentialAdministrationResolver).resolve(route);

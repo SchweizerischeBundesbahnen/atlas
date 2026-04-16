@@ -32,9 +32,7 @@ describe('BasePrmTabComponentService', () => {
   });
 
   it('should not showCurrentTab when stopPoint does not exists', () => {
-    const redirectToStopPointSpy = vi
-      .spyOn(service, 'redirectToStopPoint')
-      .mockImplementation(() => {});
+    const redirectToStopPointSpy = vi.spyOn(service, 'redirectToStopPoint').mockImplementation(() => {});
     const data: Data = { servicePoints: [BERN_WYLEREGG], stopPoints: [] };
 
     service.showCurrentTab(data);
@@ -44,9 +42,7 @@ describe('BasePrmTabComponentService', () => {
   });
 
   it('should not showCurrentTab when stopPoint is Reduced on Complete Tab', () => {
-    const redirectToStopPointSpy = vi
-      .spyOn(service, 'redirectToStopPoint')
-      .mockImplementation(() => {});
+    const redirectToStopPointSpy = vi.spyOn(service, 'redirectToStopPoint').mockImplementation(() => {});
     vi.spyOn(service, 'canShowTab').mockReturnValue(true);
     const data: Data = {
       servicePoints: [BERN_WYLEREGG],
@@ -60,9 +56,7 @@ describe('BasePrmTabComponentService', () => {
   });
 
   it('should showCurrentTab when stopPoint is Complete', () => {
-    const redirectToStopPointSpy = vi
-      .spyOn(service, 'redirectToStopPoint')
-      .mockImplementation(() => {});
+    const redirectToStopPointSpy = vi.spyOn(service, 'redirectToStopPoint').mockImplementation(() => {});
     const data: Data = {
       servicePoints: [BERN_WYLEREGG],
       stopPoints: [STOP_POINT_COMPLETE],

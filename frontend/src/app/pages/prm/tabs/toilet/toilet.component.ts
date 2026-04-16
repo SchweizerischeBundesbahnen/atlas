@@ -21,10 +21,7 @@ import { ToiletInternalService } from '../../../../api/service/prm/toilet/toilet
   templateUrl: './toilet.component.html',
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
-export class ToiletComponent
-  extends BasePrmTabComponentService
-  implements OnInit
-{
+export class ToiletComponent extends BasePrmTabComponentService implements OnInit {
   tableColumns: TableColumn<ToiletOverview>[] = [
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
@@ -57,10 +54,7 @@ export class ToiletComponent
   }
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.TOILET
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.TOILET);
   }
 
   getTab(): Tab {
@@ -68,19 +62,12 @@ export class ToiletComponent
   }
 
   getOverview(pagination: TablePagination) {
-    const parentServicePointSloid =
-      this.route.parent!.snapshot.params.stopPointSloid!;
+    const parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.toiletInternalService
-      .getToiletOverview(parentServicePointSloid)
-      .subscribe((overviewRows) => {
-        this.toilets = TableContentPaginationAndSorting.pageAndSort(
-          overviewRows,
-          pagination,
-          'designation,asc'
-        );
-        this.totalCount = overviewRows.length;
-      });
+    this.toiletInternalService.getToiletOverview(parentServicePointSloid).subscribe((overviewRows) => {
+      this.toilets = TableContentPaginationAndSorting.pageAndSort(overviewRows, pagination, 'designation,asc');
+      this.totalCount = overviewRows.length;
+    });
   }
 
   rowClicked(clickedRow: ToiletOverview) {

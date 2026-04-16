@@ -3,10 +3,7 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
-import {
-  ActivatedRouteMockType,
-  translateServiceProvider,
-} from '../../../app.testing.mocks';
+import { ActivatedRouteMockType, translateServiceProvider } from '../../../app.testing.mocks';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
@@ -23,39 +20,27 @@ describe('LoadingPointsDetailComponent', () => {
   let fixture: ComponentFixture<LoadingPointsDetailComponent>;
   let router: Router;
 
-  let servicePointService: Mocked<
-    Pick<ServicePointService, 'getServicePointVersions'>
-  >;
-  let loadingPointService: Mocked<
-    Pick<LoadingPointService, 'createLoadingPoint' | 'updateLoadingPoint'>
-  >;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let servicePointService: Mocked<Pick<ServicePointService, 'getServicePointVersions'>>;
+  let loadingPointService: Mocked<Pick<LoadingPointService, 'createLoadingPoint' | 'updateLoadingPoint'>>;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     servicePointService = {
       getServicePointVersions: vi.fn(),
     };
-    servicePointService.getServicePointVersions.mockReturnValue(
-      of([BERN_WYLEREGG])
-    );
+    servicePointService.getServicePointVersions.mockReturnValue(of([BERN_WYLEREGG]));
 
     loadingPointService = {
       createLoadingPoint: vi.fn(),
       updateLoadingPoint: vi.fn(),
     };
-    loadingPointService.createLoadingPoint.mockReturnValue(
-      of(LOADING_POINT[0])
-    );
+    loadingPointService.createLoadingPoint.mockReturnValue(of(LOADING_POINT[0]));
     loadingPointService.updateLoadingPoint.mockReturnValue(of(LOADING_POINT));
 
     dialogService = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     Element.prototype.scrollIntoView = vi.fn();
     TestBed.configureTestingModule({
@@ -154,9 +139,7 @@ describe('LoadingPointsDetailComponent', () => {
       component.form.controls.number.setValue(5);
       component.form.controls.designation.setValue('456');
 
-      component.form.controls.validFrom.setValue(
-        moment(new Date(2000 - 10 - 1))
-      );
+      component.form.controls.validFrom.setValue(moment(new Date(2000 - 10 - 1)));
       component.form.controls.validTo.setValue(moment(new Date(2099 - 10 - 1)));
       component.save();
 

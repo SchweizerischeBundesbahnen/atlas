@@ -60,12 +60,7 @@ describe('CompaniesComponent', () => {
       size: 10,
     });
 
-    expect(companyService.getCompanies).toHaveBeenCalledExactlyOnceWith(
-      [],
-      0,
-      10,
-      ['uicCode,asc']
-    );
+    expect(companyService.getCompanies).toHaveBeenCalledExactlyOnceWith([], 0, 10, ['uicCode,asc']);
 
     expect(component.companies.length).toEqual(1);
     expect(component.companies[0].uicCode).toEqual('1');

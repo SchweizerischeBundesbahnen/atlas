@@ -1,9 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TimetableHearingStatementV2 } from '../../../../api';
 import { Subject } from 'rxjs';
@@ -19,13 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-dialog',
   templateUrl: './statement.dialog.component.html',
-  imports: [
-    CommentComponent,
-    ReactiveFormsModule,
-    MatDialogActions,
-    AtlasButtonComponent,
-    TranslatePipe,
-  ],
+  imports: [CommentComponent, ReactiveFormsModule, MatDialogActions, AtlasButtonComponent, TranslatePipe],
   providers: [TranslatePipe],
 })
 export class StatementDialogComponent {
@@ -52,9 +42,7 @@ export class StatementDialogComponent {
       .updateHearingStatement(id, statement)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
-        this.notificationService.success(
-          'TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS'
-        );
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
       });
   }
 

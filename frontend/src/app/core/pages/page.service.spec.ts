@@ -1,10 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { PageService } from './page.service';
-import {
-  PermissionService,
-  TthApplicationUserType,
-} from '../auth/permission/permission.service';
+import { PermissionService, TthApplicationUserType } from '../auth/permission/permission.service';
 import { Pages } from '../../pages/pages';
 import { firstValueFrom } from 'rxjs';
 
@@ -22,10 +19,7 @@ describe('PageService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        PageService,
-        { provide: PermissionService, useValue: permissionServiceMock },
-      ],
+      providers: [PageService, { provide: PermissionService, useValue: permissionServiceMock }],
     });
     pageService = TestBed.inject(PageService);
   });
@@ -42,8 +36,7 @@ describe('PageService', () => {
   });
 
   it('should remove TTH subpages for BO_TTH user', async () => {
-    permissionServiceMock.getTthApplicationUserType = () =>
-      'BO_TTH' as TthApplicationUserType;
+    permissionServiceMock.getTthApplicationUserType = () => 'BO_TTH' as TthApplicationUserType;
 
     pageService.addPagesBasedOnPermissions();
 
@@ -54,8 +47,7 @@ describe('PageService', () => {
   });
 
   it('should keep TTH subpages for CANTON_TTH user', async () => {
-    permissionServiceMock.getTthApplicationUserType = () =>
-      'CANTON_TTH' as TthApplicationUserType;
+    permissionServiceMock.getTthApplicationUserType = () => 'CANTON_TTH' as TthApplicationUserType;
     pageService.addPagesBasedOnPermissions();
 
     const enabledPages = await firstValueFrom(pageService.enabledPages);

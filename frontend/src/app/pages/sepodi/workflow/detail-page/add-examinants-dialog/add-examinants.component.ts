@@ -11,10 +11,7 @@ import { Pages } from '../../../../pages';
 import { AddExaminantsDialogData } from './add-examinants-dialog-data';
 import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
-import {
-  AddExaminantsFormGroup,
-  AddExaminantsFormGroupBuilder,
-} from './add-examinants-form-group';
+import { AddExaminantsFormGroup, AddExaminantsFormGroupBuilder } from './add-examinants-form-group';
 import { catchError, of } from 'rxjs';
 import { DialogCloseComponent } from '../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../../core/components/dialog/content/dialog-content.component';
@@ -41,10 +38,7 @@ import { StopPointWorkflowService } from '../../../../../api/service/workflow/st
   ],
 })
 export class AddExaminantsComponent implements OnInit {
-  readonly emailValidator = [
-    AtlasCharsetsValidator.email,
-    AtlasFieldLengthValidator.length_100,
-  ];
+  readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) readonly data: AddExaminantsDialogData,
@@ -59,9 +53,7 @@ export class AddExaminantsComponent implements OnInit {
 
   ngOnInit() {
     this.form = AddExaminantsFormGroupBuilder.buildFormGroup();
-    this.form.controls.examinants.push(
-      StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup()
-    );
+    this.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
   }
 
   addExaminants() {
@@ -97,23 +89,15 @@ export class AddExaminantsComponent implements OnInit {
       .subscribe(() => {
         this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
         this.dialogRef.close(true);
-        this.router
-          .navigate([
-            Pages.SEPODI.path,
-            Pages.WORKFLOWS.path,
-            this.data.workflowId,
-          ])
-          .then();
+        this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.data.workflowId]).then();
       });
   }
 
   cancel() {
-    this.detailHelperService
-      .confirmLeaveDirtyForm(this.form)
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.dialogRef.close(false);
-        }
-      });
+    this.detailHelperService.confirmLeaveDirtyForm(this.form).subscribe((confirmed) => {
+      if (confirmed) {
+        this.dialogRef.close(false);
+      }
+    });
   }
 }

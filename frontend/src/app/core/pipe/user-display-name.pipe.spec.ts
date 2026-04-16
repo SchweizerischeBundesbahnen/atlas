@@ -7,9 +7,7 @@ import { TestBed } from '@angular/core/testing';
 describe('UserDisplayNamePipe', () => {
   let pipe: UserDisplayNamePipe;
 
-  let userAdministrationService: Mocked<
-    Pick<UserAdministrationService, 'getUserDisplayName'>
-  >;
+  let userAdministrationService: Mocked<Pick<UserAdministrationService, 'getUserDisplayName'>>;
 
   beforeEach(() => {
     userAdministrationService = {
@@ -39,9 +37,7 @@ describe('UserDisplayNamePipe', () => {
   });
 
   it('should return displayName over service', async () => {
-    userAdministrationService.getUserDisplayName.mockReturnValue(
-      of({ displayName: 'Atlas User' })
-    );
+    userAdministrationService.getUserDisplayName.mockReturnValue(of({ displayName: 'Atlas User' }));
     const result = await firstValueFrom(pipe.transform('u123456'));
     expect(result).toEqual('Atlas User');
   });

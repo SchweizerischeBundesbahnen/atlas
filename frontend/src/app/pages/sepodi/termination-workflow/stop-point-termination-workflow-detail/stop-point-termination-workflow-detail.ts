@@ -57,8 +57,7 @@ import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPe
   templateUrl: './stop-point-termination-workflow-detail.html',
 })
 export class StopPointTerminationWorkflowDetail implements OnInit {
-  protected readonly TerminationDecisionPersonEnum =
-    TerminationDecisionPersonEnum;
+  protected readonly TerminationDecisionPersonEnum = TerminationDecisionPersonEnum;
   protected readonly TerminationWorkflowStatus = TerminationWorkflowStatus;
 
   private readonly route = inject(ActivatedRoute);
@@ -74,31 +73,21 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
-      const workflowData: StopPointTerminationWorkflowDetailData =
-        data.workflow;
+      const workflowData: StopPointTerminationWorkflowDetailData = data.workflow;
 
       this.workflow = workflowData.workflow;
 
-      const indexOfVersionInReview = workflowData.servicePoint.findIndex(
-        (i) => i.id === this.workflow.versionId
-      );
+      const indexOfVersionInReview = workflowData.servicePoint.findIndex((i) => i.id === this.workflow.versionId);
       this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
 
-      this.form =
-        StopPointTerminationWorkflowDetailFormGroupBuilder.buildFormGroup(
-          workflowData.workflow
-        );
+      this.form = StopPointTerminationWorkflowDetailFormGroupBuilder.buildFormGroup(workflowData.workflow);
       this.form.disable();
 
-      this.terminationPermission =
-        this.permissionService.getTerminationPermission();
+      this.terminationPermission = this.permissionService.getTerminationPermission();
 
       if (this.terminationPermission) {
-        if (
-          this.terminationPermission === TerminationDecisionPersonEnum.InfoPlus
-        ) {
-          this.showDecisionButton =
-            this.workflow.status === TerminationWorkflowStatus.Started;
+        if (this.terminationPermission === TerminationDecisionPersonEnum.InfoPlus) {
+          this.showDecisionButton = this.workflow.status === TerminationWorkflowStatus.Started;
         }
         if (this.terminationPermission === TerminationDecisionPersonEnum.Nova) {
           this.showDecisionButton = [
@@ -124,49 +113,28 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
       versionValidTo: this.workflow.versionValidTo!,
     };
 
-    this.dialogService.openWithoutResult(
-      TerminationDecisionDetailDialogComponent,
-      dialogData
-    );
+    this.dialogService.openWithoutResult(TerminationDecisionDetailDialogComponent, dialogData);
   }
 
   goToAtlasStopPoint() {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(
-        [
-          Pages.SEPODI.path,
-          Pages.SERVICE_POINTS.path,
-          this.stopPoint?.number.number,
-        ],
-        {
-          queryParams: {
-            id: this.stopPoint?.id,
-          },
-        }
-      )
+      this.router.createUrlTree([Pages.SEPODI.path, Pages.SERVICE_POINTS.path, this.stopPoint?.number.number], {
+        queryParams: {
+          id: this.stopPoint?.id,
+        },
+      })
     );
     window.open(url, '_blank');
   }
 
   openDecisionDialog() {
-    const decisionForm =
-      StopPointTerminationWorkflowDetailFormGroupBuilder.buildTerminationDecisionFormGroup();
-    decisionForm.controls.terminationDecisionPerson.setValue(
-      this.terminationPermission
-    );
-    const terminationDatePrefill = moment(
-      this.workflow.infoPlusTerminationDate ?? this.workflow.boTerminationDate!
-    );
-    if (
-      this.workflow.status === TerminationWorkflowStatus.TerminationNotApproved
-    ) {
+    const decisionForm = StopPointTerminationWorkflowDetailFormGroupBuilder.buildTerminationDecisionFormGroup();
+    decisionForm.controls.terminationDecisionPerson.setValue(this.terminationPermission);
+    const terminationDatePrefill = moment(this.workflow.infoPlusTerminationDate ?? this.workflow.boTerminationDate!);
+    if (this.workflow.status === TerminationWorkflowStatus.TerminationNotApproved) {
       terminationDatePrefill.add(1, 'day');
-      decisionForm.controls.judgement.setValue(
-        this.workflow.novaDecision?.judgement
-      );
-      decisionForm.controls.motivation.setValue(
-        this.workflow.novaDecision?.motivation
-      );
+      decisionForm.controls.judgement.setValue(this.workflow.novaDecision?.judgement);
+      decisionForm.controls.motivation.setValue(this.workflow.novaDecision?.motivation);
     }
     decisionForm.controls.terminationDate.setValue(terminationDatePrefill);
 
@@ -184,10 +152,7 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
     };
 
     this.dialogService
-      .openDialogDataWithConfirmationResult(
-        dialogData,
-        TerminationDecisionDetailDialogComponent
-      )
+      .openDialogDataWithConfirmationResult(dialogData, TerminationDecisionDetailDialogComponent)
       .subscribe((result) => {
         if (result) {
           this.router

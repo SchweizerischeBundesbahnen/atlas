@@ -5,11 +5,7 @@ import { of, Subject } from 'rxjs';
 import { ContainerTimetableFieldNumber } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
-import {
-  adminPermissionServiceMock,
-  MockAtlasButtonComponent,
-  MockTableComponent,
-} from '../../../app.testing.mocks';
+import { adminPermissionServiceMock, MockAtlasButtonComponent, MockTableComponent } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
@@ -34,23 +30,16 @@ describe('TimetableFieldNumberOverviewComponent', () => {
 
   let component: TimetableFieldNumberOverviewComponent;
   let fixture: ComponentFixture<TimetableFieldNumberOverviewComponent>;
-  let timetableFieldNumberServiceSpy: Mocked<
-    Pick<TimetableFieldNumberInternalService, 'getOverview'>
-  >;
+  let timetableFieldNumberServiceSpy: Mocked<Pick<TimetableFieldNumberInternalService, 'getOverview'>>;
 
   beforeEach(async () => {
     timetableFieldNumberServiceSpy = {
       getOverview: vi.fn(),
     };
-    timetableFieldNumberServiceSpy.getOverview.mockReturnValue(
-      of(timetableFieldNumberContainer)
-    );
+    timetableFieldNumberServiceSpy.getOverview.mockReturnValue(of(timetableFieldNumberContainer));
 
     await TestBed.configureTestingModule({
-      imports: [
-        TimetableFieldNumberOverviewComponent,
-        TranslateModule.forRoot(),
-      ],
+      imports: [TimetableFieldNumberOverviewComponent, TranslateModule.forRoot()],
       providers: [
         {
           provide: TimetableFieldNumberInternalService,
@@ -85,9 +74,7 @@ describe('TimetableFieldNumberOverviewComponent', () => {
       size: 10,
     });
 
-    expect(
-      timetableFieldNumberServiceSpy.getOverview
-    ).toHaveBeenCalledExactlyOnceWith(
+    expect(timetableFieldNumberServiceSpy.getOverview).toHaveBeenCalledExactlyOnceWith(
       [],
       undefined,
       undefined,

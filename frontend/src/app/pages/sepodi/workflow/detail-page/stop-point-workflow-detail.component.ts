@@ -80,38 +80,22 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   bavActionEnabled = environment.sepodiWorkflowBavActionEnabled;
 
   ngOnInit() {
-    const workflowData: StopPointWorkflowDetailData =
-      this.route.snapshot.data.workflow;
+    const workflowData: StopPointWorkflowDetailData = this.route.snapshot.data.workflow;
     this.workflow = workflowData.workflow;
 
     this.initWorkflow = this.workflow;
-    this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(
-      ApplicationType.Sepodi
-    );
+    this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi);
 
-    const indexOfVersionInReview = workflowData.servicePoint.findIndex(
-      (i) => i.id === this.workflow.versionId
-    )!;
+    const indexOfVersionInReview = workflowData.servicePoint.findIndex((i) => i.id === this.workflow.versionId)!;
     this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
-    this.oldDesignation = this.getOldDesignation(
-      workflowData.servicePoint,
-      indexOfVersionInReview
-    );
+    this.oldDesignation = this.getOldDesignation(workflowData.servicePoint, indexOfVersionInReview);
 
-    this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(
-      this.workflow
-    );
+    this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.workflow);
     this.form.disable();
   }
 
-  getOldDesignation(
-    servicePoint: ReadServicePointVersion[],
-    indexOfVersionInReview: number
-  ): string {
-    const versionsBeforeInReview = servicePoint.slice(
-      0,
-      indexOfVersionInReview
-    );
+  getOldDesignation(servicePoint: ReadServicePointVersion[], indexOfVersionInReview: number): string {
+    const versionsBeforeInReview = servicePoint.slice(0, indexOfVersionInReview);
     return (
       versionsBeforeInReview
         .filter((i) => i.stopPoint && i.status === Status.Validated)
@@ -121,11 +105,9 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   startWorkflow() {
-    this.stopPointWorkflowService
-      .startStopPointWorkflow(this.workflow.id!)
-      .subscribe(() => {
-        this._reloadDetail('WORKFLOW.NOTIFICATION.START.SUCCESS');
-      });
+    this.stopPointWorkflowService.startStopPointWorkflow(this.workflow.id!).subscribe(() => {
+      this._reloadDetail('WORKFLOW.NOTIFICATION.START.SUCCESS');
+    });
   }
 
   rejectWorkflow() {
@@ -137,13 +119,9 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       rejectType: 'REJECT',
     };
 
-    this.dialogService.openWithoutResult(
-      StopPointRejectWorkflowDialogComponent,
-      dialogData,
-      {
-        minWidth: '50vw',
-      }
-    );
+    this.dialogService.openWithoutResult(StopPointRejectWorkflowDialogComponent, dialogData, {
+      minWidth: '50vw',
+    });
   }
 
   restartWorkflow() {
@@ -156,13 +134,9 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       rejectType: 'RESTART',
     };
 
-    this.dialogService.openWithoutResult(
-      StopPointRestartWorkflowDialogComponent,
-      dialogData,
-      {
-        minWidth: '50vw',
-      }
-    );
+    this.dialogService.openWithoutResult(StopPointRestartWorkflowDialogComponent, dialogData, {
+      minWidth: '50vw',
+    });
   }
 
   cancelWorkflow() {
@@ -174,13 +148,9 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       rejectType: 'CANCEL',
     };
 
-    this.dialogService.openWithoutResult(
-      StopPointRejectWorkflowDialogComponent,
-      dialogData,
-      {
-        minWidth: '50vw',
-      }
-    );
+    this.dialogService.openWithoutResult(StopPointRejectWorkflowDialogComponent, dialogData, {
+      minWidth: '50vw',
+    });
   }
 
   openDecisionDialog() {
@@ -225,9 +195,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(
-            this.initWorkflow
-          );
+          this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.initWorkflow);
           this.disableForm();
         }
       });
@@ -240,9 +208,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   private enableForm(): void {
     this.form?.enable({ emitEvent: false });
-    StopPointWorkflowDetailFormGroupBuilder.disableDefaultExaminantsInArray(
-      this.form.controls.examinants
-    );
+    StopPointWorkflowDetailFormGroupBuilder.disableDefaultExaminantsInArray(this.form.controls.examinants);
     this.isFormEnabled$.next(true);
   }
 
@@ -263,9 +229,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         ccEmails: this.form.controls.ccEmails.value ?? undefined,
         designationOfficial: this.form.controls.designationOfficial.value!,
         workflowComment: this.form.controls.workflowComment.value!,
-        examinants: this.form
-          .getRawValue()
-          .examinants.map((examinant) => examinant as StopPointPerson),
+        examinants: this.form.getRawValue().examinants.map((examinant) => examinant as StopPointPerson),
       };
       this.update(this.workflow.id!, updatedVersion);
     }
@@ -278,9 +242,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       .subscribe((workflow) => {
         this.workflow = workflow;
         this.initWorkflow = workflow;
-        this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(
-          this.workflow
-        );
+        this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.workflow);
         this.notificationService.success('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
         this.disableForm();
       });

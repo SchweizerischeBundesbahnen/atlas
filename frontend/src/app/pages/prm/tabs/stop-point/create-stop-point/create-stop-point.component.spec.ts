@@ -4,16 +4,10 @@ import { CreateStopPointComponent } from './create-stop-point.component';
 import { MeanOfTransport } from '../../../../../api';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { FormControl, FormGroup } from '@angular/forms';
-import {
-  MeanOfTransportFormGroup,
-  StopPointFormGroupBuilder,
-} from '../form/stop-point-detail-form-group';
+import { MeanOfTransportFormGroup, StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { of } from 'rxjs';
-import {
-  STOP_POINT,
-  STOP_POINT_COMPLETE,
-} from '../../../util/stop-point-test-data';
+import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../util/stop-point-test-data';
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -21,17 +15,13 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 describe('CreateStopPointComponent', () => {
   let component: CreateStopPointComponent;
   let fixture: ComponentFixture<CreateStopPointComponent>;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   beforeEach(() => {
     dialogService = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     TestBed.configureTestingModule({
       imports: [MatStepperModule, CreateStopPointComponent],
@@ -84,19 +74,11 @@ describe('CreateStopPointComponent', () => {
     component.formMeanOfTransport = new FormGroup<MeanOfTransportFormGroup>({
       meansOfTransport: new FormControl([MeanOfTransport.Train]),
     });
-    component.form =
-      StopPointFormGroupBuilder.buildFormGroup(STOP_POINT_COMPLETE);
+    component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT_COMPLETE);
 
-    const resetDataFormSpy = vi
-      .spyOn(component, 'resetDataForm')
-      .mockImplementation(() => {});
-    const initFormSpy = vi
-      .spyOn(component, 'initForm')
-      .mockImplementation(() => {});
-    const addCompleteRecordingValidationSpy = vi.spyOn(
-      StopPointFormGroupBuilder,
-      'addCompleteRecordingValidation'
-    );
+    const resetDataFormSpy = vi.spyOn(component, 'resetDataForm').mockImplementation(() => {});
+    const initFormSpy = vi.spyOn(component, 'initForm').mockImplementation(() => {});
+    const addCompleteRecordingValidationSpy = vi.spyOn(StopPointFormGroupBuilder, 'addCompleteRecordingValidation');
     const removeCompleteRecordingValidationSpy = vi.spyOn(
       StopPointFormGroupBuilder,
       'removeCompleteRecordingValidation'
@@ -104,9 +86,7 @@ describe('CreateStopPointComponent', () => {
 
     component.checkSelection();
 
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalled();
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalled();
     expect(resetDataFormSpy).toHaveBeenCalled();
     expect(initFormSpy).toHaveBeenCalled();
     expect(addCompleteRecordingValidationSpy).toHaveBeenCalled();
@@ -121,16 +101,9 @@ describe('CreateStopPointComponent', () => {
     });
     component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
 
-    const resetDataFormSpy = vi
-      .spyOn(component, 'resetDataForm')
-      .mockImplementation(() => {});
-    const initFormSpy = vi
-      .spyOn(component, 'initForm')
-      .mockImplementation(() => {});
-    const addCompleteRecordingValidationSpy = vi.spyOn(
-      StopPointFormGroupBuilder,
-      'addCompleteRecordingValidation'
-    );
+    const resetDataFormSpy = vi.spyOn(component, 'resetDataForm').mockImplementation(() => {});
+    const initFormSpy = vi.spyOn(component, 'initForm').mockImplementation(() => {});
+    const addCompleteRecordingValidationSpy = vi.spyOn(StopPointFormGroupBuilder, 'addCompleteRecordingValidation');
     const removeCompleteRecordingValidationSpy = vi.spyOn(
       StopPointFormGroupBuilder,
       'removeCompleteRecordingValidation'
@@ -141,9 +114,7 @@ describe('CreateStopPointComponent', () => {
 
     component.checkSelection();
 
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalled();
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalled();
     expect(resetDataFormSpy).toHaveBeenCalled();
     expect(initFormSpy).toHaveBeenCalled();
     expect(addCompleteRecordingValidationSpy).not.toHaveBeenCalled();
@@ -156,19 +127,13 @@ describe('CreateStopPointComponent', () => {
       meansOfTransport: new FormControl([MeanOfTransport.Bus]),
     });
     component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
-    const resetSpy = vi
-      .spyOn(component.form, 'reset')
-      .mockImplementation(() => {});
+    const resetSpy = vi.spyOn(component.form, 'reset').mockImplementation(() => {});
 
     component.resetDataForm();
 
     expect(resetSpy).toHaveBeenCalled();
-    expect(component.form.controls.meansOfTransport.value).toEqual([
-      MeanOfTransport.Metro,
-    ]);
-    expect(component.form.controls.number.value).toEqual(
-      STOP_POINT.number.number
-    );
+    expect(component.form.controls.meansOfTransport.value).toEqual([MeanOfTransport.Metro]);
+    expect(component.form.controls.number.value).toEqual(STOP_POINT.number.number);
     expect(component.form.controls.sloid.value).toEqual(STOP_POINT.sloid);
   });
 });

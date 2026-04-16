@@ -3,9 +3,7 @@
   atlasFileDrop
   (filesDropped)="onFilesDropped($event)"
   (click)="maxFileCount !== uploadedFiles.length && selectFilesFromSystem()"
-  (keydown.space)="
-    maxFileCount !== uploadedFiles.length && selectFilesFromSystem()
-  "
+  (keydown.space)="maxFileCount !== uploadedFiles.length && selectFilesFromSystem()"
 >
   <div class="file-upload-description">
     {{ 'COMMON.FILEUPLOAD.DROPZONE' | translate }}
@@ -22,11 +20,7 @@
         buttonDataCy="download-csv"
         buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
         buttonType="create"
-        [attr.title]="
-          isDownloadButtonDisabled
-            ? ('BULK_IMPORT.BUTTON.DISABLED_MESSAGE' | translate)
-            : ''
-        "
+        [attr.title]="isDownloadButtonDisabled ? ('BULK_IMPORT.BUTTON.DISABLED_MESSAGE' | translate) : ''"
         (click)="$event.stopPropagation()"
       >
         <ng-template #rightIcon>

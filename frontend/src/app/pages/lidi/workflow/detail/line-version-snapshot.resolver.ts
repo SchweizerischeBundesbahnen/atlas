@@ -12,25 +12,19 @@ export class LineVersionSnapshotResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<LineVersionSnapshot | never[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<LineVersionSnapshot | never[]> {
     const idParameter = route.params.id;
-    return this.lineInternalService
-      .getLineVersionSnapshotById(Number(idParameter))
-      .pipe(
-        catchError(() =>
-          this.router
-            .navigate([Pages.LIDI.path, Pages.WORKFLOWS.path], {
-              state: { notDismissSnackBar: true },
-            })
-            .then(() => [])
-        )
-      );
+    return this.lineInternalService.getLineVersionSnapshotById(Number(idParameter)).pipe(
+      catchError(() =>
+        this.router
+          .navigate([Pages.LIDI.path, Pages.WORKFLOWS.path], {
+            state: { notDismissSnackBar: true },
+          })
+          .then(() => [])
+      )
+    );
   }
 }
 
-export const lineVersionSnapshotResolver: ResolveFn<
-  LineVersionSnapshot | never[]
-> = (route: ActivatedRouteSnapshot) =>
+export const lineVersionSnapshotResolver: ResolveFn<LineVersionSnapshot | never[]> = (route: ActivatedRouteSnapshot) =>
   inject(LineVersionSnapshotResolver).resolve(route);

@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  NavigationCancel,
-  NavigationEnd,
-  NavigationError,
-  NavigationStart,
-  Router,
-} from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { BehaviorSubject, merge } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -24,9 +18,7 @@ export class LoadingSpinnerService {
     const navigationEnd$ = this.router.events.pipe(
       filter(
         (event) =>
-          event instanceof NavigationEnd ||
-          event instanceof NavigationCancel ||
-          event instanceof NavigationError
+          event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError
       ),
       map(() => false)
     );

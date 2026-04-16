@@ -16,10 +16,7 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { JudgementType } from '../../../../../../api';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { DateIconComponent } from '../../../../../../core/form-components/date-icon/date-icon.component';
-import {
-  MatDatepicker,
-  MatDatepickerInput,
-} from '@angular/material/datepicker';
+import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
 import { MIN_DATE } from '../../../../../../core/date/date.service';
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
@@ -39,9 +36,7 @@ export interface TerminationDecisionDetailDialogData extends DialogData {
 @Component({
   selector: 'atlas-termination-decision-detail-dialog',
   templateUrl: './termination-decision-detail-dialog.component.html',
-  styleUrls: [
-    '../../../../../../core/form-components/text-field/text-field.component.scss',
-  ],
+  styleUrls: ['../../../../../../core/form-components/text-field/text-field.component.scss'],
   imports: [
     DialogCloseComponent,
     DialogContentComponent,
@@ -62,14 +57,9 @@ export interface TerminationDecisionDetailDialogData extends DialogData {
 export class TerminationDecisionDetailDialogComponent implements OnInit {
   protected readonly JudgementType = JudgementType;
 
-  private readonly dialogRef = inject(
-    MatDialogRef<TerminationDecisionDetailDialogComponent>
-  );
-  private readonly decisionDetailDialogData: TerminationDecisionDetailDialogData =
-    inject(MAT_DIALOG_DATA);
-  private readonly terminationWorkflowService = inject(
-    StopPointTerminationWorkflowService
-  );
+  private readonly dialogRef = inject(MatDialogRef<TerminationDecisionDetailDialogComponent>);
+  private readonly decisionDetailDialogData: TerminationDecisionDetailDialogData = inject(MAT_DIALOG_DATA);
+  private readonly terminationWorkflowService = inject(StopPointTerminationWorkflowService);
 
   form!: FormGroup<TerminationDecisionFormGroup>;
   examinant!: TerminationDecisionPersonEnum;
@@ -84,8 +74,7 @@ export class TerminationDecisionDetailDialogComponent implements OnInit {
     this.readOnly = this.decisionDetailDialogData.readOnly;
     this.workflowStatus = this.decisionDetailDialogData.workflowStatus;
     this.maxDate = this.decisionDetailDialogData.versionValidTo;
-    this.minDate =
-      this.form.controls.terminationDate.value?.toDate() ?? MIN_DATE;
+    this.minDate = this.form.controls.terminationDate.value?.toDate() ?? MIN_DATE;
     if (this.readOnly) {
       this.form.disable();
     }
@@ -98,27 +87,18 @@ export class TerminationDecisionDetailDialogComponent implements OnInit {
   decide() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const terminationDecision =
-        StopPointTerminationWorkflowDetailFormGroupBuilder.getTerminationDecision(
-          this.form
-        );
+      const terminationDecision = StopPointTerminationWorkflowDetailFormGroupBuilder.getTerminationDecision(this.form);
       this.form.disable();
       if (this.examinant === TerminationDecisionPersonEnum.InfoPlus) {
         this.terminationWorkflowService
-          .decisionInfoPlus(
-            this.decisionDetailDialogData.workflowId,
-            terminationDecision
-          )
+          .decisionInfoPlus(this.decisionDetailDialogData.workflowId, terminationDecision)
           .subscribe(() => {
             this.close(true);
           });
       }
       if (this.examinant === TerminationDecisionPersonEnum.Nova) {
         this.terminationWorkflowService
-          .decisionNova(
-            this.decisionDetailDialogData.workflowId,
-            terminationDecision
-          )
+          .decisionNova(this.decisionDetailDialogData.workflowId, terminationDecision)
           .subscribe(() => {
             this.close(true);
           });

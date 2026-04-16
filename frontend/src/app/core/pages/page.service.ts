@@ -22,17 +22,11 @@ export class PageService {
     const pagesToAdd: Page[] = [];
 
     if (this.permissionService.mayAccessTimetableHearing()) {
-      const tthPage =
-        userType === 'BO_TTH'
-          ? { ...Pages.TTH, subpages: undefined }
-          : Pages.TTH;
+      const tthPage = userType === 'BO_TTH' ? { ...Pages.TTH, subpages: undefined } : Pages.TTH;
       pagesToAdd.push(tthPage);
     }
 
-    if (
-      this.permissionService.mayAccessBulkImport() &&
-      environment.bulkImportEnabled
-    ) {
+    if (this.permissionService.mayAccessBulkImport() && environment.bulkImportEnabled) {
       pagesToAdd.push(Pages.BULK_IMPORT);
     }
 

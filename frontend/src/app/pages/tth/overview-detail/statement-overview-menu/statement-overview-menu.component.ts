@@ -86,10 +86,7 @@ export class StatementOverviewMenuComponent {
     };
 
     this.dialogService
-      .openDialogDataWithConfirmationResult(
-        dialogData,
-        AddToDossierDialogComponent
-      )
+      .openDialogDataWithConfirmationResult(dialogData, AddToDossierDialogComponent)
       .subscribe((result) => {
         if (result) {
           this.reloadTable.emit();
@@ -106,10 +103,7 @@ export class StatementOverviewMenuComponent {
       tths: [statement],
     };
     this.dialogService
-      .openDialogDataWithConfirmationResult(
-        dialogData,
-        TthChangeCantonDialogComponent
-      )
+      .openDialogDataWithConfirmationResult(dialogData, TthChangeCantonDialogComponent)
       .subscribe((result) => {
         if (result) {
           this.reloadTable.emit();

@@ -22,20 +22,14 @@
     @if (!isNew() && hasAnonymousText) {
       <atlas-button
         buttonDataCy="showOriginalStatementText"
-        [buttonText]="
-          showOriginalText
-            ? 'TTH.STATEMENT.HIDE_ORIGINAL_TEXT'
-            : 'TTH.STATEMENT.SHOW_ORIGINAL_TEXT'
-        "
+        [buttonText]="showOriginalText ? 'TTH.STATEMENT.HIDE_ORIGINAL_TEXT' : 'TTH.STATEMENT.SHOW_ORIGINAL_TEXT'"
         buttonType="icon"
         (buttonClicked)="toggleOriginalText()"
         wrapperStyleClass="pt-1"
         buttonStyleClass="atlas-icon-btn font-bold-base"
       >
         <ng-template #rightIcon>
-          <i
-            class="bi {{ showOriginalText ? 'bi-lock' : 'bi-lock-fill' }} h5"
-          ></i>
+          <i class="bi {{ showOriginalText ? 'bi-lock' : 'bi-lock-fill' }} h5"></i>
         </ng-template>
       </atlas-button>
     }

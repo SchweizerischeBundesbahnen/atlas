@@ -57,18 +57,10 @@
   </form>
 </atlas-dialog-content>
 <atlas-dialog-footer>
-  <button
-    (click)="closeDialog()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-cancel-button"
-  >
+  <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
     {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
   </button>
-  <button
-    (click)="rejectWorkflow()"
-    class="atlas-primary-btn primary-color-btn"
-    data-cy="dialog-confirm-button"
-  >
+  <button (click)="rejectWorkflow()" class="atlas-primary-btn primary-color-btn" data-cy="dialog-confirm-button">
     {{ titleTranslationKey | translate }}
   </button>
 </atlas-dialog-footer>

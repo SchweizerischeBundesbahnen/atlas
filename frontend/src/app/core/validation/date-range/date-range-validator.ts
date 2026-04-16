@@ -10,17 +10,10 @@ export class DateRangeValidator {
     };
   }
 
-  static validate(
-    validFromForm: AbstractControl | null,
-    validToForm: AbstractControl | null
-  ) {
+  static validate(validFromForm: AbstractControl | null, validToForm: AbstractControl | null) {
     const validFromValue = validFromForm?.value;
     const validToValue = validToForm?.value;
-    if (
-      validFromValue !== null &&
-      validToValue !== null &&
-      validFromValue.isAfter(validToValue)
-    ) {
+    if (validFromValue !== null && validToValue !== null && validFromValue.isAfter(validToValue)) {
       const error: ValidationErrors = {
         date_range_error: {
           date: { validFrom: validFromValue, validTo: validToValue },
@@ -34,10 +27,7 @@ export class DateRangeValidator {
     }
   }
 
-  static populateWithValidationErrors(
-    controlForm: AbstractControl | null,
-    error: ValidationErrors
-  ) {
+  static populateWithValidationErrors(controlForm: AbstractControl | null, error: ValidationErrors) {
     if (!controlForm?.errors) {
       controlForm?.setErrors(error);
     } else {

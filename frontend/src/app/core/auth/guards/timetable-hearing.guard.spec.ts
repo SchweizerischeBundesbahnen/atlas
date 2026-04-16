@@ -1,16 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import {
-  canActivateTimetableHearing,
-  TimetableHearingGuard,
-} from './timetable-hearing.guard';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterModule,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { canActivateTimetableHearing, TimetableHearingGuard } from './timetable-hearing.guard';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterModule, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { PermissionService } from '../permission/permission.service';
 import { UserService } from '../user/user.service';
 import { firstValueFrom, Observable } from 'rxjs';
@@ -68,11 +59,7 @@ describe('TimetableHearingGuard', () => {
       paramMap: convertToParamMap({ id: '1234' }),
     } as ActivatedRouteSnapshot;
     const result = TestBed.runInInjectionContext(
-      () =>
-        canActivateTimetableHearing(
-          mockRoute,
-          {} as RouterStateSnapshot
-        ) as Observable<true | UrlTree>
+      () => canActivateTimetableHearing(mockRoute, {} as RouterStateSnapshot) as Observable<true | UrlTree>
     );
 
     expect(result).toBeDefined();
@@ -88,11 +75,7 @@ describe('TimetableHearingGuard', () => {
       paramMap: convertToParamMap({ id: '1234' }),
     } as ActivatedRouteSnapshot;
     const result = TestBed.runInInjectionContext(
-      () =>
-        canActivateTimetableHearing(
-          mockRoute,
-          {} as RouterStateSnapshot
-        ) as Observable<true | UrlTree>
+      () => canActivateTimetableHearing(mockRoute, {} as RouterStateSnapshot) as Observable<true | UrlTree>
     );
 
     expect(result).toBeDefined();

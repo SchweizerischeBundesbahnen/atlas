@@ -17,13 +17,11 @@ const statementArchivedDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.T
 export async function loadStatementDetailRoute() {
   const permissionService = inject(PermissionService);
   if (permissionService.getTthApplicationUserType() === 'BO_TTH') {
-    const m =
-      await import('./statement/statement-detail/bo-statement-detail/bo-statement-detail.component');
+    const m = await import('./statement/statement-detail/bo-statement-detail/bo-statement-detail.component');
     return m.BoStatementDetailComponent;
   }
   if (permissionService.getTthApplicationUserType() === 'CANTON_TTH') {
-    const m =
-      await import('./statement/statement-detail/canton-statement-detail/canton-statement-detail.component');
+    const m = await import('./statement/statement-detail/canton-statement-detail/canton-statement-detail.component');
     return m.CantonStatementDetailComponent;
   }
   throw new Error('No component statement found for you!!!');
@@ -32,13 +30,11 @@ export async function loadStatementDetailRoute() {
 export async function loadDossierDetailRoute() {
   const permissionService = inject(PermissionService);
   if (permissionService.getTthApplicationUserType() === 'BO_TTH') {
-    const m =
-      await import('./dossier/detail/bo-dossier-detail/bo-dossier-detail.component');
+    const m = await import('./dossier/detail/bo-dossier-detail/bo-dossier-detail.component');
     return m.BoDossierDetailComponent;
   }
   if (permissionService.getTthApplicationUserType() === 'CANTON_TTH') {
-    const m =
-      await import('./dossier/detail/canton-dossier-detail/canton-dossier-detail.component');
+    const m = await import('./dossier/detail/canton-dossier-detail/canton-dossier-detail.component');
     return m.CantonDossierDetailComponent;
   }
   throw new Error('No component statement found for you!!!');
@@ -48,9 +44,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./overview/timetable-hearing-overview.component').then(
-        (m) => m.TimetableHearingOverviewComponent
-      ),
+      import('./overview/timetable-hearing-overview.component').then((m) => m.TimetableHearingOverviewComponent),
   },
   {
     path: statementActiveDetailPath,
@@ -121,10 +115,7 @@ export const routes: Routes = [
   },
   {
     path: Pages.TTH_OVERVIEW_DETAIL.path,
-    loadComponent: () =>
-      import('./overview-tab/overview-tab.component').then(
-        (m) => m.OverviewTabComponent
-      ),
+    loadComponent: () => import('./overview-tab/overview-tab.component').then((m) => m.OverviewTabComponent),
     loadChildren: async () => {
       const permissionService = inject(PermissionService);
       const userService = inject(UserService);

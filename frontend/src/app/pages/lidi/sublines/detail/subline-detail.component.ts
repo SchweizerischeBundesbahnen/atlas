@@ -20,19 +20,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { map } from 'rxjs/operators';
 import { ValidationService } from '../../../../core/validation/validation.service';
-import {
-  SublineFormGroup,
-  SublineFormGroupBuilder,
-} from './subline-form-group';
+import { SublineFormGroup, SublineFormGroupBuilder } from './subline-form-group';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../../core/versioning/date-range';
-import {
-  DetailDialogHelperService,
-  DetailWithCancelEdit,
-} from '../../../../core/detail/detail-dialog-helper.service';
+import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../../core/detail/detail-dialog-helper.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { SublineService } from '../../../../api/service/lidi/subline.service';
 import { SublineInternalService } from '../../../../api/service/lidi/subline-internal.service';
@@ -85,9 +79,7 @@ import { DialogData } from '../../../../core/components/dialog/dialog.data';
     RevokeButton,
   ],
 })
-export class SublineDetailComponent
-  implements OnInit, DetailFormComponent, DetailWithCancelEdit
-{
+export class SublineDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   protected readonly Pages = Pages;
 
   TYPE_OPTIONS: SublineType[] = [];
@@ -134,10 +126,7 @@ export class SublineDetailComponent
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.versions);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.versions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
 
       this.initSelectedVersion();
@@ -145,12 +134,9 @@ export class SublineDetailComponent
         .getLine(this.selectedVersion.mainlineSlnid)
         .pipe(map((value) => [value]));
 
-      this.lineService
-        .getLineVersionsV2(this.selectedVersion.mainlineSlnid)
-        .subscribe((mainline) => {
-          this.currentMainlineSelection =
-            VersionsHandlingService.determineDefaultVersionByValidity(mainline);
-        });
+      this.lineService.getLineVersionsV2(this.selectedVersion.mainlineSlnid).subscribe((mainline) => {
+        this.currentMainlineSelection = VersionsHandlingService.determineDefaultVersionByValidity(mainline);
+      });
 
       this.TYPE_OPTIONS = [this.form.controls.sublineType.value!];
     }
@@ -158,9 +144,7 @@ export class SublineDetailComponent
   }
 
   private initSelectedVersion() {
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-      this.versions
-    );
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
     this.form = SublineFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
@@ -171,12 +155,9 @@ export class SublineDetailComponent
     if (!this.isNew || this.permissionService.isAdmin) {
       this.boSboidRestriction = [];
     } else {
-      const permission = this.permissionService.getApplicationUserPermission(
-        ApplicationType.Lidi
-      );
+      const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Lidi);
       if (permission.role === ApplicationRole.Writer) {
-        this.boSboidRestriction =
-          PermissionService.getSboidRestrictions(permission);
+        this.boSboidRestriction = PermissionService.getSboidRestrictions(permission);
       } else {
         this.boSboidRestriction = [];
       }
@@ -205,8 +186,7 @@ export class SublineDetailComponent
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const sublineVersion =
-        this.form.getRawValue() as unknown as CreateSublineVersionV2;
+      const sublineVersion = this.form.getRawValue() as unknown as CreateSublineVersionV2;
       this.form.disable();
       if (this.isNew) {
         this.createSubline(sublineVersion);
@@ -227,12 +207,8 @@ export class SublineDetailComponent
       .createSublineVersionV2(sublineVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((version) => {
-        this.notificationService.success(
-          'LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS'
-        );
-        this.router
-          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, version.slnid])
-          .then(() => this.ngOnInit());
+        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
+        this.router.navigate([Pages.LIDI.path, Pages.SUBLINES.path, version.slnid]).then(() => this.ngOnInit());
       });
   }
 
@@ -241,34 +217,18 @@ export class SublineDetailComponent
       .updateSublineVersionV2(id, sublineVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success(
-          'LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS'
-        );
-        this.router
-          .navigate([
-            Pages.LIDI.path,
-            Pages.SUBLINES.path,
-            sublineVersion.slnid,
-          ])
-          .then(() => this.ngOnInit());
+        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
+        this.router.navigate([Pages.LIDI.path, Pages.SUBLINES.path, sublineVersion.slnid]).then(() => this.ngOnInit());
       });
   }
 
   revoke(): void {
-    this.sublineInternalService
-      .revokeSubline(this.selectedVersion.slnid!)
-      .subscribe(() => {
-        this.notificationService.success(
-          'LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS'
-        );
-        this.router
-          .navigate([
-            Pages.LIDI.path,
-            Pages.SUBLINES.path,
-            this.selectedVersion.slnid,
-          ])
-          .then(() => this.ngOnInit());
-      });
+    this.sublineInternalService.revokeSubline(this.selectedVersion.slnid!).subscribe(() => {
+      this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
+      this.router
+        .navigate([Pages.LIDI.path, Pages.SUBLINES.path, this.selectedVersion.slnid])
+        .then(() => this.ngOnInit());
+    });
   }
 
   delete(): void {
@@ -282,14 +242,10 @@ export class SublineDetailComponent
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
-            this.sublineInternalService
-              .deleteSublines(this.selectedVersion.slnid)
-              .subscribe(() => {
-                this.notificationService.success(
-                  'LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS'
-                );
-                this.back();
-              });
+            this.sublineInternalService.deleteSublines(this.selectedVersion.slnid).subscribe(() => {
+              this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
+              this.back();
+            });
           }
         }
       });
@@ -337,8 +293,7 @@ export class SublineDetailComponent
       this.handleSublineType(line);
 
       this.lineService.getLineVersionsV2(line.slnid!).subscribe((mainline) => {
-        this.currentMainlineSelection =
-          VersionsHandlingService.determineDefaultVersionByValidity(mainline);
+        this.currentMainlineSelection = VersionsHandlingService.determineDefaultVersionByValidity(mainline);
       });
     } else {
       this.TYPE_OPTIONS = [];

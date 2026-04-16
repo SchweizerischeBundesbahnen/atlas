@@ -3,11 +3,7 @@ import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../../../../core/model/base-detail-form-group';
 import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
-import {
-  ReadToiletVersion,
-  StandardAttributeType,
-  ToiletVersion,
-} from '../../../../../../api';
+import { ReadToiletVersion, StandardAttributeType, ToiletVersion } from '../../../../../../api';
 
 export interface ToiletFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -30,17 +26,9 @@ export class ToiletFormGroupBuilder {
           Validators.required,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
         ]),
-        wheelchairToilet: new FormControl(
-          version?.wheelchairToilet ?? StandardAttributeType.ToBeCompleted
-        ),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
+        wheelchairToilet: new FormControl(version?.wheelchairToilet ?? StandardAttributeType.ToBeCompleted),
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [Validators.required]),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
@@ -51,10 +39,7 @@ export class ToiletFormGroupBuilder {
     );
   }
 
-  static getWritableForm(
-    form: FormGroup<ToiletFormGroup>,
-    parentServicePointSloid: string
-  ): ToiletVersion {
+  static getWritableForm(form: FormGroup<ToiletFormGroup>, parentServicePointSloid: string): ToiletVersion {
     return {
       sloid: form.value.sloid!,
       parentServicePointSloid: parentServicePointSloid,

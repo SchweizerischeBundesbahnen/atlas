@@ -1,16 +1,6 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  type MockedObject,
-  vi,
-} from 'vitest';
+import { beforeEach, describe, expect, it, type MockedObject, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  NavigateServicePointComponent,
-  NOTFOUND_LABEL,
-} from './navigate-service-point.component';
+import { NavigateServicePointComponent, NOTFOUND_LABEL } from './navigate-service-point.component';
 import { Router, RouterModule } from '@angular/router';
 import { LocationService } from '../../api/service/location/location.service';
 import { of } from 'rxjs';
@@ -19,9 +9,7 @@ import { ServicePointSearch } from '../search-service-point/service-point-search
 import { translateServiceProvider } from '../../app.testing.mocks';
 
 describe('NavigateServicePoint', () => {
-  type LocationServiceMock = MockedObject<
-    Pick<LocationService, 'getSloidLocationModel'>
-  >;
+  type LocationServiceMock = MockedObject<Pick<LocationService, 'getSloidLocationModel'>>;
   let component: NavigateServicePointComponent;
   let fixture: ComponentFixture<NavigateServicePointComponent>;
   let locationService: LocationServiceMock;
@@ -30,27 +18,20 @@ describe('NavigateServicePoint', () => {
   beforeEach(() => {
     // Mocking: stub only the used method of LocationService
     locationService = {
-      getSloidLocationModel: vi
-        .fn()
-        .mockName('locationService.getSloidLocationModel'),
+      getSloidLocationModel: vi.fn().mockName('locationService.getSloidLocationModel'),
     };
 
     // Config: wire TestBed with the mocked service and component
     TestBed.configureTestingModule({
       imports: [RouterModule.forRoot([])],
-      providers: [
-        translateServiceProvider,
-        { provide: LocationService, useValue: locationService },
-      ],
+      providers: [translateServiceProvider, { provide: LocationService, useValue: locationService }],
     });
 
     // Arrangement: obtain the fixture/component/router instances
     type ComponentProp = keyof NavigateServicePointComponent;
     const searchTypeInputName: ComponentProp = 'searchType';
     fixture = TestBed.createComponent(NavigateServicePointComponent, {
-      bindings: [
-        inputBinding(searchTypeInputName, () => ServicePointSearch.PRM),
-      ],
+      bindings: [inputBinding(searchTypeInputName, () => ServicePointSearch.PRM)],
     });
     component = fixture.componentInstance;
     router = TestBed.inject(Router);

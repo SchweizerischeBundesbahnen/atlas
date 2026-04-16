@@ -23,14 +23,10 @@ export interface DossierDetailFormGroup {
 }
 
 export class DossierFormGroupBuilder {
-  static buildFormGroup(
-    dossier?: TthDossier
-  ): FormGroup<DossierDetailFormGroup> {
+  static buildFormGroup(dossier?: TthDossier): FormGroup<DossierDetailFormGroup> {
     return new FormGroup<DossierDetailFormGroup>({
       id: new FormControl(dossier?.id),
-      statementIds: new FormControl(dossier?.statementIds, [
-        Validators.required,
-      ]),
+      statementIds: new FormControl(dossier?.statementIds, [Validators.required]),
       swissCanton: new FormControl(dossier?.swissCanton),
       topic: new FormControl(dossier?.topic, [
         Validators.required,
@@ -49,21 +45,16 @@ export class DossierFormGroupBuilder {
         AtlasFieldLengthValidator.length_255,
         AtlasCharsetsValidator.email,
       ]),
-      boDeadlineToAnswer: new FormControl(
-        dossier?.boDeadlineToAnswer ? moment(dossier.boDeadlineToAnswer) : null
-      ),
+      boDeadlineToAnswer: new FormControl(dossier?.boDeadlineToAnswer ? moment(dossier.boDeadlineToAnswer) : null),
       questionId: new FormControl(dossier?.questions.at(0)?.id),
       question: new FormControl(dossier?.questions.at(0)?.question, [
         Validators.maxLength(5000),
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
-      answerToCanton: new FormControl(
-        dossier?.questions.at(0)?.answerToCanton,
-        [
-          Validators.maxLength(5000),
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-        ]
-      ),
+      answerToCanton: new FormControl(dossier?.questions.at(0)?.answerToCanton, [
+        Validators.maxLength(5000),
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
       dossierStatus: new FormControl(dossier?.dossierStatus),
     });
   }

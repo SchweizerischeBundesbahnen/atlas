@@ -1,10 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import {
-  ControlContainer,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import {
   SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,
@@ -65,10 +60,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   private readonly dialogService = inject(DialogService);
 
   readonly WorkflowStatus = WorkflowStatus;
-  readonly emailValidator = [
-    AtlasCharsetsValidator.email,
-    AtlasFieldLengthValidator.length_100,
-  ];
+  readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   @Input() stopPoint!: ReadServicePointVersion;
   @Input() oldDesignation?: string;
@@ -88,9 +80,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         country: Country.Switzerland,
         status: Status.InReview,
         number: {
-          number: SloidHelper.servicePointSloidToNumber(
-            this.currentWorkflow.sloid
-          ),
+          number: SloidHelper.servicePointSloidToNumber(this.currentWorkflow.sloid),
           checkDigit: 1,
           numberShort: 1,
           uicCountryCode: 85,
@@ -99,31 +89,25 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     }
 
     if (!this.currentWorkflow) {
-      this.stopPointWorkflowService
-        .getExaminants(this.stopPoint.id!)
-        .subscribe({
-          next: (defaultExaminants: StopPointPerson[]) => {
-            defaultExaminants.forEach((examinant) => {
-              this.form.controls.examinants.push(
-                StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(
-                  examinant
-                )
-              );
-            });
+      this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe({
+        next: (defaultExaminants: StopPointPerson[]) => {
+          defaultExaminants.forEach((examinant) => {
             this.form.controls.examinants.push(
-              StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup()
+              StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant)
             );
-          },
-          error: (error) => {
-            console.error('Error occurred while fetching examinants:', error);
-            this.form.disable();
-          },
-        });
+          });
+          this.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
+        },
+        error: (error) => {
+          console.error('Error occurred while fetching examinants:', error);
+          this.form.disable();
+        },
+      });
     }
 
     if (this.currentWorkflow) {
-      this.specialDecision = this.currentWorkflow!.examinants?.find(
-        (examinant) => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!)
+      this.specialDecision = this.currentWorkflow!.examinants?.find((examinant) =>
+        SPECIAL_DECISION_TYPES.includes(examinant.decisionType!)
       );
     }
   }
@@ -139,26 +123,17 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   goToAtlasStopPoint() {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(
-        [
-          Pages.SEPODI.path,
-          Pages.SERVICE_POINTS.path,
-          this.stopPoint?.number.number,
-        ],
-        {
-          queryParams: {
-            id: this.stopPoint?.id,
-          },
-        }
-      )
+      this.router.createUrlTree([Pages.SEPODI.path, Pages.SERVICE_POINTS.path, this.stopPoint?.number.number], {
+        queryParams: {
+          id: this.stopPoint?.id,
+        },
+      })
     );
     window.open(url, '_blank');
   }
 
   goToWorkflow(id: number) {
-    const url = this.router.serializeUrl(
-      this.router.createUrlTree([Pages.SEPODI.path, Pages.WORKFLOWS.path, id])
-    );
+    const url = this.router.serializeUrl(this.router.createUrlTree([Pages.SEPODI.path, Pages.WORKFLOWS.path, id]));
     window.open(url, '_blank');
   }
 
@@ -182,10 +157,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
       confirmText: 'WORKFLOW.BUTTON.SEND',
       workflowId: this.currentWorkflow!.id!,
       workflowStatus: this.currentWorkflow!.status!,
-      examinant:
-        StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(
-          this.specialDecision
-        ),
+      examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(this.specialDecision),
     } satisfies DecisionDetailDialogData);
   }
 }

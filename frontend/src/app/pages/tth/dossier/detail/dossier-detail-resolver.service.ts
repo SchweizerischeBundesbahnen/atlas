@@ -18,16 +18,9 @@ export class DossierDetailResolver {
           catchError(() => {
             const hearingStatus = route.data['hearingStatus'];
             this.router
-              .navigate(
-                [
-                  Pages.TTH.path,
-                  route.paramMap.get('canton')?.toLowerCase(),
-                  hearingStatus.toLowerCase(),
-                ],
-                {
-                  state: { notDismissSnackBar: true },
-                }
-              )
+              .navigate([Pages.TTH.path, route.paramMap.get('canton')?.toLowerCase(), hearingStatus.toLowerCase()], {
+                state: { notDismissSnackBar: true },
+              })
               .then();
             return of(undefined);
           })
@@ -35,6 +28,5 @@ export class DossierDetailResolver {
   }
 }
 
-export const dossierResolver: ResolveFn<TthDossier | undefined> = (
-  route: ActivatedRouteSnapshot
-) => inject(DossierDetailResolver).resolve(route);
+export const dossierResolver: ResolveFn<TthDossier | undefined> = (route: ActivatedRouteSnapshot) =>
+  inject(DossierDetailResolver).resolve(route);

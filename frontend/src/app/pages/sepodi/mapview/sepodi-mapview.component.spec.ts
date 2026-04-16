@@ -80,13 +80,9 @@ describe('SepodiMapviewComponent', () => {
 
   it('should style side panel to open and closed', () => {
     component.setRouteActive(true);
-    expect(component.detailContainer.nativeElement.classList).toContain(
-      'side-panel-open'
-    );
+    expect(component.detailContainer.nativeElement.classList).toContain('side-panel-open');
 
     component.setRouteActive(false);
-    expect(component.detailContainer.nativeElement.classList.value).toEqual(
-      'detail-container'
-    );
+    expect(component.detailContainer.nativeElement.classList.value).toEqual('detail-container');
   });
 });

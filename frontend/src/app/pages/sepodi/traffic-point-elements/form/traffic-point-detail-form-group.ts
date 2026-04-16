@@ -2,16 +2,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReadTrafficPointElementVersion } from '../../../../api';
 import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../../core/model/base-detail-form-group';
-import {
-  GeographyFormGroup,
-  GeographyFormGroupBuilder,
-} from '../../geography/geography-form-group';
+import { GeographyFormGroup, GeographyFormGroupBuilder } from '../../geography/geography-form-group';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 
-export interface TrafficPointElementDetailFormGroup
-  extends BaseDetailFormGroup {
+export interface TrafficPointElementDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
   designation: FormControl<string | null | undefined>;
   designationOperational: FormControl<string | null | undefined>;
@@ -45,24 +41,16 @@ export class TrafficPointElementFormGroupBuilder {
     form.removeControl(controlName);
   }
 
-  static buildFormGroup(
-    version?: ReadTrafficPointElementVersion
-  ): FormGroup<TrafficPointElementDetailFormGroup> {
+  static buildFormGroup(version?: ReadTrafficPointElementVersion): FormGroup<TrafficPointElementDetailFormGroup> {
     const formGroup = new FormGroup<TrafficPointElementDetailFormGroup>(
       {
         sloid: new FormControl(version?.sloid),
-        designationOperational: new FormControl(
-          version?.designationOperational,
-          [
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            Validators.maxLength(20),
-          ]
-        ),
-        parentSloid: new FormControl(version?.parentSloid),
-        length: new FormControl(version?.length, [
-          AtlasCharsetsValidator.decimalWithDigits(10, 3),
-          Validators.min(0),
+        designationOperational: new FormControl(version?.designationOperational, [
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(20),
         ]),
+        parentSloid: new FormControl(version?.parentSloid),
+        length: new FormControl(version?.length, [AtlasCharsetsValidator.decimalWithDigits(10, 3), Validators.min(0)]),
         boardingAreaHeight: new FormControl(version?.boardingAreaHeight, [
           AtlasCharsetsValidator.decimalWithDigits(3, 2),
           Validators.min(0),
@@ -76,14 +64,8 @@ export class TrafficPointElementFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(40),
         ]),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [Validators.required]),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
@@ -97,9 +79,7 @@ export class TrafficPointElementFormGroupBuilder {
       this.addGroupToForm(
         formGroup,
         'trafficPointElementGeolocation',
-        GeographyFormGroupBuilder.buildFormGroup(
-          version.trafficPointElementGeolocation
-        )
+        GeographyFormGroupBuilder.buildFormGroup(version.trafficPointElementGeolocation)
       );
     }
 

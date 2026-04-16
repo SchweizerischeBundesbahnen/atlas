@@ -67,20 +67,14 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
     private router: Router,
     private readonly tableService: TableService
   ) {
-    const slnidFromQueryParam: string | undefined =
-      this.route.snapshot.queryParams.slnid;
+    const slnidFromQueryParam: string | undefined = this.route.snapshot.queryParams.slnid;
     if (slnidFromQueryParam) {
-      this.tableFilterConfigIntern.chipSearch.addSearchFromString(
-        slnidFromQueryParam
-      );
+      this.tableFilterConfigIntern.chipSearch.addSearchFromString(slnidFromQueryParam);
     }
   }
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      this.tableFilterConfigIntern,
-      Pages.WORKFLOWS
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.WORKFLOWS);
   }
 
   getOverview(pagination: TablePagination) {

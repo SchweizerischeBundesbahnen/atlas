@@ -10,13 +10,8 @@
   [totalCount]="userPageResult.totalCount"
 >
   <div class="d-flex flex-column mb-1">
-    <mat-label class="font-bold-lg"
-      >{{ 'COMMON.SEARCH.SEARCH_FOR' | translate }}
-    </mat-label>
-    <mat-radio-group
-      (change)="selectedSearchChanged()"
-      [(ngModel)]="selectedSearch"
-    >
+    <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_FOR' | translate }} </mat-label>
+    <mat-radio-group (change)="selectedSearchChanged()" [(ngModel)]="selectedSearch">
       @for (option of searchOptions; track option) {
         <mat-radio-button [value]="option.value" class="pe-2">
           {{ option.translationKey | translate }}
@@ -28,14 +23,9 @@
   <div class="col-12 search-section-height">
     @if (selectedSearch === 'USER') {
       <div class="mb-1">
-        <mat-label class="font-bold-lg"
-          >{{ 'USER_ADMIN.TABLE_HEADER' | translate }}
-        </mat-label>
+        <mat-label class="font-bold-lg">{{ 'USER_ADMIN.TABLE_HEADER' | translate }} </mat-label>
       </div>
-      <atlas-user-select
-        (selectionChange)="onUserFilterChanged($event)"
-        [form]="userSearchForm"
-      ></atlas-user-select>
+      <atlas-user-select (selectionChange)="onUserFilterChanged($event)" [form]="userSearchForm"></atlas-user-select>
     } @else if (selectedSearch === 'FILTER') {
       <div class="d-flex flex-row">
         <atlas-bo-select

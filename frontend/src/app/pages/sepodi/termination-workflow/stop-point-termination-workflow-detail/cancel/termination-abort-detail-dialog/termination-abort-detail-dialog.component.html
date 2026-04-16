@@ -13,20 +13,10 @@
 </atlas-dialog-content>
 
 <atlas-dialog-footer>
-  <button
-    (click)="close()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-close-button"
-  >
+  <button (click)="close()" class="atlas-primary-btn me-3" data-cy="dialog-close-button">
     {{ 'COMMON.BACK' | translate }}
   </button>
-  <button
-    (click)="abortTermination()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-save-button"
-  >
-    {{
-      'TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.CONFIRM_BUTTON' | translate
-    }}
+  <button (click)="abortTermination()" class="atlas-primary-btn me-3" data-cy="dialog-save-button">
+    {{ 'TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.CONFIRM_BUTTON' | translate }}
   </button>
 </atlas-dialog-footer>

@@ -17,10 +17,7 @@ export class TimetableHearingGuard {
   canActivate() {
     return this.userService.onPermissionsLoaded().pipe(
       map(() => {
-        if (
-          !this.userService.loggedIn ||
-          !this.permissionService.mayAccessTimetableHearing()
-        ) {
+        if (!this.userService.loggedIn || !this.permissionService.mayAccessTimetableHearing()) {
           return this.router.parseUrl('/');
         }
         return true;

@@ -1,10 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  ControlContainer,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ParkingLotFormGroup } from '../parking-lot-form-group';
 import { BooleanOptionalAttributeType } from '../../../../../../../api';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';

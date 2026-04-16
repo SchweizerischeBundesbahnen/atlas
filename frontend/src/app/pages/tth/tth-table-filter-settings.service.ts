@@ -1,8 +1,4 @@
-import {
-  StatementStatus,
-  TimetableFieldNumber,
-  TransportCompany,
-} from '../../api';
+import { StatementStatus, TimetableFieldNumber, TransportCompany } from '../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TableFilterMultiSelect } from '../../core/components/table-filter/config/table-filter-multiselect';
 import { TableFilterSearchSelect } from '../../core/components/table-filter/config/table-filter-search-select';
@@ -50,14 +46,7 @@ export class TthTableFilterSettingsService {
         Object.values(DossierStatus),
         1,
         'filter-width-single',
-        [
-          'ADDED',
-          'DOSSIER_BO_CHECK',
-          'DOSSIER_CANTON_CHECK',
-          'ACCEPTED',
-          'REJECTED',
-          'MOVED',
-        ]
+        ['ADDED', 'DOSSIER_BO_CHECK', 'DOSSIER_CANTON_CHECK', 'ACCEPTED', 'REJECTED', 'MOVED']
       ),
     };
   }

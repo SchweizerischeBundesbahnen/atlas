@@ -47,10 +47,7 @@ export class DetailDialogHelperService {
     return of(true);
   }
 
-  confirmWarning(
-    labels: Pick<DialogData, 'message' | 'confirmText'>,
-    onConfirm: () => void
-  ) {
+  confirmWarning(labels: Pick<DialogData, 'message' | 'confirmText'>, onConfirm: () => void) {
     this.dialogService
       .openDialogDataWithConfirmationResult({
         title: 'DIALOG.WARNING',

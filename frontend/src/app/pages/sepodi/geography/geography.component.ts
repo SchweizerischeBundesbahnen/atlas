@@ -14,11 +14,7 @@ import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
-import {
-  MatRadioButton,
-  MatRadioChange,
-  MatRadioGroup,
-} from '@angular/material/radio';
+import { MatRadioButton, MatRadioChange, MatRadioGroup } from '@angular/material/radio';
 import { filter, takeUntil } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InfoIconComponent } from '@atlas/form';
@@ -102,15 +98,13 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     private changeDetector: ChangeDetectorRef,
     private readonly locationGeoInternalService: LocationGeoInternalService
   ) {
-    this.mapService.clickedGeographyCoordinates
-      .pipe(takeUntilDestroyed())
-      .subscribe((coordinatePairWGS84) => {
-        this.onMapClick({
-          north: coordinatePairWGS84.lat,
-          east: coordinatePairWGS84.lng,
-          spatialReference: SpatialReference.Wgs84,
-        });
+    this.mapService.clickedGeographyCoordinates.pipe(takeUntilDestroyed()).subscribe((coordinatePairWGS84) => {
+      this.onMapClick({
+        north: coordinatePairWGS84.lat,
+        east: coordinatePairWGS84.lng,
+        spatialReference: SpatialReference.Wgs84,
       });
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -134,9 +128,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     }
 
     const maxDigits =
-      this.currentSpatialReference === SpatialReference.Lv95
-        ? this.LV95_MAX_DIGITS
-        : this.WGS84_MAX_DIGITS;
+      this.currentSpatialReference === SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS;
 
     const roundedEast = Number(coordinates.east.toFixed(maxDigits));
     const roundedNorth = Number(coordinates.north.toFixed(maxDigits));
@@ -150,18 +142,15 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   initTransformedCoordinatePair() {
     if (!this.currentCoordinates) return;
-    this.transformedCoordinatePair =
-      this.coordinateTransformationService.transform(
-        this.currentCoordinates,
-        this.transformedSpatialReference
-      );
+    this.transformedCoordinatePair = this.coordinateTransformationService.transform(
+      this.currentCoordinates,
+      this.transformedSpatialReference
+    );
     this.changeDetector.detectChanges();
   }
 
   get transformedSpatialReference() {
-    return this.currentSpatialReference === SpatialReference.Lv95
-      ? SpatialReference.Wgs84
-      : SpatialReference.Lv95;
+    return this.currentSpatialReference === SpatialReference.Lv95 ? SpatialReference.Wgs84 : SpatialReference.Lv95;
   }
 
   get currentSpatialReference(): SpatialReference | null | undefined {
@@ -185,25 +174,18 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     const previousCoordinatePair = this.currentCoordinates!;
     previousCoordinatePair.spatialReference = this.transformedSpatialReference;
 
-    const transformedCoordinatePair =
-      this.coordinateTransformationService.transform(
-        previousCoordinatePair,
-        this.currentSpatialReference!
-      );
+    const transformedCoordinatePair = this.coordinateTransformationService.transform(
+      previousCoordinatePair,
+      this.currentSpatialReference!
+    );
 
     this.setFormGroupValue(transformedCoordinatePair);
     this.initTransformedCoordinatePair();
   }
 
-  onChangeCoordinatesManually(
-    coordinates: CoordinatePair,
-    updateHeight: boolean
-  ) {
+  onChangeCoordinatesManually(coordinates: CoordinatePair, updateHeight: boolean) {
     if (this.currentSpatialReference === SpatialReference.Lv95) {
-      coordinates = this.coordinateTransformationService.transform(
-        coordinates,
-        SpatialReference.Wgs84
-      )!;
+      coordinates = this.coordinateTransformationService.transform(coordinates, SpatialReference.Wgs84)!;
     }
     if (coordinates && coordinates.north && coordinates.east) {
       this.setHeightFromGeoData(coordinates, updateHeight);
@@ -217,10 +199,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   onMapClick(coordinatesWgs84: CoordinatePair) {
     if (this.currentSpatialReference === SpatialReference.Lv95) {
-      coordinatesWgs84 = this.coordinateTransformationService.transform(
-        coordinatesWgs84,
-        SpatialReference.Lv95
-      )!;
+      coordinatesWgs84 = this.coordinateTransformationService.transform(coordinatesWgs84, SpatialReference.Lv95)!;
     }
     this.setHeightFromGeoData(coordinatesWgs84, true);
     this.setFormGroupValue(coordinatesWgs84);
@@ -238,18 +217,13 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     }
   }
 
-  public setHeightFromGeoData(
-    coordinatePair: CoordinatePair,
-    updateHeight: boolean
-  ) {
+  public setHeightFromGeoData(coordinatePair: CoordinatePair, updateHeight: boolean) {
     if (coordinatePair && updateHeight) {
-      this.locationGeoInternalService
-        .getHeight(coordinatePair)
-        .subscribe((value) => {
-          this._form?.patchValue({
-            height: value.height,
-          });
+      this.locationGeoInternalService.getHeight(coordinatePair).subscribe((value) => {
+        this._form?.patchValue({
+          height: value.height,
         });
+      });
     }
   }
 }

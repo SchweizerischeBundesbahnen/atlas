@@ -101,15 +101,11 @@ describe('TableComponent', () => {
 
   it('should get dropdown', () => {
     fixture.detectChanges();
-    const tableCells = fixture.debugElement.queryAll(
-      By.css('td .atlas-select')
-    );
+    const tableCells = fixture.debugElement.queryAll(By.css('td .atlas-select'));
     expect(tableCells).toBeDefined();
     expect(tableCells.length).toEqual(3);
     tableCells.forEach((value) => {
-      expect(value.nativeElement.textContent.trim()).toEqual(
-        'FORM.DROPDOWN_PLACEHOLDER'
-      );
+      expect(value.nativeElement.textContent.trim()).toEqual('FORM.DROPDOWN_PLACEHOLDER');
     });
   });
 
@@ -134,10 +130,7 @@ describe('TableComponent', () => {
 
     fixture.detectChanges();
     const paginator = fixture.debugElement.query(By.css('mat-paginator'));
-    paginator.nativeNode.setAttribute(
-      'ng-reflect-page-size-options',
-      [5, 10, 20]
-    );
+    paginator.nativeNode.setAttribute('ng-reflect-page-size-options', [5, 10, 20]);
     fixture.detectChanges();
 
     const matSelector = paginator.query(By.css('.mat-mdc-select-trigger'));
@@ -162,9 +155,7 @@ describe('TableComponent', () => {
     fixture.detectChanges();
     vi.spyOn(component.tableChanged, 'emit').mockImplementation(() => {});
 
-    const buttonSortHeaderName = fixture.debugElement.query(
-      By.css('.mat-sort-header-container')
-    );
+    const buttonSortHeaderName = fixture.debugElement.query(By.css('.mat-sort-header-container'));
     buttonSortHeaderName.nativeElement.click();
     fixture.detectChanges();
 

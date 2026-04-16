@@ -3,12 +3,7 @@ import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { UserAdministrationClientEditComponent } from './user-administration-client-edit.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  ApplicationRole,
-  ApplicationType,
-  ClientCredential,
-  PermissionRestrictionType,
-} from '../../../../../api';
+import { ApplicationRole, ApplicationType, ClientCredential, PermissionRestrictionType } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subject } from 'rxjs';
@@ -23,10 +18,7 @@ describe('UserAdministrationClientEditComponent', () => {
   let fixture: ComponentFixture<UserAdministrationClientEditComponent>;
 
   let clientCredentialAdministrationService: Mocked<
-    Pick<
-      ClientCredentialAdministrationService,
-      'updateClientCredentialPermissions'
-    >
+    Pick<ClientCredentialAdministrationService, 'updateClientCredentialPermissions'>
   >;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
   let dialogService: Mocked<Pick<DialogService, 'confirmLeave'>>;
@@ -42,10 +34,7 @@ describe('UserAdministrationClientEditComponent', () => {
       confirmLeave: vi.fn().mockReturnValue(of(true)),
     };
     await TestBed.configureTestingModule({
-      imports: [
-        UserAdministrationClientEditComponent,
-        TranslateModule.forRoot(),
-      ],
+      imports: [UserAdministrationClientEditComponent, TranslateModule.forRoot()],
       providers: [
         TranslatePipe,
         {
@@ -108,9 +97,7 @@ describe('UserAdministrationClientEditComponent', () => {
 
   it('should save permissions', () => {
     component.saveClientCredential();
-    expect(
-      clientCredentialAdministrationService.updateClientCredentialPermissions
-    ).toHaveBeenCalledTimes(1);
+    expect(clientCredentialAdministrationService.updateClientCredentialPermissions).toHaveBeenCalledTimes(1);
   });
 
   it('should toggleEdit', () => {

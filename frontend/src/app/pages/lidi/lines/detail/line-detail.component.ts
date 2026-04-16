@@ -13,10 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { Pages } from '../../../pages';
-import {
-  LineDetailFormGroup,
-  LineFormGroupBuilder,
-} from './line-detail-form-group';
+import { LineDetailFormGroup, LineFormGroupBuilder } from './line-detail-form-group';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { catchError, EMPTY, Observable, Subject } from 'rxjs';
@@ -44,10 +41,7 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { TranslatePipe } from '@ngx-translate/core';
 import { LineService } from '../../../../api/service/lidi/line.service';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
-import {
-  Revokable,
-  RevokeButton,
-} from '../../../../core/form-components/revoke-button/revoke-button';
+import { Revokable, RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
 import { DialogData } from '../../../../core/components/dialog/dialog.data';
 
 @Component({
@@ -131,10 +125,7 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.versions);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.versions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
       this.initSelectedVersion();
     }
@@ -157,12 +148,9 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
     if (!this.isNew || this.permissionService.isAdmin) {
       this.boSboidRestriction = [];
     } else {
-      const permission = this.permissionService.getApplicationUserPermission(
-        ApplicationType.Lidi
-      );
+      const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Lidi);
       if (permission.role === ApplicationRole.Writer) {
-        this.boSboidRestriction =
-          PermissionService.getSboidRestrictions(permission);
+        this.boSboidRestriction = PermissionService.getSboidRestrictions(permission);
       } else {
         this.boSboidRestriction = [];
       }
@@ -181,26 +169,20 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
 
   showSnapshotHistoryLink(): boolean {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
-    this.selectedVersion.lineVersionWorkflows?.forEach((lvw) =>
-      lineVersionWorkflows.push(lvw)
-    );
+    this.selectedVersion.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
     return (
       lineVersionWorkflows.length > 0 ||
-      (this.selectedVersion.lineType === LineType.Orderly &&
-        this.selectedVersion.status === Status.Validated)
+      (this.selectedVersion.lineType === LineType.Orderly && this.selectedVersion.status === Status.Validated)
     );
   }
 
   reloadRecord() {
-    this.router
-      .navigate([Pages.LIDI.path, Pages.LINES.path, this.selectedVersion.slnid])
-      .then(() => this.ngOnInit());
+    this.router.navigate([Pages.LIDI.path, Pages.LINES.path, this.selectedVersion.slnid]).then(() => this.ngOnInit());
   }
 
   isEditButtonVisible() {
     return (
-      this.selectedVersion.status !== 'IN_REVIEW' ||
-      this.permissionService.isAtLeastSupervisor(ApplicationType.Lidi)
+      this.selectedVersion.status !== 'IN_REVIEW' || this.permissionService.isAtLeastSupervisor(ApplicationType.Lidi)
     );
   }
 
@@ -216,8 +198,7 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
         this.validityService.updateValidity(this.form);
         this.validityService.validate().subscribe((confirmed) => {
           if (confirmed) {
-            const lineVersion =
-              this.form.getRawValue() as unknown as UpdateLineVersionV2;
+            const lineVersion = this.form.getRawValue() as unknown as UpdateLineVersionV2;
             this.updateLine(this.selectedVersion.id!, lineVersion);
           }
         });
@@ -232,9 +213,7 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$), catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
-        this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, version.slnid])
-          .then(() => this.ngOnInit());
+        this.router.navigate([Pages.LIDI.path, Pages.LINES.path, version.slnid]).then(() => this.ngOnInit());
       });
   }
 
@@ -254,12 +233,8 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
             this.updateLineVersion(id, lineVersion, defaultSuccessMessage);
             return EMPTY;
           } else {
-            const successMessage =
-              this.buildSuccessMessageForShortening(affectedSublines);
-            return this.openSublineShorteningDialog(
-              affectedSublines,
-              lineVersion
-            ).pipe(
+            const successMessage = this.buildSuccessMessageForShortening(affectedSublines);
+            return this.openSublineShorteningDialog(affectedSublines, lineVersion).pipe(
               map((confirmed) => {
                 return { confirmed, successMessage };
               })
@@ -277,35 +252,22 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
   }
 
   buildSuccessMessageForShortening(affectedSublines: AffectedSublinesModel) {
-    if (
-      affectedSublines.hasNotAllowedSublinesOnly &&
-      !affectedSublines.hasAllowedSublinesOnly
-    ) {
+    if (affectedSublines.hasNotAllowedSublinesOnly && !affectedSublines.hasAllowedSublinesOnly) {
       return 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
     }
     return 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS';
   }
 
-  updateLineVersion(
-    id: number,
-    lineVersion: UpdateLineVersionV2,
-    success: string
-  ) {
+  updateLineVersion(id: number, lineVersion: UpdateLineVersionV2, success: string) {
     this.lineService
       .updateLineVersion(id, lineVersion)
       .pipe(takeUntil(this.onDestroy$), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success(success);
-        this.router
-          .navigate([
-            Pages.LIDI.path,
-            Pages.LINES.path,
-            this.selectedVersion.slnid,
-          ])
-          .then(() => {
-            this.ngOnInit();
-            this.eventSubject.next(true);
-          });
+        this.router.navigate([Pages.LIDI.path, Pages.LINES.path, this.selectedVersion.slnid]).then(() => {
+          this.ngOnInit();
+          this.eventSubject.next(true);
+        });
       });
   }
 
@@ -332,20 +294,12 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
 
   revoke(): void {
     if (this.selectedVersion.slnid) {
-      this.lineInternalService
-        .revokeLine(this.selectedVersion.slnid)
-        .subscribe(() => {
-          this.notificationService.success(
-            'LIDI.LINE.NOTIFICATION.REVOKE_SUCCESS'
-          );
-          this.router
-            .navigate([
-              Pages.LIDI.path,
-              Pages.LINES.path,
-              this.selectedVersion.slnid,
-            ])
-            .then(() => this.ngOnInit());
-        });
+      this.lineInternalService.revokeLine(this.selectedVersion.slnid).subscribe(() => {
+        this.notificationService.success('LIDI.LINE.NOTIFICATION.REVOKE_SUCCESS');
+        this.router
+          .navigate([Pages.LIDI.path, Pages.LINES.path, this.selectedVersion.slnid])
+          .then(() => this.ngOnInit());
+      });
     }
   }
 
@@ -360,14 +314,10 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
-            this.lineInternalService
-              .deleteLines(this.selectedVersion.slnid)
-              .subscribe(() => {
-                this.notificationService.success(
-                  'LIDI.LINE.NOTIFICATION.DELETE_SUCCESS'
-                );
-                this.back();
-              });
+            this.lineInternalService.deleteLines(this.selectedVersion.slnid).subscribe(() => {
+              this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
+              this.back();
+            });
           }
         }
       });
@@ -435,22 +385,15 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
       if (keysUpdatedForm.includes(key)) {
         formsEqual = true;
       } else {
-        if (
-          initForm[key as keyof typeof initForm] ===
-          updatedForm[key as keyof typeof updatedForm]
-        ) {
+        if (initForm[key as keyof typeof initForm] === updatedForm[key as keyof typeof updatedForm]) {
           formsEqual = true;
         }
       }
     });
 
-    const validFromShortened = this.form.value.validFrom?.isAfter(
-      this.initForm.value.validFrom
-    );
+    const validFromShortened = this.form.value.validFrom?.isAfter(this.initForm.value.validFrom);
     this.isValidFromShortened = validFromShortened!;
-    const validToShortened = this.form.value.validTo?.isBefore(
-      this.initForm.value.validTo
-    );
+    const validToShortened = this.form.value.validTo?.isBefore(this.initForm.value.validTo);
 
     this.isValidToShortened = validToShortened!;
     return formsEqual && (validFromShortened || validToShortened);
@@ -463,17 +406,14 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
   }
 
   private initSelectedVersion() {
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-      this.versions
-    );
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
     this.form = LineFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
 
       this.showWorkflow =
         this.selectedVersion.lineType === LineType.Orderly &&
-        (this.selectedVersion.status === Status.Draft ||
-          this.selectedVersion.status === Status.InReview);
+        (this.selectedVersion.status === Status.Draft || this.selectedVersion.status === Status.InReview);
     }
   }
 
@@ -492,9 +432,7 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
       this.form.controls.swissLineNumber.updateValueAndValidity();
     } else {
       this.isLineConcessionTypeRequired = true;
-      this.form.controls.lineConcessionType.setValidators([
-        Validators.required,
-      ]);
+      this.form.controls.lineConcessionType.setValidators([Validators.required]);
       this.form.controls.lineConcessionType.updateValueAndValidity();
       this.form.controls.swissLineNumber.setValidators([Validators.required]);
       this.form.controls.swissLineNumber.updateValueAndValidity();

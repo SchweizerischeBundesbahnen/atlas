@@ -8,9 +8,7 @@ import { LOADING_POINT } from '../../../../test/data/loading-point';
 import { LoadingPointService } from '../../../api/service/sepodi/loading-point.service';
 
 describe('LoadingPointsDetailResolver', () => {
-  let loadingPointsService: Mocked<
-    Pick<LoadingPointService, 'getLoadingPoint'>
-  >;
+  let loadingPointsService: Mocked<Pick<LoadingPointService, 'getLoadingPoint'>>;
   let resolver: LoadingPointsDetailResolver;
 
   beforeEach(() => {
@@ -21,10 +19,7 @@ describe('LoadingPointsDetailResolver', () => {
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [
-        LoadingPointsDetailResolver,
-        { provide: LoadingPointService, useValue: loadingPointsService },
-      ],
+      providers: [LoadingPointsDetailResolver, { provide: LoadingPointService, useValue: loadingPointsService }],
     });
     resolver = TestBed.inject(LoadingPointsDetailResolver);
   });

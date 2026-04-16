@@ -7,11 +7,7 @@ import { SearchSelectComponent } from '../form-components/search-select/search-s
 import { BusinessOrganisationSelectComponent } from '../form-components/bo-select/business-organisation-select.component';
 import { BoSelectionDisplayPipe } from '../form-components/bo-select/bo-selection-display.pipe';
 import { LinkIconComponent } from '../form-components/link-icon/link-icon.component';
-import {
-  AtlasLabelFieldComponent,
-  InfoIconComponent,
-  InfoLinkDirective,
-} from '@atlas/form';
+import { AtlasLabelFieldComponent, InfoIconComponent, InfoLinkDirective } from '@atlas/form';
 import { TextFieldComponent } from '../form-components/text-field/text-field.component';
 import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
 import { DownloadIconComponent } from '../form-components/download-icon/download-icon.component';

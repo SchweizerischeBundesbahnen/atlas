@@ -7,10 +7,7 @@ import { DetailPageContainerComponent } from '../../../../../core/components/det
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import {
-  DossierDetailFormGroup,
-  DossierFormGroupBuilder,
-} from '../dossier-detail-form-group';
+import { DossierDetailFormGroup, DossierFormGroupBuilder } from '../dossier-detail-form-group';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -73,34 +70,20 @@ export const DOSSIER_EDITABLE_STATES = [
   templateUrl: './canton-dossier-detail.component.html',
   styleUrls: ['./canton-dossier-detail.component.scss'],
 })
-export class CantonDossierDetailComponent
-  implements DetailFormComponent, DetailWithCancelEdit, OnInit
-{
+export class CantonDossierDetailComponent implements DetailFormComponent, DetailWithCancelEdit, OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly detailHelperService = inject(DetailDialogHelperService);
   private readonly dossierInternalService = inject(DossierInternalService);
   private readonly notificationService = inject(NotificationService);
-  private readonly timetableHearingStatementInternalService = inject(
-    TimetableHearingStatementInternalService
-  );
+  private readonly timetableHearingStatementInternalService = inject(TimetableHearingStatementInternalService);
   private readonly dialogService = inject(DialogService);
-  private readonly openDossierInMailService = inject(
-    OpenCantonDossierInMailService
-  );
+  private readonly openDossierInMailService = inject(OpenCantonDossierInMailService);
 
   readonly editableStates = DOSSIER_EDITABLE_STATES;
   readonly cancelableStates = [DossierStatus.Added];
-  readonly dissolvableStates = [
-    DossierStatus.Accepted,
-    DossierStatus.Rejected,
-    DossierStatus.Moved,
-  ];
-  readonly formStatusOptions: DossierStatus[] = [
-    DossierStatus.Accepted,
-    DossierStatus.Rejected,
-    DossierStatus.Moved,
-  ];
+  readonly dissolvableStates = [DossierStatus.Accepted, DossierStatus.Rejected, DossierStatus.Moved];
+  readonly formStatusOptions: DossierStatus[] = [DossierStatus.Accepted, DossierStatus.Rejected, DossierStatus.Moved];
 
   form!: FormGroup<DossierDetailFormGroup>;
   currentDossier?: TthDossier;
@@ -135,29 +118,22 @@ export class CantonDossierDetailComponent
     } else {
       this.isNew = true;
 
-      this.selectedStatements = toNumberArrayStrict(
-        this.activatedRoute.snapshot.queryParams?.statementIds
-      );
+      this.selectedStatements = toNumberArrayStrict(this.activatedRoute.snapshot.queryParams?.statementIds);
     }
 
     this.loadCantonAndYear();
   }
 
   private loadCantonAndYear() {
-    this.timetableHearingStatementInternalService
-      .getStatement(this.selectedStatements[0])
-      .subscribe((statement) => {
-        this.swissCanton = statement.swissCanton;
-        this.form.controls.swissCanton.setValue(this.swissCanton);
-        this.timetableHearingYear = statement.timetableYear!;
-      });
+    this.timetableHearingStatementInternalService.getStatement(this.selectedStatements[0]).subscribe((statement) => {
+      this.swissCanton = statement.swissCanton;
+      this.form.controls.swissCanton.setValue(this.swissCanton);
+      this.timetableHearingYear = statement.timetableYear!;
+    });
   }
 
   get isEditable(): boolean {
-    return (
-      !!this.currentDossier &&
-      this.editableStates.includes(this.currentDossier.dossierStatus!)
-    );
+    return !!this.currentDossier && this.editableStates.includes(this.currentDossier.dossierStatus!);
   }
 
   toggleEdit() {
@@ -196,9 +172,7 @@ export class CantonDossierDetailComponent
       .createDossier(dossier)
       .pipe(catchError(this.handleError()))
       .subscribe((dossier) => {
-        this.notificationService.success(
-          'TTH.DOSSIER.NOTIFICATION.ADD_SUCCESS'
-        );
+        this.notificationService.success('TTH.DOSSIER.NOTIFICATION.ADD_SUCCESS');
         this.router
           .navigate(['..', dossier.id], {
             relativeTo: this.activatedRoute,
@@ -213,9 +187,7 @@ export class CantonDossierDetailComponent
       .updateDossier(dossier)
       .pipe(catchError(this.handleError()))
       .subscribe((dossier) => {
-        this.notificationService.success(
-          'TTH.DOSSIER.NOTIFICATION.EDIT_SUCCESS'
-        );
+        this.notificationService.success('TTH.DOSSIER.NOTIFICATION.EDIT_SUCCESS');
         this.goToDossier(dossier.id!);
       });
   }
@@ -248,10 +220,7 @@ export class CantonDossierDetailComponent
     };
 
     this.dialogService
-      .openDialogDataWithCustomResult<
-        StatementSelectData,
-        number[]
-      >(dialogData, StatementSelectDialogComponent)
+      .openDialogDataWithCustomResult<StatementSelectData, number[]>(dialogData, StatementSelectDialogComponent)
       .subscribe((selected) => {
         if (selected) {
           this.selectedStatements = selected;
@@ -270,12 +239,10 @@ export class CantonDossierDetailComponent
   }
 
   sendToBo() {
-    this.dossierInternalService
-      .sendDossierToBo(this.currentDossier!.id!)
-      .subscribe(() => {
-        this.notificationService.success('TTH.DOSSIER.NOTIFICATION.SENT_TO_BO');
-        this.goToDossier(this.currentDossier!.id!);
-      });
+    this.dossierInternalService.sendDossierToBo(this.currentDossier!.id!).subscribe(() => {
+      this.notificationService.success('TTH.DOSSIER.NOTIFICATION.SENT_TO_BO');
+      this.goToDossier(this.currentDossier!.id!);
+    });
   }
 
   completeDossier(status: DossierStatus) {
@@ -288,14 +255,10 @@ export class CantonDossierDetailComponent
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.dossierInternalService
-            .completeDossier(this.currentDossier!.id!, status)
-            .subscribe(() => {
-              this.notificationService.success(
-                'TTH.DOSSIER.NOTIFICATION.EDIT_SUCCESS'
-              );
-              this.goToDossier(this.currentDossier!.id!);
-            });
+          this.dossierInternalService.completeDossier(this.currentDossier!.id!, status).subscribe(() => {
+            this.notificationService.success('TTH.DOSSIER.NOTIFICATION.EDIT_SUCCESS');
+            this.goToDossier(this.currentDossier!.id!);
+          });
         }
       });
   }

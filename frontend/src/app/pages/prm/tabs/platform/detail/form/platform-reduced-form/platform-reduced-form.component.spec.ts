@@ -42,9 +42,7 @@ describe('PlatformReducedFormComponent', () => {
 
   it('should default infoOpportunities to ToBeCompleted', () => {
     component.form.controls.infoOpportunities.setValue([]);
-    expect(component.form.controls.infoOpportunities.value).toEqual([
-      InfoOpportunityAttributeType.ToBeCompleted,
-    ]);
+    expect(component.form.controls.infoOpportunities.value).toEqual([InfoOpportunityAttributeType.ToBeCompleted]);
   });
 
   it('should remove ToBeCompleted from infoOpportunities on other select', () => {

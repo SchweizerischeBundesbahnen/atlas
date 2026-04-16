@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { StopPointWorkflowOverviewComponent } from './stop-point-workflow-overview.component';
 import { MockTableComponent } from '../../../../app.testing.mocks';
-import {
-  ContainerReadStopPointWorkflow,
-  ReadStopPointWorkflow,
-} from '../../../../api';
+import { ContainerReadStopPointWorkflow, ReadStopPointWorkflow } from '../../../../api';
 import { of, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
@@ -15,28 +12,26 @@ import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-
 
 describe('StopPointWorkflowOverviewComponent', () => {
   const workflow: ReadStopPointWorkflow = {
-      versionId: 1000,
-      sloid: 'ch:1:sloid:7000',
-      workflowComment: 'no comment!',
-    };
-    const container: ContainerReadStopPointWorkflow = {
-      objects: [workflow],
-      totalCount: 1,
-    };
-    let isAtLeastSupervisor = true;
-    const permissionServiceMock: Partial<PermissionService> = {
-      isAtLeastSupervisor(): boolean {
-        return isAtLeastSupervisor;
-      },
-    };
+    versionId: 1000,
+    sloid: 'ch:1:sloid:7000',
+    workflowComment: 'no comment!',
+  };
+  const container: ContainerReadStopPointWorkflow = {
+    objects: [workflow],
+    totalCount: 1,
+  };
+  let isAtLeastSupervisor = true;
+  const permissionServiceMock: Partial<PermissionService> = {
+    isAtLeastSupervisor(): boolean {
+      return isAtLeastSupervisor;
+    },
+  };
 
   let component: StopPointWorkflowOverviewComponent;
   let fixture: ComponentFixture<StopPointWorkflowOverviewComponent>;
   let router: Router;
 
-  let stopPointWorkflowService: Mocked<
-    Pick<StopPointWorkflowService, 'getStopPointWorkflows'>
-  >;
+  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'getStopPointWorkflows'>>;
 
   beforeEach(async () => {
     stopPointWorkflowService = {

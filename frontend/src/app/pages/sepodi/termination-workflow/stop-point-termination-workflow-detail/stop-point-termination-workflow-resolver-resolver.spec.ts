@@ -8,11 +8,7 @@ import {
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { BERN_WYLEREGG } from 'src/test/data/service-point';
 import { AppTestingModule } from '../../../../app.testing.module';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 import { StopPointTerminationWorkflowService } from '../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
@@ -20,12 +16,8 @@ import { TerminationStopPointWorkflowModel } from '../../../../api/model/termina
 describe('stopPointTerminationWorkflowResolverResolver', () => {
   let resolver: StopPointTerminationWorkflowResolver;
 
-  let workflowServiceMock: Mocked<
-    Pick<StopPointTerminationWorkflowService, 'getTerminationById'>
-  >;
-  let servicePointsServiceMock: Mocked<
-    Pick<ServicePointService, 'getServicePointVersionsBySloid'>
-  >;
+  let workflowServiceMock: Mocked<Pick<StopPointTerminationWorkflowService, 'getTerminationById'>>;
+  let servicePointsServiceMock: Mocked<Pick<ServicePointService, 'getServicePointVersionsBySloid'>>;
 
   beforeEach(() => {
     const workflow: TerminationStopPointWorkflowModel = {
@@ -45,9 +37,7 @@ describe('stopPointTerminationWorkflowResolverResolver', () => {
     };
 
     servicePointsServiceMock = {
-      getServicePointVersionsBySloid: vi
-        .fn()
-        .mockReturnValue(of([BERN_WYLEREGG])),
+      getServicePointVersionsBySloid: vi.fn().mockReturnValue(of([BERN_WYLEREGG])),
     };
 
     TestBed.configureTestingModule({
@@ -79,8 +69,6 @@ describe('stopPointTerminationWorkflowResolverResolver', () => {
 
     const workflowData = await firstValueFrom(resolvedVersion);
     expect(workflowData?.workflow.versionId).toBe(1);
-    expect(workflowData?.servicePoint[0].designationOfficial).toBe(
-      'Bern, Wyleregg'
-    );
+    expect(workflowData?.servicePoint[0].designationOfficial).toBe('Bern, Wyleregg');
   });
 });

@@ -21,10 +21,7 @@ import { ParkingLotInternalService } from '../../../../api/service/prm/parking-l
   templateUrl: './parking-lot-table.component.html',
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
-export class ParkingLotTableComponent
-  extends BasePrmTabComponentService
-  implements OnInit
-{
+export class ParkingLotTableComponent extends BasePrmTabComponentService implements OnInit {
   tableColumns: TableColumn<ParkingLotOverview>[] = [
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
@@ -59,10 +56,7 @@ export class ParkingLotTableComponent
 
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.PARKING_LOT
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PARKING_LOT);
   }
 
   getTab(): Tab {
@@ -70,19 +64,12 @@ export class ParkingLotTableComponent
   }
 
   getOverview(pagination: TablePagination) {
-    const parentServicePointSloid =
-      this.route.parent!.snapshot.params.stopPointSloid!;
+    const parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.parkingLotInternalService
-      .getParkingLotsOverview(parentServicePointSloid)
-      .subscribe((overviewRows) => {
-        this.parkingLots = TableContentPaginationAndSorting.pageAndSort(
-          overviewRows,
-          pagination,
-          'designation,asc'
-        );
-        this.totalCount = overviewRows.length;
-      });
+    this.parkingLotInternalService.getParkingLotsOverview(parentServicePointSloid).subscribe((overviewRows) => {
+      this.parkingLots = TableContentPaginationAndSorting.pageAndSort(overviewRows, pagination, 'designation,asc');
+      this.totalCount = overviewRows.length;
+    });
   }
 
   rowClicked(clickedRow: ParkingLotOverview) {

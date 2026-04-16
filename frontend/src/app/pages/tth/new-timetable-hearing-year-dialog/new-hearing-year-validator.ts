@@ -2,20 +2,12 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Moment } from 'moment/moment';
 
 export class NewHearingYearValidator {
-  static fromAndToOneYearBefore(
-    timetableYear: string,
-    hearingFrom: string,
-    hearingTo: string
-  ): ValidatorFn {
+  static fromAndToOneYearBefore(timetableYear: string, hearingFrom: string, hearingTo: string): ValidatorFn {
     return (c: AbstractControl): { [key: string]: boolean } | null => {
       const timetableYearForm = c.get(timetableYear);
       const validFromForm = c.get(hearingFrom);
       const validToForm = c.get(hearingTo);
-      NewHearingYearValidator.validate(
-        timetableYearForm,
-        validFromForm,
-        validToForm
-      );
+      NewHearingYearValidator.validate(timetableYearForm, validFromForm, validToForm);
       return null;
     };
   }
@@ -29,29 +21,18 @@ export class NewHearingYearValidator {
     const validFromValue: Moment | undefined = validFromForm?.value;
     const validToValue: Moment | undefined = validToForm?.value;
 
-    if (
-      timetableYearFormValue &&
-      validFromValue &&
-      validFromValue?.year() !== timetableYearFormValue - 1
-    ) {
+    if (timetableYearFormValue && validFromValue && validFromValue?.year() !== timetableYearFormValue - 1) {
       const error: ValidationErrors = {
         one_year_before: {
           number: timetableYearFormValue - 1,
         },
       };
-      NewHearingYearValidator.populateWithValidationErrors(
-        validFromForm,
-        error
-      );
+      NewHearingYearValidator.populateWithValidationErrors(validFromForm, error);
     } else {
       NewHearingYearValidator.clearValidationError(validFromForm);
     }
 
-    if (
-      timetableYearFormValue &&
-      validToValue &&
-      validToValue?.year() !== timetableYearFormValue - 1
-    ) {
+    if (timetableYearFormValue && validToValue && validToValue?.year() !== timetableYearFormValue - 1) {
       const error: ValidationErrors = {
         one_year_before: {
           number: timetableYearFormValue - 1,
@@ -63,10 +44,7 @@ export class NewHearingYearValidator {
     }
   }
 
-  static populateWithValidationErrors(
-    controlForm: AbstractControl | null,
-    error: ValidationErrors
-  ) {
+  static populateWithValidationErrors(controlForm: AbstractControl | null, error: ValidationErrors) {
     if (!controlForm?.errors) {
       controlForm?.setErrors(error);
     } else {

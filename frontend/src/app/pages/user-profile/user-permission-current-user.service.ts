@@ -21,15 +21,11 @@ export class UserPermissionCurrentUserService extends UserPermissionProviderServ
   }
 
   loadFormGroup(application: ApplicationType): void {
-    const permission: Permission = super.getPermission(
-      this.userService.currentUser!.permissions,
-      application
+    const permission: Permission = super.getPermission(this.userService.currentUser!.permissions, application);
+    const applicationPermissionFormGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
+      application,
+      permission
     );
-    const applicationPermissionFormGroup =
-      ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-        application,
-        permission
-      );
     applicationPermissionFormGroup.disable();
     this.applicationPermissionFormGroup = applicationPermissionFormGroup;
     this.formChanged.next(this.applicationPermissionFormGroup);

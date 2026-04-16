@@ -18,12 +18,7 @@ import { LoadingPointInternalService } from '../../../../api/service/sepodi/load
   selector: 'atlas-service-point-loading-points',
   templateUrl: './loading-points-table.component.html',
   styleUrls: ['./loading-points-table.component.scss'],
-  imports: [
-    AtlasButtonComponent,
-    TableComponent,
-    DetailFooterComponent,
-    TranslatePipe,
-  ],
+  imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent, TranslatePipe],
 })
 export class LoadingPointsTableComponent implements OnInit {
   tableColumns: TableColumn<ReadLoadingPointVersion>[] = [
@@ -60,20 +55,14 @@ export class LoadingPointsTableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.LOADING_POINTS
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.LOADING_POINTS);
   }
 
   getOverview(pagination: TablePagination) {
     this.loadingPointInternalService
-      .getLoadingPointOverview(
-        this.servicePointNumber,
-        pagination.page,
-        pagination.size,
-        [pagination.sort ?? 'designation,asc']
-      )
+      .getLoadingPointOverview(this.servicePointNumber, pagination.page, pagination.size, [
+        pagination.sort ?? 'designation,asc',
+      ])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
         this.elements = container.objects!;
@@ -82,24 +71,12 @@ export class LoadingPointsTableComponent implements OnInit {
   }
 
   newLoadingPoint() {
-    this.router
-      .navigate([
-        Pages.SEPODI.path,
-        Pages.LOADING_POINTS.path,
-        this.servicePointNumber,
-        'add',
-      ])
-      .then();
+    this.router.navigate([Pages.SEPODI.path, Pages.LOADING_POINTS.path, this.servicePointNumber, 'add']).then();
   }
 
   editVersion($event: ReadLoadingPointVersion) {
     this.router
-      .navigate([
-        Pages.SEPODI.path,
-        Pages.LOADING_POINTS.path,
-        $event.servicePointNumber.number,
-        $event.number,
-      ])
+      .navigate([Pages.SEPODI.path, Pages.LOADING_POINTS.path, $event.servicePointNumber.number, $event.number])
       .then();
   }
 

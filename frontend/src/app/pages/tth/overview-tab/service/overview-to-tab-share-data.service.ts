@@ -25,31 +25,21 @@ export class OverviewToTabShareDataService {
 
   readonly timetableYear = this._timetableYear.asReadonly();
 
-  readonly isPlannedTimetableHearingYearFound =
-    this._isPlannedTimetableHearingYearFound.asReadonly();
+  readonly isPlannedTimetableHearingYearFound = this._isPlannedTimetableHearingYearFound.asReadonly();
 
   readonly isYearLoading = this._isYearLoading.asReadonly();
 
-  readonly isTimetableHearingYearFound =
-    this._isTimetableHearingYearFound.asReadonly();
+  readonly isTimetableHearingYearFound = this._isTimetableHearingYearFound.asReadonly();
 
   readonly yearSelection = this._yearSelection.asReadonly();
 
-  readonly isHearingYearActive = computed(
-    () => this.hearingStatus() === HearingStatus.Active
-  );
+  readonly isHearingYearActive = computed(() => this.hearingStatus() === HearingStatus.Active);
 
-  readonly isHearingYearArchived = computed(
-    () => this.hearingStatus() === HearingStatus.Archived
-  );
+  readonly isHearingYearArchived = computed(() => this.hearingStatus() === HearingStatus.Archived);
 
-  readonly isHearingYearPlanned = computed(
-    () => this.hearingStatus() === HearingStatus.Planned
-  );
+  readonly isHearingYearPlanned = computed(() => this.hearingStatus() === HearingStatus.Planned);
 
-  readonly isSwissCanton = computed(
-    () => this.cantonShort().toLowerCase() === Cantons.swiss.short.toLowerCase()
-  );
+  readonly isSwissCanton = computed(() => this.cantonShort().toLowerCase() === Cantons.swiss.short.toLowerCase());
 
   setHearingStatus(hearingStatus: HearingStatus) {
     this._hearingStatus.set(hearingStatus);

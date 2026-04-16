@@ -5,10 +5,7 @@ import { ReferencePointDetailComponent } from './reference-point-detail.componen
 import { of } from 'rxjs';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
-import {
-  MockAtlasButtonComponent,
-  MockAtlasFieldErrorComponent,
-} from '../../../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockAtlasFieldErrorComponent } from '../../../../../app.testing.mocks';
 import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
@@ -22,10 +19,7 @@ import { DateIconComponent } from '../../../../../core/form-components/date-icon
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  ReadReferencePointVersion,
-  ReferencePointAttributeType,
-} from '../../../../../api';
+import { ReadReferencePointVersion, ReferencePointAttributeType } from '../../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
@@ -73,13 +67,9 @@ const permissionService: Pick<PermissionService, 'hasPermissionsToWrite'> = {
 describe('ReferencePointDetailComponent', () => {
   let component: ReferencePointDetailComponent;
   let fixture: ComponentFixture<ReferencePointDetailComponent>;
-  let referencePointService: Mocked<
-    Pick<ReferencePointService, 'createReferencePoint' | 'updateReferencePoint'>
-  >;
+  let referencePointService: Mocked<Pick<ReferencePointService, 'createReferencePoint' | 'updateReferencePoint'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   const activatedRouteMock = {
     snapshot: {
@@ -97,12 +87,8 @@ describe('ReferencePointDetailComponent', () => {
       createReferencePoint: vi.fn(),
       updateReferencePoint: vi.fn(),
     };
-    referencePointService.createReferencePoint.mockReturnValue(
-      of(referencePoint[0])
-    );
-    referencePointService.updateReferencePoint.mockReturnValue(
-      of(referencePoint[0])
-    );
+    referencePointService.createReferencePoint.mockReturnValue(of(referencePoint[0]));
+    referencePointService.updateReferencePoint.mockReturnValue(of(referencePoint[0]));
 
     notificationService = {
       success: vi.fn(),
@@ -111,9 +97,7 @@ describe('ReferencePointDetailComponent', () => {
     dialogService = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     TestBed.configureTestingModule({
       imports: [
@@ -173,15 +157,9 @@ describe('ReferencePointDetailComponent', () => {
 
     it('should create on save', () => {
       component.form.controls.designation.setValue('Haupteingang A');
-      component.form.controls.validFrom.setValue(
-        moment('31.10.2000', 'dd.MM.yyyy')
-      );
-      component.form.controls.validTo.setValue(
-        moment('31.10.2099', 'dd.MM.yyyy')
-      );
-      component.form.controls.referencePointType.setValue(
-        ReferencePointAttributeType.MainStationEntrance
-      );
+      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
+      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
+      component.form.controls.referencePointType.setValue(ReferencePointAttributeType.MainStationEntrance);
 
       component.save();
 
@@ -227,10 +205,7 @@ describe('ReferencePointDetailComponent', () => {
       const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
       component.back();
-      expect(navigateSpy).toHaveBeenCalledExactlyOnceWith(
-        ['..'],
-        expect.any(Object)
-      );
+      expect(navigateSpy).toHaveBeenCalledExactlyOnceWith(['..'], expect.any(Object));
     });
 
     it('should toggle form', () => {

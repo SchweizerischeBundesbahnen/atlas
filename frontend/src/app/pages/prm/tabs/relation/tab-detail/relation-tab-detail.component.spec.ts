@@ -14,10 +14,7 @@ import { STOP_POINT } from '../../../util/stop-point-test-data';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../test/data/traffic-point-element';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
-import {
-  ReadReferencePointVersion,
-  ReadRelationVersion,
-} from '../../../../../api';
+import { ReadReferencePointVersion, ReadRelationVersion } from '../../../../../api';
 import { of } from 'rxjs';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
@@ -103,12 +100,8 @@ const relations: ReadRelationVersion[] = [
 describe('RelationTabDetailComponent', () => {
   let component: RelationTabDetailComponent;
   let fixture: ComponentFixture<RelationTabDetailComponent>;
-  let referencePointInternalService: Mocked<
-    Pick<ReferencePointInternalService, 'getReferencePointsOverview'>
-  >;
-  let relationService: Mocked<
-    Pick<RelationService, 'getRelationsBySloid' | 'updateRelation'>
-  >;
+  let referencePointInternalService: Mocked<Pick<ReferencePointInternalService, 'getReferencePointsOverview'>>;
+  let relationService: Mocked<Pick<RelationService, 'getRelationsBySloid' | 'updateRelation'>>;
 
   const activatedRouteMock = {
     parent: {
@@ -133,9 +126,7 @@ describe('RelationTabDetailComponent', () => {
       updateRelation: vi.fn(),
     };
 
-    referencePointInternalService.getReferencePointsOverview.mockReturnValue(
-      of([])
-    );
+    referencePointInternalService.getReferencePointsOverview.mockReturnValue(of([]));
     relationService.getRelationsBySloid.mockReturnValue(of([]));
     relationService.updateRelation.mockReturnValue(of());
 
@@ -170,16 +161,12 @@ describe('RelationTabDetailComponent', () => {
   });
 
   it('should init relation tab for complete variant', () => {
-    referencePointInternalService.getReferencePointsOverview.mockReturnValue(
-      of(referencePointOverview)
-    );
+    referencePointInternalService.getReferencePointsOverview.mockReturnValue(of(referencePointOverview));
     relationService.getRelationsBySloid.mockReturnValue(of([relations[1]]));
     fixture.detectChanges();
 
     expect(component).toBeTruthy();
-    expect(
-      referencePointInternalService.getReferencePointsOverview
-    ).toHaveBeenCalled();
+    expect(referencePointInternalService.getReferencePointsOverview).toHaveBeenCalled();
     expect(relationService.getRelationsBySloid).toHaveBeenCalled();
     expect(component.elementSloid).toBe('ch:1:sloid:89008:0:1');
     expect(component.selectedReferencePointSloid).toBe('ch:1:sloid:12345:1');
@@ -193,9 +180,7 @@ describe('RelationTabDetailComponent', () => {
   it('should init relation tab for complete variant without reference points', () => {
     fixture.detectChanges();
 
-    expect(
-      referencePointInternalService.getReferencePointsOverview
-    ).toHaveBeenCalled();
+    expect(referencePointInternalService.getReferencePointsOverview).toHaveBeenCalled();
     expect(relationService.getRelationsBySloid).not.toHaveBeenCalled();
     expect(component.elementSloid).toBe('ch:1:sloid:89008:0:1');
     expect(component.parentServicePointSloid).toBe('ch:1:sloid:89008');
@@ -221,9 +206,7 @@ describe('RelationTabDetailComponent', () => {
   });
 
   it('should change relation version correctly', () => {
-    referencePointInternalService.getReferencePointsOverview.mockReturnValue(
-      of(referencePointOverview)
-    );
+    referencePointInternalService.getReferencePointsOverview.mockReturnValue(of(referencePointOverview));
     relationService.getRelationsBySloid.mockReturnValue(of(relations));
     fixture.detectChanges();
 
@@ -234,9 +217,7 @@ describe('RelationTabDetailComponent', () => {
   });
 
   it('should save valid form', () => {
-    referencePointInternalService.getReferencePointsOverview.mockReturnValue(
-      of(referencePointOverview)
-    );
+    referencePointInternalService.getReferencePointsOverview.mockReturnValue(of(referencePointOverview));
     relationService.getRelationsBySloid.mockReturnValue(of(relations));
     fixture.detectChanges();
 

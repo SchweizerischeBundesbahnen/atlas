@@ -14,16 +14,8 @@ export class CoordinateTransformationService {
     );
   }
 
-  transform(
-    coordinatePair: CoordinatePair,
-    to: SpatialReference
-  ): CoordinatePair | undefined {
-    if (
-      !!coordinatePair.north &&
-      !!coordinatePair.east &&
-      coordinatePair.north !== 0 &&
-      coordinatePair.east !== 0
-    ) {
+  transform(coordinatePair: CoordinatePair, to: SpatialReference): CoordinatePair | undefined {
+    if (!!coordinatePair.north && !!coordinatePair.east && coordinatePair.north !== 0 && coordinatePair.east !== 0) {
       const transformationResult = proj4(coordinatePair.spatialReference, to, [
         coordinatePair.east,
         coordinatePair.north,

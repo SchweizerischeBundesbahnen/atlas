@@ -18,12 +18,7 @@
 
   <nav [tabPanel]="tabPanel" class="tabs" data-cy="tabs" mat-tab-nav-bar>
     @for (tab of TABS; track tab) {
-      <a
-        [routerLink]="tab.link"
-        routerLinkActive="active-tab"
-        class="font-bold-xl"
-        mat-tab-link
-        >
+      <a [routerLink]="tab.link" routerLinkActive="active-tab" class="font-bold-xl" mat-tab-link>
         {{ tab.title | translate }}
       </a>
     }

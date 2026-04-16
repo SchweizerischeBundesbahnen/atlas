@@ -11,11 +11,7 @@ describe('AtlasClipboardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        translateServiceProvider,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
+      providers: [translateServiceProvider, provideHttpClient(), provideHttpClientTesting()],
     });
 
     fixture = TestBed.createComponent(AtlasClipboardComponent);

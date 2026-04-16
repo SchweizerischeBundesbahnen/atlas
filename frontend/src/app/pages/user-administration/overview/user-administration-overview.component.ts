@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Pages } from '../../pages';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';

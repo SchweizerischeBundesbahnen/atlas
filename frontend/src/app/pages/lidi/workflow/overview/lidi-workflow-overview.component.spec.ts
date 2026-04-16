@@ -34,17 +34,13 @@ const versionContainer: ContainerLineVersionSnapshot = {
 describe('LidiWorkflowOverviewComponent', () => {
   let component: LidiWorkflowOverviewComponent;
   let fixture: ComponentFixture<LidiWorkflowOverviewComponent>;
-  let lineInternalService: Mocked<
-    Pick<LineInternalService, 'getLineVersionSnapshot'>
-  >;
+  let lineInternalService: Mocked<Pick<LineInternalService, 'getLineVersionSnapshot'>>;
 
   beforeEach(() => {
     lineInternalService = {
       getLineVersionSnapshot: vi.fn(),
     };
-    lineInternalService.getLineVersionSnapshot.mockReturnValue(
-      of(versionContainer)
-    );
+    lineInternalService.getLineVersionSnapshot.mockReturnValue(of(versionContainer));
 
     TestBed.configureTestingModule({
       imports: [LidiWorkflowOverviewComponent, TranslateModule.forRoot()],

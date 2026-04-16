@@ -17,10 +17,7 @@ describe('DisplayCantonPipe', () => {
 
     // Config: provide the pipe and its mocked dependencies through TestBed
     TestBed.configureTestingModule({
-      providers: [
-        DisplayCantonPipe,
-        { provide: TranslatePipe, useValue: translatePipe },
-      ],
+      providers: [DisplayCantonPipe, { provide: TranslatePipe, useValue: translatePipe }],
     });
 
     // Arrangement: obtain the pipe instance via TestBed so DI is respected

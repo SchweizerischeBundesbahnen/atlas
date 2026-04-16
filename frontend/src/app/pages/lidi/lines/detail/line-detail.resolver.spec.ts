@@ -34,10 +34,7 @@ describe('LineDetailResolver', () => {
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [
-        LineDetailResolver,
-        { provide: LineService, useValue: lineService },
-      ],
+      providers: [LineDetailResolver, { provide: LineService, useValue: lineService }],
     });
 
     resolver = TestBed.inject(LineDetailResolver);

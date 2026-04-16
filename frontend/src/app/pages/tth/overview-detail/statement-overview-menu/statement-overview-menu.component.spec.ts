@@ -53,9 +53,7 @@ describe('StatementOverviewMenuComponent', () => {
   let component: StatementOverviewMenuComponent;
   let fixture: ComponentFixture<StatementOverviewMenuComponent>;
 
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   beforeEach(() => {
     dialogService = {
@@ -117,10 +115,7 @@ describe('StatementOverviewMenuComponent', () => {
       },
     } as TimetableHearingStatementV2;
     component.createDossier(statement);
-    expect(router.navigate).toHaveBeenCalledWith(
-      ['..', Pages.TTH_DOSSIERS.path, 'add'],
-      expect.any(Object)
-    );
+    expect(router.navigate).toHaveBeenCalledWith(['..', Pages.TTH_DOSSIERS.path, 'add'], expect.any(Object));
   });
 
   it('should add statement to existing dossier', () => {
@@ -133,9 +128,7 @@ describe('StatementOverviewMenuComponent', () => {
     } as TimetableHearingStatementV2;
     component.addToDossier(statement);
 
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
   });
 
   it('should change canton via dialog', () => {
@@ -148,8 +141,6 @@ describe('StatementOverviewMenuComponent', () => {
     } as TimetableHearingStatementV2;
     component.switchCanton(statement);
 
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
   });
 });

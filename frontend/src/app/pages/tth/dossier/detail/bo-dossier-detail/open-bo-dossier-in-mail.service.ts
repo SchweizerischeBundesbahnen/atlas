@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SwissCanton } from '../../../../../api';
 import { Cantons } from '../../../../../core/cantons/Cantons';
-import {
-  DossierMailData,
-  OpenDossierInMailService,
-} from '../open-dossier-in-mail.service';
+import { DossierMailData, OpenDossierInMailService } from '../open-dossier-in-mail.service';
 
 export interface BoDossierMailData extends DossierMailData {
   id: number;
@@ -22,10 +19,7 @@ export class OpenBoDossierInMailService extends OpenDossierInMailService {
     const subject = `${tth} - Dossier ${data.id} - "${data.topic}"`;
 
     this.buildStatementInfo(data).subscribe((statementInfo) => {
-      const dossierInfo = this.buildInfoWithLabel(
-        'TTH.DOSSIER.ID_AND_TOPIC',
-        `${data.id} - "${data.topic}"`
-      );
+      const dossierInfo = this.buildInfoWithLabel('TTH.DOSSIER.ID_AND_TOPIC', `${data.id} - "${data.topic}"`);
       const cantonInfo = this.buildInfoWithLabel(
         this.translatePipe.transform('TTH.DOSSIER.INQUIRY_FROM_THE_CANTON') +
           ' ' +
@@ -34,16 +28,11 @@ export class OpenBoDossierInMailService extends OpenDossierInMailService {
       );
       const body = `${dossierInfo}${cantonInfo}${statementInfo}`;
 
-      window.open(
-        `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-        '_self'
-      );
+      window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_self');
     });
   }
 
   private getCantonLabel(swissCanton: SwissCanton): string {
-    return this.translatePipe.transform(
-      'TTH.CANTON.' + Cantons.fromSwissCanton(swissCanton)?.short
-    );
+    return this.translatePipe.transform('TTH.CANTON.' + Cantons.fromSwissCanton(swissCanton)?.short);
   }
 }

@@ -1,10 +1,6 @@
 import { BaseDetailFormGroup } from '../../../../core/model/base-detail-form-group';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  ReadSublineVersionV2,
-  SublineConcessionType,
-  SublineType,
-} from '../../../../api';
+import { ReadSublineVersionV2, SublineConcessionType, SublineType } from '../../../../api';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
@@ -37,14 +33,10 @@ export class SublineFormGroupBuilder {
           AtlasFieldLengthValidator.length_50,
           AtlasCharsetsValidator.sid4pt,
         ]),
-        mainlineSlnid: new FormControl(version?.mainlineSlnid, [
-          Validators.required,
-        ]),
+        mainlineSlnid: new FormControl(version?.mainlineSlnid, [Validators.required]),
         slnid: new FormControl(version?.slnid),
         status: new FormControl(version?.status),
-        sublineType: new FormControl(version?.sublineType, [
-          Validators.required,
-        ]),
+        sublineType: new FormControl(version?.sublineType, [Validators.required]),
         sublineConcessionType: new FormControl(version?.sublineConcessionType),
         businessOrganisation: new FormControl(version?.businessOrganisation, [
           Validators.required,
@@ -63,14 +55,8 @@ export class SublineFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [Validators.required]),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
@@ -83,24 +69,16 @@ export class SublineFormGroupBuilder {
     return formGroup;
   }
 
-  static initConcessionTypeConditionalValidation(
-    formGroup: FormGroup<SublineFormGroup>
-  ) {
+  static initConcessionTypeConditionalValidation(formGroup: FormGroup<SublineFormGroup>) {
     formGroup.controls.sublineType.valueChanges.subscribe((newType) => {
       if (newType === SublineType.Concession) {
-        formGroup.controls.sublineConcessionType.setValidators([
-          Validators.required,
-        ]);
-        formGroup.controls.swissSublineNumber.addValidators([
-          Validators.required,
-        ]);
+        formGroup.controls.sublineConcessionType.setValidators([Validators.required]);
+        formGroup.controls.swissSublineNumber.addValidators([Validators.required]);
       } else {
         formGroup.controls.sublineConcessionType.clearValidators();
         formGroup.controls.sublineConcessionType.setValue(undefined);
 
-        formGroup.controls.swissSublineNumber.removeValidators([
-          Validators.required,
-        ]);
+        formGroup.controls.swissSublineNumber.removeValidators([Validators.required]);
         formGroup.controls.swissSublineNumber.setValue(undefined);
       }
       formGroup.controls.sublineConcessionType.updateValueAndValidity();

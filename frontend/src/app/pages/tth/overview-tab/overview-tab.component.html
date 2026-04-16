@@ -1,11 +1,6 @@
 <div class="ps-5 pt-5">
   @if (!isHearingYearPlanned()) {
-    <nav
-      [tabPanel]="tabPanelCanton"
-      class="tabs"
-      data-cy="tabs"
-      mat-tab-nav-bar
-    >
+    <nav [tabPanel]="tabPanelCanton" class="tabs" data-cy="tabs" mat-tab-nav-bar>
       @for (tab of TABS; track tab) {
         <a
           [attr.data-cy]="'tth-tab-' + tab.link"
@@ -22,11 +17,7 @@
     </nav>
   }
 
-  <div
-    [ngClass]="
-      !isHearingYearPlanned() ? 'white-table-container-no-padding' : ''
-    "
-  >
+  <div [ngClass]="!isHearingYearPlanned() ? 'white-table-container-no-padding' : ''">
     <mat-tab-nav-panel #tabPanelCanton>
       <router-outlet></router-outlet>
     </mat-tab-nav-panel>

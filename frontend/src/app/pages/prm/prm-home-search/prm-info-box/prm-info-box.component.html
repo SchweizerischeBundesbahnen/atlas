@@ -2,9 +2,7 @@
   <p class="font-bold-xl">{{ 'PRM.INFO_BOX.HEADER' | translate }}</p>
   @for (attachment of attachments; track attachment) {
     <p class="font-regular-base">
-      <a href="{{ attachment.url | translate }}" target="_blank" rel="noopener">{{
-        attachment.label | translate
-      }}</a>
+      <a href="{{ attachment.url | translate }}" target="_blank" rel="noopener">{{ attachment.label | translate }}</a>
     </p>
   }
 

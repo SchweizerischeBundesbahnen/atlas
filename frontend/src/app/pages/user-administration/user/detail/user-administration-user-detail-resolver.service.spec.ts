@@ -1,20 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { UserAdministrationUserDetailResolver } from './user-administration-user-detail-resolver.service';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterModule,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 import { Permission } from '../../../../api';
 
 describe('UserAdministrationUserDetailResolver', () => {
   let resolver: UserAdministrationUserDetailResolver;
-  let userAdministrationService: Mocked<
-    Pick<UserAdministrationService, 'getUser'>
-  >;
+  let userAdministrationService: Mocked<Pick<UserAdministrationService, 'getUser'>>;
 
   beforeEach(() => {
     userAdministrationService = {
@@ -58,9 +52,7 @@ describe('UserAdministrationUserDetailResolver', () => {
       })
     );
     const userModel = await firstValueFrom(resolver.resolve(routeMock));
-    expect(userAdministrationService.getUser).toHaveBeenCalledExactlyOnceWith(
-      'userId'
-    );
+    expect(userAdministrationService.getUser).toHaveBeenCalledExactlyOnceWith('userId');
     expect(userModel?.sbbUserId).toBe('userId');
   });
 });

@@ -11,9 +11,7 @@ import { ServicePointSearch } from './service-point-search';
 import { BERN_WYLEREGG } from '../../../test/data/service-point';
 import { ServicePointInternalService } from '../../api/service/sepodi/service-point-internal.service';
 
-type ServicePointInternalServiceMock = Mocked<
-  Pick<ServicePointInternalService, 'searchServicePoints'>
->;
+type ServicePointInternalServiceMock = Mocked<Pick<ServicePointInternalService, 'searchServicePoints'>>;
 
 describe('SearchServicePointComponent', () => {
   let component: SearchServicePointComponent;
@@ -29,18 +27,12 @@ describe('SearchServicePointComponent', () => {
   beforeEach(() => {
     // Mocking
     servicePointInternalService = {
-      searchServicePoints: vi
-        .fn()
-        .mockReturnValue(of([{ sloid: 'ch:1:sloid:100' }])),
+      searchServicePoints: vi.fn().mockReturnValue(of([{ sloid: 'ch:1:sloid:100' }])),
     };
 
     // Configuration
     TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        SearchServicePointComponent,
-        SearchSelectComponent,
-      ],
+      imports: [AppTestingModule, SearchServicePointComponent, SearchSelectComponent],
       providers: [
         TranslatePipe,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -79,29 +71,21 @@ describe('SearchServicePointComponent', () => {
   });
 
   it('should load result', async () => {
-    const promise = firstValueFrom(
-      component.servicePointSearchResult$.pipe(skip(1))
-    );
+    const promise = firstValueFrom(component.servicePointSearchResult$.pipe(skip(1)));
     component.searchInput$.next('be');
     await promise;
 
     expect(component.searchValue).toEqual('be');
-    expect(
-      servicePointInternalService.searchServicePoints
-    ).toHaveBeenCalledWith({ value: 'be' });
+    expect(servicePointInternalService.searchServicePoints).toHaveBeenCalledWith({ value: 'be' });
   });
 
   it('should not load result when search input length is smaller than 2', async () => {
-    const promise = firstValueFrom(
-      component.servicePointSearchResult$.pipe(skip(1))
-    );
+    const promise = firstValueFrom(component.servicePointSearchResult$.pipe(skip(1)));
     component.searchInput$.next('b');
     await promise;
 
     expect(component.searchValue).toEqual('b');
-    expect(
-      servicePointInternalService.searchServicePoints
-    ).not.toHaveBeenCalled();
+    expect(servicePointInternalService.searchServicePoints).not.toHaveBeenCalled();
   });
 
   it('should init search value', () => {
@@ -112,9 +96,7 @@ describe('SearchServicePointComponent', () => {
   });
 
   it('should get placeholder label when searchInput < 2', async () => {
-    const promise = firstValueFrom(
-      component.servicePointSearchResult$.pipe(skip(1))
-    );
+    const promise = firstValueFrom(component.servicePointSearchResult$.pipe(skip(1)));
     component.searchInput$.next('b');
     await promise;
 
@@ -123,9 +105,7 @@ describe('SearchServicePointComponent', () => {
   });
 
   it('should get placeholder label when searchInput >= 2', async () => {
-    const promise = firstValueFrom(
-      component.servicePointSearchResult$.pipe(skip(1))
-    );
+    const promise = firstValueFrom(component.servicePointSearchResult$.pipe(skip(1)));
     component.searchInput$.next('be');
     await promise;
 

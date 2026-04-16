@@ -22,12 +22,7 @@ describe('StopPointTerminationWorkflowDetail', () => {
   let component: StopPointTerminationWorkflowDetail;
   let fixture: ComponentFixture<StopPointTerminationWorkflowDetail>;
 
-  let dialogServiceSpy: Mocked<
-    Pick<
-      DialogService,
-      'openWithoutResult' | 'openDialogDataWithConfirmationResult'
-    >
-  >;
+  let dialogServiceSpy: Mocked<Pick<DialogService, 'openWithoutResult' | 'openDialogDataWithConfirmationResult'>>;
 
   beforeEach(() => {
     const workflow: TerminationStopPointWorkflowModel = {
@@ -84,10 +79,7 @@ describe('StopPointTerminationWorkflowDetail', () => {
     vi.spyOn(window, 'open').mockImplementation(() => null);
 
     component.goToAtlasStopPoint();
-    expect(window.open).toHaveBeenCalledWith(
-      '/service-point-directory/service-points/8589008?id=1000',
-      '_blank'
-    );
+    expect(window.open).toHaveBeenCalledWith('/service-point-directory/service-points/8589008?id=1000', '_blank');
   });
 
   it('should open decision', () => {
@@ -97,29 +89,19 @@ describe('StopPointTerminationWorkflowDetail', () => {
 
   it('should open decision dialog', () => {
     component.openDecisionDialog();
-    expect(
-      dialogServiceSpy.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
   });
 
   it('should open decision dialog on nova revote with an extra day and judgement prefilled', () => {
-    component.workflow.status =
-      TerminationWorkflowStatus.TerminationNotApproved;
+    component.workflow.status = TerminationWorkflowStatus.TerminationNotApproved;
     component.terminationPermission = TerminationDecisionPersonEnum.Nova;
 
-    const expectedDecisionForm =
-      StopPointTerminationWorkflowDetailFormGroupBuilder.buildTerminationDecisionFormGroup();
-    expectedDecisionForm.controls.terminationDecisionPerson.setValue(
-      TerminationDecisionPersonEnum.Nova
-    );
-    expectedDecisionForm.controls.terminationDate.setValue(
-      moment('2029-06-01')
-    );
+    const expectedDecisionForm = StopPointTerminationWorkflowDetailFormGroupBuilder.buildTerminationDecisionFormGroup();
+    expectedDecisionForm.controls.terminationDecisionPerson.setValue(TerminationDecisionPersonEnum.Nova);
+    expectedDecisionForm.controls.terminationDate.setValue(moment('2029-06-01'));
 
     component.openDecisionDialog();
-    expect(
-      dialogServiceSpy.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledExactlyOnceWith(
+    expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledExactlyOnceWith(
       expect.objectContaining({ workflowId: 10 }),
       TerminationDecisionDetailDialogComponent
     );

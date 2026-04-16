@@ -1,17 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { firstValueFrom, Observable, of } from 'rxjs';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { contactPointResolver } from './contact-point.resolver';
-import {
-  ContactPointType,
-  ReadContactPointVersion,
-  StandardAttributeType,
-} from '../../../../../../api';
+import { ContactPointType, ReadContactPointVersion, StandardAttributeType } from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { ContactPointService } from '../../../../../../api/service/prm/contact-point/contact-point.service';
 
@@ -43,17 +35,13 @@ const contactPoint: ReadContactPointVersion[] = [
 ];
 
 describe('PrmContactPointResolver', () => {
-  let contactPointServiceSpy: Mocked<
-    Pick<ContactPointService, 'getContactPointVersions'>
-  >;
+  let contactPointServiceSpy: Mocked<Pick<ContactPointService, 'getContactPointVersions'>>;
 
   beforeEach(() => {
     contactPointServiceSpy = {
       getContactPointVersions: vi.fn(),
     };
-    contactPointServiceSpy.getContactPointVersions.mockReturnValue(
-      of(contactPoint)
-    );
+    contactPointServiceSpy.getContactPointVersions.mockReturnValue(of(contactPoint));
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],

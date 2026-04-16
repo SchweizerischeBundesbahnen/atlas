@@ -1,19 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  type Mocked,
-  vi,
-} from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { provideRouter, Router, Routes } from '@angular/router';
-import {
-  loadDossierDetailRoute,
-  loadStatementDetailRoute,
-  routes,
-} from './tth-routing';
+import { loadDossierDetailRoute, loadStatementDetailRoute, routes } from './tth-routing';
 import { provideHttpClient } from '@angular/common/http';
 import { PermissionService } from '../../core/auth/permission/permission.service';
 import { Location } from '@angular/common';
@@ -30,9 +18,7 @@ const testRoutes: Routes = [
 ];
 
 describe('TTH Routing', () => {
-  let permissionServiceSpy: Mocked<
-    Pick<PermissionService, 'getTthApplicationUserType'>
-  >;
+  let permissionServiceSpy: Mocked<Pick<PermissionService, 'getTthApplicationUserType'>>;
   let userServiceSpy: Mocked<Pick<UserService, 'onPermissionsLoaded'>>;
 
   beforeAll(async () => {
@@ -66,9 +52,7 @@ describe('TTH Routing', () => {
   });
 
   it('should load CantonStatementDetailComponent', () => {
-    permissionServiceSpy.getTthApplicationUserType.mockReturnValue(
-      'CANTON_TTH'
-    );
+    permissionServiceSpy.getTthApplicationUserType.mockReturnValue('CANTON_TTH');
 
     TestBed.configureTestingModule({
       providers: [
@@ -131,9 +115,7 @@ describe('TTH Routing', () => {
   });
 
   it('should load CantonDossierDetailComponent', () => {
-    permissionServiceSpy.getTthApplicationUserType.mockReturnValue(
-      'CANTON_TTH'
-    );
+    permissionServiceSpy.getTthApplicationUserType.mockReturnValue('CANTON_TTH');
 
     TestBed.configureTestingModule({
       providers: [
@@ -154,9 +136,7 @@ describe('TTH Routing', () => {
   });
 
   it('should redirect active to statements', async () => {
-    permissionServiceSpy.getTthApplicationUserType.mockReturnValue(
-      'CANTON_TTH'
-    );
+    permissionServiceSpy.getTthApplicationUserType.mockReturnValue('CANTON_TTH');
 
     TestBed.configureTestingModule({
       providers: [
@@ -176,9 +156,7 @@ describe('TTH Routing', () => {
   });
 
   it('should redirect archived to statements', async () => {
-    permissionServiceSpy.getTthApplicationUserType.mockReturnValue(
-      'CANTON_TTH'
-    );
+    permissionServiceSpy.getTthApplicationUserType.mockReturnValue('CANTON_TTH');
 
     TestBed.configureTestingModule({
       providers: [
@@ -198,9 +176,7 @@ describe('TTH Routing', () => {
   });
 
   it('should resolve archived dossier route', async () => {
-    permissionServiceSpy.getTthApplicationUserType.mockReturnValue(
-      'CANTON_TTH'
-    );
+    permissionServiceSpy.getTthApplicationUserType.mockReturnValue('CANTON_TTH');
 
     TestBed.configureTestingModule({
       providers: [
@@ -220,9 +196,7 @@ describe('TTH Routing', () => {
   });
 
   it('should resolve active dossier route', async () => {
-    permissionServiceSpy.getTthApplicationUserType.mockReturnValue(
-      'CANTON_TTH'
-    );
+    permissionServiceSpy.getTthApplicationUserType.mockReturnValue('CANTON_TTH');
 
     TestBed.configureTestingModule({
       providers: [
@@ -282,9 +256,7 @@ describe('TTH Routing', () => {
   });
 
   it('should not redirect Canton archived dossiers', async () => {
-    permissionServiceSpy.getTthApplicationUserType.mockReturnValue(
-      'CANTON_TTH'
-    );
+    permissionServiceSpy.getTthApplicationUserType.mockReturnValue('CANTON_TTH');
 
     TestBed.configureTestingModule({
       providers: [
@@ -304,9 +276,7 @@ describe('TTH Routing', () => {
     const location = TestBed.inject(Location);
 
     await router.navigateByUrl('/timetable-hearing/zh/archived/dossiers/1000');
-    expect(location.path()).toBe(
-      '/timetable-hearing/zh/archived/dossiers/1000'
-    );
+    expect(location.path()).toBe('/timetable-hearing/zh/archived/dossiers/1000');
   });
 
   it('should resolve BO active dossier route', async () => {

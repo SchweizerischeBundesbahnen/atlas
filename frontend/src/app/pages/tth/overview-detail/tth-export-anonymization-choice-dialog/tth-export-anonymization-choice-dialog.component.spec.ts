@@ -14,9 +14,7 @@ describe('TthExportAnonymizationChoiceDialogComponent', () => {
   let component: TthExportAnonymizationChoiceDialogComponent;
   let fixture: ComponentFixture<TthExportAnonymizationChoiceDialogComponent>;
 
-  const dialogRefSpy: Mocked<
-    Pick<MatDialogRef<TthExportAnonymizationChoiceDialogComponent>, 'close'>
-  > = {
+  const dialogRefSpy: Mocked<Pick<MatDialogRef<TthExportAnonymizationChoiceDialogComponent>, 'close'>> = {
     close: vi.fn(),
   };
 
@@ -26,12 +24,7 @@ describe('TthExportAnonymizationChoiceDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TthExportAnonymizationChoiceDialogComponent,
-        AppTestingModule,
-        BaseChangeDialogComponent,
-        FormModule,
-      ],
+      imports: [TthExportAnonymizationChoiceDialogComponent, AppTestingModule, BaseChangeDialogComponent, FormModule],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -40,9 +33,7 @@ describe('TthExportAnonymizationChoiceDialogComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(
-      TthExportAnonymizationChoiceDialogComponent
-    );
+    fixture = TestBed.createComponent(TthExportAnonymizationChoiceDialogComponent);
     component = fixture.componentInstance;
     // reset mock
     dialogRefSpy.close.mockClear();

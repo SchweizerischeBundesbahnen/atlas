@@ -1,10 +1,5 @@
 @if (isLoggedIn) {
-  <button
-    [matMenuTriggerFor]="profile"
-    id="user-menu-button"
-    mat-button
-    title="{{ userName }}"
-  >
+  <button [matMenuTriggerFor]="profile" id="user-menu-button" mat-button title="{{ userName }}">
     <div class="user-presentation d-inline-flex">
       <div class="user-icon bg-color-primary-500">
         <em class="bi bi-person" style="font-size: 16px"></em>
@@ -22,9 +17,7 @@
             <em class="bi bi-people-fill"></em>
           </div>
           <div class="d-inline-block">
-            <span class="mb-0 user-info-modal">{{
-              'PROFILE.USER_PROFILE' | translate
-            }}</span>
+            <span class="mb-0 user-info-modal">{{ 'PROFILE.USER_PROFILE' | translate }}</span>
           </div>
         </button>
 

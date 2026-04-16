@@ -11,11 +11,7 @@ describe('LinkComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        translateServiceProvider,
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting(), translateServiceProvider],
     });
   });
 

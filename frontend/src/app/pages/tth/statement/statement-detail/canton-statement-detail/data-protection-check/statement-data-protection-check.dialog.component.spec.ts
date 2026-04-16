@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mock, mockClear } from 'vitest-mock-extended';
-import {
-  SwissCanton,
-  TimetableHearingStatementV2,
-} from '../../../../../../api';
+import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../../api';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StatementDataProtectionCheckDialogComponent } from './statement-data-protection-check.dialog.component';
@@ -35,13 +32,9 @@ const statementWithTwoDocuments: TimetableHearingStatementV2 = {
 };
 
 const notificationService = mock<NotificationService>();
-const dialogRef =
-  mock<MatDialogRef<StatementDataProtectionCheckDialogComponent, boolean>>();
-const timetableHearingStatementsService =
-  mock<TimetableHearingStatementInternalService>();
-timetableHearingStatementsService.checkDataProtection.mockReturnValue(
-  of(undefined)
-);
+const dialogRef = mock<MatDialogRef<StatementDataProtectionCheckDialogComponent, boolean>>();
+const timetableHearingStatementsService = mock<TimetableHearingStatementInternalService>();
+timetableHearingStatementsService.checkDataProtection.mockReturnValue(of(undefined));
 
 describe('StatementDataProtectionCheckDialogComponent', () => {
   let component: StatementDataProtectionCheckDialogComponent;
@@ -67,9 +60,7 @@ describe('StatementDataProtectionCheckDialogComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(
-      StatementDataProtectionCheckDialogComponent
-    );
+    fixture = TestBed.createComponent(StatementDataProtectionCheckDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }
@@ -84,44 +75,30 @@ describe('StatementDataProtectionCheckDialogComponent', () => {
       expect(component.hasDocuments).toBe(false);
 
       // when
-      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(
-        false
-      );
+      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(false);
       component.completeTextDataProtection();
 
       // then
-      expect(
-        timetableHearingStatementsService.checkDataProtection
-      ).toHaveBeenCalledTimes(1);
+      expect(timetableHearingStatementsService.checkDataProtection).toHaveBeenCalledTimes(1);
       expect(notificationService.success).toHaveBeenCalledTimes(1);
       expect(dialogRef.close).toHaveBeenCalledExactlyOnceWith(true);
     });
 
     it('should force anonymizing of text if it has personal information', () => {
       // when
-      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(
-        true
-      );
+      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(true);
       component.completeTextDataProtection();
 
       // then
-      expect(
-        component.statementFormGroup.hasError('NO_ANONYMIZATION_DETECTED')
-      ).toBe(true);
+      expect(component.statementFormGroup.hasError('NO_ANONYMIZATION_DETECTED')).toBe(true);
 
       // when
-      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(
-        true
-      );
-      component.statementFormGroup.controls.anonymousStatement.setValue(
-        'anonymized text'
-      );
+      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(true);
+      component.statementFormGroup.controls.anonymousStatement.setValue('anonymized text');
       component.completeTextDataProtection();
 
       // then
-      expect(
-        component.statementFormGroup.hasError('NO_ANONYMIZATION_DETECTED')
-      ).toBe(false);
+      expect(component.statementFormGroup.hasError('NO_ANONYMIZATION_DETECTED')).toBe(false);
     });
 
     it('should cancel', () => {
@@ -145,30 +122,20 @@ describe('StatementDataProtectionCheckDialogComponent', () => {
       // step 1
       expect(component.stepper().selectedIndex).toBe(0);
 
-      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(
-        false
-      );
+      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(false);
       component.completeTextDataProtection();
 
-      expect(
-        timetableHearingStatementsService.checkDataProtection
-      ).toHaveBeenCalledTimes(0);
+      expect(timetableHearingStatementsService.checkDataProtection).toHaveBeenCalledTimes(0);
 
       // step 2
       expect(component.stepper().selectedIndex).toBe(1);
 
-      component.documentFormGroup.controls.documents
-        .at(0)
-        .controls.hasDocumentPersonalInformation.setValue(false);
-      component.documentFormGroup.controls.documents
-        .at(1)
-        .controls.hasDocumentPersonalInformation.setValue(false);
+      component.documentFormGroup.controls.documents.at(0).controls.hasDocumentPersonalInformation.setValue(false);
+      component.documentFormGroup.controls.documents.at(1).controls.hasDocumentPersonalInformation.setValue(false);
 
       component.completeFileDataProtection();
 
-      expect(
-        timetableHearingStatementsService.checkDataProtection
-      ).toHaveBeenCalledTimes(1);
+      expect(timetableHearingStatementsService.checkDataProtection).toHaveBeenCalledTimes(1);
     });
 
     it('should cancel', () => {

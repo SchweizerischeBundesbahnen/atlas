@@ -48,10 +48,7 @@ export class ValidityService {
     return this.confirmValidityDialog().pipe(take(1));
   }
 
-  validateAndDisableCustom(
-    updateFunction: () => void,
-    disableFunction: () => void
-  ) {
+  validateAndDisableCustom(updateFunction: () => void, disableFunction: () => void) {
     this.confirmValidityDialog()
       .pipe(take(1))
       .subscribe((confirmed) => {

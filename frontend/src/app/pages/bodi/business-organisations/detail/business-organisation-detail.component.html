@@ -15,14 +15,10 @@
           {{ selectedVersion.organisationNumber }}
         </div>
         <div class="font-bold-xl mb-2">
-          <span data-cy="detail-subheading-id">{{
-            selectedVersion.sboid
-          }}</span>
+          <span data-cy="detail-subheading-id">{{ selectedVersion.sboid }}</span>
           <span data-cy="total-range">
             -
-            <atlas-date-range-text
-              [dateRange]="maxValidity"
-            ></atlas-date-range-text>
+            <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
           </span>
         </div>
 
@@ -46,12 +42,8 @@
             {{ selectedVersionIndex + 1 }}
           </h2>
           <div>
-            <span class="font-bold-lg color-gray-900"
-              >{{ 'COMMON.STATUS' | translate }}
-            </span>
-            <span class="color-gray-900">{{
-              'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
-            }}</span>
+            <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+            <span class="color-gray-900">{{ 'COMMON.STATUS_TYPES.' + selectedVersion.status | translate }}</span>
           </div>
         </div>
       }
@@ -258,9 +250,7 @@
         </div>
 
         @if (tcRelations().length) {
-          <atlas-label-field
-            fieldLabel="BODI.BUSINESS_ORGANISATION.TU_RELATION_TITLE"
-          />
+          <atlas-label-field fieldLabel="BODI.BUSINESS_ORGANISATION.TU_RELATION_TITLE" />
           <atlas-table
             [tableData]="tcRelations()"
             [tableColumns]="tcRelationColumns"
@@ -271,9 +261,7 @@
           />
         }
 
-        <span class="font-bold-2xl">{{
-          'FORM.SUPPLEMENTARY_INFORMATION' | translate
-        }}</span>
+        <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
         <!-- E-Mail -->
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-12 pe-3">
@@ -298,10 +286,7 @@
 
       <div class="mt-5">
         @if (!isNew) {
-          <atlas-user-detail-info
-            [record]="selectedVersion"
-            [applicationType]="'BODI'"
-          ></atlas-user-detail-info>
+          <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'BODI'"></atlas-user-detail-info>
         }
       </div>
     </div>
@@ -346,10 +331,7 @@
         wrapperStyleClass="ms-3"
       ></atlas-button>
       @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-        <atlas-revoke-button
-          (revokeClicked)="revoke()"
-          applicationType="BODI"
-        ></atlas-revoke-button>
+        <atlas-revoke-button (revokeClicked)="revoke()" applicationType="BODI"></atlas-revoke-button>
       }
       <atlas-button
         (buttonClicked)="delete()"

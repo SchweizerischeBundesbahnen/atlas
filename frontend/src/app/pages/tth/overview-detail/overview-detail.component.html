@@ -13,10 +13,7 @@
           buttonType="cantonWritePermission"
         >
           <ng-template #rightIcon>
-            <atlas-download-icon
-              [readonly]="!isCheckBoxModeActive"
-              class="ps-2"
-            ></atlas-download-icon>
+            <atlas-download-icon [readonly]="!isCheckBoxModeActive" class="ps-2"></atlas-download-icon>
           </ng-template>
         </atlas-button>
       </div>
@@ -38,11 +35,7 @@
       </div>
     }
 
-    @if (
-      showAddNewStatementButton &&
-      isTimetableHearingYearFound() &&
-      timetableYear().statementCreatableInternal
-    ) {
+    @if (showAddNewStatementButton && isTimetableHearingYearFound() && timetableYear().statementCreatableInternal) {
       <div class="d-flex left-position ms-3">
         <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
@@ -119,20 +112,14 @@
           <div>
             @if (isHearingYearActive() && isSwissCanton()) {
               <span class="font-bold-lg">
-                {{
-                  'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
-                    | translate: { totalCount: totalCount }
-                }}
+                {{ 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX' | translate: { totalCount: totalCount } }}
                 {{ 'TTH.WHOLE_SWISS' | translate }}
               </span>
             }
 
             @if (isHearingYearActive() && !isSwissCanton()) {
               <span class="font-bold-lg">
-                {{
-                  'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
-                    | translate: { totalCount: totalCount }
-                }}
+                {{ 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX' | translate: { totalCount: totalCount } }}
                 {{ 'TTH.SWISS_CANTON' | translate }}
                 {{ 'TTH.CANTON.' + cantonShort().toUpperCase() | translate }}
               </span>
@@ -172,9 +159,7 @@
               <atlas-select
                 (selectChanged)="collectingActions($event)"
                 [additionalLabelspace]="0"
-                [disabled]="
-                  totalCount === 0 || !this.timetableYear().statementEditable!
-                "
+                [disabled]="totalCount === 0 || !this.timetableYear().statementEditable!"
                 [options]="COLLECTING_ACTION_DROPDOWN_OPTIONS"
                 dataCy="collect-action-type"
                 optionTranslateLabelPrefix="TTH.DROPDOWN.COLLECTING_ACTION.OPTION."
@@ -185,9 +170,7 @@
                     alt="{{ action }}"
                     class="pe-2"
                     height="24"
-                    src="assets/images/collecting_action/{{
-                      action.toUpperCase()
-                    }}.svg"
+                    src="assets/images/collecting_action/{{ action.toUpperCase() }}.svg"
                     width="24"
                   />
                 </ng-template>
@@ -196,10 +179,7 @@
           </div>
         }
 
-        @if (
-          statusChangeCollectingActionsEnabled ||
-          cantonDeliveryCollectingActionsEnabled
-        ) {
+        @if (statusChangeCollectingActionsEnabled || cantonDeliveryCollectingActionsEnabled) {
           <div class="d-flex flex-row col-5 left-position">
             <div class="d-flex flex-column col-6">
               <atlas-button

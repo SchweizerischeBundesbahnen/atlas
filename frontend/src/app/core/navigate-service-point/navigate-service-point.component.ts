@@ -5,27 +5,17 @@ import { LocationService } from 'src/app/api/service/location/location.service';
 import { SloidLocationModel } from '../../api/model/sloidLocationModel';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { SearchNavigationType } from '../search-service-point-panel/search-service-point-panel.component';
-import {
-  ServicePointSearch,
-  ServicePointSearchType,
-} from '../search-service-point/service-point-search';
+import { ServicePointSearch, ServicePointSearchType } from '../search-service-point/service-point-search';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointNavigationHelper } from './service-point-navigation.helper';
 import { InfoIconComponent } from '@atlas/form';
 
 export const NOTFOUND_LABEL = 'COMMON.NODATAFOUND';
-export const NAVIGATION_PLACEHOLDER =
-  'SEPODI.SERVICE_POINTS.NAVIGATION_PLACEHOLDER';
+export const NAVIGATION_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.NAVIGATION_PLACEHOLDER';
 
 @Component({
   selector: 'atlas-navigate-service-point',
-  imports: [
-    TranslatePipe,
-    ReactiveFormsModule,
-    FormsModule,
-    NgSelectComponent,
-    InfoIconComponent,
-  ],
+  imports: [TranslatePipe, ReactiveFormsModule, FormsModule, NgSelectComponent, InfoIconComponent],
   providers: [TranslatePipe],
   templateUrl: './navigate-service-point.component.html',
   styleUrls: ['./navigate-service-point.component.scss'],
@@ -57,15 +47,13 @@ export class NavigateServicePointComponent {
 
   doSearch(searchTerm: string) {
     if (searchTerm) {
-      this.locationService
-        .getSloidLocationModel(searchTerm)
-        .subscribe((sloidLocations) => {
-          if (sloidLocations.length === 0 || sloidLocations.length > 1) {
-            this.resultMsg = NOTFOUND_LABEL;
-          } else {
-            this.navigateTo(sloidLocations[0]);
-          }
-        });
+      this.locationService.getSloidLocationModel(searchTerm).subscribe((sloidLocations) => {
+        if (sloidLocations.length === 0 || sloidLocations.length > 1) {
+          this.resultMsg = NOTFOUND_LABEL;
+        } else {
+          this.navigateTo(sloidLocations[0]);
+        }
+      });
     }
   }
 
@@ -79,18 +67,12 @@ export class NavigateServicePointComponent {
   }
 
   prmNavigateTo(model: SloidLocationModel) {
-    const commands = ServicePointNavigationHelper.buildPrmNavigation(
-      model,
-      this.searchType().navigationPath
-    );
+    const commands = ServicePointNavigationHelper.buildPrmNavigation(model, this.searchType().navigationPath);
     this.doNavigate(commands);
   }
 
   sepodiNavigateTo(model: SloidLocationModel) {
-    const commands = ServicePointNavigationHelper.buildSepodiNavigation(
-      model,
-      this.searchType().navigationPath
-    );
+    const commands = ServicePointNavigationHelper.buildSepodiNavigation(model, this.searchType().navigationPath);
     this.doNavigate(commands);
   }
 

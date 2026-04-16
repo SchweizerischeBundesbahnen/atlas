@@ -6,10 +6,7 @@ import { StopPointCompleteFormComponent } from './stop-point-complete-form.compo
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
-import {
-  MockAtlasFieldErrorComponent,
-  MockSelectComponent,
-} from '../../../../../../app.testing.mocks';
+import { MockAtlasFieldErrorComponent, MockSelectComponent } from '../../../../../../app.testing.mocks';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
 import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
 import { MeansOfTransportPickerComponent } from '../../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
@@ -19,17 +16,13 @@ import { MeanOfTransport } from '../../../../../../api';
 
 describe('StopPointCompleteFormComponent', () => {
   let fixture: ComponentFixture<StopPointCompleteFormComponent>;
-  let prmVariantInfoService: Mocked<
-    Pick<PrmVariantInfoService, 'getPrmMeansOfTransportToShow'>
-  >;
+  let prmVariantInfoService: Mocked<Pick<PrmVariantInfoService, 'getPrmMeansOfTransportToShow'>>;
 
   beforeEach(() => {
     prmVariantInfoService = {
       getPrmMeansOfTransportToShow: vi.fn(),
     };
-    prmVariantInfoService.getPrmMeansOfTransportToShow.mockReturnValue(
-      Object.values(MeanOfTransport)
-    );
+    prmVariantInfoService.getPrmMeansOfTransportToShow.mockReturnValue(Object.values(MeanOfTransport));
 
     TestBed.configureTestingModule({
       imports: [
@@ -43,45 +36,31 @@ describe('StopPointCompleteFormComponent', () => {
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,
       ],
-      providers: [
-        { provide: TranslatePipe },
-        { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
-      ],
+      providers: [{ provide: TranslatePipe }, { provide: PrmVariantInfoService, useValue: prmVariantInfoService }],
     });
 
     fixture = TestBed.createComponent(StopPointCompleteFormComponent);
-    fixture.componentInstance.form =
-      StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
+    fixture.componentInstance.form = StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
     fixture.detectChanges();
   });
 
   describe('should display complete fields', () => {
     it('should display meansOfTransport', () => {
-      const meansOfTransport = fixture.debugElement.query(
-        By.css('atlas-means-of-transport-picker')
-      );
-      expect(meansOfTransport.attributes['controlName']).toEqual(
-        'meansOfTransport'
-      );
+      const meansOfTransport = fixture.debugElement.query(By.css('atlas-means-of-transport-picker'));
+      expect(meansOfTransport.attributes['controlName']).toEqual('meansOfTransport');
     });
 
     it('should display interoperable', () => {
       const interoperable = fixture.debugElement.query(By.css('mat-checkbox'));
-      expect(interoperable.attributes['formControlName']).toEqual(
-        'interoperable'
-      );
+      expect(interoperable.attributes['formControlName']).toEqual('interoperable');
     });
 
     it('should display data-range', () => {
-      expect(
-        fixture.debugElement.query(By.css('atlas-form-date-range'))
-      ).toBeDefined();
+      expect(fixture.debugElement.query(By.css('atlas-form-date-range'))).toBeDefined();
     });
 
     it('should display formComments', () => {
-      const formComments = fixture.debugElement.queryAll(
-        By.css('atlas-form-comment')
-      );
+      const formComments = fixture.debugElement.queryAll(By.css('atlas-form-comment'));
       const formCommentsControlName: string[] = [
         'freeText',
         'additionalInformation',
@@ -91,15 +70,13 @@ describe('StopPointCompleteFormComponent', () => {
       ];
 
       expect(formComments.length).toEqual(5);
-      expect(
-        formComments.map((value) => value.attributes['controlName'])
-      ).toEqual(expect.arrayContaining(formCommentsControlName));
+      expect(formComments.map((value) => value.attributes['controlName'])).toEqual(
+        expect.arrayContaining(formCommentsControlName)
+      );
     });
 
     it('should display atlasSelects', () => {
-      const atlasSelects = fixture.debugElement.queryAll(
-        By.css('atlas-select')
-      );
+      const atlasSelects = fixture.debugElement.queryAll(By.css('atlas-select'));
       const atlasSelectsControlName: string[] = [
         'visualInfo',
         'dynamicOpticSystem',
@@ -115,26 +92,19 @@ describe('StopPointCompleteFormComponent', () => {
       ];
 
       expect(atlasSelects.length).toEqual(11);
-      expect(
-        atlasSelects.map((value) => value.attributes['controlName'])
-      ).toEqual(expect.arrayContaining(atlasSelectsControlName));
+      expect(atlasSelects.map((value) => value.attributes['controlName'])).toEqual(
+        expect.arrayContaining(atlasSelectsControlName)
+      );
     });
 
     it('should display atlas-text-fields', () => {
-      const atlasTextFields = fixture.debugElement.queryAll(
-        By.css('atlas-text-field')
-      );
-      const atlasTextFieldsControlName: string[] = [
-        'url',
-        'address',
-        'zipCode',
-        'city',
-      ];
+      const atlasTextFields = fixture.debugElement.queryAll(By.css('atlas-text-field'));
+      const atlasTextFieldsControlName: string[] = ['url', 'address', 'zipCode', 'city'];
 
       expect(atlasTextFields.length).toEqual(4);
-      expect(
-        atlasTextFields.map((value) => value.attributes['controlName'])
-      ).toEqual(expect.arrayContaining(atlasTextFieldsControlName));
+      expect(atlasTextFields.map((value) => value.attributes['controlName'])).toEqual(
+        expect.arrayContaining(atlasTextFieldsControlName)
+      );
     });
   });
 });

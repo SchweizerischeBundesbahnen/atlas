@@ -1,32 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
-import {
-  BehaviorSubject,
-  catchError,
-  EMPTY,
-  finalize,
-  from,
-  Observable,
-  of,
-  switchMap,
-  take,
-} from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, finalize, from, Observable, of, switchMap, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { Pages } from '../../../../pages';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {
-  StopPointDetailFormGroup,
-  StopPointFormGroupBuilder,
-} from '../form/stop-point-detail-form-group';
+import { StopPointDetailFormGroup, StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';
 import { PrmTabsService } from '../../../prm-panel/prm-tabs.service';
-import {
-  ReadServicePointVersion,
-  ReadStopPointVersion,
-  StopPointVersion,
-} from '../../../../../api';
+import { ReadServicePointVersion, ReadStopPointVersion, StopPointVersion } from '../../../../../api';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { ReferencePointCreationHintService } from './reference-point-creation-hint/reference-point-creation-hint.service';
@@ -145,14 +128,10 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       .subscribe();
   }
 
-  private saveProcess(): Observable<
-    ReadStopPointVersion | ReadStopPointVersion[]
-  > {
+  private saveProcess(): Observable<ReadStopPointVersion | ReadStopPointVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(
-        this.form
-      );
+      const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
       if (this.isNew) {
         this.disableForm();
         return this.createStopPoint(writableStopPoint);
@@ -176,11 +155,8 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   initServicePointsData(next: Data) {
     const servicePoints: ReadServicePointVersion[] = next.servicePoints;
-    this.businessOrganisations = [
-      ...new Set(servicePoints.map((value) => value.businessOrganisation)),
-    ];
-    this.servicePointVersion =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePoints);
+    this.businessOrganisations = [...new Set(servicePoints.map((value) => value.businessOrganisation))];
+    this.servicePointVersion = VersionsHandlingService.determineDefaultVersionByValidity(servicePoints);
   }
 
   initNotExistingStopPoint() {
@@ -200,8 +176,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   initEmptyForm() {
-    this.form =
-      StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
+    this.form = StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
     this.form.controls.number.setValue(this.servicePointVersion.number.number);
     this.form.controls.sloid.setValue(this.servicePointVersion.sloid);
     this.disableForm();
@@ -220,26 +195,17 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   initExistingStopPoint() {
     this.isNew = false;
     VersionsHandlingService.addVersionNumbers(this.stopPointVersions);
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-      this.stopPointVersions
-    );
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.stopPointVersions);
     if (this.preferredId) {
       this.selectedVersion =
         this.stopPointVersions.find((i) => i.id === this.preferredId) ??
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.stopPointVersions
-        );
+        VersionsHandlingService.determineDefaultVersionByValidity(this.stopPointVersions);
       this.preferredId = undefined;
     } else {
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.stopPointVersions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.stopPointVersions);
     }
     this.isReduced = this.selectedVersion.reduced;
-    this.selectedVersionIndex = this.stopPointVersions.indexOf(
-      this.selectedVersion
-    );
+    this.selectedVersionIndex = this.stopPointVersions.indexOf(this.selectedVersion);
     this.initSelectedVersion();
     this.disableForm();
   }
@@ -250,9 +216,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   updateStopPoint(writableStopPoint: StopPointVersion) {
-    const isEditedReduced = PrmMeanOfTransportHelper.isReduced(
-      writableStopPoint.meansOfTransport
-    );
+    const isEditedReduced = PrmMeanOfTransportHelper.isReduced(writableStopPoint.meansOfTransport);
     const isCurrentReduced = this.selectedVersion.reduced;
     if (isEditedReduced !== isCurrentReduced) {
       return this.showPrmChangeVariantConfirmationDialog().pipe(
@@ -269,24 +233,18 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   doUpdateStopPoint(writableStopPoint: StopPointVersion) {
-    return this.stopPointService
-      .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
-      .pipe(
-        switchMap((updatedVersions) => {
-          this.notificationService.success(
-            'PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS'
-          );
-          return this.reloadPage().pipe(map(() => updatedVersions));
-        })
-      );
+    return this.stopPointService.updateStopPoint(this.selectedVersion.id!, writableStopPoint).pipe(
+      switchMap((updatedVersions) => {
+        this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS');
+        return this.reloadPage().pipe(map(() => updatedVersions));
+      })
+    );
   }
 
   private createStopPoint(writableStopPoint: StopPointVersion) {
     return this.stopPointService.createStopPoint(writableStopPoint).pipe(
       switchMap((stopPoint) => {
-        this.notificationService.success(
-          'PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS'
-        );
+        this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.prmTabsService.initTabs([stopPoint]);
         if (!stopPoint.reduced) {
           this.referencePointCreationHintService.showHint();
@@ -298,12 +256,9 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   private reloadPage() {
     return from(
-      this.router.navigate(
-        [Pages.PRM.path, Pages.STOP_POINTS.path, this.form.controls.number],
-        {
-          relativeTo: this.route,
-        }
-      )
+      this.router.navigate([Pages.PRM.path, Pages.STOP_POINTS.path, this.form.controls.number], {
+        relativeTo: this.route,
+      })
     );
   }
 

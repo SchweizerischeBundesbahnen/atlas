@@ -12,11 +12,7 @@ describe('NewHearingYearValidator', () => {
     const hearingFromForm = new FormControl(hearingFrom);
     const hearingToForm = new FormControl(hearingTo);
     //when
-    NewHearingYearValidator.validate(
-      timetableHearingYear,
-      hearingFromForm,
-      hearingToForm
-    );
+    NewHearingYearValidator.validate(timetableHearingYear, hearingFromForm, hearingToForm);
     //then
     expect(hearingFromForm.errors).toBeDefined();
     const dateRangeErrorValidFrom = hearingFromForm.errors?.['one_year_before'];
@@ -37,11 +33,7 @@ describe('NewHearingYearValidator', () => {
     const hearingFromForm = new FormControl(hearingFrom);
     const hearingToForm = new FormControl(hearingTo);
     //when
-    NewHearingYearValidator.validate(
-      timetableHearingYear,
-      hearingFromForm,
-      hearingToForm
-    );
+    NewHearingYearValidator.validate(timetableHearingYear, hearingFromForm, hearingToForm);
     //then
     expect(hearingFromForm.errors).toBeFalsy();
     expect(hearingToForm.errors).toBeFalsy();

@@ -18,10 +18,7 @@ describe('UserDetailComponent', () => {
   beforeEach(() => {
     // Config
     TestBed.configureTestingModule({
-      providers: [
-        { provide: UserAdministrationService, useValue: userAdminServiceMock },
-        translateServiceProvider,
-      ],
+      providers: [{ provide: UserAdministrationService, useValue: userAdminServiceMock }, translateServiceProvider],
     });
 
     // Arrangement

@@ -30,16 +30,12 @@ describe('UserPermissionCurrentUserService', () => {
         { provide: UserPermissionCurrentUserService },
       ],
     });
-    userPermissionCurrentUserService = TestBed.inject(
-      UserPermissionCurrentUserService
-    );
+    userPermissionCurrentUserService = TestBed.inject(UserPermissionCurrentUserService);
   });
 
   it('should be created', () => {
     expect(userPermissionCurrentUserService).toBeTruthy();
-    expect(userPermissionCurrentUserService.showAllSpecialPermissions()).toBe(
-      false
-    );
+    expect(userPermissionCurrentUserService.showAllSpecialPermissions()).toBe(false);
   });
 
   it('should load formgroup from user permissions', () => {

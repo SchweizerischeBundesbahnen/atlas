@@ -6,10 +6,7 @@ export class EmptyToNullDirective {
   constructor(@Self() private ngControl: NgControl) {}
 
   @HostListener('keyup') onKeyUp() {
-    if (
-      typeof this.ngControl.value === 'string' &&
-      this.ngControl.value?.trim() === ''
-    ) {
+    if (typeof this.ngControl.value === 'string' && this.ngControl.value?.trim() === '') {
       this.ngControl.reset(null);
       this.ngControl.control?.markAsDirty();
     }

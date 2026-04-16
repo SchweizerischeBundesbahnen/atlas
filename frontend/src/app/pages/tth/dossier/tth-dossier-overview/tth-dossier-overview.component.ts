@@ -17,10 +17,7 @@ import { TthDossierOverviewMenuComponent } from '../tth-dossier-overview-menu/tt
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DossierStatus } from '../../../../api/model/dossierStatus';
-import {
-  PermissionService,
-  TthApplicationUserType,
-} from '../../../../core/auth/permission/permission.service';
+import { PermissionService, TthApplicationUserType } from '../../../../core/auth/permission/permission.service';
 import { UserService } from '../../../../core/auth/user/user.service';
 
 @Component({
@@ -41,11 +38,9 @@ export class TthDossierOverviewComponent {
   readonly cantonShort = this.overviewToTabService.cantonShort;
   readonly timetableYear = this.overviewToTabService.timetableYear;
   readonly hearingStatus = this.overviewToTabService.hearingStatus;
-  readonly isTimetableHearingYearFound =
-    this.overviewToTabService.isTimetableHearingYearFound;
+  readonly isTimetableHearingYearFound = this.overviewToTabService.isTimetableHearingYearFound;
   readonly isHearingYearActive = this.overviewToTabService.isHearingYearActive;
-  readonly isHearingYearArchived =
-    this.overviewToTabService.isHearingYearArchived;
+  readonly isHearingYearArchived = this.overviewToTabService.isHearingYearArchived;
   readonly isSwissCanton = this.overviewToTabService.isSwissCanton;
   readonly isYearLoading = this.overviewToTabService.isYearLoading;
 
@@ -77,10 +72,7 @@ export class TthDossierOverviewComponent {
           ? TthTableFilterSettingsService.createDossierSettingsForBo()
           : TthTableFilterSettingsService.createDossierSettings();
 
-      this.tableFilterConfig = this.tableService.initializeFilterConfig(
-        filterSettings,
-        Pages.TTH_DOSSIERS
-      );
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(filterSettings, Pages.TTH_DOSSIERS);
 
       this.initOverviewTable();
     }
@@ -97,25 +89,13 @@ export class TthDossierOverviewComponent {
 
   getOverview(pagination: TablePagination) {
     if (this.userType === 'BO_TTH') {
-      this.fetchOverview(
-        this.userService.currentUser!.sbbuid,
-        [DossierStatus.DossierBoCheck],
-        pagination
-      );
+      this.fetchOverview(this.userService.currentUser!.sbbuid, [DossierStatus.DossierBoCheck], pagination);
     } else {
-      this.fetchOverview(
-        undefined,
-        this.tableService.filter.multiSelectDossierStatus.getActiveSearch(),
-        pagination
-      );
+      this.fetchOverview(undefined, this.tableService.filter.multiSelectDossierStatus.getActiveSearch(), pagination);
     }
   }
 
-  private fetchOverview(
-    sbbuid: string | undefined,
-    dossierStatus: DossierStatus[],
-    pagination: TablePagination
-  ) {
+  private fetchOverview(sbbuid: string | undefined, dossierStatus: DossierStatus[], pagination: TablePagination) {
     this.dossierInternalService
       .getOverview(
         this.timetableYear().timetableYear,
@@ -125,11 +105,7 @@ export class TthDossierOverviewComponent {
         dossierStatus,
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(
-          pagination.sort,
-          this.sorting,
-          'id,DESC'
-        )
+        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'id,DESC')
       )
       .pipe(catchError(this.handleError()))
       .subscribe((container) => {

@@ -7,18 +7,11 @@
       </h2>
 
       <div class="d-flex flex-column mb-2">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'USER_ADMIN.TABLE_HEADER' | translate }}
-        </mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} u123456
-        </mat-label>
+        <mat-label class="font-bold-lg required-indicator">{{ 'USER_ADMIN.TABLE_HEADER' | translate }} </mat-label>
+        <mat-label class="font-regular-sm">{{ 'FORM.FOR_EXAMPLE' | translate }} u123456 </mat-label>
       </div>
       <div style="margin-bottom: 15rem">
-        <atlas-user-select
-          (selectionChange)="selectUser($event)"
-          [form]="userSearchForm"
-        ></atlas-user-select>
+        <atlas-user-select (selectionChange)="selectUser($event)" [form]="userSearchForm"></atlas-user-select>
 
         @if (userHasAlreadyPermissions) {
           <p class="color-error">
@@ -35,9 +28,7 @@
 
     <atlas-detail-footer>
       <button
-        (click)="
-          cancelCreation((selectedUser ?? false) && !userHasAlreadyPermissions)
-        "
+        (click)="cancelCreation((selectedUser ?? false) && !userHasAlreadyPermissions)"
         class="atlas-primary-btn"
         data-cy="cancel"
       >

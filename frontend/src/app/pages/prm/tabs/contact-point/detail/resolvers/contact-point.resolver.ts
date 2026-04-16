@@ -12,9 +12,7 @@ export class PrmContactPointResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadContactPointVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadContactPointVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';
     return sloidParameter === 'add'
       ? of([])
@@ -30,6 +28,5 @@ export class PrmContactPointResolver {
   }
 }
 
-export const contactPointResolver: ResolveFn<Array<ReadContactPointVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(PrmContactPointResolver).resolve(route);
+export const contactPointResolver: ResolveFn<Array<ReadContactPointVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(PrmContactPointResolver).resolve(route);

@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ValidationError } from './validation-error';
-import {
-  AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-} from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
 
 @Injectable({
@@ -37,9 +31,7 @@ export class ValidationService {
     }
 
     // On a date parsing error, we only need that error and can ignore required etc.
-    const matDatePickerParseErrors = result.filter(
-      (errors) => errors.error === 'VALIDATION.MATDATEPICKERPARSE'
-    );
+    const matDatePickerParseErrors = result.filter((errors) => errors.error === 'VALIDATION.MATDATEPICKERPARSE');
     if (matDatePickerParseErrors.length > 0) {
       return matDatePickerParseErrors;
     }
@@ -52,20 +44,12 @@ export class ValidationService {
     if (validationError?.date) {
       const validFrom = validationError.date.validFrom;
       const validTo = validationError.date.validTo;
-      return (
-        validFrom.format(DATE_PATTERN) + ' - ' + validTo.format(DATE_PATTERN)
-      );
+      return validFrom.format(DATE_PATTERN) + ' - ' + validTo.format(DATE_PATTERN);
     }
-    if (
-      validationError?.min &&
-      typeof validationError?.min.format === 'function'
-    ) {
+    if (validationError?.min && typeof validationError?.min.format === 'function') {
       return validationError.min.format(DATE_PATTERN);
     }
-    if (
-      validationError?.max &&
-      typeof validationError?.max.format === 'function'
-    ) {
+    if (validationError?.max && typeof validationError?.max.format === 'function') {
       return validationError.max.format(DATE_PATTERN);
     }
   }
@@ -94,10 +78,7 @@ export class ValidationService {
 
       if (value === null || value === '') {
         control.markAsTouched({ onlySelf: true });
-      } else if (
-        value !== null &&
-        (value.startsWith(' ') || value.endsWith(' '))
-      ) {
+      } else if (value !== null && (value.startsWith(' ') || value.endsWith(' '))) {
         control.setErrors({ whitespaces: true });
       } else {
         control.setErrors(null);

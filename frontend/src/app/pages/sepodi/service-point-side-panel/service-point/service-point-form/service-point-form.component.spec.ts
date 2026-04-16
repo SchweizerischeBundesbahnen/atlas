@@ -50,12 +50,8 @@ describe('ServicePointFormComponent', () => {
       };
     }
   >;
-  let dialogServiceSpy: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
-  let geoDataServiceSpy: Mocked<
-    Pick<LocationGeoInternalService, 'getLocationInformation'>
-  >;
+  let dialogServiceSpy: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
+  let geoDataServiceSpy: Mocked<Pick<LocationGeoInternalService, 'getLocationInformation'>>;
 
   let isAdmin = true;
   let permission = {} as Permission;
@@ -74,9 +70,7 @@ describe('ServicePointFormComponent', () => {
     dialogServiceSpy = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
     geoDataServiceSpy = {
       getLocationInformation: vi.fn(),
     };
@@ -143,9 +137,7 @@ describe('ServicePointFormComponent', () => {
 
     component.geographyComponent.coordinatesChanged.emit(coordinatePair);
 
-    const locationInformation = await firstValueFrom(
-      component.locationInformation$!
-    );
+    const locationInformation = await firstValueFrom(component.locationInformation$!);
     expect(locationInformation.canton).toEqual(SwissCanton.Aargau);
     expect(locationInformation.isoCountryCode).toEqual('CU');
     expect(locationInformation.municipalityName).toEqual('Gemeinde');
@@ -189,16 +181,12 @@ describe('ServicePointFormComponent', () => {
 
   it('should select is StopPoint OnDemand', () => {
     //given
-    component.form = ServicePointFormGroupBuilder.buildFormGroup(
-      BERN_WYLEREGG,
-      EMPTY
-    );
+    component.form = ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG, EMPTY);
     //when
     component.onStopPointChange(StopPointType.OnDemand);
     //then
-    const meansOfTransportForm = (
-      component.form?.controls?.spTypeGroup as FormGroup<StationGroup>
-    ).controls.stopPointGroup?.controls.meansOfTransport;
+    const meansOfTransportForm = (component.form?.controls?.spTypeGroup as FormGroup<StationGroup>).controls
+      .stopPointGroup?.controls.meansOfTransport;
     expect(component.isMeanOfTransportOnDemandSelected).toBe(true);
     expect(meansOfTransportForm?.value).toHaveLength(1);
     expect(meansOfTransportForm?.value).toEqual([MeanOfTransport.OnDemand]);
@@ -206,16 +194,12 @@ describe('ServicePointFormComponent', () => {
 
   it('should not select is StopPoint OnDemand', () => {
     //given
-    component.form = ServicePointFormGroupBuilder.buildFormGroup(
-      BERN_WYLEREGG,
-      EMPTY
-    );
+    component.form = ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG, EMPTY);
     //when
     component.onStopPointChange(StopPointType.Orderly);
     //then
-    const meansOfTransportForm = (
-      component.form?.controls?.spTypeGroup as FormGroup<StationGroup>
-    ).controls.stopPointGroup?.controls.meansOfTransport;
+    const meansOfTransportForm = (component.form?.controls?.spTypeGroup as FormGroup<StationGroup>).controls
+      .stopPointGroup?.controls.meansOfTransport;
     expect(component.isMeanOfTransportOnDemandSelected).toBe(false);
     expect(meansOfTransportForm?.value).not.toEqual([MeanOfTransport.OnDemand]);
   });

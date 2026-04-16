@@ -18,10 +18,7 @@ export class BoDisplayPipe implements PipeTransform {
   transform(sboid: string): Observable<string> {
     return this.businessOrganisationsService.getVersions(sboid).pipe(
       map((businessOrganisation) => {
-        const version =
-          VersionsHandlingService.determineDefaultVersionByValidity(
-            businessOrganisation
-          );
+        const version = VersionsHandlingService.determineDefaultVersionByValidity(businessOrganisation);
         return this.boSelectionDisplayPipe.transform(version);
       })
     );

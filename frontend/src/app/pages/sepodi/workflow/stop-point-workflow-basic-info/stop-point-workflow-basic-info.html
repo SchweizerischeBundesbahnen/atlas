@@ -5,13 +5,12 @@
 </h1>
 
 @if (stopPoint().validFrom && stopPoint().validTo) {
-<div class="mb-3">
-  <span data-cy="version-range">
-    {{ 'COMMON.VERSION_VALIDITY' | translate }} {{ 'COMMON.FROM' | translate }}
-    {{ stopPoint().validFrom | displayDate }} {{ 'COMMON.TO' | translate }} {{
-    stopPoint().validTo | displayDate }}
-  </span>
-</div>
+  <div class="mb-3">
+    <span data-cy="version-range">
+      {{ 'COMMON.VERSION_VALIDITY' | translate }} {{ 'COMMON.FROM' | translate }}
+      {{ stopPoint().validFrom | displayDate }} {{ 'COMMON.TO' | translate }} {{ stopPoint().validTo | displayDate }}
+    </span>
+  </div>
 }
 <div class="stop-point-info">
   <div class="row mb-3">

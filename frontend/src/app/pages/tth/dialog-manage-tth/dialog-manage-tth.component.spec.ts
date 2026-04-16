@@ -5,10 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TimetableHearingYear } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { of } from 'rxjs';
-import {
-  MockAtlasButtonComponent,
-  translateServiceProvider,
-} from '../../../app.testing.mocks';
+import { MockAtlasButtonComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
@@ -29,20 +26,11 @@ describe('DialogManageTthComponent', () => {
   let fixture: ComponentFixture<DialogManageTthComponent>;
 
   let tthYearLidiServiceSpy: Mocked<
-    Pick<
-      TimetableHearingYearInternalService,
-      'getHearingYear' | 'updateTimetableHearingSettings'
-    >
+    Pick<TimetableHearingYearInternalService, 'getHearingYear' | 'updateTimetableHearingSettings'>
   >;
-  let tthYearWfServiceSpy: Mocked<
-    Pick<TthYearInternalService, 'closeTimetableHearingYear'>
-  >;
-  let notificationServiceSpy: Mocked<
-    Pick<NotificationService, 'success' | 'error'>
-  >;
-  let matDialogRefSpy: Mocked<
-    Pick<MatDialogRef<DialogManageTthComponent, boolean>, 'close'>
-  >;
+  let tthYearWfServiceSpy: Mocked<Pick<TthYearInternalService, 'closeTimetableHearingYear'>>;
+  let notificationServiceSpy: Mocked<Pick<NotificationService, 'success' | 'error'>>;
+  let matDialogRefSpy: Mocked<Pick<MatDialogRef<DialogManageTthComponent, boolean>, 'close'>>;
 
   const matDialogDataMock = 2020;
   const tthYear: Partial<TimetableHearingYear> = {
@@ -91,12 +79,7 @@ describe('DialogManageTthComponent', () => {
           useValue: matDialogRefSpy,
         },
       ],
-      imports: [
-        AppTestingModule,
-        DialogManageTthComponent,
-        MockAtlasButtonComponent,
-        MockAtlasSlideToggleComponent,
-      ],
+      imports: [AppTestingModule, DialogManageTthComponent, MockAtlasButtonComponent, MockAtlasSlideToggleComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DialogManageTthComponent);
@@ -111,15 +94,11 @@ describe('DialogManageTthComponent', () => {
   });
 
   it('should handleSaveAndCloseClick', () => {
-    tthYearLidiServiceSpy.updateTimetableHearingSettings.mockReturnValue(
-      of(undefined)
-    );
+    tthYearLidiServiceSpy.updateTimetableHearingSettings.mockReturnValue(of(undefined));
 
     component.handleSaveAndCloseClick();
     expect(component.actionButtonsDisabled).toBe(true);
-    expect(
-      tthYearLidiServiceSpy.updateTimetableHearingSettings
-    ).toHaveBeenCalledWith(2020, {
+    expect(tthYearLidiServiceSpy.updateTimetableHearingSettings).toHaveBeenCalledWith(2020, {
       statementEditable: true,
       statementCreatableInternal: false,
       statementCreatableExternal: true,
@@ -142,9 +121,7 @@ describe('DialogManageTthComponent', () => {
     component.handleCloseViewTthCloseClick();
 
     expect(component.actionButtonsDisabled).toBe(true);
-    expect(tthYearWfServiceSpy.closeTimetableHearingYear).toHaveBeenCalledWith(
-      2020
-    );
+    expect(tthYearWfServiceSpy.closeTimetableHearingYear).toHaveBeenCalledWith(2020);
     expect(matDialogRefSpy.close).toHaveBeenCalledWith(true);
     expect(notificationServiceSpy.success).toHaveBeenCalledWith(
       'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION'

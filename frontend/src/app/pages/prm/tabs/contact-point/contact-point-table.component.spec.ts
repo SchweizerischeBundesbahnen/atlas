@@ -1,18 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContactPointTableComponent } from './contact-point-table.component';
 import { STOP_POINT } from '../../util/stop-point-test-data';
-import {
-  MockAtlasButtonComponent,
-  MockTableComponent,
-} from '../../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { of } from 'rxjs';
-import {
-  ContactPointOverview,
-  ContactPointType,
-  StandardAttributeType,
-} from '../../../../api';
+import { ContactPointOverview, ContactPointType, StandardAttributeType } from '../../../../api';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { ContactPointInternalService } from '../../../../api/service/prm/contact-point/contact-point-internal.service';
@@ -53,17 +46,13 @@ describe('ContactPointTableComponent', () => {
   let component: ContactPointTableComponent;
   let fixture: ComponentFixture<ContactPointTableComponent>;
   let router: Router;
-  let contactPointInternalService: Mocked<
-    Pick<ContactPointInternalService, 'getContactPointOverview'>
-  >;
+  let contactPointInternalService: Mocked<Pick<ContactPointInternalService, 'getContactPointOverview'>>;
 
   beforeEach(() => {
     contactPointInternalService = {
       getContactPointOverview: vi.fn(),
     };
-    contactPointInternalService.getContactPointOverview.mockReturnValue(
-      of(contactPointOverview)
-    );
+    contactPointInternalService.getContactPointOverview.mockReturnValue(of(contactPointOverview));
 
     TestBed.configureTestingModule({
       imports: [ContactPointTableComponent],

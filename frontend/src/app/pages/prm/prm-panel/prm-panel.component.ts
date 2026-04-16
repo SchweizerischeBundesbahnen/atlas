@@ -1,17 +1,8 @@
 import { Component } from '@angular/core';
-import {
-  BusinessOrganisationVersion,
-  ReadServicePointVersion,
-  ReadStopPointVersion,
-} from '../../../api';
+import { BusinessOrganisationVersion, ReadServicePointVersion, ReadStopPointVersion } from '../../../api';
 import { DateRange } from '../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
-import {
-  ActivatedRoute,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { PRM_TABS } from './prm-tabs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -75,8 +66,7 @@ export class PrmPanelComponent {
   initTabs(stopPointVersions: ReadStopPointVersion[]) {
     this.prmTabsService.tabs.subscribe((tabs) => (this.tabs = tabs));
     this.prmTabsService.disableTabNavigation.subscribe(
-      (disableTabNavigation) =>
-        (this.disableTabNavigation = disableTabNavigation)
+      (disableTabNavigation) => (this.disableTabNavigation = disableTabNavigation)
     );
     this.prmTabsService.initTabs(stopPointVersions);
   }
@@ -87,21 +77,12 @@ export class PrmPanelComponent {
       .pipe(tap((bo) => this.initSelectedBusinessOrganisationVersion(bo)));
   }
 
-  private initServicePointVersioning(
-    servicePointVersions: ReadServicePointVersion[]
-  ) {
-    this.maxValidity =
-      VersionsHandlingService.getMaxValidity(servicePointVersions);
-    this.selectedServicePointVersion =
-      VersionsHandlingService.determineDefaultVersionByValidity(
-        servicePointVersions
-      );
+  private initServicePointVersioning(servicePointVersions: ReadServicePointVersion[]) {
+    this.maxValidity = VersionsHandlingService.getMaxValidity(servicePointVersions);
+    this.selectedServicePointVersion = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
   }
 
-  private initSelectedBusinessOrganisationVersion(
-    bos: BusinessOrganisationVersion[]
-  ) {
-    this.selectedBusinessOrganisation =
-      VersionsHandlingService.determineDefaultVersionByValidity(bos);
+  private initSelectedBusinessOrganisationVersion(bos: BusinessOrganisationVersion[]) {
+    this.selectedBusinessOrganisation = VersionsHandlingService.determineDefaultVersionByValidity(bos);
   }
 }

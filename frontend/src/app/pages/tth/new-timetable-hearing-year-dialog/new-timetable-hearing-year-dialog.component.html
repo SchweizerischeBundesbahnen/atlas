@@ -51,11 +51,7 @@
     </div>
 
     <mat-dialog-actions class="justify-content-end">
-      <button
-        (click)="closeDialog()"
-        class="atlas-primary-btn me-3"
-        data-cy="dialog-cancel-button"
-      >
+      <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
         {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
       </button>
       <button

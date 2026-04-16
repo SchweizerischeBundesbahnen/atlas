@@ -8,9 +8,7 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 
 describe('ValidityService', () => {
   let service: ValidityService;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   beforeEach(() => {
     dialogService = {
@@ -18,10 +16,7 @@ describe('ValidityService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        ValidityService,
-        { provide: DialogService, useValue: dialogService },
-      ],
+      providers: [ValidityService, { provide: DialogService, useValue: dialogService }],
     });
     service = TestBed.inject(ValidityService);
   });
@@ -75,9 +70,7 @@ describe('ValidityService', () => {
 
     const result = await firstValueFrom(service.confirmValidityDialog());
     expect(result).toBe(true);
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalled();
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalled();
   });
 
   it('should validate and disable form correctly', async () => {
@@ -93,9 +86,7 @@ describe('ValidityService', () => {
 
     expect(form.disabled).toBe(true);
     expect(updateFunctionSpy).toHaveBeenCalled();
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalled();
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalled();
   });
 
   it('should validate and disable function correctly and call update', async () => {
@@ -112,8 +103,6 @@ describe('ValidityService', () => {
 
     expect(updateFunctionSpy).toHaveBeenCalled();
     expect(disableFunctionSpy).toHaveBeenCalled();
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalled();
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalled();
   });
 });

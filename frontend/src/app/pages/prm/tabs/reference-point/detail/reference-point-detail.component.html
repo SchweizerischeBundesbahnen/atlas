@@ -7,17 +7,13 @@
   @if (!isNew) {
     <div class="font-xl mb-2">
       <span data-cy="total-range">
-        <atlas-date-range-text
-          [dateRange]="maxValidity"
-        ></atlas-date-range-text>
+        <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
       </span>
     </div>
   }
   @if (!isNew) {
     <div class="d-flex flex-row mb-3">
-      <atlas-sloid-container
-        [sloid]="selectedVersion.sloid!"
-      ></atlas-sloid-container>
+      <atlas-sloid-container [sloid]="selectedVersion.sloid!"></atlas-sloid-container>
     </div>
   }
 
@@ -29,11 +25,7 @@
     }
     @if (isNew) {
       <div class="new-sloid d-flex flex-column">
-        <atlas-sloid
-          [formGroup]="form"
-          [givenPrefix]="servicePoint.sloid + ':'"
-          [numberColons]="0"
-        ></atlas-sloid>
+        <atlas-sloid [formGroup]="form" [givenPrefix]="servicePoint.sloid + ':'" [numberColons]="0"></atlas-sloid>
       </div>
     }
     @if (showVersionSwitch) {
@@ -57,16 +49,11 @@
       </h2>
     }
 
-    <atlas-reference-point-complete-form
-      [form]="form"
-    ></atlas-reference-point-complete-form>
+    <atlas-reference-point-complete-form [form]="form"></atlas-reference-point-complete-form>
     @if (!isNew) {
       <div>
         <mat-divider class="mt-4 mb-4"></mat-divider>
-        <atlas-user-detail-info
-          [applicationType]="'PRM'"
-          [record]="selectedVersion"
-        ></atlas-user-detail-info>
+        <atlas-user-detail-info [applicationType]="'PRM'" [record]="selectedVersion"></atlas-user-detail-info>
       </div>
     }
   </atlas-detail-page-content>

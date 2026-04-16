@@ -12,24 +12,19 @@ export class PrmPanelResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadServicePointVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadServicePointVersion>> {
     const sloidParameter = route.paramMap.get('stopPointSloid') || '';
 
-    return this.servicePointService
-      .getServicePointVersionsBySloid(sloidParameter)
-      .pipe(
-        catchError(() =>
-          this.router
-            .navigate([Pages.PRM.path], {
-              state: { notDismissSnackBar: true },
-            })
-            .then(() => [])
-        )
-      );
+    return this.servicePointService.getServicePointVersionsBySloid(sloidParameter).pipe(
+      catchError(() =>
+        this.router
+          .navigate([Pages.PRM.path], {
+            state: { notDismissSnackBar: true },
+          })
+          .then(() => [])
+      )
+    );
   }
 }
-export const prmPanelResolver: ResolveFn<Array<ReadServicePointVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(PrmPanelResolver).resolve(route);
+export const prmPanelResolver: ResolveFn<Array<ReadServicePointVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(PrmPanelResolver).resolve(route);

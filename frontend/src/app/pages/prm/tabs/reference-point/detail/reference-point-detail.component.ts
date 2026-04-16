@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { ReferencePointFormGroupBuilder } from './form/reference-point-form-group';
 import { DateRange } from '../../../../../core/versioning/date-range';
-import {
-  ReadReferencePointVersion,
-  ReadServicePointVersion,
-  ReferencePointVersion,
-} from '../../../../../api';
+import { ReadReferencePointVersion, ReadServicePointVersion, ReferencePointVersion } from '../../../../../api';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -70,14 +66,9 @@ export class ReferencePointDetailComponent
 
     if (!this.isNew) {
       VersionsHandlingService.addVersionNumbers(this.versions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-        this.versions
-      );
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.versions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
@@ -85,9 +76,7 @@ export class ReferencePointDetailComponent
   }
 
   protected initForm() {
-    this.form = ReferencePointFormGroupBuilder.buildCompleteFormGroup(
-      this.selectedVersion
-    );
+    this.form = ReferencePointFormGroupBuilder.buildCompleteFormGroup(this.selectedVersion);
 
     if (!this.isNew) {
       this.form.disable();
@@ -95,29 +84,15 @@ export class ReferencePointDetailComponent
   }
 
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] =
-      this.route.snapshot.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(
-        servicePointVersions
-      );
-    this.businessOrganisations = [
-      ...new Set(
-        servicePointVersions.map((value) => value.businessOrganisation)
-      ),
-    ];
+    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
+    this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.businessOrganisations = [...new Set(servicePointVersions.map((value) => value.businessOrganisation))];
   }
 
-  protected saveProcess(): Observable<
-    ReadReferencePointVersion | ReadReferencePointVersion[]
-  > {
+  protected saveProcess(): Observable<ReadReferencePointVersion | ReadReferencePointVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      const referencePointVersion =
-        ReferencePointFormGroupBuilder.getWritableForm(
-          this.form,
-          this.servicePoint.sloid!
-        );
+      const referencePointVersion = ReferencePointFormGroupBuilder.getWritableForm(this.form, this.servicePoint.sloid!);
       if (this.isNew) {
         return this.create(referencePointVersion);
       } else {
@@ -139,28 +114,23 @@ export class ReferencePointDetailComponent
   }
 
   private create(referencePointVersion: ReferencePointVersion) {
-    return this.referencePointService
-      .createReferencePoint(referencePointVersion)
-      .pipe(
-        switchMap((createdVersion) => {
-          return this.notificateAndNavigate(
-            'PRM.REFERENCE_POINTS.NOTIFICATION.ADD_SUCCESS',
-            createdVersion.sloid!
-          ).pipe(map(() => createdVersion));
-        })
-      );
+    return this.referencePointService.createReferencePoint(referencePointVersion).pipe(
+      switchMap((createdVersion) => {
+        return this.notificateAndNavigate('PRM.REFERENCE_POINTS.NOTIFICATION.ADD_SUCCESS', createdVersion.sloid!).pipe(
+          map(() => createdVersion)
+        );
+      })
+    );
   }
 
   private update(referencePointVersion: ReferencePointVersion) {
-    return this.referencePointService
-      .updateReferencePoint(this.selectedVersion.id!, referencePointVersion)
-      .pipe(
-        switchMap((updatedVersions) => {
-          return this.notificateAndNavigate(
-            'PRM.REFERENCE_POINTS.NOTIFICATION.EDIT_SUCCESS',
-            this.selectedVersion.sloid!
-          ).pipe(map(() => updatedVersions));
-        })
-      );
+    return this.referencePointService.updateReferencePoint(this.selectedVersion.id!, referencePointVersion).pipe(
+      switchMap((updatedVersions) => {
+        return this.notificateAndNavigate(
+          'PRM.REFERENCE_POINTS.NOTIFICATION.EDIT_SUCCESS',
+          this.selectedVersion.sloid!
+        ).pipe(map(() => updatedVersions));
+      })
+    );
   }
 }

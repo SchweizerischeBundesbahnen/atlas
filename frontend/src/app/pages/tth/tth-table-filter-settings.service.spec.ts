@@ -18,9 +18,7 @@ describe('TthTableFilterSettingsService', () => {
 
     it('should create multiSelectStatementStatus filter', () => {
       const settings = TthTableFilterSettingsService.createSettings();
-      expect(settings.multiSelectStatementStatus).toBeInstanceOf(
-        TableFilterMultiSelect
-      );
+      expect(settings.multiSelectStatementStatus).toBeInstanceOf(TableFilterMultiSelect);
     });
 
     it('should create searchSelectTU filter', () => {
@@ -55,9 +53,7 @@ describe('TthTableFilterSettingsService', () => {
 
     it('should create multiSelectDossierStatus filter', () => {
       const settings = TthTableFilterSettingsService.createDossierSettings();
-      expect(settings.multiSelectDossierStatus).toBeInstanceOf(
-        TableFilterMultiSelect
-      );
+      expect(settings.multiSelectDossierStatus).toBeInstanceOf(TableFilterMultiSelect);
     });
 
     it('should return all required filter properties for dossier', () => {

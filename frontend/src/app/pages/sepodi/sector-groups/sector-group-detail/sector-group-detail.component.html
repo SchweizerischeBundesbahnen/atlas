@@ -12,18 +12,14 @@
   @if (!isNew) {
     <div class="font-xl mb-2">
       <span data-cy="total-range">
-        <atlas-date-range-text
-          [dateRange]="maxValidity"
-        ></atlas-date-range-text>
+        <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
       </span>
     </div>
   }
   <div class="d-flex flex-row mb-5" data-cy="sector-group-header-title">
     @if (!isNew) {
       <div class="me-5">
-        <atlas-sloid-container
-          [sloid]="selectedVersion.sloid!"
-        ></atlas-sloid-container>
+        <atlas-sloid-container [sloid]="selectedVersion.sloid!"></atlas-sloid-container>
       </div>
     }
     <div class="d-flex flex-column me-5">
@@ -85,12 +81,8 @@
             {{ selectedVersionIndex + 1 }}
           </h2>
           <div>
-            <span class="font-bold-lg color-gray-900"
-              >{{ 'COMMON.STATUS' | translate }}
-            </span>
-            <span class="color-gray-900">{{
-              'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
-            }}</span>
+            <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+            <span class="color-gray-900">{{ 'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate }}</span>
           </div>
         </div>
       </div>
@@ -132,18 +124,12 @@
             >
             </atlas-select>
           } @else {
-            <atlas-label-field
-              fieldLabel="SEPODI.SECTORS.SECTORS"
-              [required]="true"
-            >
-            </atlas-label-field>
+            <atlas-label-field fieldLabel="SEPODI.SECTORS.SECTORS" [required]="true"> </atlas-label-field>
             <div>
               {{ 'COMMON.NODATAFOUND' | translate }}
             </div>
             @if (form.controls.sectorSloids) {
-              <atlas-field-error
-                [control]="form.get('sectorSloids')"
-              ></atlas-field-error>
+              <atlas-field-error [control]="form.get('sectorSloids')"></atlas-field-error>
             }
           }
         </div>
@@ -181,10 +167,7 @@
     @if (!isNew) {
       <div class="mb-3">
         <mat-divider class="mt-4 mb-4"></mat-divider>
-        <atlas-user-detail-info
-          [applicationType]="'SEPODI'"
-          [record]="selectedVersion"
-        ></atlas-user-detail-info>
+        <atlas-user-detail-info [applicationType]="'SEPODI'" [record]="selectedVersion"></atlas-user-detail-info>
       </div>
     }
   </atlas-detail-page-content>
@@ -228,10 +211,7 @@
     >
     </atlas-button>
     @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-      <atlas-revoke-button
-        (revokeClicked)="revoke()"
-        applicationType="SEPODI"
-      ></atlas-revoke-button>
+      <atlas-revoke-button (revokeClicked)="revoke()" applicationType="SEPODI"></atlas-revoke-button>
     }
   </atlas-detail-footer>
 </atlas-detail-page-container>

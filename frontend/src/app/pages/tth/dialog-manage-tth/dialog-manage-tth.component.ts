@@ -1,16 +1,6 @@
-import {
-  Component,
-  Inject,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TimetableHearingYear } from '../../../api';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogClose,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
@@ -24,13 +14,7 @@ import { TthYearInternalService } from '../../../api/service/workflow/tth-year-i
   selector: 'atlas-dialog-manage-tth',
   templateUrl: './dialog-manage-tth.component.html',
   styleUrls: ['./dialog-manage-tth.component.scss'],
-  imports: [
-    MatDialogClose,
-    NgTemplateOutlet,
-    AtlasSlideToggleComponent,
-    AtlasButtonComponent,
-    TranslatePipe,
-  ],
+  imports: [MatDialogClose, NgTemplateOutlet, AtlasSlideToggleComponent, AtlasButtonComponent, TranslatePipe],
 })
 export class DialogManageTthComponent implements OnInit {
   @ViewChild('loadingView', { static: true }) loadingView!: TemplateRef<this>;
@@ -70,11 +54,7 @@ export class DialogManageTthComponent implements OnInit {
             this.statementCreatableExternalSliderValue,
             this.statementCreatableInternalSliderValue,
             this.statementEditableSliderValue,
-          ] = [
-            !!year.statementCreatableExternal,
-            !!year.statementCreatableInternal,
-            !!year.statementEditable,
-          ];
+          ] = [!!year.statementCreatableExternal, !!year.statementCreatableInternal, !!year.statementEditable];
           this.currentView = this.manageView;
         },
         error: (err) => {
@@ -111,9 +91,7 @@ export class DialogManageTthComponent implements OnInit {
       .subscribe({
         next: () => {
           this.dialogRef.close(true);
-          this.notificationService.success(
-            'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION'
-          );
+          this.notificationService.success('TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION');
         },
         error: (err) => {
           this.dialogRef.close();
@@ -138,9 +116,7 @@ export class DialogManageTthComponent implements OnInit {
       .subscribe({
         next: () => {
           this.dialogRef.close(true);
-          this.notificationService.success(
-            'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION'
-          );
+          this.notificationService.success('TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION');
         },
         error: (err) => {
           this.dialogRef.close();

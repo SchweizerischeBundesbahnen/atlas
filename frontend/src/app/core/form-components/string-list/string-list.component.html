@@ -15,28 +15,18 @@
           [paddingBottom]="false"
         >
           <ng-template #customChildInputPostfixTemplate>
-            <i
-              style="font-size: 1.5rem"
-              class="bi bi-plus-lg cursor-pointer color-primary-500"
-              (click)="addItem()"
-            ></i>
+            <i style="font-size: 1.5rem" class="bi bi-plus-lg cursor-pointer color-primary-500" (click)="addItem()"></i>
           </ng-template>
         </atlas-text-field>
       </div>
     </div>
     @if (formGroup && controlName) {
       <div class="d-flex">
-        <atlas-field-error
-          [control]="formGroup.get(controlName)"
-        ></atlas-field-error>
+        <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
       </div>
     }
   } @else {
-    <span
-      [ngClass]="required ? 'required-indicator' : ''"
-      class="font-bold-lg mb-1"
-      >{{ fieldLabel | translate }}</span
-    >
+    <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg mb-1">{{ fieldLabel | translate }}</span>
   }
   <div class="d-flex flex-row">
     @if (strListCtrl.value.length === 0 && formGroup?.disabled) {

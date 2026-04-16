@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -27,9 +19,7 @@ export class AtlasSlideToggleComponent implements OnInit, OnChanges {
   ngOnInit() {
     if (this.formControl) {
       this.toggle = this.formControl.value;
-      this.formControl.valueChanges.subscribe(
-        (newValue) => (this.toggle = newValue)
-      );
+      this.formControl.valueChanges.subscribe((newValue) => (this.toggle = newValue));
     }
   }
 

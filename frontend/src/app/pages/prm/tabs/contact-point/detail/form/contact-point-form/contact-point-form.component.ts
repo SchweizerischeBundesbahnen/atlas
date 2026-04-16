@@ -1,15 +1,7 @@
 import { Component, Input } from '@angular/core';
-import {
-  ControlContainer,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ContactPointFormGroup } from '../contact-point-form-group';
-import {
-  ContactPointType,
-  StandardAttributeType,
-} from '../../../../../../../api';
+import { ContactPointType, StandardAttributeType } from '../../../../../../../api';
 import { SelectComponent } from '../../../../../../../core/form-components/select/select.component';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../../../../../core/form-components/date-range/date-range.component';

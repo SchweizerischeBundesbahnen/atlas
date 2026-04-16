@@ -49,18 +49,14 @@ import { NgClass } from '@angular/common';
   ],
   providers: [TranslatePipe],
 })
-export class SwitchVersionComponent
-  implements OnInit, OnChanges, AfterViewInit
-{
+export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
   @Input() switchDisabled = false;
   @Input() showStatus = true;
   @Output() switchVersion = new EventEmitter<number>();
 
-  @ViewChildren(MatRow, { read: ElementRef }) versionRows!: QueryList<
-    ElementRef<HTMLTableRowElement>
-  >;
+  @ViewChildren(MatRow, { read: ElementRef }) versionRows!: QueryList<ElementRef<HTMLTableRowElement>>;
 
   currentIndex: number;
   tableColumns: TableColumn<Record>[] = [];
@@ -111,10 +107,7 @@ export class SwitchVersionComponent
     return DateService.getDateFormatted(date);
   }
 
-  format(
-    input: Date | Status | number | undefined,
-    column: TableColumn<Record>
-  ): string | null {
+  format(input: Date | Status | number | undefined, column: TableColumn<Record>): string | null {
     if (column.formatAsDate) {
       return this.formatDate(input as Date);
     }
@@ -154,9 +147,7 @@ export class SwitchVersionComponent
   hasGapToNextRecord(record: Record): boolean {
     const nextRecord = this.records[this.getIndexOfRecord(record) + 1];
     if (nextRecord) {
-      return (
-        DateService.differenceInDays(record.validTo!, nextRecord.validFrom!) > 1
-      );
+      return DateService.differenceInDays(record.validTo!, nextRecord.validFrom!) > 1;
     }
     return false;
   }

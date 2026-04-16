@@ -39,9 +39,7 @@ export class SideNavComponent {
       const params = page.params ?? [];
 
       if (params.length > 0) {
-        const values = params
-          .map((param: string) => nav[param].toLowerCase())
-          .filter(Boolean);
+        const values = params.map((param: string) => nav[param].toLowerCase()).filter(Boolean);
 
         links.set(subPage, [page.path, ...values, subPage.path]);
       } else {
@@ -62,9 +60,7 @@ export class SideNavComponent {
         takeUntilDestroyed(),
         filter((event) => event instanceof NavigationEnd),
         switchMap((event) => {
-          return pageService.enabledPages.pipe(
-            map((pages) => [event, pages] as [NavigationEnd, Page[]])
-          );
+          return pageService.enabledPages.pipe(map((pages) => [event, pages] as [NavigationEnd, Page[]]));
         })
       )
       .subscribe(([event, pages]) => {

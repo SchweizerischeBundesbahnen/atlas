@@ -4,8 +4,7 @@ import { Observable, of } from 'rxjs';
 
 @Directive({ selector: '[atlasMouseOverTitle]' })
 export class MouseOverTitleDirective {
-  @Input() atlasMouseOverTitle: (value: string) => Observable<string> = () =>
-    of('');
+  @Input() atlasMouseOverTitle: (value: string) => Observable<string> = () => of('');
   @Input() mouseOverTitleValue = '';
 
   private oldValue = '';
@@ -13,10 +12,7 @@ export class MouseOverTitleDirective {
   @HostBinding('title') title = '';
 
   @HostListener('mouseover') onMouseOver(): void {
-    if (
-      isEmpty(this.mouseOverTitleValue) ||
-      this.oldValue === this.mouseOverTitleValue
-    ) {
+    if (isEmpty(this.mouseOverTitleValue) || this.oldValue === this.mouseOverTitleValue) {
       return;
     }
 

@@ -55,12 +55,7 @@
 
           <div class="col-12 d-flex">
             <div class="d-flex flex-column col-12 pe-3">
-              <atlas-text-field
-                [formGroup]="form"
-                controlName="url"
-                data-cy="url"
-                fieldLabel="BODI.COMPANIES.URL"
-              >
+              <atlas-text-field [formGroup]="form" controlName="url" data-cy="url" fieldLabel="BODI.COMPANIES.URL">
                 <ng-template #customChildInputPostfixTemplate>
                   <a [attr.href]="prependHttp(form.value.url)" target="_blank" rel="noopener">
                     <atlas-link-icon></atlas-link-icon>

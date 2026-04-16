@@ -26,17 +26,11 @@ import { VersionsHandlingService } from '../../../../core/versioning/versions-ha
 import { DateRange } from '../../../../core/versioning/date-range';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { ValidationService } from '../../../../core/validation/validation.service';
-import {
-  DetailDialogHelperService,
-  DetailWithCancelEdit,
-} from '../../../../core/detail/detail-dialog-helper.service';
+import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../../core/detail/detail-dialog-helper.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
-import {
-  Revokable,
-  RevokeButton,
-} from '../../../../core/form-components/revoke-button/revoke-button';
+import { Revokable, RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -90,61 +84,53 @@ export class BusinessOrganisationDetailComponent
   isSwitchVersionDisabled = false;
   selectedVersionIndex!: number;
 
-  protected readonly tcRelationColumns: TableColumn<TransportCompanyRelationTableEntry>[] =
-    [
-      {
-        headerTitle: 'BODI.TRANSPORT_COMPANIES.ABBREVIATION',
-        value: 'abbreviation',
-      },
-      {
-        headerTitle: 'BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME',
-        value: 'businessRegisterName',
-      },
-      {
-        headerTitle: 'COMMON.VALID_FROM',
-        value: 'validFrom',
-        formatAsDate: true,
-      },
-      {
-        headerTitle: 'COMMON.VALID_TO',
-        value: 'validTo',
-        formatAsDate: true,
-      },
-    ];
+  protected readonly tcRelationColumns: TableColumn<TransportCompanyRelationTableEntry>[] = [
+    {
+      headerTitle: 'BODI.TRANSPORT_COMPANIES.ABBREVIATION',
+      value: 'abbreviation',
+    },
+    {
+      headerTitle: 'BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME',
+      value: 'businessRegisterName',
+    },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
+    {
+      headerTitle: 'COMMON.VALID_TO',
+      value: 'validTo',
+      formatAsDate: true,
+    },
+  ];
 
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly transportCompanyRelationInternalService = inject(
-    TransportCompanyRelationInternalService
-  );
+  private readonly transportCompanyRelationInternalService = inject(TransportCompanyRelationInternalService);
   private readonly getSboid = (): string | undefined =>
     this.activatedRoute.snapshot.data.businessOrganisationDetail[0]?.sboid;
   private readonly getTcRelations = () => {
     const sboid = this.getSboid();
-    return sboid
-      ? this.transportCompanyRelationInternalService.getBoTransportCompanyRelations(
-          sboid
-        )
-      : EMPTY;
+    return sboid ? this.transportCompanyRelationInternalService.getBoTransportCompanyRelations(sboid) : EMPTY;
   };
-  protected readonly tcRelations: Signal<TransportCompanyRelationTableEntry[]> =
-    toSignal(
-      this.getTcRelations().pipe(
-        map((relations) =>
-          relations.map(
-            (rel): TransportCompanyRelationTableEntry => ({
-              abbreviation: rel.transportCompany?.abbreviation,
-              businessRegisterName: rel.transportCompany?.businessRegisterName,
-              validFrom: rel.validFrom,
-              validTo: rel.validTo,
-              transportCompanyId: rel.transportCompany?.id,
-            })
-          )
+  protected readonly tcRelations: Signal<TransportCompanyRelationTableEntry[]> = toSignal(
+    this.getTcRelations().pipe(
+      map((relations) =>
+        relations.map(
+          (rel): TransportCompanyRelationTableEntry => ({
+            abbreviation: rel.transportCompany?.abbreviation,
+            businessRegisterName: rel.transportCompany?.businessRegisterName,
+            validFrom: rel.validFrom,
+            validTo: rel.validTo,
+            transportCompanyId: rel.transportCompany?.id,
+          })
         )
-      ),
-      {
-        initialValue: [],
-      }
-    );
+      )
+    ),
+    {
+      initialValue: [],
+    }
+  );
 
   constructor(
     private readonly businessOrganisationInternalService: BusinessOrganisationInternalService,
@@ -157,8 +143,7 @@ export class BusinessOrganisationDetailComponent
   ) {}
 
   ngOnInit() {
-    this.versions =
-      this.activatedRoute.snapshot.data.businessOrganisationDetail;
+    this.versions = this.activatedRoute.snapshot.data.businessOrganisationDetail;
     if (this.versions.length == 0) {
       this.isNew = true;
       this.form = BusinessOrganisationDetailFormGroupBuilder.getFormGroup();
@@ -166,10 +151,7 @@ export class BusinessOrganisationDetailComponent
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.versions);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.versions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
       this.initSelectedVersion();
     }
@@ -198,8 +180,7 @@ export class BusinessOrganisationDetailComponent
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const businessOrganisationVersion =
-        this.form.getRawValue() as unknown as BusinessOrganisationVersion;
+      const businessOrganisationVersion = this.form.getRawValue() as unknown as BusinessOrganisationVersion;
       this.form.disable();
       if (this.isNew) {
         this.create(businessOrganisationVersion);
@@ -215,23 +196,14 @@ export class BusinessOrganisationDetailComponent
     }
   }
 
-  update(
-    id: number,
-    businessOrganisationVersion: BusinessOrganisationVersion
-  ): void {
+  update(id: number, businessOrganisationVersion: BusinessOrganisationVersion): void {
     this.businessOrganisationInternalService
       .updateBusinessOrganisationVersion(id, businessOrganisationVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success(
-          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
-        );
+        this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate([
-            Pages.BODI.path,
-            Pages.BUSINESS_ORGANISATIONS.path,
-            this.selectedVersion.sboid,
-          ])
+          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, this.selectedVersion.sboid])
           .then(() => this.ngOnInit());
       });
   }
@@ -241,34 +213,20 @@ export class BusinessOrganisationDetailComponent
       .createBusinessOrganisationVersion(businessOrganisationVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((version) => {
-        this.notificationService.success(
-          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS'
-        );
+        this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS');
         this.router
-          .navigate([
-            Pages.BODI.path,
-            Pages.BUSINESS_ORGANISATIONS.path,
-            version.sboid,
-          ])
+          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, version.sboid])
           .then(() => this.ngOnInit());
       });
   }
 
   revoke(): void {
-    this.businessOrganisationInternalService
-      .revokeBusinessOrganisation(this.selectedVersion.sboid!)
-      .subscribe(() => {
-        this.notificationService.success(
-          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
-        );
-        this.router
-          .navigate([
-            Pages.BODI.path,
-            Pages.BUSINESS_ORGANISATIONS.path,
-            this.selectedVersion.sboid,
-          ])
-          .then(() => this.ngOnInit());
-      });
+    this.businessOrganisationInternalService.revokeBusinessOrganisation(this.selectedVersion.sboid!).subscribe(() => {
+      this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS');
+      this.router
+        .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, this.selectedVersion.sboid])
+        .then(() => this.ngOnInit());
+    });
   }
 
   delete(): void {
@@ -285,9 +243,7 @@ export class BusinessOrganisationDetailComponent
             this.businessOrganisationInternalService
               .deleteBusinessOrganisation(this.selectedVersion.sboid)
               .subscribe(() => {
-                this.notificationService.success(
-                  'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
-                );
+                this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS');
                 this.back();
               });
           }
@@ -301,22 +257,14 @@ export class BusinessOrganisationDetailComponent
 
   openInNewTab(transportCompanyId?: number) {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([
-        Pages.BODI.path,
-        Pages.TRANSPORT_COMPANIES.path,
-        transportCompanyId,
-      ])
+      this.router.createUrlTree([Pages.BODI.path, Pages.TRANSPORT_COMPANIES.path, transportCompanyId])
     );
     window.open(url, '_blank');
   }
 
   private initSelectedVersion() {
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-      this.versions
-    );
-    this.form = BusinessOrganisationDetailFormGroupBuilder.getFormGroup(
-      this.selectedVersion
-    );
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
+    this.form = BusinessOrganisationDetailFormGroupBuilder.getFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
     }

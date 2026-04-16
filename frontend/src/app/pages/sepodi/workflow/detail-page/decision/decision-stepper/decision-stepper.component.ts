@@ -48,15 +48,7 @@ export class DecisionStepperComponent {
   });
 
   readonly pin = this._formBuilder.group({
-    pin: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(6),
-        AtlasCharsetsValidator.numeric,
-      ],
-    ],
+    pin: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6), AtlasCharsetsValidator.numeric]],
   });
 
   readonly decision = DecisionFormGroupBuilder.buildFormGroup();
@@ -118,18 +110,10 @@ export class DecisionStepperComponent {
         .pipe(
           map((examinant) => {
             this._verifiedExaminant = examinant;
-            this.decision.controls.firstName.setValue(
-              examinant.firstName ?? null
-            );
-            this.decision.controls.lastName.setValue(
-              examinant.lastName ?? null
-            );
-            this.decision.controls.organisation.setValue(
-              examinant.organisation
-            );
-            this.decision.controls.personFunction.setValue(
-              examinant.personFunction ?? null
-            );
+            this.decision.controls.firstName.setValue(examinant.firstName ?? null);
+            this.decision.controls.lastName.setValue(examinant.lastName ?? null);
+            this.decision.controls.organisation.setValue(examinant.organisation);
+            this.decision.controls.personFunction.setValue(examinant.personFunction ?? null);
             return true;
           }),
           catchError(() => {

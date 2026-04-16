@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GeoJsonProperties } from 'geojson';
 import { Router, RouterOutlet } from '@angular/router';
 import { Pages } from '../../pages';
@@ -24,17 +17,9 @@ import { MapComponent } from '../map/map.component';
   selector: 'atlas-sepodi-mapview',
   templateUrl: './sepodi-mapview.component.html',
   styleUrls: ['./sepodi-mapview.component.scss'],
-  imports: [
-    AtlasButtonComponent,
-    NgClass,
-    RouterOutlet,
-    MapComponent,
-    SearchServicePointPanelComponent,
-  ],
+  imports: [AtlasButtonComponent, NgClass, RouterOutlet, MapComponent, SearchServicePointPanelComponent],
 })
-export class SepodiMapviewComponent
-  implements AfterViewInit, OnDestroy, OnInit
-{
+export class SepodiMapviewComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('detailContainer') detailContainer!: ElementRef<HTMLElement>;
 
   public isSidePanelOpen = false;
@@ -58,10 +43,9 @@ export class SepodiMapviewComponent
     private readonly userService: UserService,
     private readonly permissionService: PermissionService
   ) {
-    this.selectedElementSubscription =
-      this.mapService.selectedElement.subscribe((selectedPoint) =>
-        this.servicePointClicked(selectedPoint)
-      );
+    this.selectedElementSubscription = this.mapService.selectedElement.subscribe((selectedPoint) =>
+      this.servicePointClicked(selectedPoint)
+    );
   }
 
   ngAfterViewInit() {
@@ -73,9 +57,7 @@ export class SepodiMapviewComponent
   }
 
   servicePointClicked($event: GeoJsonProperties) {
-    this.router
-      .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path, $event!.number])
-      .then();
+    this.router.navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path, $event!.number]).then();
   }
 
   setRouteActive(value: boolean) {
@@ -98,8 +80,7 @@ export class SepodiMapviewComponent
 
   ngOnInit(): void {
     this.userService.onPermissionsLoaded().subscribe(() => {
-      this.canCreateServicePoint =
-        this.permissionService.hasPermissionsToCreate(ApplicationType.Sepodi);
+      this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(ApplicationType.Sepodi);
     });
   }
 

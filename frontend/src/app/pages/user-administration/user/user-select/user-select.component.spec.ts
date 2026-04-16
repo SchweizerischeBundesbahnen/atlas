@@ -24,9 +24,7 @@ class MockFormSearchSelectComponent {
 describe('UserSelectComponent', () => {
   let component: UserSelectComponent;
   let fixture: ComponentFixture<UserSelectComponent>;
-  let userAdministrationService: Mocked<
-    Pick<UserAdministrationService, 'searchUsers' | 'searchUsersInAtlas'>
-  >;
+  let userAdministrationService: Mocked<Pick<UserAdministrationService, 'searchUsers' | 'searchUsersInAtlas'>>;
 
   beforeEach(async () => {
     userAdministrationService = {
@@ -71,9 +69,7 @@ describe('UserSelectComponent', () => {
     component.search('testQuery');
     fixture.componentRef.setInput('searchMode', 'default');
     fixture.detectChanges();
-    expect(
-      userAdministrationService.searchUsers
-    ).toHaveBeenCalledExactlyOnceWith('testQuery');
+    expect(userAdministrationService.searchUsers).toHaveBeenCalledExactlyOnceWith('testQuery');
     const val = await firstValueFrom(component.userSearchResults$);
     expect(val).toEqual([
       {
@@ -96,9 +92,10 @@ describe('UserSelectComponent', () => {
     component.applicationType = ApplicationType.Sepodi;
     fixture.detectChanges();
     component.search('testQuery');
-    expect(
-      userAdministrationService.searchUsersInAtlas
-    ).toHaveBeenCalledExactlyOnceWith('testQuery', ApplicationType.Sepodi);
+    expect(userAdministrationService.searchUsersInAtlas).toHaveBeenCalledExactlyOnceWith(
+      'testQuery',
+      ApplicationType.Sepodi
+    );
     const val = await firstValueFrom(component.userSearchResults$);
     expect(val).toEqual([
       {

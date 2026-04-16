@@ -20,10 +20,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { TrafficPointMapService } from '../../map/traffic-point-map.service';
 import { ValidityConfirmationService } from '../../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {
-  GeographyFormGroup,
-  GeographyFormGroupBuilder,
-} from '../../geography/geography-form-group';
+import { GeographyFormGroup, GeographyFormGroupBuilder } from '../../geography/geography-form-group';
 import { ValidityService } from '../../validity/validity.service';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { SloidComponent } from '../../../../core/form-components/sloid/sloid.component';
@@ -74,9 +71,7 @@ const NUMBER_COLONS_AREA = 0;
     RevokeButton,
   ],
 })
-export class TrafficPointElementsDetailComponent
-  implements OnInit, DetailFormComponent
-{
+export class TrafficPointElementsDetailComponent implements OnInit, DetailFormComponent {
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
   showVersionSwitch = false;
@@ -111,37 +106,25 @@ export class TrafficPointElementsDetailComponent
   readonly displayExtractor = (option: AreaOption) => option.displayText;
 
   ngOnInit() {
-    this.numberColons = this.isTrafficPointArea
-      ? NUMBER_COLONS_AREA
-      : NUMBER_COLONS_PLATFORM;
+    this.numberColons = this.isTrafficPointArea ? NUMBER_COLONS_AREA : NUMBER_COLONS_PLATFORM;
 
     this.route.parent!.data.subscribe((next) => {
       this.isTrafficPointArea = next.isTrafficPointArea;
       this.trafficPointVersions = next.trafficPoint;
-      this.servicePointNumber =
-        this.route.parent!.snapshot.params['servicePointNumber'];
+      this.servicePointNumber = this.route.parent!.snapshot.params['servicePointNumber'];
       this.initTrafficPoint();
     });
   }
 
   backToTrafficPointElements(destination: string) {
-    this.router
-      .navigate([
-        Pages.SEPODI.path,
-        Pages.SERVICE_POINTS.path,
-        this.servicePointNumber,
-        destination,
-      ])
-      .then();
+    this.router.navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path, this.servicePointNumber, destination]).then();
   }
 
   confirmCancel() {
     if (this.isTrafficPointArea) {
       this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_AREA.path);
     } else {
-      this.backToTrafficPointElements(
-        Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path
-      );
+      this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path);
     }
   }
 
@@ -166,30 +149,22 @@ export class TrafficPointElementsDetailComponent
     if (this.form.valid) {
       this.confirmValidityOverServicePoint().subscribe((confirmed) => {
         if (confirmed) {
-          const trafficPointElementVersion = this.form
-            .value as unknown as CreateTrafficPointElementVersion;
+          const trafficPointElementVersion = this.form.value as unknown as CreateTrafficPointElementVersion;
 
           if (this.isTrafficPointArea) {
-            trafficPointElementVersion.trafficPointElementType =
-              TrafficPointElementType.BoardingArea;
+            trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.BoardingArea;
           } else {
-            trafficPointElementVersion.trafficPointElementType =
-              TrafficPointElementType.BoardingPlatform;
+            trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.BoardingPlatform;
           }
 
-          trafficPointElementVersion.numberWithoutCheckDigit =
-            this.servicePointNumber;
+          trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
           if (this.isNew) {
             this.disableForm();
             this.create(trafficPointElementVersion);
           } else {
             this.validityService.updateValidity(this.form);
             this.validityService.validateAndDisableCustom(
-              () =>
-                this.update(
-                  this.selectedVersion.id!,
-                  trafficPointElementVersion
-                ),
+              () => this.update(this.selectedVersion.id!, trafficPointElementVersion),
               () => this.disableForm()
             );
           }
@@ -203,10 +178,7 @@ export class TrafficPointElementsDetailComponent
     this._savedGeographyForm = undefined;
   }
 
-  update(
-    id: number,
-    trafficPointElementVersion: CreateTrafficPointElementVersion
-  ) {
+  update(id: number, trafficPointElementVersion: CreateTrafficPointElementVersion) {
     this.trafficPointElementService
       .updateTrafficPoint(id, trafficPointElementVersion)
       .pipe(catchError(this.handleError()))
@@ -227,33 +199,22 @@ export class TrafficPointElementsDetailComponent
 
   geographyEnabled() {
     if (this.form && !this.form.controls.trafficPointElementGeolocation) {
-      const groupToAdd =
-        this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup();
-      TrafficPointElementFormGroupBuilder.addGroupToForm(
-        this.form,
-        'trafficPointElementGeolocation',
-        groupToAdd
-      );
+      const groupToAdd = this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup();
+      TrafficPointElementFormGroupBuilder.addGroupToForm(this.form, 'trafficPointElementGeolocation', groupToAdd);
       this.form.markAsDirty();
     }
   }
 
   geographyDisabled() {
     if (this.form.controls.trafficPointElementGeolocation) {
-      this._savedGeographyForm =
-        this.form.controls.trafficPointElementGeolocation;
-      TrafficPointElementFormGroupBuilder.removeGroupFromForm(
-        this.form,
-        'trafficPointElementGeolocation'
-      );
+      this._savedGeographyForm = this.form.controls.trafficPointElementGeolocation;
+      TrafficPointElementFormGroupBuilder.removeGroupFromForm(this.form, 'trafficPointElementGeolocation');
       this.form.markAsDirty();
     }
   }
 
   doRevoke = (): Observable<void> => {
-    return this.trafficPointElementInternalService.revokeTrafficPoint(
-      this.selectedVersion.sloid!
-    );
+    return this.trafficPointElementInternalService.revokeTrafficPoint(this.selectedVersion.sloid!);
   };
 
   revoke() {
@@ -261,9 +222,7 @@ export class TrafficPointElementsDetailComponent
       .revokeTrafficPoint(this.selectedVersion.sloid!)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success(
-          'SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.REVOKE_SUCCESS'
-        );
+        this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.REVOKE_SUCCESS');
         this.router
           .navigate(['..', this.selectedVersion.sloid], {
             relativeTo: this.route,
@@ -284,13 +243,8 @@ export class TrafficPointElementsDetailComponent
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.trafficPointVersions
-        );
-      this.selectedVersionIndex = this.trafficPointVersions.indexOf(
-        this.selectedVersion
-      );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.trafficPointVersions);
+      this.selectedVersionIndex = this.trafficPointVersions.indexOf(this.selectedVersion);
 
       this.initSelectedVersion();
     }
@@ -301,52 +255,37 @@ export class TrafficPointElementsDetailComponent
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
     } else {
-      this.servicePointService
-        .getServicePointVersions(this.servicePointNumber)
-        .subscribe((servicePoint) => {
-          this.servicePoint = servicePoint;
-          const versionToDisplay =
-            VersionsHandlingService.determineDefaultVersionByValidity(
-              servicePoint
-            );
-          this.servicePointSloid = versionToDisplay.sloid!;
-          this.servicePointBusinessOrganisations = this.servicePoint.map(
-            (i) => {
-              return i.businessOrganisation;
-            }
-          );
+      this.servicePointService.getServicePointVersions(this.servicePointNumber).subscribe((servicePoint) => {
+        this.servicePoint = servicePoint;
+        const versionToDisplay = VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
+        this.servicePointSloid = versionToDisplay.sloid!;
+        this.servicePointBusinessOrganisations = this.servicePoint.map((i) => {
+          return i.businessOrganisation;
         });
+      });
 
-      this.trafficPointElementInternalService
-        .getAreasOfServicePoint(this.servicePointNumber)
-        .subscribe((areas) => {
-          const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
-          options.push(
-            ...areas.objects!.map((i) => {
-              return {
-                sloid: i.sloid,
-                displayText: `${i.designation} - ${i.sloid}`,
-              };
-            })
-          );
-          this.areaOptions = options;
-        });
+      this.trafficPointElementInternalService.getAreasOfServicePoint(this.servicePointNumber).subscribe((areas) => {
+        const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
+        options.push(
+          ...areas.objects!.map((i) => {
+            return {
+              sloid: i.sloid,
+              displayText: `${i.designation} - ${i.sloid}`,
+            };
+          })
+        );
+        this.areaOptions = options;
+      });
     }
   }
 
   private initSelectedVersion() {
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-      this.trafficPointVersions
-    );
-    this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(
-      this.selectedVersion
-    );
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.trafficPointVersions);
+    this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.disableForm();
     }
-    this.trafficPointMapService.displayCurrentTrafficPoint(
-      this.selectedVersion.trafficPointElementGeolocation?.wgs84
-    );
+    this.trafficPointMapService.displayCurrentTrafficPoint(this.selectedVersion.trafficPointElementGeolocation?.wgs84);
   }
 
   private showConfirmationDialog() {

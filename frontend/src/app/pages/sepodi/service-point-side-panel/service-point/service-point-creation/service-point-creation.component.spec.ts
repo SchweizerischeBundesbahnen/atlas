@@ -26,9 +26,7 @@ class PermissionServiceMock implements Partial<PermissionService> {
 
 describe('ServicePointCreationComponent', () => {
   let component: ServicePointCreationComponent;
-  let servicePointServiceSpy: Mocked<
-    Pick<ServicePointService, 'createServicePoint'>
-  >;
+  let servicePointServiceSpy: Mocked<Pick<ServicePointService, 'createServicePoint'>>;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
   let mapServiceSpy: Mocked<Pick<MapService, 'refreshMap'>>;
@@ -88,10 +86,7 @@ describe('ServicePointCreationComponent', () => {
       } as ReturnType<ServicePointService['createServicePoint']> extends import('rxjs').Observable<infer T> ? T : never)
     );
 
-    vi.spyOn(
-      ServicePointFormGroupBuilder.mapper,
-      'getWritableServicePoint'
-    ).mockReturnValue({
+    vi.spyOn(ServicePointFormGroupBuilder.mapper, 'getWritableServicePoint').mockReturnValue({
       numberShort: 57385,
     } as Partial<CreateServicePointVersion> as CreateServicePointVersion);
 
@@ -102,13 +97,8 @@ describe('ServicePointCreationComponent', () => {
     expect(servicePointServiceSpy.createServicePoint).toHaveBeenCalledWith({
       numberShort: 57385,
     });
-    expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS'
-    );
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      [8557385],
-      expect.anything()
-    );
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
+    expect(routerSpy.navigate).toHaveBeenCalledWith([8557385], expect.anything());
   });
 
   it('should get country options role supervisor', () => {

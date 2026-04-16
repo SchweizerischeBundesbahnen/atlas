@@ -12,27 +12,22 @@ export class LoadingPointsDetailResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadLoadingPointVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadLoadingPointVersion>> {
     const servicePointNumber = route.paramMap.get('servicePointNumber') || '';
     const number = route.paramMap.get('number') || '';
     return number === 'add'
       ? of([])
-      : this.loadingPointsService
-          .getLoadingPoint(Number(servicePointNumber), Number(number))
-          .pipe(
-            catchError(() =>
-              this.router
-                .navigate([Pages.SEPODI.path], {
-                  state: { notDismissSnackBar: true },
-                })
-                .then(() => [])
-            )
-          );
+      : this.loadingPointsService.getLoadingPoint(Number(servicePointNumber), Number(number)).pipe(
+          catchError(() =>
+            this.router
+              .navigate([Pages.SEPODI.path], {
+                state: { notDismissSnackBar: true },
+              })
+              .then(() => [])
+          )
+        );
   }
 }
 
-export const loadingPointResolver: ResolveFn<Array<ReadLoadingPointVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(LoadingPointsDetailResolver).resolve(route);
+export const loadingPointResolver: ResolveFn<Array<ReadLoadingPointVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(LoadingPointsDetailResolver).resolve(route);

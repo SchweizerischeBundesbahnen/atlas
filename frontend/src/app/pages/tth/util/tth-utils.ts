@@ -1,8 +1,4 @@
-import {
-  HearingStatus,
-  TimetableHearingYear,
-  TransportCompany,
-} from '../../../api';
+import { HearingStatus, TimetableHearingYear, TransportCompany } from '../../../api';
 
 export class TthUtils {
   static isHearingStatusActive(hearingStatus: HearingStatus): boolean {
@@ -28,13 +24,9 @@ export class TthUtils {
     return timetableHearingYears;
   }
 
-  static toTransportCompanyIds(
-    transportCompanies: TransportCompany[]
-  ): number[] {
+  static toTransportCompanyIds(transportCompanies: TransportCompany[]): number[] {
     return transportCompanies
       ?.map((tu) => tu.id)
-      .filter(
-        (numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined
-      );
+      .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined);
   }
 }

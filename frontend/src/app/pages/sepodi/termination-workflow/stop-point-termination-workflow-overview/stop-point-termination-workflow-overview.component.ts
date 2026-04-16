@@ -29,53 +29,44 @@ import { ActivatedRoute, Router } from '@angular/router';
   imports: [TableComponent, TranslatePipe, AsyncPipe],
 })
 export class StopPointTerminationWorkflowOverviewComponent {
-  private readonly stopPointTerminationWorkflowService = inject(
-    StopPointTerminationWorkflowService
-  );
+  private readonly stopPointTerminationWorkflowService = inject(StopPointTerminationWorkflowService);
   private readonly tableService = inject(TableService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  protected workflows$: Observable<ContainerTerminationStopPointWorkflowModel> =
-    of();
+  protected workflows$: Observable<ContainerTerminationStopPointWorkflowModel> = of();
 
-  protected readonly tableColumns: TableColumn<TerminationStopPointWorkflowModel>[] =
-    [
-      { headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.ID', value: 'id' },
-      {
-        headerTitle: 'COMMON.STATUS',
-        value: 'status',
-        translate: { withPrefix: 'TERMINATION_WORKFLOW.STATUS.' },
-      },
-      {
-        headerTitle: 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL',
-        value: 'designationOfficial',
-      },
-      { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
-      {
-        headerTitle:
-          'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.TRANSPORT_COMPANY_DATE',
-        value: 'boTerminationDate',
-        formatAsDate: true,
-      },
-      {
-        headerTitle: 'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.INFO+_DATE',
-        value: 'infoPlusTerminationDate',
-        formatAsDate: true,
-      },
-      {
-        headerTitle: 'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.NOVA_DATE',
-        value: 'novaTerminationDate',
-        formatAsDate: true,
-      },
-    ];
+  protected readonly tableColumns: TableColumn<TerminationStopPointWorkflowModel>[] = [
+    { headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.ID', value: 'id' },
+    {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'TERMINATION_WORKFLOW.STATUS.' },
+    },
+    {
+      headerTitle: 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL',
+      value: 'designationOfficial',
+    },
+    { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
+    {
+      headerTitle: 'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.TRANSPORT_COMPANY_DATE',
+      value: 'boTerminationDate',
+      formatAsDate: true,
+    },
+    {
+      headerTitle: 'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.INFO+_DATE',
+      value: 'infoPlusTerminationDate',
+      formatAsDate: true,
+    },
+    {
+      headerTitle: 'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.NOVA_DATE',
+      value: 'novaTerminationDate',
+      formatAsDate: true,
+    },
+  ];
 
   private readonly tableFilterConfigIntern = {
-    search: new TableFilterChip(
-      0,
-      'col-6',
-      'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'
-    ),
+    search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
     workflowIds: new TableFilterSingleSearch(
       1,
       'SEPODI.SERVICE_POINTS.WORKFLOW.ID',
@@ -107,30 +98,24 @@ export class StopPointTerminationWorkflowOverviewComponent {
     ),
   };
 
-  protected readonly tableFilterConfig: TableFilter<unknown>[][] =
-    this.tableService.initializeFilterConfig(
-      this.tableFilterConfigIntern,
-      Pages.TERMINATION_STOP_POINT_WORKFLOWS
-    );
+  protected readonly tableFilterConfig: TableFilter<unknown>[][] = this.tableService.initializeFilterConfig(
+    this.tableFilterConfigIntern,
+    Pages.TERMINATION_STOP_POINT_WORKFLOWS
+  );
 
   protected onRowClick(workflow: TerminationStopPointWorkflowModel) {
     this.router.navigate([workflow.id], { relativeTo: this.route }).then();
   }
 
   protected loadWorkflows(pagination: TablePagination) {
-    this.workflows$ =
-      this.stopPointTerminationWorkflowService.getTerminationStopPointWorkflows(
-        this.tableService.filter.search.getActiveSearch(),
-        addElementsToArrayWhenNotUndefined(
-          this.tableService.filter.sboid.getActiveSearch()?.sboid
-        ),
-        addElementsToArrayWhenNotUndefined(
-          this.tableService.filter.workflowIds.getActiveSearch()
-        ),
-        this.tableService.filter.workflowStatus.getActiveSearch(),
-        pagination.page,
-        pagination.size,
-        addElementsToArrayWhenNotUndefined(pagination.sort, 'id,desc')
-      );
+    this.workflows$ = this.stopPointTerminationWorkflowService.getTerminationStopPointWorkflows(
+      this.tableService.filter.search.getActiveSearch(),
+      addElementsToArrayWhenNotUndefined(this.tableService.filter.sboid.getActiveSearch()?.sboid),
+      addElementsToArrayWhenNotUndefined(this.tableService.filter.workflowIds.getActiveSearch()),
+      this.tableService.filter.workflowStatus.getActiveSearch(),
+      pagination.page,
+      pagination.size,
+      addElementsToArrayWhenNotUndefined(pagination.sort, 'id,desc')
+    );
   }
 }

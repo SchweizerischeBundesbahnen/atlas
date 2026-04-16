@@ -1,10 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import {
-  ReadTrafficPointElementVersion,
-  TrafficPointElementType,
-} from '../../../../api';
+import { ReadTrafficPointElementVersion, TrafficPointElementType } from '../../../../api';
 import { Pages } from '../../../pages';
 import { TrafficPointElementService } from '../../../../api/service/sepodi/traffic-point-element.service';
 import { tap } from 'rxjs/operators';
@@ -16,38 +13,27 @@ export class TrafficPointElementsDetailResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadTrafficPointElementVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadTrafficPointElementVersion>> {
     const trafficPointSloid = route.paramMap.get('trafficPointSloid') ?? '';
     return trafficPointSloid === 'add'
       ? of([])
-      : this.trafficPointElementService
-          .getTrafficPointElement(trafficPointSloid)
-          .pipe(
-            tap((trafficPoint) =>
-              this.checkRouteTypeMatch(trafficPoint, route)
-            ),
-            catchError(() =>
-              this.router
-                .navigate([Pages.SEPODI.path], {
-                  state: { notDismissSnackBar: true },
-                })
-                .then(() => [])
-            )
-          );
+      : this.trafficPointElementService.getTrafficPointElement(trafficPointSloid).pipe(
+          tap((trafficPoint) => this.checkRouteTypeMatch(trafficPoint, route)),
+          catchError(() =>
+            this.router
+              .navigate([Pages.SEPODI.path], {
+                state: { notDismissSnackBar: true },
+              })
+              .then(() => [])
+          )
+        );
   }
 
-  private checkRouteTypeMatch(
-    trafficPoint: ReadTrafficPointElementVersion[],
-    route: ActivatedRouteSnapshot
-  ) {
+  private checkRouteTypeMatch(trafficPoint: ReadTrafficPointElementVersion[], route: ActivatedRouteSnapshot) {
     const trafficPointExists = trafficPoint && trafficPoint.length > 0;
     if (trafficPointExists) {
       const firstVersion = trafficPoint[0];
-      const existingVersionIsArea =
-        firstVersion.trafficPointElementType ===
-        TrafficPointElementType.BoardingArea;
+      const existingVersionIsArea = firstVersion.trafficPointElementType === TrafficPointElementType.BoardingArea;
       if ((route.data.isTrafficPointArea ?? false) != existingVersionIsArea) {
         const redirectPath = existingVersionIsArea
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA.path
@@ -66,7 +52,5 @@ export class TrafficPointElementsDetailResolver {
   }
 }
 
-export const trafficPointResolver: ResolveFn<
-  Array<ReadTrafficPointElementVersion>
-> = (route: ActivatedRouteSnapshot) =>
+export const trafficPointResolver: ResolveFn<Array<ReadTrafficPointElementVersion>> = (route: ActivatedRouteSnapshot) =>
   inject(TrafficPointElementsDetailResolver).resolve(route);

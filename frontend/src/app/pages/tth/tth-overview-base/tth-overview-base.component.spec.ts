@@ -13,9 +13,7 @@ import { translateServiceProvider } from '../../../app.testing.mocks';
 import { MatSelectChange } from '@angular/material/select';
 import { TthUtils } from '../util/tth-utils';
 
-const mockTimetableHearingYearsService: Mocked<
-  Pick<TimetableHearingYearInternalService, 'getHearingYears'>
-> = {
+const mockTimetableHearingYearsService: Mocked<Pick<TimetableHearingYearInternalService, 'getHearingYears'>> = {
   getHearingYears: vi.fn(),
 };
 
@@ -82,9 +80,7 @@ describe('TthOverviewBaseComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     overviewToTabService = TestBed.inject(OverviewToTabShareDataService);
 
-    mockTimetableHearingYearsService.getHearingYears.mockReturnValue(
-      of([hearingYear2024, hearingYear2025])
-    );
+    mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of([hearingYear2024, hearingYear2025]));
 
     overviewToTabService.setCantonShort('ZH');
     overviewToTabService.setTimetableHearingYear({
@@ -103,9 +99,7 @@ describe('TthOverviewBaseComponent', () => {
     it('should load timetable hearing years for Active status', () => {
       fixture.detectChanges();
 
-      expect(
-        mockTimetableHearingYearsService.getHearingYears
-      ).toHaveBeenCalledWith([HearingStatus.Active]);
+      expect(mockTimetableHearingYearsService.getHearingYears).toHaveBeenCalledWith([HearingStatus.Active]);
       expect(component.timetableYear()).toEqual(hearingYear2024);
     });
 
@@ -126,17 +120,13 @@ describe('TthOverviewBaseComponent', () => {
 
       expect(component.isHearingYearActive()).toBeFalsy();
       expect(component.isHearingYearPlanned()).toBeTruthy();
-      expect(
-        mockTimetableHearingYearsService.getHearingYears
-      ).toHaveBeenCalledWith([HearingStatus.Planned]);
+      expect(mockTimetableHearingYearsService.getHearingYears).toHaveBeenCalledWith([HearingStatus.Planned]);
     });
 
     it('should handle Archived hearing status', () => {
       route.snapshot.data = { hearingStatus: HearingStatus.Archived };
       vi.spyOn(TthUtils, 'isHearingStatusArchived').mockReturnValue(true);
-      vi.spyOn(component, 'initOverviewArchivedTable').mockImplementation(
-        () => {}
-      );
+      vi.spyOn(component, 'initOverviewArchivedTable').mockImplementation(() => {});
 
       fixture.detectChanges();
 
@@ -147,9 +137,7 @@ describe('TthOverviewBaseComponent', () => {
   describe('Archived Table Initialization', () => {
     it('should initialize archived table when hearing status is archived', () => {
       route.snapshot.data = { hearingStatus: HearingStatus.Archived };
-      vi.spyOn(component, 'initOverviewArchivedTable').mockImplementation(
-        () => {}
-      );
+      vi.spyOn(component, 'initOverviewArchivedTable').mockImplementation(() => {});
 
       fixture.detectChanges();
 
@@ -218,9 +206,7 @@ describe('TthOverviewBaseComponent', () => {
 
       component.changeSelectedYearFromDropdown(mockSelectChange);
 
-      expect(overviewToTabService.setYearSelection).toHaveBeenCalledWith(
-        mockSelectChange.value
-      );
+      expect(overviewToTabService.setYearSelection).toHaveBeenCalledWith(mockSelectChange.value);
       expect(component.yearSelection()).toBe(2025);
       expect(component.navigateTo).toHaveBeenCalledWith('zh', 2025);
       expect(tableService.resetTableSettings).toHaveBeenCalledTimes(1);

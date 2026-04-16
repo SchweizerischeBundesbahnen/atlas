@@ -75,13 +75,9 @@ describe('UserAdministrationClientCreateComponent', () => {
 
     component.create();
 
-    expect(
-      clientCredentialAdministrationService.createClientCredential
-    ).toHaveBeenCalledTimes(1);
+    expect(clientCredentialAdministrationService.createClientCredential).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
     await fixture.whenStable();
-    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith(
-      'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
-    );
+    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS');
   });
 });

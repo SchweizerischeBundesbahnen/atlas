@@ -7,9 +7,9 @@ import {
 } from '../../util/prm-mean-of-transport-helper';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 
-export const prmMeansOfTransport: MeanOfTransport[] = Object.values(
-  MeanOfTransport
-).filter((value) => value !== MeanOfTransport.Unknown);
+export const prmMeansOfTransport: MeanOfTransport[] = Object.values(MeanOfTransport).filter(
+  (value) => value !== MeanOfTransport.Unknown
+);
 
 @Injectable({
   providedIn: 'root',
@@ -17,12 +17,8 @@ export const prmMeansOfTransport: MeanOfTransport[] = Object.values(
 export class PrmVariantInfoService {
   constructor(private permissionService: PermissionService) {}
 
-  getPrmMeansOfTransportToShow(
-    meansOfTransport: MeanOfTransport[]
-  ): MeanOfTransport[] | undefined {
-    const isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(
-      ApplicationType.Prm
-    );
+  getPrmMeansOfTransportToShow(meansOfTransport: MeanOfTransport[]): MeanOfTransport[] | undefined {
+    const isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Prm);
     if (isAtLeastSupervisor) {
       return prmMeansOfTransport;
     }

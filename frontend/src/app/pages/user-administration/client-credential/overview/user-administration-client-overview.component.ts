@@ -32,10 +32,7 @@ export class UserAdministrationClientOverviewComponent implements OnDestroy {
       .getClientCredentials(
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(
-          pagination.sort,
-          'clientCredentialId,asc'
-        )
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'clientCredentialId,asc')
       )
       .subscribe((clientContainer) => {
         this.clientCredentials = clientContainer.objects!;
@@ -44,9 +41,7 @@ export class UserAdministrationClientOverviewComponent implements OnDestroy {
   }
 
   edit(client: ClientCredential) {
-    this.router
-      .navigate([client.clientCredentialId], { relativeTo: this.route })
-      .then();
+    this.router.navigate([client.clientCredentialId], { relativeTo: this.route }).then();
   }
 
   ngOnDestroy() {

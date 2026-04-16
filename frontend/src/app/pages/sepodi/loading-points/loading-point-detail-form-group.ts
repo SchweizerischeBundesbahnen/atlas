@@ -16,9 +16,7 @@ export interface LoadingPointDetailFormGroup extends BaseDetailFormGroup {
 }
 
 export class LoadingPointFormGroupBuilder {
-  static buildFormGroup(
-    version?: ReadLoadingPointVersion
-  ): FormGroup<LoadingPointDetailFormGroup> {
+  static buildFormGroup(version?: ReadLoadingPointVersion): FormGroup<LoadingPointDetailFormGroup> {
     return new FormGroup<LoadingPointDetailFormGroup>(
       {
         number: new FormControl(version?.number, [
@@ -38,14 +36,8 @@ export class LoadingPointFormGroupBuilder {
           Validators.maxLength(35),
         ]),
         connectionPoint: new FormControl(version?.connectionPoint ?? false),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [Validators.required]),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),

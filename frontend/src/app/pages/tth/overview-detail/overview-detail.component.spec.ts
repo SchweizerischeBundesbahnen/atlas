@@ -50,24 +50,16 @@ class MockAppTthOverviewTabHeadingComponent {
   @Input() noPlannedTimetableHearingYearFound!: boolean;
 }
 
-const mockTimetableHearingYearsService: Mocked<
-  Pick<TimetableHearingYearInternalService, 'getHearingYears'>
-> = {
+const mockTimetableHearingYearsService: Mocked<Pick<TimetableHearingYearInternalService, 'getHearingYears'>> = {
   getHearingYears: vi.fn(),
 };
-const mockTimetableHearingStatementsService: Mocked<
-  Pick<TimetableHearingStatementInternalService, 'getStatements'>
-> = {
+const mockTimetableHearingStatementsService: Mocked<Pick<TimetableHearingStatementInternalService, 'getStatements'>> = {
   getStatements: vi.fn(),
 };
 const dialogSpy: Mocked<Pick<MatDialog, 'open'>> = { open: vi.fn() };
 
 let dialogServiceSpy: Mocked<
-  Pick<
-    DialogService,
-    | 'openDialogDataWithConfirmationResult'
-    | 'openCustomDataWithConfirmationResult'
-  >
+  Pick<DialogService, 'openDialogDataWithConfirmationResult' | 'openCustomDataWithConfirmationResult'>
 >;
 
 const hearingYear2000: TimetableHearingYear = {
@@ -112,26 +104,19 @@ const timetableHearingStatement: TimetableHearingStatementV2 = {
   documents: [],
   dossierId: 123,
 };
-const containerTimetableHearingStatement: ContainerTimetableHearingStatementV2 =
-  {
-    objects: [timetableHearingStatement, timetableHearingStatement],
-    totalCount: 2,
-  };
+const containerTimetableHearingStatement: ContainerTimetableHearingStatementV2 = {
+  objects: [timetableHearingStatement, timetableHearingStatement],
+  totalCount: 2,
+};
 
-const mockTthYearWfServiceSpy: Mocked<
-  Pick<TthYearInternalService, 'startTimetableHearingYear'>
-> = {
+const mockTthYearWfServiceSpy: Mocked<Pick<TthYearInternalService, 'startTimetableHearingYear'>> = {
   startTimetableHearingYear: vi.fn(),
 };
 
 async function baseTestConfiguration() {
-  mockTimetableHearingStatementsService.getStatements.mockReturnValue(
-    of(containerTimetableHearingStatement)
-  );
+  mockTimetableHearingStatementsService.getStatements.mockReturnValue(of(containerTimetableHearingStatement));
 
-  mockTimetableHearingYearsService.getHearingYears.mockReturnValue(
-    of([hearingYear2000, hearingYear2001])
-  );
+  mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of([hearingYear2000, hearingYear2001]));
 
   dialogServiceSpy = {
     openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
@@ -209,9 +194,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     it('should open dialog on addNewTimetableHearing()', () => {
       component.addNewTimetableHearing();
 
-      expect(
-        dialogServiceSpy.openCustomDataWithConfirmationResult
-      ).toHaveBeenCalledTimes(1);
+      expect(dialogServiceSpy.openCustomDataWithConfirmationResult).toHaveBeenCalledTimes(1);
     });
 
     it('should open dialog on changeSelectedStatus()', () => {
@@ -220,9 +203,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
         $event: {},
       });
 
-      expect(
-        dialogServiceSpy.openDialogDataWithConfirmationResult
-      ).toHaveBeenCalledTimes(1);
+      expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
     });
 
     it('should open dialog on collectingStatusChangeAction()', () => {
@@ -232,9 +213,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
         value: {},
       });
 
-      expect(
-        dialogServiceSpy.openDialogDataWithConfirmationResult
-      ).toHaveBeenCalledTimes(1);
+      expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
     });
 
     it('should open dialog on collectingCantonDeliveryAction()', () => {
@@ -243,9 +222,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
         value: null,
       } as MatSelectChange);
 
-      expect(
-        dialogServiceSpy.openDialogDataWithConfirmationResult
-      ).toHaveBeenCalledTimes(1);
+      expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
     });
 
     it('isSwissCanton false', () => {
@@ -294,13 +271,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[1].value).toEqual('swissCanton');
       expect(component.tableColumns[2].value).toEqual('id');
       expect(component.tableColumns[3].value).toEqual('statementSender');
-      expect(component.tableColumns[4].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[4].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[5].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[6].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[6].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[7].value).toEqual('topic');
       expect(component.tableColumns[8].value).toEqual('dataProtectionChecked');
       expect(component.tableColumns[9].value).toEqual('documents');
@@ -318,13 +291,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[1].value).toEqual('swissCanton');
       expect(component.tableColumns[2].value).toEqual('id');
       expect(component.tableColumns[3].value).toEqual('statementSender');
-      expect(component.tableColumns[4].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[4].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[5].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[6].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[6].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[7].value).toEqual('topic');
       expect(component.tableColumns[8].value).toEqual('dataProtectionChecked');
       expect(component.tableColumns[9].value).toEqual('documents');
@@ -341,13 +310,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('statementStatus');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[6].value).toEqual('topic');
       expect(component.tableColumns[7].value).toEqual('dataProtectionChecked');
       expect(component.tableColumns[8].value).toEqual('documents');
@@ -359,10 +324,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       overviewToTabService.setCantonShort('ch');
       fixture.detectChanges();
       //then
-      expect(component.timeTableHearingStatements).toEqual([
-        timetableHearingStatement,
-        timetableHearingStatement,
-      ]);
+      expect(component.timeTableHearingStatements).toEqual([timetableHearingStatement, timetableHearingStatement]);
       expect(component.totalCount).toEqual(2);
       expect(component.isTimetableHearingYearFound()).toBeFalsy();
     });
@@ -516,13 +478,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[2].value).toEqual('swissCanton');
       expect(component.tableColumns[3].value).toEqual('id');
       expect(component.tableColumns[4].value).toEqual('statementSender');
-      expect(component.tableColumns[5].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[5].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[6].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[7].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[7].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[8].value).toEqual('topic');
       expect(component.tableColumns[9].value).toEqual('dataProtectionChecked');
       expect(component.tableColumns[10].value).toEqual('documents');
@@ -537,9 +495,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       hearingTo: moment().toDate(),
     };
     const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
-    mockTimetableHearingYearsService.getHearingYears.mockReturnValue(
-      of(hearingYears)
-    );
+    mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of(hearingYears));
 
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
@@ -551,9 +507,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       overviewToTabService.setTimetableHearingYear(hearingYear2000);
       overviewToTabService.setTimetableHearingYearLoading(false);
       overviewToTabService.setTimetableHearingYearFound(false);
-      dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-        of(true)
-      );
+      dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -582,13 +536,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[6].value).toEqual('documents');
     });
 
@@ -602,13 +552,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[6].value).toEqual('documents');
     });
 
@@ -621,29 +567,19 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns.length).toEqual(6);
       expect(component.tableColumns[0].value).toEqual('id');
       expect(component.tableColumns[1].value).toEqual('statementSender');
-      expect(component.tableColumns[2].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[4].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[5].value).toEqual('documents');
     });
 
     it('should startTimetableHearingYear', () => {
-      mockTthYearWfServiceSpy.startTimetableHearingYear.mockReturnValue(
-        of(hearingYear2000)
-      );
+      mockTthYearWfServiceSpy.startTimetableHearingYear.mockReturnValue(of(hearingYear2000));
 
       component.startTimetableHearing();
 
-      expect(
-        mockTthYearWfServiceSpy.startTimetableHearingYear
-      ).toHaveBeenCalledTimes(1);
-      expect(
-        mockTthYearWfServiceSpy.startTimetableHearingYear
-      ).toHaveBeenCalledWith(2000);
+      expect(mockTthYearWfServiceSpy.startTimetableHearingYear).toHaveBeenCalledTimes(1);
+      expect(mockTthYearWfServiceSpy.startTimetableHearingYear).toHaveBeenCalledWith(2000);
     });
   });
 
@@ -656,9 +592,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
     const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
 
-    mockTimetableHearingYearsService.getHearingYears.mockReturnValue(
-      of(hearingYears)
-    );
+    mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of(hearingYears));
 
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
@@ -701,13 +635,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[6].value).toEqual('documents');
     });
 
@@ -721,13 +651,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[6].value).toEqual('documents');
     });
 
@@ -740,13 +666,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns.length).toEqual(6);
       expect(component.tableColumns[0].value).toEqual('id');
       expect(component.tableColumns[1].value).toEqual('statementSender');
-      expect(component.tableColumns[2].value).toEqual(
-        'responsibleTransportCompaniesDisplay'
-      );
+      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
       expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[4].value).toEqual(
-        'timetableFieldDescription'
-      );
+      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[5].value).toEqual('documents');
     });
   });

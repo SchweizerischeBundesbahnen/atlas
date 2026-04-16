@@ -19,20 +19,11 @@ import { StartTerminationStopPointAddWorkflow } from '../../../../../../api/mode
 @Component({
   selector: 'atlas-stop-point-termination-dialog',
   templateUrl: './stop-point-termination-dialog.component.html',
-  imports: [
-    DialogCloseComponent,
-    DialogContentComponent,
-    DialogFooterComponent,
-    TranslatePipe,
-    CommentComponent,
-  ],
+  imports: [DialogCloseComponent, DialogContentComponent, DialogFooterComponent, TranslatePipe, CommentComponent],
 })
 export class StopPointTerminationDialogComponent implements OnInit {
   constructor(
-    private readonly dialogRef: MatDialogRef<
-      StopPointTerminationDialogComponent,
-      boolean
-    >,
+    private readonly dialogRef: MatDialogRef<StopPointTerminationDialogComponent, boolean>,
     @Inject(MAT_DIALOG_DATA)
     public readonly data: StopPointTerminationDialogData,
     private readonly detailHelperService: DetailDialogHelperService,
@@ -51,12 +42,10 @@ export class StopPointTerminationDialogComponent implements OnInit {
     const startTerminationValue = this.getStartTermination();
     if (this.form.valid) {
       this.form.disable();
-      this.stopPointTerminationWorkflowService
-        .startTermination(startTerminationValue)
-        .subscribe(() => {
-          this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
-          this.dialogRef.close(true);
-        });
+      this.stopPointTerminationWorkflowService.startTermination(startTerminationValue).subscribe(() => {
+        this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
+        this.dialogRef.close(true);
+      });
     }
   }
 
@@ -64,20 +53,16 @@ export class StopPointTerminationDialogComponent implements OnInit {
     this.form.controls.sloid.setValue(this.data.sloid!);
     this.form.controls.versionId.setValue(this.data.versionId!);
     this.form.controls.boTerminationDate.setValue(this.data.boTerminationDate);
-    this.form.controls.applicantMail.setValue(
-      this.userService.currentUser!.email
-    );
+    this.form.controls.applicantMail.setValue(this.userService.currentUser!.email);
     return this.form.getRawValue() as unknown as StartTerminationStopPointAddWorkflow;
   }
 
   cancel() {
-    this.detailHelperService
-      .confirmLeaveDirtyForm(this.form)
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.dialogRef.close(false);
-        }
-      });
+    this.detailHelperService.confirmLeaveDirtyForm(this.form).subscribe((confirmed) => {
+      if (confirmed) {
+        this.dialogRef.close(false);
+      }
+    });
   }
 
   private initForm() {

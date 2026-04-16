@@ -28,8 +28,7 @@ export class StatementShareService {
       timetableFieldDescription: this.statement!.timetableFieldDescription,
       swissCanton: this.statement!.swissCanton,
       stopPlace: this.statement!.stopPlace,
-      responsibleTransportCompanies:
-        this.statement!.responsibleTransportCompanies,
+      responsibleTransportCompanies: this.statement!.responsibleTransportCompanies,
       statementSender: this.statement!.statementSender,
       statement: this.statement!.statement,
       publicComment: this.statement!.publicComment,

@@ -12,9 +12,7 @@ describe('OverviewTabComponent', () => {
   let component: OverviewTabComponent;
   let fixture: ComponentFixture<OverviewTabComponent>;
   let routerEventsSubject: Subject<Event>;
-  let permissionServiceSpy: Mocked<
-    Pick<PermissionService, 'getTthApplicationUserType'>
-  >;
+  let permissionServiceSpy: Mocked<Pick<PermissionService, 'getTthApplicationUserType'>>;
 
   beforeEach(async () => {
     routerEventsSubject = new Subject();

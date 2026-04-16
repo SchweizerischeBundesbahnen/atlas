@@ -1,9 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { ClientCredential } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
@@ -21,9 +17,7 @@ const clientCredential: ClientCredential = {
 const routerStateSnapshot = {} as RouterStateSnapshot;
 
 describe('ClientCredentialAdministrationResolver', () => {
-  let clientCredentialAdministrationService: Mocked<
-    Pick<ClientCredentialAdministrationService, 'getClientCredential'>
-  >;
+  let clientCredentialAdministrationService: Mocked<Pick<ClientCredentialAdministrationService, 'getClientCredential'>>;
   let resolver: ClientCredentialAdministrationResolver;
 
   beforeEach(() => {
@@ -58,8 +52,6 @@ describe('ClientCredentialAdministrationResolver', () => {
 
     const snapshot = await firstValueFrom(result);
     expect(snapshot.clientCredentialId).toBe('23456789');
-    expect(
-      clientCredentialAdministrationService.getClientCredential
-    ).toHaveBeenCalledExactlyOnceWith('23456789');
+    expect(clientCredentialAdministrationService.getClientCredential).toHaveBeenCalledExactlyOnceWith('23456789');
   });
 });

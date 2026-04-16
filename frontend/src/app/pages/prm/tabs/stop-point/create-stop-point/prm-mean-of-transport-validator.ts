@@ -3,14 +3,9 @@ import { MeanOfTransport } from '../../../../../api';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 
 export class PrmMeanOfTransportValidator {
-  static isReducedOrComplete(
-    control: AbstractControl
-  ): ValidationErrors | null {
+  static isReducedOrComplete(control: AbstractControl): ValidationErrors | null {
     const selectedMeansOfTransport: MeanOfTransport[] = control.value;
-    const { hasReduced, hasComplete } =
-      PrmMeanOfTransportHelper.getReducedCompleteInstances(
-        selectedMeansOfTransport
-      );
+    const { hasReduced, hasComplete } = PrmMeanOfTransportHelper.getReducedCompleteInstances(selectedMeansOfTransport);
     if (hasReduced && hasComplete) {
       return { meansOfTransportWrongCombination: control.value };
     }

@@ -20,9 +20,7 @@ describe('ScrollToTopDirective', () => {
   });
 
   it('should scroll to top', () => {
-    const scrollContainer = fixture.debugElement.query(
-      By.css('#scrollbar-content-container')
-    ).nativeElement;
+    const scrollContainer = fixture.debugElement.query(By.css('#scrollbar-content-container')).nativeElement;
     scrollContainer.scroll = vi.fn();
 
     fixture.detectChanges();

@@ -6,9 +6,7 @@ import { DialogData } from './dialog.data';
 import { ComponentType } from '@angular/cdk/portal';
 import { DialogComponent } from './dialog.component';
 
-const basicDialogConfig: Readonly<
-  Pick<MatDialogConfig, 'disableClose' | 'panelClass' | 'backdropClass'>
-> = {
+const basicDialogConfig: Readonly<Pick<MatDialogConfig, 'disableClose' | 'panelClass' | 'backdropClass'>> = {
   disableClose: true,
   panelClass: 'atlas-dialog-panel',
   backdropClass: 'atlas-dialog-backdrop',
@@ -24,13 +22,10 @@ export class DialogService {
     dialogData: D,
     dialogComponent: ComponentType<unknown> = DialogComponent
   ): Observable<boolean> {
-    const dialogRef = this.matDialog.open<unknown, D, boolean>(
-      dialogComponent,
-      {
-        data: dialogData,
-        ...(basicDialogConfig satisfies MatDialogConfig<D>),
-      }
-    );
+    const dialogRef = this.matDialog.open<unknown, D, boolean>(dialogComponent, {
+      data: dialogData,
+      ...(basicDialogConfig satisfies MatDialogConfig<D>),
+    });
     return dialogRef.afterClosed().pipe(
       take(1),
       map((value) => value || false)

@@ -21,16 +21,10 @@ import { TransportCompanyService } from '../../../api/service/bodi/transport-com
 @Component({
   selector: 'atlas-tu-select',
   templateUrl: './transport-company-select.component.html',
-  imports: [
-    SearchSelectComponent,
-    ReactiveFormsModule,
-    AtlasLabelFieldComponent,
-  ],
+  imports: [SearchSelectComponent, ReactiveFormsModule, AtlasLabelFieldComponent],
   providers: [TranslatePipe],
 })
-export class TransportCompanySelectComponent
-  implements OnInit, OnDestroy, OnChanges
-{
+export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = '';
   @Input() controlName!: string;
   @Input() formModus = true;
@@ -73,22 +67,12 @@ export class TransportCompanySelectComponent
   searchTransportCompany(searchString: string) {
     if (searchString) {
       this.transportCompanies = this.transportCompanyService
-        .getTransportCompanies(
-          [searchString],
-          undefined,
-          undefined,
-          undefined,
-          ['number,ASC']
-        )
+        .getTransportCompanies([searchString], undefined, undefined, undefined, ['number,ASC'])
         .pipe(
           map((value) => {
             const transportCompaniesNotDuplicated: TransportCompany[] = [];
             value.objects?.forEach((val) => {
-              if (
-                !this.alreadySelectedTransportCompany
-                  .map((tc) => tc.id)
-                  .includes(val.id)
-              ) {
+              if (!this.alreadySelectedTransportCompany.map((tc) => tc.id).includes(val.id)) {
                 transportCompaniesNotDuplicated.push(val);
               }
             });
@@ -103,9 +87,7 @@ export class TransportCompanySelectComponent
   }
 
   getDisplayText(transportCompany: TransportCompany) {
-    const abbreviation = transportCompany.abbreviation
-      ? transportCompany.abbreviation + ' - '
-      : '';
+    const abbreviation = transportCompany.abbreviation ? transportCompany.abbreviation + ' - ' : '';
     return abbreviation + transportCompany.businessRegisterName;
   }
 }

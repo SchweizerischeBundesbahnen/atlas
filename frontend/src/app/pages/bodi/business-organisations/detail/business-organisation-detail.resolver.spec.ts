@@ -1,9 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { BusinessOrganisationVersion, Status } from '../../../../api';
 import {
@@ -33,9 +29,7 @@ const version: BusinessOrganisationVersion = {
 
 describe('BusinessOrganisationDetailResolver', () => {
   let resolver: BusinessOrganisationDetailResolver;
-  let businessOrganisationsService: Mocked<
-    Pick<BusinessOrganisationService, 'getVersions'>
-  >;
+  let businessOrganisationsService: Mocked<Pick<BusinessOrganisationService, 'getVersions'>>;
 
   beforeEach(() => {
     businessOrganisationsService = {

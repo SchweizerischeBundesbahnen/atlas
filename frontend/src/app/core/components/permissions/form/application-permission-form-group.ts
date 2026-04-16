@@ -11,10 +11,7 @@ import {
 } from 'src/app/api';
 import { InfoPlusTerminationVotePermissionRestrictionModel } from '../../../../api/model/infoPlusTerminationVotePermissionRestrictionModel';
 import { NovaTerminationVotePermissionRestrictionModel } from '../../../../api/model/novaTerminationVotePermissionRestrictionModel';
-import {
-  ApplicationPermissionConfig,
-  RoleConfig,
-} from '../application-permission/application-permission.config';
+import { ApplicationPermissionConfig, RoleConfig } from '../application-permission/application-permission.config';
 import { PermissionPermissionRestrictionsInner } from '../../../../api/model/permissionPermissionRestrictionsInner';
 import { TransportCompanyDossierAnswerPermissionRestrictionModel } from '../../../../api/model/transportCompanyDossierAnswerPermissionRestrictionModel';
 
@@ -35,10 +32,7 @@ export interface PermissionRestriction {
 }
 
 export class ApplicationPermissionFormGroupBuilder {
-  static buildAndFillFormGroup(
-    application: ApplicationType,
-    permission: Permission
-  ) {
+  static buildAndFillFormGroup(application: ApplicationType, permission: Permission) {
     const formGroup: FormGroup<ApplicationPermission> = this.buildFormGroup();
     formGroup.controls.role.setValue(permission.role);
     formGroup.controls.application.setValue(application);
@@ -55,37 +49,27 @@ export class ApplicationPermissionFormGroupBuilder {
     );
     formGroup.controls.permissions.controls.sboidsRestrictions?.setValue(
       permission.permissionRestrictions
-        .filter(
-          (i) => i.type === PermissionRestrictionType.BusinessOrganisation
-        )
+        .filter((i) => i.type === PermissionRestrictionType.BusinessOrganisation)
         .map((i) => i.valueAsString!)
     );
     formGroup.controls.permissions.controls.bulkImportRestriction?.setValue(
       permission.permissionRestrictions.some(
-        (i) =>
-          i.type === PermissionRestrictionType.BulkImport &&
-          i.valueAsString == 'true'
+        (i) => i.type === PermissionRestrictionType.BulkImport && i.valueAsString == 'true'
       )
     );
     formGroup.controls.permissions.controls.infoPlusTerminationVote?.setValue(
       permission.permissionRestrictions.some(
-        (i) =>
-          i.type === PermissionRestrictionType.InfoPlusTerminationVote &&
-          i.valueAsString == 'true'
+        (i) => i.type === PermissionRestrictionType.InfoPlusTerminationVote && i.valueAsString == 'true'
       )
     );
     formGroup.controls.permissions.controls.novaTerminationVote?.setValue(
       permission.permissionRestrictions.some(
-        (i) =>
-          i.type === PermissionRestrictionType.NovaTerminationVote &&
-          i.valueAsString == 'true'
+        (i) => i.type === PermissionRestrictionType.NovaTerminationVote && i.valueAsString == 'true'
       )
     );
     formGroup.controls.permissions.controls.transportCompanyDossierAnswer?.setValue(
       permission.permissionRestrictions.some(
-        (i) =>
-          i.type === PermissionRestrictionType.TransportCompanyDossierAnswer &&
-          i.valueAsString == 'true'
+        (i) => i.type === PermissionRestrictionType.TransportCompanyDossierAnswer && i.valueAsString == 'true'
       )
     );
     return formGroup;
@@ -117,18 +101,10 @@ export class ApplicationPermissionFormGroupBuilder {
     const countryRestrictions = this.getCountryRestrictions(form, roleConfig);
     const cantonRestrictions = this.getCantonRestrictions(form, roleConfig);
 
-    const bulkImportRestriction = this.getBulkImportRestriction(
-      form,
-      roleConfig
-    );
-    const infoPlusTerminationVoteRestriction =
-      this.getInfoPlusTerminationRestriction(form, roleConfig);
-    const novaTerminationVoteRestriction = this.getNovaTerminationRestriction(
-      form,
-      roleConfig
-    );
-    const transportCompanyDossierAnswer =
-      this.getTransportCompanyDossierAnswerRestriction(form, roleConfig);
+    const bulkImportRestriction = this.getBulkImportRestriction(form, roleConfig);
+    const infoPlusTerminationVoteRestriction = this.getInfoPlusTerminationRestriction(form, roleConfig);
+    const novaTerminationVoteRestriction = this.getNovaTerminationRestriction(form, roleConfig);
+    const transportCompanyDossierAnswer = this.getTransportCompanyDossierAnswerRestriction(form, roleConfig);
 
     const permissionRestrictions: PermissionPermissionRestrictionsInner[] = [];
     permissionRestrictions.push(...sboidRestrictions);
@@ -153,39 +129,21 @@ export class ApplicationPermissionFormGroupBuilder {
     };
   }
 
-  private static getSboidRestrictions(
-    form: FormGroup<ApplicationPermission>,
-    roleConfig: RoleConfig
-  ) {
-    if (
-      roleConfig.permissions.restrictions.includes(
-        PermissionRestrictionType.BusinessOrganisation
-      )
-    ) {
-      const sboids =
-        form.controls.permissions.controls.sboidsRestrictions?.value ?? [];
-      const sboidRestrictions: SboidPermissionRestrictionModel[] = sboids.map(
-        (sboid) => ({
-          type: PermissionRestrictionType.BusinessOrganisation,
-          valueAsString: sboid,
-        })
-      );
+  private static getSboidRestrictions(form: FormGroup<ApplicationPermission>, roleConfig: RoleConfig) {
+    if (roleConfig.permissions.restrictions.includes(PermissionRestrictionType.BusinessOrganisation)) {
+      const sboids = form.controls.permissions.controls.sboidsRestrictions?.value ?? [];
+      const sboidRestrictions: SboidPermissionRestrictionModel[] = sboids.map((sboid) => ({
+        type: PermissionRestrictionType.BusinessOrganisation,
+        valueAsString: sboid,
+      }));
       return sboidRestrictions;
     }
     return [];
   }
 
-  private static getCountryRestrictions(
-    form: FormGroup<ApplicationPermission>,
-    roleConfig: RoleConfig
-  ) {
-    if (
-      roleConfig.permissions.restrictions.includes(
-        PermissionRestrictionType.Country
-      )
-    ) {
-      const countries =
-        form.controls.permissions.controls.countryRestrictions?.value ?? [];
+  private static getCountryRestrictions(form: FormGroup<ApplicationPermission>, roleConfig: RoleConfig) {
+    if (roleConfig.permissions.restrictions.includes(PermissionRestrictionType.Country)) {
+      const countries = form.controls.permissions.controls.countryRestrictions?.value ?? [];
       const countryRestrictions: CountryPermissionRestrictionModel[] = countries
         .filter((country) => !!country)
         .map((country) => ({
@@ -197,39 +155,21 @@ export class ApplicationPermissionFormGroupBuilder {
     return [];
   }
 
-  private static getCantonRestrictions(
-    form: FormGroup<ApplicationPermission>,
-    roleConfig: RoleConfig
-  ) {
-    if (
-      roleConfig.permissions.restrictions.includes(
-        PermissionRestrictionType.Canton
-      )
-    ) {
-      const cantons =
-        form.controls.permissions.controls.cantonRestrictions?.value ?? [];
-      const cantonRestrictions: CantonPermissionRestrictionModel[] =
-        cantons.map((canton) => ({
-          type: PermissionRestrictionType.Canton,
-          valueAsString: canton,
-        }));
+  private static getCantonRestrictions(form: FormGroup<ApplicationPermission>, roleConfig: RoleConfig) {
+    if (roleConfig.permissions.restrictions.includes(PermissionRestrictionType.Canton)) {
+      const cantons = form.controls.permissions.controls.cantonRestrictions?.value ?? [];
+      const cantonRestrictions: CantonPermissionRestrictionModel[] = cantons.map((canton) => ({
+        type: PermissionRestrictionType.Canton,
+        valueAsString: canton,
+      }));
       return cantonRestrictions;
     }
     return [];
   }
 
-  private static getBulkImportRestriction(
-    form: FormGroup<ApplicationPermission>,
-    roleConfig: RoleConfig
-  ) {
-    if (
-      roleConfig.permissions.specialPermissions.includes(
-        PermissionRestrictionType.BulkImport
-      )
-    ) {
-      const bulkImport =
-        form.controls.permissions.controls.bulkImportRestriction?.value ??
-        false;
+  private static getBulkImportRestriction(form: FormGroup<ApplicationPermission>, roleConfig: RoleConfig) {
+    if (roleConfig.permissions.specialPermissions.includes(PermissionRestrictionType.BulkImport)) {
+      const bulkImport = form.controls.permissions.controls.bulkImportRestriction?.value ?? false;
       const bulkImportRestriction: BulkImportPermissionRestrictionModel = {
         type: PermissionRestrictionType.BulkImport,
         valueAsString: bulkImport.toString(),
@@ -239,44 +179,25 @@ export class ApplicationPermissionFormGroupBuilder {
     return undefined;
   }
 
-  private static getNovaTerminationRestriction(
-    form: FormGroup<ApplicationPermission>,
-    roleConfig: RoleConfig
-  ) {
-    if (
-      roleConfig.permissions.specialPermissions.includes(
-        PermissionRestrictionType.NovaTerminationVote
-      )
-    ) {
-      const novaTerminationVote =
-        form.controls.permissions.controls.novaTerminationVote?.value ?? false;
-      const novaTerminationVoteRestriction: NovaTerminationVotePermissionRestrictionModel =
-        {
-          type: PermissionRestrictionType.NovaTerminationVote,
-          valueAsString: novaTerminationVote.toString(),
-        };
+  private static getNovaTerminationRestriction(form: FormGroup<ApplicationPermission>, roleConfig: RoleConfig) {
+    if (roleConfig.permissions.specialPermissions.includes(PermissionRestrictionType.NovaTerminationVote)) {
+      const novaTerminationVote = form.controls.permissions.controls.novaTerminationVote?.value ?? false;
+      const novaTerminationVoteRestriction: NovaTerminationVotePermissionRestrictionModel = {
+        type: PermissionRestrictionType.NovaTerminationVote,
+        valueAsString: novaTerminationVote.toString(),
+      };
       return novaTerminationVoteRestriction;
     }
     return undefined;
   }
 
-  private static getInfoPlusTerminationRestriction(
-    form: FormGroup<ApplicationPermission>,
-    roleConfig: RoleConfig
-  ) {
-    if (
-      roleConfig.permissions.specialPermissions.includes(
-        PermissionRestrictionType.InfoPlusTerminationVote
-      )
-    ) {
-      const infoPlusTerminationVote =
-        form.controls.permissions.controls.infoPlusTerminationVote?.value ??
-        false;
-      const infoPlusTerminationVoteRestriction: InfoPlusTerminationVotePermissionRestrictionModel =
-        {
-          type: PermissionRestrictionType.InfoPlusTerminationVote,
-          valueAsString: infoPlusTerminationVote.toString(),
-        };
+  private static getInfoPlusTerminationRestriction(form: FormGroup<ApplicationPermission>, roleConfig: RoleConfig) {
+    if (roleConfig.permissions.specialPermissions.includes(PermissionRestrictionType.InfoPlusTerminationVote)) {
+      const infoPlusTerminationVote = form.controls.permissions.controls.infoPlusTerminationVote?.value ?? false;
+      const infoPlusTerminationVoteRestriction: InfoPlusTerminationVotePermissionRestrictionModel = {
+        type: PermissionRestrictionType.InfoPlusTerminationVote,
+        valueAsString: infoPlusTerminationVote.toString(),
+      };
       return infoPlusTerminationVoteRestriction;
     }
     return undefined;
@@ -286,19 +207,13 @@ export class ApplicationPermissionFormGroupBuilder {
     form: FormGroup<ApplicationPermission>,
     roleConfig: RoleConfig
   ) {
-    if (
-      roleConfig.permissions.specialPermissions.includes(
-        PermissionRestrictionType.TransportCompanyDossierAnswer
-      )
-    ) {
+    if (roleConfig.permissions.specialPermissions.includes(PermissionRestrictionType.TransportCompanyDossierAnswer)) {
       const transportCompanyDossierAnswer =
-        form.controls.permissions.controls.transportCompanyDossierAnswer
-          ?.value ?? false;
-      const transportCompanyDossierAnswerRestriction: TransportCompanyDossierAnswerPermissionRestrictionModel =
-        {
-          type: PermissionRestrictionType.TransportCompanyDossierAnswer,
-          valueAsString: transportCompanyDossierAnswer.toString(),
-        };
+        form.controls.permissions.controls.transportCompanyDossierAnswer?.value ?? false;
+      const transportCompanyDossierAnswerRestriction: TransportCompanyDossierAnswerPermissionRestrictionModel = {
+        type: PermissionRestrictionType.TransportCompanyDossierAnswer,
+        valueAsString: transportCompanyDossierAnswer.toString(),
+      };
       return transportCompanyDossierAnswerRestriction;
     }
     return undefined;

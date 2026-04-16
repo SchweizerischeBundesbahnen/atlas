@@ -7,17 +7,8 @@ import {
   PermissionRestrictionType,
   SwissCanton,
 } from '../../../../api';
-import {
-  ControlContainer,
-  FormControl,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import {
-  ApplicationPermission,
-  PermissionRestriction,
-} from '../form/application-permission-form-group';
+import { ControlContainer, FormControl, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { ApplicationPermission, PermissionRestriction } from '../form/application-permission-form-group';
 import { AtlasSlideToggleComponent } from '../../../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { BusinessOrganisationSelectComponent } from '../../../form-components/bo-select/business-organisation-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -29,11 +20,7 @@ import { BusinessOrganisationLanguageService } from '../../../form-components/bo
 import { firstValueFrom } from 'rxjs';
 import { RelationComponent } from '../../relation/relation.component';
 import { AtlasSpacerComponent } from '../../spacer/atlas-spacer.component';
-import {
-  ApplicationConfig,
-  ApplicationPermissionConfig,
-  RoleConfig,
-} from './application-permission.config';
+import { ApplicationConfig, ApplicationPermissionConfig, RoleConfig } from './application-permission.config';
 import { UserPermissionProviderService } from './user-permission-provider-service';
 import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 import { AtlasLabelFieldComponent } from '@atlas/form';
@@ -77,16 +64,11 @@ export class ApplicationPermissionComponent implements OnInit {
   }
 
   readonly SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
-  readonly getCantonAbbreviation = (canton: SwissCanton) =>
-    Cantons.fromSwissCanton(canton)?.short;
+  readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
   readonly SWISS_CANTONS = Object.values(SwissCanton);
 
-  private readonly businessOrganisationService = inject(
-    BusinessOrganisationService
-  );
-  private readonly boLanguageService = inject(
-    BusinessOrganisationLanguageService
-  );
+  private readonly businessOrganisationService = inject(BusinessOrganisationService);
+  private readonly boLanguageService = inject(BusinessOrganisationLanguageService);
   readonly boFormCtrlName = 'businessOrganisation';
   readonly businessOrganisationForm: FormGroup = new FormGroup({
     [this.boFormCtrlName]: new FormControl<BusinessOrganisation | null>(null),
@@ -119,9 +101,7 @@ export class ApplicationPermissionComponent implements OnInit {
   application = input.required<ApplicationType>();
 
   availableRoles: ApplicationRole[] = [];
-  applicationConfig: ApplicationConfig = ApplicationPermissionConfig.get(
-    ApplicationType.Ttfn
-  );
+  applicationConfig: ApplicationConfig = ApplicationPermissionConfig.get(ApplicationType.Ttfn);
   form!: FormGroup<ApplicationPermission>;
   permissionsForm!: FormGroup<PermissionRestriction>;
   currentRole!: ApplicationRole;
@@ -142,39 +122,29 @@ export class ApplicationPermissionComponent implements OnInit {
     this.form = this.userPermissionProviderService.getCurrentForm()!;
     this.permissionsForm = this.form.controls.permissions;
 
-    this.availableRoles = ApplicationPermissionConfig.getRoles(
-      this.form.controls.application.value!
-    );
-    this.applicationConfig = ApplicationPermissionConfig.get(
-      this.form.controls.application.value!
-    );
-    this.showAllSpecialPermissions =
-      this.userPermissionProviderService.showAllSpecialPermissions();
+    this.availableRoles = ApplicationPermissionConfig.getRoles(this.form.controls.application.value!);
+    this.applicationConfig = ApplicationPermissionConfig.get(this.form.controls.application.value!);
+    this.showAllSpecialPermissions = this.userPermissionProviderService.showAllSpecialPermissions();
 
     this.onRoleChanged(this.form.controls.role.value ?? ApplicationRole.Reader);
 
-    this.permissionsForm.controls.sboidsRestrictions?.value?.forEach(
-      (sboid) => {
-        this.currentBusinessOrganisations = [];
-        this.addBusinessOrganisationToCurrentTable(sboid);
-      }
-    );
+    this.permissionsForm.controls.sboidsRestrictions?.value?.forEach((sboid) => {
+      this.currentBusinessOrganisations = [];
+      this.addBusinessOrganisationToCurrentTable(sboid);
+    });
   }
 
   removeBusinessOrganisation(): void {
-    const sboidToRemove =
-      this.currentBusinessOrganisations[this.selectedBusinessOrganisationIndex]
-        .sboid!;
+    const sboidToRemove = this.currentBusinessOrganisations[this.selectedBusinessOrganisationIndex].sboid!;
 
     const sboids = this.form.controls.permissions.controls.sboidsRestrictions!;
     const indexToRemove = sboids.value!.indexOf(sboidToRemove);
     sboids.value!.splice(indexToRemove, 1);
     sboids.markAsDirty();
 
-    this.currentBusinessOrganisations =
-      this.currentBusinessOrganisations.filter(
-        (_, index) => index !== this.selectedBusinessOrganisationIndex
-      );
+    this.currentBusinessOrganisations = this.currentBusinessOrganisations.filter(
+      (_, index) => index !== this.selectedBusinessOrganisationIndex
+    );
 
     this.selectedBusinessOrganisationIndex = -1;
   }
@@ -184,8 +154,7 @@ export class ApplicationPermissionComponent implements OnInit {
     if (sboid) {
       this.addBusinessOrganisationToCurrentTable(sboid);
 
-      const sboids =
-        this.form.controls.permissions.controls.sboidsRestrictions!;
+      const sboids = this.form.controls.permissions.controls.sboidsRestrictions!;
       const updatedSboids = sboids.value!;
       updatedSboids.push(sboid);
       sboids.setValue(updatedSboids);
@@ -196,28 +165,17 @@ export class ApplicationPermissionComponent implements OnInit {
 
   private addBusinessOrganisationToCurrentTable(sboid: string) {
     firstValueFrom(
-      this.businessOrganisationService.getAllBusinessOrganisations(
-        undefined,
-        [sboid],
-        undefined,
-        undefined,
-        0,
-        1,
-        ['sboid,ASC']
-      )
+      this.businessOrganisationService.getAllBusinessOrganisations(undefined, [sboid], undefined, undefined, 0, 1, [
+        'sboid,ASC',
+      ])
     ).then((result) => {
-      this.currentBusinessOrganisations = [
-        ...this.currentBusinessOrganisations,
-        result.objects![0],
-      ];
+      this.currentBusinessOrganisations = [...this.currentBusinessOrganisations, result.objects![0]];
     });
   }
 
   onRoleChanged(applicationRole: ApplicationRole) {
     this.currentRole = applicationRole;
-    const availableConfig = this.applicationConfig.roles.find(
-      (i) => i.role === applicationRole
-    );
+    const availableConfig = this.applicationConfig.roles.find((i) => i.role === applicationRole);
     if (!availableConfig) {
       throw new Error('Available Config not found for ' + applicationRole);
     }
@@ -225,30 +183,21 @@ export class ApplicationPermissionComponent implements OnInit {
   }
 
   get showBusinessOrganisationRestriction() {
-    return this.currentRoleConfig.permissions.restrictions.includes(
-      PermissionRestrictionType.BusinessOrganisation
-    );
+    return this.currentRoleConfig.permissions.restrictions.includes(PermissionRestrictionType.BusinessOrganisation);
   }
 
   get showCountryRestriction() {
-    return this.currentRoleConfig.permissions.restrictions.includes(
-      PermissionRestrictionType.Country
-    );
+    return this.currentRoleConfig.permissions.restrictions.includes(PermissionRestrictionType.Country);
   }
 
   get showCantonRestriction() {
-    return this.currentRoleConfig.permissions.restrictions.includes(
-      PermissionRestrictionType.Canton
-    );
+    return this.currentRoleConfig.permissions.restrictions.includes(PermissionRestrictionType.Canton);
   }
 
   get showBulkImport() {
     return (
-      this.currentRoleConfig.permissions.specialPermissions.includes(
-        PermissionRestrictionType.BulkImport
-      ) &&
-      (this.showAllSpecialPermissions ||
-        this.permissionsForm.controls.bulkImportRestriction?.value)
+      this.currentRoleConfig.permissions.specialPermissions.includes(PermissionRestrictionType.BulkImport) &&
+      (this.showAllSpecialPermissions || this.permissionsForm.controls.bulkImportRestriction?.value)
     );
   }
 
@@ -257,18 +206,14 @@ export class ApplicationPermissionComponent implements OnInit {
       this.currentRoleConfig.permissions.specialPermissions.includes(
         PermissionRestrictionType.InfoPlusTerminationVote
       ) &&
-      (this.showAllSpecialPermissions ||
-        this.permissionsForm.controls.infoPlusTerminationVote?.value)
+      (this.showAllSpecialPermissions || this.permissionsForm.controls.infoPlusTerminationVote?.value)
     );
   }
 
   get showNovaTerminationVote() {
     return (
-      this.currentRoleConfig.permissions.specialPermissions.includes(
-        PermissionRestrictionType.NovaTerminationVote
-      ) &&
-      (this.showAllSpecialPermissions ||
-        this.permissionsForm.controls.novaTerminationVote?.value)
+      this.currentRoleConfig.permissions.specialPermissions.includes(PermissionRestrictionType.NovaTerminationVote) &&
+      (this.showAllSpecialPermissions || this.permissionsForm.controls.novaTerminationVote?.value)
     );
   }
 
@@ -277,8 +222,7 @@ export class ApplicationPermissionComponent implements OnInit {
       this.currentRoleConfig.permissions.specialPermissions.includes(
         PermissionRestrictionType.TransportCompanyDossierAnswer
       ) &&
-      (this.showAllSpecialPermissions ||
-        this.permissionsForm.controls.transportCompanyDossierAnswer?.value)
+      (this.showAllSpecialPermissions || this.permissionsForm.controls.transportCompanyDossierAnswer?.value)
     );
   }
 
@@ -295,23 +239,17 @@ export class ApplicationPermissionComponent implements OnInit {
 
   onNovaToggle(value: boolean) {
     if (value) {
-      this.form.controls.permissions.controls.infoPlusTerminationVote?.setValue(
-        false
-      );
+      this.form.controls.permissions.controls.infoPlusTerminationVote?.setValue(false);
     }
   }
 
   onInfoPlusToggle(value: boolean) {
     if (value) {
-      this.form.controls.permissions.controls.novaTerminationVote?.setValue(
-        false
-      );
+      this.form.controls.permissions.controls.novaTerminationVote?.setValue(false);
     }
   }
 
   onTransportCompanyDossierToggle(value: boolean) {
-    this.form.controls.permissions.controls.transportCompanyDossierAnswer?.setValue(
-      value
-    );
+    this.form.controls.permissions.controls.transportCompanyDossierAnswer?.setValue(value);
   }
 }

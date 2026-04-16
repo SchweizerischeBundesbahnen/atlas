@@ -2,14 +2,8 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Language } from '../../components/language-switcher/language';
 
-export type abbreviationType =
-  | 'abbreviationDe'
-  | 'abbreviationFr'
-  | 'abbreviationIt';
-export type descriptionType =
-  | 'descriptionDe'
-  | 'descriptionFr'
-  | 'descriptionIt';
+export type abbreviationType = 'abbreviationDe' | 'abbreviationFr' | 'abbreviationIt';
+export type descriptionType = 'descriptionDe' | 'descriptionFr' | 'descriptionIt';
 export type translatableType = 'description' | 'abbreviation';
 
 @Injectable({
@@ -30,12 +24,10 @@ export class BusinessOrganisationLanguageService {
     return this.getCurrentLanguageKey('description');
   }
 
-  private getCurrentLanguageKey<
-    resultType extends descriptionType | abbreviationType,
-  >(propertyName: translatableType): resultType {
+  private getCurrentLanguageKey<resultType extends descriptionType | abbreviationType>(
+    propertyName: translatableType
+  ): resultType {
     const selectedLanguage = this.translateService.currentLang ?? Language.DE;
-    return `${propertyName}${selectedLanguage[0].toUpperCase()}${
-      selectedLanguage[1]
-    }` as resultType;
+    return `${propertyName}${selectedLanguage[0].toUpperCase()}${selectedLanguage[1]}` as resultType;
   }
 }

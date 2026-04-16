@@ -6,15 +6,10 @@
   data-cy="version-switch"
   mat-table
   multiTemplateDataRows
-  >
+>
   @for (column of tableColumns; track column) {
     <ng-container matColumnDef="{{ column.value }}">
-      <th
-        *matHeaderCellDef
-        class="font-bold-base color-primary-400 bordered-cell"
-        mat-header-cell
-        scope="col"
-        >
+      <th *matHeaderCellDef class="font-bold-base color-primary-400 bordered-cell" mat-header-cell scope="col">
         {{ column.headerTitle | translate }}
       </th>
       <ng-container *matCellDef="let value">

@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  input,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, input, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { ApplicationType, User } from '../../../../api';
@@ -50,14 +42,10 @@ export class UserSelectComponent implements OnInit {
         this.userSearchResults$ = this.userService.searchUsers(searchQuery);
         break;
       case 'inAtlas':
-        this.userSearchResults$ = this.userService.searchUsersInAtlas(
-          searchQuery,
-          this.applicationType!
-        );
+        this.userSearchResults$ = this.userService.searchUsersInAtlas(searchQuery, this.applicationType!);
         break;
       case 'boDossierAnsweringUsers':
-        this.userSearchResults$ =
-          this.tthUserService.searchBoDossierAnsweringUsers(searchQuery);
+        this.userSearchResults$ = this.tthUserService.searchBoDossierAnsweringUsers(searchQuery);
         break;
     }
   }

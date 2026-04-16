@@ -1,15 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
-import {
-  DossierDetailResolver,
-  dossierResolver,
-} from './dossier-detail-resolver.service';
+import { ActivatedRouteSnapshot, convertToParamMap, Router, RouterStateSnapshot } from '@angular/router';
+import { DossierDetailResolver, dossierResolver } from './dossier-detail-resolver.service';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { TthDossier } from '../../../../api/model/tthDossier';
 import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
@@ -26,9 +18,7 @@ const dossier: TthDossier = {
 };
 
 describe('DossierDetailResolver', () => {
-  const dossierInternalService: Mocked<
-    Pick<DossierInternalService, 'getDossier'>
-  > = {
+  const dossierInternalService: Mocked<Pick<DossierInternalService, 'getDossier'>> = {
     getDossier: vi.fn(),
   };
   const router: Mocked<Pick<Router, 'navigate'>> = {
@@ -89,9 +79,7 @@ describe('DossierDetailResolver', () => {
   });
 
   it('should route on error', async () => {
-    dossierInternalService.getDossier.mockReturnValue(
-      throwError(() => 'Dossier not found')
-    );
+    dossierInternalService.getDossier.mockReturnValue(throwError(() => 'Dossier not found'));
 
     const mockRoute = {
       paramMap: convertToParamMap({ id: '1234' }),

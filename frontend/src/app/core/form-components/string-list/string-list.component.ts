@@ -1,11 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { FieldExample } from '../text-field/field-example';
 import { concat, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -27,8 +21,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatChip,
     MatChipRemove,
     AsyncPipe,
-    TranslatePipe
-],
+    TranslatePipe,
+  ],
 })
 export class StringListComponent implements OnChanges {
   @Input() formGroup?: FormGroup;
@@ -65,8 +59,7 @@ export class StringListComponent implements OnChanges {
   }
 
   get strListCtrl(): AbstractControl {
-    if (!this.controlName)
-      throw new Error('string list control is not defined');
+    if (!this.controlName) throw new Error('string list control is not defined');
     const ctrl = this.formGroup?.get(this.controlName);
     if (!ctrl) throw new Error('string list control is not defined');
     return ctrl;
@@ -90,8 +83,7 @@ export class StringListComponent implements OnChanges {
   }
 
   private _checkInitialValue() {
-    if (!this.strListCtrl.value)
-      throw new Error('initial value should be present for list');
+    if (!this.strListCtrl.value) throw new Error('initial value should be present for list');
   }
 
   private _handleFormStateChange() {

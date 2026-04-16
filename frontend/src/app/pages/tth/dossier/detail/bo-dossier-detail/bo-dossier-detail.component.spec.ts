@@ -40,12 +40,8 @@ describe('BoDossierDetail', () => {
   let component: BoDossierDetailComponent;
   let fixture: ComponentFixture<BoDossierDetailComponent>;
 
-  let timetableHearingStatementInternalService: Mocked<
-    Pick<TimetableHearingStatementInternalService, 'getStatement'>
-  >;
-  let dossierInternalService: Mocked<
-    Pick<DossierInternalService, 'answerQuestion'>
-  >;
+  let timetableHearingStatementInternalService: Mocked<Pick<TimetableHearingStatementInternalService, 'getStatement'>>;
+  let dossierInternalService: Mocked<Pick<DossierInternalService, 'answerQuestion'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
   const openBoDossierInMailService = mock<OpenBoDossierInMailService>();
 
@@ -117,9 +113,7 @@ describe('BoDossierDetail', () => {
       answerToCanton: 'Ich bin einverstanden!',
     });
     expect(notificationService.success).toHaveBeenCalledTimes(1);
-    expect(notificationService.success).toHaveBeenCalledWith(
-      'TTH.DOSSIER.NOTIFICATION.SENT_TO_CANTON'
-    );
+    expect(notificationService.success).toHaveBeenCalledWith('TTH.DOSSIER.NOTIFICATION.SENT_TO_CANTON');
     expect(component.form.disabled).toBe(true);
     expect(component.isDossierStatusBoCheck).toBe(false);
   });
@@ -128,8 +122,6 @@ describe('BoDossierDetail', () => {
     //when
     component.openInMail();
     //then
-    expect(openBoDossierInMailService.openDossierInMail).toHaveBeenCalledTimes(
-      1
-    );
+    expect(openBoDossierInMailService.openDossierInMail).toHaveBeenCalledTimes(1);
   });
 });

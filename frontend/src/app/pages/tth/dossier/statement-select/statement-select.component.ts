@@ -21,9 +21,7 @@ export class StatementSelectComponent extends StatementTableHandler {
   removeOptionEnabled = input(true);
   showRemoveOption = input(true);
 
-  private readonly timetableHearingStatementInternalService = inject(
-    TimetableHearingStatementInternalService
-  );
+  private readonly timetableHearingStatementInternalService = inject(TimetableHearingStatementInternalService);
   private readonly router = inject(Router);
 
   defaultTableColumns: TableColumn<TimetableHearingStatementV2>[] = [
@@ -60,9 +58,7 @@ export class StatementSelectComponent extends StatementTableHandler {
   }
 
   removeStatement(statement: TimetableHearingStatementV2) {
-    const updatedStatementIds = this.selectedStatements().filter(
-      (id) => id !== statement.id
-    );
+    const updatedStatementIds = this.selectedStatements().filter((id) => id !== statement.id);
     this.selectedStatements.set(updatedStatementIds);
   }
 
@@ -85,9 +81,7 @@ export class StatementSelectComponent extends StatementTableHandler {
       this.statements = [];
     } else {
       forkJoin(
-        this.selectedStatements().map((id) =>
-          this.timetableHearingStatementInternalService.getStatement(id)
-        )
+        this.selectedStatements().map((id) => this.timetableHearingStatementInternalService.getStatement(id))
       ).subscribe((statements) => {
         this.statements = statements;
       });

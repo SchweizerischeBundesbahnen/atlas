@@ -6,8 +6,7 @@
 
   <ng-template #statementForm>
     <div [formGroup]="statementFormGroup">
-      @let hasStatementPersonalInformationControl =
-        statementFormGroup.controls.hasStatementPersonalInformation;
+      @let hasStatementPersonalInformationControl = statementFormGroup.controls.hasStatementPersonalInformation;
       <div>
         {{ 'TTH.STATEMENT.DATA_PROTECTION_CHECK_TEXT_QUESTION' | translate }}
       </div>
@@ -18,9 +17,7 @@
         <mat-radio-button [value]="false">
           {{ 'COMMON.NO' | translate }}
         </mat-radio-button>
-        <atlas-field-error
-          [control]="hasStatementPersonalInformationControl"
-        ></atlas-field-error>
+        <atlas-field-error [control]="hasStatementPersonalInformationControl"></atlas-field-error>
       </mat-radio-group>
 
       @if (hasStatementPersonalInformationControl.value !== null) {
@@ -67,26 +64,17 @@
       <ng-template matStepperIcon="edit">
         <i class="bi bi-check2-circle"></i>
       </ng-template>
-      <mat-step
-        [formGroup]="statementFormGroup"
-        [label]="'TTH.STATEMENT.STATEMENT_TEXT' | translate"
-      >
+      <mat-step [formGroup]="statementFormGroup" [label]="'TTH.STATEMENT.STATEMENT_TEXT' | translate">
         <ng-container *ngTemplateOutlet="statementForm"></ng-container>
       </mat-step>
 
-      <mat-step
-        [label]="'TTH.STATEMENT.ATTACHMENTS' | translate"
-        [formGroup]="statementFormGroup"
-      >
+      <mat-step [label]="'TTH.STATEMENT.ATTACHMENTS' | translate" [formGroup]="statementFormGroup">
         @for (document of statement.documents!; track document) {
           <div [formGroup]="documentFormGroup.controls.documents.at($index)">
             @let hasDocumentPersonalInformationControl =
-              documentFormGroup.controls.documents.at($index).controls
-                .hasDocumentPersonalInformation;
+              documentFormGroup.controls.documents.at($index).controls.hasDocumentPersonalInformation;
             <div>
-              {{
-                'TTH.STATEMENT.DATA_PROTECTION_CHECK_FILE_QUESTION' | translate
-              }}
+              {{ 'TTH.STATEMENT.DATA_PROTECTION_CHECK_FILE_QUESTION' | translate }}
             </div>
             <atlas-file
               (downloadFile)="downloadFile($event.name)"
@@ -105,9 +93,7 @@
               <mat-radio-button [value]="false">
                 {{ 'COMMON.NO' | translate }}
               </mat-radio-button>
-              <atlas-field-error
-                [control]="hasDocumentPersonalInformationControl"
-              ></atlas-field-error>
+              <atlas-field-error [control]="hasDocumentPersonalInformationControl"></atlas-field-error>
             </mat-radio-group>
 
             @if (hasDocumentPersonalInformationControl.value !== null) {
@@ -115,9 +101,7 @@
                 @if (hasDocumentPersonalInformationControl.value) {
                   {{ 'TTH.STATEMENT.FILE_CONTAINS_PERSONAL_INFO' | translate }}
                 } @else {
-                  {{
-                    'TTH.STATEMENT.FILE_CONTAINS_NO_PERSONAL_INFO' | translate
-                  }}
+                  {{ 'TTH.STATEMENT.FILE_CONTAINS_NO_PERSONAL_INFO' | translate }}
                 }
               </div>
             }

@@ -19,17 +19,13 @@ describe('StopPointTerminationInfoComponent', () => {
   let fixture: ComponentFixture<StopPointTerminationInfoComponent>;
   let routerSpy: Mocked<Pick<Router, 'createUrlTree' | 'serializeUrl'>>;
 
-  let workflowServiceSpy: Mocked<
-    Pick<StopPointTerminationWorkflowService, 'getTerminationInfoBySloid'>
-  >;
+  let workflowServiceSpy: Mocked<Pick<StopPointTerminationWorkflowService, 'getTerminationInfoBySloid'>>;
 
   beforeEach(async () => {
     workflowServiceSpy = {
       getTerminationInfoBySloid: vi.fn(),
     };
-    workflowServiceSpy.getTerminationInfoBySloid.mockReturnValue(
-      of(terminationInfo)
-    );
+    workflowServiceSpy.getTerminationInfoBySloid.mockReturnValue(of(terminationInfo));
 
     routerSpy = {
       createUrlTree: vi.fn(),
@@ -65,8 +61,7 @@ describe('StopPointTerminationInfoComponent', () => {
   it('should navigate', () => {
     const workflowId = 123;
 
-    const expectedUrl =
-      '/line-service-point-directory/termination-workflows/123';
+    const expectedUrl = '/line-service-point-directory/termination-workflows/123';
     routerSpy.serializeUrl.mockReturnValue(expectedUrl);
 
     vi.spyOn(window, 'open').mockImplementation(() => null);

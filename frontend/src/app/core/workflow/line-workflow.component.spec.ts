@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { LineWorkflowComponent } from './line-workflow.component';
 import { LineVersionWorkflow, Status } from '../../api';
-import {
-  adminPermissionServiceMock,
-  translateServiceProvider,
-} from '../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../app.testing.mocks';
 import { PermissionService } from '../auth/permission/permission.service';
 
 describe('LineWorkflowComponent', () => {
@@ -14,10 +11,7 @@ describe('LineWorkflowComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
-        translateServiceProvider,
-      ],
+      providers: [{ provide: PermissionService, useValue: adminPermissionServiceMock }, translateServiceProvider],
     });
 
     fixture = TestBed.createComponent(LineWorkflowComponent);

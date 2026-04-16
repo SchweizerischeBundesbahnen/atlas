@@ -8,9 +8,7 @@
   </div>
   <mat-stepper [linear]="true" #stepper>
     <mat-step [stepControl]="formMeanOfTransport">
-      <ng-template matStepLabel>{{
-        'PRM.STOP_POINTS.MEANS_OF_TRAFFIC_SELECTION' | translate
-      }}</ng-template>
+      <ng-template matStepLabel>{{ 'PRM.STOP_POINTS.MEANS_OF_TRAFFIC_SELECTION' | translate }}</ng-template>
       <div class="col-12 d-flex mt-4">
         <div class="d-flex flex-column col-5">
           <atlas-means-of-transport-picker
@@ -35,9 +33,7 @@
       </div>
     </mat-step>
     <mat-step [stepControl]="form" state="edit">
-      <ng-template matStepLabel>{{
-        'PRM.STOP_POINTS.POPULATE_DATA' | translate
-      }}</ng-template>
+      <ng-template matStepLabel>{{ 'PRM.STOP_POINTS.POPULATE_DATA' | translate }}</ng-template>
       @if (isDataEditable) {
         <div class="d-flex mb-2">
           <atlas-button

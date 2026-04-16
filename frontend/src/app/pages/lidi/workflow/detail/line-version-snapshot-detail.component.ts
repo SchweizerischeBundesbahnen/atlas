@@ -49,22 +49,20 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
   versionAlreadyExists = true;
   workflow!: Workflow;
   lineVersionSnapshotForm!: FormGroup<LineVersionSnapshotDetailFormGroup>;
-  workflowStartedFormGroup: FormGroup<WorkflowFormGroup> =
-    new FormGroup<WorkflowFormGroup>({
-      comment: new FormControl(''),
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      function: new FormControl(''),
-      mail: new FormControl(''),
-    });
+  workflowStartedFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
+    comment: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    function: new FormControl(''),
+    mail: new FormControl(''),
+  });
 
-  workflowCheckFormGroup: FormGroup<LineWorkflowCheckFormGroup> =
-    new FormGroup<LineWorkflowCheckFormGroup>({
-      comment: new FormControl(''),
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      function: new FormControl(''),
-    });
+  workflowCheckFormGroup: FormGroup<LineWorkflowCheckFormGroup> = new FormGroup<LineWorkflowCheckFormGroup>({
+    comment: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    function: new FormControl(''),
+  });
 
   constructor(
     private readonly router: Router,
@@ -86,11 +84,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
 
   navigateToLine() {
     if (this.lineVersionSnapshot.slnid) {
-      const urlCommands = [
-        Pages.LIDI.path,
-        Pages.LINES.path,
-        this.lineVersionSnapshot.slnid,
-      ];
+      const urlCommands = [Pages.LIDI.path, Pages.LINES.path, this.lineVersionSnapshot.slnid];
       if (this.versionAlreadyExists) {
         this.navigateToVersionById(urlCommands);
       } else {
@@ -99,9 +93,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     }
   }
 
-  populateLineVersionSnapshotFormGroup(
-    version: LineVersionSnapshot
-  ): FormGroup<LineVersionSnapshotDetailFormGroup> {
+  populateLineVersionSnapshotFormGroup(version: LineVersionSnapshot): FormGroup<LineVersionSnapshotDetailFormGroup> {
     return new FormGroup<LineVersionSnapshotDetailFormGroup>({
       lineConcessionType: new FormControl(version.lineConcessionType),
       offerCategory: new FormControl(version.offerCategory),
@@ -116,12 +108,8 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
       number: new FormControl(version.number),
       longName: new FormControl(version.longName),
       description: new FormControl(version.description),
-      validFrom: new FormControl(
-        version.validFrom ? moment(version.validFrom) : version.validFrom
-      ),
-      validTo: new FormControl(
-        version.validTo ? moment(version.validTo) : version.validTo
-      ),
+      validFrom: new FormControl(version.validFrom ? moment(version.validFrom) : version.validFrom),
+      validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo),
       comment: new FormControl(version.comment),
       etagVersion: new FormControl(version.etagVersion),
       creationDate: new FormControl(version.creationDate),
@@ -132,43 +120,37 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
   }
 
   private checkLineVersionSnapshottedAlreadyExists() {
-    this.lineService
-      .getLineVersionsV2(this.lineVersionSnapshot.slnid!)
-      .subscribe({
-        next: (lineVersions) => {
-          const lineVersionsFiltered: LineVersionV2[] = lineVersions.filter(
-            (version) => version.id === this.lineVersionSnapshot.parentObjectId
-          );
-          if (lineVersionsFiltered.length === 0) {
-            this.versionAlreadyExists = false;
-          }
-        },
-        error: () => {
+    this.lineService.getLineVersionsV2(this.lineVersionSnapshot.slnid!).subscribe({
+      next: (lineVersions) => {
+        const lineVersionsFiltered: LineVersionV2[] = lineVersions.filter(
+          (version) => version.id === this.lineVersionSnapshot.parentObjectId
+        );
+        if (lineVersionsFiltered.length === 0) {
           this.versionAlreadyExists = false;
-        },
-      });
+        }
+      },
+      error: () => {
+        this.versionAlreadyExists = false;
+      },
+    });
   }
 
   private initWorkflowForms() {
-    this.lineWorkflowService
-      .getWorkflow(this.lineVersionSnapshot.workflowId)
-      .subscribe((workflow) => {
-        this.workflow = workflow;
-        this.pupulateWorkflowStartedFormGroup();
-        if (
-          this.lineVersionSnapshot.workflowStatus === 'APPROVED' ||
-          this.lineVersionSnapshot.workflowStatus === 'REJECTED'
-        ) {
-          this.showWorkflowCheckForm = true;
-          this.populeteWorkflowCheckFormGroup();
-        }
-      });
+    this.lineWorkflowService.getWorkflow(this.lineVersionSnapshot.workflowId).subscribe((workflow) => {
+      this.workflow = workflow;
+      this.pupulateWorkflowStartedFormGroup();
+      if (
+        this.lineVersionSnapshot.workflowStatus === 'APPROVED' ||
+        this.lineVersionSnapshot.workflowStatus === 'REJECTED'
+      ) {
+        this.showWorkflowCheckForm = true;
+        this.populeteWorkflowCheckFormGroup();
+      }
+    });
   }
 
   private initLineVersionSnapshotForm() {
-    this.lineVersionSnapshotForm = this.populateLineVersionSnapshotFormGroup(
-      this.lineVersionSnapshot
-    );
+    this.lineVersionSnapshotForm = this.populateLineVersionSnapshotFormGroup(this.lineVersionSnapshot);
     this.lineVersionSnapshotForm.disable();
   }
 
@@ -185,37 +167,19 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
   }
 
   private populeteWorkflowCheckFormGroup() {
-    this.workflowCheckFormGroup.controls.firstName.setValue(
-      this.workflow.examinant?.firstName
-    );
-    this.workflowCheckFormGroup.controls.lastName.setValue(
-      this.workflow.examinant?.lastName
-    );
-    this.workflowCheckFormGroup.controls.function.setValue(
-      this.workflow.examinant?.personFunction
-    );
-    this.workflowCheckFormGroup.controls.comment.setValue(
-      this.workflow.checkComment
-    );
+    this.workflowCheckFormGroup.controls.firstName.setValue(this.workflow.examinant?.firstName);
+    this.workflowCheckFormGroup.controls.lastName.setValue(this.workflow.examinant?.lastName);
+    this.workflowCheckFormGroup.controls.function.setValue(this.workflow.examinant?.personFunction);
+    this.workflowCheckFormGroup.controls.comment.setValue(this.workflow.checkComment);
     this.workflowCheckFormGroup.disable();
   }
 
   private pupulateWorkflowStartedFormGroup() {
-    this.workflowStartedFormGroup.controls.firstName.setValue(
-      this.workflow.client?.firstName
-    );
-    this.workflowStartedFormGroup.controls.lastName.setValue(
-      this.workflow.client?.lastName
-    );
-    this.workflowStartedFormGroup.controls.mail.setValue(
-      this.workflow.client?.mail
-    );
-    this.workflowStartedFormGroup.controls.function.setValue(
-      this.workflow.client?.personFunction
-    );
-    this.workflowStartedFormGroup.controls.comment.setValue(
-      this.workflow.workflowComment
-    );
+    this.workflowStartedFormGroup.controls.firstName.setValue(this.workflow.client?.firstName);
+    this.workflowStartedFormGroup.controls.lastName.setValue(this.workflow.client?.lastName);
+    this.workflowStartedFormGroup.controls.mail.setValue(this.workflow.client?.mail);
+    this.workflowStartedFormGroup.controls.function.setValue(this.workflow.client?.personFunction);
+    this.workflowStartedFormGroup.controls.comment.setValue(this.workflow.workflowComment);
     this.workflowStartedFormGroup.disable();
   }
 }

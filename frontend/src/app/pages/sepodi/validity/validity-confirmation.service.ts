@@ -16,20 +16,13 @@ export class ValidityConfirmationService {
     validTo: Moment
   ): Observable<boolean> {
     if (servicePoint.length > 0) {
-      const servicePointValidity =
-        VersionsHandlingService.getMaxValidity(servicePoint);
-      if (
-        validFrom.isBefore(servicePointValidity.validFrom) ||
-        validTo.isAfter(servicePointValidity.validTo)
-      ) {
+      const servicePointValidity = VersionsHandlingService.getMaxValidity(servicePoint);
+      if (validFrom.isBefore(servicePointValidity.validFrom) || validTo.isAfter(servicePointValidity.validTo)) {
         return this.dialogService.openDialogDataWithConfirmationResult({
           title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
-          message:
-            'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
+          message: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
           messageArgs: {
-            validFrom: DateService.getDateFormatted(
-              servicePointValidity.validFrom
-            ),
+            validFrom: DateService.getDateFormatted(servicePointValidity.validFrom),
             validTo: DateService.getDateFormatted(servicePointValidity.validTo),
           },
           confirmText: 'COMMON.SAVE_ANYWAY',

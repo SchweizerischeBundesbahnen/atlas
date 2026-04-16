@@ -4,12 +4,8 @@
     <span class="font-bold-4xl">{{ data.title | translate }}</span>
     @if (workflowId) {
       <div>
-        <span class="font-bold-lg color-gray-900"
-          >{{ 'COMMON.STATUS' | translate }}
-        </span>
-        <span class="color-gray-900">{{
-          workflowStatusTranslated$ | async
-        }}</span>
+        <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+        <span class="color-gray-900">{{ workflowStatusTranslated$ | async }}</span>
       </div>
     }
   </div>
@@ -33,11 +29,7 @@
 </atlas-dialog-content>
 
 <atlas-dialog-footer>
-  <button
-    (click)="closeDialog()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-cancel-button"
-  >
+  <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
     {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
   </button>
   @if (!workflowId) {

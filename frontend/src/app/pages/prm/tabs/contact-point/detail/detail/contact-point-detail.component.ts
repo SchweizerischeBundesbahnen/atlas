@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ContactPointVersion,
-  ReadContactPointVersion,
-  ReadServicePointVersion,
-} from '../../../../../../api';
+import { ContactPointVersion, ReadContactPointVersion, ReadServicePointVersion } from '../../../../../../api';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ContactPointFormGroupBuilder } from '../form/contact-point-form-group';
 import { DateRange } from '../../../../../../core/versioning/date-range';
@@ -41,10 +37,7 @@ import { ContactPointService } from '../../../../../../api/service/prm/contact-p
     TranslatePipe,
   ],
 })
-export class ContactPointDetailComponent
-  extends PrmTabDetailBaseComponent<ReadContactPointVersion>
-  implements OnInit
-{
+export class ContactPointDetailComponent extends PrmTabDetailBaseComponent<ReadContactPointVersion> implements OnInit {
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
   showVersionSwitch = false;
@@ -63,14 +56,9 @@ export class ContactPointDetailComponent
 
     if (!this.isNew) {
       VersionsHandlingService.addVersionNumbers(this.versions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-        this.versions
-      );
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.versions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
@@ -78,9 +66,7 @@ export class ContactPointDetailComponent
   }
 
   protected initForm() {
-    this.form = ContactPointFormGroupBuilder.buildFormGroup(
-      this.selectedVersion
-    );
+    this.form = ContactPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
 
     if (!this.isNew) {
       this.form.disable();
@@ -88,28 +74,15 @@ export class ContactPointDetailComponent
   }
 
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] =
-      this.route.snapshot.parent!.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(
-        servicePointVersions
-      );
-    this.businessOrganisations = [
-      ...new Set(
-        servicePointVersions.map((value) => value.businessOrganisation)
-      ),
-    ];
+    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.parent!.data.servicePoint;
+    this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.businessOrganisations = [...new Set(servicePointVersions.map((value) => value.businessOrganisation))];
   }
 
-  protected saveProcess(): Observable<
-    ReadContactPointVersion | ReadContactPointVersion[]
-  > {
+  protected saveProcess(): Observable<ReadContactPointVersion | ReadContactPointVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      const contactPointVersion = ContactPointFormGroupBuilder.getWritableForm(
-        this.form,
-        this.servicePoint.sloid!
-      );
+      const contactPointVersion = ContactPointFormGroupBuilder.getWritableForm(this.form, this.servicePoint.sloid!);
       if (this.isNew) {
         return this.create(contactPointVersion);
       } else {
@@ -131,28 +104,23 @@ export class ContactPointDetailComponent
   }
 
   private create(contactPointVersion: ContactPointVersion) {
-    return this.contactPointService
-      .createContactPoint(contactPointVersion)
-      .pipe(
-        switchMap((createdVersion) => {
-          return this.notificateAndNavigate(
-            'PRM.CONTACT_POINTS.NOTIFICATION.ADD_SUCCESS',
-            createdVersion.sloid!
-          ).pipe(map(() => createdVersion));
-        })
-      );
+    return this.contactPointService.createContactPoint(contactPointVersion).pipe(
+      switchMap((createdVersion) => {
+        return this.notificateAndNavigate('PRM.CONTACT_POINTS.NOTIFICATION.ADD_SUCCESS', createdVersion.sloid!).pipe(
+          map(() => createdVersion)
+        );
+      })
+    );
   }
 
   private update(contactPointVersion: ContactPointVersion) {
-    return this.contactPointService
-      .updateContactPoint(this.selectedVersion.id!, contactPointVersion)
-      .pipe(
-        switchMap((updatedVersions) => {
-          return this.notificateAndNavigate(
-            'PRM.CONTACT_POINTS.NOTIFICATION.EDIT_SUCCESS',
-            this.selectedVersion.sloid!
-          ).pipe(map(() => updatedVersions));
-        })
-      );
+    return this.contactPointService.updateContactPoint(this.selectedVersion.id!, contactPointVersion).pipe(
+      switchMap((updatedVersions) => {
+        return this.notificateAndNavigate(
+          'PRM.CONTACT_POINTS.NOTIFICATION.EDIT_SUCCESS',
+          this.selectedVersion.sloid!
+        ).pipe(map(() => updatedVersions));
+      })
+    );
   }
 }

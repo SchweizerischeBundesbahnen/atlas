@@ -34,9 +34,7 @@ describe('ApplicationPermissionComponent', () => {
   let component: ApplicationPermissionComponent;
   let fixture: ComponentFixture<ApplicationPermissionComponent>;
 
-  let businessOrganisationServiceStub: Mocked<
-    Pick<BusinessOrganisationService, 'getAllBusinessOrganisations'>
-  >;
+  let businessOrganisationServiceStub: Mocked<Pick<BusinessOrganisationService, 'getAllBusinessOrganisations'>>;
 
   beforeEach(() => {
     // Mocking
@@ -87,9 +85,7 @@ describe('ApplicationPermissionComponent', () => {
     businessOrganisationServiceStub.getAllBusinessOrganisations.mockReturnValue(
       of({ objects: [businessOrganisation] })
     );
-    component.businessOrganisationForm.controls.businessOrganisation.setValue(
-      businessOrganisation
-    );
+    component.businessOrganisationForm.controls.businessOrganisation.setValue(businessOrganisation);
 
     // Add BusinessOrganisation
     component.addBusinessOrganisation();
@@ -105,18 +101,14 @@ describe('ApplicationPermissionComponent', () => {
   it('should set transportCompanyDossierAnswer to true', () => {
     component.onTransportCompanyDossierToggle(true);
 
-    const control =
-      component.form.controls.permissions.controls
-        .transportCompanyDossierAnswer;
+    const control = component.form.controls.permissions.controls.transportCompanyDossierAnswer;
     expect(control!.value).toBe(true);
   });
 
   it('should set transportCompanyDossierAnswer to false', () => {
     component.onTransportCompanyDossierToggle(false);
 
-    const control =
-      component.form.controls.permissions.controls
-        .transportCompanyDossierAnswer;
+    const control = component.form.controls.permissions.controls.transportCompanyDossierAnswer;
     expect(control!.value).toBe(false);
   });
 });

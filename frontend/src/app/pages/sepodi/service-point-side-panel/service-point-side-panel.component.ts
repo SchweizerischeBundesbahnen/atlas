@@ -1,10 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
@@ -43,9 +38,7 @@ export const TABS = [
   },
 ];
 
-export const FOREIGN_TABS = TABS.filter((i) =>
-  ['service-point', 'loading-points', 'comment'].includes(i.link)
-);
+export const FOREIGN_TABS = TABS.filter((i) => ['service-point', 'loading-points', 'comment'].includes(i.link));
 
 @Component({
   selector: 'atlas-service-point-side-panel',
@@ -85,19 +78,13 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
     this.servicePointSubscription = this.route.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initVersioning();
-      if (
-        Countries.geolocationCountries.includes(
-          this.servicePointVersions[0].country
-        )
-      ) {
+      if (Countries.geolocationCountries.includes(this.servicePointVersions[0].country)) {
         this.tabs = TABS;
       } else {
         this.tabs = FOREIGN_TABS;
       }
 
-      this.trafficPointMapService.displayTrafficPointsOnMap(
-        this.servicePointVersions[0].number.number
-      );
+      this.trafficPointMapService.displayTrafficPointsOnMap(this.servicePointVersions[0].number.number);
     });
   }
 
@@ -108,12 +95,7 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
   }
 
   private initVersioning() {
-    this.maxValidity = VersionsHandlingService.getMaxValidity(
-      this.servicePointVersions
-    );
-    this.selectedVersion =
-      VersionsHandlingService.determineDefaultVersionByValidity(
-        this.servicePointVersions
-      );
+    this.maxValidity = VersionsHandlingService.getMaxValidity(this.servicePointVersions);
+    this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.servicePointVersions);
   }
 }

@@ -7,12 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-workflow-form',
   templateUrl: './line-workflow-form.component.html',
-  imports: [
-    ReactiveFormsModule,
-    CommentComponent,
-    TextFieldComponent,
-    TranslatePipe,
-  ],
+  imports: [ReactiveFormsModule, CommentComponent, TextFieldComponent, TranslatePipe],
   providers: [TranslatePipe],
 })
 export class LineWorkflowFormComponent {

@@ -12,9 +12,7 @@ export class SublineDetailResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadSublineVersionV2>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadSublineVersionV2>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
@@ -30,6 +28,5 @@ export class SublineDetailResolver {
   }
 }
 
-export const sublineResolver: ResolveFn<Array<ReadSublineVersionV2>> = (
-  route: ActivatedRouteSnapshot
-) => inject(SublineDetailResolver).resolve(route);
+export const sublineResolver: ResolveFn<Array<ReadSublineVersionV2>> = (route: ActivatedRouteSnapshot) =>
+  inject(SublineDetailResolver).resolve(route);

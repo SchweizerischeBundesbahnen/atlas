@@ -16,14 +16,10 @@
     typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
   >
     <ng-template let-item="item" ng-label-tmp>
-      <ng-container
-        *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"
-      ></ng-container>
+      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"></ng-container>
     </ng-template>
     <ng-template let-item="item" ng-option-tmp>
-      <ng-container
-        *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"
-      ></ng-container>
+      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"></ng-container>
     </ng-template>
   </ng-select>
 

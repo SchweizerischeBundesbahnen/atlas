@@ -19,9 +19,7 @@ describe('DecisionStepperComponent', () => {
   let fixture: ComponentFixture<DecisionStepperComponent>;
 
   let dialogRefSpy: Mocked<Pick<MatDialogRef<DecisionStepperComponent>, 'close'>>;
-  let spWfServiceSpy: Mocked<
-    Pick<StopPointWorkflowService, 'obtainOtp' | 'verifyOtp' | 'voteWorkflow'>
-  >;
+  let spWfServiceSpy: Mocked<Pick<StopPointWorkflowService, 'obtainOtp' | 'verifyOtp' | 'voteWorkflow'>>;
 
   beforeEach(async () => {
     dialogRefSpy = { close: vi.fn() };
@@ -138,9 +136,7 @@ describe('DecisionStepperComponent', () => {
 
   it('should handle error on obtain otp step', () => {
     component.mail.controls.mail.setValue('techsupport@atlas.ch');
-    spWfServiceSpy.obtainOtp.mockReturnValue(
-      throwError(() => 'mail not found') as never
-    );
+    spWfServiceSpy.obtainOtp.mockReturnValue(throwError(() => 'mail not found') as never);
 
     component.completeObtainOtpStep();
     fixture.detectChanges();

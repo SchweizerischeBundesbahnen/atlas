@@ -22,38 +22,23 @@ describe('Service Points Navigation Helper', () => {
         sloidType: 'SERVICE_POINT',
       };
       //when
-      const result = ServicePointNavigationHelper.buildPrmNavigation(
-        location,
-        Pages.STOP_POINTS.path
-      );
+      const result = ServicePointNavigationHelper.buildPrmNavigation(location, Pages.STOP_POINTS.path);
       //then
       expect(result).toEqual(['stop-points', 'ch:1:sloid:1']);
     });
 
     prmNavigation.forEach((navigation) => {
-      it(
-        'Should build ' + navigation.sloidType + ' Navigation commands',
-        () => {
-          //given
-          const location: SloidLocationModel = {
-            sloid: 'ch:1:sloid:1:1',
-            sloidType: navigation.sloidType,
-          };
-          //when
-          const result = ServicePointNavigationHelper.buildPrmNavigation(
-            location,
-            Pages.STOP_POINTS.path
-          );
-          //then
-          expect(result).toEqual([
-            'stop-points',
-            'ch:1:sloid:1',
-            navigation.navigationPath,
-            'ch:1:sloid:1:1',
-            'detail',
-          ]);
-        }
-      );
+      it('Should build ' + navigation.sloidType + ' Navigation commands', () => {
+        //given
+        const location: SloidLocationModel = {
+          sloid: 'ch:1:sloid:1:1',
+          sloidType: navigation.sloidType,
+        };
+        //when
+        const result = ServicePointNavigationHelper.buildPrmNavigation(location, Pages.STOP_POINTS.path);
+        //then
+        expect(result).toEqual(['stop-points', 'ch:1:sloid:1', navigation.navigationPath, 'ch:1:sloid:1:1', 'detail']);
+      });
     });
 
     it('Should build referencePoint  Navigation commands', () => {
@@ -63,17 +48,9 @@ describe('Service Points Navigation Helper', () => {
         sloidType: 'REFERENCE_POINT',
       };
       //when
-      const result = ServicePointNavigationHelper.buildPrmNavigation(
-        location,
-        Pages.STOP_POINTS.path
-      );
+      const result = ServicePointNavigationHelper.buildPrmNavigation(location, Pages.STOP_POINTS.path);
       //then
-      expect(result).toEqual([
-        'stop-points',
-        'ch:1:sloid:1',
-        'reference-points',
-        'ch:1:sloid:1:1',
-      ]);
+      expect(result).toEqual(['stop-points', 'ch:1:sloid:1', 'reference-points', 'ch:1:sloid:1:1']);
     });
   });
 
@@ -85,10 +62,7 @@ describe('Service Points Navigation Helper', () => {
         sloidType: 'SERVICE_POINT',
       };
       //when
-      const result = ServicePointNavigationHelper.buildSepodiNavigation(
-        location,
-        Pages.SERVICE_POINTS.path
-      );
+      const result = ServicePointNavigationHelper.buildSepodiNavigation(location, Pages.SERVICE_POINTS.path);
       //then
       expect(result).toEqual(['service-points', '8500001']);
     });
@@ -111,17 +85,9 @@ describe('Service Points Navigation Helper', () => {
           sloidType: navigation.sloidType,
         };
         //when
-        const result = ServicePointNavigationHelper.buildSepodiNavigation(
-          location,
-          Pages.SERVICE_POINTS.path
-        );
+        const result = ServicePointNavigationHelper.buildSepodiNavigation(location, Pages.SERVICE_POINTS.path);
         //then
-        expect(result).toEqual([
-          'service-points',
-          '8500001',
-          navigation.navigationPath,
-          'ch:1:sloid:1:1',
-        ]);
+        expect(result).toEqual(['service-points', '8500001', navigation.navigationPath, 'ch:1:sloid:1:1']);
       });
     });
 
@@ -144,10 +110,7 @@ describe('Service Points Navigation Helper', () => {
           sloidType: navigation.sloidType,
         };
         //when
-        const result = ServicePointNavigationHelper.buildSepodiNavigation(
-          location,
-          Pages.SERVICE_POINTS.path
-        );
+        const result = ServicePointNavigationHelper.buildSepodiNavigation(location, Pages.SERVICE_POINTS.path);
         //then
         expect(result).toEqual([
           'service-points',

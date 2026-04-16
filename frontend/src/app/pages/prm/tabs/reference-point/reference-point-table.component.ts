@@ -21,10 +21,7 @@ import { ReferencePointInternalService } from '../../../../api/service/prm/refer
   templateUrl: './reference-point-table.component.html',
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
-export class ReferencePointTableComponent
-  extends BasePrmTabComponentService
-  implements OnInit
-{
+export class ReferencePointTableComponent extends BasePrmTabComponentService implements OnInit {
   tableColumns: TableColumn<ReadReferencePointVersion>[] = [
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
@@ -54,10 +51,7 @@ export class ReferencePointTableComponent
 
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.REFERENCE_POINT
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.REFERENCE_POINT);
   }
 
   getTab(): Tab {
@@ -65,19 +59,12 @@ export class ReferencePointTableComponent
   }
 
   getOverview(pagination: TablePagination) {
-    const parentServicePointSloid =
-      this.route.parent!.snapshot.params.stopPointSloid!;
+    const parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.referencePointInternalService
-      .getReferencePointsOverview(parentServicePointSloid)
-      .subscribe((overviewRows) => {
-        this.referencePoints = TableContentPaginationAndSorting.pageAndSort(
-          overviewRows,
-          pagination,
-          'designation,asc'
-        );
-        this.totalCount = overviewRows.length;
-      });
+    this.referencePointInternalService.getReferencePointsOverview(parentServicePointSloid).subscribe((overviewRows) => {
+      this.referencePoints = TableContentPaginationAndSorting.pageAndSort(overviewRows, pagination, 'designation,asc');
+      this.totalCount = overviewRows.length;
+    });
   }
 
   rowClicked(clickedRow: ReadReferencePointVersion) {

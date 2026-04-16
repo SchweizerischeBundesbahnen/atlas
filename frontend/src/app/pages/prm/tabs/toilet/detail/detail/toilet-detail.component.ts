@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ToiletFormGroupBuilder } from '../form/toilet-form-group';
-import {
-  ReadServicePointVersion,
-  ReadToiletVersion,
-  ToiletVersion,
-} from '../../../../../../api';
+import { ReadServicePointVersion, ReadToiletVersion, ToiletVersion } from '../../../../../../api';
 import { DateRange } from '../../../../../../core/versioning/date-range';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
 import { EMPTY, Observable, switchMap } from 'rxjs';
@@ -41,10 +37,7 @@ import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.s
     TranslatePipe,
   ],
 })
-export class ToiletDetailComponent
-  extends PrmTabDetailBaseComponent<ReadToiletVersion>
-  implements OnInit
-{
+export class ToiletDetailComponent extends PrmTabDetailBaseComponent<ReadToiletVersion> implements OnInit {
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
   showVersionSwitch = false;
@@ -63,14 +56,9 @@ export class ToiletDetailComponent
 
     if (!this.isNew) {
       VersionsHandlingService.addVersionNumbers(this.versions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-        this.versions
-      );
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.versions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
@@ -88,10 +76,7 @@ export class ToiletDetailComponent
   protected saveProcess(): Observable<ReadToiletVersion | ReadToiletVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      const toiletVersion = ToiletFormGroupBuilder.getWritableForm(
-        this.form,
-        this.servicePoint.sloid!
-      );
+      const toiletVersion = ToiletFormGroupBuilder.getWritableForm(this.form, this.servicePoint.sloid!);
       if (this.isNew) {
         return this.create(toiletVersion);
       } else {
@@ -113,40 +98,28 @@ export class ToiletDetailComponent
   }
 
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] =
-      this.route.snapshot.parent!.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(
-        servicePointVersions
-      );
-    this.businessOrganisations = [
-      ...new Set(
-        servicePointVersions.map((value) => value.businessOrganisation)
-      ),
-    ];
+    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.parent!.data.servicePoint;
+    this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.businessOrganisations = [...new Set(servicePointVersions.map((value) => value.businessOrganisation))];
   }
 
   private create(toiletVersion: ToiletVersion) {
     return this.toiletService.createToiletVersion(toiletVersion).pipe(
       switchMap((createdVersion) => {
-        return this.notificateAndNavigate(
-          'PRM.TOILETS.NOTIFICATION.ADD_SUCCESS',
-          createdVersion.sloid!
-        ).pipe(map(() => createdVersion));
+        return this.notificateAndNavigate('PRM.TOILETS.NOTIFICATION.ADD_SUCCESS', createdVersion.sloid!).pipe(
+          map(() => createdVersion)
+        );
       })
     );
   }
 
   private update(toiletVersion: ToiletVersion) {
-    return this.toiletService
-      .updateToiletVersion(this.selectedVersion.id!, toiletVersion)
-      .pipe(
-        switchMap((updatedVersions) => {
-          return this.notificateAndNavigate(
-            'PRM.TOILETS.NOTIFICATION.EDIT_SUCCESS',
-            this.selectedVersion.sloid!
-          ).pipe(map(() => updatedVersions));
-        })
-      );
+    return this.toiletService.updateToiletVersion(this.selectedVersion.id!, toiletVersion).pipe(
+      switchMap((updatedVersions) => {
+        return this.notificateAndNavigate('PRM.TOILETS.NOTIFICATION.EDIT_SUCCESS', this.selectedVersion.sloid!).pipe(
+          map(() => updatedVersions)
+        );
+      })
+    );
   }
 }

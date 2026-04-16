@@ -29,15 +29,10 @@ import { StatementDetailBaseComponent } from '../statement-detail-base.component
   templateUrl: './bo-statement-detail.component.html',
   styleUrls: ['./bo-statement-detail.component.scss'],
 })
-export class BoStatementDetailComponent
-  extends StatementDetailBaseComponent
-  implements OnInit, DetailFormComponent
-{
+export class BoStatementDetailComponent extends StatementDetailBaseComponent implements OnInit, DetailFormComponent {
   private _anonymDocuments!: FormGroup<TimetableHearingStatementDocumentGroup>[];
 
-  set anonymDocuments(
-    value: FormGroup<TimetableHearingStatementDocumentGroup>[]
-  ) {
+  set anonymDocuments(value: FormGroup<TimetableHearingStatementDocumentGroup>[]) {
     this._anonymDocuments = value;
   }
 
@@ -59,8 +54,7 @@ export class BoStatementDetailComponent
   }
 
   getStatementControlName(): string {
-    const isStatementAnonymous =
-      this.form.controls.statementAnonymous.getRawValue();
+    const isStatementAnonymous = this.form.controls.statementAnonymous.getRawValue();
     if (isStatementAnonymous) {
       return 'statement';
     }

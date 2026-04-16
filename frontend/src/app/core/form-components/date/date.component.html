@@ -1,14 +1,18 @@
 <div [formGroup]="formGroup" class="col-12 d-flex mt-3">
   <div class="d-flex flex-column">
     <atlas-label-field
-      [fieldExamples]=" readonly ? [] : [
-        { label: 'FORM.FOR_EXAMPLE', translate: true },
-        { label: ' ', translate: false },
-        {
-          label: setDateExamples ? labelExample : EXAMPLE_DATE,
-          translate: true,
-        },
-      ]"
+      [fieldExamples]="
+        readonly
+          ? []
+          : [
+              { label: 'FORM.FOR_EXAMPLE', translate: true },
+              { label: ' ', translate: false },
+              {
+                label: setDateExamples ? labelExample : EXAMPLE_DATE,
+                translate: true,
+              },
+            ]
+      "
       [required]="required"
       [fieldLabel]="label"
       [infoIconTitle]="infoIconTitle"
@@ -32,8 +36,6 @@
         <mat-datepicker #datePicker> </mat-datepicker>
       </div>
     </div>
-    <atlas-field-error
-      [control]="formGroup.get(controlName)"
-    ></atlas-field-error>
+    <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
   </div>
 </div>

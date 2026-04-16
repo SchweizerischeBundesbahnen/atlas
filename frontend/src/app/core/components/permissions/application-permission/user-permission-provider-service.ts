@@ -12,10 +12,7 @@ export abstract class UserPermissionProviderService {
 
   abstract getCurrentForm(): FormGroup<ApplicationPermission> | undefined;
 
-  protected getPermission(
-    permissions: Iterable<Permission>,
-    application: ApplicationType
-  ): Permission {
+  protected getPermission(permissions: Iterable<Permission>, application: ApplicationType): Permission {
     return (
       Array.from(permissions).find((i) => i.application === application) ?? {
         role: ApplicationRole.Reader,

@@ -12,10 +12,7 @@ import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard
 export const routes: Routes = [
   {
     path: Pages.LINES.path + '/:id',
-    loadComponent: () =>
-      import('./lines/detail/line-detail.component').then(
-        (m) => m.LineDetailComponent
-      ),
+    loadComponent: () => import('./lines/detail/line-detail.component').then((m) => m.LineDetailComponent),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       lineDetail: lineResolver,
@@ -24,10 +21,7 @@ export const routes: Routes = [
   },
   {
     path: Pages.SUBLINES.path + '/:id',
-    loadComponent: () =>
-      import('./sublines/detail/subline-detail.component').then(
-        (m) => m.SublineDetailComponent
-      ),
+    loadComponent: () => import('./sublines/detail/subline-detail.component').then((m) => m.SublineDetailComponent),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       sublineDetail: sublineResolver,
@@ -47,22 +41,16 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadComponent: () =>
-      import('./overview/lidi-overview.component').then(
-        (m) => m.LidiOverviewComponent
-      ),
+    loadComponent: () => import('./overview/lidi-overview.component').then((m) => m.LidiOverviewComponent),
     children: [
       {
         path: Pages.LINES.path,
-        loadComponent: () =>
-          import('./lines/lines.component').then((m) => m.LinesComponent),
+        loadComponent: () => import('./lines/lines.component').then((m) => m.LinesComponent),
       },
       {
         path: Pages.WORKFLOWS.path,
         loadComponent: () =>
-          import('./workflow/overview/lidi-workflow-overview.component').then(
-            (m) => m.LidiWorkflowOverviewComponent
-          ),
+          import('./workflow/overview/lidi-workflow-overview.component').then((m) => m.LidiWorkflowOverviewComponent),
       },
       { path: '**', redirectTo: Pages.LINES.path },
     ],

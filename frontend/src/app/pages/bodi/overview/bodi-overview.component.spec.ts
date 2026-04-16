@@ -13,15 +13,8 @@ describe('BoDiOverviewComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        BodiOverviewComponent,
-        BusinessOrganisationComponent,
-        AtlasButtonComponent,
-      ],
-      providers: [
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
-      ],
+      imports: [AppTestingModule, BodiOverviewComponent, BusinessOrganisationComponent, AtlasButtonComponent],
+      providers: [{ provide: PermissionService, useValue: adminPermissionServiceMock }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BodiOverviewComponent);

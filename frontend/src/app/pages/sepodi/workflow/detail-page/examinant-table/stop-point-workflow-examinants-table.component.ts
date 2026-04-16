@@ -1,11 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-  ControlContainer,
-  FormArray,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlContainer, FormArray, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { WorkflowStatus } from 'src/app/api';
 import {
   ExaminantFormGroup,
@@ -22,13 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './stop-point-workflow-examinants-table.component.html',
   styleUrls: ['./stop-point-workflow-examinants-table.component.scss'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
-  imports: [
-    ReactiveFormsModule,
-    TextFieldComponent,
-    AtlasButtonComponent,
-    NgClass,
-    TranslatePipe,
-  ],
+  imports: [ReactiveFormsModule, TextFieldComponent, AtlasButtonComponent, NgClass, TranslatePipe],
 })
 export class StopPointWorkflowExaminantsTableComponent {
   readonly WorkflowStatus = WorkflowStatus;
@@ -50,15 +38,11 @@ export class StopPointWorkflowExaminantsTableComponent {
   addExaminant() {
     ValidationService.validateForm(this.examinants);
     if (this.examinants.disabled || this.examinants.valid) {
-      this.examinants.push(
-        StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup()
-      );
+      this.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     }
   }
 
   get examinants() {
-    return this.form.controls.examinants as FormArray<
-      FormGroup<ExaminantFormGroup>
-    >;
+    return this.form.controls.examinants as FormArray<FormGroup<ExaminantFormGroup>>;
   }
 }

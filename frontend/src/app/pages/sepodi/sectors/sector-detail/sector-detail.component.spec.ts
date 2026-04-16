@@ -26,10 +26,7 @@ describe('SectorDetailComponent', () => {
   let sectorMapServiceSpy: Mocked<
     Pick<
       SectorMapService,
-      | 'displaySectorsOnMap'
-      | 'clearDisplayedSectors'
-      | 'displayCurrentSector'
-      | 'clearCurrentSector'
+      'displaySectorsOnMap' | 'clearDisplayedSectors' | 'displayCurrentSector' | 'clearCurrentSector'
     >
   >;
   let trafficPointMapServiceSpy: Mocked<
@@ -42,28 +39,15 @@ describe('SectorDetailComponent', () => {
     >
   >;
   let mapServiceSpy: Mocked<
-    Pick<
-      MapService,
-      | 'placeMarkerAndFlyTo'
-      | 'enterCoordinateSelectionMode'
-      | 'exitCoordinateSelectionMode'
-    >
+    Pick<MapService, 'placeMarkerAndFlyTo' | 'enterCoordinateSelectionMode' | 'exitCoordinateSelectionMode'>
   > & {
     mapInitialized: BehaviorSubject<boolean>;
     clickedGeographyCoordinates: Subject<CoordinatePairWGS84>;
   };
-  let validityServiceSpy: Mocked<
-    Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>
-  >;
-  let sectorServiceSpy: Mocked<
-    Pick<SectorService, 'createSector' | 'updateSector'>
-  >;
-  let sectorInternalServiceSpy: Mocked<
-    Pick<SectorInternalService, 'revokeSector'>
-  >;
-  let dialogServiceSpy: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let validityServiceSpy: Mocked<Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>>;
+  let sectorServiceSpy: Mocked<Pick<SectorService, 'createSector' | 'updateSector'>>;
+  let sectorInternalServiceSpy: Mocked<Pick<SectorInternalService, 'revokeSector'>>;
+  let dialogServiceSpy: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     Element.prototype.scrollIntoView = vi.fn();
@@ -106,9 +90,7 @@ describe('SectorDetailComponent', () => {
     dialogServiceSpy = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     return TestBed.configureTestingModule({
       imports: [AppTestingModule, SectorDetailComponent],
@@ -127,10 +109,7 @@ describe('SectorDetailComponent', () => {
     })
       .overrideComponent(SectorDetailComponent, {
         set: {
-          providers: [
-            { provide: ValidityService, useValue: validityServiceSpy },
-            TranslatePipe,
-          ],
+          providers: [{ provide: ValidityService, useValue: validityServiceSpy }, TranslatePipe],
         },
       })
       .compileComponents()
@@ -169,27 +148,18 @@ describe('SectorDetailComponent', () => {
 
     it('should save new sector', () => {
       vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
-      sectorServiceSpy.createSector.mockReturnValue(
-        of(BERN_PLATFORM_1_SECTOR_A[0])
-      );
+      sectorServiceSpy.createSector.mockReturnValue(of(BERN_PLATFORM_1_SECTOR_A[0]));
 
       component.form.controls.designation.setValue('A');
-      component.form.controls.validFrom.setValue(
-        moment('31.10.2000', 'dd.MM.yyyy')
-      );
-      component.form.controls.validTo.setValue(
-        moment('31.10.2099', 'dd.MM.yyyy')
-      );
+      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
+      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
       component.form.controls.sectorGeolocation?.controls.north.setValue(1.2);
       component.form.controls.sectorGeolocation?.controls.east.setValue(1.2);
 
       component.save();
 
       expect(sectorServiceSpy.createSector).toHaveBeenCalled();
-      expect(router.navigate).toHaveBeenCalledWith(
-        ['..', 'ch:1:sloid:7000:1:1:1'],
-        expect.any(Object)
-      );
+      expect(router.navigate).toHaveBeenCalledWith(['..', 'ch:1:sloid:7000:1:1:1'], expect.any(Object));
     });
   });
 
@@ -232,9 +202,7 @@ describe('SectorDetailComponent', () => {
 
     it('should update sector', () => {
       vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
-      sectorServiceSpy.updateSector.mockReturnValue(
-        of(BERN_PLATFORM_1_SECTOR_A)
-      );
+      sectorServiceSpy.updateSector.mockReturnValue(of(BERN_PLATFORM_1_SECTOR_A));
 
       component.toggleEdit();
       component.form.controls.designation.setValue('AAA');
@@ -242,10 +210,7 @@ describe('SectorDetailComponent', () => {
       component.save();
 
       expect(sectorServiceSpy.updateSector).toHaveBeenCalled();
-      expect(router.navigate).toHaveBeenCalledWith(
-        ['..', 'ch:1:sloid:7000:1:1:1'],
-        expect.any(Object)
-      );
+      expect(router.navigate).toHaveBeenCalledWith(['..', 'ch:1:sloid:7000:1:1:1'], expect.any(Object));
     });
 
     it('should revoke sector', () => {
