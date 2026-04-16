@@ -31,13 +31,13 @@ export class Cantons {
     { short: 'ZH', enumCanton: SwissCanton.Zurich, path: 'zh' },
   ];
 
-  public static swiss: Canton = {
+  public static readonly swiss: Canton = {
     short: 'CH',
     path: 'ch',
     enumCanton: 'SWISS' as SwissCanton,
   };
 
-  public static cantonsWithSwiss: Canton[] = [Cantons.swiss].concat(Cantons.cantons);
+  public static readonly cantonsWithSwiss: Canton[] = [Cantons.swiss].concat(Cantons.cantons);
 
   public static getSwissCantonEnum(canton: string | null): SwissCanton | undefined {
     if (!canton) {

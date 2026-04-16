@@ -384,10 +384,8 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
     keysInitForm.forEach((key) => {
       if (keysUpdatedForm.includes(key)) {
         formsEqual = true;
-      } else {
-        if (initForm[key as keyof typeof initForm] === updatedForm[key as keyof typeof updatedForm]) {
+      } else  if (initForm[key as keyof typeof initForm] === updatedForm[key as keyof typeof updatedForm]) {
           formsEqual = true;
-        }
       }
     });
 

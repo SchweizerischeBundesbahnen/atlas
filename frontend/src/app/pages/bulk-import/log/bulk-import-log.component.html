@@ -77,8 +77,8 @@
       </section>
 
       <main class="mt-3 log-grid">
-        <label class="font-bold-base text-nowrap">{{ 'BULK_IMPORT.LABEL.LINE_NUMBER' | translate }}</label>
-        <label class="font-bold-base justify-self-start">{{ 'BULK_IMPORT.LABEL.RESULT' | translate }}</label>
+        <span class="font-bold-base text-nowrap">{{ 'BULK_IMPORT.LABEL.LINE_NUMBER' | translate }}</span>
+        <span class="font-bold-base justify-self-start">{{ 'BULK_IMPORT.LABEL.RESULT' | translate }}</span>
         @for (entry of pagedLogEntries; track $index) {
           <span class="font-bold-base">{{ entry.lineNumber }}</span>
           <div class="w-100">

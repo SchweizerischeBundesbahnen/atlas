@@ -165,10 +165,10 @@ export class PermissionService {
           i.type!
         ) && i.valueAsString === 'true'
     );
-    if (votingRestriction && votingRestriction.type === PermissionRestrictionType.InfoPlusTerminationVote) {
+    if (votingRestriction?.type === PermissionRestrictionType.InfoPlusTerminationVote) {
       return TerminationDecisionPersonEnum.InfoPlus;
     }
-    if (votingRestriction && votingRestriction.type === PermissionRestrictionType.NovaTerminationVote) {
+    if (votingRestriction?.type === PermissionRestrictionType.NovaTerminationVote) {
       return TerminationDecisionPersonEnum.Nova;
     }
     return undefined;
