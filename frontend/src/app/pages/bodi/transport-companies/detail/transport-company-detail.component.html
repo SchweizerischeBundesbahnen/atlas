@@ -3,11 +3,7 @@
     <atlas-detail-page-content>
       <div class="detail-wrapper">
         <h1 class="font-bold-4xl mb-5 mt-5">
-          {{
-            (transportCompany.abbreviation ?? '') +
-              ' - ' +
-              (transportCompany.businessRegisterName ?? '')
-          }}
+          {{ (transportCompany.abbreviation ?? '') + ' - ' + (transportCompany.businessRegisterName ?? '') }}
         </h1>
 
         <h2 class="font-bold-2xl color-gray-900">
@@ -15,12 +11,9 @@
         </h2>
 
         <div class="mb-5">
-          <span class="font-bold-lg color-gray-900"
-            >{{ 'COMMON.STATUS' | translate }}
-          </span>
+          <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
           <span class="color-gray-900">{{
-            'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.' +
-              transportCompany.transportCompanyStatus | translate
+            'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.' + transportCompany.transportCompanyStatus | translate
           }}</span>
         </div>
         <form [formGroup]="transportFormGroup">
@@ -59,9 +52,7 @@
             </div>
           </div>
 
-          <span class="font-bold-2xl">{{
-            'BODI.TRANSPORT_COMPANIES.OFFICIAL_DATA' | translate
-          }}</span>
+          <span class="font-bold-2xl">{{ 'BODI.TRANSPORT_COMPANIES.OFFICIAL_DATA' | translate }}</span>
           <div class="col-12 d-flex mt-3">
             <div class="d-flex flex-column col pe-3">
               <atlas-text-field
@@ -83,9 +74,7 @@
           </div>
         </form>
 
-        <span class="font-bold-2xl">{{
-          'FORM.SUPPLEMENTARY_INFORMATION' | translate
-        }}</span>
+        <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
         <div class="col-12 d-flex mt-3">
           <div class="d-flex flex-column col-6">
             <atlas-form-comment
@@ -101,9 +90,7 @@
             (deleteRelation)="deleteRelation()"
             (updateRelation)="updateRelation()"
             (editModeChanged)="editMode = !editMode"
-            (selectedIndexChanged)="
-              selectedTransportCompanyRelationIndex = $event
-            "
+            (selectedIndexChanged)="selectedTransportCompanyRelationIndex = $event"
             [editMode]="editMode"
             [editable]="mayCreate()"
             [records]="transportCompanyRelations"
@@ -122,10 +109,7 @@
                   valueExtraction=""
                 >
                 </atlas-bo-select>
-                <atlas-form-date-range
-                  [formGroup]="form"
-                  class="col-6"
-                ></atlas-form-date-range>
+                <atlas-form-date-range [formGroup]="form" class="col-6"></atlas-form-date-range>
               </form>
             }
           </atlas-relation>

@@ -1,18 +1,10 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  MatStep,
-  MatStepLabel,
-  MatStepper,
-  MatStepperIcon,
-} from '@angular/material/stepper';
+import { MatStep, MatStepLabel, MatStepper, MatStepperIcon } from '@angular/material/stepper';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { MeanOfTransport } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import {
-  StopPointDetailFormGroup,
-  StopPointFormGroupBuilder,
-} from '../form/stop-point-detail-form-group';
+import { StopPointDetailFormGroup, StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';
 import { prmMeansOfTransport } from '../prm-variant-info.service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 
@@ -56,9 +48,7 @@ export class CreateStopPointComponent implements DetailFormComponent {
   constructor(private dialogService: DialogService) {}
 
   backSelection() {
-    this.isPreviousSelectionReduced = PrmMeanOfTransportHelper.isReduced(
-      this.selectedMeansOfTransport
-    );
+    this.isPreviousSelectionReduced = PrmMeanOfTransportHelper.isReduced(this.selectedMeansOfTransport);
     this.isMeanOfTransportSelected = true;
     this.isDataEditable = false;
     this.stepper.previous();
@@ -67,17 +57,11 @@ export class CreateStopPointComponent implements DetailFormComponent {
   checkSelection() {
     this.formMeanOfTransport.markAllAsTouched();
     if (this.formMeanOfTransport.valid) {
-      const selectedMeansOfTransport =
-        this.formMeanOfTransport.controls.meansOfTransport.value;
+      const selectedMeansOfTransport = this.formMeanOfTransport.controls.meansOfTransport.value;
       if (selectedMeansOfTransport && selectedMeansOfTransport.length > 0) {
-        this.isReduced = PrmMeanOfTransportHelper.isReduced(
-          selectedMeansOfTransport
-        );
+        this.isReduced = PrmMeanOfTransportHelper.isReduced(selectedMeansOfTransport);
         this.selectedMeansOfTransport = selectedMeansOfTransport;
-        if (
-          !this.isMeanOfTransportSelected ||
-          this.isReduced === this.isPreviousSelectionReduced
-        ) {
+        if (!this.isMeanOfTransportSelected || this.isReduced === this.isPreviousSelectionReduced) {
           this.initForm();
         } else if (this.isReduced !== this.isPreviousSelectionReduced) {
           this.confirmChangingRecodingVariant();
@@ -104,9 +88,7 @@ export class CreateStopPointComponent implements DetailFormComponent {
           if (!this.isReduced) {
             StopPointFormGroupBuilder.addCompleteRecordingValidation(this.form);
           } else {
-            StopPointFormGroupBuilder.removeCompleteRecordingValidation(
-              this.form
-            );
+            StopPointFormGroupBuilder.removeCompleteRecordingValidation(this.form);
           }
           this.initForm();
         }

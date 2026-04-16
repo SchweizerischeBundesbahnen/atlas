@@ -11,9 +11,7 @@ import {
 import { DateRangeValidator } from '../../../../../core/validation/date-range/date-range-validator';
 
 export interface RelationFormGroup extends BaseDetailFormGroup {
-  tactileVisualMarks: FormControl<
-    TactileVisualAttributeType | null | undefined
-  >;
+  tactileVisualMarks: FormControl<TactileVisualAttributeType | null | undefined>;
   contrastingAreas: FormControl<StandardAttributeType | null | undefined>;
   stepFreeAccess: FormControl<StepFreeAccessAttributeType | null | undefined>;
 }
@@ -23,20 +21,15 @@ export class RelationFormGroupBuilder {
     return new FormGroup<RelationFormGroup>(
       {
         tactileVisualMarks: new FormControl({
-          value:
-            version?.tactileVisualMarks ??
-            TactileVisualAttributeType.ToBeCompleted,
+          value: version?.tactileVisualMarks ?? TactileVisualAttributeType.ToBeCompleted,
           disabled: true,
         }),
         contrastingAreas: new FormControl({
-          value:
-            version?.contrastingAreas ?? StandardAttributeType.ToBeCompleted,
+          value: version?.contrastingAreas ?? StandardAttributeType.ToBeCompleted,
           disabled: true,
         }),
         stepFreeAccess: new FormControl({
-          value:
-            version?.stepFreeAccess ??
-            StepFreeAccessAttributeType.ToBeCompleted,
+          value: version?.stepFreeAccess ?? StepFreeAccessAttributeType.ToBeCompleted,
           disabled: true,
         }),
         validFrom: new FormControl(

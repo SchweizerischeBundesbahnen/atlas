@@ -37,9 +37,7 @@ describe('TthDossierOverviewComponent', () => {
   let router: Mocked<Pick<Router, 'navigate'>>;
   let overviewToTabService: OverviewToTabShareDataService;
   let activatedRoute: ActivatedRoute;
-  let permissionServiceSpy: Mocked<
-    Pick<PermissionService, 'getTthApplicationUserType'>
-  >;
+  let permissionServiceSpy: Mocked<Pick<PermissionService, 'getTthApplicationUserType'>>;
   let userService: Mocked<
     Pick<UserService, 'setCurrentUserAndLoadPermissions'> & {
       currentUser: { email: string; sbbuid: string };
@@ -144,9 +142,7 @@ describe('TthDossierOverviewComponent', () => {
     it('should initialize table for active hearing status', () => {
       vi.spyOn(component, 'initOverviewTable').mockImplementation(() => {});
       overviewToTabService.setHearingStatus(HearingStatus.Active);
-      dossierService.getOverview.mockReturnValue(
-        of({ objects: [], totalCount: 0 })
-      );
+      dossierService.getOverview.mockReturnValue(of({ objects: [], totalCount: 0 }));
 
       component.loadData();
 
@@ -159,9 +155,7 @@ describe('TthDossierOverviewComponent', () => {
       activatedRoute.snapshot.data = { hearingStatus: HearingStatus.Archived };
       overviewToTabService.setHearingStatus(HearingStatus.Archived);
       vi.spyOn(component, 'initOverviewTable').mockImplementation(() => {});
-      dossierService.getOverview.mockReturnValue(
-        of({ objects: [], totalCount: 0 })
-      );
+      dossierService.getOverview.mockReturnValue(of({ objects: [], totalCount: 0 }));
 
       component.loadData();
 
@@ -172,9 +166,7 @@ describe('TthDossierOverviewComponent', () => {
 
   describe('getOverview', () => {
     it('should call getOverview with correct parameters if canton', () => {
-      dossierService.getOverview.mockReturnValue(
-        of({ objects: [], totalCount: 0 })
-      );
+      dossierService.getOverview.mockReturnValue(of({ objects: [], totalCount: 0 }));
 
       component.getOverview({ page: 0, size: 10, sort: 'topic,asc' });
 
@@ -196,9 +188,7 @@ describe('TthDossierOverviewComponent', () => {
       permissionServiceSpy.getTthApplicationUserType.mockReturnValue('BO_TTH');
       createTestBed();
 
-      dossierService.getOverview.mockReturnValue(
-        of({ objects: [], totalCount: 0 })
-      );
+      dossierService.getOverview.mockReturnValue(of({ objects: [], totalCount: 0 }));
 
       component.getOverview({ page: 0, size: 10, sort: 'topic,asc' });
 
@@ -226,9 +216,7 @@ describe('TthDossierOverviewComponent', () => {
           dossierStatus: 'ADDED',
         },
       ];
-      dossierService.getOverview.mockReturnValue(
-        of({ objects: mockDossiers, totalCount: 1 })
-      );
+      dossierService.getOverview.mockReturnValue(of({ objects: mockDossiers, totalCount: 1 }));
 
       component.getOverview({ page: 0, size: 10, sort: 'topic,asc' });
 
@@ -237,9 +225,7 @@ describe('TthDossierOverviewComponent', () => {
     });
 
     it('should handle error gracefully', () => {
-      dossierService.getOverview.mockReturnValue(
-        throwError(() => new Error('Test error'))
-      );
+      dossierService.getOverview.mockReturnValue(throwError(() => new Error('Test error')));
 
       component.getOverview({ page: 0, size: 10, sort: '' });
 

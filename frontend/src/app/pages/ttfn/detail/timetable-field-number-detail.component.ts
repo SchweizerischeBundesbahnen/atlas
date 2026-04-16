@@ -1,20 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ApplicationRole,
-  ApplicationType,
-  TimetableFieldNumberVersion,
-} from '../../../api';
+import { ApplicationRole, ApplicationType, TimetableFieldNumberVersion } from '../../../api';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
-import {
-  catchError,
-  distinctUntilChanged,
-  EMPTY,
-  of,
-  skipWhile,
-  startWith,
-} from 'rxjs';
+import { catchError, distinctUntilChanged, EMPTY, of, skipWhile, startWith } from 'rxjs';
 import { Pages } from '../../pages';
 import { ValidityService } from '../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
@@ -42,10 +31,7 @@ import { SwitchVersionComponent } from '../../../core/components/switch-version/
 import { UserDetailInfoComponent } from '../../../core/components/user-edit-info/user-detail-info.component';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import {
-  DetailDialogHelperService,
-  DetailWithCancelEdit,
-} from '../../../core/detail/detail-dialog-helper.service';
+import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../core/detail/detail-dialog-helper.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { TtfnMeanOfTransport } from '../../../api/model/ttfnMeanOfTransport';
 import { RevokeButton } from '../../../core/form-components/revoke-button/revoke-button';
@@ -73,17 +59,12 @@ import { RevokeButton } from '../../../core/form-components/revoke-button/revoke
     RevokeButton,
   ],
 })
-export class TimetableFieldNumberDetailComponent
-  implements DetailWithCancelEdit, OnInit
-{
+export class TimetableFieldNumberDetailComponent implements DetailWithCancelEdit, OnInit {
   // Interface impl
   isNew: boolean = true;
   form!: FormGroup;
-  protected readonly allowableMeansOfTransport =
-    Object.values(TtfnMeanOfTransport);
-  protected readonly descriptionMaxChars: string = String(
-    DESCRIPTION_MAX_LENGTH
-  );
+  protected readonly allowableMeansOfTransport = Object.values(TtfnMeanOfTransport);
+  protected readonly descriptionMaxChars: string = String(DESCRIPTION_MAX_LENGTH);
   protected displayOutwardLine2$ = of(false);
   protected displayOutwardLine3$ = of(false);
   protected displayReturnLine2$ = of(false);
@@ -97,21 +78,14 @@ export class TimetableFieldNumberDetailComponent
   // DI
   private readonly permissionService = inject(PermissionService);
   // Template variables
-  protected readonly isAtLeastSupervisor =
-    this.permissionService.isAtLeastSupervisor(ApplicationType.Ttfn);
+  protected readonly isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Ttfn);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly timetableFieldNumberInternalService = inject(
-    TimetableFieldNumberInternalService
-  );
-  private readonly timetableFieldNumberService = inject(
-    TimetableFieldNumberService
-  );
+  private readonly timetableFieldNumberInternalService = inject(TimetableFieldNumberInternalService);
+  private readonly timetableFieldNumberService = inject(TimetableFieldNumberService);
   private readonly notificationService = inject(NotificationService);
   private readonly validityService = inject(ValidityService);
-  private readonly detailDialogHelperService = inject(
-    DetailDialogHelperService
-  );
+  private readonly detailDialogHelperService = inject(DetailDialogHelperService);
 
   ngOnInit() {
     const versions = this.readVersions();
@@ -121,18 +95,13 @@ export class TimetableFieldNumberDetailComponent
         ...version,
         versionNumber: versionIndex + 1,
       }));
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.versions
-        );
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
       this.isNew = false;
     }
     this.initForm();
-    this.showSwitch = VersionsHandlingService.hasMultipleVersions(
-      this.versions
-    );
+    this.showSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
     this.initBoSboidRestriction();
   }
 
@@ -154,12 +123,9 @@ export class TimetableFieldNumberDetailComponent
     if (this.selectedVersion || this.permissionService.isAdmin) {
       this.boSboidRestriction = [];
     } else {
-      const permission = this.permissionService.getApplicationUserPermission(
-        ApplicationType.Lidi
-      );
+      const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Lidi);
       if (permission.role === ApplicationRole.Writer) {
-        this.boSboidRestriction =
-          PermissionService.getSboidRestrictions(permission);
+        this.boSboidRestriction = PermissionService.getSboidRestrictions(permission);
       } else {
         this.boSboidRestriction = [];
       }
@@ -204,9 +170,7 @@ export class TimetableFieldNumberDetailComponent
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate([Pages.TTFN.path, ttfnid])
-          .then(() => this.ngOnInit());
+        this.router.navigate([Pages.TTFN.path, ttfnid]).then(() => this.ngOnInit());
       });
   }
 
@@ -216,32 +180,24 @@ export class TimetableFieldNumberDetailComponent
       .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
-        this.router
-          .navigate([Pages.TTFN.path, version.ttfnid])
-          .then(() => this.ngOnInit());
+        this.router.navigate([Pages.TTFN.path, version.ttfnid]).then(() => this.ngOnInit());
       });
   }
 
   revoke(): void {
     const ttfnid = required(this.selectedVersion?.ttfnid, 'ttfnid is required');
-    this.timetableFieldNumberInternalService
-      .revokeTimetableFieldNumber(ttfnid)
-      .subscribe(() => {
-        this.notificationService.success('TTFN.NOTIFICATION.REVOKE_SUCCESS');
-        this.router
-          .navigate([Pages.TTFN.path, ttfnid])
-          .then(() => this.ngOnInit());
-      });
+    this.timetableFieldNumberInternalService.revokeTimetableFieldNumber(ttfnid).subscribe(() => {
+      this.notificationService.success('TTFN.NOTIFICATION.REVOKE_SUCCESS');
+      this.router.navigate([Pages.TTFN.path, ttfnid]).then(() => this.ngOnInit());
+    });
   }
 
   deleteRecord(): void {
     const ttfnid = required(this.selectedVersion?.ttfnid, 'ttfnid is required');
-    this.timetableFieldNumberInternalService
-      .deleteVersions(ttfnid)
-      .subscribe(() => {
-        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-        this.back();
-      });
+    this.timetableFieldNumberInternalService.deleteVersions(ttfnid).subscribe(() => {
+      this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+      this.back();
+    });
   }
 
   delete() {
@@ -255,8 +211,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   getFormGroup(version?: TimetableFieldNumberVersion): FormGroup {
-    const formGroup =
-      TimetableFieldNumberDetailFormGroupBuilder.getFormGroup(version);
+    const formGroup = TimetableFieldNumberDetailFormGroupBuilder.getFormGroup(version);
 
     this.displayOutwardLine2$ = this.getDisplayObs(
       formGroup.controls.descriptionOutwardLine1,

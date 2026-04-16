@@ -2,13 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
-import {
-  BusinessOrganisation,
-  ElementType,
-  LidiElementType,
-  Line,
-  Status,
-} from '../../../api';
+import { BusinessOrganisation, ElementType, LidiElementType, Line, Status } from '../../../api';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -95,10 +89,7 @@ export class LinesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      this.tableFilterConfigIntern,
-      Pages.LINES
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.LINES);
   }
 
   getOverview(pagination: TablePagination) {
@@ -129,9 +120,7 @@ export class LinesComponent implements OnInit, OnDestroy {
     if ($event.elementType == ElementType.Subline) {
       pathToNavigate = Pages.SUBLINES.path;
     }
-    this.router
-      .navigate([Pages.LIDI.path, pathToNavigate, $event.slnid])
-      .then();
+    this.router.navigate([Pages.LIDI.path, pathToNavigate, $event.slnid]).then();
   }
 
   ngOnDestroy() {

@@ -11,8 +11,7 @@ describe('DossierDetailFormGroup', () => {
   it('should map form question to TthDossier correctly when filled', () => {
     const formGroup = DossierFormGroupBuilder.buildFormGroup();
     formGroup.controls.question.setValue('What is the status?');
-    const dossierQuestions =
-      DossierFormGroupBuilder.getDossier(formGroup).questions;
+    const dossierQuestions = DossierFormGroupBuilder.getDossier(formGroup).questions;
     expect(dossierQuestions.length).toBe(1);
     expect(dossierQuestions[0].question).toEqual('What is the status?');
     expect(dossierQuestions[0].answerToCanton).toBeNull();

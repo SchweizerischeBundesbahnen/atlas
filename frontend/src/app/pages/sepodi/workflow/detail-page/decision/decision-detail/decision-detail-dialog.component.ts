@@ -3,10 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DecisionOverrideComponent } from './override/decision-override.component';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
 import { DecisionType, ReadDecision, WorkflowStatus } from 'src/app/api';
-import {
-  ExaminantFormGroup,
-  SPECIAL_DECISION_TYPES,
-} from '../../detail-form/stop-point-workflow-detail-form-group';
+import { ExaminantFormGroup, SPECIAL_DECISION_TYPES } from '../../detail-form/stop-point-workflow-detail-form-group';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
@@ -55,14 +52,9 @@ export class DecisionDetailDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (
-      SPECIAL_DECISION_TYPES.includes(
-        this.decisionDetailDialogData.examinant.value.decisionType!
-      )
-    ) {
+    if (SPECIAL_DECISION_TYPES.includes(this.decisionDetailDialogData.examinant.value.decisionType!)) {
       this.specialDecision = true;
-      this.title =
-        'WORKFLOW.STATUS.' + this.decisionDetailDialogData.workflowStatus;
+      this.title = 'WORKFLOW.STATUS.' + this.decisionDetailDialogData.workflowStatus;
     }
     this.decisionForm.patchValue(this.decisionDetailDialogData.examinant.value);
     if (this.decisionDetailDialogData.examinant.controls.judgement.value) {

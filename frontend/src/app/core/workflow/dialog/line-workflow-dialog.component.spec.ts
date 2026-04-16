@@ -14,10 +14,7 @@ import {
 } from '../../../api';
 import { NotificationService } from '../../notification/notification.service';
 import { of } from 'rxjs';
-import {
-  adminPermissionServiceMock,
-  translateServiceProvider,
-} from '../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../app.testing.mocks';
 import { PermissionService } from '../../auth/permission/permission.service';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import { LineWorkflowService } from '../../../api/service/workflow/line-workflow.service';
@@ -50,16 +47,10 @@ describe('LineWorkflowDialogComponent new', () => {
   let component: LineWorkflowDialogComponent;
   let fixture: ComponentFixture<LineWorkflowDialogComponent>;
 
-  let dialogRefStub: Mocked<
-    Pick<MatDialogRef<LineWorkflowDialogComponent>, 'close'>
-  >;
+  let dialogRefStub: Mocked<Pick<MatDialogRef<LineWorkflowDialogComponent>, 'close'>>;
   let notificationServiceStub: Mocked<Pick<NotificationService, 'success'>>;
-  let userAdministrationServiceStub: Mocked<
-    Pick<UserAdministrationService, 'getCurrentUser'>
-  >;
-  let workflowServiceStub: Mocked<
-    Pick<LineWorkflowService, 'getWorkflow' | 'startWorkflow'>
-  >;
+  let userAdministrationServiceStub: Mocked<Pick<UserAdministrationService, 'getCurrentUser'>>;
+  let workflowServiceStub: Mocked<Pick<LineWorkflowService, 'getWorkflow' | 'startWorkflow'>>;
 
   beforeEach(() => {
     // Mocking
@@ -115,16 +106,12 @@ describe('LineWorkflowDialogComponent new', () => {
     expect(component).toBeTruthy();
 
     expect(component.workflowStartFormGroup.value.mail).toBe(user.mail);
-    expect(component.workflowStartFormGroup.value.firstName).toBe(
-      user.firstName
-    );
+    expect(component.workflowStartFormGroup.value.firstName).toBe(user.firstName);
     expect(component.workflowStartFormGroup.value.lastName).toBe(user.lastName);
   });
 
   it('should start workflow', () => {
-    component.workflowStartFormGroup.controls.comment.setValue(
-      'I mag an worfklof ga starte'
-    );
+    component.workflowStartFormGroup.controls.comment.setValue('I mag an worfklof ga starte');
     component.workflowStartFormGroup.controls.function.setValue('I bims, a TU');
 
     component.startWorkflow();
@@ -137,16 +124,10 @@ describe('LineWorkflowDialogComponent open', () => {
   let component: LineWorkflowDialogComponent;
   let fixture: ComponentFixture<LineWorkflowDialogComponent>;
 
-  let dialogRefStub: Mocked<
-    Pick<MatDialogRef<LineWorkflowDialogComponent>, 'close'>
-  >;
+  let dialogRefStub: Mocked<Pick<MatDialogRef<LineWorkflowDialogComponent>, 'close'>>;
   let notificationServiceStub: Mocked<Pick<NotificationService, 'success'>>;
-  let userAdministrationServiceStub: Mocked<
-    Pick<UserAdministrationService, 'getCurrentUser'>
-  >;
-  let workflowServiceStub: Mocked<
-    Pick<LineWorkflowService, 'getWorkflow' | 'startWorkflow'>
-  >;
+  let userAdministrationServiceStub: Mocked<Pick<UserAdministrationService, 'getCurrentUser'>>;
+  let workflowServiceStub: Mocked<Pick<LineWorkflowService, 'getWorkflow' | 'startWorkflow'>>;
 
   beforeEach(() => {
     // Mocking
@@ -205,21 +186,11 @@ describe('LineWorkflowDialogComponent open', () => {
   });
 
   it('should display existing workflow', () => {
-    expect(component.workflowStartFormGroup.value.mail).toBe(
-      workflow.client!.mail
-    );
-    expect(component.workflowStartFormGroup.value.lastName).toBe(
-      workflow.client!.lastName
-    );
-    expect(component.workflowStartFormGroup.value.firstName).toBe(
-      workflow.client!.firstName
-    );
-    expect(component.workflowStartFormGroup.value.function).toBe(
-      workflow.client!.personFunction
-    );
+    expect(component.workflowStartFormGroup.value.mail).toBe(workflow.client!.mail);
+    expect(component.workflowStartFormGroup.value.lastName).toBe(workflow.client!.lastName);
+    expect(component.workflowStartFormGroup.value.firstName).toBe(workflow.client!.firstName);
+    expect(component.workflowStartFormGroup.value.function).toBe(workflow.client!.personFunction);
 
-    expect(component.workflowStartFormGroup.value.comment).toBe(
-      workflow.workflowComment
-    );
+    expect(component.workflowStartFormGroup.value.comment).toBe(workflow.workflowComment);
   });
 });

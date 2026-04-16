@@ -52,10 +52,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      this.tableFilterConfigIntern,
-      Pages.COMPANIES
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.COMPANIES);
   }
 
   getOverview(pagination: TablePagination) {

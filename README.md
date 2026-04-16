@@ -274,26 +274,13 @@ docker-compose down -v
 
 ### Code-Formatting
 
-Configuration for the Frontend using IntelliJ:
+Configuration for Prettier:
 
-1. Install the "Prettier" plugin
-2. File > Settings > Languages & Frameworks > JavaScript > Prettier
-    1. Select "Automatic Prettier configuration"
-    2. Set "Run for files" to `{frontend/**}.{ts,html,scss}`
-    3. Select "Run on save"
+![image](documentation/image/prettier-settings.png)
 
-Configuration for Java using Intellij:
+Configuration for `Actions on Save`:
 
-1. File > Settings > Editor > Code Style
-    1. Select "Project" scheme
-2. File > Settings > Tools > Actions on Save
-    1. Activate "Reformat code" with (Files: Java, Whole File) options
-
-General configuration:
-
-1. File > Settings > Tools > Actions on Save
-    1. Activate "Optimize imports" with (Files: Java, TypeScript) options
-
+![image](documentation/image/actions-on-save.png)
 
 ## Troubleshooting
 

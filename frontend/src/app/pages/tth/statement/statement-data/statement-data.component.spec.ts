@@ -26,14 +26,9 @@ const transportCompany: TransportCompany = {
 };
 
 const mockTimetableHearingStatementsService: Mocked<
-  Pick<
-    TimetableHearingStatementInternalService,
-    'getResponsibleTransportCompanies'
-  >
+  Pick<TimetableHearingStatementInternalService, 'getResponsibleTransportCompanies'>
 > = {
-  getResponsibleTransportCompanies: vi
-    .fn()
-    .mockReturnValue(of([transportCompany])),
+  getResponsibleTransportCompanies: vi.fn().mockReturnValue(of([transportCompany])),
 };
 const router: Mocked<Pick<Router, 'navigate'>> = {
   navigate: vi.fn().mockResolvedValue(true),
@@ -66,16 +61,10 @@ describe('StatementData', () => {
     })
       .overrideComponent(StatementDataComponent, {
         remove: {
-          imports: [
-            TransportCompanySelectComponent,
-            TimetableFieldNumberSelectComponent,
-          ],
+          imports: [TransportCompanySelectComponent, TimetableFieldNumberSelectComponent],
         },
         add: {
-          imports: [
-            MockTuSelectComponent,
-            MockTimetableFieldNumberSelectComponent,
-          ],
+          imports: [MockTuSelectComponent, MockTimetableFieldNumberSelectComponent],
         },
       })
       .compileComponents();
@@ -104,13 +93,8 @@ describe('StatementData', () => {
     //when
     component.ttfnSelectionChanged(ttfn);
     //then
-    expect(
-      component.form().controls.responsibleTransportCompanies.value?.length
-    ).toBe(1);
-    const transportCompanies:
-      | TimetableHearingStatementResponsibleTransportCompany[]
-      | null
-      | undefined = component
+    expect(component.form().controls.responsibleTransportCompanies.value?.length).toBe(1);
+    const transportCompanies: TimetableHearingStatementResponsibleTransportCompany[] | null | undefined = component
       .form()
       .controls.responsibleTransportCompanies.getRawValue();
     if (transportCompanies) {

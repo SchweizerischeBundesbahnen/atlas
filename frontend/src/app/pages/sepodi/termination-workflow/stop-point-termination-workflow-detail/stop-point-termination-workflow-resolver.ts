@@ -21,41 +21,34 @@ export class StopPointTerminationWorkflowResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<StopPointTerminationWorkflowDetailData | undefined> {
+  resolve(route: ActivatedRouteSnapshot): Observable<StopPointTerminationWorkflowDetailData | undefined> {
     const idParameter = parseInt(route.paramMap.get('id') ?? '0');
-    return this.stopPointTerminationWorkflowService
-      .getTerminationById(idParameter)
-      .pipe(
-        catchError(() => {
-          this.router
-            .navigate([Pages.TERMINATION_STOP_POINT_WORKFLOWS.path], {
-              state: { notDismissSnackBar: true },
+    return this.stopPointTerminationWorkflowService.getTerminationById(idParameter).pipe(
+      catchError(() => {
+        this.router
+          .navigate([Pages.TERMINATION_STOP_POINT_WORKFLOWS.path], {
+            state: { notDismissSnackBar: true },
+          })
+          .then();
+        return of(undefined);
+      }),
+      mergeMap((workflow) => {
+        if (workflow) {
+          return this.servicePointService.getServicePointVersionsBySloid(workflow.sloid).pipe(
+            map((servicePoint) => {
+              return {
+                workflow: workflow,
+                servicePoint: servicePoint,
+              };
             })
-            .then();
-          return of(undefined);
-        }),
-        mergeMap((workflow) => {
-          if (workflow) {
-            return this.servicePointService
-              .getServicePointVersionsBySloid(workflow.sloid)
-              .pipe(
-                map((servicePoint) => {
-                  return {
-                    workflow: workflow,
-                    servicePoint: servicePoint,
-                  };
-                })
-              );
-          }
-          return of();
-        })
-      );
+          );
+        }
+        return of();
+      })
+    );
   }
 }
 
-export const stopPointTerminationWorkflowResolver: ResolveFn<
-  StopPointTerminationWorkflowDetailData | undefined
-> = (route: ActivatedRouteSnapshot) =>
-  inject(StopPointTerminationWorkflowResolver).resolve(route);
+export const stopPointTerminationWorkflowResolver: ResolveFn<StopPointTerminationWorkflowDetailData | undefined> = (
+  route: ActivatedRouteSnapshot
+) => inject(StopPointTerminationWorkflowResolver).resolve(route);

@@ -14,16 +14,8 @@ export interface StopPointRejectWorkflowFormGroup {
 export class StopPointRejectWorkflowFormGroupBuilder {
   static initFormGroup(): FormGroup<StopPointRejectWorkflowFormGroup> {
     return new FormGroup<StopPointRejectWorkflowFormGroup>({
-      firstName: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(50),
-        AtlasCharsetsValidator.iso88591,
-      ]),
-      lastName: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(50),
-        AtlasCharsetsValidator.iso88591,
-      ]),
+      firstName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
+      lastName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
       organisation: new FormControl('', [
         Validators.required,
         Validators.maxLength(255),
@@ -35,16 +27,11 @@ export class StopPointRejectWorkflowFormGroupBuilder {
         AtlasFieldLengthValidator.comments,
         AtlasCharsetsValidator.iso88591,
       ]),
-      mail: new FormControl('', [
-        Validators.required,
-        AtlasCharsetsValidator.email,
-      ]),
+      mail: new FormControl('', [Validators.required, AtlasCharsetsValidator.email]),
     });
   }
 
-  static buildStopPointRejectWorkflow(
-    formGroup: FormGroup<StopPointRejectWorkflowFormGroup>
-  ): StopPointRejectWorkflow {
+  static buildStopPointRejectWorkflow(formGroup: FormGroup<StopPointRejectWorkflowFormGroup>): StopPointRejectWorkflow {
     return {
       firstName: formGroup.controls.firstName.value!,
       lastName: formGroup.controls.lastName.value!,

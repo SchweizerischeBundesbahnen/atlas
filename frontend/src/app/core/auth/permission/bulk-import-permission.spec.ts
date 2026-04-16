@@ -1,13 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import {
-  BULK_IMPORT_APPLICATIONS,
-  BulkImportPermission,
-} from './bulk-import-permission';
-import {
-  ApplicationRole,
-  ApplicationType,
-  PermissionRestrictionType,
-} from '../../../api';
+import { BULK_IMPORT_APPLICATIONS, BulkImportPermission } from './bulk-import-permission';
+import { ApplicationRole, ApplicationType, PermissionRestrictionType } from '../../../api';
 
 describe('BulkImportPermission', () => {
   it('may access BulkImport for supervisor', () => {
@@ -48,9 +41,7 @@ describe('BulkImportPermission', () => {
       {
         application: ApplicationType.Sepodi,
         role: ApplicationRole.Writer,
-        permissionRestrictions: [
-          { type: PermissionRestrictionType.BulkImport, valueAsString: 'true' },
-        ],
+        permissionRestrictions: [{ type: PermissionRestrictionType.BulkImport, valueAsString: 'true' }],
       },
     ]);
     expect(result).toBe(true);

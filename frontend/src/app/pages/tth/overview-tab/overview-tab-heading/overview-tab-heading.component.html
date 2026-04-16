@@ -14,14 +14,9 @@
         {{ 'PAGES.TTH.TITLE_MENU' | translate }}
         {{ foundTimetableHearingYear.timetableYear }}
       </div>
-      @if (
-        !isPlannedTimetableHearingYearFound && !isTimetableHearingYearFound
-      ) {
+      @if (!isPlannedTimetableHearingYearFound && !isTimetableHearingYearFound) {
         <div class="mb-5">
-          <span>{{
-            'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND'
-              | translate
-          }}</span>
+          <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND' | translate }}</span>
         </div>
       }
       @if (isTimetableHearingYearFound) {
@@ -29,17 +24,14 @@
           <div class="mb-5">
             <span>{{
               'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_SUBHEADING_PREFIX'
-                | translate
-                  : { timeTableYear: foundTimetableHearingYear.timetableYear }
+                | translate: { timeTableYear: foundTimetableHearingYear.timetableYear }
             }}</span>
             <span class="font-bold-base">{{
               'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_SUBHEADING_POSTFIX'
                 | translate
                   : {
-                      hearingFrom:
-                        foundTimetableHearingYear.hearingFrom | displayDate,
-                      hearingTo:
-                        foundTimetableHearingYear.hearingTo | displayDate,
+                      hearingFrom: foundTimetableHearingYear.hearingFrom | displayDate,
+                      hearingTo: foundTimetableHearingYear.hearingTo | displayDate,
                     }
             }}</span>
           </div>
@@ -50,17 +42,14 @@
           <div class="mb-5">
             <span>{{
               'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX'
-                | translate
-                  : { timeTableYear: foundTimetableHearingYear.timetableYear }
+                | translate: { timeTableYear: foundTimetableHearingYear.timetableYear }
             }}</span>
             <span class="font-bold-base">{{
               'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_SUBHEADING_POSTFIX'
                 | translate
                   : {
-                      hearingFrom:
-                        foundTimetableHearingYear.hearingFrom | displayDate,
-                      hearingTo:
-                        foundTimetableHearingYear.hearingTo | displayDate,
+                      hearingFrom: foundTimetableHearingYear.hearingFrom | displayDate,
+                      hearingTo: foundTimetableHearingYear.hearingTo | displayDate,
                     }
             }}</span>
           </div>
@@ -74,15 +63,11 @@
         {{ 'PAGES.TTH.SUBPAGE.PLANNED' | translate }}
       </div>
       <div class="mb-5">
-        <span>{{
-          'TTH.OVERVIEW_TAB.OVERVIEW_PLANNED_SUBHEADING' | translate
-        }}</span>
+        <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_PLANNED_SUBHEADING' | translate }}</span>
       </div>
       @if (!isTimetableHearingYearFound) {
         <div class="table-heading font-bold-lg color-gray-900 mb-3">
-          <span>{{
-            'TTH.OVERVIEW_TAB.OVERVIEW_PLANNED_NOT_FOUND' | translate
-          }}</span>
+          <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_PLANNED_NOT_FOUND' | translate }}</span>
         </div>
       }
     </div>
@@ -93,15 +78,11 @@
         {{ 'PAGES.TTH.SUBPAGE.ARCHIVED' | translate }}
       </div>
       <div class="mb-5">
-        <span>{{
-          'TTH.OVERVIEW_TAB.OVERVIEW_ARCHIVED_SUBHEADING' | translate
-        }}</span>
+        <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_ARCHIVED_SUBHEADING' | translate }}</span>
       </div>
       @if (!isTimetableHearingYearFound) {
         <div class="table-heading font-bold-lg color-gray-900 mb-3">
-          <span>{{
-            'TTH.OVERVIEW_TAB.OVERVIEW_ARCHIVED_NOT_FOUND' | translate
-          }}</span>
+          <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_ARCHIVED_NOT_FOUND' | translate }}</span>
         </div>
       }
     </div>

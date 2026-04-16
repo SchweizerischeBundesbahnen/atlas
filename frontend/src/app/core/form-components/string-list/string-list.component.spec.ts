@@ -57,9 +57,7 @@ describe('StringListComponent', () => {
       input: 'a@a.ch',
     });
     component.addItem();
-    expect(component.formGroup.get(component.controlName)?.value).toEqual([
-      'a@a.ch',
-    ]);
+    expect(component.formGroup.get(component.controlName)?.value).toEqual(['a@a.ch']);
     expect(component.formGroup.dirty).toBe(false);
     expect(component.strListFormGroup.get('input')?.value).toEqual('');
   });
@@ -74,10 +72,7 @@ describe('StringListComponent', () => {
       input: 'b@b.ch',
     });
     component.addItem();
-    expect(component.formGroup.get(component.controlName)?.value).toEqual([
-      'a@a.ch',
-      'b@b.ch',
-    ]);
+    expect(component.formGroup.get(component.controlName)?.value).toEqual(['a@a.ch', 'b@b.ch']);
     expect(component.formGroup.dirty).toBe(true);
     expect(component.strListFormGroup.get('input')?.value).toEqual('');
   });
@@ -92,9 +87,7 @@ describe('StringListComponent', () => {
       input: null,
     });
     component.addItem();
-    expect(component.formGroup.get(component.controlName)?.value).toEqual([
-      'a@a.ch',
-    ]);
+    expect(component.formGroup.get(component.controlName)?.value).toEqual(['a@a.ch']);
     expect(component.formGroup.dirty).toBe(false);
     expect(component.strListFormGroup.get('input')?.value).toEqual(null);
   });

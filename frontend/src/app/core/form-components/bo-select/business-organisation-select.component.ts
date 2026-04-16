@@ -21,16 +21,9 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
 @Component({
   selector: 'atlas-bo-select',
   templateUrl: './business-organisation-select.component.html',
-  imports: [
-    SearchSelectComponent,
-    ReactiveFormsModule,
-    AtlasLabelFieldComponent,
-    BoSelectionDisplayPipe,
-  ],
+  imports: [SearchSelectComponent, ReactiveFormsModule, AtlasLabelFieldComponent, BoSelectionDisplayPipe],
 })
-export class BusinessOrganisationSelectComponent
-  implements OnInit, OnDestroy, OnChanges
-{
+export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'sboid';
   @Input() controlName!: string;
   @Input() formModus = true;
@@ -44,9 +37,7 @@ export class BusinessOrganisationSelectComponent
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
   private formSubscription!: Subscription;
 
-  private readonly businessOrganisationService = inject(
-    BusinessOrganisationService
-  );
+  private readonly businessOrganisationService = inject(BusinessOrganisationService);
 
   ngOnInit(): void {
     this.init();

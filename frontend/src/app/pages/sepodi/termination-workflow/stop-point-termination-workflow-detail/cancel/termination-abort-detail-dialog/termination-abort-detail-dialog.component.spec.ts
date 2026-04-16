@@ -18,12 +18,8 @@ describe('TerminationCancelDetailDialog', () => {
   let component: TerminationAbortDetailDialogComponent;
   let fixture: ComponentFixture<TerminationAbortDetailDialogComponent>;
 
-  let dialogRefMock: Mocked<
-    Pick<MatDialogRef<TerminationAbortDetailDialogComponent>, 'close'>
-  >;
-  let terminationWorkflowServiceMock: Mocked<
-    Pick<StopPointTerminationWorkflowService, 'abortTermination'>
-  >;
+  let dialogRefMock: Mocked<Pick<MatDialogRef<TerminationAbortDetailDialogComponent>, 'close'>>;
+  let terminationWorkflowServiceMock: Mocked<Pick<StopPointTerminationWorkflowService, 'abortTermination'>>;
 
   beforeEach(async () => {
     dialogRefMock = {

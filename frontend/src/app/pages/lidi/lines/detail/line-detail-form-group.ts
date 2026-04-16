@@ -1,11 +1,6 @@
 import { BaseDetailFormGroup } from '../../../../core/model/base-detail-form-group';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  LineConcessionType,
-  LineType,
-  LineVersionV2,
-  OfferCategory,
-} from '../../../../api';
+import { LineConcessionType, LineType, LineVersionV2, OfferCategory } from '../../../../api';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
@@ -27,9 +22,7 @@ export interface LineDetailFormGroup extends BaseDetailFormGroup {
 }
 
 export class LineFormGroupBuilder {
-  static buildFormGroup(
-    version?: LineVersionV2
-  ): FormGroup<LineDetailFormGroup> {
+  static buildFormGroup(version?: LineVersionV2): FormGroup<LineDetailFormGroup> {
     return new FormGroup<LineDetailFormGroup>(
       {
         linienId: new FormControl(version?.linienId, [
@@ -42,9 +35,7 @@ export class LineFormGroupBuilder {
           AtlasCharsetsValidator.sid4pt,
         ]),
         lineType: new FormControl(version?.lineType, [Validators.required]),
-        offerCategory: new FormControl(version?.offerCategory, [
-          Validators.required,
-        ]),
+        offerCategory: new FormControl(version?.offerCategory, [Validators.required]),
         businessOrganisation: new FormControl(version?.businessOrganisation, [
           Validators.required,
           AtlasFieldLengthValidator.length_50,
@@ -61,9 +52,7 @@ export class LineFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        lineConcessionType: new FormControl(version?.lineConcessionType, [
-          Validators.required,
-        ]),
+        lineConcessionType: new FormControl(version?.lineConcessionType, [Validators.required]),
         longName: new FormControl(version?.longName, [
           AtlasFieldLengthValidator.length_255,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
@@ -76,14 +65,8 @@ export class LineFormGroupBuilder {
           AtlasCharsetsValidator.iso88591,
           Validators.required,
         ]),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [Validators.required]),
         comment: new FormControl(version?.comment, [
           AtlasFieldLengthValidator.comments,
           AtlasCharsetsValidator.iso88591,

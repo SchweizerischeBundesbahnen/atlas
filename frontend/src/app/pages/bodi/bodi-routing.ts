@@ -11,9 +11,9 @@ export const routes: Routes = [
   {
     path: Pages.BUSINESS_ORGANISATIONS.path + '/:id',
     loadComponent: () =>
-      import(
-        './business-organisations/detail/business-organisation-detail.component'
-      ).then((m) => m.BusinessOrganisationDetailComponent),
+      import('./business-organisations/detail/business-organisation-detail.component').then(
+        (m) => m.BusinessOrganisationDetailComponent
+      ),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       businessOrganisationDetail: businessOrganisationResolver,
@@ -23,9 +23,9 @@ export const routes: Routes = [
   {
     path: Pages.TRANSPORT_COMPANIES.path + '/:id',
     loadComponent: () =>
-      import(
-        './transport-companies/detail/transport-company-detail.component'
-      ).then((m) => m.TransportCompanyDetailComponent),
+      import('./transport-companies/detail/transport-company-detail.component').then(
+        (m) => m.TransportCompanyDetailComponent
+      ),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       transportCompanyDetail: transportCompanyResolver,
@@ -34,10 +34,7 @@ export const routes: Routes = [
   },
   {
     path: Pages.COMPANIES.path + '/:id',
-    loadComponent: () =>
-      import('./companies/detail/company-detail.component').then(
-        (m) => m.CompanyDetailComponent
-      ),
+    loadComponent: () => import('./companies/detail/company-detail.component').then((m) => m.CompanyDetailComponent),
     resolve: {
       companyDetail: companyResolver,
     },
@@ -45,31 +42,23 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadComponent: () =>
-      import('./overview/bodi-overview.component').then(
-        (m) => m.BodiOverviewComponent
-      ),
+    loadComponent: () => import('./overview/bodi-overview.component').then((m) => m.BodiOverviewComponent),
     children: [
       {
         path: Pages.BUSINESS_ORGANISATIONS.path,
         loadComponent: () =>
-          import(
-            './business-organisations/business-organisation.component'
-          ).then((m) => m.BusinessOrganisationComponent),
+          import('./business-organisations/business-organisation.component').then(
+            (m) => m.BusinessOrganisationComponent
+          ),
       },
       {
         path: Pages.TRANSPORT_COMPANIES.path,
         loadComponent: () =>
-          import('./transport-companies/transport-companies.component').then(
-            (m) => m.TransportCompaniesComponent
-          ),
+          import('./transport-companies/transport-companies.component').then((m) => m.TransportCompaniesComponent),
       },
       {
         path: Pages.COMPANIES.path,
-        loadComponent: () =>
-          import('./companies/companies.component').then(
-            (m) => m.CompaniesComponent
-          ),
+        loadComponent: () => import('./companies/companies.component').then((m) => m.CompaniesComponent),
       },
       { path: '**', redirectTo: Pages.BUSINESS_ORGANISATIONS.path },
     ],

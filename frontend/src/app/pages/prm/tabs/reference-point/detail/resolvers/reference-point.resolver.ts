@@ -12,27 +12,21 @@ export class PrmReferencePointResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadReferencePointVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadReferencePointVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';
     return sloidParameter === 'add'
       ? of([])
-      : this.referencePointService
-          .getReferencePointVersions(sloidParameter)
-          .pipe(
-            catchError(() =>
-              this.router
-                .navigate([Pages.PRM.path], {
-                  state: { notDismissSnackBar: true },
-                })
-                .then(() => [])
-            )
-          );
+      : this.referencePointService.getReferencePointVersions(sloidParameter).pipe(
+          catchError(() =>
+            this.router
+              .navigate([Pages.PRM.path], {
+                state: { notDismissSnackBar: true },
+              })
+              .then(() => [])
+          )
+        );
   }
 }
 
-export const referencePointResolver: ResolveFn<
-  Array<ReadReferencePointVersion>
-> = (route: ActivatedRouteSnapshot) =>
+export const referencePointResolver: ResolveFn<Array<ReadReferencePointVersion>> = (route: ActivatedRouteSnapshot) =>
   inject(PrmReferencePointResolver).resolve(route);

@@ -18,10 +18,7 @@ import {
   BERN_PLATFORM_1_SECTORGROUP_A,
   CREATE_BERN_PLATFORM_1_SECTORGROUP_A,
 } from '../../../../../test/data/sectorgroup';
-import {
-  BERN_PLATFORM_1_SECTOR_A,
-  BERN_PLATFORM_1_SECTOR_MULTIPLE,
-} from '../../../../../test/data/sector';
+import { BERN_PLATFORM_1_SECTOR_A, BERN_PLATFORM_1_SECTOR_MULTIPLE } from '../../../../../test/data/sector';
 import { MapService } from '../../map/map.service';
 import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -52,31 +49,15 @@ describe('SectorGroupDetailComponent', () => {
     >
   >;
   let mapServiceSpy: Mocked<
-    Pick<
-      MapService,
-      | 'placeMarkerAndFlyTo'
-      | 'enterCoordinateSelectionMode'
-      | 'exitCoordinateSelectionMode'
-    >
+    Pick<MapService, 'placeMarkerAndFlyTo' | 'enterCoordinateSelectionMode' | 'exitCoordinateSelectionMode'>
   >;
-  let validityServiceSpy: Mocked<
-    Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>
-  >;
-  let sectorInternalServiceSpy: Mocked<
-    Pick<SectorInternalService, 'getSectors'>
-  >;
+  let validityServiceSpy: Mocked<Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>>;
+  let sectorInternalServiceSpy: Mocked<Pick<SectorInternalService, 'getSectors'>>;
   let sectorGroupServiceSpy: Mocked<
-    Pick<
-      SectorGroupService,
-      'createSectorGroup' | 'updateSectorGroup' | 'getSectorsBySectorGroupSloid'
-    >
+    Pick<SectorGroupService, 'createSectorGroup' | 'updateSectorGroup' | 'getSectorsBySectorGroupSloid'>
   >;
-  let sectorGroupInternalServiceSpy: Mocked<
-    Pick<SectorGroupInternalService, 'revokeSectorGroup'>
-  >;
-  let dialogServiceSpy: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let sectorGroupInternalServiceSpy: Mocked<Pick<SectorGroupInternalService, 'revokeSectorGroup'>>;
+  let dialogServiceSpy: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   const sectorOverview: ContainerReadSectorVersion = {
     objects: [],
@@ -122,16 +103,12 @@ describe('SectorGroupDetailComponent', () => {
     sectorGroupInternalServiceSpy = {
       revokeSectorGroup: vi.fn(),
     };
-    sectorGroupInternalServiceSpy.revokeSectorGroup.mockReturnValue(
-      of(undefined)
-    );
+    sectorGroupInternalServiceSpy.revokeSectorGroup.mockReturnValue(of(undefined));
 
     dialogServiceSpy = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     return TestBed.configureTestingModule({
       imports: [AppTestingModule, SectorGroupDetailComponent],
@@ -154,10 +131,7 @@ describe('SectorGroupDetailComponent', () => {
     })
       .overrideComponent(SectorGroupDetailComponent, {
         set: {
-          providers: [
-            { provide: ValidityService, useValue: validityServiceSpy },
-            TranslatePipe,
-          ],
+          providers: [{ provide: ValidityService, useValue: validityServiceSpy }, TranslatePipe],
         },
       })
       .compileComponents();
@@ -177,9 +151,7 @@ describe('SectorGroupDetailComponent', () => {
       fixture = TestBed.createComponent(SectorGroupDetailComponent);
       component = fixture.componentInstance;
       sectorInternalServiceSpy.getSectors.mockReturnValue(of(sectorOverview));
-      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(
-        of([])
-      );
+      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of([]));
       fixture.detectChanges();
     });
 
@@ -196,31 +168,17 @@ describe('SectorGroupDetailComponent', () => {
 
     it('should save new sector group', () => {
       vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
-      sectorGroupServiceSpy.createSectorGroup.mockReturnValue(
-        of(CREATE_BERN_PLATFORM_1_SECTORGROUP_A[0])
-      );
-      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(
-        of(BERN_PLATFORM_1_SECTOR_MULTIPLE)
-      );
+      sectorGroupServiceSpy.createSectorGroup.mockReturnValue(of(CREATE_BERN_PLATFORM_1_SECTORGROUP_A[0]));
+      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of(BERN_PLATFORM_1_SECTOR_MULTIPLE));
 
       component.form.controls.designation.setValue('A');
-      component.form.controls.validFrom.setValue(
-        moment('31.10.2000', 'dd.MM.yyyy')
-      );
-      component.form.controls.validTo.setValue(
-        moment('31.10.2099', 'dd.MM.yyyy')
-      );
-      component.form.controls.sectorSloids!.setValue([
-        'ch:1:sloid:7000:1:1:1',
-        'ch:1:sloid:7000:1:1:2',
-      ]);
+      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
+      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
+      component.form.controls.sectorSloids!.setValue(['ch:1:sloid:7000:1:1:1', 'ch:1:sloid:7000:1:1:2']);
       component.save();
 
       expect(sectorGroupServiceSpy.createSectorGroup).toHaveBeenCalled();
-      expect(router.navigate).toHaveBeenCalledWith(
-        ['..', 'ch:1:sloid:7000:1:1:5'],
-        expect.any(Object)
-      );
+      expect(router.navigate).toHaveBeenCalledWith(['..', 'ch:1:sloid:7000:1:1:5'], expect.any(Object));
     });
   });
 
@@ -238,9 +196,7 @@ describe('SectorGroupDetailComponent', () => {
       fixture = TestBed.createComponent(SectorGroupDetailComponent);
       component = fixture.componentInstance;
       sectorInternalServiceSpy.getSectors.mockReturnValue(of(sectorOverview));
-      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(
-        of([])
-      );
+      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of([]));
 
       fixture.detectChanges();
     });
@@ -270,22 +226,15 @@ describe('SectorGroupDetailComponent', () => {
       expect(component.isNew).toBe(false);
 
       vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
-      sectorGroupServiceSpy.updateSectorGroup.mockReturnValue(
-        of(BERN_PLATFORM_1_SECTORGROUP_A)
-      );
-      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(
-        of(BERN_PLATFORM_1_SECTOR_A)
-      );
+      sectorGroupServiceSpy.updateSectorGroup.mockReturnValue(of(BERN_PLATFORM_1_SECTORGROUP_A));
+      sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of(BERN_PLATFORM_1_SECTOR_A));
       component.toggleEdit();
       component.form.controls.designation.setValue('AAA');
 
       component.save();
 
       expect(sectorGroupServiceSpy.updateSectorGroup).toHaveBeenCalled();
-      expect(router.navigate).toHaveBeenCalledWith(
-        ['..', 'ch:1:sloid:7000:1:1:5'],
-        expect.any(Object)
-      );
+      expect(router.navigate).toHaveBeenCalledWith(['..', 'ch:1:sloid:7000:1:1:5'], expect.any(Object));
     });
 
     it('should revoke sector group', () => {
@@ -293,9 +242,7 @@ describe('SectorGroupDetailComponent', () => {
 
       component.revoke();
 
-      expect(
-        sectorGroupInternalServiceSpy.revokeSectorGroup
-      ).toHaveBeenCalled();
+      expect(sectorGroupInternalServiceSpy.revokeSectorGroup).toHaveBeenCalled();
     });
   });
 });

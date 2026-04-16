@@ -11,25 +11,14 @@ import {
 } from '../../../../../api';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { Pages } from '../../../../pages';
-import {
-  catchError,
-  EMPTY,
-  finalize,
-  Observable,
-  of,
-  switchMap,
-  take,
-} from 'rxjs';
+import { catchError, EMPTY, finalize, Observable, of, switchMap, take } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { map, tap } from 'rxjs/operators';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {
-  RelationFormGroup,
-  RelationFormGroupBuilder,
-} from './relation-form-group';
+import { RelationFormGroup, RelationFormGroupBuilder } from './relation-form-group';
 import { MatSelectChange } from '@angular/material/select';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
@@ -88,8 +77,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   saving = false;
 
   readonly extractSloid = (option: ReadReferencePointVersion) => option.sloid;
-  readonly displayExtractor = (option: ReadReferencePointVersion) =>
-    `${option.designation} - ${option.sloid}`;
+  readonly displayExtractor = (option: ReadReferencePointVersion) => `${option.designation} - ${option.sloid}`;
 
   constructor(
     private readonly router: Router,
@@ -104,14 +92,12 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   ngOnInit(): void {
     this.checkIfRelationsAvailable();
     this.elementSloid = this.route.parent!.snapshot.params.sloid!;
-    this.parentServicePointSloid =
-      this.route.parent!.snapshot.params.stopPointSloid;
+    this.parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid;
     this.businessOrganisations = [
       ...new Set(
-        (
-          this.route.parent!.snapshot.data
-            .servicePoint as ReadServicePointVersion[]
-        ).map((version) => version.businessOrganisation)
+        (this.route.parent!.snapshot.data.servicePoint as ReadServicePointVersion[]).map(
+          (version) => version.businessOrganisation
+        )
       ),
     ];
     this.referencePointInternalService
@@ -130,10 +116,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     this.loadRelations(this.selectedReferencePointSloid!);
   }
 
-  versionChanged(
-    currentVersion: ReadRelationVersion,
-    currentVersionIdx: number
-  ) {
+  versionChanged(currentVersion: ReadRelationVersion, currentVersionIdx: number) {
     this.form = RelationFormGroupBuilder.buildFormGroup(currentVersion);
     this.currentRelationId = currentVersion.id!;
     this.currentRelation = currentVersion;
@@ -150,9 +133,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       .pipe(
         take(1),
         tap(() => {
-          this.notificationService.success(
-            'PRM.RELATIONS.NOTIFICATION.EDIT_SUCCESS'
-          );
+          this.notificationService.success('PRM.RELATIONS.NOTIFICATION.EDIT_SUCCESS');
           this.loadRelations(this.selectedReferencePointSloid!);
         }),
         catchError(() => {
@@ -191,10 +172,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private update(relationVersion: RelationVersion) {
-    return this.relationservice.updateRelation(
-      this.currentRelationId,
-      relationVersion
-    );
+    return this.relationservice.updateRelation(this.currentRelationId, relationVersion);
   }
 
   toggleEdit() {
@@ -208,39 +186,26 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private loadRelations(referencePointSloid: string) {
-    this.relations$ = this.relationservice
-      .getRelationsBySloid(this.elementSloid!)
-      .pipe(
-        map((relationVersions) => {
-          const relationsOfSelectedRP = relationVersions.filter(
-            (relationVersion) =>
-              relationVersion.referencePointSloid === referencePointSloid
-          );
-          VersionsHandlingService.addVersionNumbers(relationsOfSelectedRP);
-          this.currentRelation =
-            VersionsHandlingService.determineDefaultVersionByValidity(
-              relationsOfSelectedRP
-            );
-          this.form = RelationFormGroupBuilder.buildFormGroup(
-            this.currentRelation
-          );
-          this.currentRelationId = this.currentRelation.id!;
-          this.selectedRelationVersion =
-            relationsOfSelectedRP.indexOf(this.currentRelation) + 1;
-          return relationsOfSelectedRP;
-        })
-      );
+    this.relations$ = this.relationservice.getRelationsBySloid(this.elementSloid!).pipe(
+      map((relationVersions) => {
+        const relationsOfSelectedRP = relationVersions.filter(
+          (relationVersion) => relationVersion.referencePointSloid === referencePointSloid
+        );
+        VersionsHandlingService.addVersionNumbers(relationsOfSelectedRP);
+        this.currentRelation = VersionsHandlingService.determineDefaultVersionByValidity(relationsOfSelectedRP);
+        this.form = RelationFormGroupBuilder.buildFormGroup(this.currentRelation);
+        this.currentRelationId = this.currentRelation.id!;
+        this.selectedRelationVersion = relationsOfSelectedRP.indexOf(this.currentRelation) + 1;
+        return relationsOfSelectedRP;
+      })
+    );
   }
 
   private checkIfRelationsAvailable() {
     const stopPoint = this.route.parent!.snapshot.data.stopPoint;
-    const reduced = PrmMeanOfTransportHelper.isReduced(
-      stopPoint[0].meansOfTransport
-    );
+    const reduced = PrmMeanOfTransportHelper.isReduced(stopPoint[0].meansOfTransport);
     if (reduced) {
-      this.router
-        .navigate([Pages.PRM.path, Pages.STOP_POINTS.path, stopPoint[0].sloid])
-        .then();
+      this.router.navigate([Pages.PRM.path, Pages.STOP_POINTS.path, stopPoint[0].sloid]).then();
     }
   }
 
@@ -249,9 +214,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       .pipe(take(1))
       .subscribe(async (confirmed) => {
         if (confirmed) {
-          this.form = RelationFormGroupBuilder.buildFormGroup(
-            this.currentRelation
-          );
+          this.form = RelationFormGroupBuilder.buildFormGroup(this.currentRelation);
           this.editing = false;
         }
       });

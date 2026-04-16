@@ -1,11 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { DossierSelectComponent } from './dossier-select/dossier-select.component';
@@ -34,8 +29,7 @@ export interface AddToDossierData extends DialogData {
   providers: [TranslatePipe],
 })
 export class AddToDossierDialogComponent {
-  private readonly dialogRef =
-    inject<MatDialogRef<AddToDossierDialogComponent, boolean>>(MatDialogRef);
+  private readonly dialogRef = inject<MatDialogRef<AddToDossierDialogComponent, boolean>>(MatDialogRef);
   private readonly dossierInternalService = inject(DossierInternalService);
   private readonly notificationService = inject(NotificationService);
 

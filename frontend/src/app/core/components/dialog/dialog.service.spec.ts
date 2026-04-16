@@ -28,10 +28,7 @@ describe('DialogService', () => {
 
     // Config
     TestBed.configureTestingModule({
-      providers: [
-        translateServiceProvider,
-        { provide: MatDialog, useValue: matDialog },
-      ],
+      providers: [translateServiceProvider, { provide: MatDialog, useValue: matDialog }],
     });
 
     // Arrangement
@@ -39,9 +36,7 @@ describe('DialogService', () => {
   });
 
   it('should open confirmation dialog and pass success value - true', async () => {
-    const result = await firstValueFrom(
-      service.openDialogDataWithConfirmationResult(dialogData)
-    );
+    const result = await firstValueFrom(service.openDialogDataWithConfirmationResult(dialogData));
 
     expect(result).toBe(true);
     expect(matDialog.open).toHaveBeenCalled();
@@ -50,9 +45,7 @@ describe('DialogService', () => {
   it('should open confirmation dialog and pass cancel value - false', async () => {
     matDialogRef.afterClosed.mockReturnValue(of(false));
 
-    const result = await firstValueFrom(
-      service.openDialogDataWithConfirmationResult(dialogData)
-    );
+    const result = await firstValueFrom(service.openDialogDataWithConfirmationResult(dialogData));
 
     expect(result).toBe(false);
     expect(matDialog.open).toHaveBeenCalled();
@@ -75,9 +68,7 @@ describe('DialogService', () => {
   });
 
   it('should openDialogDataWithCustomResult()', async () => {
-    const result = await firstValueFrom(
-      service.openDialogDataWithCustomResult<DialogData, boolean>(dialogData)
-    );
+    const result = await firstValueFrom(service.openDialogDataWithCustomResult<DialogData, boolean>(dialogData));
 
     expect(result).toBe(true);
     expect(matDialog.open).toHaveBeenCalledTimes(1);

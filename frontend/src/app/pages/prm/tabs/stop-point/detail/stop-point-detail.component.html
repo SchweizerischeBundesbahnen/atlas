@@ -38,25 +38,18 @@
     </div>
     @if (isReduced) {
       <div>
-        <atlas-stop-point-reduced-form
-          [form]="form"
-        ></atlas-stop-point-reduced-form>
+        <atlas-stop-point-reduced-form [form]="form"></atlas-stop-point-reduced-form>
       </div>
     }
     @if (!isReduced) {
       <div>
-        <atlas-stop-point-complete-form
-          [form]="form"
-        ></atlas-stop-point-complete-form>
+        <atlas-stop-point-complete-form [form]="form"></atlas-stop-point-complete-form>
       </div>
     }
     <div>
       <mat-divider class="mt-4 mb-4"></mat-divider>
       @if (!isNew) {
-        <atlas-user-detail-info
-          [applicationType]="'PRM'"
-          [record]="selectedVersion"
-        ></atlas-user-detail-info>
+        <atlas-user-detail-info [applicationType]="'PRM'" [record]="selectedVersion"></atlas-user-detail-info>
       }
     </div>
   }

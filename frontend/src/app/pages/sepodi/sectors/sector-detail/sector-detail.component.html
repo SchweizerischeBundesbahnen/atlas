@@ -12,9 +12,7 @@
   @if (!isNew) {
     <div class="font-xl mb-2">
       <span data-cy="total-range">
-        <atlas-date-range-text
-          [dateRange]="maxValidity"
-        ></atlas-date-range-text>
+        <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
       </span>
     </div>
   }
@@ -28,10 +26,7 @@
       </div>
       <div>
         {{ trafficPoint.designation ?? '-' }} - {{ trafficPoint.sloid }}
-          <atlas-clipboard
-            [value]="trafficPoint.sloid"
-            [showMe]="!this.isNew"
-          ></atlas-clipboard>
+        <atlas-clipboard [value]="trafficPoint.sloid" [showMe]="!this.isNew"></atlas-clipboard>
       </div>
     </div>
     <div class="d-flex flex-column">
@@ -64,12 +59,8 @@
             {{ selectedVersionIndex + 1 }}
           </h2>
           <div>
-            <span class="font-bold-lg color-gray-900"
-              >{{ 'COMMON.STATUS' | translate }}
-            </span>
-            <span class="color-gray-900">{{
-              'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
-            }}</span>
+            <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+            <span class="color-gray-900">{{ 'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate }}</span>
           </div>
         </div>
       </div>
@@ -146,10 +137,7 @@
     @if (!isNew) {
       <div class="mb-3">
         <mat-divider class="mt-4 mb-4"></mat-divider>
-        <atlas-user-detail-info
-          [applicationType]="'SEPODI'"
-          [record]="selectedVersion"
-        ></atlas-user-detail-info>
+        <atlas-user-detail-info [applicationType]="'SEPODI'" [record]="selectedVersion"></atlas-user-detail-info>
       </div>
     }
   </atlas-detail-page-content>
@@ -193,10 +181,7 @@
     >
     </atlas-button>
     @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-      <atlas-revoke-button
-        (revokeClicked)="revoke()"
-        applicationType="SEPODI"
-      ></atlas-revoke-button>
+      <atlas-revoke-button (revokeClicked)="revoke()" applicationType="SEPODI"></atlas-revoke-button>
     }
   </atlas-detail-footer>
 </atlas-detail-page-container>

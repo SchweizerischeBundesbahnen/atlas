@@ -1,10 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  ControlContainer,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ReducedPlatformFormGroup } from '../platform-form-group';
 import {
   BooleanOptionalAttributeType,
@@ -46,29 +41,18 @@ export class PlatformReducedFormComponent implements OnInit {
   infoOpportunities = Object.values(InfoOpportunityAttributeType);
 
   ngOnInit(): void {
-    this.form.controls.infoOpportunities.valueChanges.subscribe(
-      (infoOpportunities) => {
-        if (infoOpportunities) {
-          if (infoOpportunities.length == 0) {
-            this.form.controls.infoOpportunities.setValue([
-              InfoOpportunityAttributeType.ToBeCompleted,
-            ]);
-          }
-          if (
-            infoOpportunities?.length > 1 &&
-            infoOpportunities?.includes(
-              InfoOpportunityAttributeType.ToBeCompleted
-            )
-          ) {
-            this.form.controls.infoOpportunities.setValue(
-              infoOpportunities.filter(
-                (i) => i !== InfoOpportunityAttributeType.ToBeCompleted
-              )
-            );
-          }
+    this.form.controls.infoOpportunities.valueChanges.subscribe((infoOpportunities) => {
+      if (infoOpportunities) {
+        if (infoOpportunities.length == 0) {
+          this.form.controls.infoOpportunities.setValue([InfoOpportunityAttributeType.ToBeCompleted]);
+        }
+        if (infoOpportunities?.length > 1 && infoOpportunities?.includes(InfoOpportunityAttributeType.ToBeCompleted)) {
+          this.form.controls.infoOpportunities.setValue(
+            infoOpportunities.filter((i) => i !== InfoOpportunityAttributeType.ToBeCompleted)
+          );
         }
       }
-    );
+    });
   }
 
   protected readonly MeanOfTransport = MeanOfTransport;

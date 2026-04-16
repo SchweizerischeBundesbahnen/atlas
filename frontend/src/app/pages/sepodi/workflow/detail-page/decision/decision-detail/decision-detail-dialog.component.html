@@ -13,18 +13,12 @@
       [workflowId]="decisionDetailDialogData.workflowId"
       [examinantId]="decisionDetailDialogData.examinant.controls.id.value!"
       [existingDecision]="existingDecision"
-      [enabled]="
-        decisionDetailDialogData.workflowStatus === WorkflowStatus.Hearing
-      "
+      [enabled]="decisionDetailDialogData.workflowStatus === WorkflowStatus.Hearing"
     ></atlas-decision-override>
   }
 </atlas-dialog-content>
 <atlas-dialog-footer>
-  <button
-    (click)="close()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-close-button"
-  >
+  <button (click)="close()" class="atlas-primary-btn me-3" data-cy="dialog-close-button">
     {{ 'COMMON.BACK' | translate }}
   </button>
   @if (decisionDetailDialogData.workflowStatus === WorkflowStatus.Hearing) {

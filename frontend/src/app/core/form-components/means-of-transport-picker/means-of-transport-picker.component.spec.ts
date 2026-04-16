@@ -10,9 +10,8 @@ describe('MeansOfTransportPickerComponent', () => {
   let component: MeansOfTransportPickerComponent;
   let fixture: ComponentFixture<MeansOfTransportPickerComponent>;
 
-  const getSectorWarningEl = (
-    fixture: ComponentFixture<MeansOfTransportPickerComponent>
-  ) => fixture.debugElement.query(By.css('.sector-warning'));
+  const getSectorWarningEl = (fixture: ComponentFixture<MeansOfTransportPickerComponent>) =>
+    fixture.debugElement.query(By.css('.sector-warning'));
 
   beforeEach(() => {
     TestBed.configureTestingModule({

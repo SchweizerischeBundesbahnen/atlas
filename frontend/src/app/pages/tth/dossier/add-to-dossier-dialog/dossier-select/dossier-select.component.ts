@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { SearchSelectComponent } from '../../../../../core/form-components/search-select/search-select.component';
@@ -19,11 +12,7 @@ import { DossierStatus } from '../../../../../api/model/dossierStatus';
 @Component({
   selector: 'atlas-dossier-select',
   templateUrl: './dossier-select.component.html',
-  imports: [
-    SearchSelectComponent,
-    ReactiveFormsModule,
-    DossierSelectFormatPipe,
-  ],
+  imports: [SearchSelectComponent, ReactiveFormsModule, DossierSelectFormatPipe],
 })
 export class DossierSelectComponent implements OnInit {
   private readonly dossierInternalService = inject(DossierInternalService);
@@ -36,8 +25,7 @@ export class DossierSelectComponent implements OnInit {
   statusRestriction = input<DossierStatus[]>();
   bindValue = input<string>('');
 
-  @Output() selectionChange: EventEmitter<TthDossier> =
-    new EventEmitter<TthDossier>();
+  @Output() selectionChange: EventEmitter<TthDossier> = new EventEmitter<TthDossier>();
   searchResults$: Observable<TthDossier[]> = of([]);
 
   ngOnInit() {
@@ -50,13 +38,7 @@ export class DossierSelectComponent implements OnInit {
       return;
     }
     this.searchResults$ = this.dossierInternalService
-      .getOverview(
-        this.year(),
-        this.canton(),
-        undefined,
-        [searchQuery],
-        this.statusRestriction()
-      )
+      .getOverview(this.year(), this.canton(), undefined, [searchQuery], this.statusRestriction())
       .pipe(map((response) => response.objects ?? []));
   }
 }

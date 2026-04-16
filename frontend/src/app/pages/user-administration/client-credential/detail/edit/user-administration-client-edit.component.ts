@@ -41,9 +41,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
 
   userPermissionGivenClientService = inject(UserPermissionGivenClientService);
   notificationService = inject(NotificationService);
-  clientCredentialAdministrationService = inject(
-    ClientCredentialAdministrationService
-  );
+  clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
   dialogService = inject(DialogService);
 
   ngOnInit() {
@@ -55,27 +53,17 @@ export class UserAdministrationClientEditComponent implements OnInit {
     this.saveEnabled = false;
     this.formGroup.disable();
 
-    const permission = ApplicationPermissionFormGroupBuilder.formToModel(
-      this.formGroup
-    );
+    const permission = ApplicationPermissionFormGroupBuilder.formToModel(this.formGroup);
     this.clientCredentialAdministrationService
-      .updateClientCredentialPermissions(
-        this.client().clientCredentialId!,
-        permission.application,
-        permission
-      )
+      .updateClientCredentialPermissions(this.client().clientCredentialId!, permission.application, permission)
       .subscribe({
         next: (clientCredential) => {
-          this.userPermissionGivenClientService.clientCredential =
-            clientCredential;
+          this.userPermissionGivenClientService.clientCredential = clientCredential;
           this.editMode = false;
           this.userPermissionGivenClientService.loadFormGroup(
-            this.userPermissionGivenClientService.getCurrentForm()!.controls
-              .application.value!
+            this.userPermissionGivenClientService.getCurrentForm()!.controls.application.value!
           );
-          this.notificationService.success(
-            'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
-          );
+          this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
           this.convertUserPermissionToRecord();
         },
         error: () => (this.saveEnabled = true),
@@ -88,10 +76,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
     );
 
     if (permissionsFromUserModelAsArray.length > 0) {
-      this.record =
-        ConvertUserPermissionToRecordHelper.convertUserPermissionToRecord(
-          permissionsFromUserModelAsArray
-        );
+      this.record = ConvertUserPermissionToRecordHelper.convertUserPermissionToRecord(permissionsFromUserModelAsArray);
     }
   }
 
@@ -104,8 +89,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
         if (result) {
           this.editMode = false;
           this.userPermissionGivenClientService.loadFormGroup(
-            this.userPermissionGivenClientService.getCurrentForm()!.controls
-              .application.value!
+            this.userPermissionGivenClientService.getCurrentForm()!.controls.application.value!
           );
         }
       });
@@ -113,7 +97,6 @@ export class UserAdministrationClientEditComponent implements OnInit {
   }
 
   get formGroup() {
-    return this.userPermissionGivenClientService
-      .applicationPermissionFormGroup!;
+    return this.userPermissionGivenClientService.applicationPermissionFormGroup!;
   }
 }

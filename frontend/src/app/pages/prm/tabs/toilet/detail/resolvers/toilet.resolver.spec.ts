@@ -1,17 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 
 import { toiletResolver } from './toilet.resolver';
-import {
-  ReadToiletVersion,
-  StandardAttributeType,
-  ToiletVersion,
-} from '../../../../../../api';
+import { ReadToiletVersion, StandardAttributeType, ToiletVersion } from '../../../../../../api';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.service';

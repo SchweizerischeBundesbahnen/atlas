@@ -2,11 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { firstValueFrom, Observable, of } from 'rxjs';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { referencePointResolver } from './reference-point.resolver';
 import { ReadReferencePointVersion } from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
@@ -38,17 +34,13 @@ const referencePoint: ReadReferencePointVersion[] = [
 ];
 
 describe('PrmReferencePointResolver', () => {
-  let referencePointServiceSpy: Mocked<
-    Pick<ReferencePointService, 'getReferencePointVersions'>
-  >;
+  let referencePointServiceSpy: Mocked<Pick<ReferencePointService, 'getReferencePointVersions'>>;
 
   beforeEach(() => {
     referencePointServiceSpy = {
       getReferencePointVersions: vi.fn(),
     };
-    referencePointServiceSpy.getReferencePointVersions.mockReturnValue(
-      of(referencePoint)
-    );
+    referencePointServiceSpy.getReferencePointVersions.mockReturnValue(of(referencePoint));
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],

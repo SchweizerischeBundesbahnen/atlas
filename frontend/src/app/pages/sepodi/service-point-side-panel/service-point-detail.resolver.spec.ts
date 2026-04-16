@@ -9,25 +9,18 @@ import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 
 describe('ServicePointDetailResolver', () => {
-  let servicePointServiceSpy: Mocked<
-    Pick<ServicePointService, 'getServicePointVersions'>
-  >;
+  let servicePointServiceSpy: Mocked<Pick<ServicePointService, 'getServicePointVersions'>>;
   let resolver: ServicePointDetailResolver;
 
   beforeEach(() => {
     servicePointServiceSpy = {
       getServicePointVersions: vi.fn(),
     };
-    servicePointServiceSpy.getServicePointVersions.mockReturnValue(
-      of([BERN_WYLEREGG])
-    );
+    servicePointServiceSpy.getServicePointVersions.mockReturnValue(of([BERN_WYLEREGG]));
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [
-        ServicePointDetailResolver,
-        { provide: ServicePointService, useValue: servicePointServiceSpy },
-      ],
+      providers: [ServicePointDetailResolver, { provide: ServicePointService, useValue: servicePointServiceSpy }],
     });
     resolver = TestBed.inject(ServicePointDetailResolver);
   });

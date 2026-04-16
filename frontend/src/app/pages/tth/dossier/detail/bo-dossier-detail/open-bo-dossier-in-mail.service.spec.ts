@@ -39,11 +39,10 @@ const statementWithAnonymizedStatement: TimetableHearingStatementV2 = {
   },
 };
 
-const timetableHearingStatementInternalService: Mocked<
-  Pick<TimetableHearingStatementInternalService, 'getStatement'>
-> = {
-  getStatement: vi.fn(() => of(statementWithAnonymizedStatement)),
-};
+const timetableHearingStatementInternalService: Mocked<Pick<TimetableHearingStatementInternalService, 'getStatement'>> =
+  {
+    getStatement: vi.fn(() => of(statementWithAnonymizedStatement)),
+  };
 
 describe('OpenBoDossierInMailService', () => {
   let service: OpenBoDossierInMailService;
@@ -67,9 +66,7 @@ describe('OpenBoDossierInMailService', () => {
   });
 
   it('should open mailto link', () => {
-    const windowOpenSpy = vi
-      .spyOn(window, 'open')
-      .mockImplementation(() => null);
+    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
 
     service.openDossierInMail({
       id: 0,

@@ -9,12 +9,7 @@ import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
   selector: 'atlas-prm-home-search',
   templateUrl: './prm-home-search.component.html',
   styleUrls: ['./prm-home-search.component.scss'],
-  imports: [
-    SearchServicePointPanelComponent,
-    PrmInfoBoxComponent,
-    NgClass,
-    RouterOutlet,
-  ],
+  imports: [SearchServicePointPanelComponent, PrmInfoBoxComponent, NgClass, RouterOutlet],
 })
 export class PrmHomeSearchComponent implements OnInit {
   servicePointSearch = ServicePointSearch.PRM;

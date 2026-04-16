@@ -38,21 +38,17 @@ describe('ApplicationPermissionFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup =
-      ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-        ApplicationType.Sepodi,
-        existingPermission
-      );
+    const formGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
+      ApplicationType.Sepodi,
+      existingPermission
+    );
 
-    const permission =
-      ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
+    const permission = ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
     expect(permission.role).toEqual(existingPermission.role);
     expect(permission.permissionRestrictions).toEqual(
       expect.arrayContaining(existingPermission.permissionRestrictions)
     );
-    expect(permission.permissionRestrictions.length).toBe(
-      existingPermission.permissionRestrictions.length
-    );
+    expect(permission.permissionRestrictions.length).toBe(existingPermission.permissionRestrictions.length);
   });
 
   it('should build form for sepodi info plus voter', () => {
@@ -71,14 +67,12 @@ describe('ApplicationPermissionFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup =
-      ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-        ApplicationType.Sepodi,
-        existingPermission
-      );
+    const formGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
+      ApplicationType.Sepodi,
+      existingPermission
+    );
 
-    const permission =
-      ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
+    const permission = ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
     expect(permission).toEqual(existingPermission);
   });
 
@@ -94,14 +88,12 @@ describe('ApplicationPermissionFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup =
-      ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-        ApplicationType.TimetableHearing,
-        existingPermission
-      );
+    const formGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
+      ApplicationType.TimetableHearing,
+      existingPermission
+    );
 
-    const permission =
-      ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
+    const permission = ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
     expect(permission).toEqual(existingPermission);
   });
 
@@ -117,14 +109,12 @@ describe('ApplicationPermissionFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup =
-      ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-        ApplicationType.TimetableHearing,
-        existingPermission
-      );
+    const formGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
+      ApplicationType.TimetableHearing,
+      existingPermission
+    );
 
-    const permission =
-      ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
+    const permission = ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
     expect(permission).toEqual(existingPermission);
   });
 });

@@ -15,10 +15,7 @@ describe('FormatPipe', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: TranslatePipe, useValue: translatePipeStub },
-        FormatPipe,
-      ],
+      providers: [{ provide: TranslatePipe, useValue: translatePipeStub }, FormatPipe],
     });
 
     formatPipe = TestBed.inject(FormatPipe);
@@ -53,9 +50,7 @@ describe('FormatPipe', () => {
       },
     } as TableColumn<object>;
     formatPipe.transform(value, tableColumn);
-    expect(translatePipeStub.transform).toHaveBeenCalledExactlyOnceWith(
-      'prefix.test'
-    );
+    expect(translatePipeStub.transform).toHaveBeenCalledExactlyOnceWith('prefix.test');
   });
 
   it('should call column callback', () => {

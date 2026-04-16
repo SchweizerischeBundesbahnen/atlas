@@ -3,26 +3,14 @@
     <atlas-detail-page-content>
       <div class="dossier-form">
         <h1 class="font-bold-4xl mt-5">
-          {{
-            ('TTH.DOSSIER.DOSSIER' | translate) +
-              ' ' +
-              dossierForm.controls.id.value
-          }}
+          {{ ('TTH.DOSSIER.DOSSIER' | translate) + ' ' + dossierForm.controls.id.value }}
         </h1>
 
         <div class="d-flex flex-column col-8 mt-3">
           <div class="d-flex">
-            <atlas-label-field
-              fieldLabel="TTH.STATEMENT.TOPIC"
-              [required]="true"
-            />
+            <atlas-label-field fieldLabel="TTH.STATEMENT.TOPIC" [required]="true" />
             <div class="col-8 ms-2">
-              <atlas-text-field
-                [formGroup]="dossierForm"
-                controlName="topic"
-                [required]="true"
-              >
-              </atlas-text-field>
+              <atlas-text-field [formGroup]="dossierForm" controlName="topic" [required]="true"> </atlas-text-field>
             </div>
           </div>
         </div>
@@ -72,12 +60,7 @@
           </div>
 
           <div class="d-flex flex-column col-12 mb-4">
-            <atlas-form-comment
-              [formGroup]="form"
-              controlName="answerToCanton"
-              [displayLabel]="false"
-              maxChars="5000"
-            >
+            <atlas-form-comment [formGroup]="form" controlName="answerToCanton" [displayLabel]="false" maxChars="5000">
             </atlas-form-comment>
           </div>
 

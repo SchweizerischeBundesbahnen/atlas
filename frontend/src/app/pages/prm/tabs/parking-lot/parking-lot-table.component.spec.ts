@@ -3,17 +3,11 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { ParkingLotTableComponent } from './parking-lot-table.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  MockAtlasButtonComponent,
-  MockTableComponent,
-} from '../../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { STOP_POINT } from '../../util/stop-point-test-data';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { of } from 'rxjs';
-import {
-  BooleanOptionalAttributeType,
-  ParkingLotOverview,
-} from '../../../../api';
+import { BooleanOptionalAttributeType, ParkingLotOverview } from '../../../../api';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -43,9 +37,7 @@ describe('ParkingLotTableComponent', () => {
   let component: ParkingLotTableComponent;
   let fixture: ComponentFixture<ParkingLotTableComponent>;
   let router: Router;
-  let parkingLotInternalService: Mocked<
-    Pick<ParkingLotInternalService, 'getParkingLotsOverview'>
-  >;
+  let parkingLotInternalService: Mocked<Pick<ParkingLotInternalService, 'getParkingLotsOverview'>>;
 
   const activatedRouteMock = {
     parent: {
@@ -60,9 +52,7 @@ describe('ParkingLotTableComponent', () => {
     parkingLotInternalService = {
       getParkingLotsOverview: vi.fn(),
     };
-    parkingLotInternalService.getParkingLotsOverview.mockReturnValue(
-      of(parkingLotOverview)
-    );
+    parkingLotInternalService.getParkingLotsOverview.mockReturnValue(of(parkingLotOverview));
 
     TestBed.configureTestingModule({
       imports: [ParkingLotTableComponent, TranslateModule.forRoot()],

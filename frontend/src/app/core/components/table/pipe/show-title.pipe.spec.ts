@@ -15,10 +15,7 @@ describe('ShowTitlePipe', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: FormatPipe, useValue: formatPipeStub },
-        ShowTitlePipe,
-      ],
+      providers: [{ provide: FormatPipe, useValue: formatPipeStub }, ShowTitlePipe],
     });
 
     showTitlePipe = TestBed.inject(ShowTitlePipe);
@@ -30,14 +27,8 @@ describe('ShowTitlePipe', () => {
 
   it('should transform and hideTooltip should be false', () => {
     formatPipeStub.transform.mockReturnValue('testContentMustBeLongerThan20');
-    const transformed = showTitlePipe.transform(
-      'test',
-      {} as TableColumn<object>
-    );
+    const transformed = showTitlePipe.transform('test', {} as TableColumn<object>);
     expect(transformed).toEqual('testContentMustBeLongerThan20');
-    expect(formatPipeStub.transform).toHaveBeenCalledExactlyOnceWith(
-      'test',
-      {} as TableColumn<object>
-    );
+    expect(formatPipeStub.transform).toHaveBeenCalledExactlyOnceWith('test', {} as TableColumn<object>);
   });
 });

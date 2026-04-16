@@ -23,8 +23,7 @@ export class TerminationService {
   private initialFormValues?: Partial<CreateServicePointVersion>;
 
   initTermination(form: FormGroup<ServicePointDetailFormGroup>) {
-    this.initialFormValues =
-      ServicePointFormGroupBuilder.mapper.getWritableServicePoint(form);
+    this.initialFormValues = ServicePointFormGroupBuilder.mapper.getWritableServicePoint(form);
   }
 
   isStartingTermination(editedForm: FormGroup<ServicePointDetailFormGroup>) {
@@ -34,36 +33,22 @@ export class TerminationService {
     return false;
   }
 
-  private checkStartingTermination(
-    editedForm: FormGroup<ServicePointDetailFormGroup>
-  ) {
-    if (!this.initialFormValues)
-      throw Error('initTermination was not called before');
-    const isStopPoint: boolean =
-      (this.initialFormValues.meansOfTransport?.length ?? 0) > 0;
-    const isStopPointCountryAllowed =
-      this.isStopPointCountryTerminationAllowed();
+  private checkStartingTermination(editedForm: FormGroup<ServicePointDetailFormGroup>) {
+    if (!this.initialFormValues) throw Error('initTermination was not called before');
+    const isStopPoint: boolean = (this.initialFormValues.meansOfTransport?.length ?? 0) > 0;
+    const isStopPointCountryAllowed = this.isStopPointCountryTerminationAllowed();
     const isValidated = this.initialFormValues.status === 'VALIDATED';
     const isInThePast = this.isOnlyValidToChangedInThePast(editedForm);
-    return (
-      isStopPoint && isValidated && isStopPointCountryAllowed && isInThePast
-    );
+    return isStopPoint && isValidated && isStopPointCountryAllowed && isInThePast;
   }
 
   private isStopPointCountryTerminationAllowed() {
-    return ALLOWED_TERMINATION_COUNTRIES.some(
-      (country) => this.initialFormValues?.country === country
-    );
+    return ALLOWED_TERMINATION_COUNTRIES.some((country) => this.initialFormValues?.country === country);
   }
 
-  private isOnlyValidToChangedInThePast(
-    editedForm: FormGroup<ServicePointDetailFormGroup>
-  ) {
-    const editedFormValues =
-      ServicePointFormGroupBuilder.mapper.getWritableServicePoint(editedForm);
-    if (
-      moment(editedFormValues.validTo).isBefore(this.initialFormValues?.validTo)
-    ) {
+  private isOnlyValidToChangedInThePast(editedForm: FormGroup<ServicePointDetailFormGroup>) {
+    const editedFormValues = ServicePointFormGroupBuilder.mapper.getWritableServicePoint(editedForm);
+    if (moment(editedFormValues.validTo).isBefore(this.initialFormValues?.validTo)) {
       //remove validTo property to compare all form values
       this.deleteValidToProperty(editedFormValues);
       return this.areValuesEquals(this.initialFormValues!, editedFormValues);
@@ -75,17 +60,14 @@ export class TerminationService {
     initialFormValues: Partial<CreateServicePointVersion>,
     editedFormValues: Partial<CreateServicePointVersion>
   ) {
-    const sortFn = (a: [string, unknown], b: [string, unknown]): number =>
-      a[0].localeCompare(b[0]);
+    const sortFn = (a: [string, unknown], b: [string, unknown]): number => a[0].localeCompare(b[0]);
     return (
       JSON.stringify(Object.entries(initialFormValues).sort(sortFn)) ===
       JSON.stringify(Object.entries(editedFormValues).sort(sortFn))
     );
   }
 
-  private deleteValidToProperty(
-    editedFormValues: Partial<CreateServicePointVersion>
-  ) {
+  private deleteValidToProperty(editedFormValues: Partial<CreateServicePointVersion>) {
     const validToProperty = 'validTo';
     delete editedFormValues[validToProperty];
     delete this.initialFormValues![validToProperty];

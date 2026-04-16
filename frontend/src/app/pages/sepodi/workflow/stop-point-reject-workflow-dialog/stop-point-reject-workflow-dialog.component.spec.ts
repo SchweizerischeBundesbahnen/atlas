@@ -45,21 +45,12 @@ describe('StopPointRejectWorkflowDialogComponent', () => {
 
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
   let stopPointWorkflowService: Mocked<
-    Pick<
-      StopPointWorkflowService,
-      'rejectStopPointWorkflow' | 'cancelStopPointWorkflow'
-    >
+    Pick<StopPointWorkflowService, 'rejectStopPointWorkflow' | 'cancelStopPointWorkflow'>
   >;
   let router: Mocked<Pick<Router, 'navigate' | 'navigateByUrl'>>;
-  let detailHelperService: Mocked<
-    Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>
-  >;
-  let userAdministrationServiceMock: Mocked<
-    Pick<UserAdministrationService, 'getCurrentUser'>
-  >;
-  let dialogRefSpy: Mocked<
-    Pick<MatDialogRef<StopPointRejectWorkflowDialogComponent>, 'close'>
-  >;
+  let detailHelperService: Mocked<Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>>;
+  let userAdministrationServiceMock: Mocked<Pick<UserAdministrationService, 'getCurrentUser'>>;
+  let dialogRefSpy: Mocked<Pick<MatDialogRef<StopPointRejectWorkflowDialogComponent>, 'close'>>;
 
   function formGroup(component: StopPointRejectWorkflowDialogComponent) {
     const formGroup = component.formGroup;
@@ -129,9 +120,7 @@ describe('StopPointRejectWorkflowDialogComponent', () => {
   it('should cancel reject workflow', () => {
     component.closeDialog();
 
-    expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalledWith(
-      component.formGroup
-    );
+    expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalledWith(component.formGroup);
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 

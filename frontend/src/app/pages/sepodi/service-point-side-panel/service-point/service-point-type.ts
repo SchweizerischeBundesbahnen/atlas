@@ -5,5 +5,4 @@ export const ServicePointType = {
   FareStop: 'FARE_STOP',
 } as const;
 
-export type ServicePointType =
-  (typeof ServicePointType)[keyof typeof ServicePointType];
+export type ServicePointType = (typeof ServicePointType)[keyof typeof ServicePointType];

@@ -3,11 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { UserComponent } from './user.component';
 import { AuthService } from '../../auth/auth.service';
 import { By } from '@angular/platform-browser';
-import {
-  adminUserServiceMock,
-  authServiceMock,
-  translateServiceProvider,
-} from '../../../app.testing.mocks';
+import { adminUserServiceMock, authServiceMock, translateServiceProvider } from '../../../app.testing.mocks';
 import { UserService } from '../../auth/user/user.service';
 
 describe('UserComponent', () => {
@@ -37,9 +33,7 @@ describe('UserComponent', () => {
 
     it('should render username on the title', () => {
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector('button').title).toContain(
-        'Test'
-      );
+      expect(fixture.nativeElement.querySelector('button').title).toContain('Test');
     });
 
     it('should logout', () => {
@@ -80,16 +74,12 @@ describe('UserComponent', () => {
     });
 
     it('should return user name if no (', () => {
-      const result = component.removeDepartment(
-        'ATLAS / LIDI / FPFN Admin User'
-      );
+      const result = component.removeDepartment('ATLAS / LIDI / FPFN Admin User');
       expect(result).toBe('ATLAS / LIDI / FPFN Admin User');
     });
 
     it('should return part before (', () => {
-      const result = component.removeDepartment(
-        'Lastname Firstname (TEST-DEP)'
-      );
+      const result = component.removeDepartment('Lastname Firstname (TEST-DEP)');
       expect(result).toBe('Lastname Firstname');
     });
   });

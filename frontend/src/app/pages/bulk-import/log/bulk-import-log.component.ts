@@ -3,12 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { BulkImportLogEntry, BulkImportResult } from '../../../api';
-import {
-  AsyncPipe,
-  DatePipe,
-  NgClass,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { AsyncPipe, DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -58,10 +53,7 @@ export class BulkImportLogComponent implements OnInit {
             })),
             tap(
               (result) =>
-                (this.pagedLogEntries = this.pageChanged(
-                  { pageIndex: 0, pageSize: 5 },
-                  result.importResult.logEntries
-                ))
+                (this.pagedLogEntries = this.pageChanged({ pageIndex: 0, pageSize: 5 }, result.importResult.logEntries))
             )
           );
         } else {

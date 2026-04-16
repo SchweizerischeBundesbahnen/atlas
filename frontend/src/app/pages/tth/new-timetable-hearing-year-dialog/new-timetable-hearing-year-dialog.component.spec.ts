@@ -16,9 +16,7 @@ import { DateIconComponent } from '../../../core/form-components/date-icon/date-
 import { TranslatePipe } from '@ngx-translate/core';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 
-const mockTimetableHearingYearsService: Mocked<
-  Pick<TimetableHearingYearInternalService, 'getHearingYears'>
-> = {
+const mockTimetableHearingYearsService: Mocked<Pick<TimetableHearingYearInternalService, 'getHearingYears'>> = {
   getHearingYears: vi.fn(),
 };
 
@@ -61,9 +59,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   }
 
   beforeEach(async () => {
-    mockTimetableHearingYearsService.getHearingYears.mockReturnValue(
-      of(getTimetableHearingYears())
-    );
+    mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of(getTimetableHearingYears()));
     await TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
@@ -99,26 +95,18 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     expect(newTimetableHearingYearDialogComponent).toBeTruthy();
 
     const title = fixture.debugElement.query(By.css('h1'));
-    expect(title.nativeElement.textContent).to.contain(
-      'TTH.NEW_YEAR.DIALOG.NEW_PLAN_TIMETABLE'
-    );
+    expect(title.nativeElement.textContent).to.contain('TTH.NEW_YEAR.DIALOG.NEW_PLAN_TIMETABLE');
 
-    const dropdownLabel = fixture.debugElement.query(
-      By.css('atlas-label-field')
-    );
+    const dropdownLabel = fixture.debugElement.query(By.css('atlas-label-field'));
     expect(dropdownLabel.nativeElement).toBeTruthy();
 
     const dropdownSelect = fixture.debugElement.query(By.css('mat-select'));
     expect(dropdownSelect.nativeElement).toBeTruthy();
 
-    const formDateRange = fixture.debugElement.query(
-      By.css('atlas-form-date-range')
-    );
+    const formDateRange = fixture.debugElement.query(By.css('atlas-form-date-range'));
     expect(formDateRange.nativeElement).toBeTruthy();
 
-    const matDialogActions = fixture.debugElement.query(
-      By.css('mat-dialog-actions')
-    );
+    const matDialogActions = fixture.debugElement.query(By.css('mat-dialog-actions'));
     expect(matDialogActions.nativeElement).toBeTruthy();
   });
 
@@ -131,29 +119,17 @@ describe('NewTimetableHearingYearDialogComponent', () => {
       currentYear + 7,
       currentYear + 8,
     ]);
-    expect(newTimetableHearingYearDialogComponent.defaultYearSelection).toEqual(
-      currentYear + 4
-    );
+    expect(newTimetableHearingYearDialogComponent.defaultYearSelection).toEqual(currentYear + 4);
   });
 
   it('should get active year', () => {
-    const timetableHearingYears: TimetableHearingYear[] =
-      getTimetableHearingYears();
-    expect(
-      newTimetableHearingYearDialogComponent.getActiveYear(
-        timetableHearingYears
-      )
-    ).toEqual(currentYear);
+    const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
+    expect(newTimetableHearingYearDialogComponent.getActiveYear(timetableHearingYears)).toEqual(currentYear);
   });
 
   it('should get all planned and archived years', () => {
-    const timetableHearingYears: TimetableHearingYear[] =
-      getTimetableHearingYears();
-    expect(
-      newTimetableHearingYearDialogComponent.getAllPlanedAndArchivedYears(
-        timetableHearingYears
-      )
-    ).toEqual([
+    const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
+    expect(newTimetableHearingYearDialogComponent.getAllPlanedAndArchivedYears(timetableHearingYears)).toEqual([
       timetableHearingYears[1],
       timetableHearingYears[2],
       timetableHearingYears[3],
@@ -161,36 +137,22 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   });
 
   it('should validate that the year is planned or archived', () => {
-    const timetableHearingYears: TimetableHearingYear[] =
-      getTimetableHearingYears();
+    const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
-      newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(
-        currentYear + 1,
-        timetableHearingYears
-      )
+      newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(currentYear + 1, timetableHearingYears)
     ).toBe(true);
   });
 
   it('should validate that the year is neither planned nor archived', () => {
-    const timetableHearingYears: TimetableHearingYear[] =
-      getTimetableHearingYears();
+    const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
-      newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(
-        currentYear + 4,
-        timetableHearingYears
-      )
+      newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(currentYear + 4, timetableHearingYears)
     ).toBe(false);
   });
 
   it('should calculate proposed years', () => {
-    const timetableHearingYears: TimetableHearingYear[] =
-      getTimetableHearingYears();
-    expect(
-      newTimetableHearingYearDialogComponent.calculateProposedYears(
-        currentYear,
-        timetableHearingYears
-      )
-    ).toEqual([
+    const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
+    expect(newTimetableHearingYearDialogComponent.calculateProposedYears(currentYear, timetableHearingYears)).toEqual([
       currentYear + 4,
       currentYear + 5,
       currentYear + 6,

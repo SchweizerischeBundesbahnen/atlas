@@ -9,15 +9,9 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
-import {
-  ReadServicePointVersion,
-  ReadTrafficPointElementVersion,
-} from '../../../../api';
+import { ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../../api';
 import { FormGroup } from '@angular/forms';
-import {
-  SectorDetailFormGroup,
-  SectorFormGroupBuilder,
-} from './sector-detail-form-group';
+import { SectorDetailFormGroup, SectorFormGroupBuilder } from './sector-detail-form-group';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { SectorMapService } from '../../map/sector-map.service';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
@@ -26,10 +20,7 @@ import { GeographyComponent } from '../../geography/geography.component';
 import { MatDivider } from '@angular/material/divider';
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
-import {
-  DetailDialogHelperService,
-  DetailWithCancelEdit,
-} from '../../../../core/detail/detail-dialog-helper.service';
+import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../../core/detail/detail-dialog-helper.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { CreateSectorVersion } from '../../../../api/model/createSectorVersion';
@@ -41,10 +32,7 @@ import { filter } from 'rxjs/operators';
 import { TrafficPointMapService } from '../../map/traffic-point-map.service';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import {
-  Revokable,
-  RevokeButton,
-} from '../../../../core/form-components/revoke-button/revoke-button';
+import { Revokable, RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
 import { SloidContainerComponent } from '../../../../core/sloid-container/sloid-container.component';
 import { AtlasClipboardComponent } from '../../../../core/form-components/atlas-clipboard/atlas-clipboard.component';
 
@@ -71,14 +59,7 @@ import { AtlasClipboardComponent } from '../../../../core/form-components/atlas-
     AtlasClipboardComponent,
   ],
 })
-export class SectorDetailComponent
-  implements
-    Revokable,
-    DetailFormComponent,
-    DetailWithCancelEdit,
-    OnInit,
-    OnDestroy
-{
+export class SectorDetailComponent implements Revokable, DetailFormComponent, DetailWithCancelEdit, OnInit, OnDestroy {
   sectorVersions!: ReadSectorVersion[];
   selectedVersion!: ReadSectorVersion;
   selectedVersionIndex!: number;
@@ -115,13 +96,8 @@ export class SectorDetailComponent
       } else {
         this.isNew = false;
         VersionsHandlingService.addVersionNumbers(this.sectorVersions);
-        this.maxValidity = VersionsHandlingService.getMaxValidity(
-          this.sectorVersions
-        );
-        this.selectedVersion =
-          VersionsHandlingService.determineDefaultVersionByValidity(
-            this.sectorVersions
-          );
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.sectorVersions);
+        this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.sectorVersions);
         this.initSelectedVersion();
       }
       this.form.controls.trafficPointSloid.setValue(this.trafficPoint.sloid);
@@ -156,8 +132,7 @@ export class SectorDetailComponent
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const sectorVersion =
-        this.form.getRawValue() as unknown as CreateSectorVersion;
+      const sectorVersion = this.form.getRawValue() as unknown as CreateSectorVersion;
       this.form.disable();
       if (this.isNew) {
         this.create(sectorVersion);
@@ -180,9 +155,7 @@ export class SectorDetailComponent
       .revokeSector(this.selectedVersion.sloid!)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success(
-          'SEPODI.SECTORS.NOTIFICATION.REVOKE_SUCCESS'
-        );
+        this.notificationService.success('SEPODI.SECTORS.NOTIFICATION.REVOKE_SUCCESS');
         this.router
           .navigate(['..', this.selectedVersion.sloid], {
             relativeTo: this.route,
@@ -193,35 +166,21 @@ export class SectorDetailComponent
 
   private initSelectedVersion(): void {
     this.form = SectorFormGroupBuilder.buildFormGroup(this.selectedVersion);
-    this.selectedVersionIndex = this.sectorVersions.indexOf(
-      this.selectedVersion
-    );
+    this.selectedVersionIndex = this.sectorVersions.indexOf(this.selectedVersion);
     this.form.disable();
-    this.sectorMapService.displayCurrentSector(
-      this.selectedVersion.sectorGeolocation!.wgs84
-    );
+    this.sectorMapService.displayCurrentSector(this.selectedVersion.sectorGeolocation!.wgs84);
   }
 
   private initHeaderWithParentInfo(next: Data) {
     const servicePoint: ReadServicePointVersion[] = next.servicePoint;
-    const servicePointVersion =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
-    this.servicePointDesignationOfficial =
-      servicePointVersion.designationOfficial;
-    this.servicePointBusinessOrganisations = servicePoint.map(
-      (i) => i.businessOrganisation
-    );
-    this.trafficPointMapService.displayTrafficPointsOnMap(
-      servicePointVersion.number.number
-    );
+    const servicePointVersion = VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
+    this.servicePointDesignationOfficial = servicePointVersion.designationOfficial;
+    this.servicePointBusinessOrganisations = servicePoint.map((i) => i.businessOrganisation);
+    this.trafficPointMapService.displayTrafficPointsOnMap(servicePointVersion.number.number);
 
     const trafficPoint: ReadTrafficPointElementVersion[] = next.trafficPoint;
-    this.trafficPoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(trafficPoint);
-    this.sectorMapService.displaySectorsOnMap(
-      servicePointVersion.number.number,
-      this.trafficPoint.sloid!
-    );
+    this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(trafficPoint);
+    this.sectorMapService.displaySectorsOnMap(servicePointVersion.number.number, this.trafficPoint.sloid!);
   }
 
   private create(sectorVersion: CreateSectorVersion): void {
@@ -229,12 +188,8 @@ export class SectorDetailComponent
       .createSector(sectorVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((version) => {
-        this.notificationService.success(
-          'SEPODI.SECTORS.NOTIFICATION.ADD_SUCCESS'
-        );
-        this.router
-          .navigate(['..', version.sloid], { relativeTo: this.route })
-          .then(() => this.ngOnInit());
+        this.notificationService.success('SEPODI.SECTORS.NOTIFICATION.ADD_SUCCESS');
+        this.router.navigate(['..', version.sloid], { relativeTo: this.route }).then(() => this.ngOnInit());
       });
   }
 
@@ -243,9 +198,7 @@ export class SectorDetailComponent
       .updateSector(id, createSectorVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success(
-          'SEPODI.SECTORS.NOTIFICATION.EDIT_SUCCESS'
-        );
+        this.notificationService.success('SEPODI.SECTORS.NOTIFICATION.EDIT_SUCCESS');
         this.router
           .navigate(['..', this.selectedVersion.sloid], {
             relativeTo: this.route,

@@ -1,14 +1,5 @@
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
-import {
-  OperatingPointGroup,
-  ServicePointDetailFormGroup,
-} from './service-point-detail-form-group';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { OperatingPointGroup, ServicePointDetailFormGroup } from './service-point-detail-form-group';
 import { mergeWith, Observable, Subject } from 'rxjs';
 import {
   CreateServicePointVersion,
@@ -17,10 +8,7 @@ import {
   StopPointType,
 } from '../../../../../../api';
 import { AtLeastOneValidator } from '../../../../../../core/validation/boolean-cross-validator/at-least-one-validator';
-import {
-  addControlToFormNoEvent,
-  removeControlFromFormNoEvent,
-} from '../../../../../../core/util/forms';
+import { addControlToFormNoEvent, removeControlFromFormNoEvent } from '../../../../../../core/util/forms';
 import { takeUntil } from 'rxjs/operators';
 import moment from 'moment/moment';
 
@@ -72,9 +60,7 @@ export class StationFormGroup {
     stationGroup.controls.stopPoint.valueChanges
       .pipe(takeUntil(destroy$))
       .subscribe((checked) =>
-        checked
-          ? this.handleStopPointChecked(stationGroup, version)
-          : this.handleStopPointUnchecked(stationGroup)
+        checked ? this.handleStopPointChecked(stationGroup, version) : this.handleStopPointUnchecked(stationGroup)
       );
 
     const freightPointDestroy$ = new Subject<void>();
@@ -82,13 +68,7 @@ export class StationFormGroup {
       .pipe(takeUntil(destroy$))
       .subscribe((checked) =>
         checked
-          ? this.handleFreightPointChecked(
-              stationGroup,
-              formGroup,
-              freightPointDestroy$,
-              destroy$,
-              version
-            )
+          ? this.handleFreightPointChecked(stationGroup, formGroup, freightPointDestroy$, destroy$, version)
           : this.handleFreightPointUnchecked(freightPointDestroy$, stationGroup)
       );
 
@@ -113,28 +93,15 @@ export class StationFormGroup {
     addControlToFormNoEvent(
       stationGroup,
       'freightPointGroup',
-      this.freightPointGroup(
-        formGroup,
-        freightPointDestroy$.pipe(takeUntil(destroy$), mergeWith(destroy$)),
-        version
-      )
+      this.freightPointGroup(formGroup, freightPointDestroy$.pipe(takeUntil(destroy$), mergeWith(destroy$)), version)
     );
   }
 
-  private static handleStopPointChecked(
-    stationGroup: FormGroup<StationGroup>,
-    version?: ReadServicePointVersion
-  ) {
-    addControlToFormNoEvent(
-      stationGroup,
-      'stopPointGroup',
-      this.stopPointGroup(version)
-    );
+  private static handleStopPointChecked(stationGroup: FormGroup<StationGroup>, version?: ReadServicePointVersion) {
+    addControlToFormNoEvent(stationGroup, 'stopPointGroup', this.stopPointGroup(version));
   }
 
-  private static handleStopPointUnchecked(
-    stationGroup: FormGroup<StationGroup>
-  ) {
+  private static handleStopPointUnchecked(stationGroup: FormGroup<StationGroup>) {
     removeControlFromFormNoEvent(stationGroup, 'stopPointGroup');
   }
 
@@ -150,12 +117,7 @@ export class StationFormGroup {
           validators: Validators.required,
         }),
       },
-      [
-        this.meansOfTranportOnDemandValidator(
-          'stopPointType',
-          'meansOfTransport'
-        ),
-      ]
+      [this.meansOfTranportOnDemandValidator('stopPointType', 'meansOfTransport')]
     );
   }
 
@@ -165,58 +127,38 @@ export class StationFormGroup {
     version?: ReadServicePointVersion
   ) {
     const isRequired =
-      formGroup.controls.validityGroup.controls.validFrom.value?.isSameOrAfter(
-        moment(),
-        'day'
-      ) && formGroup.controls.country.value === 'SWITZERLAND';
+      formGroup.controls.validityGroup.controls.validFrom.value?.isSameOrAfter(moment(), 'day') &&
+      formGroup.controls.country.value === 'SWITZERLAND';
     const freightPointGroup = new FormGroup<FreightPointGroup>({
-      sortCodeOfDestinationStation: new FormControl(
-        version?.sortCodeOfDestinationStation,
-        {
-          nonNullable: true,
-          validators: isRequired
-            ? [Validators.maxLength(5), Validators.required]
-            : Validators.maxLength(5),
-        }
-      ),
+      sortCodeOfDestinationStation: new FormControl(version?.sortCodeOfDestinationStation, {
+        nonNullable: true,
+        validators: isRequired ? [Validators.maxLength(5), Validators.required] : Validators.maxLength(5),
+      }),
     });
 
-    formGroup.controls.country.valueChanges
-      .pipe(takeUntil(destroy$))
-      .subscribe((country) => {
-        const required =
-          country === 'SWITZERLAND' &&
-          formGroup.controls.validityGroup.controls.validFrom.value?.isSameOrAfter(
-            moment(),
-            'day'
-          );
-        this.updateSortCodeValidation(freightPointGroup, required);
-      });
+    formGroup.controls.country.valueChanges.pipe(takeUntil(destroy$)).subscribe((country) => {
+      const required =
+        country === 'SWITZERLAND' &&
+        formGroup.controls.validityGroup.controls.validFrom.value?.isSameOrAfter(moment(), 'day');
+      this.updateSortCodeValidation(freightPointGroup, required);
+    });
 
     formGroup.controls.validityGroup.controls.validFrom.valueChanges
       .pipe(takeUntil(destroy$))
       .subscribe((validFrom) => {
         const required =
-          validFrom?.isSameOrAfter(moment(), 'day') &&
-          formGroup.controls.country.value === 'SWITZERLAND';
+          validFrom?.isSameOrAfter(moment(), 'day') && formGroup.controls.country.value === 'SWITZERLAND';
         this.updateSortCodeValidation(freightPointGroup, required);
       });
 
     return freightPointGroup;
   }
 
-  private static updateSortCodeValidation(
-    freightPointGroup: FormGroup<FreightPointGroup>,
-    required?: boolean
-  ) {
+  private static updateSortCodeValidation(freightPointGroup: FormGroup<FreightPointGroup>, required?: boolean) {
     if (required) {
-      freightPointGroup.controls.sortCodeOfDestinationStation.addValidators(
-        Validators.required
-      );
+      freightPointGroup.controls.sortCodeOfDestinationStation.addValidators(Validators.required);
     } else {
-      freightPointGroup.controls.sortCodeOfDestinationStation.removeValidators(
-        Validators.required
-      );
+      freightPointGroup.controls.sortCodeOfDestinationStation.removeValidators(Validators.required);
     }
     freightPointGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
   }
@@ -227,34 +169,25 @@ export class StationFormGroup {
       writableForm: CreateServicePointVersion
     ) {
       if (spTypeControls && 'stopPoint' in spTypeControls) {
-        writableForm.freightServicePoint =
-          spTypeControls.freightServicePoint.value;
+        writableForm.freightServicePoint = spTypeControls.freightServicePoint.value;
         if (spTypeControls.freightPointGroup) {
           writableForm.sortCodeOfDestinationStation =
             spTypeControls.freightPointGroup.controls.sortCodeOfDestinationStation.value;
         }
 
         if (spTypeControls.stopPointGroup) {
-          writableForm.meansOfTransport =
-            spTypeControls.stopPointGroup.controls.meansOfTransport.value;
-          writableForm.stopPointType =
-            spTypeControls.stopPointGroup.controls.stopPointType.value;
+          writableForm.meansOfTransport = spTypeControls.stopPointGroup.controls.meansOfTransport.value;
+          writableForm.stopPointType = spTypeControls.stopPointGroup.controls.stopPointType.value;
         }
       }
     }
   };
 
-  static meansOfTranportOnDemandValidator(
-    stopPointType: string,
-    meansOfTransport: string
-  ) {
+  static meansOfTranportOnDemandValidator(stopPointType: string, meansOfTransport: string) {
     return (control: AbstractControl): ValidationErrors | null => {
       const stopPointControl = control.get(stopPointType);
       const meansOfTransportControl = control.get(meansOfTransport);
-      return this.validateMeansOfTranportOnDemand(
-        stopPointControl,
-        meansOfTransportControl
-      );
+      return this.validateMeansOfTranportOnDemand(stopPointControl, meansOfTransportControl);
     };
   }
 
@@ -265,8 +198,7 @@ export class StationFormGroup {
     const stopPointValue = stopPointControl?.value;
     const meansOfTransportValue = meansOfTransportControl?.value;
     const containsMeansOfTransport =
-      meansOfTransportValue.length > 0 &&
-      meansOfTransportValue.includes(MeanOfTransport.OnDemand);
+      meansOfTransportValue.length > 0 && meansOfTransportValue.includes(MeanOfTransport.OnDemand);
     if (containsMeansOfTransport && stopPointValue !== StopPointType.OnDemand) {
       meansOfTransportControl?.setErrors({ sepodiOnDemand: 'onDemand' });
     }

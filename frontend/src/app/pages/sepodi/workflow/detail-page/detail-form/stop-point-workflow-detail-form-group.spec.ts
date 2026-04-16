@@ -10,8 +10,7 @@ describe('StopPointWorkflowDetailFormGroupBuilder', () => {
       workflowComment: 'No comment',
     };
 
-    const formGroup =
-      StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
+    const formGroup = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
     expect(formGroup.controls.examinants.length).toBe(0);
   });
 
@@ -28,16 +27,11 @@ describe('StopPointWorkflowDetailFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup =
-      StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
+    const formGroup = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
 
     expect(formGroup.controls.examinants.length).toBe(1);
-    expect(
-      formGroup.controls.examinants.at(0).controls.judgement.value
-    ).toBeFalsy();
-    expect(
-      formGroup.controls.examinants.at(0).controls.judgementIcon.value
-    ).toBe('bi-hourglass-split');
+    expect(formGroup.controls.examinants.at(0).controls.judgement.value).toBeFalsy();
+    expect(formGroup.controls.examinants.at(0).controls.judgementIcon.value).toBe('bi-hourglass-split');
   });
 
   it('should create formgroup with examinants with judgement', () => {
@@ -54,15 +48,10 @@ describe('StopPointWorkflowDetailFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup =
-      StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
+    const formGroup = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
 
     expect(formGroup.controls.examinants.length).toBe(1);
-    expect(formGroup.controls.examinants.at(0).controls.judgement.value).toBe(
-      JudgementType.Yes
-    );
-    expect(
-      formGroup.controls.examinants.at(0).controls.judgementIcon.value
-    ).toBe('bi-check-lg');
+    expect(formGroup.controls.examinants.at(0).controls.judgement.value).toBe(JudgementType.Yes);
+    expect(formGroup.controls.examinants.at(0).controls.judgementIcon.value).toBe('bi-check-lg');
   });
 });

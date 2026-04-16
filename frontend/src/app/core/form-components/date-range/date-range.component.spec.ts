@@ -79,9 +79,7 @@ describe('DateRangeComponent', () => {
     todayButton.nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.formGroup.controls.validFrom.value).toEqual(
-      moment().startOf('day')
-    );
+    expect(component.formGroup.controls.validFrom.value).toEqual(moment().startOf('day'));
   });
 
   it('should open validFrom picker and select future timetable', () => {
@@ -91,24 +89,18 @@ describe('DateRangeComponent', () => {
     futureTimetableButton.nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.formGroup.controls.validFrom.value).toEqual(
-      moment(nextTimetableYearChange).startOf('day')
-    );
+    expect(component.formGroup.controls.validFrom.value).toEqual(moment(nextTimetableYearChange).startOf('day'));
   });
 
   function openValidFromPickerAndSelectHeader() {
-    const datePickerToggles = fixture.debugElement.queryAll(
-      By.css('atlas-form-date-icon')
-    );
+    const datePickerToggles = fixture.debugElement.queryAll(By.css('atlas-form-date-icon'));
     expect(datePickerToggles.length).toEqual(2);
 
     const validFromToggle = datePickerToggles[0];
     validFromToggle.nativeElement.click();
     fixture.detectChanges();
 
-    return fixture.debugElement.queryAll(
-      By.css('atlas-today-and-future-timetable-header')
-    );
+    return fixture.debugElement.queryAll(By.css('atlas-today-and-future-timetable-header'));
   }
 
   it('should select validFrom today and validTo today', () => {
@@ -117,25 +109,15 @@ describe('DateRangeComponent', () => {
     todayButton.nativeElement.click();
     fixture.detectChanges();
 
-    const datePickerToggles = fixture.debugElement.queryAll(
-      By.css('atlas-form-date-icon')
-    );
+    const datePickerToggles = fixture.debugElement.queryAll(By.css('atlas-form-date-icon'));
     datePickerToggles[1].nativeElement.click();
     fixture.detectChanges();
 
     // click on circled today
-    fixture.debugElement
-      .queryAll(By.css('.mat-calendar-body-today'))[1]
-      .nativeElement.click();
+    fixture.debugElement.queryAll(By.css('.mat-calendar-body-today'))[1].nativeElement.click();
     fixture.detectChanges();
 
-    expect(
-      component.formGroup.controls.validFrom.value.isSame(
-        moment().startOf('day')
-      )
-    ).toBe(true);
-    expect(
-      component.formGroup.controls.validTo.value.isSame(moment().startOf('day'))
-    ).toBe(true);
+    expect(component.formGroup.controls.validFrom.value.isSame(moment().startOf('day'))).toBe(true);
+    expect(component.formGroup.controls.validTo.value.isSame(moment().startOf('day'))).toBe(true);
   });
 });

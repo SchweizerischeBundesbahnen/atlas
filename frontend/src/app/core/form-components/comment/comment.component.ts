@@ -9,12 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'atlas-form-comment',
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss'],
-  imports: [
-    ReactiveFormsModule,
-    AtlasLabelFieldComponent,
-    MatInput,
-    AtlasFieldErrorComponent,
-  ],
+  imports: [ReactiveFormsModule, AtlasLabelFieldComponent, MatInput, AtlasFieldErrorComponent],
   providers: [TranslatePipe],
 })
 export class CommentComponent {

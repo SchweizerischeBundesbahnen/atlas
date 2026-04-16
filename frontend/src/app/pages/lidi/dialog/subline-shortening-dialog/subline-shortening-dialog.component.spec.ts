@@ -50,20 +50,11 @@ describe('SublineShorteningDialogComponent', () => {
     const expectedUrl = '/line-directory/sublines/123';
 
     router.serializeUrl.mockReturnValue(expectedUrl);
-    const windowOpenSpy = vi
-      .spyOn(window, 'open')
-      .mockImplementation(() => null);
+    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
 
     component.openNewTabOfSubline(slnid);
 
-    expect(router.createUrlTree).toHaveBeenCalledWith([
-      Pages.LIDI.path,
-      Pages.SUBLINES.path,
-      slnid,
-    ]);
-    expect(windowOpenSpy).toHaveBeenCalledExactlyOnceWith(
-      expectedUrl,
-      '_blank'
-    );
+    expect(router.createUrlTree).toHaveBeenCalledWith([Pages.LIDI.path, Pages.SUBLINES.path, slnid]);
+    expect(windowOpenSpy).toHaveBeenCalledExactlyOnceWith(expectedUrl, '_blank');
   });
 });

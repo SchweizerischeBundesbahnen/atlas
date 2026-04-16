@@ -1,10 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, mergeMap, Observable, of } from 'rxjs';
-import {
-  ReadServicePointVersion,
-  ReadStopPointWorkflow,
-} from '../../../../api';
+import { ReadServicePointVersion, ReadStopPointWorkflow } from '../../../../api';
 import { Pages } from '../../../pages';
 import { map } from 'rxjs/operators';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
@@ -23,9 +20,7 @@ export class StopPointWorkflowDetailResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<StopPointWorkflowDetailData | undefined> {
+  resolve(route: ActivatedRouteSnapshot): Observable<StopPointWorkflowDetailData | undefined> {
     const idParameter = parseInt(route.paramMap.get('id') || '0');
     return this.workflowService.getStopPointWorkflow(idParameter).pipe(
       catchError(() => {
@@ -38,16 +33,14 @@ export class StopPointWorkflowDetailResolver {
       }),
       mergeMap((workflow) => {
         if (workflow) {
-          return this.servicePointService
-            .getServicePointVersionsBySloid(workflow.sloid!)
-            .pipe(
-              map((servicePoint) => {
-                return {
-                  workflow: workflow,
-                  servicePoint: servicePoint,
-                };
-              })
-            );
+          return this.servicePointService.getServicePointVersionsBySloid(workflow.sloid!).pipe(
+            map((servicePoint) => {
+              return {
+                workflow: workflow,
+                servicePoint: servicePoint,
+              };
+            })
+          );
         }
         return of();
       })
@@ -55,7 +48,6 @@ export class StopPointWorkflowDetailResolver {
   }
 }
 
-export const stopPointWorkflowDetailResolver: ResolveFn<
-  StopPointWorkflowDetailData | undefined
-> = (route: ActivatedRouteSnapshot) =>
-  inject(StopPointWorkflowDetailResolver).resolve(route);
+export const stopPointWorkflowDetailResolver: ResolveFn<StopPointWorkflowDetailData | undefined> = (
+  route: ActivatedRouteSnapshot
+) => inject(StopPointWorkflowDetailResolver).resolve(route);

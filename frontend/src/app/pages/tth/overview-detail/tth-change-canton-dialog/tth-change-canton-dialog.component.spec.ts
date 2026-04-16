@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
 import { TthChangeCantonDialogComponent } from './tth-change-canton-dialog.component';
-import {
-  MAT_SNACK_BAR_DATA,
-  MatSnackBarRef,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { FormModule } from '../../../../core/module/form.module';
@@ -25,9 +22,7 @@ const statement: TimetableHearingStatementV2 = {
     emails: new Set('fan@yb.ch'),
   },
 };
-const dialogRefSpy: Mocked<
-  Pick<MatDialogRef<TthChangeCantonDialogComponent>, 'close'>
-> = { close: vi.fn() };
+const dialogRefSpy: Mocked<Pick<MatDialogRef<TthChangeCantonDialogComponent>, 'close'>> = { close: vi.fn() };
 const dialogServiceSpy: Mocked<Pick<DialogService, 'confirmLeave'>> = {
   confirmLeave: vi.fn().mockReturnValue(of({})),
 };
@@ -43,19 +38,12 @@ describe('TthChangeCantonDialogComponent', () => {
   let fixture: ComponentFixture<TthChangeCantonDialogComponent>;
 
   mockTimetableHearingStatementsService.updateHearingCanton.mockReturnValue(
-    of(undefined) as ReturnType<
-      TimetableHearingStatementInternalService['updateHearingCanton']
-    >
+    of(undefined) as ReturnType<TimetableHearingStatementInternalService['updateHearingCanton']>
   );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        FormModule,
-        TthChangeCantonDialogComponent,
-        BaseChangeDialogComponent,
-      ],
+      imports: [AppTestingModule, FormModule, TthChangeCantonDialogComponent, BaseChangeDialogComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -95,8 +83,6 @@ describe('TthChangeCantonDialogComponent', () => {
     component.onClick();
     //then
     expect(dialogRefSpy.close).toHaveBeenCalledTimes(1);
-    expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS'
-    );
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith('TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS');
   });
 });

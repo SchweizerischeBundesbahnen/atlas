@@ -22,11 +22,7 @@ describe('DetailWithRelationTabComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        DetailWithRelationTabComponent,
-        MockAtlasButtonComponent,
-      ],
+      imports: [AppTestingModule, DetailWithRelationTabComponent, MockAtlasButtonComponent],
       providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
     });
     fixture = TestBed.createComponent(DetailWithRelationTabComponent);

@@ -1,12 +1,4 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  type Mock,
-  Mocked,
-  vi,
-} from 'vitest';
+import { beforeEach, describe, expect, it, type Mock, Mocked, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { AuthService, BC_TOKEN } from './auth.service';
 import { lastValueFrom, of } from 'rxjs';
@@ -36,19 +28,9 @@ function storageMockImplOf(storageMock: { [k: string]: string }) {
 describe('AuthService', () => {
   let authService: AuthService;
 
-  let userServiceSpy: Mocked<
-    Pick<
-      UserService,
-      'setToUnauthenticatedUser' | 'setCurrentUserAndLoadPermissions'
-    >
-  >;
+  let userServiceSpy: Mocked<Pick<UserService, 'setToUnauthenticatedUser' | 'setCurrentUserAndLoadPermissions'>>;
   let pageServiceSpy: Mocked<Pick<PageService, 'addPagesBasedOnPermissions'>>;
-  let oidcSecurityServiceSpy: Mocked<
-    Pick<
-      OidcSecurityService,
-      'checkAuth' | 'authorize' | 'logoffAndRevokeTokens'
-    >
-  >;
+  let oidcSecurityServiceSpy: Mocked<Pick<OidcSecurityService, 'checkAuth' | 'authorize' | 'logoffAndRevokeTokens'>>;
   let bcTokenSpy: Mock;
   let routerSpy: Mocked<Pick<Router, 'navigateByUrl'>>;
 
@@ -108,10 +90,7 @@ describe('AuthService', () => {
     } = {};
     const sessionStorageMockImpl = storageMockImplOf(sessionStorageMock);
 
-    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(function (
-      this: Storage,
-      key: string
-    ): string | null {
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(function (this: Storage, key: string): string | null {
       if (this === localStorage) {
         localGetCalled(key);
         return localStorageMockImpl.getItem(key);
@@ -135,10 +114,7 @@ describe('AuthService', () => {
       }
     });
 
-    vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(function (
-      this: Storage,
-      key: string
-    ): void {
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(function (this: Storage, key: string): void {
       if (this === localStorage) {
         localStorageMockImpl.removeItem(key);
         localRemoveCalled(key);
@@ -166,9 +142,7 @@ describe('AuthService', () => {
     // Act
     authService.logout();
     // Assert
-    expect(
-      oidcSecurityServiceSpy.logoffAndRevokeTokens
-    ).toHaveBeenCalledExactlyOnceWith();
+    expect(oidcSecurityServiceSpy.logoffAndRevokeTokens).toHaveBeenCalledExactlyOnceWith();
     expect(localRemoveCalled).toHaveBeenCalledExactlyOnceWith('tryLogin');
   });
 
@@ -186,30 +160,22 @@ describe('AuthService', () => {
     };
     oidcSecurityServiceSpy.checkAuth.mockReturnValue(of(loginResponse));
     routerSpy.navigateByUrl.mockReturnValue(Promise.resolve(true));
-    userServiceSpy.setCurrentUserAndLoadPermissions.mockReturnValue(
-      of({} as User)
-    );
+    userServiceSpy.setCurrentUserAndLoadPermissions.mockReturnValue(of({} as User));
     sessionStorage.setItem('returnUrl', '/test');
     authService = TestBed.inject(AuthService);
     // Act
     const authResult = await lastValueFrom(authService.initAuth());
     expect(oidcSecurityServiceSpy.checkAuth).toHaveBeenCalledExactlyOnceWith();
     expect(bcTokenSpy).toHaveBeenCalledTimes(1);
-    expect(
-      userServiceSpy.setCurrentUserAndLoadPermissions
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      userServiceSpy.setCurrentUserAndLoadPermissions
-    ).toHaveBeenCalledWith({
+    expect(userServiceSpy.setCurrentUserAndLoadPermissions).toHaveBeenCalledTimes(1);
+    expect(userServiceSpy.setCurrentUserAndLoadPermissions).toHaveBeenCalledWith({
       email: 'test@sbb.ch',
       name: 'test',
       sbbuid: 'u123456',
       isAdmin: true,
       permissions: [],
     });
-    expect(
-      pageServiceSpy.addPagesBasedOnPermissions
-    ).toHaveBeenCalledExactlyOnceWith();
+    expect(pageServiceSpy.addPagesBasedOnPermissions).toHaveBeenCalledExactlyOnceWith();
     expect(sessionStorage.getItem('returnUrl')).toEqual('');
     expect(localStorage.getItem('tryLogin')).toEqual('yes');
     expect(routerSpy.navigateByUrl).toHaveBeenCalledExactlyOnceWith('/test');
@@ -229,12 +195,8 @@ describe('AuthService', () => {
       authService = TestBed.inject(AuthService);
       // Act
       const authResult = await lastValueFrom(authService.initAuth());
-      expect(
-        oidcSecurityServiceSpy.checkAuth
-      ).toHaveBeenCalledExactlyOnceWith();
-      expect(
-        userServiceSpy.setToUnauthenticatedUser
-      ).toHaveBeenCalledExactlyOnceWith();
+      expect(oidcSecurityServiceSpy.checkAuth).toHaveBeenCalledExactlyOnceWith();
+      expect(userServiceSpy.setToUnauthenticatedUser).toHaveBeenCalledExactlyOnceWith();
       expect(authResult).toBe(true);
     });
 
@@ -253,9 +215,7 @@ describe('AuthService', () => {
       // Act
       const authResult = await lastValueFrom(authService.initAuth());
       // Assert
-      expect(
-        oidcSecurityServiceSpy.checkAuth
-      ).toHaveBeenCalledExactlyOnceWith();
+      expect(oidcSecurityServiceSpy.checkAuth).toHaveBeenCalledExactlyOnceWith();
       expect(localStorage.getItem('tryLogin')).toEqual('');
       expect(loginSpy).toHaveBeenCalledExactlyOnceWith();
       expect(authResult).toBe(true);

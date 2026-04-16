@@ -1,10 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  ControlContainer,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CompletePlatformFormGroup } from '../platform-form-group';
 import {
   BasicAttributeType,
@@ -20,13 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'atlas-platform-complete-form',
   templateUrl: './platform-complete-form.component.html',
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
-  imports: [
-    CommentComponent,
-    ReactiveFormsModule,
-    TextFieldComponent,
-    SelectComponent,
-    TranslatePipe,
-  ],
+  imports: [CommentComponent, ReactiveFormsModule, TextFieldComponent, SelectComponent, TranslatePipe],
 })
 export class PlatformCompleteFormComponent {
   @Input() form!: FormGroup<CompletePlatformFormGroup>;

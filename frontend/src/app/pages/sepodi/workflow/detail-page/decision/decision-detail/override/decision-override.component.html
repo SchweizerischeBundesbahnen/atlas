@@ -32,9 +32,7 @@
       <mat-radio-button [value]="JudgementType.No">
         {{ 'WORKFLOW.DECISION.OVERRIDE_DECLINE' | translate }}
       </mat-radio-button>
-      <atlas-field-error
-        [control]="formGroup.get('fotJudgement')"
-      ></atlas-field-error>
+      <atlas-field-error [control]="formGroup.get('fotJudgement')"></atlas-field-error>
     </mat-radio-group>
 
     <div class="mt-3">

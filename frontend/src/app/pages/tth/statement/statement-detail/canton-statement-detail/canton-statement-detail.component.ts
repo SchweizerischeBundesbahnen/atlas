@@ -101,15 +101,9 @@ export class CantonStatementDetailComponent
   private readonly dialogService = inject(DialogService);
   private readonly notificationService = inject(NotificationService);
   private readonly permissionService = inject(PermissionService);
-  private readonly timetableYearChangeService = inject(
-    TimetableYearChangeInternalService
-  );
-  private readonly timetableHearingYearsService = inject(
-    TimetableHearingYearInternalService
-  );
-  private readonly openStatementInMailService = inject(
-    OpenStatementInMailService
-  );
+  private readonly timetableYearChangeService = inject(TimetableYearChangeInternalService);
+  private readonly timetableHearingYearsService = inject(TimetableHearingYearInternalService);
+  private readonly openStatementInMailService = inject(OpenStatementInMailService);
   private readonly statementShareService = inject(StatementShareService);
   private readonly tableService = inject(TableService);
 
@@ -141,17 +135,15 @@ export class CantonStatementDetailComponent
     this.uploadedFiles = [];
 
     if (this.hearingStatus === HearingStatus.Active) {
-      this.isStatementEditable = this.timetableHearingYearsService
-        .getHearingYears([HearingStatus.Active])
-        .pipe(
-          map((timetableHearingYears) => {
-            const foundTimetableHearingYears = timetableHearingYears ?? [];
-            if (foundTimetableHearingYears.length > 0) {
-              return foundTimetableHearingYears[0].statementEditable;
-            }
-            return false;
-          })
-        );
+      this.isStatementEditable = this.timetableHearingYearsService.getHearingYears([HearingStatus.Active]).pipe(
+        map((timetableHearingYears) => {
+          const foundTimetableHearingYears = timetableHearingYears ?? [];
+          if (foundTimetableHearingYears.length > 0) {
+            return foundTimetableHearingYears[0].statementEditable;
+          }
+          return false;
+        })
+      );
     }
 
     this.initForm();
@@ -169,22 +161,16 @@ export class CantonStatementDetailComponent
       .openCustomDataWithConfirmationResult(this.form, StatementDialogComponent)
       .subscribe((confirmed) => {
         if (confirmed) {
-          const hearingStatement = this.form
-            .value as TimetableHearingStatementV2;
+          const hearingStatement = this.form.value as TimetableHearingStatementV2;
           this.navigateToStatementDetail(hearingStatement);
         } else {
-          this.form.controls.cantonTransferComment.setValue(
-            this.statement?.cantonTransferComment
-          );
+          this.form.controls.cantonTransferComment.setValue(this.statement?.cantonTransferComment);
         }
       });
   }
 
   save() {
-    if (
-      !this.isNew &&
-      this.initialValueForCanton != this.form.value.swissCanton
-    ) {
+    if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
       this.cantonSelectionChanged();
     } else {
       ValidationService.validateForm(this.form);
@@ -211,33 +197,23 @@ export class CantonStatementDetailComponent
 
   removeDocument(fileName: string) {
     const documents = this.form.value.documents as { fileName: string }[];
-    const indexOfFile = documents.findIndex(
-      (document) => document.fileName === fileName
-    );
+    const indexOfFile = documents.findIndex((document) => document.fileName === fileName);
     this.form.controls.documents.removeAt(indexOfFile);
     this.form.markAsDirty();
   }
 
   openAsMail() {
-    this.openStatementInMailService.openAsMail(
-      this.statement!,
-      this.ttfnValidOn
-    );
+    this.openStatementInMailService.openAsMail(this.statement!, this.ttfnValidOn);
   }
 
-  downloadLocalFile(
-    id: number,
-    documents: Array<TimetableHearingStatementDocument> | undefined
-  ) {
+  downloadLocalFile(id: number, documents: Array<TimetableHearingStatementDocument> | undefined) {
     if (documents!.length > 0) {
       for (let i = 0; i < documents!.length!; i++) {
         this.timetableHearingStatementsService
           .getStatementDocument(id, documents![i].fileName)
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe((response) => {
-            this.uploadedFiles.push(
-              new File([response], documents![i].fileName)
-            );
+            this.uploadedFiles.push(new File([response], documents![i].fileName));
           });
       }
     }
@@ -264,30 +240,18 @@ export class CantonStatementDetailComponent
 
   private initCantonOptions() {
     if (this.isNew) {
-      const tthPermissions =
-        this.permissionService.getApplicationUserPermission(
-          ApplicationType.TimetableHearing
-        );
-      if (
-        tthPermissions.role === ApplicationRole.Supervisor ||
-        this.permissionService.isAdmin
-      ) {
+      const tthPermissions = this.permissionService.getApplicationUserPermission(ApplicationType.TimetableHearing);
+      if (tthPermissions.role === ApplicationRole.Supervisor || this.permissionService.isAdmin) {
         this.CANTON_OPTIONS = Cantons.cantons;
       } else if (tthPermissions.role === ApplicationRole.Writer) {
         this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
-          .map((restriction) =>
-            Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton)
-          )
+          .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
           .filter((element) => element !== undefined)
           .map((e) => e!)
           .sort((n1, n2) => (n1.enumCanton! > n2.enumCanton! ? 1 : -1));
       }
-      const defaultCanton = Cantons.getSwissCantonEnum(
-        this.route.snapshot.params.canton
-      );
-      if (
-        this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)
-      ) {
+      const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
+      if (this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)) {
         this.form.controls.swissCanton.setValue(defaultCanton);
       }
     } else {
@@ -315,10 +279,7 @@ export class CantonStatementDetailComponent
       this.isDuplicating = true;
       const localCopyStatement = this.statementShareService.statement;
       this.statement = this.statementShareService.getCloneStatement();
-      this.downloadLocalFile(
-        localCopyStatement.id!,
-        localCopyStatement.documents
-      );
+      this.downloadLocalFile(localCopyStatement.id!, localCopyStatement.documents);
       this.statementShareService.clearCachedStatement();
     }
   }
@@ -334,11 +295,9 @@ export class CantonStatementDetailComponent
   private initTtfnValidOnHandler() {
     this.form.controls.timetableYear.valueChanges.subscribe((year) => {
       if (year) {
-        this.timetableYearChangeService
-          .getTimetableYearChange(year - 1)
-          .subscribe((result) => {
-            this.ttfnValidOn = result;
-          });
+        this.timetableYearChangeService.getTimetableYearChange(year - 1).subscribe((result) => {
+          this.ttfnValidOn = result;
+        });
       }
     });
   }
@@ -351,9 +310,7 @@ export class CantonStatementDetailComponent
       .subscribe((statement) => {
         this.loadingSpinnerService.loading.next(false);
         this.isDuplicating = false;
-        this.notificationService.success(
-          'TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS'
-        );
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
         this.navigateToStatementDetail(statement);
       });
   }
@@ -366,21 +323,17 @@ export class CantonStatementDetailComponent
       .subscribe((statement) => {
         this.statementText.ngOnInit();
         this.loadingSpinnerService.loading.next(false);
-        this.notificationService.success(
-          'TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS'
-        );
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
         this.navigateToStatementDetail(statement);
       });
   }
 
   private navigateToStatementDetail(statement: TimetableHearingStatementV2) {
-    this.router
-      .navigate(['..', statement.id], { relativeTo: this.route })
-      .then(() => {
-        this.isInitializingComponent = false;
-        this.statement = statement;
-        this.ngOnInit();
-      });
+    this.router.navigate(['..', statement.id], { relativeTo: this.route }).then(() => {
+      this.isInitializingComponent = false;
+      this.statement = statement;
+      this.ngOnInit();
+    });
   }
 
   private handleError() {
@@ -415,21 +368,17 @@ export class CantonStatementDetailComponent
   }
 
   next() {
-    this.timetableHearingStatementsService
-      .getNextStatement(...this.getAlternationParams())
-      .subscribe((next) => {
-        this.tableService.pageIndex = next.pageable.pageNumber!;
-        this.navigateToStatementDetail(next.timetableHearingStatement);
-      });
+    this.timetableHearingStatementsService.getNextStatement(...this.getAlternationParams()).subscribe((next) => {
+      this.tableService.pageIndex = next.pageable.pageNumber!;
+      this.navigateToStatementDetail(next.timetableHearingStatement);
+    });
   }
 
   previous() {
-    this.timetableHearingStatementsService
-      .getPreviousStatement(...this.getAlternationParams())
-      .subscribe((next) => {
-        this.tableService.pageIndex = next.pageable.pageNumber!;
-        this.navigateToStatementDetail(next.timetableHearingStatement);
-      });
+    this.timetableHearingStatementsService.getPreviousStatement(...this.getAlternationParams()).subscribe((next) => {
+      this.tableService.pageIndex = next.pageable.pageNumber!;
+      this.navigateToStatementDetail(next.timetableHearingStatement);
+    });
   }
 
   private getAlternationParams(): [
@@ -444,43 +393,27 @@ export class CantonStatementDetailComponent
     number | undefined,
     Array<string> | undefined,
   ] {
-    const cantonFilter = Cantons.getSwissCantonFromShort(
-      this.route.snapshot.params.canton
-    );
+    const cantonFilter = Cantons.getSwissCantonFromShort(this.route.snapshot.params.canton);
     return [
       this.statement!.id!,
       this.statement!.timetableYear,
       cantonFilter,
       this.tableService.filterConfig?.filters.chipSearch.getActiveSearch(),
       this.tableService.filterConfig?.filters.multiSelectStatementStatus.getActiveSearch(),
-      this.tableService.filterConfig?.filters.searchSelectTTFN.getActiveSearch()
-        ?.ttfnid,
-      (
-        this.tableService.filterConfig?.filters.searchSelectTU.getActiveSearch() as TransportCompany[]
-      )
+      this.tableService.filterConfig?.filters.searchSelectTTFN.getActiveSearch()?.ttfnid,
+      (this.tableService.filterConfig?.filters.searchSelectTU.getActiveSearch() as TransportCompany[])
         ?.map((tu) => tu.id)
-        .filter(
-          (numberOrUndefined): numberOrUndefined is number =>
-            !!numberOrUndefined
-        ),
+        .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined),
       this.tableService.pageIndex,
       this.tableService.pageSize,
-      addElementsToArrayWhenNotUndefined(
-        this.tableService.sortString,
-        'statementStatus,asc',
-        'ttfnid,asc',
-        'id,ASC'
-      ),
+      addElementsToArrayWhenNotUndefined(this.tableService.sortString, 'statementStatus,asc', 'ttfnid,asc', 'id,ASC'),
     ];
   }
 
   ttfnSelectionChanged(newTtfn?: TimetableFieldNumber) {
     if (newTtfn) {
       this.timetableHearingStatementsService
-        .getResponsibleTransportCompanies(
-          newTtfn.ttfnid!,
-          this.form.value.timetableYear! - 1
-        )
+        .getResponsibleTransportCompanies(newTtfn.ttfnid!, this.form.value.timetableYear! - 1)
         .subscribe((result) => {
           this.form.controls.responsibleTransportCompanies.setValue(result);
         });
@@ -489,16 +422,11 @@ export class CantonStatementDetailComponent
 
   openDataProtectionCheck() {
     this.dialogService
-      .openCustomDataWithConfirmationResult(
-        this.statement!,
-        StatementDataProtectionCheckDialogComponent
-      )
+      .openCustomDataWithConfirmationResult(this.statement!, StatementDataProtectionCheckDialogComponent)
       .subscribe((result) => {
         if (result) {
           this.isInitializingComponent = true;
-          this.router
-            .navigate(['..', this.statement!.id], { relativeTo: this.route })
-            .then(() => this.ngOnInit());
+          this.router.navigate(['..', this.statement!.id], { relativeTo: this.route }).then(() => this.ngOnInit());
         }
       });
   }

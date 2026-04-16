@@ -62,24 +62,14 @@ export class UserAdministrationUserCreateComponent {
 
   createUser(): void {
     this.saveEnabled = false;
-    this.userService
-      .createUserPermission({ sbbUserId: this.selectedUser!.userId! })
-      .subscribe({
-        next: () => {
-          this.router
-            .navigate([
-              Pages.USER_ADMINISTRATION.path,
-              Pages.USERS.path,
-              this.selectedUser!.userId!,
-            ])
-            .then(() =>
-              this.notificationService.success(
-                'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
-              )
-            );
-        },
-        error: () => (this.saveEnabled = true),
-      });
+    this.userService.createUserPermission({ sbbUserId: this.selectedUser!.userId! }).subscribe({
+      next: () => {
+        this.router
+          .navigate([Pages.USER_ADMINISTRATION.path, Pages.USERS.path, this.selectedUser!.userId!])
+          .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
+      },
+      error: () => (this.saveEnabled = true),
+    });
   }
 
   cancelCreation(showDialog = true): void {

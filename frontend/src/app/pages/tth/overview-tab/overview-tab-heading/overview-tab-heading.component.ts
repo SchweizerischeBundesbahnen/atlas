@@ -20,10 +20,7 @@ export class OverviewTabHeadingComponent {
 
   overviewToTabShareDataService = inject(OverviewToTabShareDataService);
 
-  readonly isHearingYearActive =
-    this.overviewToTabShareDataService.isHearingYearActive;
-  readonly isHearingYearPlanned =
-    this.overviewToTabShareDataService.isHearingYearPlanned;
-  readonly isHearingYearArchived =
-    this.overviewToTabShareDataService.isHearingYearArchived;
+  readonly isHearingYearActive = this.overviewToTabShareDataService.isHearingYearActive;
+  readonly isHearingYearPlanned = this.overviewToTabShareDataService.isHearingYearPlanned;
+  readonly isHearingYearArchived = this.overviewToTabShareDataService.isHearingYearArchived;
 }

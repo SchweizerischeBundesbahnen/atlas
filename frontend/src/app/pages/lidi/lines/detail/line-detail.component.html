@@ -11,9 +11,7 @@
           {{ selectedVersion.description }}
         </div>
         <div class="font-bold-xl mb-2">
-          <span data-cy="detail-subheading-id">{{
-            selectedVersion.slnid!
-          }}</span>
+          <span data-cy="detail-subheading-id">{{ selectedVersion.slnid! }}</span>
           <span data-cy="total-range">
             -
             <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
@@ -47,15 +45,9 @@
               {{ selectedVersionIndex + 1 }}
             </h2>
             <div class="mb-3">
-              <span class="font-bold-lg color-gray-900 pe-1">{{
-                'COMMON.STATUS' | translate
-              }}</span>
-              <span class="color-gray-900">{{
-                'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
-              }}</span>
-              <span class="ps-3 font-bold-lg color-gray-900 pe-1">{{
-                'LIDI.TYPE' | translate
-              }}</span>
+              <span class="font-bold-lg color-gray-900 pe-1">{{ 'COMMON.STATUS' | translate }}</span>
+              <span class="color-gray-900">{{ 'COMMON.STATUS_TYPES.' + selectedVersion.status | translate }}</span>
+              <span class="ps-3 font-bold-lg color-gray-900 pe-1">{{ 'LIDI.TYPE' | translate }}</span>
               <span class="color-gray-900" data-cy="lineTypeReadOnly">{{
                 'LIDI.LINE.TYPES.' + lineType | translate
               }}</span>
@@ -89,9 +81,7 @@
       @if (!isNew) {
         <div class="mt-5">
           @if (!isNew) {
-            <atlas-user-detail-info
-              [record]="selectedVersion"
-              [applicationType]="'LIDI'"></atlas-user-detail-info>
+            <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'LIDI'"></atlas-user-detail-info>
           }
         </div>
       }
@@ -141,16 +131,8 @@
           ></atlas-button>
         </div>
       }
-      @if (
-        form.disabled &&
-        !isNew &&
-        selectedVersion.status !== 'REVOKED' &&
-        selectedVersion.status !== 'IN_REVIEW'
-      ) {
-        <atlas-revoke-button
-          (revokeClicked)="revoke()"
-          applicationType="LIDI"
-        ></atlas-revoke-button>
+      @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED' && selectedVersion.status !== 'IN_REVIEW') {
+        <atlas-revoke-button (revokeClicked)="revoke()" applicationType="LIDI"></atlas-revoke-button>
       }
       <atlas-button
         (buttonClicked)="delete()"

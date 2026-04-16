@@ -12,9 +12,7 @@ export class PrmPlatformResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadPlatformVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadPlatformVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';
     return this.platformService.getPlatformVersions(sloidParameter).pipe(
       catchError(() =>
@@ -28,6 +26,5 @@ export class PrmPlatformResolver {
   }
 }
 
-export const platformResolver: ResolveFn<Array<ReadPlatformVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(PrmPlatformResolver).resolve(route);
+export const platformResolver: ResolveFn<Array<ReadPlatformVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(PrmPlatformResolver).resolve(route);

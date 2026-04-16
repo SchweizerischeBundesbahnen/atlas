@@ -174,10 +174,7 @@
   @if (!isNew) {
     <div class="mb-3">
       <mat-divider class="mt-4 mb-4"></mat-divider>
-      <atlas-user-detail-info
-        [record]="selectedVersion"
-        [applicationType]="'SEPODI'"
-      ></atlas-user-detail-info>
+      <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'SEPODI'"></atlas-user-detail-info>
     </div>
   }
 </atlas-detail-page-content>
@@ -204,10 +201,7 @@
     ></atlas-button>
   }
   @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-    <atlas-revoke-button
-      (revokeClicked)="revoke()"
-      applicationType="LIDI"
-    ></atlas-revoke-button>
+    <atlas-revoke-button (revokeClicked)="revoke()" applicationType="LIDI"></atlas-revoke-button>
   }
   <atlas-button
     (buttonClicked)="toggleEdit()"

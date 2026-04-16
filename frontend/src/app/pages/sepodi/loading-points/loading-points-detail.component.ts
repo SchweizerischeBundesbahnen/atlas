@@ -1,19 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  CreateLoadingPointVersion,
-  ReadLoadingPointVersion,
-  ReadServicePointVersion,
-} from '../../../api';
+import { CreateLoadingPointVersion, ReadLoadingPointVersion, ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  LoadingPointDetailFormGroup,
-  LoadingPointFormGroupBuilder,
-} from './loading-point-detail-form-group';
+import { LoadingPointDetailFormGroup, LoadingPointFormGroupBuilder } from './loading-point-detail-form-group';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { NotificationService } from '../../../core/notification/notification.service';
@@ -107,16 +100,9 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.loadingPointVersions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(
-        this.loadingPointVersions
-      );
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.loadingPointVersions
-        );
-      this.selectedVersionIndex = this.loadingPointVersions.indexOf(
-        this.selectedVersion
-      );
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.loadingPointVersions);
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.loadingPointVersions);
+      this.selectedVersionIndex = this.loadingPointVersions.indexOf(this.selectedVersion);
 
       this.initSelectedVersion();
     }
@@ -129,31 +115,20 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
     } else {
-      this.servicePointService
-        .getServicePointVersions(this.servicePointNumber)
-        .subscribe((servicePoint) => {
-          this.servicePoint = servicePoint;
-          this.servicePointName =
-            VersionsHandlingService.determineDefaultVersionByValidity(
-              servicePoint
-            ).designationOfficial;
-          this.servicePointBusinessOrganisations = this.servicePoint.map(
-            (i) => {
-              return i.businessOrganisation;
-            }
-          );
+      this.servicePointService.getServicePointVersions(this.servicePointNumber).subscribe((servicePoint) => {
+        this.servicePoint = servicePoint;
+        this.servicePointName =
+          VersionsHandlingService.determineDefaultVersionByValidity(servicePoint).designationOfficial;
+        this.servicePointBusinessOrganisations = this.servicePoint.map((i) => {
+          return i.businessOrganisation;
         });
+      });
     }
   }
 
   backToServicePoint() {
     this.router
-      .navigate([
-        Pages.SEPODI.path,
-        Pages.SERVICE_POINTS.path,
-        this.servicePointNumber,
-        'loading-points',
-      ])
+      .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path, this.servicePointNumber, 'loading-points'])
       .then();
   }
 
@@ -164,12 +139,8 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   }
 
   private initSelectedVersion() {
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
-      this.loadingPointVersions
-    );
-    this.form = LoadingPointFormGroupBuilder.buildFormGroup(
-      this.selectedVersion
-    );
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.loadingPointVersions);
+    this.form = LoadingPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
     }
@@ -218,21 +189,15 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
         )
         .subscribe((confirmed) => {
           if (confirmed) {
-            this.loadingPointVersion = this.form
-              .value as unknown as CreateLoadingPointVersion;
-            this.loadingPointVersion.servicePointNumber =
-              this.servicePointNumber;
+            this.loadingPointVersion = this.form.value as unknown as CreateLoadingPointVersion;
+            this.loadingPointVersion.servicePointNumber = this.servicePointNumber;
             if (this.isNew) {
               this.create(this.loadingPointVersion);
               this.form.disable();
             } else {
               this.validityService.updateValidity(this.form);
               this.validityService.validateAndDisableCustom(
-                () =>
-                  this.update(
-                    this.selectedVersion.id!,
-                    this.loadingPointVersion
-                  ),
+                () => this.update(this.selectedVersion.id!, this.loadingPointVersion),
                 () => this.form.disable()
               );
             }
@@ -246,9 +211,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       .createLoadingPoint(loadingPointVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((loadingPointVersion) => {
-        this.notificationService.success(
-          'SEPODI.LOADING_POINTS.NOTIFICATION.ADD_SUCCESS'
-        );
+        this.notificationService.success('SEPODI.LOADING_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.router
           .navigate([
             Pages.SEPODI.path,
@@ -265,9 +228,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       .updateLoadingPoint(id, loadingPointVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success(
-          'SEPODI.LOADING_POINTS.NOTIFICATION.EDIT_SUCCESS'
-        );
+        this.notificationService.success('SEPODI.LOADING_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.router
           .navigate([
             Pages.SEPODI.path,

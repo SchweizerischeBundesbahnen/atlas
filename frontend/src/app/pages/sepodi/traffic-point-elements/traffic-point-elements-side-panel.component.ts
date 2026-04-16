@@ -1,15 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
-import {
-  MeanOfTransport,
-  ReadServicePointVersion,
-  ReadTrafficPointElementVersion,
-} from '../../../api';
+import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { MeanOfTransport, ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { Pages } from '../../pages';
@@ -41,9 +32,7 @@ import { SloidContainerComponent } from '../../../core/sloid-container/sloid-con
     SloidContainerComponent,
   ],
 })
-export class TrafficPointElementsSidePanelComponent
-  implements OnInit, OnDestroy
-{
+export class TrafficPointElementsSidePanelComponent implements OnInit, OnDestroy {
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
@@ -79,28 +68,17 @@ export class TrafficPointElementsSidePanelComponent
       this.initTrafficPoint();
 
       const servicePoint: ReadServicePointVersion[] = next.servicePoint;
-      const servicePointHasOneMotTrain = servicePoint.some((i) =>
-        i.meansOfTransport?.includes(MeanOfTransport.Train)
-      );
+      const servicePointHasOneMotTrain = servicePoint.some((i) => i.meansOfTransport?.includes(MeanOfTransport.Train));
       this.showTabs =
-        environment.sectorsEnabled &&
-        !this.isTrafficPointArea &&
-        !this.isNew &&
-        servicePointHasOneMotTrain;
+        environment.sectorsEnabled && !this.isTrafficPointArea && !this.isNew && servicePointHasOneMotTrain;
 
-      const versionToDisplay =
-        VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
+      const versionToDisplay = VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
       this.servicePointName = versionToDisplay.designationOfficial;
 
-      this.trafficPointMapService.displayTrafficPointsOnMap(
-        versionToDisplay.number.number
-      );
+      this.trafficPointMapService.displayTrafficPointsOnMap(versionToDisplay.number.number);
 
       if (this.showTabs) {
-        this.sectorMapService.displaySectorsOnMap(
-          versionToDisplay.number.number,
-          this.selectedVersion.sloid!
-        );
+        this.sectorMapService.displaySectorsOnMap(versionToDisplay.number.number, this.selectedVersion.sloid!);
       }
     });
   }
@@ -111,13 +89,8 @@ export class TrafficPointElementsSidePanelComponent
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(
-        this.trafficPointVersions
-      );
-      this.selectedVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          this.trafficPointVersions
-        );
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.trafficPointVersions);
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.trafficPointVersions);
       this.trafficPointMapService.displayCurrentTrafficPoint(
         this.selectedVersion.trafficPointElementGeolocation?.wgs84
       );

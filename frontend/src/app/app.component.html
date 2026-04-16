@@ -1,9 +1,6 @@
 @if (authenticated$ | async) {
   <div class="d-flex flex-column full-height-no-scroll">
-    <atlas-loading-spinner
-      [isLoading]="!!(loadingSpinnerService.loading | async)"
-    >
-    </atlas-loading-spinner>
+    <atlas-loading-spinner [isLoading]="!!(loadingSpinnerService.loading | async)"> </atlas-loading-spinner>
     <atlas-header></atlas-header>
     <div class="app-body">
       <mat-sidenav-container class="page-container">

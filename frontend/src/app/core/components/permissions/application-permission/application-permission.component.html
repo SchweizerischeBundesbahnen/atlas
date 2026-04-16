@@ -42,9 +42,7 @@
         }
         @if (showBusinessOrganisationRestriction) {
           <span class="font-bold-lg">
-            {{
-              'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate
-            }}
+            {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
           </span>
           <atlas-relation
             (deleteRelation)="removeBusinessOrganisation()"
@@ -94,9 +92,7 @@
       <div class="special-permissions d-flex flex-row">
         @if (showBulkImport) {
           <div class="me-5">
-            <atlas-label-field
-              fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"
-            ></atlas-label-field>
+            <atlas-label-field fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"></atlas-label-field>
             <atlas-slide-toggle
               [formGroup]="permissionsForm"
               controlName="bulkImportRestriction"
@@ -117,9 +113,7 @@
         }
         @if (showInfoPlusTerminationVote) {
           <div class="me-5">
-            <atlas-label-field
-              fieldLabel="USER_ADMIN.INFO_PLUS"
-            ></atlas-label-field>
+            <atlas-label-field fieldLabel="USER_ADMIN.INFO_PLUS"></atlas-label-field>
             <atlas-slide-toggle
               (toggleChange)="onInfoPlusToggle($event)"
               [formGroup]="permissionsForm"
@@ -130,9 +124,7 @@
         }
         @if (showTransportCompanyDossierAnswer) {
           <div class="me-5">
-            <atlas-label-field
-              fieldLabel="USER_ADMIN.TRANSPORT_COMPANY"
-            ></atlas-label-field>
+            <atlas-label-field fieldLabel="USER_ADMIN.TRANSPORT_COMPANY"></atlas-label-field>
             <atlas-slide-toggle
               (toggleChange)="onTransportCompanyDossierToggle($event)"
               [formGroup]="permissionsForm"

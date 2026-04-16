@@ -40,9 +40,7 @@ describe('PermissionComponent', () => {
     // Arrangement
     fixture = TestBed.createComponent(PermissionComponent);
     component = fixture.componentInstance;
-    userPermissionProviderService = TestBed.inject(
-      UserPermissionProviderService
-    );
+    userPermissionProviderService = TestBed.inject(UserPermissionProviderService);
     fixture.detectChanges();
   });
 
@@ -54,9 +52,7 @@ describe('PermissionComponent', () => {
     expect(userPermissionProviderService.getCurrentForm()?.dirty).toBe(false);
     const lidiTab = fixture.debugElement.query(By.css('.tab-LIDI'));
 
-    const applicationChangedEmit = vi
-      .spyOn(component.applicationChanged, 'emit')
-      .mockImplementation(() => {});
+    const applicationChangedEmit = vi.spyOn(component.applicationChanged, 'emit').mockImplementation(() => {});
     lidiTab.nativeElement.click();
     expect(applicationChangedEmit).toHaveBeenCalledWith(ApplicationType.Lidi);
   });
@@ -65,9 +61,7 @@ describe('PermissionComponent', () => {
     userPermissionProviderService.getCurrentForm()?.markAsDirty();
     const lidiTab = fixture.debugElement.query(By.css('.tab-LIDI'));
 
-    const applicationChangedEmit = vi
-      .spyOn(component.applicationChanged, 'emit')
-      .mockImplementation(() => {});
+    const applicationChangedEmit = vi.spyOn(component.applicationChanged, 'emit').mockImplementation(() => {});
     lidiTab.nativeElement.click();
     expect(dialogServiceStub.confirmLeave).toHaveBeenCalled();
     expect(applicationChangedEmit).toHaveBeenCalledWith(ApplicationType.Lidi);

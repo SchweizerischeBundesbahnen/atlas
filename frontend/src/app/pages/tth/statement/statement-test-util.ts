@@ -5,15 +5,14 @@ import {
   TimetableHearingStatementV2,
 } from '../../../api';
 
-const responsibleTransportCompanies: Array<TimetableHearingStatementResponsibleTransportCompany> =
-  [
-    {
-      id: 1,
-      number: '123456',
-      abbreviation: 'sbb',
-      businessRegisterName: 'sbb-123',
-    },
-  ];
+const responsibleTransportCompanies: Array<TimetableHearingStatementResponsibleTransportCompany> = [
+  {
+    id: 1,
+    number: '123456',
+    abbreviation: 'sbb',
+    businessRegisterName: 'sbb-123',
+  },
+];
 
 const statementSender = new FormGroup({
   city: new FormControl(),
@@ -29,9 +28,7 @@ export const statementFormGroup = new FormGroup({
   statementSender: statementSender,
   documents: new FormBuilder().array([]),
   topic: new FormControl('Cosa vuoi'),
-  responsibleTransportCompanies: new FormControl(
-    responsibleTransportCompanies ?? []
-  ),
+  responsibleTransportCompanies: new FormControl(responsibleTransportCompanies ?? []),
   stopPlace: new FormControl('Bern'),
 });
 

@@ -6,11 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TransportCompanySelectComponent } from '../../../../core/form-components/tu-select/transport-company-select.component';
 import { FormGroup } from '@angular/forms';
 import { StatementDetailFormGroup } from '../statement-detail/statement-detail-form-group';
-import {
-  TimetableFieldNumber,
-  TimetableHearingStatementV2,
-  TransportCompany,
-} from '../../../../api';
+import { TimetableFieldNumber, TimetableHearingStatementV2, TransportCompany } from '../../../../api';
 import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { LinkComponent } from '../../../../core/form-components/link/link.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,19 +31,14 @@ export class StatementDataComponent {
   statement = input.required<TimetableHearingStatementV2>();
   isNew = input<boolean>();
 
-  private readonly timetableHearingStatementsService = inject(
-    TimetableHearingStatementInternalService
-  );
+  private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
   ttfnSelectionChanged(newTtfn?: TimetableFieldNumber) {
     if (newTtfn) {
       this.timetableHearingStatementsService
-        .getResponsibleTransportCompanies(
-          newTtfn.ttfnid!,
-          this.form().value.timetableYear! - 1
-        )
+        .getResponsibleTransportCompanies(newTtfn.ttfnid!, this.form().value.timetableYear! - 1)
         .subscribe((result: TransportCompany[]) => {
           this.form().controls.responsibleTransportCompanies.setValue(result);
         });

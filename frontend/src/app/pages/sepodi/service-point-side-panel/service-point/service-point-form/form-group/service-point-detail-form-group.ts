@@ -13,22 +13,13 @@ import { AtlasFieldLengthValidator } from '../../../../../../core/validation/fie
 import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
-import {
-  GeographyFormGroup,
-  GeographyFormGroupBuilder,
-} from '../../../../geography/geography-form-group';
+import { GeographyFormGroup, GeographyFormGroupBuilder } from '../../../../geography/geography-form-group';
 import { ServicePointType } from '../../service-point-type';
 import { Moment } from 'moment/moment';
 import { filter, takeUntil } from 'rxjs/operators';
 import { mergeWith, Observable, Subject } from 'rxjs';
-import {
-  addControlToFormNoEvent,
-  removeControlFromFormNoEvent,
-} from '../../../../../../core/util/forms';
-import {
-  RouteNetworkFormGroup,
-  RouteNetworkGroup,
-} from './route-network-form-group';
+import { addControlToFormNoEvent, removeControlFromFormNoEvent } from '../../../../../../core/util/forms';
+import { RouteNetworkFormGroup, RouteNetworkGroup } from './route-network-form-group';
 import { StationFormGroup, StationGroup } from './station-form-group';
 
 export interface ServicePointDetailFormGroup {
@@ -63,12 +54,7 @@ export class ServicePointFormGroupBuilder {
         { value: undefined, disabled: true },
         {
           nonNullable: true,
-          validators: [
-            Validators.min(1),
-            Validators.max(99999),
-            AtlasCharsetsValidator.numeric,
-            Validators.required,
-          ],
+          validators: [Validators.min(1), Validators.max(99999), AtlasCharsetsValidator.numeric, Validators.required],
         }
       ),
       designationOfficial: new FormControl(undefined, {
@@ -83,10 +69,7 @@ export class ServicePointFormGroupBuilder {
       country: new FormControl(null, [Validators.required]),
       abbreviation: new FormControl(undefined, {
         nonNullable: true,
-        validators: [
-          Validators.maxLength(6),
-          AtlasCharsetsValidator.uppercaseNumeric,
-        ],
+        validators: [Validators.maxLength(6), AtlasCharsetsValidator.uppercaseNumeric],
       }),
       status: new FormControl(),
       designationLong: new FormControl(undefined, {
@@ -124,10 +107,7 @@ export class ServicePointFormGroupBuilder {
     return formGroup;
   }
 
-  static buildFormGroup(
-    version: ReadServicePointVersion,
-    formDestroy$: Observable<void>
-  ) {
+  static buildFormGroup(version: ReadServicePointVersion, formDestroy$: Observable<void>) {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>({
       number: new FormControl(version.number.numberShort, {
         nonNullable: true,
@@ -135,11 +115,7 @@ export class ServicePointFormGroupBuilder {
       country: new FormControl(version.country),
       abbreviation: new FormControl(version.abbreviation, {
         nonNullable: true,
-        validators: [
-          Validators.maxLength(6),
-          Validators.minLength(2),
-          AtlasCharsetsValidator.uppercaseNumeric,
-        ],
+        validators: [Validators.maxLength(6), Validators.minLength(2), AtlasCharsetsValidator.uppercaseNumeric],
       }),
       status: new FormControl(version.status, { nonNullable: true }),
       designationOfficial: new FormControl(version.designationOfficial, {
@@ -161,14 +137,10 @@ export class ServicePointFormGroupBuilder {
       }),
       validityGroup: new FormGroup<ValidityGroup>(
         {
-          validFrom: new FormControl(
-            version.validFrom ? moment(version.validFrom) : version.validFrom,
-            [Validators.required]
-          ),
-          validTo: new FormControl(
-            version.validTo ? moment(version.validTo) : version.validTo,
-            [Validators.required]
-          ),
+          validFrom: new FormControl(version.validFrom ? moment(version.validFrom) : version.validFrom, [
+            Validators.required,
+          ]),
+          validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [Validators.required]),
         },
         DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')
       ),
@@ -190,9 +162,7 @@ export class ServicePointFormGroupBuilder {
     if (version.servicePointGeolocation?.spatialReference) {
       formGroup.addControl(
         'servicePointGeolocation',
-        GeographyFormGroupBuilder.buildFormGroup(
-          version.servicePointGeolocation
-        )
+        GeographyFormGroupBuilder.buildFormGroup(version.servicePointGeolocation)
       );
     }
 
@@ -208,17 +178,9 @@ export class ServicePointFormGroupBuilder {
     version?: ReadServicePointVersion
   ) {
     const selectedTypeSwitch$ = new Subject<void>();
-    const selectedTypeDestroy$ = selectedTypeSwitch$.pipe(
-      takeUntil(formDestroy$),
-      mergeWith(formDestroy$)
-    );
+    const selectedTypeDestroy$ = selectedTypeSwitch$.pipe(takeUntil(formDestroy$), mergeWith(formDestroy$));
 
-    this.handleSelectedType(
-      formGroup,
-      selectedTypeDestroy$,
-      version,
-      formGroup.controls.selectedType.value
-    );
+    this.handleSelectedType(formGroup, selectedTypeDestroy$, version, formGroup.controls.selectedType.value);
 
     formGroup.controls.selectedType.valueChanges
       .pipe(
@@ -228,12 +190,7 @@ export class ServicePointFormGroupBuilder {
       .subscribe((selectedType) => {
         if (!selectedType) return;
         selectedTypeSwitch$.next();
-        this.handleSelectedType(
-          formGroup,
-          selectedTypeDestroy$,
-          version,
-          selectedType
-        );
+        this.handleSelectedType(formGroup, selectedTypeDestroy$, version, selectedType);
       });
   }
 
@@ -247,11 +204,7 @@ export class ServicePointFormGroupBuilder {
     removeControlFromFormNoEvent(formGroup, 'routeNetworkGroup');
     switch (selectedType) {
       case 'OPERATING_POINT': {
-        addControlToFormNoEvent(
-          formGroup,
-          'spTypeGroup',
-          this.operatingGroup(version)
-        );
+        addControlToFormNoEvent(formGroup, 'spTypeGroup', this.operatingGroup(version));
         addControlToFormNoEvent(
           formGroup,
           'routeNetworkGroup',
@@ -260,28 +213,16 @@ export class ServicePointFormGroupBuilder {
         break;
       }
       case 'STOP_POINT': {
-        const stationGroup = StationFormGroup.stationGroup(
-          formGroup,
-          selectedTypeDestroy$,
-          version
-        );
+        const stationGroup = StationFormGroup.stationGroup(formGroup, selectedTypeDestroy$, version);
         addControlToFormNoEvent(formGroup, 'spTypeGroup', stationGroup);
         if (stationGroup.controls.stopPoint.value) {
-          addControlToFormNoEvent(
-            stationGroup,
-            'stopPointGroup',
-            StationFormGroup.stopPointGroup(version)
-          );
+          addControlToFormNoEvent(stationGroup, 'stopPointGroup', StationFormGroup.stopPointGroup(version));
         }
         if (stationGroup.controls.freightServicePoint.value) {
           addControlToFormNoEvent(
             stationGroup,
             'freightPointGroup',
-            StationFormGroup.freightPointGroup(
-              formGroup,
-              selectedTypeDestroy$,
-              version
-            )
+            StationFormGroup.freightPointGroup(formGroup, selectedTypeDestroy$, version)
           );
         }
         addControlToFormNoEvent(
@@ -297,8 +238,7 @@ export class ServicePointFormGroupBuilder {
   private static operatingGroup(version?: ReadServicePointVersion) {
     return new FormGroup<OperatingPointGroup>({
       operatingPointType: new FormControl(
-        version?.operatingPointType ??
-          version?.operatingPointTechnicalTimetableType,
+        version?.operatingPointType ?? version?.operatingPointTechnicalTimetableType,
         {
           nonNullable: true,
           validators: Validators.required,
@@ -308,10 +248,7 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static determineType(version: ReadServicePointVersion) {
-    if (
-      version.operatingPointType ||
-      version.operatingPointTechnicalTimetableType
-    ) {
+    if (version.operatingPointType || version.operatingPointTechnicalTimetableType) {
       return ServicePointType.OperatingPoint;
     }
     if (version.stopPoint || version.freightServicePoint) {
@@ -324,9 +261,7 @@ export class ServicePointFormGroupBuilder {
   }
 
   static readonly mapper = class Mapper {
-    static getWritableServicePoint(
-      form: FormGroup<ServicePointDetailFormGroup>
-    ): CreateServicePointVersion {
+    static getWritableServicePoint(form: FormGroup<ServicePointDetailFormGroup>): CreateServicePointVersion {
       const formControls = form.controls;
       const validityGroupControls = formControls.validityGroup.controls;
       if (
@@ -339,8 +274,7 @@ export class ServicePointFormGroupBuilder {
         throw Error('required fields are not defined');
       }
 
-      const routeNetworkGroupControls =
-        formControls.routeNetworkGroup?.controls;
+      const routeNetworkGroupControls = formControls.routeNetworkGroup?.controls;
 
       const writableForm: CreateServicePointVersion = {
         country: formControls.country.value,
@@ -350,21 +284,14 @@ export class ServicePointFormGroupBuilder {
         abbreviation: formControls.abbreviation.value,
         businessOrganisation: formControls.businessOrganisation.value,
         categories: formControls.categories.value,
-        operatingPointRouteNetwork:
-          routeNetworkGroupControls?.operatingPointRouteNetwork.value,
+        operatingPointRouteNetwork: routeNetworkGroupControls?.operatingPointRouteNetwork.value,
         validFrom: validityGroupControls.validFrom.value.toDate(),
         validTo: validityGroupControls.validTo.value.toDate(),
-        operatingPointTrafficPointType:
-          formControls.selectedType.value === 'FARE_STOP'
-            ? 'TARIFF_POINT'
-            : undefined,
+        operatingPointTrafficPointType: formControls.selectedType.value === 'FARE_STOP' ? 'TARIFF_POINT' : undefined,
         status: formControls.status.value,
       };
 
-      RouteNetworkFormGroup.mapper.mapRouteNetwork(
-        routeNetworkGroupControls,
-        writableForm
-      );
+      RouteNetworkFormGroup.mapper.mapRouteNetwork(routeNetworkGroupControls, writableForm);
       this.mapGeolocation(formControls, writableForm);
 
       const spTypeControls = formControls.spTypeGroup?.controls;
@@ -378,32 +305,21 @@ export class ServicePointFormGroupBuilder {
       spTypeControls: StationGroup | OperatingPointGroup | undefined,
       writableForm: CreateServicePointVersion
     ) {
-      if (
-        spTypeControls &&
-        'operatingPointType' in spTypeControls &&
-        spTypeControls.operatingPointType.value
-      ) {
+      if (spTypeControls && 'operatingPointType' in spTypeControls && spTypeControls.operatingPointType.value) {
         const operatingPointType = spTypeControls.operatingPointType.value;
-        writableForm.operatingPointType = Object.values(
-          OperatingPointType
-        ).find((value) => value === operatingPointType);
+        writableForm.operatingPointType = Object.values(OperatingPointType).find(
+          (value) => value === operatingPointType
+        );
 
-        writableForm.operatingPointTechnicalTimetableType = Object.values(
-          OperatingPointTechnicalTimetableType
-        ).find((value) => value === operatingPointType);
+        writableForm.operatingPointTechnicalTimetableType = Object.values(OperatingPointTechnicalTimetableType).find(
+          (value) => value === operatingPointType
+        );
       }
     }
 
-    private static mapGeolocation(
-      formControls: ServicePointDetailFormGroup,
-      writableForm: CreateServicePointVersion
-    ) {
+    private static mapGeolocation(formControls: ServicePointDetailFormGroup, writableForm: CreateServicePointVersion) {
       const spgControls = formControls.servicePointGeolocation?.controls;
-      if (
-        spgControls?.spatialReference.value &&
-        spgControls.north.value &&
-        spgControls.east.value
-      ) {
+      if (spgControls?.spatialReference.value && spgControls.north.value && spgControls.east.value) {
         writableForm.servicePointGeolocation = {
           spatialReference: spgControls.spatialReference.value,
           north: spgControls.north.value,

@@ -49,19 +49,9 @@ describe('StopPointWorkflowDetailComponent', () => {
   let component: StopPointWorkflowDetailComponent;
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
   let dialogSpy: Mocked<Pick<MatDialog, 'open'>>;
-  let spWfServiceSpy: Mocked<
-    Pick<
-      StopPointWorkflowService,
-      'startStopPointWorkflow' | 'editStopPointWorkflow'
-    >
-  >;
+  let spWfServiceSpy: Mocked<Pick<StopPointWorkflowService, 'startStopPointWorkflow' | 'editStopPointWorkflow'>>;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
-  let dialogServiceSpy: Mocked<
-    Pick<
-      DialogService,
-      'openWithoutResult' | 'openDialogDataWithConfirmationResult'
-    >
-  >;
+  let dialogServiceSpy: Mocked<Pick<DialogService, 'openWithoutResult' | 'openDialogDataWithConfirmationResult'>>;
 
   beforeEach(() => {
     dialogSpy = {
@@ -205,9 +195,7 @@ describe('StopPointWorkflowDetailComponent', () => {
     component.form?.markAsDirty();
     expect(component.form?.dirty).toBe(true);
 
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(false)
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(false));
 
     // when & then
     component.toggleEdit();
@@ -218,9 +206,7 @@ describe('StopPointWorkflowDetailComponent', () => {
     vi.spyOn(ValidationService, 'validateForm');
 
     component.toggleEdit();
-    component.form.controls['designationOfficial'].setValue(
-      'Official Designation'
-    );
+    component.form.controls['designationOfficial'].setValue('Official Designation');
     component.form.controls['workflowComment'].setValue('Some comment');
     component.form.controls.examinants.push(
       StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup({
@@ -237,37 +223,30 @@ describe('StopPointWorkflowDetailComponent', () => {
     );
     component.form.controls['ccEmails'].setValue(['test@atlas.ch']);
 
-    spWfServiceSpy.editStopPointWorkflow.mockReturnValue(
-      of({ id: 1 } as ReadStopPointWorkflow)
-    );
+    spWfServiceSpy.editStopPointWorkflow.mockReturnValue(of({ id: 1 } as ReadStopPointWorkflow));
 
     component.save();
 
-    expect(spWfServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(
-      component.workflow.id,
-      {
-        ccEmails: ['test@atlas.ch'],
-        designationOfficial: 'Official Designation',
-        workflowComment: 'Some comment',
-        examinants: [
-          {
-            firstName: 'DIDOK',
-            lastName: 'MASTER',
-            personFunction: 'Chef',
-            mail: 'didok@chef.com',
-            organisation: 'SBB',
-            id: 1,
-            judgementIcon: 'bi-check-lg',
-            judgement: JudgementType.Yes,
-            decisionType: DecisionType.Voted,
-            defaultExaminant: false,
-          },
-        ],
-      }
-    );
-    expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'WORKFLOW.NOTIFICATION.EDIT.SUCCESS'
-    );
+    expect(spWfServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(component.workflow.id, {
+      ccEmails: ['test@atlas.ch'],
+      designationOfficial: 'Official Designation',
+      workflowComment: 'Some comment',
+      examinants: [
+        {
+          firstName: 'DIDOK',
+          lastName: 'MASTER',
+          personFunction: 'Chef',
+          mail: 'didok@chef.com',
+          organisation: 'SBB',
+          id: 1,
+          judgementIcon: 'bi-check-lg',
+          judgement: JudgementType.Yes,
+          decisionType: DecisionType.Voted,
+          defaultExaminant: false,
+        },
+      ],
+    });
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
   });
 
   it('should reject workflow', () => {
@@ -279,9 +258,7 @@ describe('StopPointWorkflowDetailComponent', () => {
   it('should open add examinants dialog for workflow in hearing', () => {
     component.addExaminants();
 
-    expect(
-      dialogServiceSpy.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
   });
 
   it('should cancel workflow', () => {
@@ -297,14 +274,11 @@ describe('StopPointWorkflowDetailComponent', () => {
 
     component.openDecisionDialog();
 
-    expect(dialogSpy.open).toHaveBeenCalledExactlyOnceWith(
-      DecisionStepperComponent,
-      {
-        data: 1,
-        disableClose: true,
-        panelClass: 'atlas-dialog-panel',
-        backdropClass: 'atlas-dialog-backdrop',
-      }
-    );
+    expect(dialogSpy.open).toHaveBeenCalledExactlyOnceWith(DecisionStepperComponent, {
+      data: 1,
+      disableClose: true,
+      panelClass: 'atlas-dialog-panel',
+      backdropClass: 'atlas-dialog-backdrop',
+    });
   });
 });

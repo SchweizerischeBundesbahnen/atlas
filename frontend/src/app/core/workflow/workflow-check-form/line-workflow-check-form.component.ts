@@ -1,10 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 import { Subject } from 'rxjs';
@@ -24,44 +19,38 @@ import { LineWorkflowService } from '../../../api/service/workflow/line-workflow
 @Component({
   selector: 'atlas-workflow-check-form',
   templateUrl: './line-workflow-check-form.component.html',
-  imports: [
-    LineWorkflowFormComponent,
-    ReactiveFormsModule,
-    AtlasButtonComponent,
-    TranslatePipe,
-  ],
+  imports: [LineWorkflowFormComponent, ReactiveFormsModule, AtlasButtonComponent, TranslatePipe],
   providers: [TranslatePipe],
 })
 export class LineWorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
   @Output() workflowChecked = new EventEmitter<void>();
 
-  formGroup: FormGroup<LineWorkflowCheckFormGroup> =
-    new FormGroup<LineWorkflowCheckFormGroup>({
-      comment: new FormControl('', [
-        AtlasFieldLengthValidator.comments,
-        AtlasCharsetsValidator.iso88591,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
-      firstName: new FormControl('', [
-        Validators.required,
-        AtlasFieldLengthValidator.length_50,
-        AtlasCharsetsValidator.iso88591,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
-      lastName: new FormControl('', [
-        Validators.required,
-        AtlasFieldLengthValidator.length_50,
-        AtlasCharsetsValidator.iso88591,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
-      function: new FormControl('', [
-        Validators.required,
-        AtlasFieldLengthValidator.length_50,
-        AtlasCharsetsValidator.iso88591,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
-    });
+  formGroup: FormGroup<LineWorkflowCheckFormGroup> = new FormGroup<LineWorkflowCheckFormGroup>({
+    comment: new FormControl('', [
+      AtlasFieldLengthValidator.comments,
+      AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+    ]),
+    firstName: new FormControl('', [
+      Validators.required,
+      AtlasFieldLengthValidator.length_50,
+      AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+    ]),
+    lastName: new FormControl('', [
+      Validators.required,
+      AtlasFieldLengthValidator.length_50,
+      AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+    ]),
+    function: new FormControl('', [
+      Validators.required,
+      AtlasFieldLengthValidator.length_50,
+      AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+    ]),
+  });
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -105,9 +94,7 @@ export class LineWorkflowCheckFormComponent implements OnInit {
         .subscribe(() => {
           this.workflowChecked.emit();
           this.notificationService.success(
-            accepted
-              ? 'WORKFLOW.NOTIFICATION.CHECK.ACCEPTED'
-              : 'WORKFLOW.NOTIFICATION.CHECK.REJECTED'
+            accepted ? 'WORKFLOW.NOTIFICATION.CHECK.ACCEPTED' : 'WORKFLOW.NOTIFICATION.CHECK.REJECTED'
           );
         });
     }

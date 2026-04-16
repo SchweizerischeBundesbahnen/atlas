@@ -12,9 +12,7 @@ export interface StatementDetailFormGroup {
   statementStatus: FormControl<StatementStatus | null | undefined>;
   ttfnid: FormControl<string | null | undefined>;
   responsibleTransportCompanies: FormControl<
-    | Array<TimetableHearingStatementResponsibleTransportCompany>
-    | null
-    | undefined
+    Array<TimetableHearingStatementResponsibleTransportCompany> | null | undefined
   >;
   swissCanton: FormControl<SwissCanton | null | undefined>;
   oldSwissCanton: FormControl<SwissCanton | null | undefined>;

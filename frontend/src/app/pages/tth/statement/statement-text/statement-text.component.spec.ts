@@ -19,11 +19,7 @@ describe('StatementText', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [StatementTextComponent],
-      providers: [
-        translateServiceProvider,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
+      providers: [translateServiceProvider, provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StatementTextComponent);

@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of, take } from 'rxjs';
 import { Pages } from '../../../pages';
@@ -56,9 +51,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
 
   ngOnInit() {
     this.initFormGroup();
-    this.servicePointService
-      .getFotComment(this.servicePointNumber)
-      .subscribe((comment) => this.initFormGroup(comment));
+    this.servicePointService.getFotComment(this.servicePointNumber).subscribe((comment) => this.initFormGroup(comment));
   }
 
   get servicePointNumber() {
@@ -67,9 +60,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
 
   initFormGroup(fotComment?: ServicePointFotComment) {
     this.form = new FormGroup<FotCommentFormGroup>({
-      fotComment: new FormControl(fotComment?.fotComment, [
-        Validators.maxLength(2000),
-      ]),
+      fotComment: new FormControl(fotComment?.fotComment, [Validators.maxLength(2000)]),
       etagVersion: new FormControl(fotComment?.etagVersion),
       creationDate: new FormControl(fotComment?.creationDate),
       editionDate: new FormControl(fotComment?.editionDate),
@@ -118,9 +109,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
         .saveFotComment(this.servicePointNumber, this.currentComment)
         .pipe(catchError(this.handleError))
         .subscribe((comment) => {
-          this.notificationService.success(
-            'SEPODI.SERVICE_POINTS.NOTIFICATION.COMMENT_SAVED'
-          );
+          this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.COMMENT_SAVED');
           this.initFormGroup(comment);
         });
     }
@@ -128,9 +117,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
 
   get currentComment(): ServicePointFotComment {
     return {
-      fotComment: this.form.controls.fotComment.value
-        ? this.form.controls.fotComment.value
-        : undefined,
+      fotComment: this.form.controls.fotComment.value ? this.form.controls.fotComment.value : undefined,
       etagVersion: this.form.controls.etagVersion.value!,
     };
   }

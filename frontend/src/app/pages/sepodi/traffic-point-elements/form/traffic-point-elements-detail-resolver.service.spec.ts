@@ -1,8 +1,4 @@
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  Router,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, Router } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -21,9 +17,7 @@ describe('TrafficPointElementsDetailResolver', () => {
   let router: Router;
 
   beforeEach(() => {
-    trafficPointElementService.getTrafficPointElement.mockReturnValue(
-      of([BERN_WYLEREGG_TRAFFIC_POINTS[0]])
-    );
+    trafficPointElementService.getTrafficPointElement.mockReturnValue(of([BERN_WYLEREGG_TRAFFIC_POINTS[0]]));
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
@@ -94,9 +88,7 @@ describe('TrafficPointElementsDetailResolver', () => {
       }),
     });
 
-    vi.spyOn(router, 'navigate').mockImplementation(() =>
-      Promise.resolve(true)
-    );
+    vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
     await firstValueFrom(resolver.resolve(mockRoute));
     expect(router.navigate).toHaveBeenCalledExactlyOnceWith([

@@ -17,9 +17,7 @@ describe('FotCommentDetailComponent', () => {
   let component: FotCommentDetailComponent;
   let fixture: ComponentFixture<FotCommentDetailComponent>;
 
-  let servicePointServiceSpy: Mocked<
-    Pick<ServicePointService, 'getFotComment' | 'saveFotComment'>
-  >;
+  let servicePointServiceSpy: Mocked<Pick<ServicePointService, 'getFotComment' | 'saveFotComment'>>;
 
   const route = {
     parent: { snapshot: { params: { servicePointNumber: 8504414 } } },
@@ -30,12 +28,8 @@ describe('FotCommentDetailComponent', () => {
       getFotComment: vi.fn(),
       saveFotComment: vi.fn(),
     };
-    servicePointServiceSpy.getFotComment.mockReturnValue(
-      of({ fotComment: 'Manu Hooligans', etagVersion: 3 })
-    );
-    servicePointServiceSpy.saveFotComment.mockReturnValue(
-      of({ fotComment: 'New comment', etagVersion: 3 })
-    );
+    servicePointServiceSpy.getFotComment.mockReturnValue(of({ fotComment: 'Manu Hooligans', etagVersion: 3 }));
+    servicePointServiceSpy.saveFotComment.mockReturnValue(of({ fotComment: 'New comment', etagVersion: 3 }));
 
     await TestBed.configureTestingModule({
       imports: [

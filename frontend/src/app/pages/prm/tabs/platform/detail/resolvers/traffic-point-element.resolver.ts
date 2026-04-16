@@ -12,25 +12,20 @@ export class TrafficPointElementResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadTrafficPointElementVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadTrafficPointElementVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';
-    return this.trafficPointElementsService
-      .getTrafficPointElement(sloidParameter)
-      .pipe(
-        catchError(() =>
-          this.router
-            .navigate([Pages.PRM.path], {
-              state: { notDismissSnackBar: true },
-            })
-            .then(() => [])
-        )
-      );
+    return this.trafficPointElementsService.getTrafficPointElement(sloidParameter).pipe(
+      catchError(() =>
+        this.router
+          .navigate([Pages.PRM.path], {
+            state: { notDismissSnackBar: true },
+          })
+          .then(() => [])
+      )
+    );
   }
 }
 
-export const trafficPointElementResolver: ResolveFn<
-  Array<ReadTrafficPointElementVersion>
-> = (route: ActivatedRouteSnapshot) =>
-  inject(TrafficPointElementResolver).resolve(route);
+export const trafficPointElementResolver: ResolveFn<Array<ReadTrafficPointElementVersion>> = (
+  route: ActivatedRouteSnapshot
+) => inject(TrafficPointElementResolver).resolve(route);

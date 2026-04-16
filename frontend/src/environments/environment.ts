@@ -5,11 +5,7 @@
 import { Environment } from './environment.model';
 import packageJson from '../../package.json';
 import { atlasReleaseNotes, authority } from './environment.common';
-import {
-  LogLevel,
-  OpenIdConfiguration,
-  PassedInitialConfig,
-} from 'angular-auth-oidc-client';
+import { LogLevel, OpenIdConfiguration, PassedInitialConfig } from 'angular-auth-oidc-client';
 
 const app: OpenIdConfiguration = {
   configId: 'app',
@@ -19,8 +15,7 @@ const app: OpenIdConfiguration = {
   // The `openid` scope is required by the library.
   // The `profile` scope is needed by the user menu in the header.
   // `offline_access` is needed to get a refresh token.
-  scope:
-    'openid profile email offline_access api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default',
+  scope: 'openid profile email offline_access api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default',
   silentRenew: true,
   useRefreshToken: true,
   autoUserInfo: false,

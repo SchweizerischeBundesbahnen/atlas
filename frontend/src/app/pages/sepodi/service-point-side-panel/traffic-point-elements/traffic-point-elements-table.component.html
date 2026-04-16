@@ -36,9 +36,7 @@
     data-cy="traffic-point-elements-table"
     [tableData]="trafficPointElementRows"
     [totalCount]="totalCount$"
-    [tableColumns]="
-      isTrafficPointArea ? tableColumnsAreas : tableColumnsPlatforms
-    "
+    [tableColumns]="isTrafficPointArea ? tableColumnsAreas : tableColumnsPlatforms"
     [tableFilterConfig]="tableFilterConfig"
     (editElementEvent)="editVersion($event)"
     (tableChanged)="getOverview($event)"

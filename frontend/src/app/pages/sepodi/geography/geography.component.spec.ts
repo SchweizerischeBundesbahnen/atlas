@@ -18,19 +18,12 @@ describe('GeographyComponent', () => {
   let component: GeographyComponent;
   let fixture: ComponentFixture<GeographyComponent>;
   let mapServiceSpy: Mocked<
-    Pick<
-      MapService,
-      | 'placeMarkerAndFlyTo'
-      | 'enterCoordinateSelectionMode'
-      | 'exitCoordinateSelectionMode'
-    >
+    Pick<MapService, 'placeMarkerAndFlyTo' | 'enterCoordinateSelectionMode' | 'exitCoordinateSelectionMode'>
   > & {
     mapInitialized: BehaviorSubject<boolean>;
     clickedGeographyCoordinates: Subject<CoordinatePairWGS84>;
   };
-  let coordinateTransformationServiceSpy: Mocked<
-    Pick<CoordinateTransformationService, 'transform'>
-  >;
+  let coordinateTransformationServiceSpy: Mocked<Pick<CoordinateTransformationService, 'transform'>>;
 
   beforeEach(async () => {
     mapServiceSpy = {
@@ -113,10 +106,7 @@ describe('GeographyComponent', () => {
 
     component.setHeightFromGeoData(coordinates, true);
 
-    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(
-      coordinates,
-      true
-    );
+    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates, true);
   });
 
   it('should call setHeightFromGeoData if onChangeCoordinatesManually is called', () => {

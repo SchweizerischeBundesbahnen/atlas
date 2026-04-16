@@ -22,9 +22,7 @@ describe('PlatformTableComponent', () => {
   let component: PlatformTableComponent;
   let fixture: ComponentFixture<PlatformTableComponent>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
-  let platformInternalService: Mocked<
-    Pick<PlatformInternalService, 'getPlatformOverview'>
-  >;
+  let platformInternalService: Mocked<Pick<PlatformInternalService, 'getPlatformOverview'>>;
   let trafficPointElementInternalService: Mocked<
     Pick<TrafficPointElementInternalService, 'getPlatformsOfServicePoint'>
   >;
@@ -72,18 +70,10 @@ describe('PlatformTableComponent', () => {
       ],
     }).overrideComponent(PlatformTableComponent, {
       remove: {
-        imports: [
-          AtlasButtonComponent,
-          TableComponent,
-          NavigationSepodiPrmComponent,
-        ],
+        imports: [AtlasButtonComponent, TableComponent, NavigationSepodiPrmComponent],
       },
       add: {
-        imports: [
-          MockAtlasButtonComponent,
-          MockTableComponent,
-          MockNavigationSepodiPrmComponent,
-        ],
+        imports: [MockAtlasButtonComponent, MockTableComponent, MockNavigationSepodiPrmComponent],
       },
     });
 

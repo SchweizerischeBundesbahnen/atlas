@@ -23,9 +23,7 @@ describe('StatementTableHandler', () => {
     //then
     expect(result).toBe(false);
 
-    result = statementTable.isDocumentExisting([
-      { fileName: 'file1', fileSize: 1 },
-    ]);
+    result = statementTable.isDocumentExisting([{ fileName: 'file1', fileSize: 1 }]);
     //then
     expect(result).toBe(true);
   });

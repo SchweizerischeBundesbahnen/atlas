@@ -6,17 +6,13 @@ import { FormControl } from '@angular/forms';
 
 describe('PrmMeanOfTransportValidator', () => {
   it('isReducedOrComplete: should validate complete', () => {
-    const result = PrmMeanOfTransportValidator.isReducedOrComplete(
-      new FormControl([MeanOfTransport.Train])
-    );
+    const result = PrmMeanOfTransportValidator.isReducedOrComplete(new FormControl([MeanOfTransport.Train]));
 
     expect(result).toBeNull();
   });
 
   it('isReducedOrComplete: should validate reduced', () => {
-    const result = PrmMeanOfTransportValidator.isReducedOrComplete(
-      new FormControl([MeanOfTransport.Bus])
-    );
+    const result = PrmMeanOfTransportValidator.isReducedOrComplete(new FormControl([MeanOfTransport.Bus]));
 
     expect(result).toBeNull();
   });

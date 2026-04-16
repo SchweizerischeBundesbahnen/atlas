@@ -1,18 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StatementSelectComponent } from '../statement-select.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
-import {
-  TimetableHearingStatementV2,
-  TransportCompany,
-} from '../../../../../api';
+import { TimetableHearingStatementV2, TransportCompany } from '../../../../../api';
 import { TablePagination } from '../../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../../core/util/arrays';
 import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
@@ -43,17 +35,9 @@ import { StatementTableHandler } from '../../../util/statement-table-handler';
   ],
   providers: [TranslatePipe, TableService],
 })
-export class StatementSelectDialogComponent
-  extends StatementTableHandler
-  implements OnInit
-{
-  private readonly dialogRef =
-    inject<MatDialogRef<StatementSelectDialogComponent, number[]>>(
-      MatDialogRef
-    );
-  private readonly timetableHearingStatementsService = inject(
-    TimetableHearingStatementInternalService
-  );
+export class StatementSelectDialogComponent extends StatementTableHandler implements OnInit {
+  private readonly dialogRef = inject<MatDialogRef<StatementSelectDialogComponent, number[]>>(MatDialogRef);
+  private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
   private readonly tableService = inject(TableService);
 
   readonly tableColumns: TableColumn<TimetableHearingStatementV2>[] = [
@@ -116,9 +100,7 @@ export class StatementSelectDialogComponent
         this.tableService.filter.chipSearch.getActiveSearch(),
         this.tableService.filter.multiSelectStatementStatus.getActiveSearch(),
         this.tableService.filter.searchSelectTTFN.getActiveSearch()?.ttfnid,
-        TthUtils.toTransportCompanyIds(
-          this.tableService.filter.searchSelectTU.getActiveSearch() as TransportCompany[]
-        ),
+        TthUtils.toTransportCompanyIds(this.tableService.filter.searchSelectTU.getActiveSearch() as TransportCompany[]),
         false,
         pagination.page,
         pagination.size,

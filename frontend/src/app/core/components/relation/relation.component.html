@@ -13,7 +13,7 @@
     class="atlas-table"
     mat-table
     matSort
-    >
+  >
     @for (column of tableColumns; track column) {
       <ng-container matColumnDef="{{ column.columnDef }}">
         <th
@@ -22,7 +22,7 @@
           class="font-bold-base color-primary-400 bordered-cell"
           mat-header-cell
           scope="col"
-          >
+        >
           {{ column.headerTitle | translate }}
         </th>
         <td *matCellDef="let value" class="bordered-cell" mat-cell>
@@ -54,7 +54,7 @@
       [disabled]="editMode"
       class="atlas-primary-btn me-2"
       data-cy="add-relation-btn"
-      >
+    >
       {{ addBtnNameTranslationKey | translate }}
     </button>
     @if (relationEditable) {
@@ -63,7 +63,7 @@
         [disabled]="editMode || selectedIndex === -1"
         class="atlas-primary-btn me-2"
         data-cy="edit-relation-btn"
-        >
+      >
         {{ updateBtnNameTranslationKey | translate }}
       </button>
     }
@@ -72,7 +72,7 @@
       [disabled]="selectedIndex === -1 || editMode"
       class="atlas-primary-btn"
       data-cy="delete-relation-btn"
-      >
+    >
       {{ deleteBtnNameTranslationKey | translate }}
     </button>
   </div>

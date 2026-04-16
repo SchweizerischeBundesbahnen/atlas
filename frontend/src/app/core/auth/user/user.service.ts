@@ -52,18 +52,13 @@ export class UserService {
       throw new Error('Can not load Permissions if not logged in');
     }
     return this.httpClient
-      .get<UserModel>(
-        `${environment.atlasApiUrl}/user-administration/v1/users/current`,
-        {
-          headers: new HttpHeaders({ Accept: '*/*' }),
-          responseType: 'json',
-        }
-      )
+      .get<UserModel>(`${environment.atlasApiUrl}/user-administration/v1/users/current`, {
+        headers: new HttpHeaders({ Accept: '*/*' }),
+        responseType: 'json',
+      })
       .pipe(
         tap((response) => {
-          this.currentUser!.permissions = response.permissions
-            ? Array.from(response.permissions)
-            : [];
+          this.currentUser!.permissions = response.permissions ? Array.from(response.permissions) : [];
           this.currentUser!.email = response.mail!;
           this.permissionsLoaded.next();
           this.userChanged.next();

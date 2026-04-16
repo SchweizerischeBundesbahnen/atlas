@@ -3,10 +3,7 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { ReferencePointTableComponent } from './reference-point-table.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  MockAtlasButtonComponent,
-  MockTableComponent,
-} from '../../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { STOP_POINT_COMPLETE } from '../../util/stop-point-test-data';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { ReadReferencePointVersion } from '../../../../api';
@@ -47,9 +44,7 @@ describe('ReferencePointTableComponent', () => {
   let component: ReferencePointTableComponent;
   let fixture: ComponentFixture<ReferencePointTableComponent>;
   let router: Router;
-  let referencePointInternalService: Mocked<
-    Pick<ReferencePointInternalService, 'getReferencePointsOverview'>
-  >;
+  let referencePointInternalService: Mocked<Pick<ReferencePointInternalService, 'getReferencePointsOverview'>>;
 
   const activatedRouteMock = {
     parent: {
@@ -67,9 +62,7 @@ describe('ReferencePointTableComponent', () => {
     referencePointInternalService = {
       getReferencePointsOverview: vi.fn(),
     };
-    referencePointInternalService.getReferencePointsOverview.mockReturnValue(
-      of(referencePointOverview)
-    );
+    referencePointInternalService.getReferencePointsOverview.mockReturnValue(of(referencePointOverview));
 
     TestBed.configureTestingModule({
       imports: [ReferencePointTableComponent, TranslateModule.forRoot()],

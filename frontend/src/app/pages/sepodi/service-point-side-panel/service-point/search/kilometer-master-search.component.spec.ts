@@ -14,17 +14,13 @@ import { ServicePointInternalService } from '../../../../../api/service/sepodi/s
 describe('KilometerMasterSearchComponent', () => {
   let component: KilometerMasterSearchComponent;
   let fixture: ComponentFixture<KilometerMasterSearchComponent>;
-  let servicePointsServiceSpy: Mocked<
-    Pick<ServicePointInternalService, 'searchServicePointsWithRouteNetworkTrue'>
-  >;
+  let servicePointsServiceSpy: Mocked<Pick<ServicePointInternalService, 'searchServicePointsWithRouteNetworkTrue'>>;
 
   beforeEach(async () => {
     servicePointsServiceSpy = {
       searchServicePointsWithRouteNetworkTrue: vi.fn(),
     };
-    servicePointsServiceSpy.searchServicePointsWithRouteNetworkTrue.mockReturnValue(
-      of()
-    );
+    servicePointsServiceSpy.searchServicePointsWithRouteNetworkTrue.mockReturnValue(of());
 
     await TestBed.configureTestingModule({
       providers: [
@@ -36,12 +32,7 @@ describe('KilometerMasterSearchComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
-      imports: [
-        NgSelectModule,
-        KilometerMasterSearchComponent,
-        SearchSelectComponent,
-        AtlasFieldErrorComponent,
-      ],
+      imports: [NgSelectModule, KilometerMasterSearchComponent, SearchSelectComponent, AtlasFieldErrorComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KilometerMasterSearchComponent);
@@ -61,8 +52,6 @@ describe('KilometerMasterSearchComponent', () => {
     //when
     component.searchServicePoint('be');
     //then
-    expect(
-      servicePointsServiceSpy.searchServicePointsWithRouteNetworkTrue
-    ).toHaveBeenCalled();
+    expect(servicePointsServiceSpy.searchServicePointsWithRouteNetworkTrue).toHaveBeenCalled();
   });
 });

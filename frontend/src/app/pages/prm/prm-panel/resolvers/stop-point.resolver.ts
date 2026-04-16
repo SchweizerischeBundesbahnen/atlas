@@ -12,9 +12,7 @@ export class StopPointResolver {
     private readonly router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadStopPointVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadStopPointVersion>> {
     const sloidParameter = route.paramMap.get('stopPointSloid') || '';
     return sloidParameter === 'add'
       ? of([])
@@ -30,6 +28,5 @@ export class StopPointResolver {
   }
 }
 
-export const stopPointResolver: ResolveFn<Array<ReadStopPointVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(StopPointResolver).resolve(route);
+export const stopPointResolver: ResolveFn<Array<ReadStopPointVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(StopPointResolver).resolve(route);

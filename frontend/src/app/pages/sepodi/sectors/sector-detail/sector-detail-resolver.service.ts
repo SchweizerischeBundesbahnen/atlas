@@ -26,6 +26,5 @@ export class SectorDetailResolver {
   }
 }
 
-export const sectorResolver: ResolveFn<Array<ReadSectorVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(SectorDetailResolver).resolve(route);
+export const sectorResolver: ResolveFn<Array<ReadSectorVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(SectorDetailResolver).resolve(route);

@@ -6,12 +6,7 @@ export class TableFilterBoolean extends TableFilter<boolean> {
   formControl: FormControl;
   fieldLabel: string;
 
-  constructor(
-    row: number,
-    elementWidthCssClass: string,
-    fieldLabel: string,
-    initialValue: boolean = false
-  ) {
+  constructor(row: number, elementWidthCssClass: string, fieldLabel: string, initialValue: boolean = false) {
     super(row, elementWidthCssClass);
     this.fieldLabel = fieldLabel;
     this.activeSearch = initialValue;

@@ -23,11 +23,7 @@ describe('TimetableFieldNumberSelectComponent', () => {
         AtlasLabelFieldComponent,
         AtlasFieldErrorComponent,
       ],
-      providers: [
-        TranslatePipe,
-        translateServiceProvider,
-        provideHttpClientTesting(),
-      ],
+      providers: [TranslatePipe, translateServiceProvider, provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimetableFieldNumberSelectComponent);

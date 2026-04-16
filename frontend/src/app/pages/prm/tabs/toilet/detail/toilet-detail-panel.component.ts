@@ -12,12 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-toilet-detail-panel',
   templateUrl: './toilet-detail-panel.component.html',
-  imports: [
-    DetailPageContainerComponent,
-    PrmDetailPanelComponent,
-    DetailWithRelationTabComponent,
-    TranslatePipe,
-  ],
+  imports: [DetailPageContainerComponent, PrmDetailPanelComponent, DetailWithRelationTabComponent, TranslatePipe],
 })
 export class ToiletDetailPanelComponent implements OnInit {
   isNew = false;
@@ -34,26 +29,16 @@ export class ToiletDetailPanelComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       this.toiletVersions = data.toilet;
-      this.isReduced = PrmMeanOfTransportHelper.isReduced(
-        data.stopPoint[0].meansOfTransport
-      );
+      this.isReduced = PrmMeanOfTransportHelper.isReduced(data.stopPoint[0].meansOfTransport);
 
       const servicePointVersions: ReadServicePointVersion[] = data.servicePoint;
-      this.servicePoint =
-        VersionsHandlingService.determineDefaultVersionByValidity(
-          servicePointVersions
-        );
+      this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
 
       this.isNew = this.toiletVersions.length === 0;
 
       if (!this.isNew) {
-        this.maxValidity = VersionsHandlingService.getMaxValidity(
-          this.toiletVersions
-        );
-        this.selectedVersion =
-          VersionsHandlingService.determineDefaultVersionByValidity(
-            this.toiletVersions
-          );
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.toiletVersions);
+        this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.toiletVersions);
       }
     });
   }

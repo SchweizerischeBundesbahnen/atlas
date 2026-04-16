@@ -11,37 +11,25 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {
-  DetailDialogHelperService,
-  DetailWithCancelEdit,
-} from '../../../../core/detail/detail-dialog-helper.service';
+import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../../core/detail/detail-dialog-helper.service';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { ValidityService } from '../../validity/validity.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DateRange } from '../../../../core/versioning/date-range';
-import {
-  ReadServicePointVersion,
-  ReadTrafficPointElementVersion,
-} from '../../../../api';
+import { ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../../api';
 import { FormGroup } from '@angular/forms';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { catchError, EMPTY } from 'rxjs';
 import { SectorGroupService } from '../../../../api/service/sepodi/sector-group.service';
-import {
-  SectorGroupDetailFormGroup,
-  SectorGroupFormGroupBuilder,
-} from './sector-group-detail-form-group';
+import { SectorGroupDetailFormGroup, SectorGroupFormGroupBuilder } from './sector-group-detail-form-group';
 import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { Pages } from '../../../pages';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { CreateSectorGroupVersion } from '../../../../api/model/createSectorGroupVersion';
-import {
-  DisplayableSector,
-  SectorMapService,
-} from '../../map/sector-map.service';
+import { DisplayableSector, SectorMapService } from '../../map/sector-map.service';
 import { TrafficPointMapService } from '../../map/traffic-point-map.service';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
@@ -80,9 +68,7 @@ import { AtlasClipboardComponent } from '../../../../core/form-components/atlas-
   styleUrls: ['./sector-group-detail.component.scss'],
   providers: [ValidityService],
 })
-export class SectorGroupDetailComponent
-  implements DetailFormComponent, DetailWithCancelEdit, OnInit, OnDestroy
-{
+export class SectorGroupDetailComponent implements DetailFormComponent, DetailWithCancelEdit, OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly sectorMapService = inject(SectorMapService);
@@ -91,9 +77,7 @@ export class SectorGroupDetailComponent
   private readonly detailHelperService = inject(DetailDialogHelperService);
   private readonly notificationService = inject(NotificationService);
   private readonly sectorGroupService = inject(SectorGroupService);
-  private readonly sectorGroupInternalService = inject(
-    SectorGroupInternalService
-  );
+  private readonly sectorGroupInternalService = inject(SectorGroupInternalService);
   private readonly sectorInternalService = inject(SectorInternalService);
 
   tableColumns: TableColumn<ReadSectorVersion>[] = [
@@ -128,8 +112,7 @@ export class SectorGroupDetailComponent
   form!: FormGroup<SectorGroupDetailFormGroup>;
   servicePointBusinessOrganisations: string[] = [];
 
-  readonly displayExtractor = (option: ReadSectorVersion) =>
-    `${option.designation} - ${option.sloid}`;
+  readonly displayExtractor = (option: ReadSectorVersion) => `${option.designation} - ${option.sloid}`;
 
   readonly extractSloid = (option: ReadSectorVersion) => option.sloid;
 
@@ -144,13 +127,8 @@ export class SectorGroupDetailComponent
       } else {
         this.isNew = false;
         VersionsHandlingService.addVersionNumbers(this.sectorGroupVersions);
-        this.maxValidity = VersionsHandlingService.getMaxValidity(
-          this.sectorGroupVersions
-        );
-        this.selectedVersion =
-          VersionsHandlingService.determineDefaultVersionByValidity(
-            this.sectorGroupVersions
-          );
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.sectorGroupVersions);
+        this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.sectorGroupVersions);
         this.initSelectedVersion();
       }
       this.form.controls.trafficPointSloid.setValue(this.trafficPoint.sloid);
@@ -162,32 +140,21 @@ export class SectorGroupDetailComponent
   }
 
   private initSelectedVersion(): void {
-    this.form = SectorGroupFormGroupBuilder.buildFormGroupUpdate(
-      this.selectedVersion
-    );
-    this.selectedVersionIndex = this.sectorGroupVersions.indexOf(
-      this.selectedVersion
-    );
+    this.form = SectorGroupFormGroupBuilder.buildFormGroupUpdate(this.selectedVersion);
+    this.selectedVersionIndex = this.sectorGroupVersions.indexOf(this.selectedVersion);
     this.form.disable();
   }
 
   private initHeaderWithParentInfo(next: Data) {
     const servicePoint: ReadServicePointVersion[] = next.servicePoint;
-    const servicePointVersion =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
+    const servicePointVersion = VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
     this.servicePointNumber = servicePointVersion.number.number;
 
-    this.servicePointDesignationOfficial =
-      servicePointVersion.designationOfficial;
-    this.servicePointBusinessOrganisations = servicePoint.map(
-      (i) => i.businessOrganisation
-    );
-    this.trafficPointMapService.displayTrafficPointsOnMap(
-      this.servicePointNumber
-    );
+    this.servicePointDesignationOfficial = servicePointVersion.designationOfficial;
+    this.servicePointBusinessOrganisations = servicePoint.map((i) => i.businessOrganisation);
+    this.trafficPointMapService.displayTrafficPointsOnMap(this.servicePointNumber);
     const trafficPoint: ReadTrafficPointElementVersion[] = next.trafficPoint;
-    this.trafficPoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(trafficPoint);
+    this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(trafficPoint);
     this.getSectors(this.trafficPoint.sloid!);
   }
 
@@ -213,8 +180,7 @@ export class SectorGroupDetailComponent
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const sectorVersion =
-        this.form.getRawValue() as unknown as CreateSectorGroupVersion;
+      const sectorVersion = this.form.getRawValue() as unknown as CreateSectorGroupVersion;
       this.form.disable();
       if (this.isNew) {
         this.create(sectorVersion);
@@ -237,26 +203,17 @@ export class SectorGroupDetailComponent
       .createSectorGroup(sectorVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((version) => {
-        this.notificationService.success(
-          'SEPODI.SECTOR_GROUPS.NOTIFICATION.ADD_SUCCESS'
-        );
-        this.router
-          .navigate(['..', version.sloid], { relativeTo: this.route })
-          .then(() => this.ngOnInit());
+        this.notificationService.success('SEPODI.SECTOR_GROUPS.NOTIFICATION.ADD_SUCCESS');
+        this.router.navigate(['..', version.sloid], { relativeTo: this.route }).then(() => this.ngOnInit());
       });
   }
 
-  private update(
-    id: number,
-    sectorGroupVersion: UpdateSectorGroupVersion
-  ): void {
+  private update(id: number, sectorGroupVersion: UpdateSectorGroupVersion): void {
     this.sectorGroupService
       .updateSectorGroup(id, sectorGroupVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success(
-          'SEPODI.SECTOR_GROUPS.NOTIFICATION.EDIT_SUCCESS'
-        );
+        this.notificationService.success('SEPODI.SECTOR_GROUPS.NOTIFICATION.EDIT_SUCCESS');
         this.router
           .navigate(['..', this.selectedVersion.sloid], {
             relativeTo: this.route,
@@ -288,30 +245,26 @@ export class SectorGroupDetailComponent
   }
 
   getOverview(sectorGroupSloid: string) {
-    this.sectorGroupService
-      .getSectorsBySectorGroupSloid(sectorGroupSloid)
-      .subscribe((sectorVersions) => {
-        this.sectorVersions = sectorVersions;
-        const sectors: DisplayableSector[] = sectorVersions.map((sector) => {
-          return {
-            sloid: sector.sloid!,
-            designation: sector.designation,
-            coordinates: sector.sectorGeolocation!.wgs84,
-            trafficPointSloid: sector.trafficPointSloid,
-            servicePointNumber: this.servicePointNumber,
-          };
-        });
-
-        this.sectorMapService.setDisplayedSectors(sectors);
+    this.sectorGroupService.getSectorsBySectorGroupSloid(sectorGroupSloid).subscribe((sectorVersions) => {
+      this.sectorVersions = sectorVersions;
+      const sectors: DisplayableSector[] = sectorVersions.map((sector) => {
+        return {
+          sloid: sector.sloid!,
+          designation: sector.designation,
+          coordinates: sector.sectorGeolocation!.wgs84,
+          trafficPointSloid: sector.trafficPointSloid,
+          servicePointNumber: this.servicePointNumber,
+        };
       });
+
+      this.sectorMapService.setDisplayedSectors(sectors);
+    });
   }
 
   getSectors(trafficPointSloid: string) {
-    this.sectorInternalService
-      .getSectors(trafficPointSloid)
-      .subscribe((sectors) => {
-        this.allSectorVersionsOfTrafficPoint = sectors.objects ?? [];
-      });
+    this.sectorInternalService.getSectors(trafficPointSloid).subscribe((sectors) => {
+      this.allSectorVersionsOfTrafficPoint = sectors.objects ?? [];
+    });
   }
 
   revoke() {
@@ -319,9 +272,7 @@ export class SectorGroupDetailComponent
       .revokeSectorGroup(this.selectedVersion.sloid!)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success(
-          'SEPODI.SECTOR_GROUPS.NOTIFICATION.REVOKE_SUCCESS'
-        );
+        this.notificationService.success('SEPODI.SECTOR_GROUPS.NOTIFICATION.REVOKE_SUCCESS');
         this.router
           .navigate(['..', this.selectedVersion.sloid], {
             relativeTo: this.route,

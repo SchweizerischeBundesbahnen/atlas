@@ -1,9 +1,4 @@
-import {
-  ApplicationConfig,
-  enableProdMode,
-  ErrorHandler,
-  importProvidersFrom,
-} from '@angular/core';
+import { ApplicationConfig, enableProdMode, ErrorHandler, importProvidersFrom } from '@angular/core';
 import { CoreModule } from './core/module/core.module';
 import { DateModule } from './core/module/date.module';
 import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
@@ -25,11 +20,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslatedPaginator } from './core/components/table/translated-paginator';
 import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
-import {
-  authInterceptor,
-  provideAuth,
-  withAppInitializerAuthCheck,
-} from 'angular-auth-oidc-client';
+import { authInterceptor, provideAuth, withAppInitializerAuthCheck } from 'angular-auth-oidc-client';
 
 if (environment.production) {
   enableProdMode();
@@ -67,11 +58,7 @@ export const appConfig: ApplicationConfig = {
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    provideHttpClient(
-      withFetch(),
-      withInterceptorsFromDi(),
-      withInterceptors([authInterceptor()])
-    ),
+    provideHttpClient(withFetch(), withInterceptorsFromDi(), withInterceptors([authInterceptor()])),
     provideAuth(environment.authConfig, withAppInitializerAuthCheck()),
   ],
 };

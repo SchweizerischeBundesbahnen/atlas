@@ -1,31 +1,13 @@
 @if (!isTargetViewSepodi && isSwissServicePoint && isStopPoint) {
-  <div
-    class="cursor-pointer d-flex flex-column align-items-center"
-    (click)="navigate()"
-    (keydown.enter)="navigate()"
-  >
-    <img
-      alt="person-wheelchair"
-      src="assets/images/prm/person-wheelchair.svg"
-      height="60"
-      width="60"
-    />
+  <div class="cursor-pointer d-flex flex-column align-items-center" (click)="navigate()" (keydown.enter)="navigate()">
+    <img alt="person-wheelchair" src="assets/images/prm/person-wheelchair.svg" height="60" width="60" />
     <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
   </div>
 }
 
 @if (isTargetViewSepodi) {
-  <div
-    class="cursor-pointer d-flex flex-column align-items-center"
-    (click)="navigate()"
-    (keydown.enter)="navigate()"
-  >
-    <img
-      alt="switzerland"
-      src="assets/images/service-point-symbols/switzerland.svg"
-      height="75"
-      width="120"
-    />
+  <div class="cursor-pointer d-flex flex-column align-items-center" (click)="navigate()" (keydown.enter)="navigate()">
+    <img alt="switzerland" src="assets/images/service-point-symbols/switzerland.svg" height="75" width="120" />
     <p>{{ 'PAGES.SERVICE_POINTS.TITLE_HEADER' | translate }}</p>
   </div>
 }

@@ -56,27 +56,23 @@ export class SectorMapService implements OnDestroy {
         takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
-        this.sectorInternalService
-          .getSectorsValidToday(trafficPointSloid)
-          .subscribe((points) => {
-            const sectors: DisplayableSector[] = points.map((point) => {
-              return {
-                sloid: point.sloid!,
-                designation: point.designation,
-                coordinates: point.sectorGeolocation!.wgs84,
-                trafficPointSloid: point.trafficPointSloid,
-                servicePointNumber: servicePointNumber,
-              };
-            });
-            this.setDisplayedSectors(sectors);
+        this.sectorInternalService.getSectorsValidToday(trafficPointSloid).subscribe((points) => {
+          const sectors: DisplayableSector[] = points.map((point) => {
+            return {
+              sloid: point.sloid!,
+              designation: point.designation,
+              coordinates: point.sectorGeolocation!.wgs84,
+              trafficPointSloid: point.trafficPointSloid,
+              servicePointNumber: servicePointNumber,
+            };
           });
+          this.setDisplayedSectors(sectors);
+        });
       });
   }
 
   public setDisplayedSectors(sectors: DisplayableSector[]) {
-    const source = this.mapService.map.getSource(
-      MAP_SECTOR_LAYER_NAME
-    ) as GeoJSONSource;
+    const source = this.mapService.map.getSource(MAP_SECTOR_LAYER_NAME) as GeoJSONSource;
     const sectorGeoInformation: Feature[] = sectors.map((point) => {
       return {
         type: 'Feature',
@@ -110,13 +106,8 @@ export class SectorMapService implements OnDestroy {
         takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
-        const source = this.mapService.map.getSource(
-          'current_sector'
-        ) as GeoJSONSource;
-        const coordinatesToSet = [
-          coordinates?.east ?? 0,
-          coordinates?.north ?? 0,
-        ];
+        const source = this.mapService.map.getSource('current_sector') as GeoJSONSource;
+        const coordinatesToSet = [coordinates?.east ?? 0, coordinates?.north ?? 0];
         source.setData({
           type: 'Feature',
           geometry: {

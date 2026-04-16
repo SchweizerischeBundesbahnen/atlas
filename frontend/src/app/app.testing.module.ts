@@ -13,16 +13,8 @@ const dialogMock = {
 };
 
 @NgModule({
-  imports: [
-    DateModule.forRoot(),
-    ReactiveFormsModule,
-    RouterModule.forRoot([]),
-  ],
+  imports: [DateModule.forRoot(), ReactiveFormsModule, RouterModule.forRoot([])],
   exports: [DateModule, ReactiveFormsModule, RouterModule],
-  providers: [
-    { provide: MatDialogRef, useValue: dialogMock },
-    { provide: TranslatePipe },
-    translateServiceProvider,
-  ],
+  providers: [{ provide: MatDialogRef, useValue: dialogMock }, { provide: TranslatePipe }, translateServiceProvider],
 })
 export class AppTestingModule {}

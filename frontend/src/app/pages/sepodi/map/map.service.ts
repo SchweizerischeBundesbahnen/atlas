@@ -176,9 +176,7 @@ export class MapService {
         this.showTrafficPointPopup(e);
       }
     });
-    this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) =>
-      this.onTrafficPointClicked(e)
-    );
+    this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => this.onTrafficPointClicked(e));
   }
 
   private initSectorMouseEvents() {
@@ -257,9 +255,7 @@ export class MapService {
   }
 
   private initStoredMapBehaviour() {
-    const initialZoom = Number(
-      localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2
-    );
+    const initialZoom = Number(localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2);
     this.map.setZoom(initialZoom);
     this.servicePointsShown.next(initialZoom >= SERVICE_POINT_MIN_ZOOM);
 
@@ -279,19 +275,14 @@ export class MapService {
       this.map.setCenter({ lng: 8.088542571207768, lat: 46.79229542892091 });
     }
     this.map.on('moveend', (e) => {
-      localStorage.setItem(
-        mapLocationLocalStorageKey,
-        JSON.stringify(e.target.getCenter())
-      );
+      localStorage.setItem(mapLocationLocalStorageKey, JSON.stringify(e.target.getCenter()));
     });
 
     this.initStoredMapStyle();
   }
 
   private initStoredMapStyle() {
-    const storedStyle = MAP_STYLES.find(
-      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey)
-    );
+    const storedStyle = MAP_STYLES.find((i) => i.id === localStorage.getItem(mapStyleLocalStorageKey));
     if (storedStyle) {
       this.switchToStyle(storedStyle);
     } else {
@@ -299,19 +290,12 @@ export class MapService {
     }
   }
 
-  showServicePointPopup(
-    event: MapMouseEvent & { features?: MapGeoJSONFeature[] }
-  ) {
+  showServicePointPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
     this.showPopup(event, this.buildServicePointPopupInformation);
   }
 
-  showTrafficPointPopup(
-    event: MapMouseEvent & { features?: MapGeoJSONFeature[] }
-  ) {
-    this.showPopup(
-      event,
-      TrafficPointMapService.buildTrafficPointPopupInformation
-    );
+  showTrafficPointPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+    this.showPopup(event, TrafficPointMapService.buildTrafficPointPopupInformation);
   }
 
   showSectorPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
@@ -325,13 +309,8 @@ export class MapService {
     if (!event.features || this.keepPopup || this.coordinateSelectionMode) {
       return;
     }
-    const coordinates = (
-      event.features[0].geometry as Point
-    ).coordinates.slice() as LngLatLike;
-    this.popup
-      .setLngLat(coordinates)
-      .setHTML(htmlContentBuilder(event.features))
-      .addTo(this.map);
+    const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
+    this.popup.setLngLat(coordinates).setHTML(htmlContentBuilder(event.features)).addTo(this.map);
     this.popup.on('close', () => {
       this.keepPopup = false;
     });
@@ -389,11 +368,7 @@ export class MapService {
   enterCoordinateSelectionMode() {
     this.coordinateSelectionMode = true;
     this.map.getCanvas().style.cursor = 'crosshair';
-    this.map.on(
-      'mouseleave',
-      MAP_SOURCE_NAME,
-      () => (this.map.getCanvas().style.cursor = 'crosshair')
-    );
+    this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = 'crosshair'));
     this.map.on('click', this.onMapClicked);
   }
 
@@ -402,11 +377,7 @@ export class MapService {
     this.marker.remove();
     this.map.off('click', this.onMapClicked);
     this.map.getCanvas().style.cursor = '';
-    this.map.on(
-      'mouseleave',
-      MAP_SOURCE_NAME,
-      () => (this.map.getCanvas().style.cursor = '')
-    );
+    this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
     this.initMapEvents();
   }
 

@@ -2,11 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
-import {
-  BusinessOrganisation,
-  Status,
-  TimetableFieldNumber,
-} from '../../../api';
+import { BusinessOrganisation, Status, TimetableFieldNumber } from '../../../api';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
@@ -29,9 +25,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './timetable-field-number-overview.component.html',
   imports: [AtlasButtonComponent, TableComponent, RouterOutlet, TranslatePipe],
 })
-export class TimetableFieldNumberOverviewComponent
-  implements OnInit, OnDestroy
-{
+export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
@@ -87,10 +81,7 @@ export class TimetableFieldNumberOverviewComponent
   ) {}
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      this.tableFilterConfigIntern,
-      Pages.TTFN
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.TTFN);
   }
 
   getOverview(pagination: TablePagination) {

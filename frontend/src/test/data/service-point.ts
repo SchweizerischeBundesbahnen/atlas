@@ -1,9 +1,4 @@
-import {
-  Country,
-  MeanOfTransport,
-  ReadServicePointVersion,
-  SpatialReference,
-} from '../../app/api';
+import { Country, MeanOfTransport, ReadServicePointVersion, SpatialReference } from '../../app/api';
 
 export const BERN_WYLEREGG: ReadServicePointVersion = {
   creationDate: '2021-03-22T09:26:29',

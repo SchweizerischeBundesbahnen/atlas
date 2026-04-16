@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { ApplicationRole, ApplicationType, Permission } from '../../../../api';
 import { UserAdministrationUserOverviewComponent } from './user-administration-user-overview.component';
-import {
-  adminPermissionServiceMock,
-  translateServiceProvider,
-} from '../../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { TableService } from '../../../../core/components/table/table.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { ActivatedRoute } from '@angular/router';
@@ -17,9 +14,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
   let component: UserAdministrationUserOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationUserOverviewComponent>;
 
-  let userAdministrationService: Mocked<
-    Pick<UserAdministrationService, 'getUsers' | 'getUser'>
-  >;
+  let userAdministrationService: Mocked<Pick<UserAdministrationService, 'getUsers' | 'getUser'>>;
   let tableService: TableService;
 
   beforeEach(() => {
@@ -84,10 +79,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
 
     component.loadUsers({ page: 5, size: 5 });
 
-    expect(userAdministrationService.getUsers).toHaveBeenCalledExactlyOnceWith(
-      5,
-      5
-    );
+    expect(userAdministrationService.getUsers).toHaveBeenCalledExactlyOnceWith(5, 5);
     expect(component.userSearchForm.get('userSearch')?.value).toBeNull();
     expect(component.boForm.get('boSearch')?.value).toBeNull();
     expect(component.selectedApplicationOptions).toEqual([]);
@@ -208,10 +200,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
     tableService.pageSize = 10;
     tableService.pageIndex = 10;
     component.reloadTableWithCurrentSettings();
-    expect(component.onUserFilterChanged).toHaveBeenCalledExactlyOnceWith(
-      null!,
-      10
-    );
+    expect(component.onUserFilterChanged).toHaveBeenCalledExactlyOnceWith(null!, 10);
   });
 
   it('test reloadTableWithCurrentSettings, FILTER', () => {

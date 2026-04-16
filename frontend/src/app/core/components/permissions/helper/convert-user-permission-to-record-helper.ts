@@ -3,9 +3,7 @@ import { Permission } from '../../../../api';
 import { CreationEditionRecord } from '../../user-edit-info/creation-edition-record';
 
 export class ConvertUserPermissionToRecordHelper {
-  static convertUserPermissionToRecord(
-    permissions: Permission[]
-  ): CreationEditionRecord {
+  static convertUserPermissionToRecord(permissions: Permission[]): CreationEditionRecord {
     const permissionsArray = Array.from(permissions || []);
 
     if (permissionsArray.length === 0) {
@@ -18,19 +16,11 @@ export class ConvertUserPermissionToRecordHelper {
     for (let i = 1; i < permissionsArray.length; i++) {
       const current = permissionsArray[i];
 
-      if (
-        moment(new Date(current.creationDate!)).isBefore(
-          moment(new Date(firstCreated.creationDate!))
-        )
-      ) {
+      if (moment(new Date(current.creationDate!)).isBefore(moment(new Date(firstCreated.creationDate!)))) {
         firstCreated = current;
       }
 
-      if (
-        moment(new Date(current.editionDate!)).isAfter(
-          moment(new Date(lastEdited.editionDate!))
-        )
-      ) {
+      if (moment(new Date(current.editionDate!)).isAfter(moment(new Date(lastEdited.editionDate!)))) {
         lastEdited = current;
       }
     }

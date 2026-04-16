@@ -21,10 +21,7 @@ import { ContactPointInternalService } from '../../../../api/service/prm/contact
   templateUrl: './contact-point-table.component.html',
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
-export class ContactPointTableComponent
-  extends BasePrmTabComponentService
-  implements OnInit
-{
+export class ContactPointTableComponent extends BasePrmTabComponentService implements OnInit {
   tableColumns: TableColumn<ContactPointOverview>[] = [
     { headerTitle: 'PRM.CONTACT_POINTS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
@@ -61,10 +58,7 @@ export class ContactPointTableComponent
 
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.CONTACT_POINT
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.CONTACT_POINT);
   }
 
   getTab(): Tab {
@@ -72,19 +66,12 @@ export class ContactPointTableComponent
   }
 
   getOverview(pagination: TablePagination) {
-    const parentServicePointSloid =
-      this.route.parent!.snapshot.params.stopPointSloid!;
+    const parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.contactPointInternalService
-      .getContactPointOverview(parentServicePointSloid)
-      .subscribe((overviewRows) => {
-        this.contactPoints = TableContentPaginationAndSorting.pageAndSort(
-          overviewRows,
-          pagination,
-          'designation,asc'
-        );
-        this.totalCount = overviewRows.length;
-      });
+    this.contactPointInternalService.getContactPointOverview(parentServicePointSloid).subscribe((overviewRows) => {
+      this.contactPoints = TableContentPaginationAndSorting.pageAndSort(overviewRows, pagination, 'designation,asc');
+      this.totalCount = overviewRows.length;
+    });
   }
 
   rowClicked(clickedRow: ContactPointOverview) {

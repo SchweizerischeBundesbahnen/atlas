@@ -27,14 +27,11 @@ describe('UserOpenInMailComponent', () => {
   beforeEach(async () => {
     // Config
     TestBed.configureTestingModule({
-      providers: [
-        { provide: UserAdministrationService, useValue: userAdminServiceMock },
-      ],
+      providers: [{ provide: UserAdministrationService, useValue: userAdminServiceMock }],
     });
 
     // Arrangement
-    const applicationTypeInputName: keyof UserOpenInMailComponent =
-      'applicationType';
+    const applicationTypeInputName: keyof UserOpenInMailComponent = 'applicationType';
     const userIdInputName: keyof UserOpenInMailComponent = 'userId';
     fixture = TestBed.createComponent(UserOpenInMailComponent, {
       bindings: [
@@ -53,9 +50,6 @@ describe('UserOpenInMailComponent', () => {
   it('should open mail', () => {
     vi.spyOn(window, 'open').mockImplementation(() => null);
     component.openInMail();
-    expect(window.open).toHaveBeenCalledExactlyOnceWith(
-      'mailto:asd@as.ch',
-      '_self'
-    );
+    expect(window.open).toHaveBeenCalledExactlyOnceWith('mailto:asd@as.ch', '_self');
   });
 });

@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { HeaderComponent } from './header.component';
 import { AuthService } from '../../auth/auth.service';
-import {
-  authServiceMock,
-  translateServiceProvider,
-} from '../../../app.testing.mocks';
+import { authServiceMock, translateServiceProvider } from '../../../app.testing.mocks';
 import { RouterModule } from '@angular/router';
 import { DateModule } from '../../module/date.module';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
@@ -31,10 +28,7 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [DateModule.forRoot(), RouterModule.forRoot([])],
-      providers: [
-        { provide: AuthService, useValue: authServiceMock },
-        translateServiceProvider,
-      ],
+      providers: [{ provide: AuthService, useValue: authServiceMock }, translateServiceProvider],
     }).overrideComponent(HeaderComponent, {
       remove: { imports: [LanguageSwitcherComponent, UserComponent] },
       add: { imports: [MockLanguageSwitcherComponent, MockUserComponent] },

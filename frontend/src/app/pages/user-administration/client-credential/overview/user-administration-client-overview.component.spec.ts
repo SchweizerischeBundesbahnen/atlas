@@ -22,10 +22,7 @@ describe('UserAdministrationClientOverviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        UserAdministrationClientOverviewComponent,
-        TranslateModule.forRoot(),
-      ],
+      imports: [UserAdministrationClientOverviewComponent, TranslateModule.forRoot()],
       providers: [
         {
           provide: ClientCredentialAdministrationService,
@@ -41,18 +38,14 @@ describe('UserAdministrationClientOverviewComponent', () => {
       })
       .compileComponents();
 
-    fixture = TestBed.createComponent(
-      UserAdministrationClientOverviewComponent
-    );
+    fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should getOverview', () => {
     //given
-    component.clientCredentials = [
-      { clientCredentialId: '134123-123123', alias: 'öV-info.ch' },
-    ];
+    component.clientCredentials = [{ clientCredentialId: '134123-123123', alias: 'öV-info.ch' }];
     component.totalCount = 1;
 
     //when
@@ -62,9 +55,9 @@ describe('UserAdministrationClientOverviewComponent', () => {
     });
 
     //then
-    expect(
-      clientCredentialAdministrationService.getClientCredentials
-    ).toHaveBeenCalledWith(0, 10, ['clientCredentialId,asc']);
+    expect(clientCredentialAdministrationService.getClientCredentials).toHaveBeenCalledWith(0, 10, [
+      'clientCredentialId,asc',
+    ]);
     expect(component.clientCredentials.length).toEqual(1);
     expect(component.clientCredentials[0].alias).toEqual('öV-info.ch');
     expect(component.totalCount).toEqual(1);

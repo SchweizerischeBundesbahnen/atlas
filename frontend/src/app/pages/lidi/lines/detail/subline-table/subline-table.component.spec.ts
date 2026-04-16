@@ -34,10 +34,7 @@ describe('SublineTableComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [AppTestingModule, SublineTableComponent, MockTableComponent],
-      providers: [
-        { provide: LineInternalService, useValue: lineInternalService },
-        FormatPipe,
-      ],
+      providers: [{ provide: LineInternalService, useValue: lineInternalService }, FormatPipe],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SublineTableComponent);
@@ -61,9 +58,6 @@ describe('SublineTableComponent', () => {
 
     component.rowClicked(subline);
 
-    expect(openSpy).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/sublines/ch:1:slnid:8000:1',
-      '_blank'
-    );
+    expect(openSpy).toHaveBeenCalledExactlyOnceWith('/line-directory/sublines/ch:1:slnid:8000:1', '_blank');
   });
 });

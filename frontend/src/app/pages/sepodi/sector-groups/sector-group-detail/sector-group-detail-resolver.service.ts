@@ -10,9 +10,7 @@ export class SectorGroupDetailResolver {
   private readonly sectorGroupService = inject(SectorGroupService);
   private readonly router = inject(Router);
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<Array<ReadSectorGroupVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadSectorGroupVersion>> {
     const sectorGroupSloid = route.paramMap.get('sectorGroupSloid') ?? '';
     return sectorGroupSloid === 'add'
       ? of([])
@@ -28,6 +26,5 @@ export class SectorGroupDetailResolver {
   }
 }
 
-export const sectorGroupResolver: ResolveFn<Array<ReadSectorGroupVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(SectorGroupDetailResolver).resolve(route);
+export const sectorGroupResolver: ResolveFn<Array<ReadSectorGroupVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(SectorGroupDetailResolver).resolve(route);

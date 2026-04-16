@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import {
-  ActivatedRouteSnapshot,
-  NavigationEnd,
-  Router,
-  RouterLink,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { merge, Observable, of } from 'rxjs';
 import { NON_PROD_STAGES, Stages } from '../../constants/stages';
@@ -49,9 +44,7 @@ export class HeaderComponent implements OnInit {
       of(this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root)),
       router.events.pipe(
         filter((e) => e instanceof NavigationEnd),
-        map(() =>
-          this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root)
-        )
+        map(() => this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root))
       )
     );
   }

@@ -12,12 +12,7 @@ import {
   MockNavigationSepodiPrmComponent,
 } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import {
-  Country,
-  ReadServicePointVersion,
-  Status,
-  StopPointType,
-} from '../../../../api';
+import { Country, ReadServicePointVersion, Status, StopPointType } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MapService } from '../../map/map.service';
 import { Component, EventEmitter, input, Input, Output } from '@angular/core';
@@ -65,28 +60,15 @@ describe('ServicePointDetailComponent', () => {
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
 
   let dialogServiceSpy: Mocked<
-    Pick<
-      DialogService,
-      | 'openDialogDataWithConfirmationResult'
-      | 'openDialogDataWithCustomResult'
-      | 'openWithoutResult'
-    >
+    Pick<DialogService, 'openDialogDataWithConfirmationResult' | 'openDialogDataWithCustomResult' | 'openWithoutResult'>
   >;
-  let servicePointServiceSpy: Mocked<
-    Pick<ServicePointService, 'updateServicePoint'>
-  >;
+  let servicePointServiceSpy: Mocked<Pick<ServicePointService, 'updateServicePoint'>>;
   let servicePointInternalServiceSpy: Mocked<
-    Pick<
-      ServicePointInternalService,
-      'validateServicePoint' | 'revokeServicePoint'
-    >
+    Pick<ServicePointInternalService, 'validateServicePoint' | 'revokeServicePoint'>
   >;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
   let mapServiceSpy: Mocked<
-    Pick<
-      MapService,
-      'placeMarkerAndFlyTo' | 'deselectServicePoint' | 'refreshMap'
-    > & {
+    Pick<MapService, 'placeMarkerAndFlyTo' | 'deselectServicePoint' | 'refreshMap'> & {
       mapInitialized: BehaviorSubject<boolean>;
     }
   >;
@@ -143,12 +125,7 @@ describe('ServicePointDetailComponent', () => {
     })
       .overrideComponent(ServicePointDetailComponent, {
         remove: {
-          imports: [
-            AtlasButtonComponent,
-            NavigationSepodiPrmComponent,
-            GeographyComponent,
-            ServicePointFormComponent,
-          ],
+          imports: [AtlasButtonComponent, NavigationSepodiPrmComponent, GeographyComponent, ServicePointFormComponent],
         },
         add: {
           imports: [
@@ -172,9 +149,7 @@ describe('ServicePointDetailComponent', () => {
     expect(component.showVersionSwitch).toBe(true);
     expect(component.selectedVersion).toBeTruthy();
 
-    expect(
-      (component.servicePointVersions[0] as Record).versionNumber
-    ).toBeTruthy();
+    expect((component.servicePointVersions[0] as Record).versionNumber).toBeTruthy();
   });
 
   it('should initialize form correctly', () => {
@@ -271,9 +246,7 @@ describe('ServicePointDetailComponent', () => {
     component.form?.markAsDirty();
     expect(component.form?.dirty).toBe(true);
 
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     // when & then
     component.toggleEdit();
@@ -289,9 +262,7 @@ describe('ServicePointDetailComponent', () => {
     component.form?.markAsDirty();
     expect(component.form?.dirty).toBe(true);
 
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(false)
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(false));
 
     // when & then
     component.toggleEdit();
@@ -416,43 +387,29 @@ describe('ServicePointDetailComponent', () => {
   });
 
   it('should validate service point on validate', () => {
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
-    servicePointInternalServiceSpy.validateServicePoint.mockReturnValue(
-      of(BERN[0])
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
+    servicePointInternalServiceSpy.validateServicePoint.mockReturnValue(of(BERN[0]));
 
     component.validate();
 
-    expect(
-      servicePointInternalServiceSpy.validateServicePoint
-    ).toHaveBeenCalled();
+    expect(servicePointInternalServiceSpy.validateServicePoint).toHaveBeenCalled();
   });
 
   it('should revoke service points on revoke', () => {
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
     servicePointInternalServiceSpy.revokeServicePoint.mockReturnValue(of(BERN));
 
     component.revoke();
 
-    expect(
-      servicePointInternalServiceSpy.revokeServicePoint
-    ).toHaveBeenCalled();
+    expect(servicePointInternalServiceSpy.revokeServicePoint).toHaveBeenCalled();
   });
 
   it('should update service point on save', () => {
     vi.spyOn(validityService, 'initValidity');
     vi.spyOn(validityService, 'validateAndDisableCustom');
-    vi.spyOn(validityService, 'confirmValidityDialog').mockReturnValue(
-      of(true)
-    );
+    vi.spyOn(validityService, 'confirmValidityDialog').mockReturnValue(of(true));
 
-    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogServiceSpy.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
     servicePointServiceSpy.updateServicePoint.mockReturnValue(of(BERN[0]));
 
     component.toggleEdit();
@@ -466,23 +423,16 @@ describe('ServicePointDetailComponent', () => {
     //given
     vi.spyOn(validityService, 'initValidity');
     vi.spyOn(terminationService, 'isStartingTermination').mockReturnValue(true);
-    vi.spyOn(
-      dialogServiceSpy,
-      'openDialogDataWithCustomResult'
-    ).mockReturnValue(of(true));
+    vi.spyOn(dialogServiceSpy, 'openDialogDataWithCustomResult').mockReturnValue(of(true));
 
     component.isLatestVersionSelected = true;
 
     component.toggleEdit();
-    component.form?.controls.validityGroup.controls.validTo.setValue(
-      moment('2099-12-30')
-    );
+    component.form?.controls.validityGroup.controls.validTo.setValue(moment('2099-12-30'));
     //when
     component.save();
     //then
-    expect(
-      dialogServiceSpy.openDialogDataWithCustomResult
-    ).toHaveBeenCalledTimes(1);
+    expect(dialogServiceSpy.openDialogDataWithCustomResult).toHaveBeenCalledTimes(1);
   });
 
   it('should open add workflow dialog', () => {

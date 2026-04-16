@@ -1,10 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  ControlContainer,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CompleteReferencePointFormGroup } from '../reference-point-form-group';
 import { ReferencePointAttributeType } from '../../../../../../../api';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';

@@ -20,9 +20,7 @@ describe('FileDropDirective', () => {
   });
 
   it('should add fileover class on drag events', () => {
-    const elementWithDirective = fixture.debugElement.query(
-      By.directive(FileDropDirective)
-    );
+    const elementWithDirective = fixture.debugElement.query(By.directive(FileDropDirective));
     expect(elementWithDirective).toBeTruthy();
 
     const dragoverEvent = mock<DragEvent>();

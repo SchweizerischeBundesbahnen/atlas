@@ -17,15 +17,8 @@ describe('TimetableHearingOverviewComponent', () => {
     service = { setCantonShort: vi.fn() };
 
     await TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        TranslateModule.forRoot(),
-        TimetableHearingOverviewComponent,
-        CantonCardComponent,
-      ],
-      providers: [
-        { provide: OverviewToTabShareDataService, useValue: service },
-      ],
+      imports: [AppTestingModule, TranslateModule.forRoot(), TimetableHearingOverviewComponent, CantonCardComponent],
+      providers: [{ provide: OverviewToTabShareDataService, useValue: service }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimetableHearingOverviewComponent);

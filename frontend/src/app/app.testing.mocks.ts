@@ -135,10 +135,7 @@ export class MockTableComponent<DATATYPE> {
   @Input() checkBoxModeEnabled = false;
   @Input() showPaginator = true;
 
-  @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatementV2>(
-    true,
-    []
-  );
+  @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatementV2>(true, []);
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
 }
@@ -270,9 +267,7 @@ export const pageServiceMock: Partial<PageService> = {
   },
 };
 
-type AuthServiceMock = Mocked<
-  Pick<AuthService, 'login' | 'logout' | 'initAuth'>
->;
+type AuthServiceMock = Mocked<Pick<AuthService, 'login' | 'logout' | 'initAuth'>>;
 export const authServiceMock: AuthServiceMock = {
   login: vi.fn(),
   logout: vi.fn(),

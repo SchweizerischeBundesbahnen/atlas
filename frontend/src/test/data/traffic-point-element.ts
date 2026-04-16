@@ -1,7 +1,4 @@
-import {
-  ContainerReadTrafficPointElementVersion,
-  ReadTrafficPointElementVersion,
-} from '../../app/api';
+import { ContainerReadTrafficPointElementVersion, ReadTrafficPointElementVersion } from '../../app/api';
 
 export const BERN_WYLEREGG_TRAFFIC_POINTS: ReadTrafficPointElementVersion[] = [
   {
@@ -96,11 +93,10 @@ export const BERN_WYLEREGG_TRAFFIC_POINTS: ReadTrafficPointElementVersion[] = [
   },
 ];
 
-export const BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER: ContainerReadTrafficPointElementVersion =
-  {
-    objects: BERN_WYLEREGG_TRAFFIC_POINTS,
-    totalCount: 2,
-  };
+export const BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER: ContainerReadTrafficPointElementVersion = {
+  objects: BERN_WYLEREGG_TRAFFIC_POINTS,
+  totalCount: 2,
+};
 
 export const BERN_TRAFFIC_POINT_PLATFORM_1 = [
   {

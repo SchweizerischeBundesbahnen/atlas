@@ -17,9 +17,7 @@ import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dia
 })
 export class TthChangeStatusDialogComponent {
   formGroup = new FormGroup<TthChangeStatusFormGroup>({
-    publicComment: new FormControl(this.data.publicComment, [
-      AtlasFieldLengthValidator.statement,
-    ]),
+    publicComment: new FormControl(this.data.publicComment, [AtlasFieldLengthValidator.statement]),
   });
   private ngUnsubscribe = new Subject<void>();
 
@@ -45,9 +43,7 @@ export class TthChangeStatusDialogComponent {
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.notificationService.success(
-            'TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS'
-          );
+          this.notificationService.success('TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS');
           this.dialogRef.close(true);
         });
     }

@@ -51,9 +51,7 @@ export class BoDossierDetailComponent implements DetailFormComponent, OnInit {
   private readonly router = inject(Router);
   private readonly dossierInternalService = inject(DossierInternalService);
   private readonly notificationService = inject(NotificationService);
-  private readonly openBoDossierInMailService = inject(
-    OpenBoDossierInMailService
-  );
+  private readonly openBoDossierInMailService = inject(OpenBoDossierInMailService);
 
   dossierForm!: FormGroup<DossierDetailFormGroup>;
   form = BoAnswerFormGroupBuilder.buildFormGroup(null);
@@ -98,9 +96,7 @@ export class BoDossierDetailComponent implements DetailFormComponent, OnInit {
       if (this.currentDossier.dossierStatus !== 'DOSSIER_BO_CHECK') {
         this.form.disable();
         this.isDossierStatusBoCheck = false;
-        this.form.controls.answerToCanton.setValue(
-          tthDossierQuestion.answerToCanton!
-        );
+        this.form.controls.answerToCanton.setValue(tthDossierQuestion.answerToCanton!);
       } else {
         this.form.enable();
         this.isDossierStatusBoCheck = true;
@@ -129,22 +125,16 @@ export class BoDossierDetailComponent implements DetailFormComponent, OnInit {
       const boAnswer: BoAnswer = {
         answerToCanton: this.form.controls.answerToCanton.getRawValue()!,
       };
-      this.dossierInternalService
-        .answerQuestion(questionId!, boAnswer)
-        .subscribe(() => {
-          this.notificationService.success(
-            'TTH.DOSSIER.NOTIFICATION.SENT_TO_CANTON'
-          );
-          this.form.disable();
-          this.isDossierStatusBoCheck = false;
-        });
+      this.dossierInternalService.answerQuestion(questionId!, boAnswer).subscribe(() => {
+        this.notificationService.success('TTH.DOSSIER.NOTIFICATION.SENT_TO_CANTON');
+        this.form.disable();
+        this.isDossierStatusBoCheck = false;
+      });
     }
   }
 
   private initDossierForm() {
     this.currentDossier = this.activatedRoute.snapshot.data.dossier;
-    this.dossierForm = DossierFormGroupBuilder.buildFormGroup(
-      this.currentDossier
-    );
+    this.dossierForm = DossierFormGroupBuilder.buildFormGroup(this.currentDossier);
   }
 }

@@ -14,10 +14,7 @@ describe('UserAdministrationClientDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        UserAdministrationClientDetailComponent,
-        TranslateModule.forRoot({}),
-      ],
+      imports: [UserAdministrationClientDetailComponent, TranslateModule.forRoot({})],
       providers: [
         {
           provide: ActivatedRoute,

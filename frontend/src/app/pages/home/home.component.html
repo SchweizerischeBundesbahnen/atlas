@@ -8,17 +8,12 @@
   </div>
   <div class="card-container" data-cy="home-card-container">
     @for (page of enabledPages | async; track page) {
-      <a
-        id="{{ page.path }}"
-        class="card"
-        [routerLink]="page.path"
-        >
+      <a id="{{ page.path }}" class="card" [routerLink]="page.path">
         <div class="d-flex flex-column justify-content-between card-content-box">
           <h3 class="title color-gray-900 font-bold-xl m-0">{{ page.title | translate }}</h3>
           <p class="font-regular-base color-gray-900 m-0">{{ page.description! | translate }}</p>
           <span class="d-flex color-primary-400 font-bold-base"
-            >{{ page.pathText! | translate
-            }}<em class="bi bi-arrow-right-short color-primary-400"></em
+            >{{ page.pathText! | translate }}<em class="bi bi-arrow-right-short color-primary-400"></em
           ></span>
         </div>
       </a>

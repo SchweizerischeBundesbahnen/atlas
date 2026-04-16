@@ -9,18 +9,8 @@
   </button>
   <mat-menu #menu="matMenu">
     <ng-template #dossierAction let-cfg>
-      <button
-        mat-menu-item
-        class="color-primary-400"
-        (click)="completeDossier(cfg.action)"
-      >
-        <img
-          class="pe-2"
-          height="22"
-          width="22"
-          [ngSrc]="cfg.icon"
-          alt="canton-delivery-icon"
-        />
+      <button mat-menu-item class="color-primary-400" (click)="completeDossier(cfg.action)">
+        <img class="pe-2" height="22" width="22" [ngSrc]="cfg.icon" alt="canton-delivery-icon" />
         <span>{{ cfg.label | translate }}</span>
       </button>
     </ng-template>

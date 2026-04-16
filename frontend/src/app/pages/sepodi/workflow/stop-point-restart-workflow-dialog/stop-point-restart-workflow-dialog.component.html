@@ -1,9 +1,7 @@
 <atlas-dialog-close (clicked)="closeDialog()"></atlas-dialog-close>
 <atlas-dialog-content>
   <div class="mb-5 dialog-title">
-    <span class="font-bold-4xl">{{
-      'WORKFLOW.BUTTON.RESTART' | translate
-    }}</span>
+    <span class="font-bold-4xl">{{ 'WORKFLOW.BUTTON.RESTART' | translate }}</span>
   </div>
   <form [formGroup]="formGroup">
     <div class="col-12 px-5 mt-3">
@@ -71,18 +69,10 @@
 </atlas-dialog-content>
 
 <atlas-dialog-footer>
-  <button
-    (click)="closeDialog()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-cancel-button"
-  >
+  <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
     {{ 'DIALOG.CANCEL' | translate }}
   </button>
-  <button
-    (click)="restartWorkflow()"
-    class="atlas-primary-btn primary-color-btn"
-    data-cy="dialog-confirm-button"
-  >
+  <button (click)="restartWorkflow()" class="atlas-primary-btn primary-color-btn" data-cy="dialog-confirm-button">
     {{ 'WORKFLOW.BUTTON.RESTART' | translate }}
   </button>
 </atlas-dialog-footer>

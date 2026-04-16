@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { ToiletComponent } from './toilet.component';
-import {
-  MockAtlasButtonComponent,
-  MockTableComponent,
-} from '../../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { ActivatedRoute } from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
@@ -38,9 +35,7 @@ const toiletOverview: ToiletOverview[] = [
 describe('Toilet Component', () => {
   let component: ToiletComponent;
   let fixture: ComponentFixture<ToiletComponent>;
-  let toiletInternalService: Mocked<
-    Pick<ToiletInternalService, 'getToiletOverview'>
-  >;
+  let toiletInternalService: Mocked<Pick<ToiletInternalService, 'getToiletOverview'>>;
 
   const activatedRouteMock = {
     parent: {

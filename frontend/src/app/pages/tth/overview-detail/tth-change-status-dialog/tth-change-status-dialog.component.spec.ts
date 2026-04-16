@@ -6,10 +6,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { of } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import {
-  MAT_SNACK_BAR_DATA,
-  MatSnackBarRef,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
@@ -28,9 +25,7 @@ const mockTimetableHearingStatementsService: Mocked<
 const dialogServiceSpy: Mocked<Pick<DialogService, 'confirmLeave'>> = {
   confirmLeave: vi.fn().mockReturnValue(of({})),
 };
-const dialogRefSpy: Mocked<
-  Pick<MatDialogRef<TthChangeStatusDialogComponent>, 'close'>
-> = {
+const dialogRefSpy: Mocked<Pick<MatDialogRef<TthChangeStatusDialogComponent>, 'close'>> = {
   close: vi.fn(),
 };
 const notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>> = {
@@ -51,9 +46,7 @@ describe('TthChangeStatusDialogComponent', () => {
   let fixture: ComponentFixture<TthChangeStatusDialogComponent>;
 
   mockTimetableHearingStatementsService.updateHearingStatementStatus.mockReturnValue(
-    of(undefined) as ReturnType<
-      TimetableHearingStatementInternalService['updateHearingStatementStatus']
-    >
+    of(undefined) as ReturnType<TimetableHearingStatementInternalService['updateHearingStatementStatus']>
   );
 
   beforeEach(async () => {
@@ -106,17 +99,13 @@ describe('TthChangeStatusDialogComponent', () => {
     component.onClick();
     //then
     expect(dialogRefSpy.close).toHaveBeenCalledTimes(1);
-    expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS'
-    );
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith('TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS');
   });
 
   it('should render tth change status dialog', () => {
     component.onClick();
 
-    const baseDialog = fixture.debugElement.query(
-      By.css('atlas-base-change-dialog')
-    );
+    const baseDialog = fixture.debugElement.query(By.css('atlas-base-change-dialog'));
     expect(baseDialog).not.toBeNull();
     expect(baseDialog.attributes['controlName']).toBe('publicComment');
     expect(baseDialog.attributes['maxChars']).toBe('5000');

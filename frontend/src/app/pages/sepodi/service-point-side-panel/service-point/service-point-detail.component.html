@@ -27,9 +27,7 @@
         }
         @if (isTerminationInProgress) {
           <div class="align-self-center">
-            <atlas-stop-point-termination-info
-              [sloid]="selectedVersion?.sloid!"
-            ></atlas-stop-point-termination-info>
+            <atlas-stop-point-termination-info [sloid]="selectedVersion?.sloid!"></atlas-stop-point-termination-info>
           </div>
         }
       </div>
@@ -45,12 +43,8 @@
           {{ selectedVersionIndex + 1 }}
         </h2>
         <div>
-          <span class="font-bold-lg color-gray-900"
-            >{{ 'COMMON.STATUS' | translate }}
-          </span>
-          <span class="color-gray-900">{{
-            'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
-          }}</span>
+          <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+          <span class="color-gray-900">{{ 'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate }}</span>
         </div>
       </div>
     }
@@ -63,9 +57,7 @@
       [selectableStopPointTypes]="selectableStopPointTypes"
     >
       <div class="color-gray-900" abbreviation>
-        @if (
-          !hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected
-        ) {
+        @if (!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected) {
           <atlas-text-field
             [fieldExamples]="[
               { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -83,9 +75,7 @@
           >
           </atlas-text-field>
         }
-        @if (
-          hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected
-        ) {
+        @if (hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected) {
           <div>
             <div class="font-bold-lg color-gray-900">
               {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
@@ -101,9 +91,7 @@
         geography
         [form]="form.controls.servicePointGeolocation"
         [editMode]="form.enabled"
-        (geographyChanged)="
-          $event ? onGeographyEnabled() : onGeographyDisabled()
-        "
+        (geographyChanged)="$event ? onGeographyEnabled() : onGeographyDisabled()"
       ></atlas-sepodi-geography>
     </atlas-service-point-form>
   }
@@ -111,10 +99,7 @@
   @if (selectedVersion) {
     <div class="mb-3">
       <mat-divider class="mt-4 mb-4"></mat-divider>
-      <atlas-user-detail-info
-        [applicationType]="'SEPODI'"
-        [record]="selectedVersion"
-      ></atlas-user-detail-info>
+      <atlas-user-detail-info [applicationType]="'SEPODI'" [record]="selectedVersion"></atlas-user-detail-info>
     </div>
   }
 </atlas-detail-page-container>
@@ -152,11 +137,7 @@
     wrapperStyleClass="ms-3"
   ></atlas-button>
 
-  @if (
-    form?.disabled &&
-    selectedVersion?.status === 'DRAFT' &&
-    !isTerminationInProgress
-  ) {
+  @if (form?.disabled && selectedVersion?.status === 'DRAFT' && !isTerminationInProgress) {
     <atlas-button
       (buttonClicked)="addWorkflow()"
       applicationType="SEPODI"

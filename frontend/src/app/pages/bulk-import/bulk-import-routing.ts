@@ -5,17 +5,11 @@ import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./overview/bulk-import-overview.component').then(
-        (m) => m.BulkImportOverviewComponent
-      ),
+    loadComponent: () => import('./overview/bulk-import-overview.component').then((m) => m.BulkImportOverviewComponent),
     canDeactivate: [canLeaveDirtyForm],
   },
   {
     path: ':id',
-    loadComponent: () =>
-      import('./log/bulk-import-log.component').then(
-        (m) => m.BulkImportLogComponent
-      ),
+    loadComponent: () => import('./log/bulk-import-log.component').then((m) => m.BulkImportLogComponent),
   },
 ];

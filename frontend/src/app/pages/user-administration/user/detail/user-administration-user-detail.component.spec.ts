@@ -28,10 +28,7 @@ describe('UserAdministrationUserDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        UserAdministrationUserDetailComponent,
-        TranslateModule.forRoot(),
-      ],
+      imports: [UserAdministrationUserDetailComponent, TranslateModule.forRoot()],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -43,16 +40,10 @@ describe('UserAdministrationUserDetailComponent', () => {
     })
       .overrideComponent(UserAdministrationUserDetailComponent, {
         remove: {
-          providers: [
-            UserAdministrationUserCreateComponent,
-            UserAdministrationUserEditComponent,
-          ],
+          providers: [UserAdministrationUserCreateComponent, UserAdministrationUserEditComponent],
         },
         add: {
-          providers: [
-            MockAppUserAdministrationCreateComponent,
-            MockUserAdministrationUserEditComponent,
-          ],
+          providers: [MockAppUserAdministrationCreateComponent, MockUserAdministrationUserEditComponent],
         },
       })
       .compileComponents();

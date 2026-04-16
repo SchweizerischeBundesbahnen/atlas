@@ -47,12 +47,8 @@ import { NotificationService } from '../../../../../../core/notification/notific
 export class StatementDataProtectionCheckDialogComponent implements OnInit {
   readonly statement = inject<TimetableHearingStatementV2>(MAT_DIALOG_DATA);
 
-  private readonly dialogRef = inject(
-    MatDialogRef<StatementDataProtectionCheckDialogComponent, boolean>
-  );
-  private readonly timetableHearingStatementsService = inject(
-    TimetableHearingStatementInternalService
-  );
+  private readonly dialogRef = inject(MatDialogRef<StatementDataProtectionCheckDialogComponent, boolean>);
+  private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
   private readonly notificationService = inject(NotificationService);
 
   readonly stepper = viewChild.required<MatStepper>('stepper');
@@ -64,14 +60,8 @@ export class StatementDataProtectionCheckDialogComponent implements OnInit {
   ngOnInit() {
     this.hasDocuments = (this.statement.documents?.length ?? 0) > 0;
 
-    this.statementFormGroup =
-      StatementDataProtectionFormGroupBuilder.buildStatementGroup(
-        this.statement
-      );
-    this.documentFormGroup =
-      StatementDataProtectionFormGroupBuilder.buildDocumentGroup(
-        this.statement
-      );
+    this.statementFormGroup = StatementDataProtectionFormGroupBuilder.buildStatementGroup(this.statement);
+    this.documentFormGroup = StatementDataProtectionFormGroupBuilder.buildDocumentGroup(this.statement);
   }
 
   completeTextDataProtection() {
@@ -95,15 +85,10 @@ export class StatementDataProtectionCheckDialogComponent implements OnInit {
   private completeDataProtection() {
     this.timetableHearingStatementsService
       .checkDataProtection(
-        StatementDataProtectionFormGroupBuilder.toModel(
-          this.documentFormGroup,
-          this.statementFormGroup
-        )
+        StatementDataProtectionFormGroupBuilder.toModel(this.documentFormGroup, this.statementFormGroup)
       )
       .subscribe(() => {
-        this.notificationService.success(
-          'TTH.STATEMENT.DATA_PROTECTION_CHECK_SUCCESS'
-        );
+        this.notificationService.success('TTH.STATEMENT.DATA_PROTECTION_CHECK_SUCCESS');
         this.dialogRef.close(true);
       });
   }
@@ -115,8 +100,6 @@ export class StatementDataProtectionCheckDialogComponent implements OnInit {
   downloadFile(fileName: string) {
     this.timetableHearingStatementsService
       .getStatementDocument(this.statement.id!, fileName)
-      .subscribe((response) =>
-        FileDownloadService.downloadFile(fileName, response)
-      );
+      .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
 }

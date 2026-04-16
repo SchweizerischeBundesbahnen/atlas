@@ -7,8 +7,7 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import moment from 'moment';
 
-export interface BusinessOrganisationDetailFormGroup
-  extends BaseDetailFormGroup {
+export interface BusinessOrganisationDetailFormGroup extends BaseDetailFormGroup {
   descriptionDe: FormControl<string | null | undefined>;
   descriptionFr: FormControl<string | null | undefined>;
   descriptionIt: FormControl<string | null | undefined>;
@@ -76,19 +75,13 @@ export class BusinessOrganisationDetailFormGroupBuilder {
           Validators.min(0),
           Validators.max(99999),
         ]),
-        contactEnterpriseEmail: new FormControl(
-          version?.contactEnterpriseEmail,
-          [AtlasFieldLengthValidator.length_255, AtlasCharsetsValidator.email]
-        ),
+        contactEnterpriseEmail: new FormControl(version?.contactEnterpriseEmail, [
+          AtlasFieldLengthValidator.length_255,
+          AtlasCharsetsValidator.email,
+        ]),
         businessTypes: new FormControl(version?.businessTypes),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version?.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version?.validTo) : null,
-          [Validators.required]
-        ),
+        validFrom: new FormControl(version?.validFrom ? moment(version?.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version?.validTo) : null, [Validators.required]),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),

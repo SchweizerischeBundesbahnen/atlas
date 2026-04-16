@@ -1,21 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
   ServicePointFormGroupBuilder,
 } from '../service-point-form/form-group/service-point-detail-form-group';
-import {
-  ApplicationRole,
-  ApplicationType,
-  Country,
-  Permission,
-  PermissionRestrictionType,
-} from '../../../../../api';
+import { ApplicationRole, ApplicationType, Country, Permission, PermissionRestrictionType } from '../../../../../api';
 import { Countries } from '../../../../../core/country/Countries';
 import { catchError, EMPTY, mergeWith, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,10 +24,7 @@ import { GeographyComponent } from '../../../geography/geography.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import {
-  addControlToFormNoEvent,
-  removeControlFromFormNoEvent,
-} from '../../../../../core/util/forms';
+import { addControlToFormNoEvent, removeControlFromFormNoEvent } from '../../../../../core/util/forms';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { stopPointTypesWithoutUnknown } from '../service-point-detail.component';
 import { ServicePointService } from '../../../../../api/service/sepodi/service-point.service';
@@ -62,17 +48,15 @@ import { ServicePointService } from '../../../../../api/service/sepodi/service-p
   ],
   providers: [TranslatePipe, TranslationSortingService],
 })
-export class ServicePointCreationComponent
-  implements OnInit, DetailFormComponent, OnDestroy
-{
+export class ServicePointCreationComponent implements OnInit, DetailFormComponent, OnDestroy {
   public form: FormGroup<ServicePointDetailFormGroup>;
   private readonly formDestroy$ = new Subject<void>();
 
   public countryOptions: Country[] = [];
   public readonly getCountryEnum = Countries.getCountryEnum;
-  public servicePointTypeChanged$: Subject<
+  public servicePointTypeChanged$: Subject<ServicePointType | null | undefined> = new Subject<
     ServicePointType | null | undefined
-  > = new Subject<ServicePointType | null | undefined>();
+  >();
 
   constructor(
     private readonly permissionService: PermissionService,
@@ -82,17 +66,13 @@ export class ServicePointCreationComponent
     private readonly notificationService: NotificationService,
     private readonly mapService: MapService
   ) {
-    this.form = ServicePointFormGroupBuilder.buildEmptyFormGroup(
-      this.formDestroy$
-    );
+    this.form = ServicePointFormGroupBuilder.buildEmptyFormGroup(this.formDestroy$);
 
     this.form.controls.country?.valueChanges
       .pipe(mergeWith(this.servicePointTypeChanged$), takeUntilDestroyed())
       .subscribe(this.handleCountryOrTypeChange);
 
-    this.form.controls.country?.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe(this.handleCountryChange);
+    this.form.controls.country?.valueChanges.pipe(takeUntilDestroyed()).subscribe(this.handleCountryChange);
   }
 
   private handleCountryChange = (country: Country | null) => {
@@ -126,10 +106,7 @@ export class ServicePointCreationComponent
 
   ngOnInit() {
     this.countryOptions = this.getCountryOptions();
-    if (
-      this.countryOptions.length === 1 &&
-      this.countryOptions[0] === Country.Switzerland
-    ) {
+    if (this.countryOptions.length === 1 && this.countryOptions[0] === Country.Switzerland) {
       this.form.controls.country?.setValue(Country.Switzerland);
     }
   }
@@ -140,11 +117,7 @@ export class ServicePointCreationComponent
   }
 
   onGeographyEnabled() {
-    addControlToFormNoEvent(
-      this.form,
-      'servicePointGeolocation',
-      GeographyFormGroupBuilder.buildFormGroup()
-    );
+    addControlToFormNoEvent(this.form, 'servicePointGeolocation', GeographyFormGroupBuilder.buildFormGroup());
   }
 
   onGeographyDisabled() {
@@ -160,19 +133,14 @@ export class ServicePointCreationComponent
   onSave(): void {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      const servicePointVersion =
-        ServicePointFormGroupBuilder.mapper.getWritableServicePoint(this.form);
-      const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
-        (key) => this.form.get(key)?.disabled
-      );
+      const servicePointVersion = ServicePointFormGroupBuilder.mapper.getWritableServicePoint(this.form);
+      const controlsAlreadyDisabled = Object.keys(this.form.controls).filter((key) => this.form.get(key)?.disabled);
       this.form.disable({ emitEvent: false });
       this.servicePointService
         .createServicePoint(servicePointVersion)
         .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
         .subscribe((servicePointVersion) => {
-          this.notificationService.success(
-            'SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS'
-          );
+          this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
           this.router
             .navigate([servicePointVersion.number.number], {
               relativeTo: this.route,
@@ -194,29 +162,19 @@ export class ServicePointCreationComponent
   };
 
   private getCountryOptions(): Country[] {
-    const sepodiUserPermission =
-      this.permissionService.getApplicationUserPermission(
-        ApplicationType.Sepodi
-      );
+    const sepodiUserPermission = this.permissionService.getApplicationUserPermission(ApplicationType.Sepodi);
     return this.getCountryScope(sepodiUserPermission);
   }
 
   private getCountryScope(sepodiUserPermission: Permission): Country[] {
     if (this.isSupervisorOrAdmin(sepodiUserPermission)) {
-      const countryScope = Countries.filteredCountries().sort(
-        Countries.compareFn
-      );
+      const countryScope = Countries.filteredCountries().sort(Countries.compareFn);
       return [...Countries.geolocationCountries, ...countryScope];
     } else {
       let countryScope = sepodiUserPermission.permissionRestrictions
-        .filter(
-          (restriction) =>
-            restriction.type === PermissionRestrictionType.Country
-        )
+        .filter((restriction) => restriction.type === PermissionRestrictionType.Country)
         .map((restriction) => restriction.valueAsString as Country);
-      const geolocationCountries = Countries.geolocationCountries.filter(
-        (country) => countryScope.includes(country)
-      );
+      const geolocationCountries = Countries.geolocationCountries.filter((country) => countryScope.includes(country));
       countryScope = countryScope
         .filter((country) => !geolocationCountries.includes(country))
         .sort(Countries.compareFn);
@@ -225,9 +183,7 @@ export class ServicePointCreationComponent
   }
 
   private readonly isSupervisorOrAdmin = (sepodiUserPermission: Permission) =>
-    sepodiUserPermission.role === ApplicationRole.Supervisor ||
-    this.permissionService.isAdmin;
+    sepodiUserPermission.role === ApplicationRole.Supervisor || this.permissionService.isAdmin;
 
-  protected readonly stopPointTypesWithoutUnknown =
-    stopPointTypesWithoutUnknown;
+  protected readonly stopPointTypesWithoutUnknown = stopPointTypesWithoutUnknown;
 }

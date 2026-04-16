@@ -11,19 +11,12 @@ import { TestBed } from '@angular/core/testing';
 import { UserService } from '../user/user.service';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
-type UserServiceMock = Pick<
-  { -readonly [P in keyof UserService]: UserService[P] },
-  'permissions' | 'isAdmin'
->;
+type UserServiceMock = Pick<{ -readonly [P in keyof UserService]: UserService[P] }, 'permissions' | 'isAdmin'>;
 
 describe('PermissionService', () => {
   describe('Permissions for create Button', () => {
     it('Permissions for create Button BODI are set up correctly', () => {
-      let result = PermissionService.hasPermissionsToCreateWithPermissions(
-        ApplicationType.Bodi,
-        [],
-        true
-      );
+      let result = PermissionService.hasPermissionsToCreateWithPermissions(ApplicationType.Bodi, [], true);
       expect(result).toBe(true);
 
       result = PermissionService.hasPermissionsToCreateWithPermissions(
@@ -80,11 +73,7 @@ describe('PermissionService', () => {
     });
 
     it('Permissions for create Button LIDI are set up correctly', () => {
-      let result = PermissionService.hasPermissionsToCreateWithPermissions(
-        ApplicationType.Lidi,
-        [],
-        true
-      );
+      let result = PermissionService.hasPermissionsToCreateWithPermissions(ApplicationType.Lidi, [], true);
       expect(result).toBe(true);
 
       result = PermissionService.hasPermissionsToCreateWithPermissions(
@@ -141,11 +130,7 @@ describe('PermissionService', () => {
     });
 
     it('Permissions for create Button TTFN are set up correctly', () => {
-      let result = PermissionService.hasPermissionsToCreateWithPermissions(
-        ApplicationType.Ttfn,
-        [],
-        true
-      );
+      let result = PermissionService.hasPermissionsToCreateWithPermissions(ApplicationType.Ttfn, [], true);
       expect(result).toBe(true);
 
       result = PermissionService.hasPermissionsToCreateWithPermissions(
@@ -313,12 +298,7 @@ describe('PermissionService', () => {
     });
 
     it('should be able to edit Canton if user is admin', () => {
-      const result = PermissionService.hasPermissionToWriteOnCanton(
-        ApplicationType.TimetableHearing,
-        'be',
-        [],
-        true
-      );
+      const result = PermissionService.hasPermissionToWriteOnCanton(ApplicationType.TimetableHearing, 'be', [], true);
       expect(result).toBe(true);
     });
   });
@@ -451,9 +431,7 @@ describe('PermissionService', () => {
         },
       ];
 
-      const ttfnSupervisor = permissionService.isAtLeastSupervisor(
-        ApplicationType.Ttfn
-      );
+      const ttfnSupervisor = permissionService.isAtLeastSupervisor(ApplicationType.Ttfn);
       expect(ttfnSupervisor).toBe(true);
     });
   });
@@ -483,8 +461,7 @@ describe('PermissionService', () => {
 
     it('should have no termination permission', () => {
       userServiceMock.permissions = [];
-      const terminationPermission =
-        permissionService.getTerminationPermission();
+      const terminationPermission = permissionService.getTerminationPermission();
       expect(terminationPermission).toBeUndefined();
     });
 
@@ -502,11 +479,8 @@ describe('PermissionService', () => {
         },
       ];
 
-      const terminationPermission =
-        permissionService.getTerminationPermission();
-      expect(terminationPermission).toEqual(
-        TerminationDecisionPersonEnum.InfoPlus
-      );
+      const terminationPermission = permissionService.getTerminationPermission();
+      expect(terminationPermission).toEqual(TerminationDecisionPersonEnum.InfoPlus);
     });
 
     it('should get nova termination permission', () => {
@@ -527,8 +501,7 @@ describe('PermissionService', () => {
         },
       ];
 
-      const terminationPermission =
-        permissionService.getTerminationPermission();
+      const terminationPermission = permissionService.getTerminationPermission();
       expect(terminationPermission).toEqual(TerminationDecisionPersonEnum.Nova);
     });
   });

@@ -10,10 +10,7 @@ describe('SectorPermissionService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        SectorPermissionService,
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
-      ],
+      providers: [SectorPermissionService, { provide: PermissionService, useValue: adminPermissionServiceMock }],
     });
     sectorPermissionService = TestBed.inject(SectorPermissionService);
   });

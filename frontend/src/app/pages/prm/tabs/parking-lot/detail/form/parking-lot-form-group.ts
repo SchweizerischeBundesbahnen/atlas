@@ -3,20 +3,14 @@ import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../../../../core/model/base-detail-form-group';
 import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
-import {
-  BooleanOptionalAttributeType,
-  ParkingLotVersion,
-  ReadParkingLotVersion,
-} from '../../../../../../api';
+import { BooleanOptionalAttributeType, ParkingLotVersion, ReadParkingLotVersion } from '../../../../../../api';
 
 export interface ParkingLotFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
   designation: FormControl<string | null | undefined>;
   additionalInformation: FormControl<string | null | undefined>;
   placesAvailable: FormControl<BooleanOptionalAttributeType | null | undefined>;
-  prmPlacesAvailable: FormControl<
-    BooleanOptionalAttributeType | null | undefined
-  >;
+  prmPlacesAvailable: FormControl<BooleanOptionalAttributeType | null | undefined>;
 }
 
 export class ParkingLotFormGroupBuilder {
@@ -33,24 +27,14 @@ export class ParkingLotFormGroupBuilder {
           Validators.required,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
         ]),
-        placesAvailable: new FormControl(
-          version?.placesAvailable ??
-            BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required]
-        ),
-        prmPlacesAvailable: new FormControl(
-          version?.prmPlacesAvailable ??
-            BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required]
-        ),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
+        placesAvailable: new FormControl(version?.placesAvailable ?? BooleanOptionalAttributeType.ToBeCompleted, [
+          Validators.required,
+        ]),
+        prmPlacesAvailable: new FormControl(version?.prmPlacesAvailable ?? BooleanOptionalAttributeType.ToBeCompleted, [
+          Validators.required,
+        ]),
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [Validators.required]),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
@@ -61,10 +45,7 @@ export class ParkingLotFormGroupBuilder {
     );
   }
 
-  static getWritableForm(
-    form: FormGroup<ParkingLotFormGroup>,
-    parentServicePointSloid: string
-  ): ParkingLotVersion {
+  static getWritableForm(form: FormGroup<ParkingLotFormGroup>, parentServicePointSloid: string): ParkingLotVersion {
     return {
       sloid: form.value.sloid!,
       parentServicePointSloid: parentServicePointSloid,

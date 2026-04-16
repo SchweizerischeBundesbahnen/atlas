@@ -34,10 +34,7 @@ describe('SublineDetailResolver', () => {
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [
-        SublineDetailResolver,
-        { provide: SublineService, useValue: sublineService },
-      ],
+      providers: [SublineDetailResolver, { provide: SublineService, useValue: sublineService }],
     });
 
     resolver = TestBed.inject(SublineDetailResolver);

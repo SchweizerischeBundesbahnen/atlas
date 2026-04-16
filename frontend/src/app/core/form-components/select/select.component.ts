@@ -126,9 +126,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
-      this.formGroup
-        ?.get(this.controlName!)
-        ?.setValue(changes.value.currentValue);
+      this.formGroup?.get(this.controlName!)?.setValue(changes.value.currentValue);
     }
   }
 

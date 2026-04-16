@@ -4,11 +4,7 @@ import { firstValueFrom, Observable, of } from 'rxjs';
 import { ReadStopPointVersion } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ServicePointDetailResolver } from '../../../sepodi/service-point-side-panel/service-point-detail.resolver';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data';
 import { StopPointService } from '../../../../api/service/prm/stop-point/stop-point.service';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
@@ -25,10 +21,7 @@ describe('stopPointResolver', () => {
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [
-        ServicePointDetailResolver,
-        { provide: StopPointService, useValue: stopPointService },
-      ],
+      providers: [ServicePointDetailResolver, { provide: StopPointService, useValue: stopPointService }],
     });
 
     resolver = TestBed.inject(StopPointResolver);
@@ -44,10 +37,7 @@ describe('stopPointResolver', () => {
     };
 
     const result = TestBed.runInInjectionContext(() =>
-      stopPointResolver(
-        mockRoute as ActivatedRouteSnapshot,
-        {} as RouterStateSnapshot
-      )
+      stopPointResolver(mockRoute as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
     ) as Observable<ReadStopPointVersion[]>;
 
     const versions = await firstValueFrom(result);
@@ -61,10 +51,7 @@ describe('stopPointResolver', () => {
     };
 
     const result = TestBed.runInInjectionContext(() =>
-      stopPointResolver(
-        mockRoute as ActivatedRouteSnapshot,
-        {} as RouterStateSnapshot
-      )
+      stopPointResolver(mockRoute as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
     ) as Observable<ReadStopPointVersion[]>;
 
     const versions = await firstValueFrom(result);

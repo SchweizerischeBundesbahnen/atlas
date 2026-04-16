@@ -3,13 +3,8 @@
     <div class="search-row">
       @for (filterConfig of row; track $index; let filterConfigIndex = $index) {
         @if (filterConfig | instanceOf: TableFilterChipClass; as chipSearch) {
-          <div
-            [class]="chipSearch.elementWidthCssClass"
-            class="d-flex flex-column search-box"
-          >
-            <atlas-label-field
-              [fieldLabel]="chipSearch.fieldLabel"
-            ></atlas-label-field>
+          <div [class]="chipSearch.elementWidthCssClass" class="d-flex flex-column search-box">
+            <atlas-label-field [fieldLabel]="chipSearch.fieldLabel"></atlas-label-field>
             <div
               [ngClass]="chipSearch.disabled ? 'disabled' : ''"
               class="search-main-field mb-4"
@@ -17,10 +12,7 @@
             >
               <mat-chip-grid #chipList [disabled]="chipSearch.disabled">
                 @for (search of chipSearch.activeSearch; track $index) {
-                  <mat-chip-row
-                    (removed)="chipSearch.removeSearch(search); emitSearch()"
-                    class="font-bold-sm"
-                  >
+                  <mat-chip-row (removed)="chipSearch.removeSearch(search); emitSearch()" class="font-bold-sm">
                     {{ search }}
                     <button matChipRemove data-cy="remove-chip">
                       <i class="bi bi-x-circle-fill"></i>
@@ -29,9 +21,7 @@
                 }
 
                 <input
-                  (matChipInputTokenEnd)="
-                    chipSearch.addSearchFromChipInputEvent($event); emitSearch()
-                  "
+                  (matChipInputTokenEnd)="chipSearch.addSearchFromChipInputEvent($event); emitSearch()"
                   [matChipInputFor]="chipList"
                   [attr.data-cy]="`table-filter-chip-search-${rowIdx}-${filterConfigIndex}`"
                   class="font-regular-base"
@@ -42,36 +32,24 @@
           </div>
         }
 
-        @if (
-          filterConfig | instanceOf: TableFilterBooleanClass;
-          as booleanFilter
-        ) {
+        @if (filterConfig | instanceOf: TableFilterBooleanClass; as booleanFilter) {
           <div [class]="booleanFilter.elementWidthCssClass">
             <div class="slide-toggle-row-wrapper pb-3 mt-3">
-              <atlas-label-field
-                [fieldLabel]="booleanFilter.fieldLabel"
-              ></atlas-label-field>
+              <atlas-label-field [fieldLabel]="booleanFilter.fieldLabel"></atlas-label-field>
               <atlas-slide-toggle
                 [toggle]="booleanFilter.getActiveSearch()"
-                (toggleChange)="
-                  booleanFilter.setActiveSearch($event); emitSearch()
-                "
+                (toggleChange)="booleanFilter.setActiveSearch($event); emitSearch()"
               >
               </atlas-slide-toggle>
             </div>
           </div>
         }
 
-        @if (
-          filterConfig | instanceOf: TableFilterSearchSelectClass;
-          as searchSelect
-        ) {
+        @if (filterConfig | instanceOf: TableFilterSearchSelectClass; as searchSelect) {
           <div [class]="searchSelect.elementWidthCssClass">
             @if (searchSelect.searchType === 'BUSINESS_ORGANISATION') {
               <atlas-bo-select
-                (boSelectionChanged)="
-                  searchSelect.setActiveSearch($event); emitSearch()
-                "
+                (boSelectionChanged)="searchSelect.setActiveSearch($event); emitSearch()"
                 [formGroup]="searchSelect.formGroup!"
                 [formModus]="false"
                 controlName="businessOrganisation"
@@ -81,9 +59,7 @@
 
             @if (searchSelect.searchType === 'TIMETABLE_FIELD_NUMBER') {
               <atlas-ttfn-select
-                (ttfnSelectionChanged)="
-                  searchSelect.setActiveSearch($event); emitSearch()
-                "
+                (ttfnSelectionChanged)="searchSelect.setActiveSearch($event); emitSearch()"
                 [disabled]="searchSelect.disabled!"
                 [formGroup]="searchSelect.formGroup!"
                 [formModus]="false"
@@ -95,9 +71,7 @@
 
             @if (searchSelect.searchType === 'TRANSPORT_COMPANY') {
               <atlas-tu-select
-                (tuSelectionChanged)="
-                  searchSelect.setActiveSearch($event); emitSearch()
-                "
+                (tuSelectionChanged)="searchSelect.setActiveSearch($event); emitSearch()"
                 [disabled]="searchSelect.disabled!"
                 [formGroup]="searchSelect.formGroup!"
                 [formModus]="false"
@@ -108,39 +82,25 @@
           </div>
         }
 
-        @if (
-          filterConfig | instanceOf: TableFilterMultiSelectClass;
-          as multiSelect
-        ) {
+        @if (filterConfig | instanceOf: TableFilterMultiSelectClass; as multiSelect) {
           <div [class]="multiSelect.elementWidthCssClass">
             <atlas-select
-              (selectChanged)="
-                multiSelect.setActiveSearch($event.value); emitSearch()
-              "
+              (selectChanged)="multiSelect.setActiveSearch($event.value); emitSearch()"
               [additionalLabelspace]="0"
               [disabled]="multiSelect.disabled"
               [label]="multiSelect.labelTranslationKey"
               [multiple]="true"
-              [optionTranslateLabelPrefix]="
-                multiSelect.typeTranslationKeyPrefix
-              "
+              [optionTranslateLabelPrefix]="multiSelect.typeTranslationKeyPrefix"
               [options]="multiSelect.selectOptions"
               [value]="multiSelect.activeSearch"
-              dataCy="table-filter-multi-select-{{ rowIdx }}-{{
-                filterConfigIndex
-              }}"
+              dataCy="table-filter-multi-select-{{ rowIdx }}-{{ filterConfigIndex }}"
             ></atlas-select>
           </div>
         }
 
-        @if (
-          filterConfig | instanceOf: TableFilterDateSelectClass;
-          as dateSelect
-        ) {
+        @if (filterConfig | instanceOf: TableFilterDateSelectClass; as dateSelect) {
           <div [class]="dateSelect.elementWidthCssClass">
-            <atlas-label-field
-              fieldLabel="COMMON.SEARCH.VALIDITY"
-            ></atlas-label-field>
+            <atlas-label-field fieldLabel="COMMON.SEARCH.VALIDITY"></atlas-label-field>
             <div class="search-date-field">
               <div class="container-date-field">
                 <input
@@ -162,33 +122,17 @@
                 <mat-datepicker #picker></mat-datepicker>
               </div>
             </div>
-            <atlas-field-error
-              [control]="dateSelect.formControl"
-            ></atlas-field-error>
+            <atlas-field-error [control]="dateSelect.formControl"></atlas-field-error>
           </div>
         }
 
-        @if (
-          filterConfig | instanceOf: TableFilterSingleSearchClass;
-          as singleSearch
-        ) {
+        @if (filterConfig | instanceOf: TableFilterSingleSearchClass; as singleSearch) {
           <div [class]="singleSearch.elementWidthCssClass">
-            <atlas-label-field
-              [fieldLabel]="singleSearch.label"
-            ></atlas-label-field>
-            <div
-              [ngClass]="singleSearch.disabled ? 'disabled' : ''"
-              class="single-search"
-            >
-              <mat-chip-grid
-                #singleSearchChipList
-                [disabled]="singleSearch.disabled"
-              >
+            <atlas-label-field [fieldLabel]="singleSearch.label"></atlas-label-field>
+            <div [ngClass]="singleSearch.disabled ? 'disabled' : ''" class="single-search">
+              <mat-chip-grid #singleSearchChipList [disabled]="singleSearch.disabled">
                 @if (singleSearch.getActiveSearch(); as activeSearch) {
-                  <mat-chip-row
-                    (removed)="singleSearch.setActiveSearch(); emitSearch()"
-                    class="font-bold-sm"
-                  >
+                  <mat-chip-row (removed)="singleSearch.setActiveSearch(); emitSearch()" class="font-bold-sm">
                     {{ activeSearch }}
                     <button matChipRemove>
                       <i class="bi bi-x-circle-fill"></i>
@@ -198,19 +142,14 @@
 
                 <input
                   [formControl]="singleSearch.formControl"
-                  (matChipInputTokenEnd)="
-                    singleSearch.addSearchFromChipInputEvent($event);
-                    emitSearch()
-                  "
+                  (matChipInputTokenEnd)="singleSearch.addSearchFromChipInputEvent($event); emitSearch()"
                   [matChipInputFor]="singleSearchChipList"
                   [attr.data-cy]="`table-filter-single-search-${rowIdx}-${filterConfigIndex}`"
                   class="font-regular-base"
                 />
               </mat-chip-grid>
             </div>
-            <atlas-field-error
-              [control]="singleSearch.formControl"
-            ></atlas-field-error>
+            <atlas-field-error [control]="singleSearch.formControl"></atlas-field-error>
           </div>
         }
       }

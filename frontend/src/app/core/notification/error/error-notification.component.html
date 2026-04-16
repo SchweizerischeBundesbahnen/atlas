@@ -5,13 +5,7 @@
         @for (detail of data.details; track detail) {
           <ul>
             <li>
-              {{
-                detail.displayInfo.code
-                  | translate
-                    : notificationService.arrayParametersToObject(
-                        detail.displayInfo
-                      )
-              }}
+              {{ detail.displayInfo.code | translate: notificationService.arrayParametersToObject(detail.displayInfo) }}
             </li>
           </ul>
         }
@@ -29,9 +23,6 @@
 </div>
 @if (notificationService.correlationId) {
   <div class="data ms-3 me-3 mb-3">
-    {{
-      'ERROR.CORRELATION_ID'
-        | translate: { correlationId: notificationService.correlationId }
-    }}
+    {{ 'ERROR.CORRELATION_ID' | translate: { correlationId: notificationService.correlationId } }}
   </div>
 }

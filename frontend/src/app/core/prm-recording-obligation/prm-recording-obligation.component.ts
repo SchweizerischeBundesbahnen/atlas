@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
 import { StopPointInternalService } from '../../api/service/prm/stop-point/stop-point-internal.service';
@@ -32,9 +26,7 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.isPrmSupervisor = this.permissionService.isAtLeastSupervisor(
-      ApplicationType.Prm
-    );
+    this.isPrmSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Prm);
 
     this.initCurrentRecordingObligation();
   }
@@ -48,10 +40,7 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
   private initCurrentRecordingObligation() {
     this.stopPointInternalService
       .getRecordingObligation(this.sloid)
-      .subscribe(
-        (recordingObligation) =>
-          (this.recordingObligation = recordingObligation.value)
-      );
+      .subscribe((recordingObligation) => (this.recordingObligation = recordingObligation.value));
   }
 
   toggleRecordingObligation() {
@@ -60,9 +49,7 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
         value: !this.recordingObligation,
       })
       .subscribe(() => {
-        this.notificationService.success(
-          'PRM.STOP_POINTS.RECORDING_OBLIGATION_SAVED'
-        );
+        this.notificationService.success('PRM.STOP_POINTS.RECORDING_OBLIGATION_SAVED');
         this.recordingObligation = !this.recordingObligation;
       });
   }

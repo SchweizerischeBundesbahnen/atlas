@@ -32,9 +32,9 @@ export const routes: Routes = [
   {
     path: Pages.CLIENTS.path + '/:clientId',
     loadComponent: () =>
-      import(
-        './client-credential/detail/user-administration-client-detail.component'
-      ).then((m) => m.UserAdministrationClientDetailComponent),
+      import('./client-credential/detail/user-administration-client-detail.component').then(
+        (m) => m.UserAdministrationClientDetailComponent
+      ),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       clientCredential: clientCredentialResolver,
@@ -50,23 +50,21 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./overview/user-administration-overview.component').then(
-        (m) => m.UserAdministrationOverviewComponent
-      ),
+      import('./overview/user-administration-overview.component').then((m) => m.UserAdministrationOverviewComponent),
     children: [
       {
         path: Pages.USERS.path,
         loadComponent: () =>
-          import(
-            './user/overview/user-administration-user-overview.component'
-          ).then((m) => m.UserAdministrationUserOverviewComponent),
+          import('./user/overview/user-administration-user-overview.component').then(
+            (m) => m.UserAdministrationUserOverviewComponent
+          ),
       },
       {
         path: Pages.CLIENTS.path,
         loadComponent: () =>
-          import(
-            './client-credential/overview/user-administration-client-overview.component'
-          ).then((m) => m.UserAdministrationClientOverviewComponent),
+          import('./client-credential/overview/user-administration-client-overview.component').then(
+            (m) => m.UserAdministrationClientOverviewComponent
+          ),
       },
       { path: '**', redirectTo: Pages.USERS.path },
     ],

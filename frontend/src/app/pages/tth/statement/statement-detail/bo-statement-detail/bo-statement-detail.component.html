@@ -1,24 +1,18 @@
 <atlas-detail-page-container>
   <atlas-detail-page-content>
     <div class="statement-form">
-      <atlas-statement-data
-        [form]="form"
-        [ttfnValidOn]="ttfnValidOn!"
-        [statement]="statement!"
-      />
+      <atlas-statement-data [form]="form" [ttfnValidOn]="ttfnValidOn!" [statement]="statement!" />
       <div class="d-flex flex-column col-12">
         <atlas-form-comment
           [formGroup]="form"
           label="TTH.STATEMENT.STATEMENT_TEXT"
-          [controlName]=getStatementControlName()
+          [controlName]="getStatementControlName()"
         >
         </atlas-form-comment>
       </div>
       @if (anonymDocuments && anonymDocuments.length > 0) {
         <div class="mb-3 mt-4">
-          <atlas-label-field
-            fieldLabel="TTH.STATEMENT.ATTACHMENTS"
-          ></atlas-label-field>
+          <atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS"></atlas-label-field>
           @for (document of anonymDocuments; track document) {
             <atlas-file
               (downloadFile)="downloadFile($event.name)"

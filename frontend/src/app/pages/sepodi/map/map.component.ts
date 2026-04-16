@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options';
@@ -53,8 +45,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.userService.onPermissionsLoaded().subscribe(() => {
-      this.canCreateServicePoint =
-        this.permissionService.hasPermissionsToCreate(ApplicationType.Sepodi);
+      this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(ApplicationType.Sepodi);
     });
     this.mapService.servicePointsShown
       .pipe(takeUntil(this.onDestroy$))
@@ -64,9 +55,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
-    MapIconsService.getLegendIconsAsImages().then(
-      (icons) => (this.legend = icons)
-    );
+    MapIconsService.getLegendIconsAsImages().then((icons) => (this.legend = icons));
   }
 
   ngOnDestroy() {

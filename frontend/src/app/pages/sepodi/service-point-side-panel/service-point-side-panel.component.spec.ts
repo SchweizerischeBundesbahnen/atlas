@@ -78,10 +78,7 @@ describe('ServicePointSidePanelComponent', () => {
   let fixture: ComponentFixture<ServicePointSidePanelComponent>;
 
   let trafficPointMapServiceSpy: Mocked<
-    Pick<
-      TrafficPointMapService,
-      'displayTrafficPointsOnMap' | 'clearDisplayedTrafficPoints'
-    >
+    Pick<TrafficPointMapService, 'displayTrafficPointsOnMap' | 'clearDisplayedTrafficPoints'>
   >;
 
   const activatedRouteMock = { data: of({ servicePoint: [BERN_WYLEREGG] }) };
@@ -130,17 +127,13 @@ describe('ServicePointSidePanelComponent', () => {
     it('should display current designationOfficial and validity', () => {
       expect(component.selectedVersion).toBeTruthy();
 
-      expect(component.selectedVersion.designationOfficial).toEqual(
-        'Bern, Wyleregg'
-      );
+      expect(component.selectedVersion.designationOfficial).toEqual('Bern, Wyleregg');
       expect(component.maxValidity.validFrom).toEqual(new Date('2014-12-14'));
       expect(component.maxValidity.validTo).toEqual(new Date('2021-03-31'));
 
       expect(component.tabs).toHaveLength(5);
 
-      expect(
-        trafficPointMapServiceSpy.displayTrafficPointsOnMap
-      ).toHaveBeenCalled();
+      expect(trafficPointMapServiceSpy.displayTrafficPointsOnMap).toHaveBeenCalled();
     });
   });
 

@@ -46,11 +46,7 @@ describe('TableService', () => {
 
   it('should test getOrphanFilters', () => {
     const sharedFilterConfig = {
-      search: new TableFilterChip(
-        0,
-        'col-6',
-        'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'
-      ),
+      search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
       workflowIds: new TableFilterSingleSearch(
         1,
         'SEPODI.SERVICE_POINTS.WORKFLOW.ID',
@@ -85,11 +81,7 @@ describe('TableService', () => {
           businessOrganisation: new FormControl(),
         })
       ),
-      locality: new TableFilterSingleSearch(
-        1,
-        'SEPODI.GEOLOCATION.DISTRICT',
-        'col-3 pb-5'
-      ),
+      locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT', 'col-3 pb-5'),
     };
 
     const tableFilterConfigIntern = {
@@ -105,19 +97,10 @@ describe('TableService', () => {
       ),
     };
 
-    const newFilterConfig = new TableFilterConfig(
-      tableFilterConfigIntern,
-      Pages.SERVICE_POINT_WORKFLOWS
-    );
-    const oldFilterConfig = new TableFilterConfig(
-      tableFilterConfigIntern2,
-      Pages.SERVICE_POINT_WORKFLOWS
-    );
+    const newFilterConfig = new TableFilterConfig(tableFilterConfigIntern, Pages.SERVICE_POINT_WORKFLOWS);
+    const oldFilterConfig = new TableFilterConfig(tableFilterConfigIntern2, Pages.SERVICE_POINT_WORKFLOWS);
 
-    const orphanFilters: string[] = service.getOrphanFilters(
-      newFilterConfig,
-      oldFilterConfig
-    );
+    const orphanFilters: string[] = service.getOrphanFilters(newFilterConfig, oldFilterConfig);
     expect(orphanFilters).toEqual(['filterByNoDecision']);
   });
 });

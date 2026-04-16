@@ -15,5 +15,4 @@ export class PermissionsLoadedGuard {
   }
 }
 
-export const permissionsLoaded: CanActivateFn = () =>
-  inject(PermissionsLoadedGuard).canActivate();
+export const permissionsLoaded: CanActivateFn = () => inject(PermissionsLoadedGuard).canActivate();

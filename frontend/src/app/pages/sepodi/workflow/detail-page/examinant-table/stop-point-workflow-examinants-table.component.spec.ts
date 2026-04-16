@@ -35,16 +35,11 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
       .compileComponents()
       .then();
 
-    fixture = TestBed.createComponent(
-      StopPointWorkflowExaminantsTableComponent
-    );
+    fixture = TestBed.createComponent(StopPointWorkflowExaminantsTableComponent);
     component = fixture.componentInstance;
 
-    component.form =
-      StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
-    component.examinants.push(
-      StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup()
-    );
+    component.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
+    component.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     fixture.detectChanges();
   });
 

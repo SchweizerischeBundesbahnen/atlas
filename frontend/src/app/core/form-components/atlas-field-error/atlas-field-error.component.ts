@@ -25,10 +25,7 @@ export class AtlasFieldErrorComponent {
         this.errors$ = of([]);
         return;
       }
-      this.errors$ = merge(
-        ctrl.valueChanges,
-        ctrl.parent?.statusChanges ?? EMPTY
-      ).pipe(
+      this.errors$ = merge(ctrl.valueChanges, ctrl.parent?.statusChanges ?? EMPTY).pipe(
         startWith(this.getErrors(ctrl.errors)),
         map(() => this.getErrors(ctrl.errors))
       );

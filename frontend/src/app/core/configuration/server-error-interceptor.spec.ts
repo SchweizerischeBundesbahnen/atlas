@@ -5,22 +5,14 @@ import { NotificationService } from '../notification/notification.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import {
-  HttpErrorResponse,
-  HttpEventType,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
 
 describe('Server Error Interceptor', () => {
   let interceptor: ServerErrorInterceptor;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatSnackBarModule,
-        TranslateModule.forRoot(),
-        RouterModule.forRoot([]),
-      ],
+      imports: [MatSnackBarModule, TranslateModule.forRoot(), RouterModule.forRoot([])],
       providers: [NotificationService, ServerErrorInterceptor],
     });
 

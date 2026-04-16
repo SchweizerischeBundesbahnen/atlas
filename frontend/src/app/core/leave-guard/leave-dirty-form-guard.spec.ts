@@ -11,26 +11,19 @@ describe('LeaveDirtyFormGuard', () => {
     title: 'DIALOG.DISCARD_CHANGES_TITLE',
     message: 'DIALOG.LEAVE_SITE',
   } as const;
-  type DialogServiceMock = Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  type DialogServiceMock = Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
   let dialogService: DialogServiceMock;
   let leaveDirtyFormGuard: LeaveDirtyFormGuard;
 
   beforeEach(() => {
     // Mocking: create the DialogService stub with only the used member
     dialogService = {
-      openDialogDataWithConfirmationResult: vi
-        .fn()
-        .mockName('DialogService.confirm'),
+      openDialogDataWithConfirmationResult: vi.fn().mockName('DialogService.confirm'),
     };
 
     // Config: provide the guard and mocked dependencies via TestBed
     TestBed.configureTestingModule({
-      providers: [
-        { provide: DialogService, useValue: dialogService },
-        LeaveDirtyFormGuard,
-      ],
+      providers: [{ provide: DialogService, useValue: dialogService }, LeaveDirtyFormGuard],
     });
 
     // Arrangement: inject the guard through TestBed so DI is honored
@@ -51,14 +44,7 @@ describe('LeaveDirtyFormGuard', () => {
 
     const form = new FormGroup({});
 
-    expect(
-      leaveDirtyFormGuard.canDeactivate(
-        { form: form },
-        route,
-        currentState,
-        nextState
-      )
-    ).toBeTruthy();
+    expect(leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState)).toBeTruthy();
   });
 
   it('should allow routing by creation with same url if form is not dirty', () => {
@@ -72,14 +58,7 @@ describe('LeaveDirtyFormGuard', () => {
     const form = new FormGroup({});
     form.markAsDirty();
 
-    expect(
-      leaveDirtyFormGuard.canDeactivate(
-        { form: form },
-        route,
-        currentState,
-        nextState
-      )
-    ).toBeTruthy();
+    expect(leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState)).toBeTruthy();
   });
 
   it('should display confirmation dialog on dirty form', () => {
@@ -93,15 +72,8 @@ describe('LeaveDirtyFormGuard', () => {
     const form = new FormGroup({});
     form.markAsDirty();
 
-    leaveDirtyFormGuard.canDeactivate(
-      { form: form },
-      route,
-      currentState,
-      nextState
-    );
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledExactlyOnceWith(confirmPayload);
+    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledExactlyOnceWith(confirmPayload);
   });
 
   it('should display confirmation dialog when leaving dirty service point creation', () => {
@@ -115,15 +87,8 @@ describe('LeaveDirtyFormGuard', () => {
     const form = new FormGroup({});
     form.markAsDirty();
 
-    leaveDirtyFormGuard.canDeactivate(
-      { form: form },
-      route,
-      currentState,
-      nextState
-    );
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledExactlyOnceWith(confirmPayload);
+    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledExactlyOnceWith(confirmPayload);
   });
 
   it('should not display confirmation dialog when creating service point', () => {
@@ -137,15 +102,8 @@ describe('LeaveDirtyFormGuard', () => {
     const form = new FormGroup({});
     form.markAsDirty();
 
-    leaveDirtyFormGuard.canDeactivate(
-      { form: form },
-      route,
-      currentState,
-      nextState
-    );
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).not.toHaveBeenCalled();
+    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    expect(dialogService.openDialogDataWithConfirmationResult).not.toHaveBeenCalled();
   });
 
   it('should display confirmation dialog when leaving dirty contact point creation with detail subtab', () => {
@@ -157,14 +115,7 @@ describe('LeaveDirtyFormGuard', () => {
     const form = new FormGroup({});
     form.markAsDirty();
 
-    leaveDirtyFormGuard.canDeactivate(
-      { form: form },
-      route,
-      currentState,
-      nextState
-    );
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledExactlyOnceWith(confirmPayload);
+    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledExactlyOnceWith(confirmPayload);
   });
 });

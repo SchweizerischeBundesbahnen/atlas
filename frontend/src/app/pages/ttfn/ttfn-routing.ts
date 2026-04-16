@@ -7,9 +7,7 @@ export const routes: Routes = [
   {
     path: Pages.TTFN_DETAIL.path,
     loadComponent: () =>
-      import('./detail/timetable-field-number-detail.component').then(
-        (m) => m.TimetableFieldNumberDetailComponent
-      ),
+      import('./detail/timetable-field-number-detail.component').then((m) => m.TimetableFieldNumberDetailComponent),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       timetableFieldNumberDetail: timetableFieldNumberResolver,

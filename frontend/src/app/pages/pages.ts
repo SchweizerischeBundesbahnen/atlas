@@ -303,12 +303,6 @@ export class Pages {
     path: 'service-point',
   };
 
-  public static pages: Page[] = [
-    Pages.HOME,
-    Pages.LIDI,
-    Pages.BODI,
-    Pages.SEPODI,
-    Pages.PRM,
-  ];
+  public static pages: Page[] = [Pages.HOME, Pages.LIDI, Pages.BODI, Pages.SEPODI, Pages.PRM];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
 }

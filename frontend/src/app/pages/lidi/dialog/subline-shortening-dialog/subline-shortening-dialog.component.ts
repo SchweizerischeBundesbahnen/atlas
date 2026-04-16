@@ -1,9 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { AffectedSublinesModel } from '../../../../api';
 import { Router } from '@angular/router';
 import { Pages } from '../../../pages';
@@ -19,17 +15,11 @@ import { LinkComponent } from '../../../../core/form-components/link/link.compon
 })
 export class SublineShorteningDialogComponent {
   get hasAllowedOnly() {
-    return (
-      !this.data.affectedSublines.hasNotAllowedSublinesOnly &&
-      this.data.affectedSublines.hasAllowedSublinesOnly
-    );
+    return !this.data.affectedSublines.hasNotAllowedSublinesOnly && this.data.affectedSublines.hasAllowedSublinesOnly;
   }
 
   get hasAllowedAndNotAllowed() {
-    return (
-      this.data.affectedSublines.hasAllowedSublinesOnly &&
-      this.data.affectedSublines.hasNotAllowedSublinesOnly
-    );
+    return this.data.affectedSublines.hasAllowedSublinesOnly && this.data.affectedSublines.hasNotAllowedSublinesOnly;
   }
 
   get notice() {
@@ -67,10 +57,7 @@ export class SublineShorteningDialogComponent {
   }
 
   get hasNotAllowedOnly() {
-    return (
-      this.data.affectedSublines.hasNotAllowedSublinesOnly &&
-      !this.data.affectedSublines.hasAllowedSublinesOnly
-    );
+    return this.data.affectedSublines.hasNotAllowedSublinesOnly && !this.data.affectedSublines.hasAllowedSublinesOnly;
   }
 
   get validFrom() {
@@ -105,9 +92,7 @@ export class SublineShorteningDialogComponent {
   ) {}
 
   openNewTabOfSubline(slnid: string) {
-    const url = this.router.serializeUrl(
-      this.router.createUrlTree([Pages.LIDI.path, Pages.SUBLINES.path, slnid])
-    );
+    const url = this.router.serializeUrl(this.router.createUrlTree([Pages.LIDI.path, Pages.SUBLINES.path, slnid]));
     window.open(url, '_blank');
   }
 }

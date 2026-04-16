@@ -76,9 +76,7 @@ export class TrafficPointMapService implements OnDestroy {
   }
 
   setDisplayedTrafficPoints(trafficPoints: DisplayableTrafficPoint[]) {
-    const source = this.mapService.map.getSource(
-      MAP_TRAFFIC_POINT_LAYER_NAME
-    ) as GeoJSONSource | undefined;
+    const source = this.mapService.map.getSource(MAP_TRAFFIC_POINT_LAYER_NAME) as GeoJSONSource | undefined;
     const trafficPointGeoInformation: Feature[] = trafficPoints.map((point) => {
       return {
         type: 'Feature',
@@ -112,13 +110,8 @@ export class TrafficPointMapService implements OnDestroy {
         takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
-        const source = this.mapService.map.getSource(
-          'current_traffic_point'
-        ) as GeoJSONSource;
-        const coordinatesToSet = [
-          coordinates?.east ?? 0,
-          coordinates?.north ?? 0,
-        ];
+        const source = this.mapService.map.getSource('current_traffic_point') as GeoJSONSource;
+        const coordinatesToSet = [coordinates?.east ?? 0, coordinates?.north ?? 0];
         source.setData({
           type: 'Feature',
           geometry: {

@@ -3,11 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
-import {
-  PlatformOverview,
-  ReadServicePointVersion,
-  ReadTrafficPointElementVersion,
-} from '../../../../api';
+import { PlatformOverview, ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../../api';
 import { PlatformOverviewRow } from './platform-overview-row';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
@@ -28,17 +24,9 @@ import { PlatformInternalService } from '../../../../api/service/prm/platform/pl
 @Component({
   selector: 'atlas-platform',
   templateUrl: './platform-table.component.html',
-  imports: [
-    NavigationSepodiPrmComponent,
-    TableComponent,
-    DetailFooterComponent,
-    AtlasButtonComponent,
-  ],
+  imports: [NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, AtlasButtonComponent],
 })
-export class PlatformTableComponent
-  extends BasePrmTabComponentService
-  implements OnInit
-{
+export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
   trafficPointElements: ReadTrafficPointElementVersion[] = [];
@@ -81,12 +69,8 @@ export class PlatformTableComponent
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);
 
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.PLATFORMS
-    );
-    this.servicePointVersion =
-      this.route.parent!.snapshot.data.servicePoints[0];
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PLATFORMS);
+    this.servicePointVersion = this.route.parent!.snapshot.data.servicePoints[0];
   }
 
   getTab(): Tab {
@@ -110,29 +94,19 @@ export class PlatformTableComponent
         mergeMap(() => this.platformInternalService.getPlatformOverview(sloid))
       )
       .subscribe((platforms) => {
-        const mergedPlatformInfos =
-          this.mergeTrafficPointAndPlatformDataForOverview(platforms);
-        this.platforms = TableContentPaginationAndSorting.pageAndSort(
-          mergedPlatformInfos,
-          pagination,
-          'designation'
-        );
+        const mergedPlatformInfos = this.mergeTrafficPointAndPlatformDataForOverview(platforms);
+        this.platforms = TableContentPaginationAndSorting.pageAndSort(mergedPlatformInfos, pagination, 'designation');
         this.totalCount = mergedPlatformInfos.length;
       });
   }
 
-  mergeTrafficPointAndPlatformDataForOverview(
-    prmPlatformOverview: PlatformOverview[]
-  ) {
+  mergeTrafficPointAndPlatformDataForOverview(prmPlatformOverview: PlatformOverview[]) {
     const mergedOverview: PlatformOverviewRow[] = [];
     this.trafficPointElements.forEach((trafficPointElementInSePoDi) => {
-      const correspondingPrmPlatform = prmPlatformOverview.find(
-        (i) => i.sloid === trafficPointElementInSePoDi.sloid!
-      );
+      const correspondingPrmPlatform = prmPlatformOverview.find((i) => i.sloid === trafficPointElementInSePoDi.sloid!);
       mergedOverview.push({
         designation: trafficPointElementInSePoDi.designation,
-        designationOperational:
-          trafficPointElementInSePoDi.designationOperational,
+        designationOperational: trafficPointElementInSePoDi.designationOperational,
         sloid: trafficPointElementInSePoDi.sloid!,
         validFrom: correspondingPrmPlatform?.validFrom,
         validTo: correspondingPrmPlatform?.validTo,

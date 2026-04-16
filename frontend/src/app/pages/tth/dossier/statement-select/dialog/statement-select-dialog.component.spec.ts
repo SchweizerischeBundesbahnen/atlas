@@ -26,9 +26,7 @@ const dialogData: StatementSelectData = {
 const dialogServiceSpy: Mocked<Pick<DialogService, 'confirmLeave'>> = {
   confirmLeave: vi.fn().mockReturnValue(of(true)),
 };
-const dialogRefSpy: Mocked<
-  Pick<MatDialogRef<StatementSelectDialogComponent>, 'close'>
-> = {
+const dialogRefSpy: Mocked<Pick<MatDialogRef<StatementSelectDialogComponent>, 'close'>> = {
   close: vi.fn(),
 };
 
@@ -42,10 +40,7 @@ const statement: TimetableHearingStatementV2 = {
   documents: [],
 };
 const timetableHearingStatementInternalService: Mocked<
-  Pick<
-    TimetableHearingStatementInternalService,
-    'getStatements' | 'getStatement'
-  >
+  Pick<TimetableHearingStatementInternalService, 'getStatements' | 'getStatement'>
 > = {
   getStatements: vi.fn().mockReturnValue(of({ objects: [], totalCount: 0 })),
   getStatement: vi.fn().mockReturnValue(of(statement)),

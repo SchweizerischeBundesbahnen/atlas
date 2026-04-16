@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { TransportCompaniesComponent } from './transport-companies.component';
-import {
-  ContainerTransportCompany,
-  TransportCompanyStatus,
-} from '../../../api';
+import { ContainerTransportCompany, TransportCompanyStatus } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
@@ -25,17 +22,13 @@ const transportCompany: ContainerTransportCompany = {
 describe('TransportCompaniesComponent', () => {
   let component: TransportCompaniesComponent;
   let fixture: ComponentFixture<TransportCompaniesComponent>;
-  let transportCompanyService: Mocked<
-    Pick<TransportCompanyService, 'getTransportCompanies'>
-  >;
+  let transportCompanyService: Mocked<Pick<TransportCompanyService, 'getTransportCompanies'>>;
 
   beforeEach(() => {
     transportCompanyService = {
       getTransportCompanies: vi.fn(),
     };
-    transportCompanyService.getTransportCompanies.mockReturnValue(
-      of(transportCompany)
-    );
+    transportCompanyService.getTransportCompanies.mockReturnValue(of(transportCompany));
 
     TestBed.configureTestingModule({
       imports: [TransportCompaniesComponent, TranslateModule.forRoot()],
@@ -63,9 +56,7 @@ describe('TransportCompaniesComponent', () => {
       size: 10,
     });
 
-    expect(
-      transportCompanyService.getTransportCompanies
-    ).toHaveBeenCalledExactlyOnceWith(
+    expect(transportCompanyService.getTransportCompanies).toHaveBeenCalledExactlyOnceWith(
       [],
       [
         TransportCompanyStatus.Current,

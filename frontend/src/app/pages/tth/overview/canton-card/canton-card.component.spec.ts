@@ -15,11 +15,7 @@ describe('CantonCardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        translateServiceProvider,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
+      providers: [translateServiceProvider, provideHttpClient(), provideHttpClientTesting()],
     });
 
     fixture = TestBed.createComponent(CantonCardComponent);
@@ -37,8 +33,6 @@ describe('CantonCardComponent', () => {
     const cantonFlag = fixture.debugElement.queryAll(By.css('.flag'));
     //then
     expect(cantonFlag.length).toBe(1);
-    expect(cantonFlag[0].attributes['src']).toContain(
-      'assets/images/cantons/AG.svg'
-    );
+    expect(cantonFlag[0].attributes['src']).toContain('assets/images/cantons/AG.svg');
   });
 });

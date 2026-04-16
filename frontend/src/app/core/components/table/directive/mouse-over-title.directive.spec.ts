@@ -6,16 +6,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { By } from '@angular/platform-browser';
 
 @Component({
-  template: `
-    <div [atlasMouseOverTitle]="transform" [mouseOverTitleValue]="value"></div>
-  `,
+  template: ` <div [atlasMouseOverTitle]="transform" [mouseOverTitleValue]="value"></div> `,
   imports: [MouseOverTitleDirective],
 })
 class HostComponent {
   value = '';
-  transform: (v: string) => Observable<string> = vi
-    .fn()
-    .mockReturnValue(of('result'));
+  transform: (v: string) => Observable<string> = vi.fn().mockReturnValue(of('result'));
 }
 
 describe('MouseOverTitleDirective', () => {
@@ -28,9 +24,7 @@ describe('MouseOverTitleDirective', () => {
   });
 
   it('should create', () => {
-    const debugEl = fixture.debugElement.query(
-      By.directive(MouseOverTitleDirective)
-    );
+    const debugEl = fixture.debugElement.query(By.directive(MouseOverTitleDirective));
     fixture.detectChanges();
 
     expect(debugEl.injector.get(MouseOverTitleDirective)).toBeTruthy();
@@ -38,9 +32,7 @@ describe('MouseOverTitleDirective', () => {
 
   it('should return on empty or unchanged mouseOverTitleValue', () => {
     // when
-    const el = fixture.debugElement.query(
-      By.directive(MouseOverTitleDirective)
-    ).nativeElement;
+    const el = fixture.debugElement.query(By.directive(MouseOverTitleDirective)).nativeElement;
     el.dispatchEvent(new Event('mouseover'));
     fixture.detectChanges();
 
@@ -54,9 +46,7 @@ describe('MouseOverTitleDirective', () => {
     fixture.detectChanges();
 
     // when
-    const el = fixture.debugElement.query(
-      By.directive(MouseOverTitleDirective)
-    ).nativeElement;
+    const el = fixture.debugElement.query(By.directive(MouseOverTitleDirective)).nativeElement;
     el.dispatchEvent(new Event('mouseover'));
     fixture.detectChanges();
 
@@ -71,9 +61,7 @@ describe('MouseOverTitleDirective', () => {
     component.value = 'test';
     component.transform = vi.fn().mockReturnValue(throwError(() => 'error'));
 
-    const debugEl = fixture.debugElement.query(
-      By.directive(MouseOverTitleDirective)
-    );
+    const debugEl = fixture.debugElement.query(By.directive(MouseOverTitleDirective));
     debugEl.injector.get(MouseOverTitleDirective).title = 'old title';
 
     fixture.detectChanges();

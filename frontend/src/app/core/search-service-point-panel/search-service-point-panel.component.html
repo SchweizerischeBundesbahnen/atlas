@@ -1,13 +1,6 @@
-<div
-  [ngClass]="
-    showSearchPanel ? 'search-container-opened' : 'search-container-closed'
-  "
-  class="search-container"
->
+<div [ngClass]="showSearchPanel ? 'search-container-opened' : 'search-container-closed'" class="search-container">
   @if (!showSearchPanel) {
-    <span class="ps-4 pt-2 search-plaintext"
-      >{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}...</span
-    >
+    <span class="ps-4 pt-2 search-plaintext">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}...</span>
   } @else {
     <div class="container-sp-create-and-search">
       @if (searchNavigationType === 'NAVIGATION') {
@@ -16,9 +9,7 @@
           [searchType]="searchType"
         ></atlas-navigate-service-point>
       } @else {
-        <atlas-search-service-point
-          [searchType]="searchType"
-        ></atlas-search-service-point>
+        <atlas-search-service-point [searchType]="searchType"></atlas-search-service-point>
       }
 
       <div class="font-bold-sm ps-3">
@@ -26,10 +17,7 @@
           {{ 'SEPODI.SERVICE_POINTS.SEARCH_OR_NAVIGATION' | translate }}
         </span>
         <div class="ps-4 pt-lg-2">
-          <atlas-slide-toggle
-            (toggleChange)="changeSearchType($event)"
-            [slideTrackNeutral]="true"
-          ></atlas-slide-toggle>
+          <atlas-slide-toggle (toggleChange)="changeSearchType($event)" [slideTrackNeutral]="true"></atlas-slide-toggle>
         </div>
       </div>
       <ng-content></ng-content>
@@ -39,7 +27,7 @@
     <atlas-button
       (buttonClicked)="toggle()"
       buttonType="icon"
-      wrapperStyleClass="{{ showSearchPanel ?   'pt-4' : 'pt-1' }} pe-3 pb-1"
+      wrapperStyleClass="{{ showSearchPanel ? 'pt-4' : 'pt-1' }} pe-3 pb-1"
     >
       <ng-template #rightIcon>
         <i [ngClass]="showSearchPanel ? 'bi bi-arrow-up-circle' : 'bi bi-arrow-down-circle'"></i>

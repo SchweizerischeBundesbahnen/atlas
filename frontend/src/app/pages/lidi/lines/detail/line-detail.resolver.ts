@@ -28,6 +28,5 @@ export class LineDetailResolver {
   }
 }
 
-export const lineResolver: ResolveFn<Array<LineVersionV2>> = (
-  route: ActivatedRouteSnapshot
-) => inject(LineDetailResolver).resolve(route);
+export const lineResolver: ResolveFn<Array<LineVersionV2>> = (route: ActivatedRouteSnapshot) =>
+  inject(LineDetailResolver).resolve(route);

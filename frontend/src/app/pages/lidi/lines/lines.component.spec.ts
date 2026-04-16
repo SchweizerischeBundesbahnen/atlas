@@ -1,13 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { LinesComponent } from './lines.component';
-import {
-  ContainerLine,
-  ElementType,
-  LidiElementType,
-  Line,
-  Status,
-} from '../../../api';
+import { ContainerLine, ElementType, LidiElementType, Line, Status } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -83,33 +77,21 @@ describe('LinesComponent', () => {
   it('should edit line', () => {
     //given
     line.elementType = 'LINE';
-    const navigateSpy = vi
-      .spyOn(router, 'navigate')
-      .mockReturnValue(Promise.resolve(true));
+    const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
     //when
     component.editVersion(line);
     //then
-    expect(navigateSpy).toHaveBeenCalledWith([
-      Pages.LIDI.path,
-      Pages.LINES.path,
-      line.slnid,
-    ]);
+    expect(navigateSpy).toHaveBeenCalledWith([Pages.LIDI.path, Pages.LINES.path, line.slnid]);
   });
 
   it('should edit subline', () => {
     //given
     line.elementType = 'SUBLINE';
-    const navigateSpy = vi
-      .spyOn(router, 'navigate')
-      .mockReturnValue(Promise.resolve(true));
+    const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
     //when
     component.editVersion(line);
     //then
-    expect(navigateSpy).toHaveBeenCalledWith([
-      Pages.LIDI.path,
-      Pages.SUBLINES.path,
-      line.slnid,
-    ]);
+    expect(navigateSpy).toHaveBeenCalledWith([Pages.LIDI.path, Pages.SUBLINES.path, line.slnid]);
   });
 
   it('should getOverview', () => {

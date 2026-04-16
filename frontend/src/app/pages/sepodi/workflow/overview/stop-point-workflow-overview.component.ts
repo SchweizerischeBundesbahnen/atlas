@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TableFilterChip } from '../../../../core/components/table-filter/config/table-filter-chip';
 import { TableFilterSearchSelect } from '../../../../core/components/table-filter/config/table-filter-search-select';
-import {
-  ApplicationType,
-  BusinessOrganisation,
-  ReadStopPointWorkflow,
-  WorkflowStatus,
-} from '../../../../api';
+import { ApplicationType, BusinessOrganisation, ReadStopPointWorkflow, WorkflowStatus } from '../../../../api';
 import { TableFilterSearchType } from '../../../../core/components/table-filter/config/table-filter-search-type';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TableFilterMultiSelect } from '../../../../core/components/table-filter/config/table-filter-multiselect';
@@ -32,11 +27,7 @@ import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-
 })
 export class StopPointWorkflowOverviewComponent implements OnInit {
   private readonly tableFilterConfigIntern = {
-    search: new TableFilterChip(
-      0,
-      'col-6',
-      'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'
-    ),
+    search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
     workflowIds: new TableFilterSingleSearch(
       1,
       'SEPODI.SERVICE_POINTS.WORKFLOW.ID',
@@ -71,11 +62,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
         businessOrganisation: new FormControl(),
       })
     ),
-    locality: new TableFilterSingleSearch(
-      1,
-      'SEPODI.GEOLOCATION.DISTRICT',
-      'filter-width'
-    ),
+    locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT', 'filter-width'),
   };
 
   private readonly tableFilterConfigInternWithBoolean = {
@@ -160,8 +147,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
         [this.tableService.filter.sboid.getActiveSearch()?.sboid],
         undefined,
         undefined,
-        this.tableService.filter.filterByNoDecision?.getActiveSearch() ??
-          undefined,
+        this.tableService.filter.filterByNoDecision?.getActiveSearch() ?? undefined,
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'id,desc')

@@ -1,18 +1,5 @@
-import {
-  Component,
-  contentChild,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef,
-} from '@angular/core';
-import {
-  MatSort,
-  MatSortHeader,
-  Sort,
-  SortDirection,
-} from '@angular/material/sort';
+import { Component, contentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
 import { TableService } from './table.service';
@@ -91,8 +78,7 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() tableChanged = new EventEmitter<TablePagination>();
-  @Output() tableInitialized: EventEmitter<TablePagination> =
-    new EventEmitter<TablePagination>();
+  @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
   @Output() changeDropdownEvent = new EventEmitter<ColumnDropDownEvent>();
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Output() buttonClickEvent = new EventEmitter<any>();
@@ -220,12 +206,6 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   protected isActionColumn(column: TableColumn<DATATYPE>): boolean {
-    return (
-      !column.checkbox &&
-      !column.dropdown &&
-      !column.button &&
-      !column.customCell &&
-      !column.icon
-    );
+    return !column.checkbox && !column.dropdown && !column.button && !column.customCell && !column.icon;
   }
 }

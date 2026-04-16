@@ -14,10 +14,7 @@ describe('Selection Validator', () => {
   });
 
   it('should set required selection error when not the right amount of elements selected', () => {
-    const control = new FormControl(
-      ['A'],
-      SelectionValidator.requiredSelected(2)
-    );
+    const control = new FormControl(['A'], SelectionValidator.requiredSelected(2));
     control.markAsDirty();
     expect(control.errors).toBeDefined();
     const error = control.errors?.['req_selected_error'];
@@ -39,10 +36,7 @@ describe('Selection Validator', () => {
   });
 
   it('should set error at 1 then clear when count > 1', () => {
-    const formArray = new FormArray(
-      [new FormControl(true)],
-      SelectionValidator.minSelected(2)
-    );
+    const formArray = new FormArray([new FormControl(true)], SelectionValidator.minSelected(2));
     formArray.markAsDirty();
     expect(formArray.errors?.['min_selected_error']).toBeDefined();
     expect(formArray.errors?.['min_selected_error'].actual).toBe(1);

@@ -54,8 +54,7 @@ export class StatementDataProtectionFormGroupBuilder {
     return (control: AbstractControl): ValidationErrors | null => {
       const formGroup = control as FormGroup<StatementDataProtectionFormGroup>;
 
-      const hasPersonalInformation =
-        formGroup.controls.hasStatementPersonalInformation.value;
+      const hasPersonalInformation = formGroup.controls.hasStatementPersonalInformation.value;
       const anonymizedStatement = formGroup.controls.anonymousStatement.value;
 
       if (hasPersonalInformation && anonymizedStatement === originalStatement) {
@@ -90,8 +89,7 @@ export class StatementDataProtectionFormGroupBuilder {
     documentFormGroup: FormGroup<StatementDocumentDataProtectionFormGroup>,
     statementFormGroup: FormGroup<StatementDataProtectionFormGroup>
   ): TimetableHearingStatementDataProtection {
-    const statementHasPersonalInformation =
-      statementFormGroup.controls.hasStatementPersonalInformation.value!;
+    const statementHasPersonalInformation = statementFormGroup.controls.hasStatementPersonalInformation.value!;
     return {
       id: statementFormGroup.controls.id.value!,
       statementAnonymous: !statementHasPersonalInformation,

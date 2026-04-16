@@ -121,15 +121,11 @@ export class Countries {
   ];
 
   static fromCountry(country: Country | undefined): CountryName | undefined {
-    return this.countryNames.find(
-      (countryName) => countryName.enumCountry === country
-    );
+    return this.countryNames.find((countryName) => countryName.enumCountry === country);
   }
 
   static fromUicCode(uicCountryCode: number) {
-    return this.countryNames.find(
-      (countryName) => countryName.uicCode === uicCountryCode
-    )!;
+    return this.countryNames.find((countryName) => countryName.uicCode === uicCountryCode)!;
   }
 
   static getCountryNameUicCodeFromCountry(country: Country): number {
@@ -158,15 +154,11 @@ export class Countries {
       Country.ItalyBus,
       Country.FranceBus,
     ];
-    return Object.values(Country).filter(
-      (country) => !countriesToFilterOut.includes(country)
-    );
+    return Object.values(Country).filter((country) => !countriesToFilterOut.includes(country));
   }
 
-  static readonly getCountryEnum = (country: Country) =>
-    Countries.fromCountry(country)?.enumCountry;
+  static readonly getCountryEnum = (country: Country) => Countries.fromCountry(country)?.enumCountry;
 
   public static readonly compareFn = (n1: Country, n2: Country) =>
-    Countries.getCountryNameUicCodeFromCountry(n1) -
-    Countries.getCountryNameUicCodeFromCountry(n2);
+    Countries.getCountryNameUicCodeFromCountry(n1) - Countries.getCountryNameUicCodeFromCountry(n2);
 }

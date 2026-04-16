@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -20,16 +21,9 @@ import { SearchSelectComponent } from '../search-select/search-select.component'
 @Component({
   selector: 'atlas-ttfn-select',
   templateUrl: './timetable-field-number-select.component.html',
-  imports: [
-    ReactiveFormsModule,
-    AtlasLabelFieldComponent,
-    TimetableFieldNumberSelectOptionPipe,
-    SearchSelectComponent,
-  ],
+  imports: [ReactiveFormsModule, AtlasLabelFieldComponent, TimetableFieldNumberSelectOptionPipe, SearchSelectComponent],
 })
-export class TimetableFieldNumberSelectComponent
-  implements OnInit, OnDestroy, OnChanges
-{
+export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'ttfnid';
   @Input() controlName!: string;
   @Input() formModus = true;
@@ -41,12 +35,10 @@ export class TimetableFieldNumberSelectComponent
   @Output() selectedTimetableFieldNumberChanged = new EventEmitter();
   @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
 
+  private readonly timetableFieldNumbersService = inject(TimetableFieldNumberInternalService);
+
   timetableFieldNumbers: Observable<TimetableFieldNumber[]> = of([]);
   private formSubscription?: Subscription;
-
-  constructor(
-    private timetableFieldNumbersService: TimetableFieldNumberInternalService
-  ) {}
 
   ngOnInit(): void {
     this.init();
@@ -74,16 +66,9 @@ export class TimetableFieldNumberSelectComponent
   searchTimetableFieldNumber(searchString: string) {
     if (searchString) {
       this.timetableFieldNumbers = this.timetableFieldNumbersService
-        .getOverview(
-          [searchString],
-          undefined,
-          undefined,
-          this.validOn,
-          undefined,
-          undefined,
-          undefined,
-          ['ttfnid,ASC']
-        )
+        .getOverview([searchString], undefined, undefined, this.validOn, undefined, undefined, undefined, [
+          'ttfnid,ASC',
+        ])
         .pipe(map((value) => value.objects ?? []));
     }
   }

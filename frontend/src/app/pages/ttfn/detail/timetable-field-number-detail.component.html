@@ -12,9 +12,7 @@
           </span>
           <span data-cy="total-range">
             -
-            <atlas-date-range-text
-              [dateRange]="maxValidity!"
-            ></atlas-date-range-text>
+            <atlas-date-range-text [dateRange]="maxValidity!"></atlas-date-range-text>
           </span>
         </div>
       } @else {
@@ -41,12 +39,8 @@
             {{ selectedVersionIndex! + 1 }}
           </h2>
           <p>
-            <span class="font-bold-lg color-gray-900"
-              >{{ 'COMMON.STATUS' | translate }}
-            </span>
-            <span class="color-gray-900">{{
-              'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
-            }}</span>
+            <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+            <span class="color-gray-900">{{ 'COMMON.STATUS_TYPES.' + selectedVersion.status | translate }}</span>
           </p>
         </div>
       }
@@ -121,21 +115,13 @@
         <div class="col-12 d-flex gap-4">
           <div class="flex-50">
             @if (displayOutwardLine2$ | async) {
-              <atlas-text-field
-                [fieldExamples]="[]"
-                [formGroup]="form"
-                controlName="descriptionOutwardLine2"
-              >
+              <atlas-text-field [fieldExamples]="[]" [formGroup]="form" controlName="descriptionOutwardLine2">
               </atlas-text-field>
             }
           </div>
           <div class="flex-50">
             @if (displayReturnLine2$ | async) {
-              <atlas-text-field
-                [fieldExamples]="[]"
-                [formGroup]="form"
-                controlName="descriptionReturnLine2"
-              >
+              <atlas-text-field [fieldExamples]="[]" [formGroup]="form" controlName="descriptionReturnLine2">
               </atlas-text-field>
             }
           </div>
@@ -173,9 +159,7 @@
           controlName="meanOfTransport"
         ></atlas-means-of-transport-picker>
 
-        <span class="font-bold-2xl d-block mt-4">{{
-          'FORM.KEY_DATA' | translate
-        }}</span>
+        <span class="font-bold-2xl d-block mt-4">{{ 'FORM.KEY_DATA' | translate }}</span>
         <div class="w-50">
           <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
         </div>
@@ -194,10 +178,7 @@
 
       @if (selectedVersion) {
         <div class="mt-5">
-          <atlas-user-detail-info
-            [record]="selectedVersion"
-            [applicationType]="'TTFN'"
-          ></atlas-user-detail-info>
+          <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'TTFN'"></atlas-user-detail-info>
         </div>
       }
     </div>
@@ -246,10 +227,7 @@
           ></atlas-button>
         }
         @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-          <atlas-revoke-button
-            (revokeClicked)="revoke()"
-            applicationType="TTFN"
-          ></atlas-revoke-button>
+          <atlas-revoke-button (revokeClicked)="revoke()" applicationType="TTFN"></atlas-revoke-button>
         }
         <atlas-button
           (buttonClicked)="delete()"

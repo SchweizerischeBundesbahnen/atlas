@@ -1,13 +1,4 @@
-import {
-  Component,
-  ContentChild,
-  EventEmitter,
-  input,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, ContentChild, EventEmitter, input, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ServicePointDetailFormGroup } from './form-group/service-point-detail-form-group';
 import { ServicePointType } from '../service-point-type';
@@ -83,9 +74,9 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   selectableStopPointTypes = input.required<StopPointType[]>();
 
   @Output()
-  selectedServicePointTypeChange: EventEmitter<
+  selectedServicePointTypeChange: EventEmitter<ServicePointType | null | undefined> = new EventEmitter<
     ServicePointType | null | undefined
-  > = new EventEmitter<ServicePointType | null | undefined>();
+  >();
 
   @Input() set form(form: FormGroup<ServicePointDetailFormGroup>) {
     this._form = form;
@@ -103,14 +94,9 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this.locationInformation$ = of({
       isoCountryCode: version?.servicePointGeolocation?.isoCountryCode,
       canton: version?.servicePointGeolocation?.swissLocation?.canton,
-      municipalityName:
-        version?.servicePointGeolocation?.swissLocation?.localityMunicipality
-          ?.municipalityName,
-      localityName:
-        version?.servicePointGeolocation?.swissLocation?.localityMunicipality
-          ?.localityName,
-      swissDistrictName:
-        version?.servicePointGeolocation?.swissLocation?.district?.districtName,
+      municipalityName: version?.servicePointGeolocation?.swissLocation?.localityMunicipality?.municipalityName,
+      localityName: version?.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName,
+      swissDistrictName: version?.servicePointGeolocation?.swissLocation?.district?.districtName,
     });
   }
 
@@ -155,25 +141,20 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this.initSortedOperatingPointTypes();
     this.initBoSboidRestriction();
     if (!this.isNew) {
-      this.geographyComponent?.coordinatesChanged.subscribe(
-        (coordinatePair) => {
-          if (coordinatePair.north && coordinatePair.east) {
-            this.locationInformation$ = this.locationGeoInternalService
-              .getLocationInformation(coordinatePair)
-              .pipe(
-                map((geoReference) => ({
-                  isoCountryCode: Countries.fromCountry(geoReference.country)
-                    ?.short,
-                  canton: geoReference.swissCanton,
-                  municipalityName: geoReference.swissMunicipalityName,
-                  localityName: geoReference.swissLocalityName,
-                  height: geoReference.height,
-                  swissDistrictName: geoReference.swissDistrictName,
-                }))
-              );
-          }
+      this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
+        if (coordinatePair.north && coordinatePair.east) {
+          this.locationInformation$ = this.locationGeoInternalService.getLocationInformation(coordinatePair).pipe(
+            map((geoReference) => ({
+              isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
+              canton: geoReference.swissCanton,
+              municipalityName: geoReference.swissMunicipalityName,
+              localityName: geoReference.swissLocalityName,
+              height: geoReference.height,
+              swissDistrictName: geoReference.swissDistrictName,
+            }))
+          );
         }
-      );
+      });
     }
   }
 
@@ -186,26 +167,21 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   private initSortedOperatingPointTypes(): void {
     this.setSortedOperatingPointTypes();
-    this.langChangeSubscription =
-      this.translationSortingService.translateService.onLangChange.subscribe(
-        this.setSortedOperatingPointTypes
-      );
+    this.langChangeSubscription = this.translationSortingService.translateService.onLangChange.subscribe(
+      this.setSortedOperatingPointTypes
+    );
   }
 
   private setSortedOperatingPointTypes = (): void => {
     this.operatingPointTypes = this.translationSortingService.sort(
-      [
-        ...Object.values(OperatingPointType),
-        ...Object.values(OperatingPointTechnicalTimetableType),
-      ],
+      [...Object.values(OperatingPointType), ...Object.values(OperatingPointTechnicalTimetableType)],
       'SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES.'
     );
   };
 
   onStopPointChange(stopPointType: StopPointType) {
-    const meansOfTransportForm = (
-      this.form?.controls?.spTypeGroup as FormGroup<StationGroup>
-    ).controls.stopPointGroup?.controls.meansOfTransport;
+    const meansOfTransportForm = (this.form?.controls?.spTypeGroup as FormGroup<StationGroup>).controls.stopPointGroup
+      ?.controls.meansOfTransport;
     if (stopPointType === StopPointType.OnDemand) {
       meansOfTransportForm?.setValue([MeanOfTransport.OnDemand]);
       this.isMeanOfTransportOnDemandSelected = true;
@@ -214,61 +190,43 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private initTypeChangeInformationDialog(
-    selectedTypeCtrl: FormControl<ServicePointType | null | undefined>
-  ) {
-    selectedTypeCtrl.valueChanges
-      .pipe(takeUntil(this.formDestroy$))
-      .subscribe((newType) => {
-        if (this.isNew) {
+  private initTypeChangeInformationDialog(selectedTypeCtrl: FormControl<ServicePointType | null | undefined>) {
+    selectedTypeCtrl.valueChanges.pipe(takeUntil(this.formDestroy$)).subscribe((newType) => {
+      if (this.isNew) {
+        this._currentSelectedServicePointType = newType;
+        this.selectedServicePointTypeChange.emit(this._currentSelectedServicePointType);
+      }
+      if (!this.isNew && this._currentSelectedServicePointType != newType) {
+        if (this._currentSelectedServicePointType != ServicePointType.ServicePoint) {
+          this.dialogService
+            .openDialogDataWithConfirmationResult({
+              title: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.TITLE',
+              message: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.MESSAGE',
+            })
+            .pipe(take(1))
+            .subscribe((result) => {
+              if (result) {
+                this._currentSelectedServicePointType = newType;
+                this.selectedServicePointTypeChange.emit(this._currentSelectedServicePointType);
+              } else {
+                selectedTypeCtrl.setValue(this._currentSelectedServicePointType);
+              }
+            });
+        } else {
           this._currentSelectedServicePointType = newType;
-          this.selectedServicePointTypeChange.emit(
-            this._currentSelectedServicePointType
-          );
+          this.selectedServicePointTypeChange.emit(this._currentSelectedServicePointType);
         }
-        if (!this.isNew && this._currentSelectedServicePointType != newType) {
-          if (
-            this._currentSelectedServicePointType !=
-            ServicePointType.ServicePoint
-          ) {
-            this.dialogService
-              .openDialogDataWithConfirmationResult({
-                title: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.TITLE',
-                message: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.MESSAGE',
-              })
-              .pipe(take(1))
-              .subscribe((result) => {
-                if (result) {
-                  this._currentSelectedServicePointType = newType;
-                  this.selectedServicePointTypeChange.emit(
-                    this._currentSelectedServicePointType
-                  );
-                } else {
-                  selectedTypeCtrl.setValue(
-                    this._currentSelectedServicePointType
-                  );
-                }
-              });
-          } else {
-            this._currentSelectedServicePointType = newType;
-            this.selectedServicePointTypeChange.emit(
-              this._currentSelectedServicePointType
-            );
-          }
-        }
-      });
+      }
+    });
   }
 
   initBoSboidRestriction() {
     if (!this.isNew || this.permissionService.isAdmin) {
       this.boSboidRestriction = [];
     } else {
-      const permission = this.permissionService.getApplicationUserPermission(
-        ApplicationType.Sepodi
-      );
+      const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Sepodi);
       if (permission.role === ApplicationRole.Writer) {
-        this.boSboidRestriction =
-          PermissionService.getSboidRestrictions(permission);
+        this.boSboidRestriction = PermissionService.getSboidRestrictions(permission);
       } else {
         this.boSboidRestriction = [];
       }

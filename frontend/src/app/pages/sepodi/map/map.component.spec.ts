@@ -25,11 +25,10 @@ describe('MapComponent', () => {
   mapServiceSpy.servicePointsShown = new BehaviorSubject(false);
   mapServiceSpy.map = mapMock;
   mapServiceSpy.initMap.mockReturnValue(mapMock);
-  mapServiceSpy.clickedGeographyCoordinates =
-    new BehaviorSubject<CoordinatePairWGS84>({
-      lat: 0,
-      lng: 0,
-    });
+  mapServiceSpy.clickedGeographyCoordinates = new BehaviorSubject<CoordinatePairWGS84>({
+    lat: 0,
+    lng: 0,
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -79,22 +78,16 @@ describe('MapComponent', () => {
 
   it('should increase zoom when zoomIn() is called', () => {
     component.zoomIn();
-    expect(component.map.zoomTo).toHaveBeenCalledWith(
-      component.map.getZoom() + 0.75,
-      {
-        duration: 500,
-      }
-    );
+    expect(component.map.zoomTo).toHaveBeenCalledWith(component.map.getZoom() + 0.75, {
+      duration: 500,
+    });
   });
 
   it('should decrease zoom when zoomOut() is called', () => {
     component.zoomOut();
-    expect(component.map.zoomTo).toHaveBeenCalledWith(
-      component.map.getZoom() - 0.75,
-      {
-        duration: 500,
-      }
-    );
+    expect(component.map.zoomTo).toHaveBeenCalledWith(component.map.getZoom() - 0.75, {
+      duration: 500,
+    });
   });
 
   it('should zoom to SERVICE_POINT_MIN_ZOOM', () => {

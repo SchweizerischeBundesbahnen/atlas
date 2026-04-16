@@ -9,12 +9,9 @@ export interface MapIcon {
 
 export class MapIconsService {
   private static readonly IMAGES_BASE_PATH = '../../../../assets/images/';
-  private static readonly SERVICE_POINT_ICONS_BASE_PATH =
-    this.IMAGES_BASE_PATH + 'service-point-symbols/';
-  private static readonly TRAFFIC_POINT_ICONS_BASE_PATH =
-    this.IMAGES_BASE_PATH + 'traffic-point-symbols/';
-  private static readonly SECTOR_ICONS_BASE_PATH =
-    this.IMAGES_BASE_PATH + 'sector-symbols/';
+  private static readonly SERVICE_POINT_ICONS_BASE_PATH = this.IMAGES_BASE_PATH + 'service-point-symbols/';
+  private static readonly TRAFFIC_POINT_ICONS_BASE_PATH = this.IMAGES_BASE_PATH + 'traffic-point-symbols/';
+  private static readonly SECTOR_ICONS_BASE_PATH = this.IMAGES_BASE_PATH + 'sector-symbols/';
 
   static addTrafficPointIconToMap(map: Map) {
     MapIconsService.getTrafficPointIconsAsImages().then((icons) => {
@@ -27,11 +24,7 @@ export class MapIconsService {
   }
 
   static getTrafficPointIconsAsImages() {
-    const types = [
-      'BOARDING_PLATFORM',
-      'BOARDING_AREA',
-      'SELECTED_TP_INDICATOR',
-    ].map((type) =>
+    const types = ['BOARDING_PLATFORM', 'BOARDING_AREA', 'SELECTED_TP_INDICATOR'].map((type) =>
       this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type)
     );
     return Promise.all(types);
@@ -55,22 +48,15 @@ export class MapIconsService {
   }
 
   static getLegendIconsAsImages() {
-    const servicePointIconsForLegend = Object.keys(ServicePointIconType).map(
-      (type) => this.getIconAsImage(this.SERVICE_POINT_ICONS_BASE_PATH, type)
+    const servicePointIconsForLegend = Object.keys(ServicePointIconType).map((type) =>
+      this.getIconAsImage(this.SERVICE_POINT_ICONS_BASE_PATH, type)
     );
-    const trafficPointIconsForLegend = [
-      'BOARDING_PLATFORM',
-      'BOARDING_AREA',
-    ].map((type) =>
+    const trafficPointIconsForLegend = ['BOARDING_PLATFORM', 'BOARDING_AREA'].map((type) =>
       this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type)
     );
-    let allLegendIcons = servicePointIconsForLegend.concat(
-      trafficPointIconsForLegend
-    );
+    let allLegendIcons = servicePointIconsForLegend.concat(trafficPointIconsForLegend);
     if (environment.sectorsEnabled) {
-      allLegendIcons = allLegendIcons.concat(
-        this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, 'SECTOR')
-      );
+      allLegendIcons = allLegendIcons.concat(this.getIconAsImage(this.SECTOR_ICONS_BASE_PATH, 'SECTOR'));
     }
     return Promise.all(allLegendIcons);
   }

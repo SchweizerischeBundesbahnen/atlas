@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  InterpolatableTranslationObject,
-  TranslateService,
-} from '@ngx-translate/core';
+import { InterpolatableTranslationObject, TranslateService } from '@ngx-translate/core';
 import { DateAdapter } from '@angular/material/core';
 import { Language } from './language';
 import { NgClass, UpperCasePipe } from '@angular/common';
@@ -25,14 +22,8 @@ export class LanguageSwitcherComponent {
     private dateAdapter: DateAdapter<any>
   ) {
     const language =
-      this.languages.find(
-        (lang) =>
-          lang ===
-          localStorage.getItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY)
-      ) ||
-      this.languages.find(
-        (lang) => lang === translateService.getBrowserLang()
-      ) ||
+      this.languages.find((lang) => lang === localStorage.getItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY)) ||
+      this.languages.find((lang) => lang === translateService.getBrowserLang()) ||
       this.languages[0];
     this.setLanguage(language);
   }
@@ -42,10 +33,7 @@ export class LanguageSwitcherComponent {
   }
 
   setLanguage(language: string): Observable<InterpolatableTranslationObject> {
-    localStorage.setItem(
-      LanguageSwitcherComponent.STORED_LANGUAGE_KEY,
-      language
-    );
+    localStorage.setItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY, language);
     this.dateAdapter.setLocale(language);
     return this.translateService.use(language);
   }

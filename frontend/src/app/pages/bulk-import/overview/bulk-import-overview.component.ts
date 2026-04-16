@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  BulkImportFormGroup,
-  BulkImportFormGroupBuilder,
-} from '../detail/bulk-import-form-group';
+import { BulkImportFormGroup, BulkImportFormGroupBuilder } from '../detail/bulk-import-form-group';
 import { ApplicationType, BusinessObjectType, ImportType } from '../../../api';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { catchError, EMPTY, finalize } from 'rxjs';
@@ -34,51 +31,18 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
 
-const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] =
-  [
-    [
-      ApplicationType.Sepodi,
-      BusinessObjectType.ServicePoint,
-      ImportType.Update,
-    ],
-    [
-      ApplicationType.Sepodi,
-      BusinessObjectType.ServicePoint,
-      ImportType.Create,
-    ],
-    [
-      ApplicationType.Sepodi,
-      BusinessObjectType.ServicePoint,
-      ImportType.Terminate,
-    ],
-    [
-      ApplicationType.Sepodi,
-      BusinessObjectType.TrafficPoint,
-      ImportType.Create,
-    ],
-    [
-      ApplicationType.Sepodi,
-      BusinessObjectType.TrafficPoint,
-      ImportType.Update,
-    ],
-    [
-      ApplicationType.Sepodi,
-      BusinessObjectType.TrafficPoint,
-      ImportType.Terminate,
-    ],
-    [ApplicationType.Sepodi, BusinessObjectType.Sector, ImportType.Create],
-    [
-      ApplicationType.Prm,
-      BusinessObjectType.PlatformReduced,
-      ImportType.Update,
-    ],
-    [
-      ApplicationType.Prm,
-      BusinessObjectType.PlatformComplete,
-      ImportType.Update,
-    ],
-    [ApplicationType.Lidi, BusinessObjectType.Line, ImportType.Update],
-  ];
+const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
+  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
+  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Create],
+  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Terminate],
+  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Create],
+  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update],
+  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Terminate],
+  [ApplicationType.Sepodi, BusinessObjectType.Sector, ImportType.Create],
+  [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Update],
+  [ApplicationType.Prm, BusinessObjectType.PlatformComplete, ImportType.Update],
+  [ApplicationType.Lidi, BusinessObjectType.Line, ImportType.Update],
+];
 
 @Component({
   templateUrl: './bulk-import-overview.component.html',
@@ -97,8 +61,7 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] =
 export class BulkImportOverviewComponent implements OnInit {
   protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;
   protected readonly OPTIONS_APPLICATION_TYPE = OPTIONS_APPLICATION_TYPE;
-  protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT =
-    ALLOWED_FILE_TYPES_BULK_IMPORT;
+  protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT = ALLOWED_FILE_TYPES_BULK_IMPORT;
   isCheckForNull: boolean = false;
   isCombinationForActiveDownloadButton: boolean = false;
   isDownloadButtonDisabled: boolean = true;
@@ -144,19 +107,14 @@ export class BulkImportOverviewComponent implements OnInit {
 
     this.form.controls.applicationType.valueChanges.subscribe((value) => {
       if (value) {
-        this.isAtLeastSupervisor =
-          this.permissionService.isAtLeastSupervisor(value);
+        this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(value);
         this.OPTIONS_OBJECT_TYPE = this.OPTIONS_OBJECTS[value];
         this.resetConfiguration(false);
       }
     });
 
     this.form.valueChanges.subscribe((value) => {
-      if (
-        value.importType != null &&
-        value.applicationType != null &&
-        value.objectType != null
-      ) {
+      if (value.importType != null && value.applicationType != null && value.objectType != null) {
         this.isEnabledToStartImport = true;
       }
       this.updateFlags();
@@ -175,9 +133,7 @@ export class BulkImportOverviewComponent implements OnInit {
     this.saving = true;
     this.loadingSpinnerService.loading.next(true);
 
-    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(
-      this.form
-    );
+    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
 
     this.bulkImportService
       .startBulkImport(bulkImportRequest, this.uploadedFiles[0])
@@ -230,11 +186,8 @@ export class BulkImportOverviewComponent implements OnInit {
 
   updateFlags() {
     this.isCheckForNull = this.checkForNull();
-    this.isCombinationForActiveDownloadButton =
-      this.combinationForActiveDownloadButton();
-    this.isDownloadButtonDisabled = !(
-      this.isCheckForNull && this.isCombinationForActiveDownloadButton
-    );
+    this.isCombinationForActiveDownloadButton = this.combinationForActiveDownloadButton();
+    this.isDownloadButtonDisabled = !(this.isCheckForNull && this.isCombinationForActiveDownloadButton);
   }
 
   checkForNull(): boolean {
@@ -251,24 +204,15 @@ export class BulkImportOverviewComponent implements OnInit {
     const importType = this.form.controls.importType.value;
 
     return VALID_COMBINATIONS.some(
-      ([appType, objType, impType]) =>
-        appType === applicationType &&
-        objType === objectType &&
-        impType === importType
+      ([appType, objType, impType]) => appType === applicationType && objType === objectType && impType === importType
     );
   }
 
   downloadExcel() {
-    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(
-      this.form
-    );
+    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
     const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.csv`;
     this.bulkImportService
-      .downloadTemplate(
-        bulkImportRequest.applicationType,
-        bulkImportRequest.objectType,
-        bulkImportRequest.importType
-      )
+      .downloadTemplate(bulkImportRequest.applicationType, bulkImportRequest.objectType, bulkImportRequest.importType)
       .subscribe((response: Blob) => {
         FileDownloadService.downloadFile(filename, response);
         this.dialogService.showInfo({

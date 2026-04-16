@@ -10,11 +10,7 @@
 <form [formGroup]="formGroup">
   <div [class]="{ 'text-field-wrapper': paddingBottom }">
     <div class="text-field-flex">
-      <ng-container
-        #customChildInputPrefixTemplate
-        *ngTemplateOutlet="customChildInputPrefixTemplate"
-      >
-      </ng-container>
+      <ng-container #customChildInputPrefixTemplate *ngTemplateOutlet="customChildInputPrefixTemplate"> </ng-container>
       <input
         [formControlName]="controlName"
         [ngStyle]="customInputNgStyle"
@@ -23,13 +19,8 @@
         [attr.data-cy]="controlName"
         atlasEmptyToNull
       />
-      <ng-container
-        #customChildInputPostfixTemplate
-        *ngTemplateOutlet="customChildInputPostfixTemplate"
-      ></ng-container>
+      <ng-container #customChildInputPostfixTemplate *ngTemplateOutlet="customChildInputPostfixTemplate"></ng-container>
     </div>
-    <atlas-field-error
-      [control]="formGroup.get(controlName)"
-    ></atlas-field-error>
+    <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
   </div>
 </form>

@@ -14,30 +14,20 @@ const transportCompany: TransportCompany = {
   description: 'SBB',
 };
 
-const transportCompanyRelations: TransportCompanyBoRelation[] = [
-  { id: 1 },
-  { id: 2 },
-];
+const transportCompanyRelations: TransportCompanyBoRelation[] = [{ id: 1 }, { id: 2 }];
 
 describe('TransportCompanyDetailResolver', () => {
   let resolver: TransportCompanyDetailResolver;
-  let transportCompanyService: Mocked<
-    Pick<TransportCompanyService, 'getTransportCompany'>
-  >;
+  let transportCompanyService: Mocked<Pick<TransportCompanyService, 'getTransportCompany'>>;
   let transportCompanyRelationInternalService: Mocked<
-    Pick<
-      TransportCompanyRelationInternalService,
-      'getTransportCompanyBoRelations'
-    >
+    Pick<TransportCompanyRelationInternalService, 'getTransportCompanyBoRelations'>
   >;
 
   beforeEach(() => {
     transportCompanyService = {
       getTransportCompany: vi.fn(),
     };
-    transportCompanyService.getTransportCompany.mockReturnValue(
-      of(transportCompany)
-    );
+    transportCompanyService.getTransportCompany.mockReturnValue(of(transportCompany));
 
     transportCompanyRelationInternalService = {
       getTransportCompanyBoRelations: vi.fn(),
@@ -68,8 +58,7 @@ describe('TransportCompanyDetailResolver', () => {
 
     const resolvedVersion = resolver.resolve(mockRoute);
 
-    const [transportCompany, transportCompanyRelations] =
-      await firstValueFrom(resolvedVersion);
+    const [transportCompany, transportCompanyRelations] = await firstValueFrom(resolvedVersion);
     expect(transportCompany.id).toBe(1234);
     expect(transportCompany.description).toBe('SBB');
     expect(transportCompanyRelations.length).toBe(2);

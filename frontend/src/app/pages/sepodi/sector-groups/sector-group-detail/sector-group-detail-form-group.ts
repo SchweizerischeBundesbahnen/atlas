@@ -15,30 +15,21 @@ export interface SectorGroupDetailFormGroup extends BaseDetailFormGroup {
 }
 
 export class SectorGroupFormGroupBuilder {
-  private static createBaseControls(
-    sectorGroupVersion?: ReadSectorGroupVersion
-  ) {
+  private static createBaseControls(sectorGroupVersion?: ReadSectorGroupVersion) {
     return {
       sloid: new FormControl(sectorGroupVersion?.sloid),
       trafficPointSloid: new FormControl(sectorGroupVersion?.trafficPointSloid),
-      designation: new FormControl(sectorGroupVersion?.designation, [
-        Validators.required,
-        Validators.maxLength(8),
-      ]),
+      designation: new FormControl(sectorGroupVersion?.designation, [Validators.required, Validators.maxLength(8)]),
       length: new FormControl(sectorGroupVersion?.length, [
         AtlasCharsetsValidator.decimalWithDigits(6, 3),
         Validators.min(0),
       ]),
-      validFrom: new FormControl(
-        sectorGroupVersion?.validFrom
-          ? moment(sectorGroupVersion.validFrom)
-          : null,
-        [Validators.required]
-      ),
-      validTo: new FormControl(
-        sectorGroupVersion?.validTo ? moment(sectorGroupVersion.validTo) : null,
-        [Validators.required]
-      ),
+      validFrom: new FormControl(sectorGroupVersion?.validFrom ? moment(sectorGroupVersion.validFrom) : null, [
+        Validators.required,
+      ]),
+      validTo: new FormControl(sectorGroupVersion?.validTo ? moment(sectorGroupVersion.validTo) : null, [
+        Validators.required,
+      ]),
       etagVersion: new FormControl(sectorGroupVersion?.etagVersion),
       creationDate: new FormControl(sectorGroupVersion?.creationDate),
       editionDate: new FormControl(sectorGroupVersion?.editionDate),
@@ -47,23 +38,17 @@ export class SectorGroupFormGroupBuilder {
     };
   }
 
-  static buildFormGroupUpdate(
-    sectorGroupVersion?: ReadSectorGroupVersion
-  ): FormGroup<SectorGroupDetailFormGroup> {
+  static buildFormGroupUpdate(sectorGroupVersion?: ReadSectorGroupVersion): FormGroup<SectorGroupDetailFormGroup> {
     const controls = this.createBaseControls(sectorGroupVersion);
-    return new FormGroup<SectorGroupDetailFormGroup>(
-      controls as SectorGroupDetailFormGroup,
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
-    );
+    return new FormGroup<SectorGroupDetailFormGroup>(controls as SectorGroupDetailFormGroup, [
+      DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo'),
+    ]);
   }
 
   static buildFormGroupCreate(): FormGroup<SectorGroupDetailFormGroup> {
     const controls: SectorGroupDetailFormGroup = {
       ...this.createBaseControls(),
-      sectorSloids: new FormControl(
-        [],
-        [Validators.required, SelectionValidator.minSelected(2)]
-      ),
+      sectorSloids: new FormControl([], [Validators.required, SelectionValidator.minSelected(2)]),
     };
 
     return new FormGroup<SectorGroupDetailFormGroup>(controls, [

@@ -47,9 +47,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
 
   ngOnInit() {
     this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup();
-    this.form.controls.designationOfficial.setValue(
-      this.data.stopPoint.designationOfficial
-    );
+    this.form.controls.designationOfficial.setValue(this.data.stopPoint.designationOfficial);
   }
 
   addWorkflow() {
@@ -74,29 +72,19 @@ export class AddStopPointWorkflowComponent implements OnInit {
           }),
       };
       this.form.disable();
-      this.stopPointWorkflowService
-        .addStopPointWorkflow(workflow)
-        .subscribe((createdWorkflow) => {
-          this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
-          this.dialogRef.close();
-          this.router
-            .navigate([
-              Pages.SEPODI.path,
-              Pages.WORKFLOWS.path,
-              createdWorkflow.id,
-            ])
-            .then();
-        });
+      this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe((createdWorkflow) => {
+        this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
+        this.dialogRef.close();
+        this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, createdWorkflow.id]).then();
+      });
     }
   }
 
   cancel() {
-    this.detailHelperService
-      .confirmLeaveDirtyForm(this.form)
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.dialogRef.close(true);
-        }
-      });
+    this.detailHelperService.confirmLeaveDirtyForm(this.form).subscribe((confirmed) => {
+      if (confirmed) {
+        this.dialogRef.close(true);
+      }
+    });
   }
 }

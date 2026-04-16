@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { catchError, EMPTY, Observable, retry } from 'rxjs';
 import { NotificationService } from '../notification/notification.service';
 
@@ -39,9 +33,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
       error.name == 'HttpErrorResponse' &&
       error.statusText === 'Bad Request' &&
       error.url?.includes('https://login.microsoftonline.com/') &&
-      error.message.includes(
-        'Http failure response for https://login.microsoftonline.com/'
-      )
+      error.message.includes('Http failure response for https://login.microsoftonline.com/')
     );
   }
 }

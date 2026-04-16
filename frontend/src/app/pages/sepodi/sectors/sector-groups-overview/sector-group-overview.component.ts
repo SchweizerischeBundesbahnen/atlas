@@ -17,13 +17,7 @@ import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVer
 
 @Component({
   selector: 'atlas-sector-group-overview',
-  imports: [
-    TranslatePipe,
-    DetailPageContentComponent,
-    TableComponent,
-    AtlasButtonComponent,
-    DetailFooterComponent,
-  ],
+  imports: [TranslatePipe, DetailPageContentComponent, TableComponent, AtlasButtonComponent, DetailFooterComponent],
   templateUrl: './sector-group-overview.component.html',
   styleUrls: ['./sector-group-overview.component.scss'],
 })
@@ -65,22 +59,16 @@ export class SectorGroupOverviewComponent implements OnInit {
   hasAtLeastTwoSectors = false;
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.SECTOR_GROUPS
-    );
-    this.trafficPointSloid =
-      this.route.parent!.snapshot.params['trafficPointSloid']!;
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.SECTOR_GROUPS);
+    this.trafficPointSloid = this.route.parent!.snapshot.params['trafficPointSloid']!;
 
     this.showCreateButtons = this.sectorPermissionService.showCreateButton(
       this.route.parent!.snapshot.data.servicePoint
     );
 
-    this.sectorInternalService
-      .getSectors(this.trafficPointSloid)
-      .subscribe((sectors) => {
-        this.hasAtLeastTwoSectors = sectors.totalCount! >= 2;
-      });
+    this.sectorInternalService.getSectors(this.trafficPointSloid).subscribe((sectors) => {
+      this.hasAtLeastTwoSectors = sectors.totalCount! >= 2;
+    });
   }
 
   editSectorGroup(clickedRow: ReadSectorGroupVersion) {
@@ -93,12 +81,7 @@ export class SectorGroupOverviewComponent implements OnInit {
 
   getSectorGroupOverview(pagination: TablePagination) {
     this.sectorGroupInternalService
-      .getSectorGroups(
-        this.trafficPointSloid,
-        pagination.page,
-        pagination.size,
-        [pagination.sort ?? 'designation,asc']
-      )
+      .getSectorGroups(this.trafficPointSloid, pagination.page, pagination.size, [pagination.sort ?? 'designation,asc'])
       .subscribe((sectorGroups) => {
         this.sectorGroups = sectorGroups.objects!;
         this.totalSectorGroups = sectorGroups.totalCount!;

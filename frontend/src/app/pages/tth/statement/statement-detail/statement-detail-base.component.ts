@@ -18,9 +18,7 @@ import { FileDownloadService } from '../../../../core/components/file-upload/fil
 export abstract class StatementDetailBaseComponent {
   protected router = inject(Router);
   protected route = inject(ActivatedRoute);
-  protected timetableHearingStatementsService = inject(
-    TimetableHearingStatementInternalService
-  );
+  protected timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
 
   protected ttfnValidOn: Date | undefined = undefined;
   statement: TimetableHearingStatementV2 | undefined;
@@ -30,111 +28,57 @@ export abstract class StatementDetailBaseComponent {
 
   protected backToOverview() {
     this.router
-      .navigate(
-        [
-          Pages.TTH.path,
-          this.route.snapshot.params.canton.toLowerCase(),
-          this.hearingStatus.toLowerCase(),
-        ],
-        {
-          queryParams: {
-            year: this.statement?.timetableYear,
-          },
-        }
-      )
+      .navigate([Pages.TTH.path, this.route.snapshot.params.canton.toLowerCase(), this.hearingStatus.toLowerCase()], {
+        queryParams: {
+          year: this.statement?.timetableYear,
+        },
+      })
       .then();
   }
 
   protected downloadFile(fileName: string) {
     this.timetableHearingStatementsService
       .getStatementDocument(this.statement!.id!, fileName)
-      .subscribe((response) =>
-        FileDownloadService.downloadFile(fileName, response)
-      );
+      .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
 
-  protected getFormGroup(
-    statement: TimetableHearingStatementV2 | undefined
-  ): FormGroup {
+  protected getFormGroup(statement: TimetableHearingStatementV2 | undefined): FormGroup {
     return new FormGroup<StatementDetailFormGroup>({
       id: new FormControl(statement?.id),
-      timetableYear: new FormControl(statement?.timetableYear, [
-        Validators.required,
-      ]),
-      statementStatus: new FormControl(statement?.statementStatus, [
-        Validators.required,
-      ]),
+      timetableYear: new FormControl(statement?.timetableYear, [Validators.required]),
+      statementStatus: new FormControl(statement?.statementStatus, [Validators.required]),
       ttfnid: new FormControl(statement?.ttfnid),
-      responsibleTransportCompanies: new FormControl(
-        statement?.responsibleTransportCompanies ?? []
-      ),
+      responsibleTransportCompanies: new FormControl(statement?.responsibleTransportCompanies ?? []),
       oldSwissCanton: new FormControl(statement?.oldSwissCanton),
-      swissCanton: new FormControl(statement?.swissCanton, [
-        Validators.required,
-      ]),
+      swissCanton: new FormControl(statement?.swissCanton, [Validators.required]),
       stopPlace: new FormControl(statement?.stopPlace, [
         AtlasFieldLengthValidator.length_255,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
       statementSender: new FormGroup<StatementSenderFormGroup>({
-        firstName: new FormControl(statement?.statementSender?.firstName, [
-          AtlasFieldLengthValidator.length_100,
-        ]),
-        lastName: new FormControl(statement?.statementSender?.lastName, [
-          AtlasFieldLengthValidator.length_100,
-        ]),
-        organisation: new FormControl(
-          statement?.statementSender?.organisation,
-          [AtlasFieldLengthValidator.length_100]
-        ),
+        firstName: new FormControl(statement?.statementSender?.firstName, [AtlasFieldLengthValidator.length_100]),
+        lastName: new FormControl(statement?.statementSender?.lastName, [AtlasFieldLengthValidator.length_100]),
+        organisation: new FormControl(statement?.statementSender?.organisation, [AtlasFieldLengthValidator.length_100]),
         zip: new FormControl(statement?.statementSender?.zip, [
           AtlasCharsetsValidator.numeric,
           Validators.min(1000),
           Validators.max(99999),
         ]),
-        city: new FormControl(statement?.statementSender?.city, [
-          AtlasFieldLengthValidator.length_50,
-        ]),
-        street: new FormControl(statement?.statementSender?.street, [
-          AtlasFieldLengthValidator.length_100,
-        ]),
-        emails: new FormControl(
-          Array.from(statement?.statementSender?.emails ?? []),
-          [Validators.required]
-        ),
+        city: new FormControl(statement?.statementSender?.city, [AtlasFieldLengthValidator.length_50]),
+        street: new FormControl(statement?.statementSender?.street, [AtlasFieldLengthValidator.length_100]),
+        emails: new FormControl(Array.from(statement?.statementSender?.emails ?? []), [Validators.required]),
       }),
-      statement: new FormControl(statement?.statement, [
-        Validators.required,
-        AtlasFieldLengthValidator.statement,
-      ]),
-      anonymousStatement: new FormControl(statement?.anonymousStatement, [
-        AtlasFieldLengthValidator.statement,
-      ]),
+      statement: new FormControl(statement?.statement, [Validators.required, AtlasFieldLengthValidator.statement]),
+      anonymousStatement: new FormControl(statement?.anonymousStatement, [AtlasFieldLengthValidator.statement]),
       statementAnonymous: new FormControl(statement?.statementAnonymous),
-      publicComment: new FormControl(statement?.publicComment, [
-        AtlasFieldLengthValidator.statement,
-      ]),
-      internalComment: new FormControl(statement?.internalComment, [
-        AtlasFieldLengthValidator.statement,
-      ]),
-      cantonTransferComment: new FormControl(statement?.cantonTransferComment, [
-        AtlasFieldLengthValidator.length_280,
-      ]),
-      topic: new FormControl(statement?.topic, [
-        AtlasFieldLengthValidator.length_255,
-      ]),
-      documents: new FormArray<
-        FormGroup<TimetableHearingStatementDocumentGroup>
-      >(
+      publicComment: new FormControl(statement?.publicComment, [AtlasFieldLengthValidator.statement]),
+      internalComment: new FormControl(statement?.internalComment, [AtlasFieldLengthValidator.statement]),
+      cantonTransferComment: new FormControl(statement?.cantonTransferComment, [AtlasFieldLengthValidator.length_280]),
+      topic: new FormControl(statement?.topic, [AtlasFieldLengthValidator.length_255]),
+      documents: new FormArray<FormGroup<TimetableHearingStatementDocumentGroup>>(
         statement?.documents
-          ?.map((document) =>
-            TimetableHearingStatementBuilder.buildTimetableHearingStatementDocumentGroup(
-              document
-            )
-          )
-          .sort((a, b) =>
-            a.getRawValue().fileName!.localeCompare(b.getRawValue().fileName!)
-          ) ?? []
+          ?.map((document) => TimetableHearingStatementBuilder.buildTimetableHearingStatementDocumentGroup(document))
+          .sort((a, b) => a.getRawValue().fileName!.localeCompare(b.getRawValue().fileName!)) ?? []
       ),
       etagVersion: new FormControl(statement?.etagVersion),
       editor: new FormControl(statement?.editor),

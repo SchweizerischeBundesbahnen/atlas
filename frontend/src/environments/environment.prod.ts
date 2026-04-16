@@ -1,11 +1,7 @@
 import 'angular-server-side-configuration/process';
 import { atlasReleaseNotes, authority } from './environment.common';
 import { Environment } from './environment.model';
-import {
-  LogLevel,
-  OpenIdConfiguration,
-  PassedInitialConfig,
-} from 'angular-auth-oidc-client';
+import { LogLevel, OpenIdConfiguration, PassedInitialConfig } from 'angular-auth-oidc-client';
 
 /**
  * How to use angular-server-side-configuration:
@@ -59,11 +55,9 @@ export const environment: Environment = {
   atlasReleaseNotes,
   journeyMapsApiKey: process.env.JOURNEY_MAPS_API_KEY!,
   // feature toggles
-  sepodiWorkflowBavActionEnabled:
-    process.env.SEPODI_WORKFLOW_BAV_ACTION_ENABLED !== 'false',
+  sepodiWorkflowBavActionEnabled: process.env.SEPODI_WORKFLOW_BAV_ACTION_ENABLED !== 'false',
   bulkImportEnabled: process.env.BULK_IMPORT_ENABLED !== 'false',
-  terminationWorkflowEnabled:
-    process.env.TERMINTAION_WORKFLOW_ENABLED !== 'false',
+  terminationWorkflowEnabled: process.env.TERMINTAION_WORKFLOW_ENABLED !== 'false',
   sectorsEnabled: process.env.SECTORS_ENABLED !== 'false',
   ttfnEnabled: process.env.TTFN_ENABLED !== 'false',
 };

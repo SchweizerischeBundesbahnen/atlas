@@ -16,39 +16,24 @@ import { contactPointResolver } from './tabs/contact-point/detail/resolvers/cont
 
 import { toiletResolver } from './tabs/toilet/detail/resolvers/toilet.resolver';
 
-import {
-  PRM_DETAIL_TAB_LINK,
-  PRM_RELATIONS_TAB_LINK,
-} from './tabs/relation/tab/detail-with-relation-tab.component';
+import { PRM_DETAIL_TAB_LINK, PRM_RELATIONS_TAB_LINK } from './tabs/relation/tab/detail-with-relation-tab.component';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./prm-home-search/prm-home-search.component').then(
-        (m) => m.PrmHomeSearchComponent
-      ),
+    loadComponent: () => import('./prm-home-search/prm-home-search.component').then((m) => m.PrmHomeSearchComponent),
     data: { isHome: true },
     pathMatch: 'full',
   },
   {
     path: '',
-    loadComponent: () =>
-      import('./prm-home-search/prm-home-search.component').then(
-        (m) => m.PrmHomeSearchComponent
-      ),
+    loadComponent: () => import('./prm-home-search/prm-home-search.component').then((m) => m.PrmHomeSearchComponent),
     data: { isHome: false },
     children: [
       {
-        path:
-          Pages.STOP_POINTS.path +
-          '/:stopPointSloid/' +
-          Pages.PLATFORMS.path +
-          '/:sloid',
+        path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.PLATFORMS.path + '/:sloid',
         loadComponent: () =>
-          import('./tabs/platform/detail/platform-detail-panel.component').then(
-            (m) => m.PlatformDetailPanelComponent
-          ),
+          import('./tabs/platform/detail/platform-detail-panel.component').then((m) => m.PlatformDetailPanelComponent),
         runGuardsAndResolvers: 'always',
         canDeactivate: [canLeaveDirtyForm],
         resolve: {
@@ -61,18 +46,16 @@ export const routes: Routes = [
           {
             path: PRM_DETAIL_TAB_LINK,
             loadComponent: () =>
-              import(
-                './tabs/platform/detail/detail/platform-detail.component'
-              ).then((m) => m.PlatformDetailComponent),
+              import('./tabs/platform/detail/detail/platform-detail.component').then((m) => m.PlatformDetailComponent),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
           {
             path: PRM_RELATIONS_TAB_LINK,
             loadComponent: () =>
-              import(
-                './tabs/relation/tab-detail/relation-tab-detail.component'
-              ).then((m) => m.RelationTabDetailComponent),
+              import('./tabs/relation/tab-detail/relation-tab-detail.component').then(
+                (m) => m.RelationTabDetailComponent
+              ),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
@@ -80,15 +63,11 @@ export const routes: Routes = [
         ],
       },
       {
-        path:
-          Pages.STOP_POINTS.path +
-          '/:stopPointSloid/' +
-          Pages.REFERENCE_POINT.path +
-          '/:sloid',
+        path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.REFERENCE_POINT.path + '/:sloid',
         loadComponent: () =>
-          import(
-            './tabs/reference-point/detail/reference-point-detail.component'
-          ).then((m) => m.ReferencePointDetailComponent),
+          import('./tabs/reference-point/detail/reference-point-detail.component').then(
+            (m) => m.ReferencePointDetailComponent
+          ),
         runGuardsAndResolvers: 'always',
         canDeactivate: [canLeaveDirtyForm],
         resolve: {
@@ -97,15 +76,11 @@ export const routes: Routes = [
         },
       },
       {
-        path:
-          Pages.STOP_POINTS.path +
-          '/:stopPointSloid/' +
-          Pages.PARKING_LOT.path +
-          '/:sloid',
+        path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.PARKING_LOT.path + '/:sloid',
         loadComponent: () =>
-          import(
-            './tabs/parking-lot/detail/parking-lot-detail-panel.component'
-          ).then((m) => m.ParkingLotDetailPanelComponent),
+          import('./tabs/parking-lot/detail/parking-lot-detail-panel.component').then(
+            (m) => m.ParkingLotDetailPanelComponent
+          ),
         runGuardsAndResolvers: 'always',
         resolve: {
           parkingLot: parkingLotResolver,
@@ -116,18 +91,18 @@ export const routes: Routes = [
           {
             path: PRM_DETAIL_TAB_LINK,
             loadComponent: () =>
-              import(
-                './tabs/parking-lot/detail/detail/parking-lot-detail.component'
-              ).then((m) => m.ParkingLotDetailComponent),
+              import('./tabs/parking-lot/detail/detail/parking-lot-detail.component').then(
+                (m) => m.ParkingLotDetailComponent
+              ),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
           {
             path: PRM_RELATIONS_TAB_LINK,
             loadComponent: () =>
-              import(
-                './tabs/relation/tab-detail/relation-tab-detail.component'
-              ).then((m) => m.RelationTabDetailComponent),
+              import('./tabs/relation/tab-detail/relation-tab-detail.component').then(
+                (m) => m.RelationTabDetailComponent
+              ),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
@@ -135,15 +110,11 @@ export const routes: Routes = [
         ],
       },
       {
-        path:
-          Pages.STOP_POINTS.path +
-          '/:stopPointSloid/' +
-          Pages.CONTACT_POINT.path +
-          '/:sloid',
+        path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.CONTACT_POINT.path + '/:sloid',
         loadComponent: () =>
-          import(
-            './tabs/contact-point/detail/contact-point-detail-panel.component'
-          ).then((m) => m.ContactPointDetailPanelComponent),
+          import('./tabs/contact-point/detail/contact-point-detail-panel.component').then(
+            (m) => m.ContactPointDetailPanelComponent
+          ),
         runGuardsAndResolvers: 'always',
         resolve: {
           contactPoint: contactPointResolver,
@@ -154,18 +125,18 @@ export const routes: Routes = [
           {
             path: PRM_DETAIL_TAB_LINK,
             loadComponent: () =>
-              import(
-                './tabs/contact-point/detail/detail/contact-point-detail.component'
-              ).then((m) => m.ContactPointDetailComponent),
+              import('./tabs/contact-point/detail/detail/contact-point-detail.component').then(
+                (m) => m.ContactPointDetailComponent
+              ),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
           {
             path: PRM_RELATIONS_TAB_LINK,
             loadComponent: () =>
-              import(
-                './tabs/relation/tab-detail/relation-tab-detail.component'
-              ).then((m) => m.RelationTabDetailComponent),
+              import('./tabs/relation/tab-detail/relation-tab-detail.component').then(
+                (m) => m.RelationTabDetailComponent
+              ),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
@@ -173,15 +144,9 @@ export const routes: Routes = [
         ],
       },
       {
-        path:
-          Pages.STOP_POINTS.path +
-          '/:stopPointSloid/' +
-          Pages.TOILET.path +
-          '/:sloid',
+        path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.TOILET.path + '/:sloid',
         loadComponent: () =>
-          import('./tabs/toilet/detail/toilet-detail-panel.component').then(
-            (m) => m.ToiletDetailPanelComponent
-          ),
+          import('./tabs/toilet/detail/toilet-detail-panel.component').then((m) => m.ToiletDetailPanelComponent),
         runGuardsAndResolvers: 'always',
         resolve: {
           toilet: toiletResolver,
@@ -192,18 +157,16 @@ export const routes: Routes = [
           {
             path: PRM_DETAIL_TAB_LINK,
             loadComponent: () =>
-              import(
-                './tabs/toilet/detail/detail/toilet-detail.component'
-              ).then((m) => m.ToiletDetailComponent),
+              import('./tabs/toilet/detail/detail/toilet-detail.component').then((m) => m.ToiletDetailComponent),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
           {
             path: PRM_RELATIONS_TAB_LINK,
             loadComponent: () =>
-              import(
-                './tabs/relation/tab-detail/relation-tab-detail.component'
-              ).then((m) => m.RelationTabDetailComponent),
+              import('./tabs/relation/tab-detail/relation-tab-detail.component').then(
+                (m) => m.RelationTabDetailComponent
+              ),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
@@ -212,10 +175,7 @@ export const routes: Routes = [
       },
       {
         path: Pages.STOP_POINTS.path + '/:stopPointSloid',
-        loadComponent: () =>
-          import('./prm-panel/prm-panel.component').then(
-            (m) => m.PrmPanelComponent
-          ),
+        loadComponent: () => import('./prm-panel/prm-panel.component').then((m) => m.PrmPanelComponent),
         resolve: {
           stopPoints: stopPointResolver,
           servicePoints: prmPanelResolver,
@@ -225,50 +185,39 @@ export const routes: Routes = [
           {
             path: Pages.PRM_STOP_POINT_TAB.path,
             loadComponent: () =>
-              import(
-                './tabs/stop-point/detail/stop-point-detail.component'
-              ).then((m) => m.StopPointDetailComponent),
+              import('./tabs/stop-point/detail/stop-point-detail.component').then((m) => m.StopPointDetailComponent),
             runGuardsAndResolvers: 'always',
             canDeactivate: [canLeaveDirtyForm],
           },
           {
             path: PrmTabs.REFERENCE_POINT.link,
             loadComponent: () =>
-              import(
-                './tabs/reference-point/reference-point-table.component'
-              ).then((m) => m.ReferencePointTableComponent),
+              import('./tabs/reference-point/reference-point-table.component').then(
+                (m) => m.ReferencePointTableComponent
+              ),
             runGuardsAndResolvers: 'always',
           },
           {
             path: PrmTabs.PLATFORM.link,
             loadComponent: () =>
-              import('./tabs/platform/platform-table.component').then(
-                (m) => m.PlatformTableComponent
-              ),
+              import('./tabs/platform/platform-table.component').then((m) => m.PlatformTableComponent),
             runGuardsAndResolvers: 'always',
           },
           {
             path: PrmTabs.CONTACT_POINT.link,
             loadComponent: () =>
-              import('./tabs/contact-point/contact-point-table.component').then(
-                (m) => m.ContactPointTableComponent
-              ),
+              import('./tabs/contact-point/contact-point-table.component').then((m) => m.ContactPointTableComponent),
             runGuardsAndResolvers: 'always',
           },
           {
             path: PrmTabs.TOILET.link,
-            loadComponent: () =>
-              import('./tabs/toilet/toilet.component').then(
-                (m) => m.ToiletComponent
-              ),
+            loadComponent: () => import('./tabs/toilet/toilet.component').then((m) => m.ToiletComponent),
             runGuardsAndResolvers: 'always',
           },
           {
             path: PrmTabs.PARKING_LOT.link,
             loadComponent: () =>
-              import('./tabs/parking-lot/parking-lot-table.component').then(
-                (m) => m.ParkingLotTableComponent
-              ),
+              import('./tabs/parking-lot/parking-lot-table.component').then((m) => m.ParkingLotTableComponent),
             runGuardsAndResolvers: 'always',
           },
           { path: '**', redirectTo: Pages.PRM_STOP_POINT_TAB.path },

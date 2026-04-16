@@ -67,8 +67,7 @@ const error = new HttpErrorResponse({
     message: 'Not found',
     details: [
       {
-        message:
-          'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
         field: 'number',
         displayInfo: {
           code: 'TTFN.CONFLICT.NUMBER',
@@ -84,12 +83,8 @@ const error = new HttpErrorResponse({
   },
 });
 
-let validityService: Mocked<
-  Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>
->;
-let dialogService: Mocked<
-  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
->;
+let validityService: Mocked<Pick<ValidityService, 'initValidity' | 'updateValidity' | 'validate'>>;
+let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
 function createSharedMocks() {
   validityService = {
@@ -140,9 +135,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   let fixture: ComponentFixture<LineDetailComponent>;
   let router: Router;
   let lineService: Mocked<Pick<LineService, 'updateLineVersion'>>;
-  let lineInternalService: Mocked<
-    Pick<LineInternalService, 'deleteLines' | 'checkAffectedSublines'>
-  >;
+  let lineInternalService: Mocked<Pick<LineInternalService, 'deleteLines' | 'checkAffectedSublines'>>;
 
   const mockData = { lineDetail: [lineVersion] };
 
@@ -187,9 +180,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should update LineVersion successfully', async () => {
     lineService.updateLineVersion.mockReturnValue(of([lineVersion]));
-    const navigateSpy = vi
-      .spyOn(router, 'navigate')
-      .mockReturnValue(Promise.resolve(true));
+    const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.toggleEdit();
     component.form.controls.description.setValue('UpdatedDescription');
@@ -197,14 +188,10 @@ describe('LineDetailComponent for existing lineVersion', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const snackBarContainer = document.body.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
 
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer!.textContent.trim()).toBe(
-      'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS'
-    );
+    expect(snackBarContainer!.textContent.trim()).toBe('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
     expect(snackBarContainer!.classList).toContain('success');
     expect(navigateSpy).toHaveBeenCalled();
   });
@@ -222,23 +209,17 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should delete LineVersion successfully', async () => {
     lineInternalService.deleteLines.mockReturnValue(of(undefined));
-    const navigateSpy = vi
-      .spyOn(router, 'navigate')
-      .mockReturnValue(Promise.resolve(true));
+    const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.delete();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const snackBarContainer = document.body.querySelector(
-      'mat-snack-bar-container'
-    );
+    const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
 
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer!.textContent.trim()).toBe(
-      'LIDI.LINE.NOTIFICATION.DELETE_SUCCESS'
-    );
+    expect(snackBarContainer!.textContent.trim()).toBe('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer!.classList).toContain('success');
     expect(navigateSpy).toHaveBeenCalled();
   });
@@ -248,17 +229,11 @@ describe('LineDetailComponent for existing lineVersion', () => {
       allowedSublines: ['1234'],
       notAllowedSublines: [],
     };
-    vi.spyOn(component, 'isOnlyValidityChangedToTruncation').mockReturnValue(
-      true
-    );
-    vi.spyOn(component, 'openSublineShorteningDialog').mockReturnValue(
-      of(true)
-    );
+    vi.spyOn(component, 'isOnlyValidityChangedToTruncation').mockReturnValue(true);
+    vi.spyOn(component, 'openSublineShorteningDialog').mockReturnValue(of(true));
 
     lineService.updateLineVersion.mockReturnValue(of([lineVersion]));
-    lineInternalService.checkAffectedSublines.mockReturnValue(
-      of(affectedSublines)
-    );
+    lineInternalService.checkAffectedSublines.mockReturnValue(of(affectedSublines));
     vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
     const updateLineVersionSpy = vi.spyOn(component, 'updateLineVersion');
 
@@ -266,11 +241,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     component.form.controls.validTo.setValue(moment('2028-06-01'));
     component.updateLine(1, lineVersion);
 
-    expect(updateLineVersionSpy).toHaveBeenCalledWith(
-      1,
-      lineVersion,
-      'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS'
-    );
+    expect(updateLineVersionSpy).toHaveBeenCalledWith(1, lineVersion, 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS');
   });
 
   it('should update LineVersion with mixed sublines', () => {
@@ -281,17 +252,11 @@ describe('LineDetailComponent for existing lineVersion', () => {
       hasNotAllowedSublinesOnly: true,
       hasAllowedSublinesOnly: true,
     };
-    vi.spyOn(component, 'isOnlyValidityChangedToTruncation').mockReturnValue(
-      true
-    );
-    vi.spyOn(component, 'openSublineShorteningDialog').mockReturnValue(
-      of(true)
-    );
+    vi.spyOn(component, 'isOnlyValidityChangedToTruncation').mockReturnValue(true);
+    vi.spyOn(component, 'openSublineShorteningDialog').mockReturnValue(of(true));
 
     lineService.updateLineVersion.mockReturnValue(of([lineVersion]));
-    lineInternalService.checkAffectedSublines.mockReturnValue(
-      of(affectedSublines)
-    );
+    lineInternalService.checkAffectedSublines.mockReturnValue(of(affectedSublines));
     vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
     const updateLineVersionSpy = vi.spyOn(component, 'updateLineVersion');
 
@@ -299,11 +264,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     component.form.controls.validTo.setValue(moment('2028-06-01'));
     component.updateLine(1, lineVersion);
 
-    expect(updateLineVersionSpy).toHaveBeenCalledWith(
-      1,
-      lineVersion,
-      'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS'
-    );
+    expect(updateLineVersionSpy).toHaveBeenCalledWith(1, lineVersion, 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS');
   });
 
   it('should update LineVersion with not allowed sublines', () => {
@@ -314,17 +275,11 @@ describe('LineDetailComponent for existing lineVersion', () => {
       hasAllowedSublinesOnly: false,
       hasNotAllowedSublinesOnly: true,
     };
-    vi.spyOn(component, 'isOnlyValidityChangedToTruncation').mockReturnValue(
-      true
-    );
-    vi.spyOn(component, 'openSublineShorteningDialog').mockReturnValue(
-      of(true)
-    );
+    vi.spyOn(component, 'isOnlyValidityChangedToTruncation').mockReturnValue(true);
+    vi.spyOn(component, 'openSublineShorteningDialog').mockReturnValue(of(true));
 
     lineService.updateLineVersion.mockReturnValue(of([lineVersion]));
-    lineInternalService.checkAffectedSublines.mockReturnValue(
-      of(affectedSublines)
-    );
+    lineInternalService.checkAffectedSublines.mockReturnValue(of(affectedSublines));
     vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
     const updateLineVersionSpy = vi.spyOn(component, 'updateLineVersion');
 
@@ -332,11 +287,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     component.form.controls.validTo.setValue(moment('2028-06-01'));
     component.updateLine(1, lineVersion);
 
-    expect(updateLineVersionSpy).toHaveBeenCalledWith(
-      1,
-      lineVersion,
-      'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS'
-    );
+    expect(updateLineVersionSpy).toHaveBeenCalledWith(1, lineVersion, 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
   });
 });
 
@@ -362,9 +313,7 @@ describe('LineDetailComponent for new lineVersion', () => {
 
   describe('create new Version', () => {
     it('successfully', async () => {
-      const navigateSpy = vi
-        .spyOn(router, 'navigate')
-        .mockReturnValue(Promise.resolve(true));
+      const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
       lineService.createLineVersionV2.mockReturnValue(of(lineVersion));
 
       component.form.patchValue({
@@ -383,14 +332,10 @@ describe('LineDetailComponent for new lineVersion', () => {
       await fixture.whenStable();
       fixture.detectChanges();
 
-      const snackBarContainer = document.body.querySelector(
-        'mat-snack-bar-container'
-      );
+      const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
 
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer!.textContent.trim()).toBe(
-        'LIDI.LINE.NOTIFICATION.ADD_SUCCESS'
-      );
+      expect(snackBarContainer!.textContent.trim()).toBe('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
       expect(snackBarContainer!.classList).toContain('success');
       expect(navigateSpy).toHaveBeenCalled();
     });

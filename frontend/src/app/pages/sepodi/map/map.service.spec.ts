@@ -2,13 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
-import {
-  GeoJSONSource,
-  Map,
-  MapGeoJSONFeature,
-  MapMouseEvent,
-  Marker,
-} from 'maplibre-gl';
+import { GeoJSONSource, Map, MapGeoJSONFeature, MapMouseEvent, Marker } from 'maplibre-gl';
 import { SpatialReference } from '../../../api';
 import { MAP_STYLES } from './map-options';
 import { Router } from '@angular/router';
@@ -73,9 +67,7 @@ describe('MapService', () => {
     service.deselectServicePoint();
 
     expect(mapMock.getSource).toHaveBeenCalledWith('current_coordinates');
-    expect(
-      (service.map.getSource('current_coordinates') as GeoJSONSource).setData
-    ).toHaveBeenCalledWith({
+    expect((service.map.getSource('current_coordinates') as GeoJSONSource).setData).toHaveBeenCalledWith({
       type: 'Feature',
       geometry: {
         type: 'Point',
@@ -90,11 +82,7 @@ describe('MapService', () => {
 
     service.switchToStyle(MAP_STYLES[3]);
 
-    expect(mapMock.setLayoutProperty).toHaveBeenCalledWith(
-      'osm',
-      'visibility',
-      'visible'
-    );
+    expect(mapMock.setLayoutProperty).toHaveBeenCalledWith('osm', 'visibility', 'visible');
   });
 
   it('should remove map', () => {
@@ -121,9 +109,7 @@ describe('MapService', () => {
     ] as unknown as MapGeoJSONFeature[];
 
     const result = service.buildServicePointPopupInformation(features);
-    expect(result).toEqual(
-      '<a href="service-point-directory/service-points/8507000"><b>85 07000</b> - Bern</a> <br/>'
-    );
+    expect(result).toEqual('<a href="service-point-directory/service-points/8507000"><b>85 07000</b> - Bern</a> <br/>');
   });
 
   it('should show popup on features coordinates', () => {

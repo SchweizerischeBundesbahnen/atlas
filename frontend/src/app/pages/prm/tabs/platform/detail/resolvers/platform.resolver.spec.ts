@@ -2,11 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { firstValueFrom, Observable, of } from 'rxjs';
-import {
-  ActivatedRouteSnapshot,
-  convertToParamMap,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { platformResolver } from './platform.resolver';
 import { ReadPlatformVersion } from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';

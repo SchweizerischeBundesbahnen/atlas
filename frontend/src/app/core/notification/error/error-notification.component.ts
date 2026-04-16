@@ -1,8 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import {
-  MAT_SNACK_BAR_DATA,
-  MatSnackBarRef,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NotificationService } from '../notification.service';
 import { ErrorResponse } from '../../../api';
 

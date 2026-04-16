@@ -16,15 +16,10 @@ export class TransportCompanyDetailResolver {
     private readonly transportCompanyRelationInternalService: TransportCompanyRelationInternalService
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<[TransportCompany, TransportCompanyBoRelation[]]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<[TransportCompany, TransportCompanyBoRelation[]]> {
     const idParameter = parseInt(route.paramMap.get('id') || '0');
     if (Number.isNaN(idParameter)) {
-      this.notificationService.error(
-        new Error(),
-        'BODI.TRANSPORT_COMPANIES.ID_NAN_ERROR'
-      );
+      this.notificationService.error(new Error(), 'BODI.TRANSPORT_COMPANIES.ID_NAN_ERROR');
       return this.routeOnFailure();
     }
     return forkJoin([
@@ -49,7 +44,6 @@ export class TransportCompanyDetailResolver {
   }
 }
 
-export const transportCompanyResolver: ResolveFn<
-  [TransportCompany, TransportCompanyBoRelation[]]
-> = (route: ActivatedRouteSnapshot) =>
-  inject(TransportCompanyDetailResolver).resolve(route);
+export const transportCompanyResolver: ResolveFn<[TransportCompany, TransportCompanyBoRelation[]]> = (
+  route: ActivatedRouteSnapshot
+) => inject(TransportCompanyDetailResolver).resolve(route);

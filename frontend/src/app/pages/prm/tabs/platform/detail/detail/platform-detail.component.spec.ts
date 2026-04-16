@@ -2,16 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { PlatformDetailComponent } from './platform-detail.component';
-import {
-  ReadPlatformVersion,
-  VehicleAccessAttributeType,
-} from '../../../../../../api';
+import { ReadPlatformVersion, VehicleAccessAttributeType } from '../../../../../../api';
 import { of } from 'rxjs';
 import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
-import {
-  STOP_POINT,
-  STOP_POINT_COMPLETE,
-} from '../../../../util/stop-point-test-data';
+import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../../util/stop-point-test-data';
 import { BERN_WYLEREGG } from '../../../../../../../test/data/service-point';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../../test/data/traffic-point-element';
 import {
@@ -123,14 +117,10 @@ const reducedPlatform: ReadPlatformVersion[] = [
 describe('PlatformDetailComponent', () => {
   let component: PlatformDetailComponent;
   let fixture: ComponentFixture<PlatformDetailComponent>;
-  let platformService: Mocked<
-    Pick<PlatformService, 'createPlatform' | 'updatePlatform'>
-  >;
+  let platformService: Mocked<Pick<PlatformService, 'createPlatform' | 'updatePlatform'>>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   const activatedRouteMock = {
     snapshot: {
@@ -167,9 +157,7 @@ describe('PlatformDetailComponent', () => {
     dialogService = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     TestBed.configureTestingModule({
       imports: [
@@ -236,12 +224,8 @@ describe('PlatformDetailComponent', () => {
     });
 
     it('should create on save', () => {
-      component.form.controls.validFrom.setValue(
-        moment('31.10.2000', 'dd.MM.yyyy')
-      );
-      component.form.controls.validTo.setValue(
-        moment('31.10.2099', 'dd.MM.yyyy')
-      );
+      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
+      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
 
       component.save();
 
@@ -349,12 +333,8 @@ describe('PlatformDetailComponent', () => {
     });
 
     it('should create complete platform', () => {
-      component.form.controls.validFrom.setValue(
-        moment('31.10.2000', 'dd.MM.yyyy')
-      );
-      component.form.controls.validTo.setValue(
-        moment('31.10.2099', 'dd.MM.yyyy')
-      );
+      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
+      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
 
       component.save();
       expect(platformService.createPlatform).toHaveBeenCalled();

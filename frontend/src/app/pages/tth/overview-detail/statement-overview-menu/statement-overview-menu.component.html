@@ -12,28 +12,16 @@
     <span>{{ 'TTH.BUTTON.DUPLICATE' | translate }}</span>
   </button>
   @if (!row().dossierId) {
-    <button
-      mat-menu-item
-      class="color-primary-400"
-      (click)="createDossier(row())"
-    >
+    <button mat-menu-item class="color-primary-400" (click)="createDossier(row())">
       <i class="icon bi bi-folder me-2"></i>
       <span>{{ 'TTH.BUTTON.CREATE_DOSSIER' | translate }}</span>
     </button>
-    <button
-      mat-menu-item
-      class="color-primary-400"
-      (click)="addToDossier(row())"
-    >
+    <button mat-menu-item class="color-primary-400" (click)="addToDossier(row())">
       <i class="icon bi bi-folder-plus me-2"></i>
       <span>{{ 'TTH.BUTTON.ADD_TO_DOSSIER' | translate }}</span>
     </button>
 
-    <button
-      mat-menu-item
-      class="color-primary-400"
-      (click)="switchCanton(row())"
-    >
+    <button mat-menu-item class="color-primary-400" (click)="switchCanton(row())">
       <img
         class="pe-2"
         height="22"
@@ -41,9 +29,7 @@
         width="22"
         alt="canton-delivery-icon"
       />
-      <span>{{
-        'TTH.DROPDOWN.COLLECTING_ACTION.OPTION.CANTON_DELIVERY' | translate
-      }}</span>
+      <span>{{ 'TTH.DROPDOWN.COLLECTING_ACTION.OPTION.CANTON_DELIVERY' | translate }}</span>
     </button>
   }
 </mat-menu>

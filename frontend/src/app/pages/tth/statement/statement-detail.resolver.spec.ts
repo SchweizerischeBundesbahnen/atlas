@@ -1,10 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import {
-  HearingStatus,
-  SwissCanton,
-  TimetableHearingStatementV2,
-} from '../../../api';
+import { HearingStatus, SwissCanton, TimetableHearingStatementV2 } from '../../../api';
 import { StatementDetailResolver } from './statement-detail.resolver';
 import { AppTestingModule } from '../../../app.testing.module';
 import { firstValueFrom, of } from 'rxjs';
@@ -21,9 +17,7 @@ const statement: TimetableHearingStatementV2 = {
 };
 
 describe('StatementDetailResolver', () => {
-  const timetableHearingStatementsServiceSpy: Mocked<
-    Pick<TimetableHearingStatementInternalService, 'getStatement'>
-  > = {
+  const timetableHearingStatementsServiceSpy: Mocked<Pick<TimetableHearingStatementInternalService, 'getStatement'>> = {
     getStatement: vi.fn().mockReturnValue(of(statement)),
   };
 

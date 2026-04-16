@@ -92,10 +92,7 @@
     </div>
     @if (currentRelation) {
       <mat-divider class="mt-4 mb-4"></mat-divider>
-      <atlas-user-detail-info
-        [record]="currentRelation"
-        [applicationType]="'PRM'"
-      ></atlas-user-detail-info>
+      <atlas-user-detail-info [record]="currentRelation" [applicationType]="'PRM'"></atlas-user-detail-info>
     }
   }
 </atlas-detail-page-content>

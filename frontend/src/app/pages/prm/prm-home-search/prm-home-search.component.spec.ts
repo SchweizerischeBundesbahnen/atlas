@@ -24,12 +24,7 @@ describe('PrmHomeSearchComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        PrmHomeSearchComponent,
-        SearchServicePointPanelMockComponent,
-        PrmInfoBoxComponent,
-      ],
+      imports: [AppTestingModule, PrmHomeSearchComponent, SearchServicePointPanelMockComponent, PrmInfoBoxComponent],
       providers: [
         { provide: TranslatePipe },
         provideRouter([
@@ -61,19 +56,13 @@ describe('PrmHomeSearchComponent', () => {
     const harness = await RouterTestingHarness.create('prm-directory');
     await harness.navigateByUrl('prm-directory');
 
-    expect(harness.routeNativeElement?.textContent).toContain(
-      'PRM.INFO_BOX.HEADER'
-    );
+    expect(harness.routeNativeElement?.textContent).toContain('PRM.INFO_BOX.HEADER');
   });
 
   it('should navigate to prm-directory/stop-points', async () => {
-    const harness = await RouterTestingHarness.create(
-      'prm-directory/stop-points'
-    );
+    const harness = await RouterTestingHarness.create('prm-directory/stop-points');
     await harness.navigateByUrl('prm-directory/stop-points');
 
-    expect(harness.routeNativeElement?.textContent).not.toContain(
-      'PRM.INFO_BOX.HEADER'
-    );
+    expect(harness.routeNativeElement?.textContent).not.toContain('PRM.INFO_BOX.HEADER');
   });
 });

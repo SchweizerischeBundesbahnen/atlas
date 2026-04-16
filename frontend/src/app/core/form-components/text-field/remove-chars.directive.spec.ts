@@ -43,9 +43,7 @@ describe('RemoveCharsDirective', () => {
   it('should remove defined char', () => {
     component.formGroup.controls.east.setValue("123'123");
 
-    fixture.debugElement
-      .query(By.css('atlas-text-field'))
-      .nativeElement.dispatchEvent(keyUpEvent);
+    fixture.debugElement.query(By.css('atlas-text-field')).nativeElement.dispatchEvent(keyUpEvent);
     fixture.detectChanges();
 
     expect(component.formGroup.value.east).toBe('123123');

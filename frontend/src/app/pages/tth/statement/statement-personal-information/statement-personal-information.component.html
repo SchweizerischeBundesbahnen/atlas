@@ -35,19 +35,11 @@
 
 <div class="d-flex flex-row col-12 mb-2">
   <div class="d-flex flex-column col-2 pe-3">
-    <atlas-text-field
-      [formGroup]="form().controls.statementSender"
-      controlName="zip"
-      fieldLabel="TTH.STATEMENT.ZIP"
-    >
+    <atlas-text-field [formGroup]="form().controls.statementSender" controlName="zip" fieldLabel="TTH.STATEMENT.ZIP">
     </atlas-text-field>
   </div>
   <div class="d-flex flex-column col-5 pe-3">
-    <atlas-text-field
-      [formGroup]="form().controls.statementSender"
-      controlName="city"
-      fieldLabel="TTH.STATEMENT.CITY"
-    >
+    <atlas-text-field [formGroup]="form().controls.statementSender" controlName="city" fieldLabel="TTH.STATEMENT.CITY">
     </atlas-text-field>
   </div>
   <div class="d-flex flex-column col-5">
@@ -78,10 +70,6 @@
     ]"
     controlName="statementSender.emails"
   >
-    <atlas-clipboard
-      [value]="emails"
-      [showMe]="form().disabled"
-      class="ps-2 pt-2"
-    ></atlas-clipboard>
+    <atlas-clipboard [value]="emails" [showMe]="form().disabled" class="ps-2 pt-2"></atlas-clipboard>
   </atlas-text-list>
 </div>

@@ -78,18 +78,10 @@ describe('TrafficPointElementsTableComponent', () => {
     })
       .overrideComponent(TrafficPointElementsTableComponent, {
         remove: {
-          imports: [
-            AtlasButtonComponent,
-            TableComponent,
-            NavigationSepodiPrmComponent,
-          ],
+          imports: [AtlasButtonComponent, TableComponent, NavigationSepodiPrmComponent],
         },
         add: {
-          imports: [
-            MockAtlasButtonComponent,
-            MockTableComponent,
-            MockNavigationSepodiPrmComponent,
-          ],
+          imports: [MockAtlasButtonComponent, MockTableComponent, MockNavigationSepodiPrmComponent],
         },
       })
       .compileComponents();
@@ -109,24 +101,18 @@ describe('TrafficPointElementsTableComponent', () => {
       size: 10,
     });
 
-    expect(
-      trafficPointElementInternalServiceSpy.getPlatformsOfServicePoint
-    ).toHaveBeenCalledWith(8507000, 0, 10, ['designation,asc']);
+    expect(trafficPointElementInternalServiceSpy.getPlatformsOfServicePoint).toHaveBeenCalledWith(8507000, 0, 10, [
+      'designation,asc',
+    ]);
   });
 
   it('should navigate to add trafficpoint', () => {
     component.addNewTrafficPointElement();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['add'],
-      expect.any(Object)
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['add'], expect.any(Object));
   });
 
   it('should navigate to edit trafficpoint', () => {
     component.editVersion(BERN_WYLEREGG_TRAFFIC_POINTS[0]);
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['ch:1:sloid:89008:0:1'],
-      expect.any(Object)
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['ch:1:sloid:89008:0:1'], expect.any(Object));
   });
 });

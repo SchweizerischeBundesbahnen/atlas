@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { ParkingLotDetailComponent } from './parking-lot-detail.component';
-import {
-  BooleanOptionalAttributeType,
-  ReadParkingLotVersion,
-} from '../../../../../../api';
+import { BooleanOptionalAttributeType, ReadParkingLotVersion } from '../../../../../../api';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG } from '../../../../../../../test/data/service-point';
 import { SloidComponent } from '../../../../../../core/form-components/sloid/sloid.component';
@@ -68,13 +65,9 @@ const parkingLot: ReadParkingLotVersion[] = [
 describe('ParkingLotDetailComponent', () => {
   let component: ParkingLotDetailComponent;
   let fixture: ComponentFixture<ParkingLotDetailComponent>;
-  let parkingLotService: Mocked<
-    Pick<ParkingLotService, 'createParkingLot' | 'updateParkingLot'>
-  >;
+  let parkingLotService: Mocked<Pick<ParkingLotService, 'createParkingLot' | 'updateParkingLot'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
-  let dialogService: Mocked<
-    Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-  >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   const activatedRouteMock = {
     snapshot: {
@@ -104,9 +97,7 @@ describe('ParkingLotDetailComponent', () => {
     dialogService = {
       openDialogDataWithConfirmationResult: vi.fn(),
     };
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     TestBed.configureTestingModule({
       imports: [
@@ -172,12 +163,8 @@ describe('ParkingLotDetailComponent', () => {
 
     it('should create on save', () => {
       component.form.controls.designation.setValue('Haupteingang A');
-      component.form.controls.validFrom.setValue(
-        moment('31.10.2000', 'dd.MM.yyyy')
-      );
-      component.form.controls.validTo.setValue(
-        moment('31.10.2099', 'dd.MM.yyyy')
-      );
+      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
+      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
 
       component.save();
 

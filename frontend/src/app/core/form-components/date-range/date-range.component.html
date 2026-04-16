@@ -29,16 +29,10 @@
           (keydown.space)="validFromPicker.open()"
           [enabled]="controlFrom.enabled"
         ></atlas-form-date-icon>
-        <mat-datepicker
-          #validFromPicker
-          [calendarHeaderComponent]="validFromHeader"
-        >
-        </mat-datepicker>
+        <mat-datepicker #validFromPicker [calendarHeaderComponent]="validFromHeader"> </mat-datepicker>
       </div>
     </div>
-    <atlas-field-error
-      [control]="formGroup.get(controlNameFrom)"
-    ></atlas-field-error>
+    <atlas-field-error [control]="formGroup.get(controlNameFrom)"></atlas-field-error>
   </div>
   <div class="d-flex flex-column col-6 pe-3">
     <atlas-label-field
@@ -79,8 +73,6 @@
         <mat-datepicker #validToPicker> </mat-datepicker>
       </div>
     </div>
-    <atlas-field-error
-      [control]="formGroup.get(controlNameTo)"
-    ></atlas-field-error>
+    <atlas-field-error [control]="formGroup.get(controlNameTo)"></atlas-field-error>
   </div>
 </div>

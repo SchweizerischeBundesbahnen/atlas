@@ -16,9 +16,7 @@ describe('LineWorkflowCheckFormComponent', () => {
   let isAtLeastSupervisor = true;
   let permissionServiceStub: Pick<PermissionService, 'isAtLeastSupervisor'>;
   let workflowServiceStub: Mocked<Pick<LineWorkflowService, 'examinantCheck'>>;
-  let userAdminServiceStub: Mocked<
-    Pick<UserAdministrationService, 'getCurrentUser'>
-  >;
+  let userAdminServiceStub: Mocked<Pick<UserAdministrationService, 'getCurrentUser'>>;
 
   beforeEach(() => {
     // Mocking
@@ -54,18 +52,14 @@ describe('LineWorkflowCheckFormComponent', () => {
     fixture.detectChanges();
 
     expect(component).toBeTruthy();
-    expect(
-      fixture.debugElement.query(By.css('atlas-workflow-form'))
-    ).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('atlas-workflow-form'))).toBeTruthy();
   });
 
   it('should not show component for reader/writer', () => {
     isAtLeastSupervisor = false;
     fixture.detectChanges();
 
-    expect(
-      fixture.debugElement.query(By.css('atlas-workflow-form'))
-    ).toBeFalsy();
+    expect(fixture.debugElement.query(By.css('atlas-workflow-form'))).toBeFalsy();
   });
 
   it('should check workflow on button click', () => {

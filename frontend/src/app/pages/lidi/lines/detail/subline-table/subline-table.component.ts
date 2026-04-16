@@ -50,22 +50,16 @@ export class SublineTableComponent implements OnInit, OnDestroy {
   }
 
   subscribeToParent(): void {
-    this.eventSubject
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((refreshTable: boolean) => {
-        if (refreshTable) {
-          this.getOverview();
-        }
-      });
+    this.eventSubject.pipe(takeUntil(this.onDestroy$)).subscribe((refreshTable: boolean) => {
+      if (refreshTable) {
+        this.getOverview();
+      }
+    });
   }
 
   rowClicked(subline: Line) {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([
-        Pages.LIDI.path,
-        Pages.SUBLINES.path,
-        subline.slnid,
-      ])
+      this.router.createUrlTree([Pages.LIDI.path, Pages.SUBLINES.path, subline.slnid])
     );
     window.open(url, '_blank');
   }

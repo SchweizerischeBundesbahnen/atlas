@@ -7,16 +7,12 @@
   @if (!isNew) {
     <div class="font-xl mb-2">
       <span data-cy="total-range">
-        <atlas-date-range-text
-          [dateRange]="maxValidity"
-        ></atlas-date-range-text>
+        <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
       </span>
     </div>
   }
   <div class="d-flex flex-row mb-5">
-    <atlas-sloid-container
-      [sloid]="trafficPoint.sloid!"
-    ></atlas-sloid-container>
+    <atlas-sloid-container [sloid]="trafficPoint.sloid!"></atlas-sloid-container>
     <div class="d-flex flex-column ms-5 me-5">
       <div class="font-bold-base">
         {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION' | translate }}
@@ -25,9 +21,7 @@
     </div>
     <div class="d-flex flex-column" data-cy="stop-point-name">
       <div class="font-bold-base">
-        {{
-          'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL' | translate
-        }}
+        {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL' | translate }}
       </div>
       <div>{{ trafficPoint.designationOperational }}</div>
     </div>

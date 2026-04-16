@@ -18,9 +18,7 @@ describe('SectorGroupOverviewComponent', () => {
   let component: SectorGroupOverviewComponent;
   let fixture: ComponentFixture<SectorGroupOverviewComponent>;
 
-  let sectorGroupInternalServiceSpy: Mocked<
-    Pick<SectorGroupInternalService, 'getSectorGroups'>
-  >;
+  let sectorGroupInternalServiceSpy: Mocked<Pick<SectorGroupInternalService, 'getSectorGroups'>>;
   let sectorInternalServiceSpy: Mocked<Pick<SectorInternalService, 'getSectors'>>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
 
@@ -51,9 +49,7 @@ describe('SectorGroupOverviewComponent', () => {
     sectorGroupInternalServiceSpy = {
       getSectorGroups: vi.fn(),
     };
-    sectorGroupInternalServiceSpy.getSectorGroups.mockReturnValue(
-      of(sectorGroupOverview)
-    );
+    sectorGroupInternalServiceSpy.getSectorGroups.mockReturnValue(of(sectorGroupOverview));
 
     sectorInternalServiceSpy = {
       getSectors: vi.fn(),
@@ -100,12 +96,9 @@ describe('SectorGroupOverviewComponent', () => {
       size: 10,
     });
 
-    expect(sectorGroupInternalServiceSpy.getSectorGroups).toHaveBeenCalledWith(
-      'ch:1:sloid:7000:1',
-      0,
-      10,
-      ['designation,asc']
-    );
+    expect(sectorGroupInternalServiceSpy.getSectorGroups).toHaveBeenCalledWith('ch:1:sloid:7000:1', 0, 10, [
+      'designation,asc',
+    ]);
   });
 
   it('should navigate to sector group detail', () => {
@@ -117,28 +110,19 @@ describe('SectorGroupOverviewComponent', () => {
       sloid: 'ch:1:sloid:7000:1:1',
     });
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['ch:1:sloid:7000:1:1'],
-      expect.any(Object)
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['ch:1:sloid:7000:1:1'], expect.any(Object));
   });
 
   it('should navigate back to service point', () => {
     component.backToServicePoint();
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['../..'],
-      expect.any(Object)
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['../..'], expect.any(Object));
   });
 
   it('should navigate to add sector group', () => {
     component.addSectorGroup();
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(
-      ['add'],
-      expect.any(Object)
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['add'], expect.any(Object));
   });
 
   it('should set hasAtLeastTwoSectors to false ', () => {

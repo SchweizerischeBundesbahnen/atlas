@@ -4,17 +4,11 @@ import { PrmRecordingObligationComponent } from './prm-recording-obligation.comp
 import { StopPointInternalService } from '../../api/service/prm/stop-point/stop-point-internal.service';
 import { EMPTY, of } from 'rxjs';
 import { PermissionService } from '../auth/permission/permission.service';
-import {
-  adminPermissionServiceMock,
-  translateServiceProvider,
-} from '../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../app.testing.mocks';
 
 describe('PrmRecordingObligationComponent', () => {
   type StopPointInternalServiceMock = Mocked<
-    Pick<
-      StopPointInternalService,
-      'getRecordingObligation' | 'updateRecordingObligation'
-    >
+    Pick<StopPointInternalService, 'getRecordingObligation' | 'updateRecordingObligation'>
   >;
 
   let component: PrmRecordingObligationComponent;
@@ -47,9 +41,7 @@ describe('PrmRecordingObligationComponent', () => {
 
     expect(component).toBeTruthy();
     expect(component.recordingObligation).toBe(true);
-    expect(
-      stopPointInternalServiceMock.getRecordingObligation
-    ).toHaveBeenCalledExactlyOnceWith(undefined);
+    expect(stopPointInternalServiceMock.getRecordingObligation).toHaveBeenCalledExactlyOnceWith(undefined);
   });
 
   it('should toggle recording obligation', () => {

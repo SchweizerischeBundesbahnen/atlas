@@ -12,12 +12,8 @@ import { StopPointService } from '../../api/service/prm/stop-point/stop-point.se
 
 describe('NavigationSepodiPrmComponent', () => {
   type RouterMock = Mocked<Pick<Router, 'navigateByUrl'>>;
-  type StopPointServiceMock = Mocked<
-    Pick<StopPointService, 'getStopPointVersions'>
-  >;
-  type ServicePointServiceMock = Mocked<
-    Pick<ServicePointService, 'getServicePointVersions'>
-  >;
+  type StopPointServiceMock = Mocked<Pick<StopPointService, 'getStopPointVersions'>>;
+  type ServicePointServiceMock = Mocked<Pick<ServicePointService, 'getServicePointVersions'>>;
 
   let component: NavigationSepodiPrmComponent;
   let fixture: ComponentFixture<NavigationSepodiPrmComponent>;
@@ -27,14 +23,10 @@ describe('NavigationSepodiPrmComponent', () => {
 
   beforeEach(() => {
     stopPointServiceMock = {
-      getStopPointVersions: vi
-        .fn()
-        .mockName('StopPointService.getStopPointVersions'),
+      getStopPointVersions: vi.fn().mockName('StopPointService.getStopPointVersions'),
     };
     servicePointServiceMock = {
-      getServicePointVersions: vi
-        .fn()
-        .mockName('ServicePointService.getServicePointVersions'),
+      getServicePointVersions: vi.fn().mockName('ServicePointService.getServicePointVersions'),
     };
     routerMock = {
       navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
@@ -52,9 +44,7 @@ describe('NavigationSepodiPrmComponent', () => {
     fixture = TestBed.createComponent(NavigationSepodiPrmComponent);
     component = fixture.componentInstance;
     component.targetPage = 'stop-point';
-    servicePointServiceMock.getServicePointVersions.mockReturnValue(
-      of([BERN_WYLEREGG])
-    );
+    servicePointServiceMock.getServicePointVersions.mockReturnValue(of([BERN_WYLEREGG]));
   });
 
   describe('With Component Init', () => {
@@ -67,9 +57,7 @@ describe('NavigationSepodiPrmComponent', () => {
     });
 
     it('should navigate to the correct URL when targetPage is stop point', () => {
-      stopPointServiceMock.getStopPointVersions.mockReturnValue(
-        of([STOP_POINT])
-      );
+      stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
       component.sloid = 'ch:1:sloid:89008';
 
       component.init();
@@ -82,9 +70,7 @@ describe('NavigationSepodiPrmComponent', () => {
     });
 
     it('should navigate to the correct URL when targetPage is service point', () => {
-      stopPointServiceMock.getStopPointVersions.mockReturnValue(
-        of([STOP_POINT])
-      );
+      stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
       component.number = 8589008;
       component.targetPage = 'service-point';
 
@@ -98,9 +84,7 @@ describe('NavigationSepodiPrmComponent', () => {
     });
 
     it('should navigate to the correct URL when targetPage is traffic point table', () => {
-      stopPointServiceMock.getStopPointVersions.mockReturnValue(
-        of([STOP_POINT])
-      );
+      stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
       component.number = 8589008;
       component.targetPage = 'traffic-point-table';
 
@@ -114,9 +98,7 @@ describe('NavigationSepodiPrmComponent', () => {
     });
 
     it('should navigate to the correct URL when targetPage is traffic point detail', () => {
-      stopPointServiceMock.getStopPointVersions.mockReturnValue(
-        of([STOP_POINT])
-      );
+      stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
       component.sloid = 'ch:1:sloid:89008';
       component.number = 8589008;
       component.targetPage = 'traffic-point-detail';
@@ -131,9 +113,7 @@ describe('NavigationSepodiPrmComponent', () => {
     });
 
     it('should navigate to the correct URL when targetPage is platform table', () => {
-      stopPointServiceMock.getStopPointVersions.mockReturnValue(
-        of([STOP_POINT])
-      );
+      stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
       component.sloid = 'ch:1:sloid:89008';
       component.targetPage = 'platform-table';
 
@@ -147,9 +127,7 @@ describe('NavigationSepodiPrmComponent', () => {
     });
 
     it('should navigate to the correct URL when targetPage is platform detail', () => {
-      stopPointServiceMock.getStopPointVersions.mockReturnValue(
-        of([STOP_POINT])
-      );
+      stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
       component.parentSloid = 'ch:1:sloid:89008';
       component.sloid = 'ch:1:sloid:89008:0:1';
       component.targetPage = 'platform-detail';
@@ -167,15 +145,11 @@ describe('NavigationSepodiPrmComponent', () => {
       const sloid = BERN_WYLEREGG.sloid!;
       const mockResponse: ReadStopPointVersion[] = [];
 
-      stopPointServiceMock.getStopPointVersions.mockReturnValue(
-        of(mockResponse)
-      );
+      stopPointServiceMock.getStopPointVersions.mockReturnValue(of(mockResponse));
 
       component.checkStopPointExists(sloid);
 
-      expect(
-        stopPointServiceMock.getStopPointVersions
-      ).toHaveBeenCalledExactlyOnceWith(sloid);
+      expect(stopPointServiceMock.getStopPointVersions).toHaveBeenCalledExactlyOnceWith(sloid);
       expect(routerMock.navigateByUrl).toHaveBeenCalledExactlyOnceWith(
         `/prm-directory/stop-points/${sloid}/stop-point`
       );
@@ -187,15 +161,11 @@ describe('NavigationSepodiPrmComponent', () => {
       const number = 8589008;
       const mockResponse: ReadServicePointVersion[] = [BERN_WYLEREGG];
 
-      servicePointServiceMock.getServicePointVersions.mockReturnValue(
-        of(mockResponse)
-      );
+      servicePointServiceMock.getServicePointVersions.mockReturnValue(of(mockResponse));
 
       component.checkServicePointIsLocatedInSwitzerland(number);
 
-      expect(
-        servicePointServiceMock.getServicePointVersions
-      ).toHaveBeenCalledExactlyOnceWith(number);
+      expect(servicePointServiceMock.getServicePointVersions).toHaveBeenCalledExactlyOnceWith(number);
       expect(component.isSwissServicePoint).toBe(true);
     });
 
@@ -203,15 +173,11 @@ describe('NavigationSepodiPrmComponent', () => {
       const number = 8589008;
       const mockResponse: ReadServicePointVersion[] = [BERN_WYLEREGG];
 
-      servicePointServiceMock.getServicePointVersions.mockReturnValue(
-        of(mockResponse)
-      );
+      servicePointServiceMock.getServicePointVersions.mockReturnValue(of(mockResponse));
 
       component.checkServicePointIsLocatedInSwitzerland(number);
 
-      expect(
-        servicePointServiceMock.getServicePointVersions
-      ).toHaveBeenCalledExactlyOnceWith(number);
+      expect(servicePointServiceMock.getServicePointVersions).toHaveBeenCalledExactlyOnceWith(number);
       expect(component.isSwissServicePoint).toBe(true);
       expect(component.isStopPoint).toBe(true);
     });

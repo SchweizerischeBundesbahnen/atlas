@@ -4,10 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { By } from '@angular/platform-browser';
-import {
-  pageServiceMock,
-  translateServiceProvider,
-} from '../../app.testing.mocks';
+import { pageServiceMock, translateServiceProvider } from '../../app.testing.mocks';
 import { PageService } from '../../core/pages/page.service';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -17,16 +14,8 @@ describe('HomeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        RouterModule.forRoot([]),
-        HomeComponent,
-      ],
-      providers: [
-        translateServiceProvider,
-        { provide: PageService, useValue: pageServiceMock },
-      ],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterModule.forRoot([]), HomeComponent],
+      providers: [translateServiceProvider, { provide: PageService, useValue: pageServiceMock }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);

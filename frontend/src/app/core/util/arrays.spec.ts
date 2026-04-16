@@ -1,21 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import {
-  addElementsToArrayWhenNotUndefined,
-  toNumberArrayStrict,
-} from './arrays';
+import { addElementsToArrayWhenNotUndefined, toNumberArrayStrict } from './arrays';
 
 describe('Arrays Util Test', () => {
   it('addElementsToArrayWhenNotUndefined: should not add undefined elements to array', () => {
-    expect(
-      addElementsToArrayWhenNotUndefined(
-        undefined,
-        'one',
-        undefined,
-        'two',
-        'three',
-        undefined
-      )
-    ).toEqual(['one', 'two', 'three']);
+    expect(addElementsToArrayWhenNotUndefined(undefined, 'one', undefined, 'two', 'three', undefined)).toEqual([
+      'one',
+      'two',
+      'three',
+    ]);
   });
 
   it('toNumberArrayStrict: should map undefined to empty array', () => {

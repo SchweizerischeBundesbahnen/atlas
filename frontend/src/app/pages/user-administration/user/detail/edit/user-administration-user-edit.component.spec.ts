@@ -4,13 +4,7 @@ import { UserAdministrationUserEditComponent } from './user-administration-user-
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  ApplicationRole,
-  ApplicationType,
-  Permission,
-  User,
-  UserDisplayName,
-} from '../../../../../api';
+import { ApplicationRole, ApplicationType, Permission, User, UserDisplayName } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
@@ -23,12 +17,7 @@ describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
   let fixture: ComponentFixture<UserAdministrationUserEditComponent>;
 
-  let userAdministrationService: Mocked<
-    Pick<
-      UserAdministrationService,
-      'updateUserPermission' | 'getUserDisplayName'
-    >
-  >;
+  let userAdministrationService: Mocked<Pick<UserAdministrationService, 'updateUserPermission' | 'getUserDisplayName'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
   let dialogService: Mocked<Pick<DialogService, 'confirmLeave'>>;
 
@@ -41,9 +30,7 @@ describe('UserAdministrationUserEditComponent', () => {
       sbbUserId: 'u123456',
       displayName: 'UserDisplayName',
     };
-    userAdministrationService.getUserDisplayName.mockReturnValue(
-      of(userDisplayName)
-    );
+    userAdministrationService.getUserDisplayName.mockReturnValue(of(userDisplayName));
     notificationService = {
       success: vi.fn(),
     };
@@ -132,17 +119,17 @@ describe('UserAdministrationUserEditComponent', () => {
 
     component.saveUser();
 
-    expect(
-      userAdministrationService.updateUserPermission
-    ).toHaveBeenCalledExactlyOnceWith('u123456', ApplicationType.Ttfn, {
-      role: ApplicationRole.Reader,
-      application: ApplicationType.Ttfn,
-      permissionRestrictions: [],
-    });
-    expect(component.editMode).toBe(false);
-    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith(
-      'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
+    expect(userAdministrationService.updateUserPermission).toHaveBeenCalledExactlyOnceWith(
+      'u123456',
+      ApplicationType.Ttfn,
+      {
+        role: ApplicationRole.Reader,
+        application: ApplicationType.Ttfn,
+        permissionRestrictions: [],
+      }
     );
+    expect(component.editMode).toBe(false);
+    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
 
     userAdministrationService.updateUserPermission.mockReturnValue(
       new Observable<User>((subscriber) => subscriber.error('error'))

@@ -2,8 +2,7 @@
   <div class="mb-2">
     <atlas-link
       label="{{
-        'SEPODI.SERVICE_POINTS.WORKFLOW.PREVIOUS_WORKFLOW'
-          | translate: { number: currentWorkflow!.previousWorkflowId! }
+        'SEPODI.SERVICE_POINTS.WORKFLOW.PREVIOUS_WORKFLOW' | translate: { number: currentWorkflow!.previousWorkflowId! }
       }}"
       (linkClicked)="goToWorkflow(currentWorkflow!.previousWorkflowId!)"
     >
@@ -57,29 +56,21 @@
   <div class="row mb-3">
     <div class="col" data-cy="new-designation-official">
       <div class="font-bold-base">
-        {{
-          'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate
-        }}
+        {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}
       </div>
       @if (!currentWorkflow) {
         <div>{{ stopPoint.designationOfficial }}</div>
       }
 
       @if (currentWorkflow) {
-        <atlas-text-field
-          [formGroup]="form"
-          controlName="designationOfficial"
-        ></atlas-text-field>
+        <atlas-text-field [formGroup]="form" controlName="designationOfficial"></atlas-text-field>
       }
     </div>
 
     @if (oldDesignation) {
       <div class="col-8" data-cy="old-designation-official">
         <div class="font-bold-base">
-          {{
-            'SEPODI.SERVICE_POINTS.WORKFLOW.OLD_DESIGNATION_OFFICIAL'
-              | translate
-          }}
+          {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OLD_DESIGNATION_OFFICIAL' | translate }}
         </div>
         <div>{{ oldDesignation }}</div>
       </div>
@@ -88,38 +79,25 @@
 
   @if (currentWorkflow) {
     <div class="row mb-5">
-      @if (
-        stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality
-          ?.localityName
-      ) {
+      @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
         <div class="col" data-cy="municipality">
           <div class="font-bold-base">
             {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
           </div>
           <div>
-            {{
-              stopPoint.servicePointGeolocation!.swissLocation!
-                .localityMunicipality!.localityName
-            }}
+            {{ stopPoint.servicePointGeolocation!.swissLocation!.localityMunicipality!.localityName }}
           </div>
         </div>
       }
       <div class="col-8" data-cy="links">
         <span class="font-bold-base">
-          <em class="bi bi-geo-alt-fill"></em
-          >{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
+          <em class="bi bi-geo-alt-fill"></em>{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
         </span>
         @if (stopPoint.servicePointGeolocation?.lv95) {
-          <atlas-link
-            label="Swisstopo"
-            (linkClicked)="goToSwissTopo()"
-          ></atlas-link>
+          <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
           /
         }
-        <atlas-link
-          label="atlas"
-          (linkClicked)="goToAtlasStopPoint()"
-        ></atlas-link>
+        <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
       </div>
     </div>
   }
@@ -142,9 +120,7 @@
       {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS' | translate }}
 
       <atlas-form-info-icon
-        infoTitle="{{
-          'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_INFO' | translate
-        }}"
+        infoTitle="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_INFO' | translate }}"
       ></atlas-form-info-icon>
     </div>
     @if (form.enabled) {

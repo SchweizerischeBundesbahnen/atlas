@@ -37,9 +37,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
   let fixture: ComponentFixture<StopPointWorkflowDetailFormComponent>;
   let router: Router;
 
-  let stopPointWorkflowService: Mocked<
-    Pick<StopPointWorkflowService, 'getExaminants'>
-  >;
+  let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'getExaminants'>>;
 
   beforeEach(async () => {
     stopPointWorkflowService = {
@@ -73,8 +71,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
     component = fixture.componentInstance;
 
     component.stopPoint = BERN_WYLEREGG;
-    component.form =
-      StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
+    component.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
     fixture.detectChanges();
     router = TestBed.inject(Router);
   });
@@ -87,15 +84,11 @@ describe('StopPointWorkflowDetailFormComponent', () => {
 
     // Default examinant disabled state
     expect(component.form.controls.examinants.length).toBe(2);
-    expect(component.form.controls.examinants.at(0).controls.mail.value).toBe(
-      'atlas@sbb.ch'
-    );
+    expect(component.form.controls.examinants.at(0).controls.mail.value).toBe('atlas@sbb.ch');
     expect(component.form.controls.examinants.at(0).enabled).toBe(false);
 
     // Default empty row enabled
-    expect(
-      component.form.controls.examinants.at(1).controls.mail.value
-    ).toBeFalsy();
+    expect(component.form.controls.examinants.at(1).controls.mail.value).toBeFalsy();
     expect(component.form.controls.examinants.at(1).enabled).toBe(true);
   });
 
@@ -110,8 +103,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
   });
 
   it('should go to atlas', () => {
-    const url =
-      'http://localhost:4200/service-point-directory/service-points/8500039/service-point?id=1085';
+    const url = 'http://localhost:4200/service-point-directory/service-points/8500039/service-point?id=1085';
     vi.spyOn(window, 'open').mockImplementation(() => null);
     vi.spyOn(router, 'serializeUrl').mockReturnValue(url);
 

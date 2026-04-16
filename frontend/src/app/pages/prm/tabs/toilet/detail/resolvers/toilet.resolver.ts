@@ -28,6 +28,5 @@ export class ToiletResolver {
   }
 }
 
-export const toiletResolver: ResolveFn<Array<ToiletVersion>> = (
-  route: ActivatedRouteSnapshot
-) => inject(ToiletResolver).resolve(route);
+export const toiletResolver: ResolveFn<Array<ToiletVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(ToiletResolver).resolve(route);

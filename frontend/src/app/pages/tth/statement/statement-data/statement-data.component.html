@@ -1,18 +1,11 @@
 <h1 class="font-bold-4xl mt-5">
-  {{
-    statement()
-      ? ('TTH.STATEMENT.STATEMENT' | translate) + ' ' + statement().id
-      : ('TTH.STATEMENT.NEW' | translate)
-  }}
+  {{ statement() ? ('TTH.STATEMENT.STATEMENT' | translate) + ' ' + statement().id : ('TTH.STATEMENT.NEW' | translate) }}
 </h1>
 
 @if (!isNew()) {
   @if (statement().dossierId) {
     <atlas-link
-      label="{{
-        'TTH.STATEMENT.DOSSIER_LINK'
-          | translate: { dossierId: statement().dossierId }
-      }}"
+      label="{{ 'TTH.STATEMENT.DOSSIER_LINK' | translate: { dossierId: statement().dossierId } }}"
       (linkClicked)="goToDossier(statement().dossierId!)"
     >
     </atlas-link>
@@ -32,8 +25,7 @@
   <div class="label-input-row">
     <atlas-label-field fieldLabel="TTH.STATEMENT.TOPIC" />
     <div class="col-8">
-      <atlas-text-field [formGroup]="form()" controlName="topic">
-      </atlas-text-field>
+      <atlas-text-field [formGroup]="form()" controlName="topic"> </atlas-text-field>
     </div>
   </div>
 </div>

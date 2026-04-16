@@ -1,11 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FileUploadError } from './file-upload-error';
 import { FileDropDirective } from './file-drop/file-drop.directive';
 import { NgStyle } from '@angular/common';
@@ -83,9 +76,7 @@ export class FileUploadComponent {
   }
 
   get combinedFileSize() {
-    return this.uploadedFiles
-      .map((file) => file.size)
-      .reduce((sum, current) => sum + current, 0);
+    return this.uploadedFiles.map((file) => file.size).reduce((sum, current) => sum + current, 0);
   }
 
   private validateFile(file: File) {
@@ -116,11 +107,7 @@ export class FileUploadComponent {
   }
 
   private fileCountErrorAlreadyAdded() {
-    return (
-      this.errorFiles.filter(
-        (error) => error.errorMessage === 'COMMON.FILEUPLOAD.ERROR.FILE_COUNT'
-      ).length > 0
-    );
+    return this.errorFiles.filter((error) => error.errorMessage === 'COMMON.FILEUPLOAD.ERROR.FILE_COUNT').length > 0;
   }
 
   private addFileError(file: File, errorMessage: string) {
@@ -136,9 +123,7 @@ export class FileUploadComponent {
   }
 
   fileDeleted(file: { name: string }) {
-    this.uploadedFiles = this.uploadedFiles.filter(
-      (item) => item.name !== file.name
-    );
+    this.uploadedFiles = this.uploadedFiles.filter((item) => item.name !== file.name);
     this.clearErrors();
     this.uploadedFilesChange.emit(this.uploadedFiles);
   }

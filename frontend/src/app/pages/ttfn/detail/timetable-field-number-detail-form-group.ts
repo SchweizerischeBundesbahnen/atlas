@@ -1,10 +1,6 @@
 import { BaseDetailFormGroup } from '../../../core/model/base-detail-form-group';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  MeanOfTransport,
-  Status,
-  TimetableFieldNumberVersion,
-} from '../../../api';
+import { MeanOfTransport, Status, TimetableFieldNumberVersion } from '../../../api';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
@@ -34,9 +30,7 @@ export class TimetableFieldNumberDetailFormGroupBuilder {
     WhitespaceValidator.blankOrEmptySpaceSurrounding,
   ];
 
-  static getFormGroup(
-    version?: TimetableFieldNumberVersion
-  ): FormGroup<TimetableFieldNumberDetailFormGroup> {
+  static getFormGroup(version?: TimetableFieldNumberVersion): FormGroup<TimetableFieldNumberDetailFormGroup> {
     return new FormGroup<TimetableFieldNumberDetailFormGroup>(
       {
         ttfnid: new FormControl(version?.ttfnid),
@@ -51,81 +45,39 @@ export class TimetableFieldNumberDetailFormGroupBuilder {
         }),
         number: new FormControl(version?.number, {
           nonNullable: true,
-          validators: [
-            Validators.required,
-            AtlasFieldLengthValidator.length_50,
-            AtlasCharsetsValidator.ttfnNumber,
-          ],
+          validators: [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.ttfnNumber],
         }),
         status: new FormControl(version?.status),
-        descriptionOutwardLine1: new FormControl(
-          version?.descriptionOutwardLine1,
-          {
-            nonNullable: true,
-            validators: [
-              ...TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
-              Validators.required,
-            ],
-          }
-        ),
-        descriptionOutwardLine2: new FormControl(
-          version?.descriptionOutwardLine2,
-          {
-            nonNullable: true,
-            validators:
-              TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
-          }
-        ),
-        descriptionOutwardLine3: new FormControl(
-          version?.descriptionOutwardLine3,
-          {
-            nonNullable: true,
-            validators:
-              TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
-          }
-        ),
-        descriptionReturnLine1: new FormControl(
-          version?.descriptionReturnLine1,
-          {
-            nonNullable: true,
-            validators:
-              TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
-          }
-        ),
-        descriptionReturnLine2: new FormControl(
-          version?.descriptionReturnLine2,
-          {
-            nonNullable: true,
-            validators:
-              TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
-          }
-        ),
-        descriptionReturnLine3: new FormControl(
-          version?.descriptionReturnLine3,
-          {
-            nonNullable: true,
-            validators:
-              TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
-          }
-        ),
-        meanOfTransport: new FormControl(
-          version?.meanOfTransport ? [version.meanOfTransport] : [],
-          {
-            nonNullable: true,
-            validators: [
-              Validators.required,
-              SelectionValidator.requiredSelected(1),
-            ],
-          }
-        ),
-        validFrom: new FormControl(
-          version?.validFrom ? moment(version.validFrom) : null,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version?.validTo ? moment(version.validTo) : null,
-          [Validators.required]
-        ),
+        descriptionOutwardLine1: new FormControl(version?.descriptionOutwardLine1, {
+          nonNullable: true,
+          validators: [...TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS, Validators.required],
+        }),
+        descriptionOutwardLine2: new FormControl(version?.descriptionOutwardLine2, {
+          nonNullable: true,
+          validators: TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
+        }),
+        descriptionOutwardLine3: new FormControl(version?.descriptionOutwardLine3, {
+          nonNullable: true,
+          validators: TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
+        }),
+        descriptionReturnLine1: new FormControl(version?.descriptionReturnLine1, {
+          nonNullable: true,
+          validators: TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
+        }),
+        descriptionReturnLine2: new FormControl(version?.descriptionReturnLine2, {
+          nonNullable: true,
+          validators: TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
+        }),
+        descriptionReturnLine3: new FormControl(version?.descriptionReturnLine3, {
+          nonNullable: true,
+          validators: TimetableFieldNumberDetailFormGroupBuilder.DESCRIPTION_VALIDATORS,
+        }),
+        meanOfTransport: new FormControl(version?.meanOfTransport ? [version.meanOfTransport] : [], {
+          nonNullable: true,
+          validators: [Validators.required, SelectionValidator.requiredSelected(1)],
+        }),
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [Validators.required]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [Validators.required]),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),

@@ -10,14 +10,9 @@ import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-fo
 @Component({
   selector: 'atlas-client-credential-administration',
   templateUrl: './user-administration-client-detail.component.html',
-  imports: [
-    UserAdministrationClientEditComponent,
-    UserAdministrationClientCreateComponent,
-  ],
+  imports: [UserAdministrationClientEditComponent, UserAdministrationClientCreateComponent],
 })
-export class UserAdministrationClientDetailComponent
-  implements OnInit, DetailFormComponent
-{
+export class UserAdministrationClientDetailComponent implements OnInit, DetailFormComponent {
   activatedRoute = inject(ActivatedRoute);
   userPermissionGivenClientService = inject(UserPermissionGivenClientService);
 

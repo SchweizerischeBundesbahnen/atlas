@@ -46,11 +46,7 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
   }
 
   init() {
-    const sepodiPages = [
-      'service-point',
-      'traffic-point-table',
-      'traffic-point-detail',
-    ];
+    const sepodiPages = ['service-point', 'traffic-point-table', 'traffic-point-detail'];
     this.isTargetViewSepodi = sepodiPages.includes(this.targetPage);
     if (!this.isTargetViewSepodi) {
       this.checkServicePointIsLocatedInSwitzerland(this.number!);
@@ -65,19 +61,13 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 
     switch (this.targetPage) {
       case 'stop-point':
-        this.router.navigateByUrl(
-          `/prm-directory/stop-points/${this.sloid}/stop-point`
-        );
+        this.router.navigateByUrl(`/prm-directory/stop-points/${this.sloid}/stop-point`);
         break;
       case 'service-point':
-        this.router.navigateByUrl(
-          `/service-point-directory/service-points/${this.number}/service-point`
-        );
+        this.router.navigateByUrl(`/service-point-directory/service-points/${this.number}/service-point`);
         break;
       case 'traffic-point-table':
-        this.router.navigateByUrl(
-          `/service-point-directory/service-points/${this.number}/traffic-point-elements`
-        );
+        this.router.navigateByUrl(`/service-point-directory/service-points/${this.number}/traffic-point-elements`);
         break;
       case 'traffic-point-detail':
         this.router.navigateByUrl(
@@ -85,14 +75,10 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
         );
         break;
       case 'platform-table':
-        this.router.navigateByUrl(
-          `/prm-directory/stop-points/${this.sloid}/platforms`
-        );
+        this.router.navigateByUrl(`/prm-directory/stop-points/${this.sloid}/platforms`);
         break;
       case 'platform-detail':
-        this.router.navigateByUrl(
-          `/prm-directory/stop-points/${this.parentSloid}/platforms/${this.sloid}/detail`
-        );
+        this.router.navigateByUrl(`/prm-directory/stop-points/${this.parentSloid}/platforms/${this.sloid}/detail`);
         break;
       default:
         this.router.navigateByUrl('');
@@ -102,24 +88,17 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
   checkStopPointExists(sloid: string) {
     this.stopPointService.getStopPointVersions(sloid).subscribe((stoppoint) => {
       if (stoppoint.length === 0) {
-        this.router.navigateByUrl(
-          `/prm-directory/stop-points/${sloid}/stop-point`
-        );
+        this.router.navigateByUrl(`/prm-directory/stop-points/${sloid}/stop-point`);
       }
     });
   }
 
   checkServicePointIsLocatedInSwitzerland(number: number) {
-    this.servicePointService
-      .getServicePointVersions(number)
-      .subscribe((servicePointVersion) => {
-        const servicePoint =
-          servicePointVersion[servicePointVersion.length - 1];
-        this.isSwissServicePoint =
-          Countries.fromUicCode(servicePoint.number.uicCountryCode)
-            .enumCountry === Country.Switzerland;
-        this.isStopPoint =
-          servicePointVersion.filter((sp) => sp.stopPoint).length > 0;
-      });
+    this.servicePointService.getServicePointVersions(number).subscribe((servicePointVersion) => {
+      const servicePoint = servicePointVersion[servicePointVersion.length - 1];
+      this.isSwissServicePoint =
+        Countries.fromUicCode(servicePoint.number.uicCountryCode).enumCountry === Country.Switzerland;
+      this.isStopPoint = servicePointVersion.filter((sp) => sp.stopPoint).length > 0;
+    });
   }
 }

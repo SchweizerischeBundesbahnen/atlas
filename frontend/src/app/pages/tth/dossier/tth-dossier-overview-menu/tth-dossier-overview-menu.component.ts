@@ -37,27 +37,15 @@ export class TthDossierOverviewMenuComponent {
   row = input.required<TthDossier>();
   column = input.required<TableColumn<TthDossier>>();
 
-  allowedDossierStatusForDissolve = [
-    DossierStatus.Accepted,
-    DossierStatus.Rejected,
-    DossierStatus.Moved,
-  ];
+  allowedDossierStatusForDissolve = [DossierStatus.Accepted, DossierStatus.Rejected, DossierStatus.Moved];
 
-  isHearingStatusActive = computed(
-    () => this.hearingStatus() === HearingStatus.Active
-  );
+  isHearingStatusActive = computed(() => this.hearingStatus() === HearingStatus.Active);
 
-  isDossierCancelable = computed(
-    () => this.row().dossierStatus === DossierStatus.Added
-  );
+  isDossierCancelable = computed(() => this.row().dossierStatus === DossierStatus.Added);
 
-  isDossierDissolvable = computed(() =>
-    this.allowedDossierStatusForDissolve.includes(this.row().dossierStatus!)
-  );
+  isDossierDissolvable = computed(() => this.allowedDossierStatusForDissolve.includes(this.row().dossierStatus!));
 
-  isDossierCompletable = computed(
-    () => this.isDossierCancelable() || this.isDossierDissolvable()
-  );
+  isDossierCompletable = computed(() => this.isDossierCancelable() || this.isDossierDissolvable());
 
   reloadTable = output();
 
@@ -71,18 +59,14 @@ export class TthDossierOverviewMenuComponent {
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.dossierInternalService
-            .completeDossier(this.row().id!, status)
-            .subscribe(() => {
-              this.notificationService.success(
-                'TTH.DOSSIER.NOTIFICATION.EDIT_SUCCESS'
-              );
-              this.router
-                .navigate(['dossiers'], {
-                  relativeTo: this.route.parent,
-                })
-                .then();
-            });
+          this.dossierInternalService.completeDossier(this.row().id!, status).subscribe(() => {
+            this.notificationService.success('TTH.DOSSIER.NOTIFICATION.EDIT_SUCCESS');
+            this.router
+              .navigate(['dossiers'], {
+                relativeTo: this.route.parent,
+              })
+              .then();
+          });
         }
       });
   }

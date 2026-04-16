@@ -13,14 +13,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
 import { SwissCanton } from '../../../../api';
 
-const dialogService: Mocked<
-  Pick<DialogService, 'openDialogDataWithConfirmationResult'>
-> = {
+const dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>> = {
   openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
 };
-const dossierInternalService: Mocked<
-  Pick<DossierInternalService, 'completeDossier'>
-> = {
+const dossierInternalService: Mocked<Pick<DossierInternalService, 'completeDossier'>> = {
   completeDossier: vi.fn().mockReturnValue(of(undefined)),
 };
 
@@ -76,9 +72,7 @@ describe('TthDossierOverviewMenuComponent', () => {
   it('should open dialog when completeDossier is called', () => {
     component.completeDossier(DossierStatus.Accepted);
 
-    expect(
-      dialogService.openDialogDataWithConfirmationResult
-    ).toHaveBeenCalledWith({
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledWith({
       title: 'TTH.DOSSIER.NOTIFICATION.COMPLETE_TITLE',
       message: 'TTH.DOSSIER.NOTIFICATION.COMPLETE_MESSAGE',
       confirmText: 'DIALOG.OK',
@@ -87,28 +81,19 @@ describe('TthDossierOverviewMenuComponent', () => {
   });
 
   it('should call service when dialog is confirmed', () => {
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(true)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
     component.completeDossier(DossierStatus.Accepted);
 
-    expect(dossierInternalService.completeDossier).toHaveBeenCalledWith(
-      123,
-      DossierStatus.Accepted
-    );
-    expect(notificationService.success).toHaveBeenCalledWith(
-      'TTH.DOSSIER.NOTIFICATION.EDIT_SUCCESS'
-    );
+    expect(dossierInternalService.completeDossier).toHaveBeenCalledWith(123, DossierStatus.Accepted);
+    expect(notificationService.success).toHaveBeenCalledWith('TTH.DOSSIER.NOTIFICATION.EDIT_SUCCESS');
     expect(router.navigate).toHaveBeenCalledWith(['dossiers'], {
       relativeTo: expect.any(Object),
     });
   });
 
   it('should not call service when dialog is canceled', () => {
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(
-      of(false)
-    );
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(false));
     dossierInternalService.completeDossier.mockClear();
 
     component.completeDossier(DossierStatus.Accepted);

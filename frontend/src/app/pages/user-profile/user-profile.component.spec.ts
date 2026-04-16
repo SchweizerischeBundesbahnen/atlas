@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { UserProfileComponent } from './user-profile.component';
-import {
-  adminUserServiceMock,
-  translateServiceProvider,
-} from '../../app.testing.mocks';
+import { adminUserServiceMock, translateServiceProvider } from '../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 import { UserService } from '../../core/auth/user/user.service';
 import { Component } from '@angular/core';

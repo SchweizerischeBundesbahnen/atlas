@@ -18,12 +18,7 @@ import { Canton } from '../../../../core/cantons/Canton';
 @Component({
   selector: 'atlas-tth-change-canton-dialog',
   templateUrl: './tth-change-canton-dialog.component.html',
-  imports: [
-    BaseChangeDialogComponent,
-    ReactiveFormsModule,
-    SelectComponent,
-    NgOptimizedImage,
-  ],
+  imports: [BaseChangeDialogComponent, ReactiveFormsModule, SelectComponent, NgOptimizedImage],
 })
 export class TthChangeCantonDialogComponent implements OnInit {
   formGroup!: FormGroup<TthChangeCantonFormGroup>;
@@ -45,9 +40,7 @@ export class TthChangeCantonDialogComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = new FormGroup<TthChangeCantonFormGroup>({
-      cantonChangeComment: new FormControl('', [
-        AtlasFieldLengthValidator.length_280,
-      ]),
+      cantonChangeComment: new FormControl('', [AtlasFieldLengthValidator.length_280]),
       swissCanton: new FormControl(this.data.swissCanton),
     });
     this.showSwissCantonDropdown = !!this.data.swissCanton;
@@ -68,9 +61,7 @@ export class TthChangeCantonDialogComponent implements OnInit {
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.notificationService.success(
-            'TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS'
-          );
+          this.notificationService.success('TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS');
           this.dialogRef.close(true);
         });
     }

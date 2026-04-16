@@ -6,9 +6,7 @@
   @if (!isNew) {
     <div class="font-xl mb-2">
       <span data-cy="total-range">
-        <atlas-date-range-text
-          [dateRange]="maxValidity"
-        ></atlas-date-range-text>
+        <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
       </span>
     </div>
   }
@@ -116,23 +114,16 @@
       </div>
 
       <div class="col-4 d-flex flex-column" [formGroup]="form">
-        <mat-label class="font-bold-lg"
-          >{{ 'SEPODI.LOADING_POINTS.CONNECTION_POINT' | translate }}
-        </mat-label>
+        <mat-label class="font-bold-lg">{{ 'SEPODI.LOADING_POINTS.CONNECTION_POINT' | translate }} </mat-label>
         <atlas-spacer height="20px"></atlas-spacer>
         <mat-radio-group formControlName="connectionPoint">
           @for (option of [true, false]; track option) {
             <mat-radio-button [value]="option">
-              {{
-                'SEPODI.LOADING_POINTS.CONNECTION_POINT_VALUE.' + option
-                  | translate
-              }}
+              {{ 'SEPODI.LOADING_POINTS.CONNECTION_POINT_VALUE.' + option | translate }}
             </mat-radio-button>
           }
         </mat-radio-group>
-        <atlas-field-error
-          [control]="form.get('connectionPoint')"
-        ></atlas-field-error>
+        <atlas-field-error [control]="form.get('connectionPoint')"></atlas-field-error>
       </div>
     </div>
 
@@ -144,10 +135,7 @@
     @if (!isNew) {
       <div class="mb-3">
         <mat-divider class="mt-4 mb-4"></mat-divider>
-        <atlas-user-detail-info
-          [record]="selectedVersion"
-          [applicationType]="'SEPODI'"
-        ></atlas-user-detail-info>
+        <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'SEPODI'"></atlas-user-detail-info>
       </div>
     }
   </atlas-detail-page-content>

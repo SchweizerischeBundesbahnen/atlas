@@ -49,27 +49,18 @@ export class UserAdministrationUserEditComponent implements OnInit {
   }
 
   saveUser(): void {
-    const userPermission = ApplicationPermissionFormGroupBuilder.formToModel(
-      this.formGroup
-    );
+    const userPermission = ApplicationPermissionFormGroupBuilder.formToModel(this.formGroup);
     this.formGroup.disable();
     this.userAdministrationService
-      .updateUserPermission(
-        this.user().sbbUserId,
-        userPermission.application,
-        userPermission
-      )
+      .updateUserPermission(this.user().sbbUserId, userPermission.application, userPermission)
       .subscribe({
         next: (user) => {
           this.userPermissionGivenUserService.user = user;
           this.editMode = false;
           this.userPermissionGivenUserService.loadFormGroup(
-            this.userPermissionGivenUserService.getCurrentForm()!.controls
-              .application.value!
+            this.userPermissionGivenUserService.getCurrentForm()!.controls.application.value!
           );
-          this.notificationService.success(
-            'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
-          );
+          this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
           this.convertUserPermissionToRecord();
         },
         error: () => this.formGroup.enable(),
@@ -85,8 +76,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
         if (result) {
           this.editMode = false;
           this.userPermissionGivenUserService.loadFormGroup(
-            this.userPermissionGivenUserService.getCurrentForm()!.controls
-              .application.value!
+            this.userPermissionGivenUserService.getCurrentForm()!.controls.application.value!
           );
         }
       });
@@ -101,13 +91,10 @@ export class UserAdministrationUserEditComponent implements OnInit {
   }
 
   private convertUserPermissionToRecord(): void {
-    const permissionsFromUserModelAsArray = Array.from(
-      this.userPermissionGivenUserService.user.permissions
-    );
+    const permissionsFromUserModelAsArray = Array.from(this.userPermissionGivenUserService.user.permissions);
 
-    this.userRecord =
-      ConvertUserPermissionToRecordHelper.convertUserPermissionToRecord(
-        permissionsFromUserModelAsArray
-      );
+    this.userRecord = ConvertUserPermissionToRecordHelper.convertUserPermissionToRecord(
+      permissionsFromUserModelAsArray
+    );
   }
 }

@@ -3,12 +3,7 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientCredentialCreateFormGroup } from './create-form-group';
 import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
@@ -59,9 +54,7 @@ export class UserAdministrationClientCreateComponent {
     ]),
   });
 
-  clientCredentialAdministrationService = inject(
-    ClientCredentialAdministrationService
-  );
+  clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
   notificationService = inject(NotificationService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -74,24 +67,14 @@ export class UserAdministrationClientCreateComponent {
       const permission = {
         ...this.form.value,
       } as ClientCredentialCreate;
-      this.clientCredentialAdministrationService
-        .createClientCredential(permission)
-        .subscribe({
-          next: () => {
-            this.router
-              .navigate([
-                Pages.USER_ADMINISTRATION.path,
-                Pages.CLIENTS.path,
-                permission.clientCredentialId,
-              ])
-              .then(() =>
-                this.notificationService.success(
-                  'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
-                )
-              );
-          },
-          error: () => (this.saveEnabled = true),
-        });
+      this.clientCredentialAdministrationService.createClientCredential(permission).subscribe({
+        next: () => {
+          this.router
+            .navigate([Pages.USER_ADMINISTRATION.path, Pages.CLIENTS.path, permission.clientCredentialId])
+            .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
+        },
+        error: () => (this.saveEnabled = true),
+      });
     }
   }
 

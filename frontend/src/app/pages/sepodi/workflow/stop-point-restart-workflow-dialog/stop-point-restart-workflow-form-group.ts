@@ -14,16 +14,8 @@ export interface StopPointRestartWorkflowFormGroup {
 export class StopPointRestartWorkflowFormGroupBuilder {
   static initFormGroup(): FormGroup<StopPointRestartWorkflowFormGroup> {
     return new FormGroup<StopPointRestartWorkflowFormGroup>({
-      firstName: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(50),
-        AtlasCharsetsValidator.iso88591,
-      ]),
-      lastName: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(50),
-        AtlasCharsetsValidator.iso88591,
-      ]),
+      firstName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
+      lastName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
       organisation: new FormControl('', [
         Validators.required,
         Validators.maxLength(255),
@@ -35,10 +27,7 @@ export class StopPointRestartWorkflowFormGroupBuilder {
         AtlasFieldLengthValidator.comments,
         AtlasCharsetsValidator.iso88591,
       ]),
-      mail: new FormControl('', [
-        Validators.required,
-        AtlasCharsetsValidator.email,
-      ]),
+      mail: new FormControl('', [Validators.required, AtlasCharsetsValidator.email]),
       designationOfficial: new FormControl('', [
         Validators.required,
         Validators.minLength(2),

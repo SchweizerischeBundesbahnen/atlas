@@ -3,12 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TableFilterComponent } from './table-filter.component';
 import { By } from '@angular/platform-browser';
 import moment from 'moment';
-import {
-  MatChipGrid,
-  MatChipInput,
-  MatChipInputEvent,
-  MatChipRow,
-} from '@angular/material/chips';
+import { MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow } from '@angular/material/chips';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   MatDatepickerControl,
@@ -46,8 +41,7 @@ import { translateServiceProvider } from '../../../app.testing.mocks';
 class MockMatChipInputComponent {
   @Input() matChipInputFor: any;
   @Input() formControl = new FormControl();
-  @Output() matChipInputTokenEnd: EventEmitter<MatChipInputEvent> =
-    new EventEmitter<MatChipInputEvent>();
+  @Output() matChipInputTokenEnd: EventEmitter<MatChipInputEvent> = new EventEmitter<MatChipInputEvent>();
 }
 
 @Component({
@@ -77,15 +71,9 @@ class MockAtlasSelectComponent {
   template: '',
 })
 class MockMatDatepickerInputComponent {
-  @Output() dateChange: EventEmitter<
-    Partial<MatDatepickerInputEvent<Moment | null, any>>
-  > = new EventEmitter();
+  @Output() dateChange: EventEmitter<Partial<MatDatepickerInputEvent<Moment | null, any>>> = new EventEmitter();
 
-  @Input() matDatepicker!: MatDatepickerPanel<
-    MatDatepickerControl<any>,
-    any | null,
-    any
-  >;
+  @Input() matDatepicker!: MatDatepickerPanel<MatDatepickerControl<any>, any | null, any>;
   @Input() formControl: FormControl = new FormControl();
 }
 
@@ -112,12 +100,7 @@ describe('TableFilterComponent', () => {
       ],
     }).overrideComponent(TableFilterComponent, {
       remove: {
-        imports: [
-          MatDatepickerInput,
-          MatChipInput,
-          MatChipGrid,
-          SelectComponent,
-        ],
+        imports: [MatDatepickerInput, MatChipInput, MatChipGrid, SelectComponent],
       },
       add: {
         imports: [
@@ -134,21 +117,14 @@ describe('TableFilterComponent', () => {
   });
 
   it('should emitSearch on multi select change', () => {
-    const multiSelectFilter = new TableFilterMultiSelect(
-      '',
-      '',
-      ['one', 'two'],
-      1,
-      'col-3'
-    );
+    const multiSelectFilter = new TableFilterMultiSelect('', '', ['one', 'two'], 1, 'col-3');
     component.filterConfigurations = [[multiSelectFilter]];
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
-    const mockAtlasSelectComponent: MockAtlasSelectComponent =
-      fixture.debugElement.query(
-        By.directive(MockAtlasSelectComponent)
-      ).componentInstance;
+    const mockAtlasSelectComponent: MockAtlasSelectComponent = fixture.debugElement.query(
+      By.directive(MockAtlasSelectComponent)
+    ).componentInstance;
     mockAtlasSelectComponent.selectChanged.emit({ value: ['one'] });
 
     expect(multiSelectFilter.getActiveSearch()).toEqual(['one']);
@@ -166,10 +142,9 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
-    const mockMatDatepickerInputComponent: MockMatDatepickerInputComponent =
-      fixture.debugElement.query(
-        By.directive(MockMatDatepickerInputComponent)
-      ).componentInstance;
+    const mockMatDatepickerInputComponent: MockMatDatepickerInputComponent = fixture.debugElement.query(
+      By.directive(MockMatDatepickerInputComponent)
+    ).componentInstance;
 
     const momentInputValue: Moment = moment('31.12.2021', 'DD.MM.yyyy');
     dateSelect.formControl.setValue(momentInputValue.toDate());
@@ -178,9 +153,7 @@ describe('TableFilterComponent', () => {
       value: momentInputValue,
     });
 
-    expect(dateSelect.getActiveSearch()).toEqual(
-      moment('31.12.2021', 'DD.MM.yyyy').toDate()
-    );
+    expect(dateSelect.getActiveSearch()).toEqual(moment('31.12.2021', 'DD.MM.yyyy').toDate());
     expect(component.searchEvent.emit).toHaveBeenCalledExactlyOnceWith();
   });
 
@@ -190,10 +163,9 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
-    const mockMatDatepickerInputComponent: MockMatDatepickerInputComponent =
-      fixture.debugElement.query(
-        By.directive(MockMatDatepickerInputComponent)
-      ).componentInstance;
+    const mockMatDatepickerInputComponent: MockMatDatepickerInputComponent = fixture.debugElement.query(
+      By.directive(MockMatDatepickerInputComponent)
+    ).componentInstance;
 
     const momentInputValue: Moment = moment('31.12.1600', 'DD.MM.yyyy');
     dateSelect.formControl.setErrors({ min: 'Date too early!' });
@@ -211,10 +183,9 @@ describe('TableFilterComponent', () => {
     component.filterConfigurations = [[chipSelect]];
     fixture.detectChanges();
 
-    const mockMatChipInputComponent: MockMatChipInputComponent =
-      fixture.debugElement.query(
-        By.directive(MockMatChipInputComponent)
-      ).componentInstance;
+    const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
+      By.directive(MockMatChipInputComponent)
+    ).componentInstance;
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
     const chipInputClearSpy = vi.fn();
@@ -237,10 +208,9 @@ describe('TableFilterComponent', () => {
     component.filterConfigurations = [[chipSelect]];
     fixture.detectChanges();
 
-    const mockMatChipInputComponent: MockMatChipInputComponent =
-      fixture.debugElement.query(
-        By.directive(MockMatChipInputComponent)
-      ).componentInstance;
+    const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
+      By.directive(MockMatChipInputComponent)
+    ).componentInstance;
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
     const chipInputClearSpy = vi.fn();
@@ -264,9 +234,7 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
-    const matChipRow: MatChipRow = fixture.debugElement.query(
-      By.directive(MatChipRow)
-    ).componentInstance;
+    const matChipRow: MatChipRow = fixture.debugElement.query(By.directive(MatChipRow)).componentInstance;
     matChipRow.removed.emit();
 
     expect(chipSelect.getActiveSearch()).toEqual([]);
@@ -286,10 +254,9 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
-    const boSelectComponent: BusinessOrganisationSelectComponent =
-      fixture.debugElement.query(
-        By.directive(BusinessOrganisationSelectComponent)
-      ).componentInstance;
+    const boSelectComponent: BusinessOrganisationSelectComponent = fixture.debugElement.query(
+      By.directive(BusinessOrganisationSelectComponent)
+    ).componentInstance;
     boSelectComponent.boSelectionChanged.emit({
       sboid: 'Test',
     } as BusinessOrganisation);
@@ -311,10 +278,9 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
-    const ttfnSelectComponent: TimetableFieldNumberSelectComponent =
-      fixture.debugElement.query(
-        By.directive(TimetableFieldNumberSelectComponent)
-      ).componentInstance;
+    const ttfnSelectComponent: TimetableFieldNumberSelectComponent = fixture.debugElement.query(
+      By.directive(TimetableFieldNumberSelectComponent)
+    ).componentInstance;
     ttfnSelectComponent.ttfnSelectionChanged.emit({
       ttfnid: 'Test',
     } as TimetableFieldNumber);
@@ -336,10 +302,9 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
-    const tuSelectComponent: TransportCompanySelectComponent =
-      fixture.debugElement.query(
-        By.directive(TransportCompanySelectComponent)
-      ).componentInstance;
+    const tuSelectComponent: TransportCompanySelectComponent = fixture.debugElement.query(
+      By.directive(TransportCompanySelectComponent)
+    ).componentInstance;
     tuSelectComponent.tuSelectionChanged.emit({ number: 'Test' });
 
     expect(searchSelect.getActiveSearch()).toEqual({ number: 'Test' });
@@ -347,18 +312,13 @@ describe('TableFilterComponent', () => {
   });
 
   it('should set single search', () => {
-    const singleSearch = new TableFilterSingleSearch(
-      1,
-      'SEPODI.GEOLOCATION.DISTRICT',
-      'col-3'
-    );
+    const singleSearch = new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT', 'col-3');
     component.filterConfigurations = [[singleSearch]];
     fixture.detectChanges();
 
-    const mockMatChipInputComponent: MockMatChipInputComponent =
-      fixture.debugElement.query(
-        By.directive(MockMatChipInputComponent)
-      ).componentInstance;
+    const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
+      By.directive(MockMatChipInputComponent)
+    ).componentInstance;
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
     const chipInputClearSpy = vi.fn();
@@ -388,10 +348,9 @@ describe('TableFilterComponent', () => {
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
 
-    const slideToggleComponent: AtlasSlideToggleComponent =
-      fixture.debugElement.query(
-        By.directive(AtlasSlideToggleComponent)
-      ).componentInstance;
+    const slideToggleComponent: AtlasSlideToggleComponent = fixture.debugElement.query(
+      By.directive(AtlasSlideToggleComponent)
+    ).componentInstance;
 
     slideToggleComponent.toggleChange.emit(true);
     fixture.detectChanges();

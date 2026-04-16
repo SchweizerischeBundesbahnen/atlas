@@ -45,10 +45,7 @@ describe('TthUtils', () => {
       },
     ];
     //when
-    const result = TthUtils.sortByTimetableHearingYear(
-      timetableHearingYear,
-      false
-    );
+    const result = TthUtils.sortByTimetableHearingYear(timetableHearingYear, false);
     //then
     expect(result[0].timetableYear).toBe(2002);
     expect(result[1].timetableYear).toBe(2004);
@@ -75,10 +72,7 @@ describe('TthUtils', () => {
       },
     ];
     //when
-    const result = TthUtils.sortByTimetableHearingYear(
-      timetableHearingYear,
-      true
-    );
+    const result = TthUtils.sortByTimetableHearingYear(timetableHearingYear, true);
     //then
     expect(result[2].timetableYear).toBe(2002);
     expect(result[1].timetableYear).toBe(2004);
@@ -87,11 +81,7 @@ describe('TthUtils', () => {
 
   it('should map transportcompanies to id and filter undefined values', () => {
     //when
-    const result = TthUtils.toTransportCompanyIds([
-      { id: 1 },
-      { id: undefined },
-      { id: 3 },
-    ]);
+    const result = TthUtils.toTransportCompanyIds([{ id: 1 }, { id: undefined }, { id: 3 }]);
     //then
     expect(result).toEqual([1, 3]);
   });

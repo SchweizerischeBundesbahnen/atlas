@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
@@ -86,22 +80,14 @@ export class RelationComponent<RECORD_TYPE> {
     return DateService.getDateFormatted(date);
   }
 
-  getValue(
-    row: RECORD_TYPE,
-    column: TableColumn<RECORD_TYPE>
-  ): string | Date | number {
+  getValue(row: RECORD_TYPE, column: TableColumn<RECORD_TYPE>): string | Date | number {
     if (column.formatAsDate) {
-      return this.formatDate(
-        this.readValueFromObject(row, column.value ?? column.valuePath!) as Date
-      );
+      return this.formatDate(this.readValueFromObject(row, column.value ?? column.valuePath!) as Date);
     }
     return this.readValueFromObject(row, column.value ?? column.valuePath!);
   }
 
-  private readValueFromObject(
-    obj: RECORD_TYPE,
-    path: string
-  ): string | Date | number {
+  private readValueFromObject(obj: RECORD_TYPE, path: string): string | Date | number {
     const objectPath = path.split('.');
     return objectPath.reduce((prev, curr) => prev[curr], obj as any);
   }
@@ -145,9 +131,7 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   private getValuePathFromColumnName(column: string): string {
-    const filteredColumn = this.tableColumns.filter(
-      (i) => i.columnDef == column
-    )[0];
+    const filteredColumn = this.tableColumns.filter((i) => i.columnDef == column)[0];
     return filteredColumn.value ?? filteredColumn.valuePath!;
   }
 

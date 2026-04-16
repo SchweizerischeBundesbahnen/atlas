@@ -56,13 +56,11 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
   }
 
   closeDialog() {
-    this.detailHelperService
-      .confirmLeaveDirtyForm(this.formGroup)
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.dialogRef.close(true);
-        }
-      });
+    this.detailHelperService.confirmLeaveDirtyForm(this.formGroup).subscribe((confirmed) => {
+      if (confirmed) {
+        this.dialogRef.close(true);
+      }
+    });
   }
 
   private populateUserDataFormFromAuthenticatedUser() {
@@ -77,10 +75,9 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
   restartWorkflow() {
     ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
-      const stopPointRestartWorkflow =
-        StopPointRestartWorkflowFormGroupBuilder.buildStopPointRestartWorkflow(
-          this.formGroup
-        );
+      const stopPointRestartWorkflow = StopPointRestartWorkflowFormGroupBuilder.buildStopPointRestartWorkflow(
+        this.formGroup
+      );
       this.doRestart(stopPointRestartWorkflow);
     }
   }
@@ -89,9 +86,7 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
     this.stopPointWorkflowService
       .restartStopPointWorkflow(this.data.workflowId, stopPointRestartWorkflow)
       .subscribe((workflow) => {
-        this.notificationService.success(
-          'WORKFLOW.NOTIFICATION.CHECK.RESTARTED'
-        );
+        this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.RESTARTED');
         this.formGroup.disable();
         this.dialogRef.close();
         this.navigateToWorkflow(workflow.id!);
@@ -100,9 +95,7 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
 
   private navigateToWorkflow(id: number) {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router
-        .navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, id])
-        .then(() => {});
+      this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, id]).then(() => {});
     });
   }
 }

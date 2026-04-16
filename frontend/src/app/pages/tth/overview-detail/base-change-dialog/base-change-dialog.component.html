@@ -10,14 +10,10 @@
       <br />
     </div>
     @if (data.type === 'SINGLE') {
-      <span class="font-regular-lg message">{{
-        data.message | translate
-      }}</span>
+      <span class="font-regular-lg message">{{ data.message | translate }}</span>
     }
     @if (!data.type || data.type === 'MULTIPLE') {
-      <span class="font-regular-lg message">{{
-        data.message | translate: { tthsLength: data.tths.length }
-      }}</span>
+      <span class="font-regular-lg message">{{ data.message | translate: { tthsLength: data.tths.length } }}</span>
     }
   </div>
   <ng-content></ng-content>
@@ -30,18 +26,10 @@
     ></atlas-form-comment>
   </div>
   <mat-dialog-actions class="justify-content-end">
-    <button
-      (click)="closeDialog()"
-      class="atlas-primary-btn me-3"
-      data-cy="dialog-cancel-button"
-    >
+    <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
       {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
     </button>
-    <button
-      (click)="changeEvent.emit()"
-      class="atlas-primary-btn primary-color-btn"
-      data-cy="dialog-confirm-button"
-    >
+    <button (click)="changeEvent.emit()" class="atlas-primary-btn primary-color-btn" data-cy="dialog-confirm-button">
       {{ data.confirmText ?? 'DIALOG.OK' | translate }}
     </button>
   </mat-dialog-actions>

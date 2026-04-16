@@ -25,11 +25,10 @@ const statement: TimetableHearingStatementV2 = {
   },
   documents: [],
 };
-const timetableHearingStatementInternalService: Mocked<
-  Pick<TimetableHearingStatementInternalService, 'getStatement'>
-> = {
-  getStatement: vi.fn().mockReturnValue(of(statement)),
-};
+const timetableHearingStatementInternalService: Mocked<Pick<TimetableHearingStatementInternalService, 'getStatement'>> =
+  {
+    getStatement: vi.fn().mockReturnValue(of(statement)),
+  };
 const dossier: TthDossier = {
   swissCanton: SwissCanton.Bern,
   boContactMail: 'info@bls.ch',
@@ -41,10 +40,7 @@ const dossier: TthDossier = {
   dossierStatus: DossierStatus.Added,
 };
 const dossierInternalService: Mocked<
-  Pick<
-    DossierInternalService,
-    'createDossier' | 'updateDossier' | 'sendDossierToBo' | 'completeDossier'
-  >
+  Pick<DossierInternalService, 'createDossier' | 'updateDossier' | 'sendDossierToBo' | 'completeDossier'>
 > = {
   createDossier: vi.fn().mockReturnValue(of(dossier)),
   updateDossier: vi.fn().mockReturnValue(of(dossier)),
@@ -55,16 +51,11 @@ const dossierInternalService: Mocked<
 const notificationService: Mocked<Pick<NotificationService, 'success'>> = {
   success: vi.fn(),
 };
-const openDossierInMailService: Mocked<
-  Pick<OpenCantonDossierInMailService, 'openDossierInMailClient'>
-> = {
+const openDossierInMailService: Mocked<Pick<OpenCantonDossierInMailService, 'openDossierInMailClient'>> = {
   openDossierInMailClient: vi.fn(),
 };
 const dialogService: Mocked<
-  Pick<
-    DialogService,
-    'openDialogDataWithConfirmationResult' | 'openDialogDataWithCustomResult'
-  >
+  Pick<DialogService, 'openDialogDataWithConfirmationResult' | 'openDialogDataWithCustomResult'>
 > = {
   openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
   openDialogDataWithCustomResult: vi.fn().mockReturnValue(of([1, 2])),
@@ -111,9 +102,7 @@ describe('DossierDetailComponent', () => {
     it('should open statement select dialog', () => {
       component.openAddStatementsDialog();
 
-      expect(
-        dialogService.openDialogDataWithCustomResult
-      ).toHaveBeenCalledTimes(1);
+      expect(dialogService.openDialogDataWithCustomResult).toHaveBeenCalledTimes(1);
       expect(component.selectedStatements).toEqual([1, 2]);
     });
   });
@@ -152,9 +141,7 @@ describe('DossierDetailComponent', () => {
 
     it('should open internal feedback mail', () => {
       component.openInternalFeedbackMail();
-      expect(
-        openDossierInMailService.openDossierInMailClient
-      ).toHaveBeenCalledTimes(1);
+      expect(openDossierInMailService.openDossierInMailClient).toHaveBeenCalledTimes(1);
     });
 
     it('should not enable question fields if answer already here', () => {
@@ -186,9 +173,7 @@ describe('DossierDetailComponent', () => {
     it('should complete to bo', () => {
       component.completeDossier(DossierStatus.Canceled);
 
-      expect(
-        dialogService.openDialogDataWithConfirmationResult
-      ).toHaveBeenCalledTimes(1);
+      expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
       expect(dossierInternalService.completeDossier).toHaveBeenCalledTimes(1);
     });
 

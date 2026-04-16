@@ -74,10 +74,7 @@
       </form>
     </mat-step>
 
-    <mat-step
-      [completed]="isStepThreeCompl$ | async"
-      [label]="'WORKFLOW.DECISION.DECISION' | translate"
-    >
+    <mat-step [completed]="isStepThreeCompl$ | async" [label]="'WORKFLOW.DECISION.DECISION' | translate">
       <atlas-decision-form [form]="decision"></atlas-decision-form>
 
       <div class="d-flex justify-content-center mt-4">

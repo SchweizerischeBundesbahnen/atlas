@@ -31,17 +31,13 @@ export class KeepaliveService {
         passive: true,
       })
     );
-    this.interruptionEventPipe = merge(...fromEvents).pipe(
-      throttleTime(this.EVENT_THROTTLE_TIME_MS)
-    );
+    this.interruptionEventPipe = merge(...fromEvents).pipe(throttleTime(this.EVENT_THROTTLE_TIME_MS));
   }
 
   startWatching(timeoutFunc: () => void): void {
     this.createIdleInterval(timeoutFunc);
     this.eventsSubscription?.unsubscribe();
-    this.zone.runOutsideAngular(() =>
-      this.createEventsSubscription(timeoutFunc)
-    );
+    this.zone.runOutsideAngular(() => this.createEventsSubscription(timeoutFunc));
   }
 
   stopWatching(): void {
@@ -67,12 +63,7 @@ export class KeepaliveService {
   private createIdleInterval(timeoutFunc: () => void): void {
     this.zone.runOutsideAngular(() => {
       this.intervalId = <number>(
-        (<unknown>(
-          setInterval(
-            () => this.intervalFunction(timeoutFunc),
-            this.INTERVAL_FREQUENCY_MS
-          )
-        ))
+        (<unknown>setInterval(() => this.intervalFunction(timeoutFunc), this.INTERVAL_FREQUENCY_MS))
       );
     });
   }

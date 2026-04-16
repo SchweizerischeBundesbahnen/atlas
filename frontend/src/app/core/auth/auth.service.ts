@@ -3,23 +3,13 @@ import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { UserService } from './user/user.service';
 import { PageService } from '../pages/page.service';
 import { TokenUser, User } from './user/user';
-import {
-  catchError,
-  defaultIfEmpty,
-  EMPTY,
-  from,
-  Observable,
-  of,
-  take,
-} from 'rxjs';
+import { catchError, defaultIfEmpty, EMPTY, from, Observable, of, take } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Role } from './role';
 import { Router } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
 
-export const BC_TOKEN = new InjectionToken<
-  (logoutFn: () => void) => BroadcastChannel
->('BroadcastChannel creation', {
+export const BC_TOKEN = new InjectionToken<(logoutFn: () => void) => BroadcastChannel>('BroadcastChannel creation', {
   providedIn: 'root',
   factory: () => (logoutFn: () => void) => {
     const bc = new BroadcastChannel('logout');
@@ -62,10 +52,7 @@ export class AuthService {
         this._bc = this.createBC(() => this.logout());
         localStorage.setItem(this._tryLoginKey, this._tryLoginValue);
 
-        const user = this.buildUser(
-          loginResponse.userData,
-          loginResponse.accessToken
-        );
+        const user = this.buildUser(loginResponse.userData, loginResponse.accessToken);
         return this.userService.setCurrentUserAndLoadPermissions(user);
       }),
       switchMap(() => {
@@ -79,10 +66,7 @@ export class AuthService {
         return true;
       }),
       catchError((error) => {
-        console.log(
-          'Error occurred during authentication initialisation',
-          error
-        );
+        console.log('Error occurred during authentication initialisation', error);
         return EMPTY;
       }),
       defaultIfEmpty(true),
@@ -91,10 +75,7 @@ export class AuthService {
   }
 
   login() {
-    sessionStorage.setItem(
-      this._returnUrlKey,
-      `${location.pathname}${location.search}${location.hash}`
-    );
+    sessionStorage.setItem(this._returnUrlKey, `${location.pathname}${location.search}${location.hash}`);
     this.oidcSecurityService.authorize();
   }
 

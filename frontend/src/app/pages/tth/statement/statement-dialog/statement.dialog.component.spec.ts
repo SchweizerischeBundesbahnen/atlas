@@ -41,19 +41,12 @@ describe('StatementDialogComponent', () => {
   let component: StatementDialogComponent;
   let fixture: ComponentFixture<StatementDialogComponent>;
 
-  mockTimetableHearingStatementsService.updateHearingStatement.mockReturnValue(
-    of(statement)
-  );
+  mockTimetableHearingStatementsService.updateHearingStatement.mockReturnValue(of(statement));
 
   beforeEach(async () => {
     dialogRefSpy = { close: vi.fn() };
     await TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        FormModule,
-        StatementDialogComponent,
-        MockAtlasButtonComponent,
-      ],
+      imports: [AppTestingModule, FormModule, StatementDialogComponent, MockAtlasButtonComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: form },
         { provide: NotificationService, useValue: notificationServiceSpy },
@@ -76,9 +69,7 @@ describe('StatementDialogComponent', () => {
     component.changeCantonAndAddComment();
     //then
     expect(dialogRefSpy.close).toHaveBeenCalledTimes(1);
-    expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS'
-    );
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
   });
 
   it('should go back to edit mode', () => {
@@ -93,18 +84,12 @@ describe('StatementDialogComponent', () => {
     expect(title.nativeElement.textContent).toBe('TTH.STATEMENT.DIALOG.TITLE');
 
     const dropdownLabel = fixture.debugElement.query(By.css('div > span'));
-    expect(dropdownLabel.nativeElement.textContent).to.contain(
-      'TTH.STATEMENT.DIALOG.TEXT'
-    );
+    expect(dropdownLabel.nativeElement.textContent).to.contain('TTH.STATEMENT.DIALOG.TEXT');
 
-    const dropdownSelect = fixture.debugElement.query(
-      By.css('atlas-form-comment')
-    );
+    const dropdownSelect = fixture.debugElement.query(By.css('atlas-form-comment'));
     expect(dropdownSelect.nativeElement).toBeTruthy();
 
-    const matDialogActions = fixture.debugElement.query(
-      By.css('mat-dialog-actions')
-    );
+    const matDialogActions = fixture.debugElement.query(By.css('mat-dialog-actions'));
     expect(matDialogActions.nativeElement).toBeTruthy();
   });
 });

@@ -24,10 +24,7 @@ export class ReferencePointCreationHintService {
       .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
-          const url = this.router.url.substring(
-            0,
-            this.router.url.lastIndexOf('/')
-          );
+          const url = this.router.url.substring(0, this.router.url.lastIndexOf('/'));
           this.router.navigate([url, Pages.REFERENCE_POINT.path, 'add']).then();
         }
       });

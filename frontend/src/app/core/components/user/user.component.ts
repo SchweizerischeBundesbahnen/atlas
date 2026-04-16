@@ -56,10 +56,7 @@ export class UserComponent implements OnInit {
     this.isAdmin = this.userService.isAdmin;
     this.permissions = this.userService.permissions.filter(
       (permission) =>
-        !(
-          permission.application === ApplicationType.TimetableHearing &&
-          permission.role === ApplicationRole.Reader
-        )
+        !(permission.application === ApplicationType.TimetableHearing && permission.role === ApplicationRole.Reader)
     );
   }
 

@@ -1,10 +1,9 @@
 <div class="search-form" data-cy="search-sepodi-form">
   <div class="d-flex flex-column">
     <span class="font-bold-sm pb-2">
-      {{ 'SLOID' }} -
-      {{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH' | translate }} -
+      {{ 'SLOID' }} - {{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH' | translate }} -
       {{ 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL' | translate }}
-      <atlas-form-info-icon/>
+      <atlas-form-info-icon />
     </span>
   </div>
 
@@ -23,24 +22,11 @@
     loadingText="{{ 'COMMON.LOADING' | translate }}"
   >
     <ng-template let-item="item" ng-option-tmp>
-      <span
-        [ngClass]="isSearchBySloid ? 'bold' : ''"
-        [innerHTML]="item.sloid"
-      ></span>
+      <span [ngClass]="isSearchBySloid ? 'bold' : ''" [innerHTML]="item.sloid"></span>
       <span>&nbsp;&nbsp;&nbsp;</span>
-      <span
-        [innerHTML]="
-          item.number.toString()
-            | searchResultHighlight: searchValue
-            | splitServicePointNumber
-        "
-      ></span>
+      <span [innerHTML]="item.number.toString() | searchResultHighlight: searchValue | splitServicePointNumber"></span>
       <span>&nbsp;&nbsp;&nbsp;</span>
-      <span
-        [innerHTML]="
-          item.designationOfficial | searchResultHighlight: searchValue
-        "
-      ></span>
+      <span [innerHTML]="item.designationOfficial | searchResultHighlight: searchValue"></span>
     </ng-template>
   </ng-select>
 </div>

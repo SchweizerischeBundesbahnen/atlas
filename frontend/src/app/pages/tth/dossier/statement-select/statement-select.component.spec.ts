@@ -18,11 +18,10 @@ const statement: TimetableHearingStatementV2 = {
   },
   documents: [],
 };
-const timetableHearingStatementInternalService: Mocked<
-  Pick<TimetableHearingStatementInternalService, 'getStatement'>
-> = {
-  getStatement: vi.fn().mockReturnValue(of(statement)),
-};
+const timetableHearingStatementInternalService: Mocked<Pick<TimetableHearingStatementInternalService, 'getStatement'>> =
+  {
+    getStatement: vi.fn().mockReturnValue(of(statement)),
+  };
 
 describe('StatementSelectComponent', () => {
   let component: StatementSelectComponent;
@@ -73,9 +72,7 @@ describe('StatementSelectComponent', () => {
   });
 
   it('should go to statement', () => {
-    const windowOpenSpy = vi
-      .spyOn(window, 'open')
-      .mockImplementation(() => null);
+    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
 
     component.goToStatement(statement);
 

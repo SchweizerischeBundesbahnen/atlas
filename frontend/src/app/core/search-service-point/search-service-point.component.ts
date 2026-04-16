@@ -1,25 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ServicePointSearchResult } from '../../api';
-import {
-  catchError,
-  concat,
-  debounceTime,
-  distinctUntilChanged,
-  Observable,
-  of,
-  Subject,
-} from 'rxjs';
+import { catchError, concat, debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { TranslatePipe } from '@ngx-translate/core';
-import {
-  ServicePointSearch,
-  ServicePointSearchType,
-} from './service-point-search';
-import {
-  NgOptionTemplateDirective,
-  NgSelectComponent,
-} from '@ng-select/ng-select';
+import { ServicePointSearch, ServicePointSearchType } from './service-point-search';
+import { NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { SearchResultHighlightPipe } from './search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from './split-service-point-number.pipe';
@@ -82,10 +68,7 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   get notFoundText(): string {
-    if (
-      !this._searchValue ||
-      this._searchValue.length >= this.MIN_LENGTH_TERM
-    ) {
+    if (!this._searchValue || this._searchValue.length >= this.MIN_LENGTH_TERM) {
       return this.getNotFoundTranslatedLabel();
     }
     return this.getTypeToSearchTranslatedLabel();
@@ -139,21 +122,17 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   private searchSwissOnlyServicePointAsStopPoint(term: string) {
-    return this.servicePointInternalService
-      .searchSwissOnlyServicePoints({ value: term })
-      .pipe(
-        catchError(() => of([])),
-        tap(() => (this.loading = false))
-      );
+    return this.servicePointInternalService.searchSwissOnlyServicePoints({ value: term }).pipe(
+      catchError(() => of([])),
+      tap(() => (this.loading = false))
+    );
   }
 
   private searchServicePoint(term: string) {
-    return this.servicePointInternalService
-      .searchServicePoints({ value: term })
-      .pipe(
-        catchError(() => of([])),
-        tap(() => (this.loading = false))
-      );
+    return this.servicePointInternalService.searchServicePoints({ value: term }).pipe(
+      catchError(() => of([])),
+      tap(() => (this.loading = false))
+    );
   }
 
   initSearchValue(searchValue: string) {
@@ -166,9 +145,7 @@ export class SearchServicePointComponent implements OnInit {
       .navigate(
         [
           this.searchType.navigationPath,
-          this.searchType === ServicePointSearch.SePoDi
-            ? searchResultSelected.number
-            : searchResultSelected.sloid,
+          this.searchType === ServicePointSearch.SePoDi ? searchResultSelected.number : searchResultSelected.sloid,
         ],
         { relativeTo: this.route }
       )

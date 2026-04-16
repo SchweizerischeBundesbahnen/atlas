@@ -10,10 +10,7 @@ export class AtLeastOneValidator {
     };
   }
 
-  static validate(
-    firstField: AbstractControl | null,
-    secondField: AbstractControl | null
-  ) {
+  static validate(firstField: AbstractControl | null, secondField: AbstractControl | null) {
     const firstFieldValue = firstField?.value;
     const secondFieldValue = secondField?.value;
     if (!firstFieldValue && !secondFieldValue) {
@@ -28,10 +25,7 @@ export class AtLeastOneValidator {
     }
   }
 
-  static populateWithValidationErrors(
-    controlForm: AbstractControl | null,
-    error: ValidationErrors
-  ) {
+  static populateWithValidationErrors(controlForm: AbstractControl | null, error: ValidationErrors) {
     if (!controlForm?.errors) {
       controlForm?.setErrors(error);
     } else {

@@ -13,9 +13,7 @@ describe('DossierSelectComponent', () => {
   let component: DossierSelectComponent;
   let fixture: ComponentFixture<DossierSelectComponent>;
 
-  const dossierInternalService: Mocked<
-    Pick<DossierInternalService, 'getOverview'>
-  > = {
+  const dossierInternalService: Mocked<Pick<DossierInternalService, 'getOverview'>> = {
     getOverview: vi.fn(),
   };
 

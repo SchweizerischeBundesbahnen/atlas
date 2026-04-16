@@ -40,20 +40,13 @@
     </atlas-select>
   </div>
   <div class="d-flex flex-column col-6 pt-4 ps-5" [formGroup]="form">
-    <mat-checkbox
-      formControlName="mainReferencePoint"
-      data-cy="mainReferencePoint"
-    >
+    <mat-checkbox formControlName="mainReferencePoint" data-cy="mainReferencePoint">
       {{ 'PRM.REFERENCE_POINTS.MAIN_REFERENCE_POINT' | translate }}
       <atlas-form-info-icon
-        infoTitle="{{
-          'PRM.REFERENCE_POINTS.MAIN_REFERENCE_POINT_INFO' | translate
-        }}"
+        infoTitle="{{ 'PRM.REFERENCE_POINTS.MAIN_REFERENCE_POINT_INFO' | translate }}"
       ></atlas-form-info-icon>
     </mat-checkbox>
-    <atlas-field-error
-      [control]="form.get('mainReferencePoint')"
-    ></atlas-field-error>
+    <atlas-field-error [control]="form.get('mainReferencePoint')"></atlas-field-error>
   </div>
 </div>
 <div class="col-12 d-flex mt-4">
