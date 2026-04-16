@@ -20,6 +20,7 @@ public class RelationVersionJsonProcessor implements ItemProcessor<RelationVersi
         .contrastingAreas(version.getContrastingAreas())
         .stepFreeAccess(version.getStepFreeAccess())
         .referencePointElementType(version.getReferencePointElementType())
+        .status(version.getStatus())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
         .creationDate(version.getCreationDate())

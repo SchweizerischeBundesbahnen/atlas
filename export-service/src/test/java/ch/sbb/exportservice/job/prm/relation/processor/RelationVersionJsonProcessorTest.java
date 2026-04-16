@@ -7,6 +7,7 @@ import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion;
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ class RelationVersionJsonProcessorTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .creationDate(LocalDateTime.of(2024, 2, 7, 20, 0))
         .editionDate(LocalDateTime.of(2024, 2, 7, 20, 0))
+        .status(Status.VALIDATED)
         .build();
 
     RelationVersionJsonProcessor processor = new RelationVersionJsonProcessor();
@@ -49,6 +51,7 @@ class RelationVersionJsonProcessorTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .creationDate(LocalDateTime.of(2024, 2, 7, 20, 0))
         .editionDate(LocalDateTime.of(2024, 2, 7, 20, 0))
+        .status(Status.VALIDATED)
         .build();
 
     ReadRelationVersionModel result = processor.process(entity);
