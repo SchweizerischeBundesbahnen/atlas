@@ -61,7 +61,7 @@
     "angular-server-side-configuration": "^21.0.0",
     "bootstrap": "^5.3",
     "jwt-decode": "^4.0.0",
-    "maplibre-gl": "5.22.0",
+    "maplibre-gl": "5.23.0",
     "moment": "^2.30",
     "proj4": "^2.12.1",
     "rxjs": "^7.8",
