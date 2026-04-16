@@ -3,14 +3,11 @@ package ch.sbb.atlas.servicepointdirectory.module.geodata.controller;
 import static ch.sbb.atlas.imports.ItemProcessResponseStatus.FAILED;
 import static ch.sbb.atlas.imports.ItemProcessResponseStatus.SUCCESS;
 
-import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
-import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.api.ServicePointGeoDataApiInternal;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.model.UpdateGeoLocationResultContainer;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceJobService;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -23,19 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ServicePointGeoDataApiInternalController implements ServicePointGeoDataApiInternal {
 
-  private final GeoReferenceService geoReferenceService;
   private final GeoReferenceJobService geoReferenceJobService;
-
   private final ServicePointGeoDataService servicePointGeoDataService;
 
   @Override
   public VectorTile.Tile getServicePointsGeoData(Integer z, Integer x, Integer y, Optional<LocalDate> validAtDate) {
     return servicePointGeoDataService.getGeoData(z, x, y, validAtDate.orElse(LocalDate.now()));
-  }
-
-  @Override
-  public GeoReference getLocationInformation(CoordinatePair coordinatePair) {
-    return geoReferenceService.getGeoReference(coordinatePair);
   }
 
   @Override

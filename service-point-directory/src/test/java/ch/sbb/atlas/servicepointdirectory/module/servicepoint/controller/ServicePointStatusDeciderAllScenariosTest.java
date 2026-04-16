@@ -5,13 +5,13 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.client.location.LocationGeoClient;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
@@ -20,13 +20,13 @@ import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointGeolocationMapper;
@@ -48,10 +48,10 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @MockitoBean
-  private GeoReferenceService geoReferenceService;
+  private LocationService locationService;
 
   @MockitoBean
-  private LocationService locationService;
+  private LocationGeoClient locationGeoClient;
 
   private final ServicePointVersionRepository repository;
   private final ServicePointApiV1Controller servicePointController;
@@ -65,11 +65,19 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
 
   @BeforeEach
   void createDefaultVersion() {
-    GeoReference geoReference = GeoReference.builder().country(Country.SWITZERLAND).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReference);
-    doCallRealMethod().when(geoReferenceService).addGeoReferenceInformation(any());
-
     when(locationService.generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND)).thenReturn("ch:1:sloid:1");
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(
+        GeoReference.builder()
+            .country(Country.SWITZERLAND)
+            .swissCanton(SwissCanton.BERN)
+            .swissDistrictNumber(242)
+            .swissDistrictName("Biel/Bienne")
+            .swissMunicipalityNumber(371)
+            .swissMunicipalityName("Biel/Bienne")
+            .swissLocalityName("Biel/Bienne")
+            .height(435.0)
+            .build()
+    );
   }
 
   @AfterEach
@@ -599,7 +607,6 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
-
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -1104,7 +1111,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   @Test
   void newStopPointWhenValidityIsNotSwissLocationShouldSetStatusToValidated() throws Exception {
     GeoReference geoReference = GeoReference.builder().country(Country.ITALY).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReference);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReference);
     CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     mvc.perform(post("/v1/service-points")
             .contentType(contentType)
@@ -1166,7 +1173,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   void scenario21WhenStopPointWithFrenchGeolocationAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft()
       throws Exception {
     GeoReference geoReferenceFrance = GeoReference.builder().country(Country.FRANCE).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceFrance);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceFrance);
     CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint1.setDesignationOfficial("A Hausen");
@@ -1177,7 +1184,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
 
     GeoReference geoReferenceSwitzerland = GeoReference.builder().country(Country.SWITZERLAND).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
     UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint3.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
@@ -1281,7 +1288,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   void whenStopPointWithFrenchGeolocationAndUpdateStopPointWithNewSwissGeolocationAndNewNameThenStopPointDraft()
       throws Exception {
     GeoReference geoReferenceFrance = GeoReference.builder().country(Country.FRANCE).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceFrance);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceFrance);
     CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint1.setDesignationOfficial("A Hausen");
@@ -1292,7 +1299,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
 
     GeoReference geoReferenceSwitzerland = GeoReference.builder().country(Country.SWITZERLAND).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
     UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint3.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
@@ -1340,7 +1347,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   @Test
   void whenStopPointWithNoCountryGeolocationThenStopPointValidated() throws Exception {
     GeoReference geoReferenceCountryNull = GeoReference.builder().country(null).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceCountryNull);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceCountryNull);
     CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint1.setDesignationOfficial("A Hausen");
@@ -1373,7 +1380,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   @Test
   void whenStopPointWithGeolocationAbroadAndUpdateStopPointWithNullGeolocationThenStopPointValidated() throws Exception {
     GeoReference geoReferenceFrance = GeoReference.builder().country(Country.FRANCE).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceFrance);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceFrance);
     CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint1.setDesignationOfficial("A Hausen");
@@ -1384,7 +1391,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
 
     GeoReference geoReferenceWithNullCountry = GeoReference.builder().country(Country.SWITZERLAND).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceWithNullCountry);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceWithNullCountry);
     UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint3.setServicePointGeolocation(null);
     stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
@@ -1404,7 +1411,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   @Test
   void whenStopPointWithGeolocationAbroadAndUpdateStopPointWithNullCountryGeolocationThenStopPointValidated() throws Exception {
     GeoReference geoReferenceFrance = GeoReference.builder().country(Country.FRANCE).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceFrance);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceFrance);
     CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint1.setDesignationOfficial("A Hausen");
@@ -1415,7 +1422,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
 
     GeoReference geoReferenceWithNullCountry = GeoReference.builder().country(null).build();
-    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceWithNullCountry);
+    when(locationGeoClient.getLocationInformation(any(), anyBoolean())).thenReturn(geoReferenceWithNullCountry);
     UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint3.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
@@ -1973,5 +1980,4 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[3].designationLong", is("designation long 1")))
         .andExpect(jsonPath("$[3].stopPointType", is(StopPointType.ORDERLY.toString())));
   }
-
 }

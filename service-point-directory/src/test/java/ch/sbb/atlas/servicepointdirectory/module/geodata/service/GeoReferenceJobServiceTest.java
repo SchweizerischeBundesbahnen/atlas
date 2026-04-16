@@ -2,10 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.module.geodata.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.api.servicepoint.GeoReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -29,10 +28,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 class GeoReferenceJobServiceTest {
 
   @MockitoBean
-  private GeoReferenceService geoReferenceService;
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @MockitoBean
-  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+  private ServicePointGeoDataService servicePointGeoDataService;
 
   @Autowired
   private ServicePointVersionRepository servicePointVersionRepository;
@@ -53,22 +52,12 @@ class GeoReferenceJobServiceTest {
     //given
     ServicePointVersion servicePointVersion = servicePointService.createAndPublish(ServicePointTestData.getBernWyleregg(),
         Optional.empty(), List.of());
-    GeoReference geoReference = GeoReference.builder()
-        .country(Country.SWITZERLAND)
-        .swissCanton(SwissCanton.BERN)
-        .swissDistrictNumber(246)
-        .swissDistrictName("Bern-Mittelland")
-        .swissMunicipalityNumber(351)
-        .swissMunicipalityName("Bern")
-        .swissLocalityName("Bern")
-        .height(555D)
-        .build();
     ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-    when(geoReferenceService.getGeoReference(any(), eq(servicePointGeolocation.getHeight() == null)))
-        .thenReturn(geoReference);
+    when(servicePointGeoDataService.getGeoReferenceInformation(any(ServicePointGeolocation.class))).thenReturn(
+        servicePointGeolocation);
+
     //when
-    UpdateGeoLocationResultContainer result = geoReferenceJobService.updateGeoLocation(
-        servicePointVersion.getId());
+    UpdateGeoLocationResultContainer result = geoReferenceJobService.updateGeoLocation(servicePointVersion.getId());
 
     //then
     assertThat(result).isNull();
@@ -81,7 +70,7 @@ class GeoReferenceJobServiceTest {
     bernWyleregg.setValidTo(LocalDate.of(9999, 1, 31));
     ServicePointVersion servicePointVersion = servicePointService.createAndPublish(bernWyleregg,
         Optional.empty(), List.of());
-    GeoReference geoReference = GeoReference.builder()
+    ServicePointGeolocation servicePointGeolocationWithUpdatedGeo = ServicePointGeolocation.builder()
         .country(Country.SWITZERLAND)
         .swissCanton(SwissCanton.VAUD)
         .swissDistrictNumber(2230)
@@ -90,13 +79,15 @@ class GeoReferenceJobServiceTest {
         .swissMunicipalityName("Château-d'Oex")
         .swissLocalityName("La Lécherette")
         .height(1201.0)
+        .east(123.2)
+        .north(22132.12)
+        .spatialReference(SpatialReference.LV95)
         .build();
-    ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-    when(geoReferenceService.getGeoReference(any(), eq(servicePointGeolocation.getHeight() == null)))
-        .thenReturn(geoReference);
+    when(servicePointGeoDataService.getGeoReferenceInformation(any(ServicePointGeolocation.class))).thenReturn(
+        servicePointGeolocationWithUpdatedGeo);
+
     //when
-    UpdateGeoLocationResultContainer result = geoReferenceJobService.updateGeoLocation(
-        servicePointVersion.getId());
+    UpdateGeoLocationResultContainer result = geoReferenceJobService.updateGeoLocation(servicePointVersion.getId());
 
     //then
     assertThat(result).isNotNull();
@@ -108,12 +99,14 @@ class GeoReferenceJobServiceTest {
     assertThat(versionsResult).hasSize(2);
 
     ServicePointGeolocation updatedServicePointGeolocationResult = result.getUpdatedServicePointGeolocation();
-    assertThat(updatedServicePointGeolocationResult.getSwissCanton()).isEqualTo(geoReference.getSwissCanton());
+    assertThat(updatedServicePointGeolocationResult.getSwissCanton()).isEqualTo(
+        servicePointGeolocationWithUpdatedGeo.getSwissCanton());
     assertThat(updatedServicePointGeolocationResult.getSwissMunicipalityName()).isEqualTo(
-        geoReference.getSwissMunicipalityName());
+        servicePointGeolocationWithUpdatedGeo.getSwissMunicipalityName());
     assertThat(updatedServicePointGeolocationResult.getSwissMunicipalityNumber()).isEqualTo(
-        geoReference.getSwissMunicipalityNumber());
-    assertThat(updatedServicePointGeolocationResult.getSwissLocalityName()).isEqualTo(geoReference.getSwissLocalityName());
+        servicePointGeolocationWithUpdatedGeo.getSwissMunicipalityNumber());
+    assertThat(updatedServicePointGeolocationResult.getSwissLocalityName()).isEqualTo(
+        servicePointGeolocationWithUpdatedGeo.getSwissLocalityName());
 
     ServicePointGeolocation currentServicePointGeolocationResult = result.getCurrentServicePointGeolocation();
     assertThat(currentServicePointGeolocationResult).usingRecursiveComparison()
@@ -129,7 +122,6 @@ class GeoReferenceJobServiceTest {
         new VersionDataRange(versionsResult.getFirst().getValidFrom(), versionsResult.getFirst().getValidTo()),
         new VersionDataRange(versionsResult.getLast().getValidFrom(), versionsResult.getLast().getValidTo()));
     assertThat(result.getResponseMessage()).isNotNull();
-
   }
 
   @Test
@@ -146,7 +138,7 @@ class GeoReferenceJobServiceTest {
     servicePointVersionEdited.setValidTo(newValidTo);
     servicePointService.updateServicePointVersion(version, servicePointVersionEdited,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber()));
-    GeoReference geoReference = GeoReference.builder()
+    ServicePointGeolocation servicePointGeolocationWithUpdatedGeo = ServicePointGeolocation.builder()
         .country(Country.SWITZERLAND)
         .swissCanton(SwissCanton.BERN)
         .swissDistrictNumber(246)
@@ -155,12 +147,15 @@ class GeoReferenceJobServiceTest {
         .swissMunicipalityName("Bern")
         .swissLocalityName("Bern")
         .height(555D)
+        .east(2600783D)
+        .north(1201099D)
+        .spatialReference(SpatialReference.LV95)
         .build();
-    ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-    when(geoReferenceService.getGeoReference(any(), eq(servicePointGeolocation.getHeight() == null)))
-        .thenReturn(geoReference);
+    when(servicePointGeoDataService.getGeoReferenceInformation(any(ServicePointGeolocation.class))).thenReturn(
+        servicePointGeolocationWithUpdatedGeo);
     ServicePointVersion versionToUpdate = servicePointService.findAllByNumberOrderByValidFrom(
         servicePointVersion.getNumber()).getLast();
+
     //when
     UpdateGeoLocationResultContainer result =
         geoReferenceJobService.updateGeoLocation(versionToUpdate.getId());
@@ -180,12 +175,14 @@ class GeoReferenceJobServiceTest {
         .isEqualTo(versionToUpdate.getServicePointGeolocation());
 
     ServicePointGeolocation updatedServicePointGeolocationResult = result.getUpdatedServicePointGeolocation();
-    assertThat(updatedServicePointGeolocationResult.getSwissCanton()).isEqualTo(geoReference.getSwissCanton());
+    assertThat(updatedServicePointGeolocationResult.getSwissCanton()).isEqualTo(
+        servicePointGeolocationWithUpdatedGeo.getSwissCanton());
     assertThat(updatedServicePointGeolocationResult.getSwissMunicipalityName()).isEqualTo(
-        geoReference.getSwissMunicipalityName());
+        servicePointGeolocationWithUpdatedGeo.getSwissMunicipalityName());
     assertThat(updatedServicePointGeolocationResult.getSwissMunicipalityNumber()).isEqualTo(
-        geoReference.getSwissMunicipalityNumber());
-    assertThat(updatedServicePointGeolocationResult.getSwissLocalityName()).isEqualTo(geoReference.getSwissLocalityName());
+        servicePointGeolocationWithUpdatedGeo.getSwissMunicipalityNumber());
+    assertThat(updatedServicePointGeolocationResult.getSwissLocalityName()).isEqualTo(
+        servicePointGeolocationWithUpdatedGeo.getSwissLocalityName());
 
     assertThat(result.getCurrentVersionsDataRange()).hasSize(2).containsExactlyInAnyOrder(
         new VersionDataRange(servicePointVersion.getValidFrom(), servicePointVersion.getValidTo()),
@@ -194,5 +191,4 @@ class GeoReferenceJobServiceTest {
         new VersionDataRange(updatedVersion.getValidFrom(), updatedVersion.getValidTo()));
     assertThat(result.getResponseMessage()).isNotNull();
   }
-
 }

@@ -3,18 +3,24 @@ package ch.sbb.atlas.servicepointdirectory.module.geodata.service;
 import static ch.sbb.atlas.servicepointdirectory.module.geodata.repository.ServicePointGeolocationRepository.coordinatesBetween;
 import static ch.sbb.atlas.servicepointdirectory.module.geodata.repository.ServicePointGeolocationRepository.validAtDate;
 
+import ch.sbb.atlas.api.client.location.GeoAdminHeightResponse;
+import ch.sbb.atlas.api.client.location.LocationGeoClient;
+import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeoData;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeoData;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.mapper.ServicePointGeoDataMapper;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.repository.ServicePointGeolocationRepository;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.transformer.BoundingBoxTransformer;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.transformer.GeometryTransformer;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.repository.ServicePointGeolocationRepository;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Envelope;
@@ -33,6 +39,7 @@ public class ServicePointGeoDataService {
   private final VectorTileService vectorTileService;
   private final ServicePointGeoDataMapper servicePointGeoDataMapper;
   private final ServicePointGeolocationRepository geolocationRepository;
+  private final LocationGeoClient locationGeoClient;
 
   private static final double TEN_PERCENT = 0.1;
 
@@ -86,4 +93,24 @@ public class ServicePointGeoDataService {
         ));
   }
 
+  public ServicePointGeolocation getGeoReferenceInformation(@NonNull ServicePointGeolocation servicePointGeolocationToUpdate) {
+    GeoReference geoReference = locationGeoClient.getLocationInformation(servicePointGeolocationToUpdate.asCoordinatePair(),
+        servicePointGeolocationToUpdate.getHeight() == null);
+
+    return servicePointGeolocationToUpdate
+        .toBuilder()
+        .height(geoReference.getHeight() != null ? geoReference.getHeight() : servicePointGeolocationToUpdate.getHeight())
+        .country(geoReference.getCountry())
+        .swissCanton(geoReference.getSwissCanton())
+        .swissDistrictNumber(geoReference.getSwissDistrictNumber())
+        .swissDistrictName(geoReference.getSwissDistrictName())
+        .swissMunicipalityNumber(geoReference.getSwissMunicipalityNumber())
+        .swissMunicipalityName(geoReference.getSwissMunicipalityName())
+        .swissLocalityName(geoReference.getSwissLocalityName())
+        .build();
+  }
+
+  public GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) {
+    return locationGeoClient.getHeight(coordinatePair);
+  }
 }

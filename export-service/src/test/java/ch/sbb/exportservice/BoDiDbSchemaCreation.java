@@ -21,10 +21,6 @@ import org.springframework.test.context.jdbc.SqlGroup;
         ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
         "businessOrganisationDirectoryDataSource",
         transactionManager =
-            "businessOrganisationDirectoryTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
-    @Sql(scripts = {"/bodi-drop.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD, config =
-    @SqlConfig(dataSource = "businessOrganisationDirectoryDataSource",
-        transactionManager =
             "businessOrganisationDirectoryTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED))
 })
 public @interface BoDiDbSchemaCreation {

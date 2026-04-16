@@ -12,7 +12,6 @@ import ch.sbb.atlas.imports.model.create.SectorCreateCsvModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.service.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.module.sector.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
@@ -34,9 +33,6 @@ class SectorBulkImportServiceTest {
 
   @MockitoBean
   private CountryAndBusinessOrganisationBasedUserAdministrationService administrationService;
-
-  @MockitoBean
-  private GeoReferenceService geoReferenceService;
 
   @MockitoBean
   private LocationService locationService;

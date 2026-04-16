@@ -13,15 +13,12 @@ import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.journey.poi.model.CountryCode;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
-import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
-import ch.sbb.atlas.servicepointdirectory.module.geodata.client.journepoy.JourneyPoiClientBase;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.controller.ServicePointApiV1Controller;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
@@ -32,25 +29,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApiTest {
-
-  @MockitoBean
-  private JourneyPoiConfig journeyPoiConfig;
-
-  @MockitoBean
-  private OAuthFeignConfig oAuthFeignConfig;
-
-  @MockitoBean
-  private JourneyPoiClientBase journeyPoiClient;
 
   @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @MockitoBean
   private LocationService locationService;
+
+  @MockitoBean
+  private ServicePointGeoDataService servicePointGeoDataService;
 
   private final ServicePointVersionRepository repository;
   private final ServicePointApiV1Controller servicePointController;
@@ -65,12 +55,9 @@ class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApi
   @BeforeEach
   void createDefaultVersion() {
     repository.save(ServicePointTestData.getBernWyleregg());
-
-    ResponseEntity<ch.sbb.atlas.journey.poi.model.Country> poiResponse =
-        ResponseEntity.ofNullable(
-            new ch.sbb.atlas.journey.poi.model.Country().countryCode(new CountryCode().isoCountryCode("RO")));
-    when(journeyPoiClient.closestCountry(any(), any())).thenReturn(poiResponse);
     when(locationService.generateSloid(any(), any(Country.class))).thenReturn("ch:1:sloid:1");
+    when(servicePointGeoDataService.getGeoReferenceInformation(any())).thenAnswer(
+        invocation -> ServicePointTestData.getServicePointGeolocationBernMittelland());
   }
 
   @AfterEach
@@ -224,5 +211,4 @@ class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApi
     assertThat(result.getLast().getValidFrom()).isEqualTo(LocalDate.of(2030, 12, 31));
     assertThat(result.getLast().getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
   }
-
 }

@@ -4,6 +4,7 @@ plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
     id("buildlogic.docker-java")
+    alias(libs.plugins.openapi.generator)
 }
 
 group = "ch.sbb.atlas"
@@ -18,6 +19,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
 
+    // Spring Cloud
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
     // Spring Security
     implementation("org.springframework.boot:spring-boot-starter-security-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-security-oauth2-authorization-server")
@@ -28,6 +32,7 @@ dependencies {
 
     // Project dependencies
     implementation(project(":base-atlas"))
+    implementation(project(":kafka"))
 
     runtimeOnly("org.postgresql:postgresql")
 
@@ -49,3 +54,32 @@ springBoot {
         }
     }
 }
+
+openApiGenerate {
+    generatorName.set("spring")
+    inputSpec.set("${projectDir}/src/main/resources/journey-pois.yaml")
+    apiPackage.set("org.openapitools.api")
+    outputDir.set("${project.layout.buildDirectory.get()}/generated-sources/openapi")
+    configOptions.putAll(
+        mapOf(
+            Pair("interfaceOnly", "true"),
+            Pair("modelPackage", "ch.sbb.atlas.journey.poi.model"),
+            Pair("apiPackage", "ch.sbb.atlas.journey.poi.api"),
+            Pair("useSpringBoot3", "true"),
+            Pair("generatedConstructorWithRequiredArgs", "false"),
+            Pair("openApiNullable", "false"),
+        )
+    )
+    library.set("spring-cloud")
+    generateApiTests.set(false)
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir(files("${project.layout.buildDirectory.get()}/generated-sources/openapi"))
+        }
+    }
+}
+
+tasks.compileJava.get().dependsOn(tasks.openApiGenerate)
