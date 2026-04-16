@@ -9,10 +9,4 @@ export interface Environment {
   authConfig: PassedInitialConfig;
   atlasReleaseNotes: string;
   journeyMapsApiKey: string;
-  // feature toggles
-  sepodiWorkflowBavActionEnabled: boolean;
-  bulkImportEnabled: boolean;
-  terminationWorkflowEnabled: boolean;
-  sectorsEnabled: boolean;
-  ttfnEnabled: boolean;
 }

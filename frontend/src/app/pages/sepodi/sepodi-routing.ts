@@ -7,7 +7,6 @@ import { loadingPointResolver } from './loading-points/loading-points-detail-res
 import { canCreateServicePoint } from './service-point-creation-guard';
 import { stopPointWorkflowDetailResolver } from './workflow/detail-page/stop-point-workflow-detail-resolver.service';
 import { permissionsLoaded } from '../../core/auth/guards/permissions-loaded.guard';
-import { featureToggleGuard } from '../feature-toggle.guard';
 import { stopPointTerminationWorkflowResolver } from './termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-resolver';
 import { sectorResolver } from './sectors/sector-detail/sector-detail-resolver.service';
 import { sectorGroupResolver } from './sector-groups/sector-group-detail/sector-group-detail-resolver.service';
@@ -39,7 +38,7 @@ const terminationWorkflowRoutes: Routes = [
       import('./termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-detail').then(
         (m) => m.StopPointTerminationWorkflowDetail
       ),
-    canActivate: [featureToggleGuard, permissionsLoaded],
+    canActivate: [permissionsLoaded],
     resolve: { workflow: stopPointTerminationWorkflowResolver },
     runGuardsAndResolvers: 'always',
   },
@@ -49,7 +48,6 @@ const terminationWorkflowRoutes: Routes = [
       import('./termination-workflow/stop-point-termination-workflow-overview/stop-point-termination-workflow-overview.component').then(
         (m) => m.StopPointTerminationWorkflowOverviewComponent
       ),
-    canActivate: [featureToggleGuard],
   },
 ];
 

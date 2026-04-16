@@ -4,7 +4,6 @@ import {
   ServicePointDetailFormGroup,
   ServicePointFormGroupBuilder,
 } from '../service-point-form/form-group/service-point-detail-form-group';
-import { environment } from '../../../../../../environments/environment';
 import { Country, CreateServicePointVersion } from '../../../../../api';
 import moment from 'moment';
 
@@ -27,10 +26,7 @@ export class TerminationService {
   }
 
   isStartingTermination(editedForm: FormGroup<ServicePointDetailFormGroup>) {
-    if (environment.terminationWorkflowEnabled) {
-      return this.checkStartingTermination(editedForm);
-    }
-    return false;
+    return this.checkStartingTermination(editedForm);
   }
 
   private checkStartingTermination(editedForm: FormGroup<ServicePointDetailFormGroup>) {

@@ -12,7 +12,6 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { environment } from '../../../../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, catchError, EMPTY, Observable, of, take } from 'rxjs';
 import {
@@ -77,7 +76,6 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   initWorkflow!: ReadStopPointWorkflow;
   oldDesignation?: string;
   isAtLeastSupervisor!: boolean;
-  bavActionEnabled = environment.sepodiWorkflowBavActionEnabled;
 
   ngOnInit() {
     const workflowData: StopPointWorkflowDetailData = this.route.snapshot.data.workflow;

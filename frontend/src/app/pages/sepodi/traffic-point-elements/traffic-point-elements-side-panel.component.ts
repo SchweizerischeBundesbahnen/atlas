@@ -10,7 +10,6 @@ import { DateRangeTextComponent } from '../../../core/versioning/date-range-text
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { SectorMapService } from '../map/sector-map.service';
-import { environment } from '../../../../environments/environment';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { SloidContainerComponent } from '../../../core/sloid-container/sloid-container.component';
 
@@ -69,8 +68,7 @@ export class TrafficPointElementsSidePanelComponent implements OnInit, OnDestroy
 
       const servicePoint: ReadServicePointVersion[] = next.servicePoint;
       const servicePointHasOneMotTrain = servicePoint.some((i) => i.meansOfTransport?.includes(MeanOfTransport.Train));
-      this.showTabs =
-        environment.sectorsEnabled && !this.isTrafficPointArea && !this.isNew && servicePointHasOneMotTrain;
+      this.showTabs = !this.isTrafficPointArea && !this.isNew && servicePointHasOneMotTrain;
 
       const versionToDisplay = VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
       this.servicePointName = versionToDisplay.designationOfficial;

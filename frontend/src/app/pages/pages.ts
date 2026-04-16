@@ -1,5 +1,4 @@
 import { Page } from '../core/model/page';
-import { environment } from '../../environments/environment';
 
 export class Pages {
   public static readonly HOME: Page = {
@@ -179,9 +178,7 @@ export class Pages {
     path: 'service-point-directory',
     pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
-    subpages: environment.terminationWorkflowEnabled
-      ? [Pages.SERVICE_POINT_WORKFLOWS, Pages.TERMINATION_STOP_POINT_WORKFLOWS]
-      : [Pages.SERVICE_POINT_WORKFLOWS],
+    subpages: [Pages.SERVICE_POINT_WORKFLOWS, Pages.TERMINATION_STOP_POINT_WORKFLOWS],
   };
 
   public static readonly SERVICE_POINTS: Page = {
