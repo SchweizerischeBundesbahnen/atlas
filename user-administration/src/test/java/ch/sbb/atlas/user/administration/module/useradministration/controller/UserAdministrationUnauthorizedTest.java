@@ -8,8 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.model.controller.TestcontainersConfiguration;
-import ch.sbb.atlas.model.controller.WithUnauthorizedMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.service.UserPermissionRepository;
 import com.microsoft.graph.models.User;
@@ -22,18 +23,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@WithUnauthorizedMockJwtAuthentication
-@ActiveProfiles("integration-test")
-@Import(TestcontainersConfiguration.class)
+@IntegrationTest
+@WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
 @Transactional
 @AutoConfigureMockMvc(addFilters = false)
 class UserAdministrationUnauthorizedTest {

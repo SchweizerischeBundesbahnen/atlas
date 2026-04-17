@@ -8,7 +8,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.model.controller.WithAdminMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.transport.company.SharedTransportCompanyConfig;
 import ch.sbb.atlas.user.administration.security.entity.Permission;
 import ch.sbb.atlas.user.administration.security.entity.PermissionRestriction;
@@ -41,7 +41,7 @@ class UserPermissionHolderTest {
   @BeforeEach
   void setUp() {
     Permission permission = Permission.builder()
-        .identifier(WithAdminMockJwtAuthentication.SBB_UID)
+        .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
         .role(ApplicationRole.WRITER)
         .application(ApplicationType.SEPODI)
         .build();
@@ -63,7 +63,7 @@ class UserPermissionHolderTest {
   void shouldLoadUserFromPermissionTable() {
     Optional<UserAdministrationModel> currentUser = userPermissionHolder.getCurrentUser();
     assertThat(currentUser).isPresent();
-    assertThat(currentUser.get().getUserId()).isEqualTo(WithAdminMockJwtAuthentication.SBB_UID);
+    assertThat(currentUser.get().getUserId()).isEqualTo(WithMockJwtAuthentication.MOCKUSER_SBB_UID);
     assertThat(currentUser.get().getPermissions().iterator().next().getRestrictions().iterator().next().getRestrictionType())
         .isEqualTo(PermissionRestrictionType.BUSINESS_ORGANISATION);
   }

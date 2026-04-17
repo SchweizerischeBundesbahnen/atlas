@@ -6,10 +6,9 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.model.controller.TestcontainersConfiguration;
-import ch.sbb.atlas.model.controller.WithUnauthorizedMockJwtAuthentication;
-import ch.sbb.atlas.model.controller.WithUnauthorizedMockJwtAuthentication.MockUnauthorizedJwtAuthenticationFactory;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.models.UserCollectionResponse;
 import com.microsoft.graph.serviceclient.GraphServiceClient;
@@ -19,21 +18,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
-@WithUnauthorizedMockJwtAuthentication
-@ActiveProfiles("integration-test")
-@Import(TestcontainersConfiguration.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 class UserAdministrationSecurityConfigTest {
 
@@ -58,43 +46,31 @@ class UserAdministrationSecurityConfigTest {
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
   void shouldAllowDisplayNameQueryForUnauthorizedInternalRoleAndMaskResponse() throws Exception {
-    Authentication authentication = new JwtAuthenticationToken(MockUnauthorizedJwtAuthenticationFactory.createJwt("u123456"),
-        AuthorityUtils.createAuthorityList(Role.AUTHORITY_UNAUTHORIZED, Role.AUTHORITY_INTERNAL));
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
     mvc.perform(get("/v1/users/user1/displayname"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.displayName").value("*****"));
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
   void shouldAllowDisplayNameQueryForAuthorizedInternalRoleAndNotMaskResponse() throws Exception {
-    Jwt jwt = MockUnauthorizedJwtAuthenticationFactory.createJwt("u123456", List.of(Role.ATLAS_INTERNAL));
-    Authentication authentication = new JwtAuthenticationToken(jwt, AuthorityUtils.createAuthorityList(Role.AUTHORITY_INTERNAL));
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
     mvc.perform(get("/v1/users/user1/displayname"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.displayName").value(not("*****")));
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.NONE)
   void shouldNotAllowDisplayNameQueryForOthersWithNoRoles() throws Exception {
-    Jwt jwt = MockUnauthorizedJwtAuthenticationFactory.createJwt("u123456", List.of());
-    Authentication authentication = new JwtAuthenticationToken(jwt, AuthorityUtils.createAuthorityList());
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
     mvc.perform(get("/v1/users/user1/displayname"))
         .andExpect(status().isForbidden());
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
   void shouldNotAllowSearchToUnauthorizedInternal() throws Exception {
-    Authentication authentication = new JwtAuthenticationToken(MockUnauthorizedJwtAuthenticationFactory.createJwt("u123456"),
-        AuthorityUtils.createAuthorityList(Role.AUTHORITY_UNAUTHORIZED, Role.AUTHORITY_INTERNAL));
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
     mvc.perform(get("/v1/search").param("searchQuery", "testQuery"))
         .andExpect(status().isForbidden());
   }

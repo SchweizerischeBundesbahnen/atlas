@@ -14,7 +14,6 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
-import ch.sbb.atlas.model.controller.WithUnauthorizedMockJwtAuthentication.MockUnauthorizedJwtAuthenticationFactory;
 import ch.sbb.atlas.user.administration.module.clientcredential.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.module.clientcredential.service.ClientCredentialAdministrationService;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.PermissionRestriction;
@@ -35,7 +34,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 class UserAdministrationControllerTest {
 
@@ -82,7 +80,6 @@ class UserAdministrationControllerTest {
 
   @Test
   void shouldNotCallGraphApiOnNoUserIds() {
-    SecurityContextHolder.setContext(MockUnauthorizedJwtAuthenticationFactory.createSecurityContext("u123456"));
     List<UserDisplayNameModel> result = userAdministrationController.getUserInformation(Collections.emptyList());
 
     assertThat(result).isEmpty();

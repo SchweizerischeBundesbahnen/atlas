@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.model.controller.WithAdminMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.line.directory.module.subline.SublineTestData;
 import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import java.time.LocalDate;
@@ -60,8 +60,8 @@ class SublineVersionRepositoryTest {
     assertThat(result.getCreationDate()).isNotNull();
     assertThat(result.getEditionDate()).isNotNull();
 
-    assertThat(result.getCreator()).isEqualTo(WithAdminMockJwtAuthentication.SBB_UID);
-    assertThat(result.getEditor()).isEqualTo(WithAdminMockJwtAuthentication.SBB_UID);
+    assertThat(result.getCreator()).isEqualTo(WithMockJwtAuthentication.MOCKUSER_SBB_UID);
+    assertThat(result.getEditor()).isEqualTo(WithMockJwtAuthentication.MOCKUSER_SBB_UID);
   }
 
   @Test

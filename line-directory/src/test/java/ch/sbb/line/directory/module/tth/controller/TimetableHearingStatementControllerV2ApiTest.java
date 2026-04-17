@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.module.tth.controller;
 
-import static ch.sbb.atlas.model.controller.WithAdminMockJwtAuthentication.MockJwtAuthenticationFactory.createJwtWithoutSbbUid;
 import static ch.sbb.line.directory.helper.PdfFiles.MULTIPART_FILES;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -24,6 +23,9 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockUser;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
@@ -47,11 +49,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @MockitoBean(types = UserAdministrationClient.class)
@@ -180,14 +177,8 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.ATLAS_ADMIN, user = MockUser.CLIENT_CREDENTIAL)
   void shouldThrowForbiddenExceptionWhenStatementCreatableExternalV2IsFalse() throws Exception {
-    // For Client-Credential Auth
-    SecurityContext context = SecurityContextHolder.getContext();
-    Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
-        AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
-    authentication.setAuthenticated(true);
-    context.setAuthentication(authentication);
-
     TimetableHearingYearModel hearingYearModel = timetableHearingYearController.startHearingYear(YEAR);
     hearingYearModel.setStatementCreatableExternal(false);
     timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
@@ -205,14 +196,8 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.ATLAS_ADMIN, user = MockUser.CLIENT_CREDENTIAL)
   void shouldCreateStatementExternalV2FromSkiWeb() throws Exception {
-    // For Client-Credential Auth
-    SecurityContext context = SecurityContextHolder.getContext();
-    Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
-        AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
-    authentication.setAuthenticated(true);
-    context.setAuthentication(authentication);
-
     timetableHearingYearController.startHearingYear(YEAR);
 
     final MockMultipartFile statementJson = getMockMultipartFile();
