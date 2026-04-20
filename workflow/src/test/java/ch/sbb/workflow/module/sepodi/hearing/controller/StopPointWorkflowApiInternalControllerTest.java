@@ -18,11 +18,17 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import ch.sbb.atlas.user.administration.security.entity.Permission;
+import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.module.sepodi.hearing.StopPointWorkflowTestData;
@@ -58,6 +64,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.ResultActions;
 
 class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
@@ -75,6 +82,9 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
   @Autowired
   private OtpRepository otpRepository;
 
+  @Autowired
+  private PermissionRepository permissionRepository;
+
   @MockitoBean
   private SePoDiClientService sePoDiClientService;
 
@@ -86,6 +96,7 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
     otpRepository.deleteAll();
     decisionRepository.deleteAll();
     workflowRepository.deleteAll();
+    permissionRepository.deleteAll();
   }
 
   @Test
@@ -107,6 +118,13 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldStartWorkflow() throws Exception {
+    startWorkflow()
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("HEARING")));
+    verify(notificationService).sendStartStopPointWorkflowMail(any(StopPointWorkflow.class));
+  }
+
+  private ResultActions startWorkflow() throws Exception {
     //when
     Person person = Person.builder()
         .firstName("Marek")
@@ -131,11 +149,34 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
     workflowRepository.save(stopPointWorkflow);
 
     //given
-    mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/start/" + stopPointWorkflow.getId())
-            .contentType(contentType))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.status", is("HEARING")));
-    verify(notificationService).sendStartStopPointWorkflowMail(any(StopPointWorkflow.class));
+    return mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/start/" + stopPointWorkflow.getId())
+        .contentType(contentType));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldStartWorkflowAsSupervisor() throws Exception {
+    // given sepodi supervisor
+    Permission permission = Permission.builder()
+        .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+        .application(ApplicationType.SEPODI)
+        .role(ApplicationRole.SUPERVISOR)
+        .build();
+    permissionRepository.saveAndFlush(permission);
+
+    startWorkflow().andExpect(status().isOk());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldNotStartWorkflowAsStandardUser() throws Exception {
+    startWorkflow().andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotStartWorkflowAsUnauthorized() throws Exception {
+    startWorkflow().andExpect(status().isForbidden());
   }
 
   @Test

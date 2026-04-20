@@ -15,7 +15,13 @@ import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
 import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.atlas.api.workflow.WorkflowModel;
 import ch.sbb.atlas.api.workflow.WorkflowStartModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
+import ch.sbb.atlas.user.administration.security.entity.Permission;
+import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Person;
@@ -27,6 +33,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.ResultActions;
 
 class LineWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
@@ -37,6 +44,9 @@ class LineWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
   @Autowired
   private WorkflowRepository workflowRepository;
+
+  @Autowired
+  private PermissionRepository permissionRepository;
 
   @MockitoBean
   private LineWorkflowClient lineWorkflowClient;
@@ -53,6 +63,12 @@ class LineWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetWorkflows() throws Exception {
+    getWorkflows()
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  private ResultActions getWorkflows() throws Exception {
     ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -70,13 +86,37 @@ class LineWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
     controller.startWorkflow(workflowModel);
 
-    mvc.perform(get(LineWorkflowApiInternal.BASE_PATH))
+    return mvc.perform(get(LineWorkflowApiInternal.BASE_PATH));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetWorkflowsWithoutSensitiveInformationForUnauthorized() throws Exception {
+    getWorkflows()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)));
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].client.mail", is("m*****")))
+        .andExpect(jsonPath("$[0].client.firstName", is("M*****")))
+        .andExpect(jsonPath("$[0].client.lastName", is("H*****")));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldGetWorkflowsAsStandardUser() throws Exception {
+    getWorkflows()
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].client.mail", is(MAIL_ADDRESS)));
   }
 
   @Test
   void shouldGetWorkflowById() throws Exception {
+    getWorkflowById()
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.swissId", is("CH123456")))
+        .andExpect(jsonPath("$.client.mail", is(MAIL_ADDRESS)));
+  }
+
+  private ResultActions getWorkflowById() throws Exception {
     Person person = Person.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -96,11 +136,27 @@ class LineWorkflowApiInternalControllerTest extends BaseControllerApiTest {
         .number("IC8")
         .build();
 
-    LineWorkflow entity = workflowRepository.save(lineWorkflow);
+    LineWorkflow entity = workflowRepository.saveAndFlush(lineWorkflow);
 
-    mvc.perform(get(LineWorkflowApiInternal.BASE_PATH + "/" + entity.getId()))
+    return mvc.perform(get(LineWorkflowApiInternal.BASE_PATH + "/" + entity.getId()));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldGetWorkflowByIdAsStandardUser() throws Exception {
+    getWorkflowById()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.swissId", is("CH123456")));
+        .andExpect(jsonPath("$.swissId", is("CH123456")))
+        .andExpect(jsonPath("$.client.mail", is(MAIL_ADDRESS)));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetWorkflowByIdAsUnauthorized() throws Exception {
+    getWorkflowById()
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.swissId", is("CH123456")))
+        .andExpect(jsonPath("$.client.mail", is("m*****")));
   }
 
   @Test
@@ -241,6 +297,12 @@ class LineWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldAcceptWorkflow() throws Exception {
+    acceptWorkflow()
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.checkComment", is("ok")));
+  }
+
+  private ResultActions acceptWorkflow() throws Exception {
     //when
     ClientPersonModel client = ClientPersonModel.builder()
         .firstName("Marek")
@@ -268,10 +330,33 @@ class LineWorkflowApiInternalControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post(LineWorkflowApiInternal.BASE_PATH + "/" + startedWorkflow.getId() + "/examinant-check")
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(workflowCheck)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.checkComment", is("ok")));
+    return mvc.perform(post(LineWorkflowApiInternal.BASE_PATH + "/" + startedWorkflow.getId() + "/examinant-check")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(workflowCheck)));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldAcceptWorkflowAsSupervisor() throws Exception {
+    Permission permission = Permission.builder()
+        .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+        .application(ApplicationType.LIDI)
+        .role(ApplicationRole.SUPERVISOR)
+        .build();
+    permissionRepository.saveAndFlush(permission);
+
+    acceptWorkflow().andExpect(status().isOk());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldNotAcceptWorkflowAsStandardUser() throws Exception {
+    acceptWorkflow().andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotAcceptWorkflowAsUnauthorized() throws Exception {
+    acceptWorkflow().andExpect(status().isForbidden());
   }
 }
