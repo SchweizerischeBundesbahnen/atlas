@@ -9,7 +9,6 @@ import ch.sbb.importservice.module.geo.writer.ServicePointUpdateGeoLocationApiWr
 import ch.sbb.importservice.utils.StepUtils;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -17,10 +16,12 @@ import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.integration.chunk.ChunkTaskExecutorItemWriter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -29,6 +30,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Slf4j
 public class ServicePointGeoLocationUpdateConfig {
 
+  public static final String GEO_LOCATION_VERSIONS_KEY = "GeoLocationVersions";
   public static final String UPDATE_SERVICE_POINT_GEO_JOB = "updateServicePointGeoJob";
   private static final int SERVICE_POINT_CHUNK_SIZE = 40;
   private static final int THREAD_EXECUTION_SIZE = 64;
@@ -42,49 +44,45 @@ public class ServicePointGeoLocationUpdateConfig {
 
   @StepScope
   @Bean
-  public ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointGeoLocationListItemReader() {
+  public ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> geoLocationItemReader(
+      @Value("#{stepExecution}") StepExecution stepExecution) {
     List<ServicePointSwissWithGeoLocationModel> servicePointWithGeolocation =
         geoLocationService.getActualServicePointWithGeolocation();
-    log.info("Start sending requests to service-point-directory with chunkSize: {}...", SERVICE_POINT_CHUNK_SIZE);
+    stepExecution.getExecutionContext().put(GEO_LOCATION_VERSIONS_KEY, servicePointWithGeolocation.size());
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(servicePointWithGeolocation));
   }
 
   @Bean
+  public ChunkTaskExecutorItemWriter<ServicePointSwissWithGeoLocationModel> geoItemWriter() {
+    ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+    taskExecutor.setCorePoolSize(THREAD_EXECUTION_SIZE);
+    taskExecutor.setThreadNamePrefix("geo-update-");
+    taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+    taskExecutor.afterPropertiesSet();
+    return new ChunkTaskExecutorItemWriter<>(geoApiWriter, taskExecutor);
+  }
+
+  @Bean
   public Step updateServicePointGeoLocationStep(
-      ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointListItemReader) {
-    String stepName = "parseServicePointCsvStep";
+      ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointListItemReader,
+      ChunkTaskExecutorItemWriter<ServicePointSwissWithGeoLocationModel> geoItemWriter) {
+    String stepName = "updateServicePointGeoLocationStep";
     return new StepBuilder(stepName, jobRepository)
         .<ServicePointSwissWithGeoLocationModel, ServicePointSwissWithGeoLocationModel>chunk(SERVICE_POINT_CHUNK_SIZE)
         .transactionManager(transactionManager)
-        .reader(servicePointListItemReader)
-        .writer(geoApiWriter)
+        .reader(servicePointListItemReader).writer(geoItemWriter)
         .faultTolerant()
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
         .listener(stepTracerListener)
-        .taskExecutor(asyncGeoLocationTaskExecutor())
         .build();
   }
 
   @Bean
-  public Job updateServicePointGeoJob(
-      ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointListItemReader) {
+  public Job updateServicePointGeoJob(Step updateServicePointGeoLocationStep) {
     return new JobBuilder(UPDATE_SERVICE_POINT_GEO_JOB, jobRepository)
-        .listener(geoLocationJobCompletionListener)
-        .flow(updateServicePointGeoLocationStep(servicePointListItemReader))
+        .listener(geoLocationJobCompletionListener).flow(updateServicePointGeoLocationStep)
         .end()
         .build();
-  }
-
-  @StepScope
-  @Bean
-  protected AsyncTaskExecutor asyncGeoLocationTaskExecutor() {
-    ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-    taskExecutor.setCorePoolSize(THREAD_EXECUTION_SIZE);
-    taskExecutor.setMaxPoolSize(THREAD_EXECUTION_SIZE);
-    taskExecutor.setQueueCapacity(THREAD_EXECUTION_SIZE);
-    taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-    taskExecutor.setThreadNamePrefix("Thread-");
-    return taskExecutor;
   }
 
 }

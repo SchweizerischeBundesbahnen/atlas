@@ -7,41 +7,34 @@ import ch.sbb.importservice.module.geo.repository.GeoUpdateProcessItemRepository
 import ch.sbb.importservice.module.geo.service.ServicePointUpdateGeoLocationService;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.step.StepExecution;
-import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.jspecify.annotations.NonNull;
+import org.springframework.batch.core.step.StepContribution;
+import org.springframework.batch.core.step.item.ChunkProcessor;
 import org.springframework.batch.infrastructure.item.Chunk;
-import org.springframework.batch.infrastructure.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@StepScope
-public class ServicePointUpdateGeoLocationApiWriter implements ItemWriter<ServicePointSwissWithGeoLocationModel> {
+@RequiredArgsConstructor
+public class ServicePointUpdateGeoLocationApiWriter implements ChunkProcessor<ServicePointSwissWithGeoLocationModel> {
 
-  private StepExecution stepExecution;
-
-  @Autowired
-  private ServicePointUpdateGeoLocationService sePoDiClientService;
-
-  @Autowired
-  private GeoUpdateProcessItemRepository geoUpdateProcessItemRepository;
-
-  @BeforeStep
-  public void getStepExecutionData(StepExecution stepExecution) {
-    this.stepExecution = stepExecution;
-  }
+  private final GeoUpdateProcessItemRepository geoUpdateProcessItemRepository;
+  private final ServicePointUpdateGeoLocationService sePoDiClientService;
 
   @Override
-  public void write(Chunk<? extends ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoModels) {
+  public void process(Chunk<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoModels,
+      @NonNull StepContribution contribution) {
     List<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoLocationModels =
         new ArrayList<>(servicePointSwissWithGeoModels.getItems());
-    doWrite(servicePointSwissWithGeoLocationModels);
+    doWrite(servicePointSwissWithGeoLocationModels, contribution);
+
+    contribution.incrementWriteCount(servicePointSwissWithGeoLocationModels.size());
   }
 
-  void doWrite(List<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoLocationModels) {
+  void doWrite(List<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoLocationModels,
+      StepContribution contribution) {
     servicePointSwissWithGeoLocationModels.forEach(swissWithGeoModel -> swissWithGeoModel.getDetails()
         .forEach(detail -> {
           GeoUpdateItemResultModel result =
@@ -49,7 +42,7 @@ public class ServicePointUpdateGeoLocationApiWriter implements ItemWriter<Servic
           log.info("Process ServicePoint [sloid={},id={}] with GeoLocation...", swissWithGeoModel.getSloid(),
               detail.getId());
           if (result != null) {
-            GeoUpdateProcessItem geoUpdateProcessItem = getGeoUpdateProcessItem(result);
+            GeoUpdateProcessItem geoUpdateProcessItem = getGeoUpdateProcessItem(result, contribution);
             geoUpdateProcessItemRepository.saveAndFlush(geoUpdateProcessItem);
             log.info("Result: {}", result);
           } else {
@@ -58,14 +51,15 @@ public class ServicePointUpdateGeoLocationApiWriter implements ItemWriter<Servic
         }));
   }
 
-  private GeoUpdateProcessItem getGeoUpdateProcessItem(GeoUpdateItemResultModel result) {
+  private GeoUpdateProcessItem getGeoUpdateProcessItem(GeoUpdateItemResultModel result, StepContribution contribution) {
     return GeoUpdateProcessItem.builder()
         .sloid(result.getSloid())
         .servicePointId(result.getId())
-        .jobExecutionName(stepExecution.getJobExecution().getJobInstance().getJobName())
-        .stepExecutionId(stepExecution.getId())
+        .jobExecutionName(contribution.getStepExecution().getJobExecution().getJobInstance().getJobName())
+        .stepExecutionId(contribution.getStepExecution().getId())
         .responseStatus(result.getStatus())
         .responseMessage(result.getMessage())
         .build();
   }
+
 }
