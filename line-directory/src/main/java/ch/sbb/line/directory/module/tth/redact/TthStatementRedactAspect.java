@@ -46,7 +46,7 @@ public class TthStatementRedactAspect {
     if (resultObject instanceof TimetableHearingStatement timetableHearingStatement) {
 
       if (timetableHearingStatement.getDossierContactMail() != null
-          && boUserMailCheckService.isCurrentUserMailAssignedTo(timetableHearingStatement)) {
+          && boUserMailCheckService.isCurrentUserAssignedTo(timetableHearingStatement)) {
         String statement = timetableHearingStatement.getStatement();
 
         if (redactObject instanceof TimetableHearingStatement redactedStatement) {

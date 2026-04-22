@@ -55,7 +55,7 @@ public class TthDossierService {
 
   @TthRedacted
   @PostAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).TIMETABLE_HEARING) || @boUserMailCheckService.isCurrentUserMailAssignedTo(returnObject)")
+      + ".ApplicationType).TIMETABLE_HEARING) || @boUserMailCheckService.isCurrentUserAssignedTo(returnObject)")
   public TthDossier getDossierById(Long dossierId) {
     return findDossier(dossierId);
   }
@@ -183,7 +183,7 @@ public class TthDossierService {
   }
 
   @Transactional
-  @PreAuthorize("@boUserMailCheckService.isCurrentUserMailAssignedTo(#tthDossier)")
+  @PreAuthorize("@boUserMailCheckService.isCurrentUserAssignedTo(#tthDossier)")
   public void answerQuestion(Long questionId, String boAnswer, TthDossier tthDossier) {
     TthDossierQuestion question = questionRepository.findById(questionId).orElseThrow(() -> new IdNotFoundException(questionId));
 

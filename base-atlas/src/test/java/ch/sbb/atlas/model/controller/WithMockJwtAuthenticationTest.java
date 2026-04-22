@@ -1,5 +1,6 @@
 package ch.sbb.atlas.model.controller;
 
+import static ch.sbb.atlas.service.UserService.SBBUID_CLAIM;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersionSharingDataAccessor;
@@ -45,6 +46,9 @@ class WithMockJwtAuthenticationTest {
   @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
   void shouldBeUnauthorizedUser() {
     assertThat(UserService.getRoles()).containsExactlyInAnyOrder(Role.ATLAS_ROLES_UNAUTHORIZED_KEY, Role.ATLAS_INTERNAL);
+
+    assertThat(UserService.getAccessToken().getClaimAsString(SBBUID_CLAIM)).isNull();
+    assertThat(UserService.getUserIdentifier()).isEqualTo("unauthorized-client-id");
   }
 
   @Test

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class BoUserMailCheckService {
 
-  public boolean isCurrentUserMailAssignedTo(BoContactAssociated boContactAssociated) {
+  public boolean isCurrentUserAssignedTo(BoContactAssociated boContactAssociated) {
     boolean isMailAssigned = isCurrentUserMailAssignedTo(boContactAssociated.getBoContactMail());
     boolean isSbbuidAssigned = isCurrentUserSbbUidAssignedTo(boContactAssociated.getBoContactSbbuid());
 
@@ -18,12 +18,20 @@ public class BoUserMailCheckService {
   }
 
   public boolean isCurrentUserMailAssignedTo(String boMail) {
+    if (boMail == null) {
+      log.info("boMail not given for assignedTo check");
+      return false;
+    }
     String preferredUsername = UserService.getPreferredUsername();
     log.info("{} is equal to boMail: {}", preferredUsername, boMail);
     return Objects.equals(boMail, preferredUsername);
   }
 
   public boolean isCurrentUserSbbUidAssignedTo(String boSbbuid) {
+    if (boSbbuid == null) {
+      log.info("boSbbuid not given for assignedTo check");
+      return false;
+    }
     String userIdentifier = UserService.getUserIdentifier();
     log.info("{} is equal to boSbbuid: {}", userIdentifier, boSbbuid);
     return Objects.equals(userIdentifier, boSbbuid);

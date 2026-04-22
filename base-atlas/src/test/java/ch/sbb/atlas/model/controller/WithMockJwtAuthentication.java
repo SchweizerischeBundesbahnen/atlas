@@ -62,17 +62,21 @@ public @interface WithMockJwtAuthentication {
           .issuer("https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0")
           .claim(Role.ROLES_JWT_KEY, annotation.role().getRoleClaims());
 
-      switch (annotation.user()) {
-        case USER -> {
-          jwtBuilder.claim(UserService.SBBUID_CLAIM, annotation.sbbuid());
-          jwtBuilder.claim("name", "Test User");
+      if (annotation.role() == MockRole.UNAUTHORIZED) {
+        jwtBuilder.claim(UserService.AZP_CLAIM, "unauthorized-client-id");
+      } else {
+        switch (annotation.user()) {
+          case USER -> {
+            jwtBuilder.claim(UserService.SBBUID_CLAIM, annotation.sbbuid());
+            jwtBuilder.claim("name", "Test User");
 
-          switch (annotation.accountType()) {
-            case STANDARD -> jwtBuilder.claim(UserService.PREFERRED_USERNAME_CLAIM, "test.user@sbb.ch");
-            case GUEST -> jwtBuilder.claim(UserService.PREFERRED_USERNAME_CLAIM, annotation.sbbuid() + "@sbb.ch");
+            switch (annotation.accountType()) {
+              case STANDARD -> jwtBuilder.claim(UserService.PREFERRED_USERNAME_CLAIM, "test.user@sbb.ch");
+              case GUEST -> jwtBuilder.claim(UserService.PREFERRED_USERNAME_CLAIM, annotation.sbbuid() + "@sbb.ch");
+            }
           }
+          case CLIENT_CREDENTIAL -> jwtBuilder.claim(UserService.AZP_CLAIM, "client-id");
         }
-        case CLIENT_CREDENTIAL -> jwtBuilder.claim(UserService.AZP_CLAIM, "client-id");
       }
       return jwtBuilder.build();
     }
