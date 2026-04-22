@@ -13,9 +13,14 @@ import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
@@ -23,13 +28,18 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestDa
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.controller.ServicePointApiV1Controller;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.user.administration.security.entity.Permission;
+import ch.sbb.atlas.user.administration.security.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.ResultActions;
 
 class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApiTest {
 
@@ -42,15 +52,14 @@ class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApi
   @MockitoBean
   private ServicePointGeoDataService servicePointGeoDataService;
 
-  private final ServicePointVersionRepository repository;
-  private final ServicePointApiV1Controller servicePointController;
+  @Autowired
+  private ServicePointVersionRepository repository;
 
   @Autowired
-  StopPointTerminationApiInternalControllerApiTest(ServicePointVersionRepository repository,
-      ServicePointApiV1Controller servicePointController) {
-    this.repository = repository;
-    this.servicePointController = servicePointController;
-  }
+  private ServicePointApiV1Controller servicePointController;
+
+  @Autowired
+  private PermissionRepository permissionRepository;
 
   @BeforeEach
   void createDefaultVersion() {
@@ -63,6 +72,7 @@ class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApi
   @AfterEach
   void cleanUpDb() {
     repository.deleteAll();
+    permissionRepository.deleteAll();
   }
 
   @Test
@@ -100,6 +110,10 @@ class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApi
 
   @Test
   void shouldStartServicePointTermination() throws Exception {
+    startTermination().andExpect(status().isOk()).andExpect(jsonPath("$.terminationInProgress", is(true)));
+  }
+
+  private ResultActions startTermination() throws Exception {
     ServicePointVersion servicePointVersion = ServicePointTestData.createStopPointServicePointWithUnknownMeanOfTransportVersion();
     servicePointVersion.setStatus(Status.VALIDATED);
     ServicePointVersion version = repository.save(servicePointVersion);
@@ -107,15 +121,39 @@ class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApi
     String sloid = version.getSloid();
 
     UpdateTerminationServicePointModel updateTerminationServicePointModel = UpdateTerminationServicePointModel.builder()
-        .terminationInProgress(true)
-        .terminationDate(version.getValidTo().minusDays(1))
-        .build();
+        .terminationInProgress(true).terminationDate(version.getValidTo().minusDays(1)).build();
 
-    mvc.perform(post("/internal/service-points/termination/start/" + sloid + "/" + id)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(updateTerminationServicePointModel)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.terminationInProgress", is(true)));
+    return mvc.perform(post("/internal/service-points/termination/start/" + sloid + "/" + id).contentType(contentType)
+        .content(mapper.writeValueAsString(updateTerminationServicePointModel)));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotStartServicePointTerminationWhenUnauthorized() throws Exception {
+    startTermination().andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldStartServicePointTerminationAsWriter() throws Exception {
+    // given write permission on sboid and country match service point
+    Permission permission = Permission.builder()
+        .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+        .application(ApplicationType.SEPODI)
+        .role(ApplicationRole.WRITER)
+        .build();
+    permission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+            .permission(permission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:100626").build(),
+        PermissionRestriction.builder()
+            .permission(permission)
+            .type(PermissionRestrictionType.COUNTRY)
+            .restriction(Country.SWITZERLAND.name()).build()));
+    permissionRepository.saveAndFlush(permission);
+
+    // when & then
+    startTermination().andExpect(status().isOk());
   }
 
   @Test

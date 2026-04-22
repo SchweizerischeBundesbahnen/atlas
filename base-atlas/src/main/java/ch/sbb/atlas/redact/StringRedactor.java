@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 @UtilityClass
 public class StringRedactor {
 
-  private static final String REPLACEMENT = "*****";
+  public static final String REPLACEMENT = "*****";
 
   public static String redactString(String string, boolean showFirstChar) {
     if (string == null) {

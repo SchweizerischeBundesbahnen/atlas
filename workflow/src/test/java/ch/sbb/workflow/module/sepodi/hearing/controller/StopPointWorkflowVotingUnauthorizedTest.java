@@ -6,8 +6,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.model.controller.TestcontainersConfiguration;
-import ch.sbb.atlas.model.controller.WithUnauthorizedMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.module.sepodi.hearing.enity.Decision;
@@ -36,16 +37,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@WithUnauthorizedMockJwtAuthentication
-@ActiveProfiles("integration-test")
-@Import(TestcontainersConfiguration.class)
+@IntegrationTest
+@WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
 @Transactional
 class StopPointWorkflowVotingUnauthorizedTest {
 

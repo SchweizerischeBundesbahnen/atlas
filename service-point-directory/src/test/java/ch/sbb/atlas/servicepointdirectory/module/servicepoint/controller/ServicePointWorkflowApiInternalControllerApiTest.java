@@ -18,9 +18,14 @@ import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
@@ -28,14 +33,19 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestDa
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.user.administration.security.entity.Permission;
+import ch.sbb.atlas.user.administration.security.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.ResultActions;
 
 class ServicePointWorkflowApiInternalControllerApiTest extends BaseControllerApiTest {
 
@@ -50,10 +60,15 @@ class ServicePointWorkflowApiInternalControllerApiTest extends BaseControllerApi
 
   @Autowired
   private ServicePointVersionRepository repository;
+
   @Autowired
   private ServicePointApiV1Controller servicePointApiV1Controller;
+
   @Autowired
   private ServicePointWorkflowApiInternalController servicePointWorkflowApiInternalController;
+
+  @Autowired
+  private PermissionRepository permissionRepository;
 
   private ServicePointVersion servicePointVersion;
 
@@ -68,6 +83,7 @@ class ServicePointWorkflowApiInternalControllerApiTest extends BaseControllerApi
   @AfterEach
   void cleanUpDb() {
     repository.deleteAll();
+    permissionRepository.deleteAll();
   }
 
   @Test
@@ -246,16 +262,50 @@ class ServicePointWorkflowApiInternalControllerApiTest extends BaseControllerApi
   }
 
   @Test
-  void shouldUpdateServicePointStatus() throws Exception {
+  void shouldUpdateServicePointStatusFromDraftToInReviewOnStartingWorkflow() throws Exception {
+    updateServicePointStatusFromDraftToInReviewOnStartingWorkflow().andExpect(status().isOk());
+  }
+
+  private ResultActions updateServicePointStatusFromDraftToInReviewOnStartingWorkflow() throws Exception {
     //given
     servicePointVersion.setStatus(Status.DRAFT);
     repository.save(servicePointVersion);
 
-    //when & then
-    mvc.perform(put("/internal/service-points/status/" + servicePointVersion.getSloid() + "/" + servicePointVersion.getId())
+    //when
+    return mvc.perform(
+        put("/internal/service-points/status/" + servicePointVersion.getSloid() + "/" + servicePointVersion.getId())
             .contentType(contentType)
-            .content(mapper.writeValueAsString(Status.IN_REVIEW)))
-        .andExpect(status().isOk());
+            .content(mapper.writeValueAsString(Status.IN_REVIEW)));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldUpdateServicePointStatusFromDraftToInReviewOnStartingWorkflowAsWriter() throws Exception {
+    // given write permission on sboid and country match service point
+    Permission permission = Permission.builder()
+        .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+        .application(ApplicationType.SEPODI)
+        .role(ApplicationRole.WRITER)
+        .build();
+    permission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+            .permission(permission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction(servicePointVersion.getBusinessOrganisation())
+            .build(),
+        PermissionRestriction.builder()
+            .permission(permission)
+            .type(PermissionRestrictionType.COUNTRY)
+            .restriction(servicePointVersion.getCountry().name())
+            .build()));
+    permissionRepository.saveAndFlush(permission);
+
+    updateServicePointStatusFromDraftToInReviewOnStartingWorkflow().andExpect(status().isOk());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotUpdateServicePointStatusFromDraftToInReviewOnStartingWorkflowAsUnauthorized() throws Exception {
+    updateServicePointStatusFromDraftToInReviewOnStartingWorkflow().andExpect(status().isForbidden());
   }
 
   @Test

@@ -13,7 +13,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 public final class UserService {
 
   public static final String SBBUID_CLAIM = "sbbuid";
-  static final String AZP_CLAIM = "azp";
+  public static final String AZP_CLAIM = "azp";
+  public static final String PREFERRED_USERNAME_CLAIM = "preferred_username";
 
   public static Jwt getAccessToken() {
     Authentication authentication = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication());
@@ -26,7 +27,7 @@ public final class UserService {
   }
 
   public static String getPreferredUsername() {
-    return getAccessToken().getClaim("preferred_username");
+    return getAccessToken().getClaim(PREFERRED_USERNAME_CLAIM);
   }
 
   public static boolean hasUnauthorizedRole() {

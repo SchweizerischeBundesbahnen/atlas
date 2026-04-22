@@ -29,22 +29,34 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2.Field
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockAccountType;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
+import ch.sbb.atlas.redact.StringRedactor;
+import ch.sbb.atlas.user.administration.security.entity.Permission;
+import ch.sbb.atlas.user.administration.security.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import ch.sbb.line.directory.module.tth.entity.StatementSender;
 import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement;
+import ch.sbb.line.directory.module.tth.entity.TimetableHearingYear;
 import ch.sbb.line.directory.module.tth.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.module.tth.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.module.tth.mapper.ResponsibleTransportCompanyMapper;
@@ -70,24 +82,34 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 class TimetableHearingStatementControllerInternalApiTest extends BaseControllerApiTest {
 
   private static final long YEAR = 2022L;
-  private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
-      .timetableYear(YEAR)
-      .hearingFrom(LocalDate.of(2021, 1, 1))
-      .hearingTo(LocalDate.of(2021, 2, 1))
-      .build();
   private static final String TTFNID = "ch:1:ttfnid:123123123";
   private static final String SBOID = "ch:1:sboid:123451";
 
-  private final TimetableHearingYearRepository timetableHearingYearRepository;
-  private final TimetableHearingYearControllerInternal timetableHearingYearController;
-  private final TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal;
-  private final TimetableHearingStatementRepository timetableHearingStatementRepository;
-  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
-  private final TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
+  @Autowired
+  private TimetableHearingYearRepository timetableHearingYearRepository;
+
+  @Autowired
+  private TimetableHearingYearControllerInternal timetableHearingYearController;
+
+  @Autowired
+  private TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal;
+
+  @Autowired
+  private TimetableHearingStatementRepository timetableHearingStatementRepository;
+
+  @Autowired
+  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
+
+  @Autowired
+  private TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
+
+  @Autowired
+  private PermissionRepository permissionRepository;
 
   @MockitoBean
   private TimetableFieldNumberService timetableFieldNumberService;
@@ -98,28 +120,20 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   @MockitoBean
   private UserAdministrationClient userAdministrationClient;
 
-  @Autowired
-  TimetableHearingStatementControllerInternalApiTest(
-      TimetableHearingYearRepository timetableHearingYearRepository,
-      TimetableHearingYearControllerInternal timetableHearingYearController,
-      TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal,
-      TimetableHearingStatementRepository timetableHearingStatementRepository,
-      SharedTransportCompanyRepository sharedTransportCompanyRepository,
-      TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository) {
-    this.timetableHearingYearRepository = timetableHearingYearRepository;
-    this.timetableHearingYearController = timetableHearingYearController;
-    this.timetableHearingStatementControllerInternal = timetableHearingStatementControllerInternal;
-    this.timetableHearingStatementRepository = timetableHearingStatementRepository;
-    this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
-    this.timetableFieldNumberVersionRepository = timetableFieldNumberVersionRepository;
-  }
-
   private SharedTransportCompany sharedTransportCompany;
   private SharedTransportCompany sharedTransportCompany1;
 
   @BeforeEach
   void setUp() {
-    timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearRepository.saveAndFlush(TimetableHearingYear.builder()
+        .timetableYear(YEAR)
+        .hearingStatus(HearingStatus.PLANNED)
+        .hearingFrom(LocalDate.of(2021, 1, 1))
+        .hearingTo(LocalDate.of(2021, 2, 1))
+        .statementCreatableExternal(true)
+        .statementCreatableInternal(true)
+        .statementEditable(true)
+        .build());
 
     TimetableFieldNumber returnedTimetableFieldNumber = TimetableFieldNumber.builder()
         .number("1.1")
@@ -189,6 +203,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     timetableHearingStatementRepository.deleteAll();
     timetableFieldNumberVersionRepository.deleteAll();
     sharedTransportCompanyRepository.deleteAll();
+    permissionRepository.deleteAll();
   }
 
   @Test
@@ -208,7 +223,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
 
     TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
@@ -246,7 +261,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
         .id(1111L)
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
@@ -270,7 +285,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   @Test
   void shouldCreateStatementWithTwoDocuments() throws Exception {
     TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -298,7 +313,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   @Test
   void shouldFailCreatingStatementWithFourDocuments() throws Exception {
     TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -360,7 +375,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   void shouldUpdateStatement() throws Exception {
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -391,7 +406,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .build();
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(statementSenderModelV2)
             .responsibleTransportCompaniesDisplay(sharedTransportCompany.getAbbreviation())
@@ -401,7 +416,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         Collections.emptyList());
     timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(statementSenderModelV2)
             .responsibleTransportCompaniesDisplay(sharedTransportCompany.getAbbreviation())
@@ -427,11 +442,11 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
   @Test
   void shouldUpdateHearingStatementStatus() throws Exception {
-    timetableHearingYearController.startHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear());
+    timetableHearingYearController.startHearingYear(YEAR);
 
     //given
     TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
@@ -440,7 +455,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
     TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
@@ -474,11 +489,11 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
   @Test
   void shouldThrowForbiddenExceptionWhenTimeTableYearOfStatementNotEqualAsHearingYear() throws Exception {
-    timetableHearingYearController.startHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear());
+    timetableHearingYearController.startHearingYear(YEAR);
 
     //given
     TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
@@ -515,7 +530,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   void shouldThrowForbiddenWhenHearingYearIsNotActive() throws Exception {
     //given
     TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
@@ -525,7 +540,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .build();
 
     TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
@@ -555,7 +570,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
             .statementEditable(false).build());
     //given
     TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
@@ -565,7 +580,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .build();
 
     TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
@@ -630,7 +645,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -658,7 +673,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   void shouldAddDocumentsToExistingStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -683,7 +698,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   @Test
   void shouldUpdateStatementWithDocumentsWithAdditionalDocuments() throws Exception {
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -714,7 +729,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   @Test
   void shouldUpdateStatementWithDocumentsWithAdditionalDocumentAndRemoveExisting() throws Exception {
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -744,28 +759,74 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
   @Test
   void shouldGetStatementById() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
-        TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModelV2.builder()
-                .emails(Set.of("fabienne.mueller@sbb.ch"))
-                .build())
-            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-            .build(),
-        Collections.emptyList());
-
-    mvc.perform(get("/internal/timetable-hearing/statements/" + statement.getId()))
+    getStatementById()
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(0)));
+  }
+
+  private ResultActions getStatementById() throws Exception {
+    TimetableHearingStatement statement = timetableHearingStatementRepository.save(
+        TimetableHearingStatement.builder()
+            .timetableYear(YEAR)
+            .swissCanton(SwissCanton.BERN)
+            .statementStatus(StatementStatus.RECEIVED)
+            .statementSender(StatementSender.builder()
+                .emails(List.of("fabienne.mueller@sbb.ch"))
+                .build())
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+            .dossierContactSbbuid("e456789")
+            .build());
+
+    return mvc.perform(get("/internal/timetable-hearing/statements/" + statement.getId()));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotBeAuthorizedToGetStatementByIdAsUnauthorized() throws Exception {
+    getStatementById().andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldBeAuthorizedToGetStatementByIdAsExplicitReader() throws Exception {
+    Permission permission = Permission.builder()
+        .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+        .application(ApplicationType.TIMETABLE_HEARING)
+        .role(ApplicationRole.EXPLICIT_READER)
+        .build();
+    permissionRepository.saveAndFlush(permission);
+
+    getStatementById().andExpect(status().isOk())
+        // Mails are visible for canton user
+        .andExpect(jsonPath("$.statementSender.emails[0]", is("fabienne.mueller@sbb.ch")));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(sbbuid = "e456789", role = MockRole.STANDARD, accountType = MockAccountType.GUEST)
+  void shouldBeAuthorizedToGetStatementByIdAsBoUser() throws Exception {
+    Permission permission = Permission.builder()
+        .identifier("e456789")
+        .application(ApplicationType.TIMETABLE_HEARING)
+        .role(ApplicationRole.READER)
+        .build();
+    permission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+        .permission(permission)
+        .type(PermissionRestrictionType.TRANSPORT_COMPANY_DOSSIER_ANSWER)
+        .restriction("true")
+        .build()));
+    permissionRepository.saveAndFlush(permission);
+
+    getStatementById().andExpect(status().isOk())
+        // Mails are redacted for bo user
+        .andExpect(jsonPath("$.statementSender.emails[0]", is(StringRedactor.REPLACEMENT)));
   }
 
   @Test
   void shouldGetStatementByHearingYear() throws Exception {
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -787,7 +848,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   void shouldGetStatementDocumentByDocumentId() throws Exception {
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -806,7 +867,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   void shouldThrowExceptionOnGetStatementDocumentByDocumentId() throws Exception {
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -824,7 +885,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   void shouldDeleteStatementDocumentByDocumentId() throws Exception {
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -843,7 +904,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   void shouldGetStatementDocumentNotFoundWhenNoDocument() throws Exception {
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -865,7 +926,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch", "flo.mueller@sbb.ch"))
@@ -896,7 +957,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .firstName("Fabienne")
@@ -948,7 +1009,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .firstName("Fabienne")
@@ -993,7 +1054,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   @Test
   void shouldUpdateStatementWithReplacingTransportCompany() throws Exception {
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -1067,7 +1128,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     // Given
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -1094,7 +1155,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     // Given
     TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
         TimetableHearingStatementModelV2.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableYear(YEAR)
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
