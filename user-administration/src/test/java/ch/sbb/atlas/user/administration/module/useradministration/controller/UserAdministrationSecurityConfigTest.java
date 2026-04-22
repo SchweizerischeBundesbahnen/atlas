@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
@@ -28,7 +29,7 @@ class UserAdministrationSecurityConfigTest {
   @Autowired
   private MockMvc mvc;
 
-  @Autowired
+  @MockitoBean
   private GraphServiceClient graphClient;
 
   @BeforeEach
@@ -73,5 +74,21 @@ class UserAdministrationSecurityConfigTest {
   void shouldNotAllowSearchToUnauthorizedInternal() throws Exception {
     mvc.perform(get("/v1/search").param("searchQuery", "testQuery"))
         .andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldAllowSearchByMailForWriter() throws Exception {
+    mvc.perform(get("/v1/users/mail").param("mail", "e527717@sbb.ch"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.displayName").value(not("*****")));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotDisplayInfoForUnauthorizedOnSearchByMail() throws Exception {
+    mvc.perform(get("/v1/users/mail").param("mail", "e527717@sbb.ch"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.displayName").value("*****"));
   }
 }
