@@ -88,7 +88,7 @@ class TthDossierServiceTest {
             .build()))
         .build());
 
-    when(boUserMailCheckService.isCurrentUserMailAssignedTo(any(BoContactAssociated.class))).thenReturn(true);
+    when(boUserMailCheckService.isCurrentUserAssignedTo(any(BoContactAssociated.class))).thenReturn(true);
 
     TthDossierYear tthDossierYear = TthDossierYear.builder()
         .timetableYear(2024L)

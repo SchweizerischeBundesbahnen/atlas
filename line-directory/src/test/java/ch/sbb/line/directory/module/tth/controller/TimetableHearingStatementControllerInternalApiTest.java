@@ -488,6 +488,49 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   }
 
   @Test
+  void shouldUpdateHearingStatementStatusAsAdmin() throws Exception {
+    updateHearingStatementStatus().andExpect(status().isOk());
+  }
+
+  private ResultActions updateHearingStatementStatus() throws Exception {
+    TimetableHearingYear timetableHearingYear = timetableHearingYearRepository.findById(YEAR).orElseThrow();
+    timetableHearingYear.setHearingStatus(HearingStatus.ACTIVE);
+    timetableHearingYearRepository.saveAndFlush(timetableHearingYear);
+
+    //given
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(YEAR)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .emails(List.of("mike@thebike.com"))
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    statement = timetableHearingStatementRepository.saveAndFlush(statement);
+    UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
+        UpdateHearingStatementStatusModel.builder().ids(List.of(statement.getId())).justification("Forza Napoli")
+            .statementStatus(StatementStatus.ACCEPTED).build();
+
+    //when
+    return mvc.perform(put("/internal/timetable-hearing/statements/update-statement-status")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(updateHearingStatementStatusModel)));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotUpdateHearingStatementStatusAsUnauthorized() throws Exception {
+    updateHearingStatementStatus().andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldNotUpdateHearingStatementStatusAsStandardUser() throws Exception {
+    updateHearingStatementStatus().andExpect(status().isForbidden());
+  }
+
+  @Test
   void shouldThrowForbiddenExceptionWhenTimeTableYearOfStatementNotEqualAsHearingYear() throws Exception {
     timetableHearingYearController.startHearingYear(YEAR);
 
@@ -635,6 +678,49 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingCantonModel)))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldUpdateHearingStatementCantonAsAdmin() throws Exception {
+    updateHearingStatementCanton().andExpect(status().isOk());
+  }
+
+  private ResultActions updateHearingStatementCanton() throws Exception {
+    TimetableHearingYear timetableHearingYear = timetableHearingYearRepository.findById(YEAR).orElseThrow();
+    timetableHearingYear.setHearingStatus(HearingStatus.ACTIVE);
+    timetableHearingYearRepository.saveAndFlush(timetableHearingYear);
+
+    //given
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(YEAR)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .emails(List.of("mike@thebike.com"))
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    statement = timetableHearingStatementRepository.saveAndFlush(statement);
+    UpdateHearingCantonModel updateHearingCantonModel =
+        UpdateHearingCantonModel.builder().comment("Forza Napoli").ids(List.of(statement.getId())).swissCanton(SwissCanton.JURA)
+            .build();
+
+    //when
+    return mvc.perform(put("/internal/timetable-hearing/statements/update-canton")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(updateHearingCantonModel)));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotUpdateHearingStatementCantonAsUnauthorized() throws Exception {
+    updateHearingStatementCanton().andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldNotUpdateHearingStatementCantonAsStandardUser() throws Exception {
+    updateHearingStatementCanton().andExpect(status().isForbidden());
   }
 
   @Test
@@ -1121,6 +1207,75 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     assertThat(statementAfterUpdate.getDossierContactMail()).isEqualTo("uerli@bernmobil.ch");
     assertThat(statementAfterUpdate.getDossierContactSbbuid()).isEqualTo("u123456");
     assertThat(statementAfterUpdate.getStatementStatus()).isEqualTo(StatementStatus.IN_REVIEW);
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotUpdateStatementsInBatchForDossierIfUnauthorized() throws Exception {
+    BatchUpdateTimetableHearingStatementsModel updateModel = getBatchUpdateTimetableHearingStatementsModel();
+
+    //when
+    mvc.perform(post("/internal/timetable-hearing/statements/batch-update-statements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateModel)))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldNotUpdateStatementsInBatchForDossierIfStandardUser() throws Exception {
+    BatchUpdateTimetableHearingStatementsModel updateModel = getBatchUpdateTimetableHearingStatementsModel();
+
+    //when
+    mvc.perform(post("/internal/timetable-hearing/statements/batch-update-statements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateModel)))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldUpdateStatementsInBatchForDossierIfWriter() throws Exception {
+    Permission permission = Permission.builder()
+        .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+        .application(ApplicationType.TIMETABLE_HEARING)
+        .role(ApplicationRole.WRITER)
+        .build();
+    permission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+        .permission(permission)
+        .type(PermissionRestrictionType.CANTON)
+        .restriction(SwissCanton.BERN.name())
+        .build()));
+    permissionRepository.saveAndFlush(permission);
+
+    BatchUpdateTimetableHearingStatementsModel updateModel = getBatchUpdateTimetableHearingStatementsModel();
+
+    //when
+    mvc.perform(post("/internal/timetable-hearing/statements/batch-update-statements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateModel)))
+        .andExpect(status().isOk());
+  }
+
+  private BatchUpdateTimetableHearingStatementsModel getBatchUpdateTimetableHearingStatementsModel() {
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .emails(List.of("mike@thebike.com"))
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    statement = timetableHearingStatementRepository.saveAndFlush(statement);
+    return BatchUpdateTimetableHearingStatementsModel.builder()
+        .ids(List.of(statement.getId()))
+        .dossierCanton(SwissCanton.BERN)
+        .dossierId(1L)
+        .dossierContactMail("uerli@bernmobil.ch")
+        .dossierContactSbbuid("u123456")
+        .statementStatus(StatementStatus.IN_REVIEW)
+        .build();
   }
 
   @Test

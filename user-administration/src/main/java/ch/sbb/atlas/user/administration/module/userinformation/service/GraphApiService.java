@@ -45,6 +45,7 @@ public class GraphApiService {
     });
   }
 
+  @Redacted
   public List<UserModel> searchUserByMail(String mail) {
     return getUsers(requestConfig -> {
       Objects.requireNonNull(requestConfig.queryParameters);

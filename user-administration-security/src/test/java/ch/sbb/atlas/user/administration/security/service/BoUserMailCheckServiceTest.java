@@ -42,7 +42,7 @@ class BoUserMailCheckServiceTest {
     when(boMail.getBoContactMail()).thenReturn("user@yb.com");
 
     //when
-    boolean result = boUserMailCheckService.isCurrentUserMailAssignedTo(boMail);
+    boolean result = boUserMailCheckService.isCurrentUserAssignedTo(boMail);
 
     //then
     assertThat(result).isTrue();
@@ -55,7 +55,7 @@ class BoUserMailCheckServiceTest {
     BoContactAssociated boMail = mock(BoContactAssociated.class);
     when(boMail.getBoContactMail()).thenReturn("fc@zueri.com");
     //when
-    boolean result = boUserMailCheckService.isCurrentUserMailAssignedTo(boMail);
+    boolean result = boUserMailCheckService.isCurrentUserAssignedTo(boMail);
     //then
     assertThat(result).isFalse();
     userServiceMock.verify(UserService::getPreferredUsername, times(1));
@@ -69,9 +69,46 @@ class BoUserMailCheckServiceTest {
     when(boMail.getBoContactSbbuid()).thenReturn("u123456");
 
     //when
-    boolean result = boUserMailCheckService.isCurrentUserMailAssignedTo(boMail);
+    boolean result = boUserMailCheckService.isCurrentUserAssignedTo(boMail);
 
     //then
     assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldReturnFalseWhenSbbUidCheckedAgainstBoSbbuidNull() {
+    //given
+    userServiceMock.when(UserService::getUserIdentifier).thenReturn(null);
+    //when
+    boolean result = boUserMailCheckService.isCurrentUserSbbUidAssignedTo(null);
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldReturnFalseWhenSbbUidCheckedAgainstBoSbbuidDoesNotMatch() {
+    //when
+    boolean result = boUserMailCheckService.isCurrentUserSbbUidAssignedTo("e123456");
+    //then
+    assertThat(result).isFalse();
+    userServiceMock.verify(UserService::getUserIdentifier, times(1));
+  }
+
+  @Test
+  void shouldReturnTrueWhenSbbUidCheckedAgainstCorrectBoSbbuid() {
+    //when
+    boolean result = boUserMailCheckService.isCurrentUserSbbUidAssignedTo("u123456");
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldReturnFalseWhenMailNullCheckedAgainstNull() {
+    //given
+    userServiceMock.when(UserService::getPreferredUsername).thenReturn(null);
+    //when
+    boolean result = boUserMailCheckService.isCurrentUserMailAssignedTo(null);
+    //then
+    assertThat(result).isFalse();
   }
 }

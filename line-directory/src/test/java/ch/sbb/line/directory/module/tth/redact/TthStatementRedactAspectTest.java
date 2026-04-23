@@ -45,7 +45,7 @@ class TthStatementRedactAspectTest {
     resultObject.setDossierContactMail(mailTo);
     resultObject.setStatementAnonymous(true);
     TimetableHearingStatement redactObject = resultObject.toBuilder().build();
-    doReturn(true).when(boUserMailCheckService).isCurrentUserMailAssignedTo(resultObject);
+    doReturn(true).when(boUserMailCheckService).isCurrentUserAssignedTo(resultObject);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(resultObject, redactObject);
 
@@ -61,7 +61,7 @@ class TthStatementRedactAspectTest {
     resultObject.setDossierContactMail(mailTo);
     resultObject.setStatementAnonymous(false);
     TimetableHearingStatement redactObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(resultObject);
-    doReturn(true).when(boUserMailCheckService).isCurrentUserMailAssignedTo(resultObject);
+    doReturn(true).when(boUserMailCheckService).isCurrentUserAssignedTo(resultObject);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(resultObject, redactObject);
 
@@ -77,7 +77,7 @@ class TthStatementRedactAspectTest {
     resultObject.setDossierContactMail(mailTo);
     resultObject.setStatementAnonymous(false);
     TimetableHearingStatement redactObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(resultObject);
-    doReturn(true).when(boUserMailCheckService).isCurrentUserMailAssignedTo(resultObject);
+    doReturn(true).when(boUserMailCheckService).isCurrentUserAssignedTo(resultObject);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(resultObject, redactObject);
 
@@ -93,7 +93,7 @@ class TthStatementRedactAspectTest {
     resultObject.setDossierContactMail(mailTo);
     resultObject.setStatementAnonymous(false);
     TimetableHearingStatement redactObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(resultObject);
-    doReturn(false).when(boUserMailCheckService).isCurrentUserMailAssignedTo(resultObject);
+    doReturn(false).when(boUserMailCheckService).isCurrentUserAssignedTo(resultObject);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(resultObject, redactObject);
 
@@ -109,7 +109,7 @@ class TthStatementRedactAspectTest {
     resultObject.setDossierContactMail(mailTo);
     resultObject.setStatementAnonymous(true);
     TimetableHearingStatementModelV2 redactObject = TimetableHearingStatementModelV2.builder().build();
-    doReturn(true).when(boUserMailCheckService).isCurrentUserMailAssignedTo(resultObject);
+    doReturn(true).when(boUserMailCheckService).isCurrentUserAssignedTo(resultObject);
     //when && then
     assertThrows(IllegalStateException.class,
         () -> tthStatementRedactAspect.redactStatementForBoUser(resultObject, redactObject));
@@ -202,7 +202,7 @@ class TthStatementRedactAspectTest {
     // when & then
     //given
     TimetableHearingStatement redactedObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(sensitiveStatement);
-    doReturn(true).when(boUserMailCheckService).isCurrentUserMailAssignedTo(sensitiveStatement);
+    doReturn(true).when(boUserMailCheckService).isCurrentUserAssignedTo(sensitiveStatement);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(sensitiveStatement, redactedObject);
     assertThat(redactedObject.getDocuments()).isEmpty();
