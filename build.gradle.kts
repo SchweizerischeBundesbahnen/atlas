@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.1234.0"
+version = "2.1235.0"
 
 subprojects {
     sonar {
