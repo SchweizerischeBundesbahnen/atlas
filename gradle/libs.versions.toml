@@ -29,7 +29,7 @@ protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version
 
 # Other
 swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.48" }
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.42.39" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.42.40" }
 jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.7" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.5.1" }
@@ -42,7 +42,7 @@ azure-identity = { group = "com.azure", name = "azure-identity", version = "1.18
 # Gradle Plugin Dependencies
 asciidoctor-gradle-plugin = { group = "org.asciidoctor.jvm.convert", name = "org.asciidoctor.jvm.convert.gradle.plugin", version = "4.0.5" }
 spring-dependency-management-gradle-plugin = { group = "io.spring.dependency-management", name = "io.spring.dependency-management.gradle.plugin", version = "1.1.7" }
-spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "4.0.5" }
+spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "4.0.6" }
 
 
 [bundles]
