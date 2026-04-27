@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.model.Status;
@@ -476,7 +477,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
       assertThat(result.getBoardingDevice()).isEqualTo(BoardingDeviceAttributeType.TO_BE_COMPLETED);
       assertThat(result.getDynamicAudio()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
       assertThat(result.getDynamicVisual()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
-      assertThat(result.getLevelAccessWheelchair()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
+      assertThat(result.getLevelAccessWheelchair()).isEqualTo(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED);
 
       assertThat(result.getTactileSystem()).isNull();
       assertThat(result.getVehicleAccess()).isNull();
@@ -519,4 +520,3 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
   }
 
 }
-

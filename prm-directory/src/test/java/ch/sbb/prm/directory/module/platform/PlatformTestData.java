@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.model.Status;
@@ -42,7 +43,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
@@ -73,7 +74,7 @@ public class PlatformTestData {
         .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
         .inclination(123.12)
         .inclinationWidth(123.12)
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .status(Status.VALIDATED)
         .superelevation(321.123)
         .build();
@@ -120,7 +121,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
         .infoOpportunities(List.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
@@ -147,7 +148,7 @@ public class PlatformTestData {
         .additionalInformation("additional info")
         .inclination(123.12)
         .inclinationWidth(123.12)
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .superelevation(321.123)
         .build();
 
@@ -192,7 +193,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
@@ -219,7 +220,7 @@ public class PlatformTestData {
         .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
         .inclination(123.12)
         .inclinationWidth(123.12)
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .superelevation(321.123);
   }
 
@@ -240,7 +241,7 @@ public class PlatformTestData {
         .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
         .inclination(123.12)
         .inclinationWidth(123.12)
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .superelevation(321.123);
   }
 
@@ -261,7 +262,7 @@ public class PlatformTestData {
         .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
         .inclination(123.12)
         .inclinationWidth(123.12)
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .superelevation(321.123);
   }
 
@@ -285,7 +286,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(InfoOpportunityAttributeType.TO_BE_COMPLETED))
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
@@ -314,7 +315,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION))
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)

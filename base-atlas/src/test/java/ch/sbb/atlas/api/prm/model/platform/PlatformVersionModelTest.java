@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.model.BaseValidatorTest;
 import ch.sbb.atlas.model.Status;
@@ -81,7 +82,7 @@ class PlatformVersionModelTest extends BaseValidatorTest {
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
         .infoOpportunities(List.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
-        .levelAccessWheelchair(BasicAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
