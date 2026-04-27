@@ -9,20 +9,13 @@ import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.step.StepExecution;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.infrastructure.item.Chunk;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@StepScope
 @RequiredArgsConstructor
 public class TrafficPointUpdateWriter extends TrafficPointUpdate implements BulkImportItemWriter {
-
-  @Value("#{stepExecution}")
-  private StepExecution stepExecution;
 
   private final TrafficPointBulkImportClient trafficPointBulkImportClient;
 
@@ -30,7 +23,6 @@ public class TrafficPointUpdateWriter extends TrafficPointUpdate implements Bulk
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
     List<BulkImportUpdateContainer<TrafficPointUpdateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
-    WriterUtil.addInNameOfTo(stepExecution, updateContainers);
 
     log.info("Writing {} containers to service-point-directory", updateContainers.size());
 
