@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.job.JobExecution;
@@ -31,7 +32,7 @@ public class GeoLocationMailNotificationService {
   public MailNotification buildMailErrorNotification(String jobName, StepExecution stepExecution) {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
-        .subject("Job [" + jobName + "] execution failed")
+        .subject(buildJobWithNameInfo(jobName) + " execution failed")
         .mailType(MailType.UPDATE_GEOLOCATION_ERROR_NOTIFICATION)
         .templateProperties(buildErrorMailContent(jobName, stepExecution))
         .build();
@@ -42,7 +43,7 @@ public class GeoLocationMailNotificationService {
       StepExecution stepExecution) {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
-        .subject("Job [" + jobName + "] execution successfully")
+        .subject(buildJobWithNameInfo(jobName) + " execution successfully")
         .mailType(MailType.UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION)
         .templateProperties(buildSuccessMailContent(jobName, geoUpdateProcessItems, stepExecution))
         .build();
@@ -138,8 +139,17 @@ public class GeoLocationMailNotificationService {
 
   private String getJobInformation(JobExecution jobExecution) {
     Duration jobExecutionDuration = BatchMetrics.calculateDuration(jobExecution.getStartTime(), jobExecution.getEndTime());
-    return "Job [" + jobExecution.getJobInstance().getJobName() + " with id " + jobExecution.getId() + "] executed in "
+    return buildJobWithNameInfo(jobExecution.getJobInstance().getJobName(), Optional.of(jobExecution.getId())) + " executed in "
         + BatchMetrics.formatDuration(jobExecutionDuration);
   }
 
+  private static String buildJobWithNameInfo(String jobName) {
+    return buildJobWithNameInfo(jobName, Optional.empty());
+  }
+
+  private static String buildJobWithNameInfo(String jobName, Optional<Long> id) {
+    StringBuilder jobInfo = new StringBuilder("Job [").append(jobName);
+    id.ifPresent(jobId -> jobInfo.append(" with id ").append(jobId));
+    return jobInfo.append("]").toString();
+  }
 }

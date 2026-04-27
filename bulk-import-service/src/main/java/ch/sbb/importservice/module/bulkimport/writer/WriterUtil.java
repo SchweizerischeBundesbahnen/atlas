@@ -35,7 +35,7 @@ public class WriterUtil {
     });
   }
 
-  public static <T> void addInNameOfTo(StepExecution stepExecution, List<BulkImportUpdateContainer<?>> updateContainers) {
+  public static void addInNameOfTo(StepExecution stepExecution, List<BulkImportUpdateContainer<?>> updateContainers) {
     String inNameOf = stepExecution.getJobExecution().getJobParameters().getString(BulkImport.Fields.inNameOf);
     updateContainers.forEach(updateContainer -> updateContainer.setInNameOf(inNameOf));
   }
