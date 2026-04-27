@@ -1633,6 +1633,13 @@
         "NOT_APPLICABLE": "Nicht anwendbar",
         "PARTIALLY": "Teilweise",
         "WITH_REMOTE_CONTROL": "Mit Fernbedienung"
+      },
+      "LEVEL_ACCESS_WHEELCHAIR_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "YES": "Ja",
+        "YES_WITH_STAFF_ASSISTANCE": "Ja, mit Hilfe Fahrpersonal",
+        "NO": "Nein",
+        "NOT_APPLICABLE": "Nicht anwendbar"
       }
     },
     "INFO_BOX": {

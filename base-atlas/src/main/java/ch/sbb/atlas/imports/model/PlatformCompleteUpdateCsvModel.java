@@ -3,6 +3,7 @@ package ch.sbb.atlas.imports.model;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion;
 import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion.Mapping;
@@ -87,7 +88,7 @@ public class PlatformCompleteUpdateCsvModel implements Validatable<PlatformCompl
   private Double inclinationWidth;
 
   @DefaultMapping
-  private BasicAttributeType levelAccessWheelchair;
+  private LevelAccessWheelchairAttributeType levelAccessWheelchair;
 
   @DefaultMapping
   @Nulling

@@ -1633,6 +1633,13 @@
         "NOT_APPLICABLE": "Non applicable",
         "PARTIALLY": "Partiellement",
         "WITH_REMOTE_CONTROL": "Avec télécommande"
+      },
+      "LEVEL_ACCESS_WHEELCHAIR_TYPES": {
+        "TO_BE_COMPLETED": "À compléter",
+        "YES": "Oui",
+        "YES_WITH_STAFF_ASSISTANCE": "Oui, avec l’aide du personnel roulant",
+        "NO": "Non",
+        "NOT_APPLICABLE": "Non applicable"
       }
     },
     "INFO_BOX": {
