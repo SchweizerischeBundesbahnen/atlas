@@ -6,6 +6,7 @@ import { CommentComponent } from '../../../../../../../core/form-components/comm
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
 import { SelectComponent } from '../../../../../../../core/form-components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LevelAccessWheelchairAttributeType } from '../../../../../../../api/model/levelAccessWheelchairAttributeType';
 
 @Component({
   selector: 'atlas-platform-complete-form',
@@ -20,5 +21,5 @@ export class PlatformCompleteFormComponent {
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   basicAttributeType = Object.values(BasicAttributeType);
   boardingDeviceAttributeTypes = Object.values(BoardingDeviceAttributeType);
-  levelAccessWheelchairAttributeTypes = Object.values(BasicAttributeType);
+  levelAccessWheelchairAttributeTypes = Object.values(LevelAccessWheelchairAttributeType);
 }
