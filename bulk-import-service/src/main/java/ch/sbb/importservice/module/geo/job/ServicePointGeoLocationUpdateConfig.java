@@ -52,6 +52,7 @@ public class ServicePointGeoLocationUpdateConfig {
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(servicePointWithGeolocation));
   }
 
+  @StepScope
   @Bean
   public ChunkTaskExecutorItemWriter<ServicePointSwissWithGeoLocationModel> geoItemWriter() {
     ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -64,13 +65,14 @@ public class ServicePointGeoLocationUpdateConfig {
 
   @Bean
   public Step updateServicePointGeoLocationStep(
-      ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointListItemReader,
+      ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> geoLocationItemReader,
       ChunkTaskExecutorItemWriter<ServicePointSwissWithGeoLocationModel> geoItemWriter) {
     String stepName = "updateServicePointGeoLocationStep";
     return new StepBuilder(stepName, jobRepository)
         .<ServicePointSwissWithGeoLocationModel, ServicePointSwissWithGeoLocationModel>chunk(SERVICE_POINT_CHUNK_SIZE)
         .transactionManager(transactionManager)
-        .reader(servicePointListItemReader).writer(geoItemWriter)
+        .reader(geoLocationItemReader)
+        .writer(geoItemWriter)
         .faultTolerant()
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
         .listener(stepTracerListener)
@@ -80,7 +82,8 @@ public class ServicePointGeoLocationUpdateConfig {
   @Bean
   public Job updateServicePointGeoJob(Step updateServicePointGeoLocationStep) {
     return new JobBuilder(UPDATE_SERVICE_POINT_GEO_JOB, jobRepository)
-        .listener(geoLocationJobCompletionListener).flow(updateServicePointGeoLocationStep)
+        .listener(geoLocationJobCompletionListener)
+        .flow(updateServicePointGeoLocationStep)
         .end()
         .build();
   }

@@ -33,7 +33,7 @@ class GeoLocationMailNotificationServiceTest {
     expectedMailContent.put("exception", "");
     expectedMailContent.put("jobParameter", "{}");
     expectedMailContent.put("stepName", "myStep");
-  expectedMailContent.put("stepExecutionInformation", "Step [myStep with id 123] executed in ");
+  expectedMailContent.put("stepExecutionInformation", "Job [job with id 1] executed in ");
   JobExecution jobExecution = new JobExecution(1L, new JobInstance(1L, "job"), new JobParameters());
   StepExecution stepExecution = new StepExecution(123,"myStep", jobExecution);
   stepExecution.getExecutionContext().put("traceId", "abc123");
@@ -58,7 +58,7 @@ class GeoLocationMailNotificationServiceTest {
     expectedMailContent.put("exception", "");
     expectedMailContent.put("jobParameter", "{}");
    expectedMailContent.put("stepName", "myStep");
-   expectedMailContent.put("stepExecutionInformation", "Step [myStep with id 123] executed in ");
+   expectedMailContent.put("stepExecutionInformation", "Job [job with id 1] executed in ");
    JobExecution jobExecution = new JobExecution(1L, new JobInstance(1L, "job"), new JobParameters());
    StepExecution stepExecution = new StepExecution(123L,"myStep", jobExecution);
    stepExecution.getExecutionContext().put("traceId", "abc123");
