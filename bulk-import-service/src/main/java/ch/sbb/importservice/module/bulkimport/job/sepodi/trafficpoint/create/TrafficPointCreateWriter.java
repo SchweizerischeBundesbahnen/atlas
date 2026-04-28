@@ -9,7 +9,6 @@ import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -20,9 +19,9 @@ public class TrafficPointCreateWriter extends TrafficPointCreate implements Bulk
   private final TrafficPointBulkImportClient trafficPointBulkImportClient;
 
   @Override
-  public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
+  public void accept(List<BulkImportUpdateContainer<?>> items) {
     List<BulkImportUpdateContainer<TrafficPointCreateCsvModel>> createContainers =
-        WriterUtil.getContainersWithoutDataValidationErrors(items);
+        WriterUtil.getContainers(items);
 
     log.info("Writing {} containers to service-point-directory", createContainers.size());
 

@@ -9,7 +9,6 @@ import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -20,9 +19,8 @@ public class LineUpdateWriter extends LineUpdate implements BulkImportItemWriter
   private final LineBulkImportClient lineBulkImportClient;
 
   @Override
-  public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    List<BulkImportUpdateContainer<LineUpdateCsvModel>> updateContainers =
-        WriterUtil.getContainersWithoutDataValidationErrors(items);
+  public void accept(List<BulkImportUpdateContainer<?>> items) {
+    List<BulkImportUpdateContainer<LineUpdateCsvModel>> updateContainers = WriterUtil.getContainers(items);
 
     log.info("Writing {} containers to lidi", updateContainers.size());
 

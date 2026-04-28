@@ -9,7 +9,6 @@ import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -20,11 +19,9 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
   private final ServicePointBulkImportClient servicePointBulkImportClient;
 
   @Override
-  public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    log.info("Writing {} items", items.size());
-
+  public void accept(List<BulkImportUpdateContainer<?>> items) {
     List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers =
-        WriterUtil.getContainersWithoutDataValidationErrors(items);
+        WriterUtil.getContainers(items);
 
     log.info("Writing {} containers to service-point-directory", updateContainers.size());
 

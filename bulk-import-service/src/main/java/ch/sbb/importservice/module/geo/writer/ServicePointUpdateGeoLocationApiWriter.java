@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.step.item.ChunkProcessor;
 import org.springframework.batch.infrastructure.item.Chunk;
@@ -26,29 +27,39 @@ public class ServicePointUpdateGeoLocationApiWriter implements ChunkProcessor<Se
   @Override
   public void process(Chunk<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoModels,
       @NonNull StepContribution contribution) {
-    List<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoLocationModels =
-        new ArrayList<>(servicePointSwissWithGeoModels.getItems());
-    doWrite(servicePointSwissWithGeoLocationModels, contribution);
-
-    contribution.incrementWriteCount(servicePointSwissWithGeoLocationModels.size());
+    doWrite(new ArrayList<>(servicePointSwissWithGeoModels.getItems()), contribution);
   }
 
   void doWrite(List<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoLocationModels,
       StepContribution contribution) {
-    servicePointSwissWithGeoLocationModels.forEach(swissWithGeoModel -> swissWithGeoModel.getDetails()
-        .forEach(detail -> {
-          GeoUpdateItemResultModel result =
-              sePoDiClientService.updateServicePointGeoLocation(swissWithGeoModel.getSloid(), detail.getId());
-          log.info("Process ServicePoint [sloid={},id={}] with GeoLocation...", swissWithGeoModel.getSloid(),
-              detail.getId());
-          if (result != null) {
-            GeoUpdateProcessItem geoUpdateProcessItem = getGeoUpdateProcessItem(result, contribution);
-            geoUpdateProcessItemRepository.saveAndFlush(geoUpdateProcessItem);
-            log.info("Result: {}", result);
-          } else {
-            log.info("No GeoLocation updated!");
-          }
-        }));
+    servicePointSwissWithGeoLocationModels
+        .forEach(swissWithGeoModel -> swissWithGeoModel.getDetails()
+            .forEach(detail -> doWrite(swissWithGeoModel, detail, contribution)));
+  }
+
+  void doWrite(ServicePointSwissWithGeoLocationModel servicePoint,
+      ServicePointSwissWithGeoLocationModel.Detail versionInfo,
+      StepContribution contribution) {
+    try {
+      GeoUpdateItemResultModel result = sePoDiClientService.updateServicePointGeoLocation(servicePoint.getSloid(),
+          versionInfo.getId());
+      log.info("Process ServicePoint [sloid={},id={}] with GeoLocation...", servicePoint.getSloid(),
+          versionInfo.getId());
+
+      contribution.incrementWriteCount(1);
+      if (result != null) {
+        GeoUpdateProcessItem geoUpdateProcessItem = getGeoUpdateProcessItem(result, contribution);
+        geoUpdateProcessItemRepository.saveAndFlush(geoUpdateProcessItem);
+        log.info("Result: {}", result);
+      } else {
+        log.info("No GeoLocation updated!");
+      }
+    } catch (Exception e) {
+      log.error("Error while updating GeoLocation for ServicePoint [sloid={},id={}]", servicePoint.getSloid(),
+          versionInfo.getId(), e);
+      contribution.incrementWriteSkipCount(1);
+      contribution.setExitStatus(ExitStatus.FAILED.setExitException(e));
+    }
   }
 
   private GeoUpdateProcessItem getGeoUpdateProcessItem(GeoUpdateItemResultModel result, StepContribution contribution) {

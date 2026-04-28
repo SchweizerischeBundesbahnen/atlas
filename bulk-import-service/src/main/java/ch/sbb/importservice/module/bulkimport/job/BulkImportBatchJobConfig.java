@@ -2,6 +2,9 @@ package ch.sbb.importservice.module.bulkimport.job;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_JOB_NAME;
 
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
@@ -24,6 +27,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -125,9 +129,24 @@ public class BulkImportBatchJobConfig {
         .build();
     BulkImportItemWriter writer = bulkImportWriters.getWriter(config);
     ChunkProcessor<BulkImportUpdateContainer<?>> chunkProcessor = (items, contribution) -> {
+
       WriterUtil.addInNameOfTo(contribution.getStepExecution(), items.getItems());
-      writer.accept(items);
-      contribution.incrementWriteCount(items.getItems().size());
+      List<BulkImportUpdateContainer<?>> itemsToWrite = WriterUtil.getContainersWithoutDataValidationErrors(items);
+      try {
+        writer.accept(itemsToWrite);
+        contribution.incrementWriteCount(items.getItems().size());
+      } catch (Exception e) {
+        itemsToWrite.forEach(item -> item.setBulkImportLogEntry(BulkImportLogEntry.builder()
+            .status(BulkImportStatus.DATA_EXECUTION_ERROR)
+            .lineNumber(item.getLineNumber())
+            .errors(List.of(BulkImportError.builder()
+                .errorMessage(e.getMessage())
+                .build()))
+            .build()));
+
+        contribution.incrementWriteSkipCount(items.getItems().size());
+        contribution.setExitStatus(ExitStatus.FAILED.setExitException(e));
+      }
       items.getItems().forEach(writeItem ->
           bulkImportLogService.saveDataExecutionLog(stepExecution.getJobExecutionId(), writeItem));
     };

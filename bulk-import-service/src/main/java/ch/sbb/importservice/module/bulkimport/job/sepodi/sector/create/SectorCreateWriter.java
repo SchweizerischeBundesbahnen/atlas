@@ -8,7 +8,6 @@ import ch.sbb.importservice.module.bulkimport.writer.BulkImportItemWriter;
 import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,9 +17,8 @@ public class SectorCreateWriter extends SectorCreate implements BulkImportItemWr
   private final SectorBulkImportClient sectorBulkImportClient;
 
   @Override
-  public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    List<BulkImportUpdateContainer<SectorCreateCsvModel>> createContainers =
-        WriterUtil.getContainersWithoutDataValidationErrors(items);
+  public void accept(List<BulkImportUpdateContainer<?>> items) {
+    List<BulkImportUpdateContainer<SectorCreateCsvModel>> createContainers = WriterUtil.getContainers(items);
 
     List<BulkImportItemExecutionResult> importResult = sectorBulkImportClient.bulkImportCreate(createContainers);
     WriterUtil.mapExecutionResultToLogEntry(importResult, createContainers);

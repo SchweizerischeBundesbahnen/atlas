@@ -13,12 +13,13 @@ import org.springframework.batch.infrastructure.item.Chunk;
 @UtilityClass
 public class WriterUtil {
 
-  public static <T> List<BulkImportUpdateContainer<T>> getContainersWithoutDataValidationErrors(
-      Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    return items.getItems().stream()
-        .map(i -> (BulkImportUpdateContainer<T>) i)
-        .filter(i -> !i.hasDataValidationErrors())
-        .toList();
+  public static List<BulkImportUpdateContainer<?>> getContainersWithoutDataValidationErrors(
+      Chunk<BulkImportUpdateContainer<?>> items) {
+    return items.getItems().stream().filter(i -> !i.hasDataValidationErrors()).toList();
+  }
+
+  public static <T> List<BulkImportUpdateContainer<T>> getContainers(List<BulkImportUpdateContainer<?>> items) {
+    return items.stream().map(i -> (BulkImportUpdateContainer<T>) i).toList();
   }
 
   public static <T> void mapExecutionResultToLogEntry(List<BulkImportItemExecutionResult> executionResults,
