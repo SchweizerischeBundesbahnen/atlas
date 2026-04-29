@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   MeanOfTransport,
   PlatformVersion,
@@ -10,11 +10,7 @@ import {
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PrmMeanOfTransportHelper } from '../../../../util/prm-mean-of-transport-helper';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
-import {
-  CompletePlatformFormGroup,
-  PlatformFormGroupBuilder,
-  ReducedPlatformFormGroup,
-} from '../form/platform-form-group';
+import { CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup, } from '../form/platform-form-group';
 import { DateRange } from '../../../../../../core/versioning/date-range';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
@@ -34,6 +30,8 @@ import { DetailFooterComponent } from '../../../../../../core/components/detail-
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
+import { Data } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'atlas-platforms',
@@ -55,6 +53,8 @@ import { PlatformService } from '../../../../../../api/service/prm/platform/plat
   ],
 })
 export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatformVersion> implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
+
   servicePoint!: ReadServicePointVersion;
   meansOfTransport: MeanOfTransport[] = [];
   trafficPoint!: ReadTrafficPointElementVersion;
@@ -82,32 +82,35 @@ export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatf
   }
 
   ngOnInit(): void {
-    this.initSePoDiData();
-    this.stopPoint = this.route.snapshot.parent!.data.stopPoint;
-    this.versions = this.route.snapshot.parent!.data.platform;
+    this.route.parent!.data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data) => {
+      this.initSePoDiData(data);
+      this.stopPoint = data.stopPoint;
+      this.versions = data.platform;
 
-    this.meansOfTransport = this.stopPoint.flatMap((i) => i.meansOfTransport);
-    this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
-    this.isNew = this.versions.length === 0;
+      this.meansOfTransport = this.stopPoint.flatMap((i) => i.meansOfTransport);
+      this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
+      this.isNew = this.versions.length === 0;
 
-    if (this.isNew) {
-      this.mayCreate = this.hasPermissionToCreateNewStopPoint();
-    } else {
-      VersionsHandlingService.addVersionNumbers(this.versions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
-      this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
-    }
-
-    this.initForm();
+      if (this.isNew) {
+        this.mayCreate = this.hasPermissionToCreateNewStopPoint();
+        this.showVersionSwitch = false;
+        this.initForm();
+      } else {
+        VersionsHandlingService.addVersionNumbers(this.versions);
+        this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
+        this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
+        this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
+        this.initForm(this.selectedVersion);
+      }
+    });
   }
 
-  protected initForm() {
+  protected initForm(version?: ReadPlatformVersion) {
     if (this.reduced) {
-      this.form = PlatformFormGroupBuilder.buildReducedFormGroup(this.selectedVersion);
+      this.form = PlatformFormGroupBuilder.buildReducedFormGroup(version);
     } else {
-      this.form = PlatformFormGroupBuilder.buildCompleteFormGroup(this.selectedVersion);
+      this.form = PlatformFormGroupBuilder.buildCompleteFormGroup(version);
     }
     this.form.controls.sloid.setValue(this.trafficPoint.sloid);
 
@@ -145,13 +148,11 @@ export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatf
     }
   }
 
-  private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.parent!.data.servicePoint;
+  private initSePoDiData(data: Data) {
+    const servicePointVersions: ReadServicePointVersion[] = data.servicePoint;
     this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
     this.businessOrganisations = [...new Set(servicePointVersions.map((value) => value.businessOrganisation))];
-    this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.route.snapshot.parent!.data.trafficPoint
-    );
+    this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(data.trafficPoint);
   }
 
   private hasPermissionToCreateNewStopPoint(): boolean {

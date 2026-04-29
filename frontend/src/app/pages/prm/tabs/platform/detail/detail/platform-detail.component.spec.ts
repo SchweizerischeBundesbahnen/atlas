@@ -1,43 +1,45 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {beforeEach, describe, expect, it, type Mocked, vi} from 'vitest';
 
-import { PlatformDetailComponent } from './platform-detail.component';
-import { ReadPlatformVersion, VehicleAccessAttributeType } from '../../../../../../api';
-import { of } from 'rxjs';
-import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../../util/stop-point-test-data';
-import { BERN_WYLEREGG } from '../../../../../../../test/data/service-point';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../../test/data/traffic-point-element';
+import {PlatformDetailComponent} from './platform-detail.component';
+import {ReadPlatformVersion, VehicleAccessAttributeType} from '../../../../../../api';
+import {of} from 'rxjs';
+import {DialogService} from '../../../../../../core/components/dialog/dialog.service';
+import {STOP_POINT, STOP_POINT_COMPLETE} from '../../../../util/stop-point-test-data';
+import {BERN_WYLEREGG} from '../../../../../../../test/data/service-point';
+import {BERN_WYLEREGG_TRAFFIC_POINTS} from '../../../../../../../test/data/traffic-point-element';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
   MockAtlasFieldErrorComponent,
   MockNavigationSepodiPrmComponent,
 } from '../../../../../../app.testing.mocks';
-import { DisplayDatePipe } from '../../../../../../core/pipe/display-date.pipe';
-import { PlatformReducedFormComponent } from '../form/platform-reduced-form/platform-reduced-form.component';
-import { PlatformCompleteFormComponent } from '../form/platform-complete-form/platform-complete-form.component';
-import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
-import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
-import { SelectComponent } from '../../../../../../core/form-components/select/select.component';
-import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
-import { DateRangeTextComponent } from '../../../../../../core/versioning/date-range-text/date-range-text.component';
-import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
-import { DateRangeComponent } from '../../../../../../core/form-components/date-range/date-range.component';
-import { DateIconComponent } from '../../../../../../core/form-components/date-icon/date-icon.component';
-import { UserDetailInfoComponent } from '../../../../../../core/components/user-edit-info/user-detail-info.component';
-import { DetailPageContainerComponent } from '../../../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailPageContentComponent } from '../../../../../../core/components/detail-page-content/detail-page-content.component';
-import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
-import { AppTestingModule } from '../../../../../../app.testing.module';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NotificationService } from '../../../../../../core/notification/notification.service';
-import { TranslatePipe } from '@ngx-translate/core';
-import { SplitServicePointNumberPipe } from '../../../../../../core/search-service-point/split-service-point-number.pipe';
+import {DisplayDatePipe} from '../../../../../../core/pipe/display-date.pipe';
+import {PlatformReducedFormComponent} from '../form/platform-reduced-form/platform-reduced-form.component';
+import {PlatformCompleteFormComponent} from '../form/platform-complete-form/platform-complete-form.component';
+import {TextFieldComponent} from '../../../../../../core/form-components/text-field/text-field.component';
+import {AtlasLabelFieldComponent, InfoIconComponent} from '@atlas/form';
+import {AtlasSpacerComponent} from '../../../../../../core/components/spacer/atlas-spacer.component';
+import {SelectComponent} from '../../../../../../core/form-components/select/select.component';
+import {CommentComponent} from '../../../../../../core/form-components/comment/comment.component';
+import {DateRangeTextComponent} from '../../../../../../core/versioning/date-range-text/date-range-text.component';
+import {SwitchVersionComponent} from '../../../../../../core/components/switch-version/switch-version.component';
+import {DateRangeComponent} from '../../../../../../core/form-components/date-range/date-range.component';
+import {DateIconComponent} from '../../../../../../core/form-components/date-icon/date-icon.component';
+import {UserDetailInfoComponent} from '../../../../../../core/components/user-edit-info/user-detail-info.component';
+import {
+  DetailPageContainerComponent
+} from '../../../../../../core/components/detail-page-container/detail-page-container.component';
+import {DetailPageContentComponent} from '../../../../../../core/components/detail-page-content/detail-page-content.component';
+import {DetailFooterComponent} from '../../../../../../core/components/detail-footer/detail-footer.component';
+import {AppTestingModule} from '../../../../../../app.testing.module';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {NotificationService} from '../../../../../../core/notification/notification.service';
+import {TranslatePipe} from '@ngx-translate/core';
+import {SplitServicePointNumberPipe} from '../../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
-import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
-import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
+import {PermissionService} from '../../../../../../core/auth/permission/permission.service';
+import {PlatformService} from '../../../../../../api/service/prm/platform/platform.service';
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -123,15 +125,13 @@ describe('PlatformDetailComponent', () => {
   let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
 
   const activatedRouteMock = {
-    snapshot: {
-      parent: {
-        data: {
-          stopPoint: [STOP_POINT],
-          servicePoint: [BERN_WYLEREGG],
-          platform: [],
-          trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
-        },
-      },
+    parent: {
+      data: of({
+        stopPoint: [STOP_POINT],
+        servicePoint: [BERN_WYLEREGG],
+        platform: [],
+        trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+      }),
     },
   };
 
@@ -238,15 +238,13 @@ describe('PlatformDetailComponent', () => {
     beforeEach(() => {
       TestBed.overrideProvider(ActivatedRoute, {
         useValue: {
-          snapshot: {
-            parent: {
-              data: {
-                stopPoint: [STOP_POINT],
-                servicePoint: [BERN_WYLEREGG],
-                platform: reducedPlatform,
-                trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
-              },
-            },
+          parent: {
+            data: of({
+              stopPoint: [STOP_POINT],
+              servicePoint: [BERN_WYLEREGG],
+              platform: reducedPlatform,
+              trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+            }),
           },
         },
       });
@@ -306,15 +304,13 @@ describe('PlatformDetailComponent', () => {
     beforeEach(() => {
       TestBed.overrideProvider(ActivatedRoute, {
         useValue: {
-          snapshot: {
-            parent: {
-              data: {
-                stopPoint: [STOP_POINT_COMPLETE],
-                servicePoint: [BERN_WYLEREGG],
-                platform: [],
-                trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
-              },
-            },
+          parent: {
+            data: of({
+              stopPoint: [STOP_POINT_COMPLETE],
+              servicePoint: [BERN_WYLEREGG],
+              platform: [],
+              trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+            }),
           },
         },
       });
