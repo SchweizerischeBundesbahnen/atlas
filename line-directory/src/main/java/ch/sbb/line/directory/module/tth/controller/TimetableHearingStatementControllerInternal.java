@@ -96,7 +96,9 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
 
   @Override
   public TimetableHearingStatementModelV2 getStatement(Long id) {
-    return TimetableHearingStatementMapperV2.toModel(timetableHearingStatementService.getTimetableHearingStatementById(id));
+    TimetableHearingStatementModelV2 model = TimetableHearingStatementMapperV2.toModel(
+        timetableHearingStatementService.getTimetableHearingStatementById(id));
+    return timetableFieldNumberResolverService.resolveAdditionalVersionInfo(List.of(model)).getFirst();
   }
 
   @Override

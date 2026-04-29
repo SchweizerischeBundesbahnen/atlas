@@ -1040,8 +1040,8 @@
       "AUSTRIA": "81 - Austria"
     },
     "STATEMENT": {
-      "NEW": "Nuovo parare",
-      "STATEMENT": "Parare",
+      "NEW": "Nuovo parere",
+      "STATEMENT": "Parere",
       "PERSONAL_INFORMATION": "Dati personali",
       "STATEMENT_INFO": "Nominare le connessioni (ad es. la connessione con la partenza 12:35) a cui si fa riferimento.",
       "ROUTE": "Percorso",
@@ -1052,7 +1052,7 @@
       "CLARIFICATION_POSTFIX": "(ai suoi dipendenti)",
       "CLARIFICATION_INFO": "Inviare il contenuto del dossier a uno specialista con una domanda. Il contenuto apparirà come link diretto nella tua email.",
       "CLARIFICATION_MAIL": "Aprire un'e-mail ",
-      "REQUEST": "Richiesta parare",
+      "REQUEST": "Richiesta parere",
       "TTFN": "Numero del quadro d’orario",
       "FIRST_NAME": "Nome",
       "LAST_NAME": "Cognome",
@@ -1070,8 +1070,8 @@
       "STREET": "Via",
       "STATUS": "Stato",
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Il parare nuovo è stato salvato con successo.",
-        "EDIT_SUCCESS": "Il parare è stato salvato con successo."
+        "ADD_SUCCESS": "Il parere nuovo è stato salvato con successo.",
+        "EDIT_SUCCESS": "Il parere è stato salvato con successo."
       },
       "DIALOG": {
         "TITLE": "Modifica Cantone",
