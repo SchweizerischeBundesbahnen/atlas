@@ -1,13 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.module.servicepoint;
 
+import ch.sbb.atlas.annotation.AdminOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
-import ch.sbb.atlas.configuration.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +24,12 @@ public interface ServicePointApiInternal {
   @PostMapping("{servicePointNumber}/revoke")
   List<ReadServicePointVersionModel> revokeServicePoint(@PathVariable Integer servicePointNumber);
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @AdminOnly
   @PostMapping("/sync-service-points")
   @Operation(description = "Write all Service Points to kafka again for redistribution")
   void syncServicePoints();
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @AdminOnly
   @GetMapping("/actual-swiss-service-point-with-geo")
   List<ServicePointSwissWithGeoLocationModel> getActualServicePointWithGeolocation();
 }

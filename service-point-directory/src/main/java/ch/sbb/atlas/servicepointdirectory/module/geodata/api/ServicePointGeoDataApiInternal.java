@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.geodata.api;
 
+import ch.sbb.atlas.annotation.AdminOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,7 +24,7 @@ public interface ServicePointGeoDataApiInternal {
   VectorTile.Tile getServicePointsGeoData(@PathVariable Integer z, @PathVariable Integer x, @PathVariable Integer y,
       @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validAtDate);
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @AdminOnly
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "/internal/geodata/update-geo/{sloid}/{id}")
   GeoUpdateItemResultModel updateServicePointGeoLocation(@PathVariable String sloid, @PathVariable Long id);

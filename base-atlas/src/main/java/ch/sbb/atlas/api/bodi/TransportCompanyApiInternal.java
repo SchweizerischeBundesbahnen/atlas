@@ -1,10 +1,9 @@
 package ch.sbb.atlas.api.bodi;
 
-import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.annotation.AdminOnly;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +13,7 @@ public interface TransportCompanyApiInternal {
 
   String BASE_PATH = "internal/transport-companies";
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @AdminOnly
   @PostMapping(BASE_PATH + "/loadFromBAV")
   void loadTransportCompaniesFromBav();
 
