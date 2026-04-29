@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
@@ -47,7 +48,7 @@ public class PlatformTemplateGenerator {
         .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
         .inclination(12.00)
         .inclinationWidth(12.00)
-        .levelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED)
         .superelevation(23.00)
         .build();
   }

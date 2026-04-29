@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.BasePrmEntity;
@@ -60,7 +61,7 @@ public class PlatformVersion extends BasePrmEntity {
 
     private String infoOpportunitiesPipeList;
 
-    private BasicAttributeType levelAccessWheelchair;
+    private LevelAccessWheelchairAttributeType levelAccessWheelchair;
 
     private Boolean partialElevation;
 

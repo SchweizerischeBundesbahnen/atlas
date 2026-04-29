@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.BasePrmServiceTest;
@@ -73,7 +74,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     editedVersion.setInclination(323.12);
     editedVersion.setInclinationWidth(323.12);
     editedVersion.setAdditionalInformation("no additional");
-    editedVersion.setLevelAccessWheelchair(BasicAttributeType.YES);
+    editedVersion.setLevelAccessWheelchair(LevelAccessWheelchairAttributeType.YES);
     editedVersion.setSuperelevation(121.123);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());

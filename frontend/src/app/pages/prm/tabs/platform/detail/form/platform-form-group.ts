@@ -14,6 +14,7 @@ import {
   ReadPlatformVersion,
   VehicleAccessAttributeType,
 } from '../../../../../../api';
+import { LevelAccessWheelchairAttributeType } from '../../../../../../api/model/levelAccessWheelchairAttributeType';
 
 export interface PlatformFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -41,7 +42,7 @@ export interface CompletePlatformFormGroup extends PlatformFormGroup {
   dynamicVisual: FormControl<BasicAttributeType | null | undefined>;
   inclination: FormControl<number | null | undefined>;
   inclinationWidth: FormControl<number | null | undefined>;
-  levelAccessWheelchair: FormControl<BasicAttributeType | null | undefined>;
+  levelAccessWheelchair: FormControl<LevelAccessWheelchairAttributeType | null | undefined>;
   superelevation: FormControl<number | null | undefined>;
 }
 

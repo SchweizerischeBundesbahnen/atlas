@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
@@ -107,7 +108,7 @@ public class ImportFiles {
         .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
         .inclination(12.00)
         .inclinationWidth(12.00)
-        .levelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED)
         .superelevation(23.00)
         .build();
   }

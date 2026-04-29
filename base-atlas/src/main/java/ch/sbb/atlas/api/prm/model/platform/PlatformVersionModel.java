@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.api.prm.model.PrmApiConstants;
@@ -81,7 +82,7 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   @Schema(description = "Information options")
   private List<InfoOpportunityAttributeType> infoOpportunities;
 
-  private BasicAttributeType levelAccessWheelchair;
+  private LevelAccessWheelchairAttributeType levelAccessWheelchair;
 
   private Boolean partialElevation;
 

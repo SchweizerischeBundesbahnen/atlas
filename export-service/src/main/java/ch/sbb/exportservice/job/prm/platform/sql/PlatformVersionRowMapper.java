@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -48,7 +49,8 @@ public class PlatformVersionRowMapper implements RowMapper<PlatformVersion> {
     builder.inclinationWidth(rs.getObject("inclination_width") != null ? rs.getDouble("inclination_width") : null);
     setInfoOpportunities(builder, rs.getString("info_opportunities"));
     builder.levelAccessWheelchair(
-        rs.getObject("level_access_wheelchair") != null ? BasicAttributeType.valueOf(rs.getString("level_access_wheelchair"))
+        rs.getObject("level_access_wheelchair") != null ? LevelAccessWheelchairAttributeType.valueOf(
+            rs.getString("level_access_wheelchair"))
             : null);
     builder.partialElevation(rs.getBoolean("partial_elevation"));
     builder.superElevation(rs.getObject("superelevation") != null ? rs.getDouble("superelevation") : null);

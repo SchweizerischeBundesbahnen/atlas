@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
@@ -36,6 +37,6 @@ class PlatformVersionMapperTest {
     assertThat(platformVersion.getBoardingDevice()).isEqualTo(BoardingDeviceAttributeType.TO_BE_COMPLETED);
     assertThat(platformVersion.getDynamicAudio()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
     assertThat(platformVersion.getDynamicVisual()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
-    assertThat(platformVersion.getLevelAccessWheelchair()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
+    assertThat(platformVersion.getLevelAccessWheelchair()).isEqualTo(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED);
   }
 }

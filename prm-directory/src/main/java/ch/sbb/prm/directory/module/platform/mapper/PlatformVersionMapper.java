@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
@@ -18,7 +19,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 import lombok.experimental.UtilityClass;
-import org.springframework.lang.NonNull;
 
 @UtilityClass
 public class PlatformVersionMapper {
@@ -122,7 +122,7 @@ public class PlatformVersionMapper {
       resettedVersion.setBoardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED);
       resettedVersion.setDynamicAudio(BasicAttributeType.TO_BE_COMPLETED);
       resettedVersion.setDynamicVisual(BasicAttributeType.TO_BE_COMPLETED);
-      resettedVersion.setLevelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED);
+      resettedVersion.setLevelAccessWheelchair(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED);
     }
     return resettedVersion;
   }
@@ -169,7 +169,7 @@ public class PlatformVersionMapper {
         ifCurrentNull(BasicAttributeType.TO_BE_COMPLETED, platformVersion::getDynamicVisual)
     );
     platformVersion.setLevelAccessWheelchair(
-        ifCurrentNull(BasicAttributeType.TO_BE_COMPLETED, platformVersion::getLevelAccessWheelchair)
+        ifCurrentNull(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED, platformVersion::getLevelAccessWheelchair)
     );
   }
 

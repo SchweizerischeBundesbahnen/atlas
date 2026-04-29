@@ -12,6 +12,7 @@ import { BooleanOptionalAttributeType } from './booleanOptionalAttributeType';
 import { VehicleAccessAttributeType } from './vehicleAccessAttributeType';
 import { BasicAttributeType } from './basicAttributeType';
 import { InfoOpportunityAttributeType } from './infoOpportunityAttributeType';
+import { LevelAccessWheelchairAttributeType } from './levelAccessWheelchairAttributeType';
 import { BoardingDeviceAttributeType } from './boardingDeviceAttributeType';
 
 
@@ -90,7 +91,7 @@ export interface PlatformVersion {
      * Information options
      */
     infoOpportunities?: Array<InfoOpportunityAttributeType>;
-    levelAccessWheelchair?: BasicAttributeType;
+    levelAccessWheelchair?: LevelAccessWheelchairAttributeType;
     partialElevation?: boolean;
     /**
      * Track superelevation value [mm]

@@ -4,6 +4,7 @@ import static ch.sbb.exportservice.util.MapperUtil.mapBooleanOptionalAttributeTy
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.exportservice.job.prm.platform.entity.PlatformVersion;
 import ch.sbb.exportservice.job.prm.platform.model.PlatformVersionCsvModel;
@@ -32,7 +33,7 @@ public class PlatformVersionCsvProcessor implements ItemProcessor<PlatformVersio
         .inclinationLongitudinal(version.getInclinationLongitudinal())
         .inclinationWidth(version.getInclinationWidth())
         .infoOpportunities(version.getInfoOpportunitiesPipeList())
-        .levelAccessWheelchair(mapBasicAttributeType(version.getLevelAccessWheelchair()))
+        .levelAccessWheelchair(mapLevelAccessWheelchairAttributeType(version.getLevelAccessWheelchair()))
         .partialElevation(version.getPartialElevation())
         .superElevation(version.getSuperElevation())
         .tactileSystems(mapBooleanOptionalAttributeType(version.getTactileSystems()))
@@ -49,6 +50,10 @@ public class PlatformVersionCsvProcessor implements ItemProcessor<PlatformVersio
   }
 
   private String mapBasicAttributeType(BasicAttributeType attributeType) {
+    return attributeType != null ? attributeType.toString() : null;
+  }
+
+  private String mapLevelAccessWheelchairAttributeType(LevelAccessWheelchairAttributeType attributeType) {
     return attributeType != null ? attributeType.toString() : null;
   }
 

@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
@@ -30,7 +31,7 @@ public class PlatformRecordingStatusEvaluator {
         platform.getContrastingAreas() == BooleanOptionalAttributeType.TO_BE_COMPLETED ||
         platform.getDynamicAudio() == BasicAttributeType.TO_BE_COMPLETED ||
         platform.getDynamicVisual() == BasicAttributeType.TO_BE_COMPLETED ||
-        platform.getLevelAccessWheelchair() == BasicAttributeType.TO_BE_COMPLETED
+        platform.getLevelAccessWheelchair() == LevelAccessWheelchairAttributeType.TO_BE_COMPLETED
     ) {
       return RecordingStatus.INCOMPLETE;
     }

@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -42,7 +43,7 @@ class PlatformVersionCsvProcessorTest {
         .inclinationWidth(0.000)
         .infoOpportunities(Collections.singleton(InfoOpportunityAttributeType.TO_BE_COMPLETED))
         .infoOpportunitiesPipeList("infoOpportunitiesPipeList")
-        .levelAccessWheelchair(BasicAttributeType.YES)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
         .partialElevation(false)
         .superElevation(0.000)
         .tactileSystems(BooleanOptionalAttributeType.YES)
