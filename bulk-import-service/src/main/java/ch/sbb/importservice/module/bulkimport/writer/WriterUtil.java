@@ -13,12 +13,13 @@ import org.springframework.batch.infrastructure.item.Chunk;
 @UtilityClass
 public class WriterUtil {
 
-  public static <T> List<BulkImportUpdateContainer<T>> getContainersWithoutDataValidationErrors(
-      Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    return items.getItems().stream()
-        .map(i -> (BulkImportUpdateContainer<T>) i)
-        .filter(i -> !i.hasDataValidationErrors())
-        .toList();
+  public static List<BulkImportUpdateContainer<?>> getContainersWithoutDataValidationErrors(
+      Chunk<BulkImportUpdateContainer<?>> items) {
+    return items.getItems().stream().filter(i -> !i.hasDataValidationErrors()).toList();
+  }
+
+  public static <T> List<BulkImportUpdateContainer<T>> getContainers(List<BulkImportUpdateContainer<?>> items) {
+    return items.stream().map(i -> (BulkImportUpdateContainer<T>) i).toList();
   }
 
   public static <T> void mapExecutionResultToLogEntry(List<BulkImportItemExecutionResult> executionResults,
@@ -35,7 +36,7 @@ public class WriterUtil {
     });
   }
 
-  public static <T> void addInNameOfTo(StepExecution stepExecution, List<BulkImportUpdateContainer<T>> updateContainers) {
+  public static void addInNameOfTo(StepExecution stepExecution, List<BulkImportUpdateContainer<?>> updateContainers) {
     String inNameOf = stepExecution.getJobExecution().getJobParameters().getString(BulkImport.Fields.inNameOf);
     updateContainers.forEach(updateContainer -> updateContainer.setInNameOf(inNameOf));
   }

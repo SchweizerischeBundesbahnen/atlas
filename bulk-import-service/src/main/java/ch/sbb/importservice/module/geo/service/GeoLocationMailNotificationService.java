@@ -1,6 +1,6 @@
 package ch.sbb.importservice.module.geo.service;
 
-import static ch.sbb.importservice.module.geo.service.ServicePointUpdateGeoLocationService.GEO_LOCATION_VERSIONS_KEY;
+import static ch.sbb.importservice.module.geo.job.ServicePointGeoLocationUpdateConfig.GEO_LOCATION_VERSIONS_KEY;
 
 import ch.sbb.atlas.imports.ItemProcessResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
-import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.observability.BatchMetrics;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +32,7 @@ public class GeoLocationMailNotificationService {
   public MailNotification buildMailErrorNotification(String jobName, StepExecution stepExecution) {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
-        .subject("Job [" + jobName + "] execution failed")
+        .subject(buildJobWithNameInfo(jobName) + " execution failed")
         .mailType(MailType.UPDATE_GEOLOCATION_ERROR_NOTIFICATION)
         .templateProperties(buildErrorMailContent(jobName, stepExecution))
         .build();
@@ -41,7 +43,7 @@ public class GeoLocationMailNotificationService {
       StepExecution stepExecution) {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
-        .subject("Job [" + jobName + "] execution successfully")
+        .subject(buildJobWithNameInfo(jobName) + " execution successfully")
         .mailType(MailType.UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION)
         .templateProperties(buildSuccessMailContent(jobName, geoUpdateProcessItems, stepExecution))
         .build();
@@ -50,7 +52,7 @@ public class GeoLocationMailNotificationService {
   private List<Map<String, Object>> buildSuccessMailContent(String jobName,
       List<GeoUpdateProcessItem> geoUpdateProcessItems,
       StepExecution stepExecution) {
-    String stepExecutionInformation = getStepExecutionInformation(stepExecution);
+    String stepExecutionInformation = getJobInformation(stepExecution.getJobExecution());
 
     String geoLocationVersionsProcessed = String.valueOf(stepExecution.getExecutionContext().get(GEO_LOCATION_VERSIONS_KEY));
     log.info("GeoLocation Versions Processed: {}", geoLocationVersionsProcessed);
@@ -87,7 +89,7 @@ public class GeoLocationMailNotificationService {
   }
 
   private List<Map<String, Object>> buildErrorMailContent(String jobName, StepExecution stepExecution) {
-    String stepExecutionInformation = getStepExecutionInformation(stepExecution);
+    String stepExecutionInformation = getJobInformation(stepExecution.getJobExecution());
 
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
@@ -135,10 +137,19 @@ public class GeoLocationMailNotificationService {
         .filter(itemResponseStatus -> status.equals(itemResponseStatus.getResponseStatus())).toList();
   }
 
-  private String getStepExecutionInformation(StepExecution stepExecution) {
-    Duration stepExecutionDuration = BatchMetrics.calculateDuration(stepExecution.getStartTime(), stepExecution.getEndTime());
-    return "Step [" + stepExecution.getStepName() + " with id " + stepExecution.getId() + "] executed in "
-        + BatchMetrics.formatDuration(stepExecutionDuration);
+  private String getJobInformation(JobExecution jobExecution) {
+    Duration jobExecutionDuration = BatchMetrics.calculateDuration(jobExecution.getStartTime(), jobExecution.getEndTime());
+    return buildJobWithNameInfo(jobExecution.getJobInstance().getJobName(), Optional.of(jobExecution.getId())) + " executed in "
+        + BatchMetrics.formatDuration(jobExecutionDuration);
   }
 
+  private static String buildJobWithNameInfo(String jobName) {
+    return buildJobWithNameInfo(jobName, Optional.empty());
+  }
+
+  private static String buildJobWithNameInfo(String jobName, Optional<Long> id) {
+    StringBuilder jobInfo = new StringBuilder("Job [").append(jobName);
+    id.ifPresent(jobId -> jobInfo.append(" with id ").append(jobId));
+    return jobInfo.append("]").toString();
+  }
 }

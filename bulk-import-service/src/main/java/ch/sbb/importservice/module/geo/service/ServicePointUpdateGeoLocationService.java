@@ -6,21 +6,12 @@ import ch.sbb.importservice.module.geo.client.ServicePointClient;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.step.StepExecution;
-import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@StepScope
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ServicePointUpdateGeoLocationService {
-
-  public static final String GEO_LOCATION_VERSIONS_KEY = "GeoLocationVersions";
-
-  @Value("#{stepExecution}")
-  private StepExecution stepExecution;
 
   private final ServicePointClient servicePointClient;
 
@@ -31,7 +22,6 @@ public class ServicePointUpdateGeoLocationService {
     int servicePointVersionWithGeolocationSize = servicePointWithGeolocation.stream()
         .mapToInt(swissWithGeoModel -> swissWithGeoModel.getDetails().size()).sum();
     log.info("Found {} service points with geo location to update.", servicePointVersionWithGeolocationSize);
-    stepExecution.getExecutionContext().put(GEO_LOCATION_VERSIONS_KEY, servicePointVersionWithGeolocationSize);
     return servicePointWithGeolocation;
   }
 

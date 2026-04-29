@@ -55,7 +55,7 @@ public class BulkImportLogService {
         .map(i -> mapToLogEntry(i.getLogEntry()))
         .sorted(Comparator.comparing(BulkImportLogEntry::getLineNumber))
         .toList();
-    Map<BulkImportStatus, Long> statusCounts = logEntries.stream().collect(Collectors.groupingBy(i -> i.getStatus(),
+    Map<BulkImportStatus, Long> statusCounts = logEntries.stream().collect(Collectors.groupingBy(BulkImportLogEntry::getStatus,
         Collectors.counting()));
     return LogFile.builder()
         .nbOfSuccess(statusCounts.getOrDefault(BulkImportStatus.SUCCESS, 0L))
