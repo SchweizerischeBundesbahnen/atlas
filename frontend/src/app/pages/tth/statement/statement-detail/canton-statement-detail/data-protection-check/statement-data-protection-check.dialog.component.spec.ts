@@ -108,6 +108,19 @@ describe('StatementDataProtectionCheckDialogComponent', () => {
       // then
       expect(dialogRef.close).toHaveBeenCalledExactlyOnceWith(false);
     });
+
+    it('should reset text on radio group set to false', () => {
+      // when
+      expect(component.statementFormGroup.controls.anonymousStatement.value).toBe('Canton change statement.');
+      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(true);
+
+      component.statementFormGroup.controls.anonymousStatement.setValue('Anonymized thingi');
+      component.statementFormGroup.controls.hasStatementPersonalInformation.setValue(false);
+      component.statementPersonalInformationChanged(false);
+
+      // then
+      expect(component.statementFormGroup.controls.anonymousStatement.value).toBe('Canton change statement.');
+    });
   });
 
   describe('with documents', () => {

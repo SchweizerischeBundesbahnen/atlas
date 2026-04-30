@@ -494,6 +494,32 @@ class TimetableHearingStatementServiceTest {
   }
 
   @Test
+  void shouldFindStatementByTopicSearchCriteria() {
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
+    TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
+        .timetableYear(YEAR)
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .topic("Wichtiges Thema")
+        .build();
+    timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel, Collections.emptyList());
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .searchCriterias(List.of("Thema"))
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+  }
+
+  @Test
   void shouldNotFindStatementBySearchCriteria() {
     timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()

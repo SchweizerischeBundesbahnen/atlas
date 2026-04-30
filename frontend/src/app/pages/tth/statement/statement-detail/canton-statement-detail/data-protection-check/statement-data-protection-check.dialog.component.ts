@@ -102,4 +102,12 @@ export class StatementDataProtectionCheckDialogComponent implements OnInit {
       .getStatementDocument(this.statement.id!, fileName)
       .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
+
+  statementPersonalInformationChanged(newValue: boolean) {
+    if (!newValue) {
+      this.statementFormGroup.controls.anonymousStatement.setValue(
+        this.statement.anonymousStatement ? this.statement.anonymousStatement : this.statement.statement
+      );
+    }
+  }
 }

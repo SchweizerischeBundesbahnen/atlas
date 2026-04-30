@@ -55,8 +55,7 @@ public interface TimetableHearingStatementApiInternal {
       @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
-  void updateHearingStatementStatus(
-      @org.springframework.web.bind.annotation.RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus);
+  void updateHearingStatementStatus(@RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = BASE_PATH + "/update-canton")
@@ -68,8 +67,7 @@ public interface TimetableHearingStatementApiInternal {
       @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
-  void updateHearingCanton(
-      @org.springframework.web.bind.annotation.RequestBody UpdateHearingCantonModel updateHearingCantonModel);
+  void updateHearingCanton(@RequestBody UpdateHearingCantonModel updateHearingCantonModel);
 
   @GetMapping(BASE_PATH)
   @PageableAsQueryParam
