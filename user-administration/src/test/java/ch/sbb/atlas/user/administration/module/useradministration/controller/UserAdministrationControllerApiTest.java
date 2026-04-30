@@ -1,378 +1,269 @@
 package ch.sbb.atlas.user.administration.module.useradministration.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.assertArg;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
-import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserModel.Fields;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
-import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.user.administration.module.clientcredential.entity.ClientCredentialPermission;
-import ch.sbb.atlas.user.administration.module.clientcredential.service.ClientCredentialAdministrationService;
-import ch.sbb.atlas.user.administration.module.useradministration.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.module.clientcredential.repository.ClientCredentialPermissionRepository;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
-import ch.sbb.atlas.user.administration.module.useradministration.mapper.UserPermissionMapper;
-import ch.sbb.atlas.user.administration.module.useradministration.service.UserAdministrationService;
-import ch.sbb.atlas.user.administration.module.useradministration.service.UserPermissionDistributor;
-import ch.sbb.atlas.user.administration.module.userinformation.service.GraphApiService;
+import ch.sbb.atlas.user.administration.module.useradministration.service.UserPermissionRepository;
+import com.microsoft.graph.models.User;
+import com.microsoft.graph.models.UserCollectionResponse;
+import com.microsoft.graph.serviceclient.GraphServiceClient;
+import com.microsoft.graph.users.UsersRequestBuilder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
   @MockitoBean
-  private UserAdministrationService userAdministrationService;
+  private GraphServiceClient graphClient;
 
-  @MockitoBean
-  private GraphApiService graphApiService;
+  @Autowired
+  private UserPermissionRepository userPermissionRepository;
 
-  @MockitoBean
-  private ClientCredentialAdministrationService clientCredentialAdministrationService;
+  @Autowired
+  private ClientCredentialPermissionRepository clientCredentialPermissionRepository;
 
-  @MockitoSpyBean
-  private UserPermissionDistributor userPermissionDistributor;
+  @BeforeEach
+  void setUp() {
+    UsersRequestBuilder users = buildGraphApiUserResult("u123456");
+    when(graphClient.users()).thenReturn(users);
 
-  @Test
-  void shouldGetUsers() throws Exception {
-    // given
-    List<String> pageContent = List.of("user1", "user2");
-    Mockito.when(userAdministrationService.getUserPage(any(Pageable.class), isNull(), isNull(), isNull()))
-        .thenReturn(new PageImpl<>(pageContent, Pageable.ofSize(5), 2));
-    Mockito.when(graphApiService.resolveUsers(pageContent))
-        .thenReturn(List.of(
-            UserModel.builder()
-                .sbbUserId("user1")
-                .accountStatus(UserAccountStatus.DELETED)
-                .build(),
-            UserModel.builder()
-                .sbbUserId("user2")
-                .accountStatus(UserAccountStatus.ACTIVE)
-                .lastName("lastName")
-                .build()
-        ));
-    Mockito.when(userAdministrationService.getUserPermissions(anyString()))
-        .thenReturn(List.of(UserPermission.builder()
-            .role(ApplicationRole.SUPERVISOR)
-            .application(ApplicationType.TTFN)
-            .permissionRestrictions(
-                Set.of(
-                    PermissionRestriction.builder()
-                        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                        .restriction("ch:1:sboid:1")
-                        .build()
-                )
-            )
-            .build()));
+    userPermissionRepository.save(UserPermission.builder()
+        .role(ApplicationRole.SUPERVISOR)
+        .application(ApplicationType.SEPODI)
+        .sbbUserId("u123456").build());
 
-    // when & then
-    mvc.perform(get("/v1/users")
-            .queryParam("page", "0")
-            .queryParam("size", "5"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(2))
-        .andExpect(jsonPath("$.objects", hasSize(2)))
-        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'user1')].accountStatus").value("DELETED"))
-        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'user1')].permissions[0].role").value("SUPERVISOR"))
-        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'user1')].permissions[0].application").value("TTFN"))
-        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'user2')].accountStatus").value("ACTIVE"))
-        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'user2')].permissions[*]").value(hasSize(1)))
-        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'user2')].lastName").value("lastName"));
-  }
-
-  @Test
-  void shouldGetUserByMail() throws Exception {
-    // given
-    Mockito.when(graphApiService.searchUserByMail("user1@yb.com"))
-        .thenReturn(List.of(
-            UserModel.builder()
-                .sbbUserId("user1")
-                .lastName("lastName")
-                .mail("user1@yb.com")
-                .build()
-        ));
-    Mockito.when(userAdministrationService.getUserPermissions("user1"))
-        .thenReturn(List.of(UserPermission.builder()
-            .role(ApplicationRole.READER)
-            .application(ApplicationType.TIMETABLE_HEARING)
-            .permissionRestrictions(
-                Set.of(
-                    PermissionRestriction.builder()
-                        .type(PermissionRestrictionType.TRANSPORT_COMPANY_DOSSIER_ANSWER)
-                        .restriction("true")
-                        .build()
-                )
-            )
-            .build()));
-
-    // when & then
-    mvc.perform(get("/v1/users/mail?mail=user1@yb.com"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.sbbUserId").value("user1"))
-        .andExpect(jsonPath("$.lastName").value("lastName"))
-        .andExpect(jsonPath("$.permissions").value(hasSize(1)))
-        .andExpect(jsonPath("$.permissions[0].role").value("READER"))
-        .andExpect(jsonPath("$.permissions[0].application").value("TIMETABLE_HEARING"));
-  }
-
-  @Test
-  void shouldGetUser() throws Exception {
-    // given
-    Mockito.when(graphApiService.resolveUsers(List.of("user1")))
-        .thenReturn(List.of(
-            UserModel.builder()
-                .sbbUserId("user1")
-                .lastName("lastName")
-                .build()
-        ));
-    Mockito.when(userAdministrationService.getUserPermissions("user1"))
-        .thenReturn(List.of(UserPermission.builder()
-            .role(ApplicationRole.SUPERVISOR)
-            .application(ApplicationType.TTFN)
-            .permissionRestrictions(
-                Set.of(
-                    PermissionRestriction.builder()
-                        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                        .restriction("ch:1:sboid:1")
-                        .build()
-                )
-            )
-            .build()));
-
-    // when & then
-    mvc.perform(get("/v1/users/user1"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.sbbUserId").value("user1"))
-        .andExpect(jsonPath("$.lastName").value("lastName"))
-        .andExpect(jsonPath("$.permissions").value(hasSize(1)))
-        .andExpect(jsonPath("$.permissions[0].role").value("SUPERVISOR"))
-        .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
-  }
-
-  @Test
-  void shouldCreateUserPermissionWithAllReaderPermissions() throws Exception {
-    // given
-    Mockito.when(graphApiService.resolveUsers(List.of("user1")))
-        .thenReturn(List.of(
-            UserModel.builder()
-                .sbbUserId("user1")
-                .lastName("lastName")
-                .mail("user1@sbb.ch")
-                .build()
-        ));
-    Mockito.when(userAdministrationService.getUserPermissions("user1"))
-        .thenReturn(List.of(UserPermission.builder()
-            .role(ApplicationRole.SUPERVISOR)
-            .application(ApplicationType.TTFN)
-            .permissionRestrictions(
-                Set.of(
-                    PermissionRestriction.builder()
-                        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                        .restriction("ch:1:sboid:1")
-                        .build()
-                )
-            )
-            .build()));
-
-    UserPermissionCreateModel model = UserPermissionCreateModel
-        .builder()
-        .sbbUserId("user1")
-        .build();
-
-    // when & then
-    mvc.perform(post("/v1/users")
-            .content(mapper.writeValueAsString(model)).contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + Fields.sbbUserId).value("user1"))
-        .andExpect(jsonPath("$." + Fields.mail).value("user1@sbb.ch"));
-
-    Mockito.verify(userAdministrationService, Mockito.times(1)).save(model);
-    Mockito.verify(userPermissionDistributor, Mockito.times(1)).pushUserPermissionToKafka(any(UserAdministrationModel.class));
-  }
-
-  @Test
-  void shouldThrowUserPermissionConflictExceptionOnCreateUserPermission() throws Exception {
-    // given
-    UserPermissionCreateModel createModel = UserPermissionCreateModel
-        .builder()
-        .sbbUserId("user1")
-        .build();
-
-    Mockito.doThrow(new UserPermissionConflictException(createModel.getSbbUserId()))
-        .when(userAdministrationService).save(createModel);
-
-    // when & then
-    mvc.perform(post("/v1/users")
-            .content(mapper.writeValueAsString(createModel)).contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.status").value(409))
-        .andExpect(jsonPath("$.message").value("A conflict occurred on UserPermission"))
-        .andExpect(jsonPath("$.error").value("User Permission Conflict"))
-        .andExpect(jsonPath("$.details").value(hasSize(1)));
-  }
-
-  @Test
-  void shouldUpdateUserPermission() throws Exception {
-    // given
-    PermissionModel permission = PermissionModel.builder()
-        .application(ApplicationType.TTFN)
+    clientCredentialPermissionRepository.save(ClientCredentialPermission.builder()
+        .application(ApplicationType.PRM)
         .role(ApplicationRole.WRITER)
-        .permissionRestrictions(new ArrayList<>(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009"))))
-        .build();
-
-    Mockito.when(graphApiService.resolveUsers(List.of("user1")))
-        .thenReturn(List.of(
-            UserModel.builder()
-                .sbbUserId("user1")
-                .lastName("lastName")
-                .mail("user1@sbb.ch")
-                .build()
-        ));
-    Mockito.when(userAdministrationService.getUserPermissions("user1"))
-        .thenReturn(List.of(UserPermissionMapper.toEntity("user1", permission)));
-
-    // when & then
-    mvc.perform(put("/v1/users/user1/TTFN").contentType(contentType)
-            .content(mapper.writeValueAsString(permission)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.sbbUserId").value("user1"))
-        .andExpect(jsonPath("$.lastName").value("lastName"))
-        .andExpect(jsonPath("$.permissions").value(hasSize(1)))
-        .andExpect(jsonPath("$.permissions[0].role").value("WRITER"))
-        .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
-
-    Mockito.verify(userAdministrationService, Mockito.times(1))
-        .updatePermission(eq("user1"), eq(ApplicationType.TTFN),
-            assertArg(argument -> assertThat(argument).usingRecursiveComparison().isEqualTo(permission)));
-    Mockito.verify(userPermissionDistributor, Mockito.times(1))
-        .pushUserPermissionToKafka(any(UserAdministrationModel.class));
+        .clientCredentialId("client-id")
+        .alias("PostAuto")
+        .build());
   }
 
-  @Test
-  void getUsersWithSboidsAndApplicationTypesFound() throws Exception {
-    // given
-    List<String> pageContent = List.of("user1");
-    Mockito.when(userAdministrationService.getUserPage(
-            any(Pageable.class),
-            eq(Set.of("ch:1:sboid:1")),
-            eq(Set.of(ApplicationType.LIDI, ApplicationType.TTFN)),
-            eq(PermissionRestrictionType.BUSINESS_ORGANISATION))
-        )
-        .thenReturn(new PageImpl<>(pageContent, Pageable.ofSize(10), 1));
-    Mockito.when(graphApiService.resolveUsers(pageContent))
-        .thenReturn(List.of(
-            UserModel.builder()
-                .sbbUserId("user1")
-                .accountStatus(UserAccountStatus.ACTIVE)
-                .build()
-        ));
-    Mockito.when(userAdministrationService.getUserPermissions(anyString()))
-        .thenReturn(List.of(UserPermission.builder()
-            .role(ApplicationRole.SUPERVISOR)
-            .application(ApplicationType.TTFN)
-            .permissionRestrictions(
-                Set.of(
-                    PermissionRestriction.builder()
-                        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                        .restriction("ch:1:sboid:1")
-                        .build()
-                )
-            )
-            .build()));
-
-    // when & then
-    mvc.perform(get("/v1/users")
-            .queryParam("page", "0")
-            .queryParam("size", "10")
-            .queryParam("applicationTypes", "LIDI", "TTFN")
-            .queryParam("type", PermissionRestrictionType.BUSINESS_ORGANISATION.name())
-            .queryParam("permissionRestrictions", "ch:1:sboid:1"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects[0].sbbUserId").value("user1"))
-        .andExpect(jsonPath("$.objects[0].permissions", hasSize(1)));
+  private static UsersRequestBuilder buildGraphApiUserResult(String sbbuid) {
+    UsersRequestBuilder usersRequestBuilderMock = Mockito.mock(UsersRequestBuilder.class);
+    UserCollectionResponse userCollectionResponseMock = Mockito.mock(UserCollectionResponse.class);
+    User graphUser = new User();
+    graphUser.setDisplayName("Lastname Firstname");
+    graphUser.setOnPremisesSamAccountName(sbbuid);
+    graphUser.setSurname("Lastname");
+    graphUser.setGivenName("Firstname");
+    graphUser.setMail(sbbuid + "@sbb.ch");
+    graphUser.setAccountEnabled(true);
+    when(userCollectionResponseMock.getValue()).thenReturn(List.of(graphUser));
+    when(usersRequestBuilderMock.get(any())).thenReturn(userCollectionResponseMock);
+    return usersRequestBuilderMock;
   }
 
-  @Test
-  void getUserDisplayNameExisting() throws Exception {
-    // given
-    Mockito.when(clientCredentialAdministrationService.getClientCredentialPermission("user1"))
-        .thenReturn(List.of(ClientCredentialPermission.builder().alias("Lastname Firstname").build()));
-
-    // when & then
-    mvc.perform(get("/v1/users/user1/displayname"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayName").value(startsWith("Lastname Firstname")));
+  @AfterEach
+  void tearDown() {
+    userPermissionRepository.deleteAll();
+    clientCredentialPermissionRepository.deleteAll();
   }
 
-  @Test
-  void getUserDisplayNameNotExisting() throws Exception {
-    // given
-    Mockito.when(clientCredentialAdministrationService.getClientCredentialPermission("ATLAS_SYSTEM_USER"))
-        .thenReturn(Collections.emptyList());
-    Mockito.when(graphApiService.resolveUsers(List.of("ATLAS_SYSTEM_USER")))
-        .thenReturn(List.of(UserModel.builder().sbbUserId("ATLAS_SYSTEM_USER").build()));
+  @Nested
+  @DisplayName("GET v1/users")
+  class GetUsersOverview {
 
-    // when & then
-    mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayName").doesNotExist());
+    @Test
+    void shouldGetUsers() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users")
+              .queryParam("page", "0")
+              .queryParam("size", "5"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.totalCount").value(1))
+          .andExpect(jsonPath("$.objects", hasSize(1)))
+          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].accountStatus").value("ACTIVE"))
+          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].permissions[0].role").value("SUPERVISOR"))
+          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].permissions[0].application").value("SEPODI"));
+    }
+
+    @Test
+    void shouldGetUsersWithSboidsAndApplicationTypesFound() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users")
+              .queryParam("page", "0")
+              .queryParam("size", "10")
+              .queryParam("applicationTypes", "SEPODI"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)))
+          .andExpect(jsonPath("$.objects[0].sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.objects[0].permissions", hasSize(1)));
+    }
   }
 
-  @Test
-  void getUserDisplayNameForExistingClient() throws Exception {
-    // given
-    Mockito.when(clientCredentialAdministrationService.getClientCredentialPermission("client-id"))
-        .thenReturn(List.of(ClientCredentialPermission.builder().alias("ALIAS").build()));
+  @Nested
+  @DisplayName("GET v1/users/{userId}")
+  class GetUser {
 
-    // when & then
-    mvc.perform(get("/v1/users/client-id/displayname"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayName").value("ALIAS"));
+    @Test
+    void shouldGetUser() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users/u123456"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.lastName").value("Lastname"))
+          .andExpect(jsonPath("$.permissions").value(hasSize(1)))
+          .andExpect(jsonPath("$.permissions[0].role").value("SUPERVISOR"))
+          .andExpect(jsonPath("$.permissions[0].application").value("SEPODI"));
+    }
   }
 
-  @Test
-  void shouldGetUserDisplayInformation() throws Exception {
-    // given
-    Mockito.when(clientCredentialAdministrationService.getClientCredentialPermission("user1"))
-        .thenReturn(List.of(ClientCredentialPermission.builder().alias("ALIAS").build()));
-    Mockito.when(graphApiService.resolveUsers(Collections.emptyList()))
-        .thenReturn(Collections.emptyList());
+  @Nested
+  @DisplayName("GET v1/users/mail?mail={mail}")
+  class GetUserByMail {
 
-    // when & then
-    mvc.perform(get("/v1/users/display-info?userIds=user1"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].sbbUserId").value("user1"))
-        .andExpect(jsonPath("$[0].displayName").value("ALIAS"));
+    @Test
+    void shouldGetUserByMail() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users/mail?mail=u123456@yb.com"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.lastName").value("Lastname"))
+          .andExpect(jsonPath("$.permissions").value(hasSize(1)))
+          .andExpect(jsonPath("$.permissions[0].role").value("SUPERVISOR"))
+          .andExpect(jsonPath("$.permissions[0].application").value("SEPODI"));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldAllowSearchByMailForWriter() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/mail").param("mail", "e527717@sbb.ch"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").value(not("*****")));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotDisplayInfoForUnauthorizedOnSearchByMail() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/mail").param("mail", "e527717@sbb.ch"))
+          .andExpect(status().isForbidden());
+    }
+  }
+
+  @Nested
+  @DisplayName("GET v1/users/{userId}/displayname")
+  class GetUserDisplayName {
+
+    @Test
+    void shouldGetUserDisplayNameExisting() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users/client-id/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").value("PostAuto"));
+    }
+
+    @Test
+    void shouldGetUserDisplayNameNotExisting() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").doesNotExist());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldAllowDisplayNameQueryForUnauthorizedInternalRoleAndMaskResponse() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/u123456/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").value("*****"));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldAllowDisplayNameQueryForAuthorizedInternalRoleAndNotMaskResponse() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/u123456/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").value(not("*****")));
+    }
+  }
+
+  @Nested
+  @DisplayName("GET v1/users/current")
+  class GetCurrentUser {
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldGetCurrentUserInformationUnauthorized() throws Exception {
+      mvc.perform(MockMvcRequestBuilders.get("/v1/users/current")).andExpect(status().isOk());
+    }
+  }
+
+  @Nested
+  @DisplayName("POST v1/users")
+  class CreateUserPermission {
+
+    @Test
+    void shouldCreateUserPermissionWithAllReaderPermissions() throws Exception {
+      UsersRequestBuilder users = buildGraphApiUserResult("u234565");
+      when(graphClient.users()).thenReturn(users);
+
+      UserPermissionCreateModel model = UserPermissionCreateModel
+          .builder()
+          .sbbUserId("u234565")
+          .build();
+
+      // when & then
+      mvc.perform(post("/v1/users")
+              .content(mapper.writeValueAsString(model)).contentType(MediaType.APPLICATION_JSON))
+          .andExpect(status().isCreated())
+          .andExpect(jsonPath("$." + Fields.sbbUserId).value("u234565"))
+          .andExpect(jsonPath("$." + Fields.mail).value("u234565@sbb.ch"));
+    }
+
+  }
+
+  @Nested
+  @DisplayName("PUT v1/users/{userId}/{application}")
+  class UpdateUserPermissions {
+
+    @Test
+    void shouldUpdateUserPermission() throws Exception {
+      // given
+      PermissionModel permission = PermissionModel.builder()
+          .application(ApplicationType.TTFN)
+          .role(ApplicationRole.WRITER)
+          .permissionRestrictions(new ArrayList<>(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009"))))
+          .build();
+
+      // when & then
+      mvc.perform(put("/v1/users/u123456/TTFN").contentType(contentType)
+              .content(mapper.writeValueAsString(permission)))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.lastName").value("Lastname"))
+          .andExpect(jsonPath("$.permissions").value(hasSize(2)));
+    }
   }
 }

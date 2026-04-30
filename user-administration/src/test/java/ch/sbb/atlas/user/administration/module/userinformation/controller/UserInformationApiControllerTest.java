@@ -1,125 +1,145 @@
 package ch.sbb.atlas.user.administration.module.userinformation.controller;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.user.administration.UserModel;
-import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.user.administration.module.useradministration.service.UserAdministrationService;
-import ch.sbb.atlas.user.administration.module.userinformation.service.GraphApiService;
-import java.util.Arrays;
-import java.util.Collections;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
+import ch.sbb.atlas.user.administration.module.useradministration.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
+import ch.sbb.atlas.user.administration.module.useradministration.service.UserPermissionRepository;
+import com.microsoft.graph.models.User;
+import com.microsoft.graph.models.UserCollectionResponse;
+import com.microsoft.graph.serviceclient.GraphServiceClient;
+import com.microsoft.graph.users.UsersRequestBuilder;
 import java.util.List;
+import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class UserInformationApiControllerTest extends BaseControllerApiTest {
 
   @MockitoBean
-  private GraphApiService graphApiService;
+  private GraphServiceClient graphClient;
 
-  @MockitoBean
-  private UserAdministrationService userAdministrationService;
+  @Autowired
+  private UserPermissionRepository userPermissionRepository;
 
-  @Test
-  void shoudSearchUserInAD() throws Exception {
-    UserModel userModel = UserModel.builder()
-        .sbbUserId("u999999")
-        .firstName("Uwe")
-        .lastName("König")
-        .mail("uwe.koenig@sbb.ch")
-        .accountStatus(UserAccountStatus.ACTIVE)
-        .build();
+  @BeforeEach
+  void setUp() {
+    UsersRequestBuilder users = buildGraphApiUserResult();
+    when(graphClient.users()).thenReturn(users);
 
-    UserModel userModel2 = UserModel.builder()
-        .sbbUserId("u123456")
-        .firstName("hans")
-        .lastName("müller")
-        .mail("hans.müller@sbb.ch")
-        .accountStatus(UserAccountStatus.ACTIVE)
-        .build();
-
-    when(graphApiService.searchUsers("testQuery")).thenReturn(List.of(userModel, userModel2));
-
-    mvc.perform(get("/v1/search")
-            .param("searchQuery", "testQuery"))
-        .andExpect(jsonPath("$.length()").value(2))
-        .andExpect(status().isOk());
-
-    verify(graphApiService, times(1)).searchUsers("testQuery");
-    verifyNoInteractions(userAdministrationService);
+    userPermissionRepository.save(UserPermission.builder()
+        .role(ApplicationRole.SUPERVISOR)
+        .application(ApplicationType.SEPODI)
+        .sbbUserId("u123456").build());
   }
 
-  @Test
-  void shouldSearchUserInAtlas() throws Exception {
-    UserModel userModel = UserModel.builder()
-        .sbbUserId("u999999")
-        .firstName("Uwe")
-        .lastName("König")
-        .mail("uwe.koenig@sbb.ch")
-        .accountStatus(UserAccountStatus.ACTIVE)
-        .build();
-
-    UserModel userModel2 = UserModel.builder()
-        .sbbUserId("u123456")
-        .firstName("hans")
-        .lastName("müller")
-        .mail("hans.müller@sbb.ch")
-        .accountStatus(UserAccountStatus.ACTIVE)
-        .build();
-
-    List<UserModel> userModels = Arrays.asList(userModel, userModel2);
-    when(graphApiService.searchUsers("testQuery")).thenReturn(userModels);
-
-    List<UserModel> filteredUsers = Collections.singletonList(userModel);
-
-    when(userAdministrationService.filterForPermittedUserInAtlas(userModels, ApplicationType.SEPODI))
-        .thenReturn(filteredUsers);
-
-    mvc.perform(get("/v1/search-in-atlas")
-            .param("searchQuery", "testQuery")
-            .param("applicationType", "SEPODI"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.length()").value(1))
-        .andExpect(jsonPath("$[0].sbbUserId").value("u999999"));
-
-    verify(graphApiService, times(1)).searchUsers("testQuery");
-    verify(userAdministrationService, times(1)).filterForPermittedUserInAtlas(userModels, ApplicationType.SEPODI);
-
+  private static UsersRequestBuilder buildGraphApiUserResult() {
+    UsersRequestBuilder usersRequestBuilderMock = Mockito.mock(UsersRequestBuilder.class);
+    UserCollectionResponse userCollectionResponseMock = Mockito.mock(UserCollectionResponse.class);
+    User graphUser = new User();
+    graphUser.setDisplayName("Lastname Firstname");
+    graphUser.setOnPremisesSamAccountName("u123456");
+    graphUser.setSurname("Lastname");
+    graphUser.setGivenName("Firstname");
+    graphUser.setMail("u123456@sbb.ch");
+    graphUser.setAccountEnabled(true);
+    when(userCollectionResponseMock.getValue()).thenReturn(List.of(graphUser));
+    when(usersRequestBuilderMock.get(any())).thenReturn(userCollectionResponseMock);
+    return usersRequestBuilderMock;
   }
 
-  @Test
-  void shouldSearchBoUsers() throws Exception {
-    UserModel userModel = UserModel.builder()
-        .sbbUserId("u999999")
-        .firstName("Uwe")
-        .lastName("König")
-        .mail("uwe.koenig@sbb.ch")
-        .accountStatus(UserAccountStatus.ACTIVE)
-        .build();
+  @AfterEach
+  void tearDown() {
+    userPermissionRepository.deleteAll();
+  }
 
-    List<UserModel> userModels = Collections.singletonList(userModel);
-    String searchQuery = "testQuery";
-    when(graphApiService.searchUsers(searchQuery)).thenReturn(userModels);
+  @Nested
+  @DisplayName("GET /v1/search")
+  class SearchUsers {
 
-    List<UserModel> filteredUsers = Collections.singletonList(userModel);
+    @Test
+    void shouldSearchUserInAD() throws Exception {
+      mvc.perform(get("/v1/search")
+              .param("searchQuery", "u123456"))
+          .andExpect(jsonPath("$.length()").value(1))
+          .andExpect(status().isOk());
+    }
 
-    when(userAdministrationService.filterForPermittedUserInAtlas(userModels, ApplicationType.SEPODI))
-        .thenReturn(filteredUsers);
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotAllowSearchToUnauthorizedInternal() throws Exception {
+      mvc.perform(get("/v1/search").param("searchQuery", "testQuery"))
+          .andExpect(status().isForbidden());
+    }
+  }
 
-    mvc.perform(get("/v1/search-bo-dossier-answering-users")
-            .param("searchQuery", searchQuery))
-        .andExpect(status().isOk());
+  @Nested
+  @DisplayName("GET /v1/search-in-atlas")
+  class SearchUsersInAtlas {
 
-    verify(graphApiService, times(1)).searchUsers("testQuery");
-    verify(userAdministrationService, times(1)).filterForBoDossierAnsweringPermission(userModels);
+    @Test
+    void shouldSearchUserInAtlas() throws Exception {
+      mvc.perform(get("/v1/search-in-atlas")
+              .param("searchQuery", "u123456")
+              .param("applicationType", "SEPODI"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.length()").value(1))
+          .andExpect(jsonPath("$[0].sbbUserId").value("u123456"));
+    }
 
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotGetUsersViaSearchInAtlasAsUnauthorized() throws Exception {
+      userPermissionRepository.save(UserPermission.builder()
+          .role(ApplicationRole.SUPERVISOR)
+          .application(ApplicationType.SEPODI)
+          .sbbUserId("user1").build());
+
+      mvc.perform(MockMvcRequestBuilders.get("/v1/search-in-atlas?searchQuery=user1&applicationType=SEPODI"))
+          .andExpect(status().isForbidden());
+    }
+  }
+
+  @Nested
+  @DisplayName("GET /v1/search-in-atlas")
+  class SearchBoDossierAnsweringUsers {
+
+    @Test
+    void shouldSearchBoUsers() throws Exception {
+      UserPermission userPermission = UserPermission.builder()
+          .role(ApplicationRole.READER)
+          .application(ApplicationType.TIMETABLE_HEARING)
+          .sbbUserId("u123456")
+          .build();
+      userPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .userPermission(userPermission)
+          .type(PermissionRestrictionType.TRANSPORT_COMPANY_DOSSIER_ANSWER)
+          .restriction("true")
+          .build()));
+      userPermissionRepository.save(userPermission);
+
+      mvc.perform(get("/v1/search-bo-dossier-answering-users")
+              .param("searchQuery", "u123456@sbb.ch"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.length()").value(1));
+
+    }
   }
 }

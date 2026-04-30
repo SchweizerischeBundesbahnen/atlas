@@ -7,16 +7,16 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Access restricted to admin users
+ * Forbids access for unauthorized client credential from api-auth-gateway
  */
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-public @interface AdminOnly {
+@PreAuthorize("!hasAuthority('" + Role.AUTHORITY_UNAUTHORIZED + "')")
+public @interface AuthorizedOnly {
 
 }

@@ -1,22 +1,26 @@
 package ch.sbb.atlas.annotation;
 
-import ch.sbb.atlas.configuration.Role;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.springframework.security.access.annotation.Secured;
 
 /**
- * Access restricted to admin users
+ * Marker Annotation to declare an endpoint as allowed for unauthorized access.
  */
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-public @interface AdminOnly {
+public @interface UnauthorizedAllowed {
+
+  FurtherLimitations limitations();
+
+  enum FurtherLimitations {
+    NONE,
+    REDACTED,
+  }
 
 }

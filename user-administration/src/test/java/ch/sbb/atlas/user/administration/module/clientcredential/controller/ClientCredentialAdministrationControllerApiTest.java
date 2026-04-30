@@ -20,6 +20,8 @@ import ch.sbb.atlas.user.administration.module.useradministration.entity.Permiss
 import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -37,118 +39,138 @@ class ClientCredentialAdministrationControllerApiTest extends BaseControllerApiT
     clientCredentialPermissionRepository.deleteAll();
   }
 
-  @Test
-  void shouldGetClient() throws Exception {
-    ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
-        .role(ApplicationRole.WRITER)
-        .application(ApplicationType.TTFN)
-        .clientCredentialId(CLIENT_ID)
-        .alias(ALIAS)
-        .build();
-    clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
-        .clientCredentialPermission(clientCredentialPermission)
-        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-        .restriction("ch:1:sboid:123123")
-        .build()));
-    clientCredentialPermissionRepository.save(clientCredentialPermission);
-    clientCredentialPermission =
-        ClientCredentialPermission.builder()
-            .role(ApplicationRole.WRITER)
-            .application(ApplicationType.TIMETABLE_HEARING)
-            .clientCredentialId(CLIENT_ID)
-            .alias(ALIAS)
-            .build();
-    clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
-        .clientCredentialPermission(clientCredentialPermission)
-        .type(PermissionRestrictionType.CANTON)
-        .restriction(SwissCanton.BERN.name())
-        .build()));
-    clientCredentialPermissionRepository.save(clientCredentialPermission);
+  @Nested
+  @DisplayName("GET /v1/client-credentials")
+  class GetClientCredentials {
 
-    mvc.perform(get("/v1/client-credentials/" + CLIENT_ID))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.clientCredentialId").value(CLIENT_ID))
-        .andExpect(jsonPath("$.permissions", hasSize(2)))
-        .andExpect(jsonPath("$.permissions[0].permissionRestrictions", hasSize(1)))
-        .andExpect(jsonPath("$.permissions[1].permissionRestrictions", hasSize(1)));
+    @Test
+    void shouldGetClientCredentialOverview() throws Exception {
+      ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
+          .role(ApplicationRole.WRITER)
+          .application(ApplicationType.TTFN)
+          .clientCredentialId(CLIENT_ID)
+          .alias(ALIAS)
+          .build();
+      clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .clientCredentialPermission(clientCredentialPermission)
+          .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+          .restriction("ch:1:sboid:123123")
+          .build()));
+      clientCredentialPermissionRepository.save(clientCredentialPermission);
+      clientCredentialPermission =
+          ClientCredentialPermission.builder()
+              .role(ApplicationRole.WRITER)
+              .application(ApplicationType.TIMETABLE_HEARING)
+              .clientCredentialId(CLIENT_ID)
+              .alias(ALIAS)
+              .build();
+      clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .clientCredentialPermission(clientCredentialPermission)
+          .type(PermissionRestrictionType.CANTON)
+          .restriction(SwissCanton.BERN.name())
+          .build()));
+      clientCredentialPermissionRepository.save(clientCredentialPermission);
+
+      mvc.perform(get("/v1/client-credentials"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)));
+    }
   }
 
-  @Test
-  void shouldGetClientCredentialOverview() throws Exception {
-    ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
-        .role(ApplicationRole.WRITER)
-        .application(ApplicationType.TTFN)
-        .clientCredentialId(CLIENT_ID)
-        .alias(ALIAS)
-        .build();
-    clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
-        .clientCredentialPermission(clientCredentialPermission)
-        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-        .restriction("ch:1:sboid:123123")
-        .build()));
-    clientCredentialPermissionRepository.save(clientCredentialPermission);
-    clientCredentialPermission =
-        ClientCredentialPermission.builder()
-            .role(ApplicationRole.WRITER)
-            .application(ApplicationType.TIMETABLE_HEARING)
-            .clientCredentialId(CLIENT_ID)
-            .alias(ALIAS)
-            .build();
-    clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
-        .clientCredentialPermission(clientCredentialPermission)
-        .type(PermissionRestrictionType.CANTON)
-        .restriction(SwissCanton.BERN.name())
-        .build()));
-    clientCredentialPermissionRepository.save(clientCredentialPermission);
+  @Nested
+  @DisplayName("GET /v1/client-credentials/{clientId}")
+  class GetClientCredential {
 
-    mvc.perform(get("/v1/client-credentials"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)));
+    @Test
+    void shouldGetClient() throws Exception {
+      ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
+          .role(ApplicationRole.WRITER)
+          .application(ApplicationType.TTFN)
+          .clientCredentialId(CLIENT_ID)
+          .alias(ALIAS)
+          .build();
+      clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .clientCredentialPermission(clientCredentialPermission)
+          .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+          .restriction("ch:1:sboid:123123")
+          .build()));
+      clientCredentialPermissionRepository.save(clientCredentialPermission);
+      clientCredentialPermission =
+          ClientCredentialPermission.builder()
+              .role(ApplicationRole.WRITER)
+              .application(ApplicationType.TIMETABLE_HEARING)
+              .clientCredentialId(CLIENT_ID)
+              .alias(ALIAS)
+              .build();
+      clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .clientCredentialPermission(clientCredentialPermission)
+          .type(PermissionRestrictionType.CANTON)
+          .restriction(SwissCanton.BERN.name())
+          .build()));
+      clientCredentialPermissionRepository.save(clientCredentialPermission);
+
+      mvc.perform(get("/v1/client-credentials/" + CLIENT_ID))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.clientCredentialId").value(CLIENT_ID))
+          .andExpect(jsonPath("$.permissions", hasSize(2)))
+          .andExpect(jsonPath("$.permissions[0].permissionRestrictions", hasSize(1)))
+          .andExpect(jsonPath("$.permissions[1].permissionRestrictions", hasSize(1)));
+    }
   }
 
-  @Test
-  void shouldCreateClient() throws Exception {
-    ClientCredentialCreateModel client = ClientCredentialCreateModel.builder()
-        .clientCredentialId("new-client-id")
-        .alias("some-alias")
-        .comment("Comment")
-        .build();
+  @Nested
+  @DisplayName("POST /v1/client-credentials")
+  class CreateClientCredential {
 
-    mvc.perform(post("/v1/client-credentials").content(mapper.writeValueAsString(client)).contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.clientCredentialId").value("new-client-id"));
+    @Test
+    void shouldCreateClient() throws Exception {
+      ClientCredentialCreateModel client = ClientCredentialCreateModel.builder()
+          .clientCredentialId("new-client-id")
+          .alias("some-alias")
+          .comment("Comment")
+          .build();
+
+      mvc.perform(
+              post("/v1/client-credentials").content(mapper.writeValueAsString(client)).contentType(MediaType.APPLICATION_JSON))
+          .andExpect(status().isCreated())
+          .andExpect(jsonPath("$.clientCredentialId").value("new-client-id"));
+    }
   }
 
-  @Test
-  void shouldUpdateClientPermissions() throws Exception {
-    // given
-    ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
-        .role(ApplicationRole.WRITER)
-        .application(ApplicationType.TTFN)
-        .clientCredentialId(CLIENT_ID)
-        .alias(ALIAS)
-        .build();
-    clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
-        .clientCredentialPermission(clientCredentialPermission)
-        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-        .restriction("ch:1:sboid:123123")
-        .build()));
-    clientCredentialPermissionRepository.save(clientCredentialPermission);
+  @Nested
+  @DisplayName("PUT /v1/client-credentials/{clientId}/{application}")
+  class UpdateClientCredential {
 
-    // when
-    PermissionModel permission = PermissionModel.builder()
-        .role(ApplicationRole.READER)
-        .application(ApplicationType.TTFN)
-        .permissionRestrictions(Collections.emptyList())
-        .build();
+    @Test
+    void shouldUpdateClientPermissions() throws Exception {
+      // given
+      ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
+          .role(ApplicationRole.WRITER)
+          .application(ApplicationType.TTFN)
+          .clientCredentialId(CLIENT_ID)
+          .alias(ALIAS)
+          .build();
+      clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .clientCredentialPermission(clientCredentialPermission)
+          .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+          .restriction("ch:1:sboid:123123")
+          .build()));
+      clientCredentialPermissionRepository.save(clientCredentialPermission);
 
-    mvc.perform(put("/v1/client-credentials/"
-            + CLIENT_ID + "/" + ApplicationType.TTFN).content(mapper.writeValueAsString(permission))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.clientCredentialId").value(CLIENT_ID))
-        .andExpect(jsonPath("$.permissions", hasSize(1)))
-        .andExpect(jsonPath("$.permissions[0].role").value("READER"));
+      // when
+      PermissionModel permission = PermissionModel.builder()
+          .role(ApplicationRole.READER)
+          .application(ApplicationType.TTFN)
+          .permissionRestrictions(Collections.emptyList())
+          .build();
+
+      mvc.perform(put("/v1/client-credentials/"
+              + CLIENT_ID + "/" + ApplicationType.TTFN).content(mapper.writeValueAsString(permission))
+              .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.clientCredentialId").value(CLIENT_ID))
+          .andExpect(jsonPath("$.permissions", hasSize(1)))
+          .andExpect(jsonPath("$.permissions[0].role").value("READER"));
+    }
   }
-
 }
