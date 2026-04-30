@@ -1,5 +1,7 @@
 package ch.sbb.atlas.api.lidi;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Validated
 public interface TimetableYearChangeApiInternal {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{year}")
   @Operation(description = "Returns the Timetable year change for the given year")
   @ApiResponses(value = {
@@ -32,6 +35,7 @@ public interface TimetableYearChangeApiInternal {
   })
   LocalDate getTimetableYearChange(@PathVariable @Min(1700) @Max(9999) int year);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("/next-years/{count}")
   @Operation(description = "Returns a list of the next Timetable years change")
   @ApiResponses(value = {
