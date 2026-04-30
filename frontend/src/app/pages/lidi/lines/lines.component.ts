@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -82,11 +82,9 @@ export class LinesComponent implements OnInit, OnDestroy {
   lineVersions: Line[] = [];
   totalCount$ = 0;
 
-  constructor(
-    private readonly lineService: LineInternalService,
-    private readonly router: Router,
-    private readonly tableService: TableService
-  ) {}
+  private readonly lineService = inject(LineInternalService);
+  private readonly router = inject(Router);
+  private readonly tableService = inject(TableService);
 
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.LINES);

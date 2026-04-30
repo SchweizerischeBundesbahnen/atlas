@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   ApplicationType,
   EditStopPointWorkflow,
@@ -58,15 +58,13 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   protected readonly WorkflowStatus = WorkflowStatus;
   protected readonly ApplicationType = ApplicationType;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private readonly dialog: MatDialog,
-    private readonly stopPointWorkflowService: StopPointWorkflowService,
-    private readonly notificationService: NotificationService,
-    private dialogService: DialogService,
-    private permissionService: PermissionService
-  ) {}
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly dialogService = inject(DialogService);
+  private readonly permissionService = inject(PermissionService);
 
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
 

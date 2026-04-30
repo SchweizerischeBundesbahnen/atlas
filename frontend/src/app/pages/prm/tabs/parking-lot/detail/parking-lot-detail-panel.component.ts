@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../../../core/versioning/date-range';
@@ -15,16 +15,14 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DetailPageContainerComponent, PrmDetailPanelComponent, DetailWithRelationTabComponent, TranslatePipe],
 })
 export class ParkingLotDetailPanelComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+
   isNew = false;
   isReduced = false;
-
   selectedVersion!: ReadParkingLotVersion;
   parkingLot: ReadParkingLotVersion[] = [];
-
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
-
-  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {

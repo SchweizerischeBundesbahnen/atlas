@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -71,12 +71,10 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
 
   private transportCompaniesSubscription?: Subscription;
 
-  constructor(
-    private readonly transportCompanyService: TransportCompanyService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly tableService: TableService
-  ) {}
+  private readonly transportCompanyService = inject(TransportCompanyService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly tableService = inject(TableService);
 
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(

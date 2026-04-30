@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Pages } from '../../pages/pages';
 import { Page } from '../model/page';
 import { PermissionService } from '../auth/permission/permission.service';
@@ -11,7 +11,7 @@ export class PageService {
   private _viewablePages: BehaviorSubject<Page[]> = new BehaviorSubject([...Pages.pages, Pages.TTFN]);
   enabledPages: Observable<Page[]> = this._viewablePages.asObservable();
 
-  constructor(private readonly permissionService: PermissionService) {}
+  private readonly permissionService = inject(PermissionService);
 
   addPagesBasedOnPermissions() {
     const userType = this.permissionService.getTthApplicationUserType();

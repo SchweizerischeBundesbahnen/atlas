@@ -7,10 +7,8 @@ import { LineService } from '../../../../api/service/lidi/line.service';
 
 @Injectable({ providedIn: 'root' })
 export class LineDetailResolver {
-  constructor(
-    private readonly lineService: LineService,
-    private readonly router: Router
-  ) {}
+  private readonly lineService = inject(LineService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<LineVersionV2>> {
     const idParameter = route.paramMap.get('id') || '';

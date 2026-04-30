@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 import { map } from 'rxjs/operators';
@@ -10,10 +10,8 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
   pure: true,
 })
 export class BoDisplayPipe implements PipeTransform {
-  constructor(
-    private readonly boSelectionDisplayPipe: BoSelectionDisplayPipe,
-    private readonly businessOrganisationsService: BusinessOrganisationService
-  ) {}
+  private readonly boSelectionDisplayPipe = inject(BoSelectionDisplayPipe);
+  private readonly businessOrganisationsService = inject(BusinessOrganisationService);
 
   transform(sboid: string): Observable<string> {
     return this.businessOrganisationsService.getVersions(sboid).pipe(

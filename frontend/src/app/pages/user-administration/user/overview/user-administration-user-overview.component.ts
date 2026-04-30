@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -68,12 +68,10 @@ export class UserAdministrationUserOverviewComponent {
 
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
 
-  constructor(
-    private readonly userAdministrationService: UserAdministrationService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly tableService: TableService
-  ) {}
+  private readonly userAdministrationService = inject(UserAdministrationService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly tableService = inject(TableService);
 
   reloadTableWithCurrentSettings(): void {
     if (this.selectedSearch === 'USER') {

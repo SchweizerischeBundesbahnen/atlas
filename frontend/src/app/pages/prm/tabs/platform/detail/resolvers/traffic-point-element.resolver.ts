@@ -7,10 +7,8 @@ import { TrafficPointElementService } from '../../../../../../api/service/sepodi
 
 @Injectable({ providedIn: 'root' })
 export class TrafficPointElementResolver {
-  constructor(
-    private readonly trafficPointElementsService: TrafficPointElementService,
-    private readonly router: Router
-  ) {}
+  private readonly trafficPointElementsService = inject(TrafficPointElementService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadTrafficPointElementVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';

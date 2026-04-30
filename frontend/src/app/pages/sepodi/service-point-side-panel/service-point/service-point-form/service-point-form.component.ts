@@ -1,4 +1,4 @@
-import { Component, ContentChild, EventEmitter, input, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ContentChild, EventEmitter, input, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ServicePointDetailFormGroup } from './form-group/service-point-detail-form-group';
 import { ServicePointType } from '../service-point-type';
@@ -60,6 +60,11 @@ import { StationGroup } from './form-group/station-form-group';
   ],
 })
 export class ServicePointFormComponent implements OnInit, OnDestroy {
+  private readonly translationSortingService = inject(TranslationSortingService);
+  private readonly dialogService = inject(DialogService);
+  private readonly locationGeoInternalService = inject(LocationGeoInternalService);
+  private readonly permissionService = inject(PermissionService);
+
   @ContentChild(GeographyComponent, { static: true })
   geographyComponent?: GeographyComponent;
 
@@ -104,14 +109,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     return this._currentVersion;
   }
 
-  get isStopPointOnDemandSelected(): boolean {
-    return this._isStopPointOnDemandSelected;
-  }
-
-  set isStopPointOnDemandSelected(value: boolean) {
-    this._isStopPointOnDemandSelected = value;
-  }
-
   get isMeanOfTransportOnDemandSelected(): boolean {
     return this._isMeanOfTransportOnDemandSelected;
   }
@@ -128,13 +125,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   private formDestroy$ = new Subject<void>();
 
   boSboidRestriction: string[] = [];
-
-  constructor(
-    private readonly translationSortingService: TranslationSortingService,
-    private readonly dialogService: DialogService,
-    private readonly locationGeoInternalService: LocationGeoInternalService,
-    private readonly permissionService: PermissionService
-  ) {}
 
   ngOnInit(): void {
     this.isNew = !this.currentVersion?.id;

@@ -7,10 +7,8 @@ import { ParkingLotService } from '../../../../../../api/service/prm/parking-lot
 
 @Injectable({ providedIn: 'root' })
 export class PrmParkingLotResolver {
-  constructor(
-    private readonly parkingLotService: ParkingLotService,
-    private readonly router: Router
-  ) {}
+  private readonly parkingLotService = inject(ParkingLotService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadParkingLotVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';

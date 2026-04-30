@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { TimetableHearingYear } from '../../../api';
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
@@ -17,6 +17,12 @@ import { TthYearInternalService } from '../../../api/service/workflow/tth-year-i
   imports: [MatDialogClose, NgTemplateOutlet, AtlasSlideToggleComponent, AtlasButtonComponent, TranslatePipe],
 })
 export class DialogManageTthComponent implements OnInit {
+  private readonly year: number = inject(MAT_DIALOG_DATA);
+  private readonly timetableHearingYearsService = inject(TimetableHearingYearInternalService);
+  private readonly tthYearInternalService = inject(TthYearInternalService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly dialogRef = inject(MatDialogRef<DialogManageTthComponent, boolean>);
+
   @ViewChild('loadingView', { static: true }) loadingView!: TemplateRef<this>;
   @ViewChild('manageView', { static: true }) manageView!: TemplateRef<this>;
   @ViewChild('closeTimetableHearingView', { static: true })
@@ -29,18 +35,6 @@ export class DialogManageTthComponent implements OnInit {
   timetableHearingYear?: TimetableHearingYear;
   currentView: TemplateRef<this> | null = null;
   actionButtonsDisabled = false;
-
-  private readonly year: number;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private readonly matDialogData: number,
-    private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
-    private readonly tthYearInternalService: TthYearInternalService,
-    private readonly notificationService: NotificationService,
-    private readonly dialogRef: MatDialogRef<DialogManageTthComponent, boolean>
-  ) {
-    this.year = matDialogData;
-  }
 
   ngOnInit() {
     this.currentView = this.loadingView;

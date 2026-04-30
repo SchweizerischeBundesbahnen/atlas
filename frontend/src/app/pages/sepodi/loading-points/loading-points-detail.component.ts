@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateLoadingPointVersion, ReadLoadingPointVersion, ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -16,7 +16,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validity } from '../../model/validity';
 import { ValidityService } from '../validity/validity.service';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
-
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
@@ -60,6 +59,15 @@ import { LoadingPointService } from '../../../api/service/sepodi/loading-point.s
   ],
 })
 export class LoadingPointsDetailComponent implements DetailFormComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly servicePointService = inject(ServicePointService);
+  private readonly loadingPointService = inject(LoadingPointService);
+  private readonly dialogService = inject(DialogService);
+  private readonly validityConfirmationService = inject(ValidityConfirmationService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly validityService = inject(ValidityService);
+
   loadingPointVersions!: ReadLoadingPointVersion[];
   selectedVersion!: ReadLoadingPointVersion;
 
@@ -77,16 +85,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   validity!: Validity;
   loadingPointVersion!: CreateLoadingPointVersion;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly servicePointService: ServicePointService,
-    private readonly loadingPointService: LoadingPointService,
-    private readonly dialogService: DialogService,
-    private readonly validityConfirmationService: ValidityConfirmationService,
-    private readonly notificationService: NotificationService,
-    private readonly validityService: ValidityService
-  ) {
+  constructor() {
     this.route.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.loadingPointVersions = next.loadingPoint;
       this.initLoadingPoint();

@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, Input, Self } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener, inject, Input } from '@angular/core';
 
 @Directive({ selector: '[atlasRemoveChars]' })
 export class RemoveCharsDirective implements AfterViewInit {
@@ -7,7 +7,7 @@ export class RemoveCharsDirective implements AfterViewInit {
   private inputElement?: HTMLInputElement;
   private value?: string;
 
-  constructor(@Self() private element: ElementRef) {}
+  private readonly element = inject(ElementRef, { self: true });
 
   ngAfterViewInit() {
     this.inputElement = this.element.nativeElement.querySelector('input');

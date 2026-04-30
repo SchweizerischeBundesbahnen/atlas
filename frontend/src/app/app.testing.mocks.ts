@@ -76,6 +76,12 @@ export class MockTuSelectComponent {
 }
 
 @Component({
+  selector: 'atlas-sepodi-geography',
+  template: `<h1>Mock Geography Component</h1>`,
+})
+export class MockGeographyComponent {}
+
+@Component({
   selector: 'atlas-ttfn-select',
   template: '<p>Mock TTFN Select Component</p>',
 })

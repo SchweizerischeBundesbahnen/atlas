@@ -1,6 +1,5 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
-import { ServiceWorkerService } from './service-worker.service';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { LoadingSpinnerComponent } from './core/components/loading-spinner/loading-spinner.component';
 import { HeaderComponent } from './core/components/header/header.component';
@@ -14,7 +13,6 @@ import { AuthService } from './core/auth/auth.service';
   selector: 'atlas-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [ServiceWorkerService],
   imports: [
     LoadingSpinnerComponent,
     HeaderComponent,
@@ -28,14 +26,8 @@ import { AuthService } from './core/auth/auth.service';
   ],
 })
 export class AppComponent {
-  @ViewChild('sidenav') sideNav?: MatSidenav;
-  sideNavOpened = true;
   protected readonly authenticated$ = inject(AuthService).initAuth();
-
-  constructor(
-    public readonly loadingSpinnerService: LoadingSpinnerService,
-    private readonly _swService: ServiceWorkerService
-  ) {}
+  protected readonly loadingSpinnerService = inject(LoadingSpinnerService);
 }
 
 Date.prototype.toISOString = function () {

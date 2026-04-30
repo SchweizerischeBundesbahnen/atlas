@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BulkImportFormGroup, BulkImportFormGroupBuilder } from '../detail/bulk-import-form-group';
 import { ApplicationType, BusinessObjectType, ImportType } from '../../../api';
@@ -90,14 +90,12 @@ export class BulkImportOverviewComponent implements OnInit {
   isFileUploaded = false;
   saving = false;
 
-  constructor(
-    private userAdministrationService: UserAdministrationService,
-    private permissionService: PermissionService,
-    private bulkImportService: BulkImportService,
-    private readonly notificationService: NotificationService,
-    private readonly dialogService: DialogService,
-    private readonly loadingSpinnerService: LoadingSpinnerService
-  ) {}
+  private readonly userAdministrationService = inject(UserAdministrationService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly bulkImportService = inject(BulkImportService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly dialogService = inject(DialogService);
+  private readonly loadingSpinnerService = inject(LoadingSpinnerService);
 
   ngOnInit(): void {
     this.form = BulkImportFormGroupBuilder.initFormGroup();

@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
  */
 @Injectable({ providedIn: 'root' })
 export class PermissionsLoadedGuard {
-  constructor(private readonly userService: UserService) {}
+  private readonly userService = inject(UserService);
 
   canActivate() {
     return this.userService.onPermissionsLoaded().pipe(map(() => true));

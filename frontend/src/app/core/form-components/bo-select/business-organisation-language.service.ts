@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Language } from '../../components/language-switcher/language';
 
@@ -10,7 +10,7 @@ export type translatableType = 'description' | 'abbreviation';
   providedIn: 'root',
 })
 export class BusinessOrganisationLanguageService {
-  constructor(private readonly translateService: TranslateService) {}
+  private readonly translateService = inject(TranslateService);
 
   public languageChanged() {
     return this.translateService.onLangChange;

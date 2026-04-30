@@ -9,12 +9,10 @@ import { TransportCompanyService } from '../../../../api/service/bodi/transport-
 
 @Injectable({ providedIn: 'root' })
 export class TransportCompanyDetailResolver {
-  constructor(
-    private readonly transportCompanyService: TransportCompanyService,
-    private readonly notificationService: NotificationService,
-    private readonly router: Router,
-    private readonly transportCompanyRelationInternalService: TransportCompanyRelationInternalService
-  ) {}
+  private readonly transportCompanyService = inject(TransportCompanyService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly router = inject(Router);
+  private readonly transportCompanyRelationInternalService = inject(TransportCompanyRelationInternalService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<[TransportCompany, TransportCompanyBoRelation[]]> {
     const idParameter = parseInt(route.paramMap.get('id') || '0');

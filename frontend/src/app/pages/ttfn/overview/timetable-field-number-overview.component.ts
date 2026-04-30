@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
@@ -26,6 +26,11 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [AtlasButtonComponent, TableComponent, RouterOutlet, TranslatePipe],
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
+  private readonly timetableFieldNumbersService = inject(TimetableFieldNumberInternalService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly tableService = inject(TableService);
+
   private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
@@ -72,13 +77,6 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
 
   timetableFieldNumbers: TimetableFieldNumber[] = [];
   totalCount$ = 0;
-
-  constructor(
-    private timetableFieldNumbersService: TimetableFieldNumberInternalService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private tableService: TableService
-  ) {}
 
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.TTFN);

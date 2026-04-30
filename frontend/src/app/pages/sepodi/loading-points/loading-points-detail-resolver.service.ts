@@ -7,10 +7,8 @@ import { LoadingPointService } from '../../../api/service/sepodi/loading-point.s
 
 @Injectable({ providedIn: 'root' })
 export class LoadingPointsDetailResolver {
-  constructor(
-    private readonly loadingPointsService: LoadingPointService,
-    private readonly router: Router
-  ) {}
+  private readonly loadingPointsService = inject(LoadingPointService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadLoadingPointVersion>> {
     const servicePointNumber = route.paramMap.get('servicePointNumber') || '';

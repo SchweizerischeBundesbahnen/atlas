@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ServicePointSearchResult } from '../../api';
 import { catchError, concat, debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -43,18 +43,16 @@ export class SearchServicePointComponent implements OnInit {
   searchInput$ = new Subject<string>();
   loading = false;
 
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly servicePointInternalService = inject(ServicePointInternalService);
+  private readonly translatePipe = inject(TranslatePipe);
+
   get searchPlaceholder() {
     return this.searchType === ServicePointSearch.SePoDi
       ? SEARCH_SERVICE_POINT_PLACEHOLDER
       : SEARCH_STOP_POINT_PLACEHOLDER;
   }
-
-  constructor(
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly servicePointInternalService: ServicePointInternalService,
-    private readonly translatePipe: TranslatePipe
-  ) {}
 
   get searchValue(): string {
     return this._searchValue;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ReadServicePointVersion, ReadToiletVersion } from '../../../../../api';
 import { DateRange } from '../../../../../core/versioning/date-range';
 import { ActivatedRoute } from '@angular/router';
@@ -15,16 +15,14 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DetailPageContainerComponent, PrmDetailPanelComponent, DetailWithRelationTabComponent, TranslatePipe],
 })
 export class ToiletDetailPanelComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+
   isNew = false;
   isReduced = false;
-
   toiletVersions: ReadToiletVersion[] = [];
   selectedVersion!: ReadToiletVersion;
-
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
-
-  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {

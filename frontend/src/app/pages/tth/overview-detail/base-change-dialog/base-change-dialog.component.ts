@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { StatusChangeData } from '../tth-change-status-dialog/model/status-change-data';
@@ -22,10 +22,8 @@ export class BaseChangeDialogComponent {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() dialogRef!: MatDialogRef<any>;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
-    private readonly dialogService: DialogService
-  ) {}
+  public data: StatusChangeData = inject(MAT_DIALOG_DATA);
+  private readonly dialogService = inject(DialogService);
 
   closeDialog() {
     if (this.formGroup.dirty) {

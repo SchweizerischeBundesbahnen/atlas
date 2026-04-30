@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ApplicationType, BusinessOrganisation, TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -19,7 +19,6 @@ import { DetailPageContentComponent } from '../../../../core/components/detail-p
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
-
 import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
@@ -50,6 +49,14 @@ import { DialogData } from '../../../../core/components/dialog/dialog.data';
   ],
 })
 export class TransportCompanyDetailComponent implements OnInit, DetailFormComponent {
+  private readonly businessOrganisationService = inject(BusinessOrganisationService);
+  private readonly transportCompanyRelationInternalService = inject(TransportCompanyRelationInternalService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly businessOrganisationLanguageService = inject(BusinessOrganisationLanguageService);
+  private readonly dialogService = inject(DialogService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+
   transportCompany!: TransportCompany;
   transportFormGroup!: FormGroup<TransportCompanyFormGroup>;
   transportCompanyRelations!: TransportCompanyBoRelation[];
@@ -96,7 +103,6 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
       formatAsDate: true,
     },
   ];
-
   readonly form = new FormGroup(
     {
       businessOrganisation: new FormControl<BusinessOrganisation | null>(null, [Validators.required]),
@@ -105,17 +111,6 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
     },
     [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
   );
-
-  constructor(
-    private readonly businessOrganisationService: BusinessOrganisationService,
-    private readonly transportCompanyRelationInternalService: TransportCompanyRelationInternalService,
-    private readonly permissionService: PermissionService,
-    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    private readonly dialogService: DialogService,
-    private readonly notificationService: NotificationService,
-    private readonly activatedRoute: ActivatedRoute
-  ) {}
-
   readonly selectOption = (item: BusinessOrganisation) => {
     return `${item.organisationNumber} - ${item[this.getCurrentLanguageAbbreviation()]} - ${
       item[this.getCurrentLanguageDescription()]

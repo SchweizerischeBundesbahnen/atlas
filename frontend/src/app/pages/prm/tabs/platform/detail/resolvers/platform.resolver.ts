@@ -7,10 +7,8 @@ import { PlatformService } from '../../../../../../api/service/prm/platform/plat
 
 @Injectable({ providedIn: 'root' })
 export class PrmPlatformResolver {
-  constructor(
-    private readonly platformService: PlatformService,
-    private readonly router: Router
-  ) {}
+  private readonly platformService = inject(PlatformService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadPlatformVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';

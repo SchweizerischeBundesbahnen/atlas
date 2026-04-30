@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
@@ -27,10 +27,14 @@ import { PlatformInternalService } from '../../../../api/service/prm/platform/pl
   imports: [NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, AtlasButtonComponent],
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly tableService = inject(TableService);
+  private readonly platformInternalService = inject(PlatformInternalService);
+  private readonly trafficPointElementInternalService = inject(TrafficPointElementInternalService);
+
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
   trafficPointElements: ReadTrafficPointElementVersion[] = [];
-
   tableColumns: TableColumn<PlatformOverviewRow>[] = [
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
@@ -56,14 +60,8 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
   tableFilterConfig!: TableFilter<unknown>[][];
   servicePointVersion!: ReadServicePointVersion;
 
-  constructor(
-    readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly tableService: TableService,
-    private readonly platformInternalService: PlatformInternalService,
-    private readonly trafficPointElementInternalService: TrafficPointElementInternalService
-  ) {
-    super(router);
+  constructor() {
+    super(inject(Router));
   }
 
   ngOnInit(): void {

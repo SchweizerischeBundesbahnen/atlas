@@ -67,15 +67,18 @@ import { StatementTableHandler } from '../util/statement-table-handler';
   ],
 })
 export class OverviewDetailComponent extends StatementTableHandler {
-  readonly cantonShort = this.overviewToTabService.cantonShort;
-  readonly timetableYear = this.overviewToTabService.timetableYear;
-  readonly hearingStatus = this.overviewToTabService.hearingStatus;
-  readonly isTimetableHearingYearFound = this.overviewToTabService.isTimetableHearingYearFound;
-  readonly isHearingYearActive = this.overviewToTabService.isHearingYearActive;
-  readonly isHearingYearPlanned = this.overviewToTabService.isHearingYearPlanned;
-  readonly isHearingYearArchived = this.overviewToTabService.isHearingYearArchived;
-  readonly isSwissCanton = this.overviewToTabService.isSwissCanton;
-  readonly isYearLoading = this.overviewToTabService.isYearLoading;
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
+  private readonly timetableHearingYearsService = inject(TimetableHearingYearInternalService);
+  private readonly tthYearInternalService = inject(TthYearInternalService);
+  private readonly overviewToTabService = inject(OverviewToTabShareDataService);
+  private readonly dialogService = inject(DialogService);
+  private readonly tableService = inject(TableService);
+  private readonly translateService = inject(TranslateService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly destroyRef = inject(DestroyRef);
 
   timeTableHearingStatements: TimetableHearingStatementV2[] = [];
   totalCount = 0;
@@ -104,23 +107,20 @@ export class OverviewDetailComponent extends StatementTableHandler {
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatementV2>(true, []);
   isCheckBoxModeActive = false;
-  private destroyRef = inject(DestroyRef);
 
   tableFilterConfig!: TableFilter<unknown>[][];
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService,
-    private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
-    private readonly tthYearInternalService: TthYearInternalService,
-    private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly dialogService: DialogService,
-    private readonly tableService: TableService,
-    private readonly translateService: TranslateService,
-    private readonly permissionService: PermissionService,
-    private readonly matDialog: MatDialog
-  ) {
+  readonly cantonShort = this.overviewToTabService.cantonShort;
+  readonly timetableYear = this.overviewToTabService.timetableYear;
+  readonly hearingStatus = this.overviewToTabService.hearingStatus;
+  readonly isTimetableHearingYearFound = this.overviewToTabService.isTimetableHearingYearFound;
+  readonly isHearingYearActive = this.overviewToTabService.isHearingYearActive;
+  readonly isHearingYearPlanned = this.overviewToTabService.isHearingYearPlanned;
+  readonly isHearingYearArchived = this.overviewToTabService.isHearingYearArchived;
+  readonly isSwissCanton = this.overviewToTabService.isSwissCanton;
+  readonly isYearLoading = this.overviewToTabService.isYearLoading;
+
+  constructor() {
     super();
     effect(() => {
       if (!this.isYearLoading()) {

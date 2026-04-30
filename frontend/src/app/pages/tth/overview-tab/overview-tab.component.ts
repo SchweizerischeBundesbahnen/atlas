@@ -4,7 +4,6 @@ import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@ang
 import { OverviewToTabShareDataService } from './service/overview-to-tab-share-data.service';
 import { HearingOverviewTab } from './model/hearing-overview-tab';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
-
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgClass } from '@angular/common';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
@@ -14,10 +13,11 @@ import { PermissionService } from '../../../core/auth/permission/permission.serv
   imports: [MatTabNav, RouterLinkActive, MatTabLink, RouterLink, MatTabNavPanel, RouterOutlet, TranslatePipe, NgClass],
 })
 export class OverviewTabComponent {
-  protected readonly isHearingYearPlanned = this.overviewToTabService.isHearingYearPlanned;
-
+  protected readonly route = inject(ActivatedRoute);
+  private readonly overviewToTabService = inject(OverviewToTabShareDataService);
   private readonly permissionService = inject(PermissionService);
 
+  protected readonly isHearingYearPlanned = this.overviewToTabService.isHearingYearPlanned;
   protected readonly hearingStatus = this.overviewToTabService.hearingStatus;
 
   TABS: HearingOverviewTab[] = [
@@ -38,10 +38,7 @@ export class OverviewTabComponent {
     },
   ];
 
-  constructor(
-    public readonly route: ActivatedRoute,
-    private readonly overviewToTabService: OverviewToTabShareDataService
-  ) {
+  constructor() {
     this.overviewToTabService.setCantonShort(this.route.snapshot.params['canton']);
 
     if (this.permissionService.getTthApplicationUserType() === 'BO_TTH') {

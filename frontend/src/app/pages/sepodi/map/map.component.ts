@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options';
@@ -20,6 +20,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatIconButton, NgClass, TranslatePipe],
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  private readonly mapService = inject(MapService);
+  private readonly userService = inject(UserService);
+  private readonly permissionService = inject(PermissionService);
+
   @Input() public isSidePanelOpen = false;
 
   public canCreateServicePoint = false;
@@ -36,12 +40,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
-
-  constructor(
-    private readonly mapService: MapService,
-    private readonly userService: UserService,
-    private readonly permissionService: PermissionService
-  ) {}
 
   ngOnInit() {
     this.userService.onPermissionsLoaded().subscribe(() => {

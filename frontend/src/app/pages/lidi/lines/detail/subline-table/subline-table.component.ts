@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
@@ -39,10 +39,8 @@ export class SublineTableComponent implements OnInit, OnDestroy {
   tableFilterConfig!: TableFilter<unknown>[][];
   sublines: Array<Line> = [];
 
-  constructor(
-    private readonly lineInternalService: LineInternalService,
-    private readonly router: Router
-  ) {}
+  private readonly lineInternalService = inject(LineInternalService);
+  private readonly router = inject(Router);
 
   ngOnInit() {
     this.getOverview();

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
 import { StopPointInternalService } from '../../api/service/prm/stop-point/stop-point-internal.service';
@@ -19,11 +19,9 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
   @Input() sloid!: string;
   @Input() showToggle = true;
 
-  constructor(
-    private readonly stopPointInternalService: StopPointInternalService,
-    private permissionService: PermissionService,
-    private notificationService: NotificationService
-  ) {}
+  private readonly stopPointInternalService = inject(StopPointInternalService);
+  private permissionService = inject(PermissionService);
+  private notificationService = inject(NotificationService);
 
   ngOnInit(): void {
     this.isPrmSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Prm);

@@ -6,6 +6,8 @@ import { StatementStatus } from '../../../api';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FormatPipe } from './pipe/format.pipe';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { TranslatePipe } from '@ngx-translate/core';
+import { mock } from 'vitest-mock-extended';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -15,7 +17,14 @@ describe('TableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [translateServiceProvider, FormatPipe],
+      providers: [
+        {
+          provide: TranslatePipe,
+          useValue: mock<TranslatePipe>(),
+        },
+        translateServiceProvider,
+        FormatPipe,
+      ],
     });
 
     fixture = TestBed.createComponent(TableComponent);

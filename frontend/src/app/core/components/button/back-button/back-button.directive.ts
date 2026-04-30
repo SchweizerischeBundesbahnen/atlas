@@ -1,12 +1,10 @@
-import { Directive, HostListener } from '@angular/core';
+import { Directive, HostListener, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Directive({ selector: '[atlasBackButton]' })
 export class BackButtonDirective {
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
 
   @HostListener('click')
   onClick() {

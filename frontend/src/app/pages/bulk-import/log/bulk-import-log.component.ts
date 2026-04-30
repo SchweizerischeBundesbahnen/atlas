@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -31,10 +31,8 @@ export class BulkImportLogComponent implements OnInit {
   data$?: Observable<{ importResult?: BulkImportResultTemplate; id: unknown }>;
   pagedLogEntries: Array<BulkImportLogEntryTemplate> = [];
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly bulkImportService: BulkImportService
-  ) {}
+  private readonly route = inject(ActivatedRoute);
+  private readonly bulkImportService = inject(BulkImportService);
 
   ngOnInit() {
     this.data$ = this.route.params.pipe(

@@ -4,12 +4,12 @@
     <atlas-header></atlas-header>
     <div class="app-body">
       <mat-sidenav-container class="page-container">
-        <mat-sidenav #sidenav mode="side" [opened]="sideNavOpened">
+        <mat-sidenav mode="side" [opened]="true">
           <mat-nav-list>
             <atlas-side-nav></atlas-side-nav>
           </mat-nav-list>
         </mat-sidenav>
-        <mat-sidenav-content [class.content-menu-closed]="!sideNavOpened">
+        <mat-sidenav-content>
           <div id="scrollbar-content-container" class="full-height">
             <router-outlet></router-outlet>
           </div>

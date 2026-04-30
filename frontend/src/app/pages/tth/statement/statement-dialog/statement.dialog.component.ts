@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TimetableHearingStatementV2 } from '../../../../api';
@@ -21,12 +21,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class StatementDialogComponent {
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(
-    public dialogRef: MatDialogRef<StatementDialogComponent, boolean>,
-    @Inject(MAT_DIALOG_DATA) public form: FormGroup<StatementDetailFormGroup>,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService,
-    private readonly notificationService: NotificationService
-  ) {}
+  public dialogRef = inject(MatDialogRef<StatementDialogComponent, boolean>);
+  public form: FormGroup<StatementDetailFormGroup> = inject(MAT_DIALOG_DATA);
+  private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
+  private readonly notificationService = inject(NotificationService);
 
   changeCantonAndAddComment() {
     const hearingStatement = this.form.value as TimetableHearingStatementV2;

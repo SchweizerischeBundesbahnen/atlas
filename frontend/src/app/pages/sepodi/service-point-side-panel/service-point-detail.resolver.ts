@@ -7,10 +7,8 @@ import { ServicePointService } from '../../../api/service/sepodi/service-point.s
 
 @Injectable({ providedIn: 'root' })
 export class ServicePointDetailResolver {
-  constructor(
-    private readonly servicePointService: ServicePointService,
-    private readonly router: Router
-  ) {}
+  private readonly servicePointService = inject(ServicePointService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadServicePointVersion>> {
     const idParameter = route.paramMap.get('servicePointNumber') ?? '';

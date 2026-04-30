@@ -1,4 +1,4 @@
-import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef, inject } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
@@ -35,7 +35,7 @@ export class AtlasButtonComponent {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('rightIcon') rightIcon!: TemplateRef<any>;
 
-  constructor(private permissionService: PermissionService) {}
+  private permissionService = inject(PermissionService);
 
   isButtonVisible() {
     if (this.buttonType === AtlasButtonType.CREATE_CHECKING_PERMISSION) {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   StopPointRejectWorkflowFormGroup,
   StopPointRejectWorkflowFormGroupBuilder,
@@ -44,22 +44,21 @@ const titleTranslationKeys: Record<DialogAction, string> = {
 })
 export class StopPointRejectWorkflowDialogComponent implements OnInit {
   formGroup!: FormGroup<StopPointRejectWorkflowFormGroup>;
-  protected readonly titleTranslationKey: string;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) readonly data: StopPointRejectWorkflowDialogData,
-    private readonly stopPointWorkflowService: StopPointWorkflowService,
-    private readonly dialogRef: MatDialogRef<StopPointRejectWorkflowDialogComponent>,
-    private readonly userAdministrationService: UserAdministrationService,
-    private readonly notificationService: NotificationService,
-    private readonly detailHelperService: DetailDialogHelperService,
-    private readonly router: Router
-  ) {
-    if (data.rejectType === 'RESTART') {
+  public readonly data: StopPointRejectWorkflowDialogData = inject(MAT_DIALOG_DATA);
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  private readonly dialogRef = inject(MatDialogRef<StopPointRejectWorkflowDialogComponent>);
+  private readonly userAdministrationService = inject(UserAdministrationService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
+  private readonly router = inject(Router);
+
+  protected readonly titleTranslationKey: string = (() => {
+    if (this.data.rejectType === 'RESTART') {
       throw new Error('Restart is not supported in StopPointRejectWorkflowDialogComponent');
     }
-    this.titleTranslationKey = titleTranslationKeys[data.rejectType];
-  }
+    return titleTranslationKeys[this.data.rejectType];
+  })();
 
   ngOnInit(): void {
     this.formGroup = StopPointRejectWorkflowFormGroupBuilder.initFormGroup();

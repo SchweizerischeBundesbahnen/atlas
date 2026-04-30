@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationParamMessage } from './notification-param-message';
@@ -22,6 +22,9 @@ export class NotificationService {
     verticalPosition: 'top',
   };
   correlationId: string | null | undefined;
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  private translateService = inject(TranslateService);
   private routerEventSubscription?: Subscription;
   private readonly routerEventPipe = this.router.events.pipe(
     first(
@@ -33,12 +36,6 @@ export class NotificationService {
     }),
     takeUntilDestroyed()
   );
-
-  constructor(
-    private snackBar: MatSnackBar,
-    private translateService: TranslateService,
-    private router: Router
-  ) {}
 
   success(msg: string, param?: NotificationParamMessage) {
     this.notify(msg, 'success', param);

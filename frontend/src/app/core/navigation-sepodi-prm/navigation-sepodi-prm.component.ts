@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Country } from '../../api';
 import { Countries } from '../country/Countries';
@@ -31,11 +31,9 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
   isStopPoint!: boolean;
   isSwissServicePoint!: boolean;
 
-  constructor(
-    private router: Router,
-    private readonly stopPointService: StopPointService,
-    private readonly servicePointService: ServicePointService
-  ) {}
+  private router = inject(Router);
+  private readonly stopPointService = inject(StopPointService);
+  private readonly servicePointService = inject(ServicePointService);
 
   ngOnInit(): void {
     this.init();

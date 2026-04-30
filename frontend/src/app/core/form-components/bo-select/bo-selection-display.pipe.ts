@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { BusinessOrganisation } from '../../../api';
 import { BusinessOrganisationLanguageService } from './business-organisation-language.service';
 
@@ -7,7 +7,7 @@ import { BusinessOrganisationLanguageService } from './business-organisation-lan
   pure: false,
 })
 export class BoSelectionDisplayPipe implements PipeTransform {
-  constructor(private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService) {}
+  private readonly businessOrganisationLanguageService = inject(BusinessOrganisationLanguageService);
 
   transform(value?: BusinessOrganisation): string {
     if (!value) {

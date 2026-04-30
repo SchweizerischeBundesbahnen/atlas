@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { StopPointDetailFormGroup, StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
 import { BooleanOptionalAttributeType, MeanOfTransport, StandardAttributeType } from '../../../../../../api';
 import { TranslationSortingService } from '../../../../../../core/translation/translation-sorting.service';
@@ -39,10 +39,8 @@ export class StopPointCompleteFormComponent implements OnInit {
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   meansOfTransportToShow: MeanOfTransport[] | undefined;
 
-  constructor(
-    private readonly translationSortingService: TranslationSortingService,
-    private readonly prmVariantInfoService: PrmVariantInfoService
-  ) {}
+  private readonly translationSortingService = inject(TranslationSortingService);
+  private readonly prmVariantInfoService = inject(PrmVariantInfoService);
 
   ngOnInit(): void {
     if (this.isNew) {

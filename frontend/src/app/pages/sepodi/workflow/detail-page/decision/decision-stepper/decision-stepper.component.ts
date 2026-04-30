@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
 import { MatStep, MatStepper, MatStepperIcon } from '@angular/material/stepper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { catchError, EMPTY, Observable, of, shareReplay, take } from 'rxjs';
@@ -39,6 +39,13 @@ import { StopPointWorkflowService } from '../../../../../../api/service/workflow
 export class DecisionStepperComponent {
   @ViewChild('stepper') readonly stepper?: MatStepper;
 
+  private readonly _formBuilder = inject(FormBuilder);
+  private readonly _dialogService = inject(DialogService);
+  private readonly _dialogRef = inject(MatDialogRef<DecisionStepperComponent>);
+  private readonly _spWfService = inject(StopPointWorkflowService);
+  private readonly _workflowId: number = inject(MAT_DIALOG_DATA);
+  private readonly cd = inject(ChangeDetectorRef);
+
   isStepOneCompl$: Observable<boolean> = of();
   isStepTwoCompl$: Observable<boolean> = of();
   isStepThreeCompl$: Observable<boolean> = of();
@@ -60,15 +67,6 @@ export class DecisionStepperComponent {
 
   resendMailActive = true;
   private _verifiedExaminant?: StopPointPerson;
-
-  constructor(
-    private readonly _formBuilder: FormBuilder,
-    private readonly _dialogService: DialogService,
-    private readonly _dialogRef: MatDialogRef<DecisionStepperComponent>,
-    private readonly _spWfService: StopPointWorkflowService,
-    @Inject(MAT_DIALOG_DATA) private readonly _workflowId: number,
-    private readonly cd: ChangeDetectorRef
-  ) {}
 
   completeObtainOtpStep() {
     this.mail.markAllAsTouched();

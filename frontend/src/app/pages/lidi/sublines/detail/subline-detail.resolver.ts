@@ -7,10 +7,8 @@ import { SublineService } from '../../../../api/service/lidi/subline.service';
 
 @Injectable({ providedIn: 'root' })
 export class SublineDetailResolver {
-  constructor(
-    private readonly sublinesService: SublineService,
-    private readonly router: Router
-  ) {}
+  private readonly sublinesService = inject(SublineService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadSublineVersionV2>> {
     const idParameter = route.paramMap.get('id') || '';

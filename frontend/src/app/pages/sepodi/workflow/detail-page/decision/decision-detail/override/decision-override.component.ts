@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder } from './decision-override-form-group';
@@ -31,6 +31,12 @@ import { StopPointWorkflowService } from '../../../../../../../api/service/workf
   providers: [TranslatePipe],
 })
 export class DecisionOverrideComponent implements OnInit, OnChanges {
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly matDialogRef = inject(MatDialogRef<DecisionDetailDialogComponent>);
+  private readonly router = inject(Router);
+
   protected readonly JudgementType = JudgementType;
 
   @Input() workflowId!: number;
@@ -40,14 +46,6 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
 
   isSepodiSupervisor = false;
   formGroup!: FormGroup<DecisionOverrideFormGroup>;
-
-  constructor(
-    private stopPointWorkflowService: StopPointWorkflowService,
-    private permissionService: PermissionService,
-    private notificationService: NotificationService,
-    private matDialogRef: MatDialogRef<DecisionDetailDialogComponent>,
-    private router: Router
-  ) {}
 
   ngOnInit() {
     this.init();

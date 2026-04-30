@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { ServicePointSearchResult } from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,6 +16,8 @@ import { ServicePointInternalService } from '../../../../../api/service/sepodi/s
   providers: [TranslatePipe],
 })
 export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
+  private readonly servicePointInternalService = inject(ServicePointInternalService);
+
   @Input() valueExtraction = 'number';
   @Input() controlName!: string;
   @Input() formModus = true;
@@ -27,8 +29,6 @@ export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChan
 
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
   private formSubscription!: Subscription;
-
-  constructor(private readonly servicePointInternalService: ServicePointInternalService) {}
 
   ngOnInit(): void {
     this.init();

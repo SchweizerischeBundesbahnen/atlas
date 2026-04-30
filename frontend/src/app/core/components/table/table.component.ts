@@ -1,4 +1,4 @@
-import { Component, contentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, contentChild, EventEmitter, Input, OnInit, Output, TemplateRef, inject } from '@angular/core';
 import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
@@ -87,7 +87,7 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   customCell = contentChild(TemplateRef);
 
-  constructor(private readonly tableService: TableService) {}
+  private readonly tableService = inject(TableService);
 
   private _tableData: DATATYPE[] = [];
 

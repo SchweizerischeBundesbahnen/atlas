@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { catchError, EMPTY, Observable, retry } from 'rxjs';
 import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class ServerErrorInterceptor implements HttpInterceptor {
-  constructor(private notificationService: NotificationService) {}
+  private notificationService = inject(NotificationService);
 
   intercept(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

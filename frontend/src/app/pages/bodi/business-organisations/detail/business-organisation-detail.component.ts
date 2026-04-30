@@ -73,6 +73,14 @@ type TransportCompanyRelationTableEntry = {
 export class BusinessOrganisationDetailComponent
   implements Revokable, OnInit, DetailFormComponent, DetailWithCancelEdit
 {
+  private readonly businessOrganisationInternalService = inject(BusinessOrganisationInternalService);
+  private readonly businessOrganisationLanguageService = inject(BusinessOrganisationLanguageService);
+  private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
+  private readonly dialogService = inject(DialogService);
+  private readonly validityService = inject(ValidityService);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
+
   BUSINESS_TYPES = Object.values(BusinessType);
   versions!: BusinessOrganisationVersion[];
   selectedVersion!: BusinessOrganisationVersion;
@@ -131,16 +139,6 @@ export class BusinessOrganisationDetailComponent
       initialValue: [],
     }
   );
-
-  constructor(
-    private readonly businessOrganisationInternalService: BusinessOrganisationInternalService,
-    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    private readonly router: Router,
-    private readonly notificationService: NotificationService,
-    private readonly dialogService: DialogService,
-    private readonly validityService: ValidityService,
-    private readonly detailHelperService: DetailDialogHelperService
-  ) {}
 
   ngOnInit() {
     this.versions = this.activatedRoute.snapshot.data.businessOrganisationDetail;

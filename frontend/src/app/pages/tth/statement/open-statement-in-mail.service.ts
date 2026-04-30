@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TimetableFieldNumber, TimetableHearingStatementV2 } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
@@ -7,10 +7,8 @@ import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/t
   providedIn: 'root',
 })
 export class OpenStatementInMailService {
-  constructor(
-    private readonly translatePipe: TranslatePipe,
-    private readonly timetableFieldNumbersService: TimetableFieldNumberInternalService
-  ) {}
+  private readonly translatePipe = inject(TranslatePipe);
+  private readonly timetableFieldNumbersService = inject(TimetableFieldNumberInternalService);
 
   openAsMail(statement: TimetableHearingStatementV2, ttfnValidOn: Date | undefined) {
     if (statement?.ttfnid) {

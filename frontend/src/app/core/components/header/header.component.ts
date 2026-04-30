@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ActivatedRouteSnapshot, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
@@ -35,19 +35,16 @@ export class HeaderComponent implements OnInit {
   showLabel = true;
   environmentLabel: string = environment.label;
   environmentReleaseNotesUrl: string = environment.atlasReleaseNotes;
-  headerTitle$: Observable<string>;
+  private readonly router = inject(Router);
+  headerTitle$: Observable<string> = merge(
+    of(this.getHeaderTitleForCurrentRoute(this.router.routerState.snapshot.root)),
+    this.router.events.pipe(
+      filter((e) => e instanceof NavigationEnd),
+      map(() => this.getHeaderTitleForCurrentRoute(this.router.routerState.snapshot.root))
+    )
+  );
 
   isItWednesday = false;
-
-  constructor(private readonly router: Router) {
-    this.headerTitle$ = merge(
-      of(this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root)),
-      router.events.pipe(
-        filter((e) => e instanceof NavigationEnd),
-        map(() => this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root))
-      )
-    );
-  }
 
   ngOnInit() {
     this.isItWednesday = new Date().getDay() === 3;

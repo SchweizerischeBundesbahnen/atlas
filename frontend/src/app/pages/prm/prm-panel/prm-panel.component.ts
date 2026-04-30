@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BusinessOrganisationVersion, ReadServicePointVersion, ReadStopPointVersion } from '../../../api';
 import { DateRange } from '../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -37,6 +37,10 @@ import { SloidContainerComponent } from '../../../core/sloid-container/sloid-con
   ],
 })
 export class PrmPanelComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly businessOrganisationsService = inject(BusinessOrganisationService);
+  private readonly prmTabsService = inject(PrmTabsService);
+
   selectedServicePointVersion!: ReadServicePointVersion;
   selectedBusinessOrganisation?: BusinessOrganisationVersion;
   selectedVersion!: ReadStopPointVersion;
@@ -46,11 +50,7 @@ export class PrmPanelComponent {
 
   tabs = PRM_TABS;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly businessOrganisationsService: BusinessOrganisationService,
-    private readonly prmTabsService: PrmTabsService
-  ) {
+  constructor() {
     this.route.data
       .pipe(
         takeUntilDestroyed(),

@@ -49,8 +49,6 @@ export class TthDossierOverviewComponent {
   tableColumns: TableColumn<TthDossier>[] = [];
   tableFilterConfig!: TableFilter<unknown>[][];
 
-  STATUS_OPTIONS = Object.values(DossierStatus);
-
   sorting = 'topic,asc';
   userType!: TthApplicationUserType;
 

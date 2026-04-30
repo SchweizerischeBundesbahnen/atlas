@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -34,7 +34,6 @@ import { DetailPageContainerComponent } from '../../../../core/components/detail
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
-
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import { MatLabel } from '@angular/material/form-field';
@@ -103,19 +102,17 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   boSboidRestriction: string[] = [];
 
-  constructor(
-    private readonly router: Router,
-    private readonly sublineService: SublineService,
-    private readonly sublineInternalService: SublineInternalService,
-    private readonly notificationService: NotificationService,
-    private readonly lineService: LineService,
-    private readonly lineServiceInternal: LineInternalService,
-    private readonly permissionService: PermissionService,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly validityService: ValidityService,
-    private readonly detailHelperService: DetailDialogHelperService,
-    private readonly dialogService: DialogService
-  ) {}
+  private readonly router = inject(Router);
+  private readonly sublineService = inject(SublineService);
+  private readonly sublineInternalService = inject(SublineInternalService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly lineService = inject(LineService);
+  private readonly lineServiceInternal = inject(LineInternalService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly validityService = inject(ValidityService);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
+  private readonly dialogService = inject(DialogService);
 
   ngOnInit() {
     this.versions = this.activatedRoute.snapshot.data.sublineDetail;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Validity } from '../../model/validity';
 import { FormGroup } from '@angular/forms';
 import { of, take } from 'rxjs';
@@ -8,7 +8,7 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 export class ValidityService {
   validity!: Validity;
 
-  constructor(private dialogService: DialogService) {}
+  private dialogService = inject(DialogService);
 
   initValidity(form: FormGroup) {
     this.validity = {

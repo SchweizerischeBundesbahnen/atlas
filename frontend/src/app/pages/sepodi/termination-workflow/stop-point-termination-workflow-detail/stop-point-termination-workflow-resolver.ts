@@ -15,11 +15,9 @@ export interface StopPointTerminationWorkflowDetailData {
 
 @Injectable({ providedIn: 'root' })
 export class StopPointTerminationWorkflowResolver {
-  constructor(
-    private readonly stopPointTerminationWorkflowService: StopPointTerminationWorkflowService,
-    private readonly servicePointService: ServicePointService,
-    private readonly router: Router
-  ) {}
+  private readonly stopPointTerminationWorkflowService = inject(StopPointTerminationWorkflowService);
+  private readonly servicePointService = inject(ServicePointService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<StopPointTerminationWorkflowDetailData | undefined> {
     const idParameter = parseInt(route.paramMap.get('id') ?? '0');

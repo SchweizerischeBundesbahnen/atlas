@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Company } from '../../../../api';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CompanyFormGroup } from './company-form-group';
@@ -30,11 +30,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class CompanyDetailComponent implements OnInit {
+  private readonly activatedRoute = inject(ActivatedRoute);
+
   company!: Company;
-
   form!: FormGroup<CompanyFormGroup>;
-
-  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.company = this.activatedRoute.snapshot.data.companyDetail;

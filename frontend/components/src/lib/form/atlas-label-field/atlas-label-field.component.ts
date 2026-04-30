@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgClass } from '@angular/common';
 import { FieldExample } from '../../../../../src/app/core/form-components/text-field/field-example';
@@ -12,13 +12,13 @@ import { InfoIconComponent } from '../info-icon/info-icon.component';
   providers: [TranslatePipe],
 })
 export class AtlasLabelFieldComponent {
+  private readonly translatePipe = inject(TranslatePipe);
+
   @Input() required!: boolean;
   @Input() fieldLabel!: string;
   @Input() infoIconTitle!: string;
   @Input() infoIconLink!: string;
   @Input() fieldExamples!: Array<FieldExample>;
-
-  constructor(private readonly translatePipe: TranslatePipe) {}
 
   translate(fieldExample: FieldExample): string {
     if (fieldExample.label && !fieldExample.arg) {

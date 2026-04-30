@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DetailDialogHelperService } from '../../../../../../core/detail/detail-dialog-helper.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -22,15 +22,12 @@ import { StartTerminationStopPointAddWorkflow } from '../../../../../../api/mode
   imports: [DialogCloseComponent, DialogContentComponent, DialogFooterComponent, TranslatePipe, CommentComponent],
 })
 export class StopPointTerminationDialogComponent implements OnInit {
-  constructor(
-    private readonly dialogRef: MatDialogRef<StopPointTerminationDialogComponent, boolean>,
-    @Inject(MAT_DIALOG_DATA)
-    public readonly data: StopPointTerminationDialogData,
-    private readonly detailHelperService: DetailDialogHelperService,
-    private readonly stopPointTerminationWorkflowService: StopPointTerminationWorkflowService,
-    private readonly notificationService: NotificationService,
-    private readonly userService: UserService
-  ) {}
+  protected readonly data: StopPointTerminationDialogData = inject(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<StopPointTerminationDialogComponent, boolean>);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
+  private readonly stopPointTerminationWorkflowService = inject(StopPointTerminationWorkflowService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly userService = inject(UserService);
 
   form!: FormGroup<StartTerminationStopPointAddWorkflowFormGroup>;
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { StopPointDetailFormGroup } from '../stop-point-detail-form-group';
 import { MeanOfTransport } from '../../../../../../api';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
@@ -16,12 +16,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class StopPointReducedFormComponent implements OnInit {
+  private readonly prmVariantInfoService = inject(PrmVariantInfoService);
+
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
   @Input() selectedMeansOfTransport!: MeanOfTransport[];
   @Input() isNew = false;
-  meansOfTransportToShow: MeanOfTransport[] | undefined;
 
-  constructor(private readonly prmVariantInfoService: PrmVariantInfoService) {}
+  meansOfTransportToShow: MeanOfTransport[] | undefined;
 
   ngOnInit(): void {
     if (this.isNew) {

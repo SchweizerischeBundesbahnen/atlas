@@ -1,8 +1,8 @@
-import { AfterViewInit, Directive, ElementRef, Self } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core';
 
 @Directive({ selector: '[atlasScrollToTop]' })
 export class ScrollToTopDirective implements AfterViewInit {
-  constructor(@Self() private elementRef: ElementRef<HTMLElement>) {}
+  private readonly elementRef = inject(ElementRef, { self: true });
 
   ngAfterViewInit() {
     const scrollbarElement = this.elementRef.nativeElement.closest('#scrollbar-content-container');

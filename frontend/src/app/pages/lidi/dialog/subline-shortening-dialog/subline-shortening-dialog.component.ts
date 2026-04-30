@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { AffectedSublinesModel } from '../../../../api';
 import { Router } from '@angular/router';
@@ -76,20 +76,18 @@ export class SublineShorteningDialogComponent {
     return this.data.affectedSublines.notAllowedSublines;
   }
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      isAllowedToShort: boolean;
-      affectedSublines: AffectedSublinesModel;
-      validFrom: Date;
-      validTo: Date;
-      isValidFromShortened: boolean;
-      isValidToShortened: boolean;
-    },
-    private router: Router,
-    private datePipe: DatePipe,
-    private translateService: TranslateService
-  ) {}
+  public data: {
+    isAllowedToShort: boolean;
+    affectedSublines: AffectedSublinesModel;
+    validFrom: Date;
+    validTo: Date;
+    isValidFromShortened: boolean;
+    isValidToShortened: boolean;
+  } = inject(MAT_DIALOG_DATA);
+
+  private readonly router = inject(Router);
+  private readonly datePipe = inject(DatePipe);
+  private readonly translateService = inject(TranslateService);
 
   openNewTabOfSubline(slnid: string) {
     const url = this.router.serializeUrl(this.router.createUrlTree([Pages.LIDI.path, Pages.SUBLINES.path, slnid]));

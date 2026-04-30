@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,6 @@ import { DetailPageContentComponent } from '../../../../core/components/detail-p
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
-
 import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 
@@ -39,15 +38,13 @@ export interface FotCommentFormGroup {
   ],
 })
 export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
-  form!: FormGroup<FotCommentFormGroup>;
+  private readonly servicePointService = inject(ServicePointService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly dialogService = inject(DialogService);
+  private readonly notificationService = inject(NotificationService);
 
-  constructor(
-    private readonly servicePointService: ServicePointService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly dialogService: DialogService,
-    private readonly notificationService: NotificationService
-  ) {}
+  form!: FormGroup<FotCommentFormGroup>;
 
   ngOnInit() {
     this.initFormGroup();

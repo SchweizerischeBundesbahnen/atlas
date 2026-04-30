@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineWorkflowDialogData } from './line-workflow-dialog-data';
 import { NotificationService } from '../../notification/notification.service';
@@ -75,14 +75,12 @@ export class LineWorkflowDialogComponent implements OnInit {
   workflowId?: number;
   workflowStatusTranslated$?: Observable<string>;
 
-  constructor(
-    public readonly dialogRef: MatDialogRef<LineWorkflowDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public readonly data: LineWorkflowDialogData,
-    private readonly notificationService: NotificationService,
-    private readonly lineWorkflowService: LineWorkflowService,
-    private readonly userAdministrationService: UserAdministrationService,
-    private readonly translateService: TranslateService
-  ) {}
+  public readonly dialogRef: MatDialogRef<LineWorkflowDialogComponent> = inject(MatDialogRef as any);
+  public readonly data: LineWorkflowDialogData = inject(MAT_DIALOG_DATA);
+  private readonly notificationService = inject(NotificationService);
+  private readonly lineWorkflowService = inject(LineWorkflowService);
+  private readonly userAdministrationService = inject(UserAdministrationService);
+  private readonly translateService = inject(TranslateService);
 
   ngOnInit() {
     this.initWorkflowForm();

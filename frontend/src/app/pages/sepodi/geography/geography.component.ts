@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -45,6 +46,11 @@ export const WGS84_MAX_DIGITS = 11;
   ],
 })
 export class GeographyComponent implements OnDestroy, OnChanges {
+  private readonly coordinateTransformationService = inject(CoordinateTransformationService);
+  private readonly mapService = inject(MapService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly locationGeoInternalService = inject(LocationGeoInternalService);
+
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
 
@@ -92,12 +98,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   private formDestroy$ = new Subject<void>();
 
-  constructor(
-    private coordinateTransformationService: CoordinateTransformationService,
-    private mapService: MapService,
-    private changeDetector: ChangeDetectorRef,
-    private readonly locationGeoInternalService: LocationGeoInternalService
-  ) {
+  constructor() {
     this.mapService.clickedGeographyCoordinates.pipe(takeUntilDestroyed()).subscribe((coordinatePairWGS84) => {
       this.onMapClick({
         north: coordinatePairWGS84.lat,

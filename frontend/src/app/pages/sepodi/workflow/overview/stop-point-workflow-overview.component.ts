@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TableFilterChip } from '../../../../core/components/table-filter/config/table-filter-chip';
 import { TableFilterSearchSelect } from '../../../../core/components/table-filter/config/table-filter-search-select';
 import { ApplicationType, BusinessOrganisation, ReadStopPointWorkflow, WorkflowStatus } from '../../../../api';
@@ -113,13 +113,11 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
   stopPointWorkflows: ReadStopPointWorkflow[] = [];
   totalCount$ = 0;
 
-  constructor(
-    private stopPointWorkflowService: StopPointWorkflowService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private tableService: TableService,
-    private permissionService: PermissionService
-  ) {}
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly tableService = inject(TableService);
+  private readonly permissionService = inject(PermissionService);
 
   ngOnInit() {
     if (this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi)) {

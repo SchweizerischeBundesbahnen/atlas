@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { TableService } from '../../../../core/components/table/table.service';
-
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -21,6 +20,11 @@ import { TrafficPointElementInternalService } from '../../../../api/service/sepo
   imports: [AtlasButtonComponent, NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, TranslatePipe],
 })
 export class TrafficPointElementsTableComponent implements OnInit {
+  private readonly trafficPointElementInternalService = inject(TrafficPointElementInternalService);
+  private readonly tableService = inject(TableService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   tableColumnsPlatforms: TableColumn<ReadTrafficPointElementVersion>[] = [
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
@@ -66,13 +70,6 @@ export class TrafficPointElementsTableComponent implements OnInit {
   tableFilterConfig!: TableFilter<unknown>[][];
   servicePointVersion!: ReadServicePointVersion;
   servicePointBusinessOrganisations: string[] = [];
-
-  constructor(
-    private readonly trafficPointElementInternalService: TrafficPointElementInternalService,
-    private readonly tableService: TableService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((next) => {

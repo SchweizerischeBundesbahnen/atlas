@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { ClientCredential } from '../../../../api';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -21,11 +21,9 @@ export class UserAdministrationClientOverviewComponent implements OnDestroy {
 
   private credentialsSubscription?: Subscription;
 
-  constructor(
-    private clientCredentialAdministrationService: ClientCredentialAdministrationService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  private readonly clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   getOverview(pagination: TablePagination) {
     this.credentialsSubscription = this.clientCredentialAdministrationService

@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { inject, Injectable, NgZone } from '@angular/core';
 import { fromEvent, merge, Subscription, throttleTime } from 'rxjs';
 
 @Injectable({
@@ -18,21 +18,19 @@ export class KeepaliveService {
     'touchmove',
     'scroll',
   ];
-  private readonly interruptionEventPipe;
+  private readonly zone = inject(NgZone);
+  private readonly interruptionEventPipe = merge(
+    ...this.interruptionEventNames.map((eventName) =>
+      fromEvent(document, eventName, {
+        passive: true,
+      })
+    )
+  ).pipe(throttleTime(this.EVENT_THROTTLE_TIME_MS));
 
   private interruptions: Event[] = [];
   private eventsSubscription?: Subscription;
   private timeoutId?: number;
   private intervalId?: number;
-
-  constructor(private readonly zone: NgZone) {
-    const fromEvents = this.interruptionEventNames.map((eventName) =>
-      fromEvent(document, eventName, {
-        passive: true,
-      })
-    );
-    this.interruptionEventPipe = merge(...fromEvents).pipe(throttleTime(this.EVENT_THROTTLE_TIME_MS));
-  }
 
   startWatching(timeoutFunc: () => void): void {
     this.createIdleInterval(timeoutFunc);
