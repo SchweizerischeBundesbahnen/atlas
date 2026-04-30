@@ -28,6 +28,15 @@ public interface UserAdministrationApiV1 {
 
   String BASE_PATH = "v1/users";
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
+  @GetMapping(BASE_PATH + "/current")
+  UserModel getCurrentUser();
+
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
+  @GetMapping(BASE_PATH + "/{userId}/displayname")
+  @Operation(description = "Retrieve Users DisplayName for a given user")
+  UserDisplayNameModel getUserDisplayName(@PathVariable String userId);
+
   @AuthorizedOnly
   @GetMapping(BASE_PATH)
   @PageableAsQueryParam
@@ -46,15 +55,6 @@ public interface UserAdministrationApiV1 {
   @GetMapping(BASE_PATH + "/mail")
   @Operation(description = "Retrieve User Information for a given user by mail")
   UserModel getUserByMail(@RequestParam String mail);
-
-  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
-  @GetMapping(BASE_PATH + "/{userId}/displayname")
-  @Operation(description = "Retrieve Users DisplayName for a given user")
-  UserDisplayNameModel getUserDisplayName(@PathVariable String userId);
-
-  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
-  @GetMapping(BASE_PATH + "/current")
-  UserModel getCurrentUser();
 
   @AdminOnly
   @PostMapping(BASE_PATH)

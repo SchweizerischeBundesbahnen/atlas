@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class UserAdministrationControllerApiTest extends BaseControllerApiTest {
@@ -92,6 +93,65 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   }
 
   @Nested
+  @DisplayName("GET v1/users/current")
+  class GetCurrentUser {
+
+    @Test
+    void shouldGetCurrentUserInformationAsAdmin() throws Exception {
+      mvc.perform(MockMvcRequestBuilders.get("/v1/users/current")).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldGetCurrentUserInformationAsStandardUser() throws Exception {
+      mvc.perform(MockMvcRequestBuilders.get("/v1/users/current")).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldGetCurrentUserInformationUnauthorized() throws Exception {
+      mvc.perform(MockMvcRequestBuilders.get("/v1/users/current")).andExpect(status().isOk());
+    }
+  }
+
+  @Nested
+  @DisplayName("GET v1/users/{userId}/displayname")
+  class GetUserDisplayName {
+
+    @Test
+    void shouldGetUserDisplayNameForExistingClientCredential() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users/client-id/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").value("PostAuto"));
+    }
+
+    @Test
+    void shouldGetUserDisplayNameNotExistingClientCredential() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").doesNotExist());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldAllowDisplayNameQueryForUnauthorizedAndMaskResponse() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/u123456/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").value("*****"));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldAllowDisplayNameQueryForStandardUserAndNotMaskResponse() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/u123456/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").value("Lastname Firstname"));
+    }
+  }
+
+  @Nested
   @DisplayName("GET v1/users")
   class GetUsersOverview {
 
@@ -121,6 +181,13 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
           .andExpect(jsonPath("$.objects[0].sbbUserId").value("u123456"))
           .andExpect(jsonPath("$.objects[0].permissions", hasSize(1)));
     }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotGetUsersAsUnauthorized() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users"))
+          .andExpect(status().isForbidden());
+    }
   }
 
   @Nested
@@ -137,6 +204,13 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
           .andExpect(jsonPath("$.permissions").value(hasSize(1)))
           .andExpect(jsonPath("$.permissions[0].role").value("SUPERVISOR"))
           .andExpect(jsonPath("$.permissions[0].application").value("SEPODI"));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotGetUserAsUnauthorized() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/u123456"))
+          .andExpect(status().isForbidden());
     }
   }
 
@@ -173,59 +247,18 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   }
 
   @Nested
-  @DisplayName("GET v1/users/{userId}/displayname")
-  class GetUserDisplayName {
-
-    @Test
-    void shouldGetUserDisplayNameExisting() throws Exception {
-      // when & then
-      mvc.perform(get("/v1/users/client-id/displayname"))
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$.displayName").value("PostAuto"));
-    }
-
-    @Test
-    void shouldGetUserDisplayNameNotExisting() throws Exception {
-      // when & then
-      mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$.displayName").doesNotExist());
-    }
-
-    @Test
-    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
-    void shouldAllowDisplayNameQueryForUnauthorizedInternalRoleAndMaskResponse() throws Exception {
-      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/u123456/displayname"))
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$.displayName").value("*****"));
-    }
-
-    @Test
-    @WithMockJwtAuthentication(role = MockRole.STANDARD)
-    void shouldAllowDisplayNameQueryForAuthorizedInternalRoleAndNotMaskResponse() throws Exception {
-      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/u123456/displayname"))
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$.displayName").value(not("*****")));
-    }
-  }
-
-  @Nested
-  @DisplayName("GET v1/users/current")
-  class GetCurrentUser {
-
-    @Test
-    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
-    void shouldGetCurrentUserInformationUnauthorized() throws Exception {
-      mvc.perform(MockMvcRequestBuilders.get("/v1/users/current")).andExpect(status().isOk());
-    }
-  }
-
-  @Nested
   @DisplayName("POST v1/users")
   class CreateUserPermission {
 
     @Test
     void shouldCreateUserPermissionWithAllReaderPermissions() throws Exception {
+      createUserPermission()
+          .andExpect(status().isCreated())
+          .andExpect(jsonPath("$." + Fields.sbbUserId).value("u234565"))
+          .andExpect(jsonPath("$." + Fields.mail).value("u234565@sbb.ch"));
+    }
+
+    private ResultActions createUserPermission() throws Exception {
       UsersRequestBuilder users = buildGraphApiUserResult("u234565");
       when(graphClient.users()).thenReturn(users);
 
@@ -235,13 +268,22 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
           .build();
 
       // when & then
-      mvc.perform(post("/v1/users")
-              .content(mapper.writeValueAsString(model)).contentType(MediaType.APPLICATION_JSON))
-          .andExpect(status().isCreated())
-          .andExpect(jsonPath("$." + Fields.sbbUserId).value("u234565"))
-          .andExpect(jsonPath("$." + Fields.mail).value("u234565@sbb.ch"));
+      return mvc.perform(post("/v1/users")
+          .content(mapper.writeValueAsString(model))
+          .contentType(MediaType.APPLICATION_JSON));
     }
 
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldNotCreateUserPermissionAsStandardUser() throws Exception {
+      createUserPermission().andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotCreateUserPermissionAsUnauthorized() throws Exception {
+      createUserPermission().andExpect(status().isForbidden());
+    }
   }
 
   @Nested
@@ -250,6 +292,14 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
     @Test
     void shouldUpdateUserPermission() throws Exception {
+      updateUserPermission()
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.lastName").value("Lastname"))
+          .andExpect(jsonPath("$.permissions").value(hasSize(2)));
+    }
+
+    private ResultActions updateUserPermission() throws Exception {
       // given
       PermissionModel permission = PermissionModel.builder()
           .application(ApplicationType.TTFN)
@@ -258,12 +308,20 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
           .build();
 
       // when & then
-      mvc.perform(put("/v1/users/u123456/TTFN").contentType(contentType)
-              .content(mapper.writeValueAsString(permission)))
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
-          .andExpect(jsonPath("$.lastName").value("Lastname"))
-          .andExpect(jsonPath("$.permissions").value(hasSize(2)));
+      return mvc.perform(put("/v1/users/u123456/TTFN").contentType(contentType)
+          .content(mapper.writeValueAsString(permission)));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldNotUpdateUserPermissionAsStandardUser() throws Exception {
+      updateUserPermission().andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotUpdateUserPermissionAsUnauthorized() throws Exception {
+      updateUserPermission().andExpect(status().isForbidden());
     }
   }
 }

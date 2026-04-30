@@ -84,9 +84,15 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
 
     @Test
     @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
-    void shouldNotAllowSearchToUnauthorizedInternal() throws Exception {
+    void shouldNotAllowSearchToUnauthorized() throws Exception {
       mvc.perform(get("/v1/search").param("searchQuery", "testQuery"))
           .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldNotAllowSearchToStandardUser() throws Exception {
+      mvc.perform(get("/v1/search").param("searchQuery", "testQuery")).andExpect(status().isForbidden());
     }
   }
 
@@ -107,13 +113,18 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
     @Test
     @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
     void shouldNotGetUsersViaSearchInAtlasAsUnauthorized() throws Exception {
-      userPermissionRepository.save(UserPermission.builder()
-          .role(ApplicationRole.SUPERVISOR)
-          .application(ApplicationType.SEPODI)
-          .sbbUserId("user1").build());
-
-      mvc.perform(MockMvcRequestBuilders.get("/v1/search-in-atlas?searchQuery=user1&applicationType=SEPODI"))
+      mvc.perform(MockMvcRequestBuilders.get("/v1/search-in-atlas?searchQuery=u123456&applicationType=SEPODI"))
           .andExpect(status().isForbidden());
+    }
+
+    /**
+     * BulkImport by writer with special bulk import rights
+     */
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldGetUsersViaSearchInAtlasAsStandardUser() throws Exception {
+      mvc.perform(MockMvcRequestBuilders.get("/v1/search-in-atlas?searchQuery=u123456&applicationType=SEPODI"))
+          .andExpect(status().isOk());
     }
   }
 
@@ -140,6 +151,22 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.length()").value(1));
 
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotSearchBoUsersAsUnauthorized() throws Exception {
+      mvc.perform(get("/v1/search-bo-dossier-answering-users").param("searchQuery", "u123456@sbb.ch"))
+          .andExpect(status().isForbidden());
+    }
+
+    /**
+     * Dossier canton writer looks for bo contact
+     */
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldGetUsersViaSearchInAtlasAsStandardUser() throws Exception {
+      mvc.perform(get("/v1/search-bo-dossier-answering-users").param("searchQuery", "u123456@sbb.ch")).andExpect(status().isOk());
     }
   }
 }
