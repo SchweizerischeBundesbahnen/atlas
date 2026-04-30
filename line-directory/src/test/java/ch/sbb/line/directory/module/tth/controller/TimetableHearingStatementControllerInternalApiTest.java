@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -820,30 +819,6 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
       mvc.perform(get("/internal/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
           .andExpect(status().isNotFound());
-    }
-  }
-
-  @Nested
-  @DisplayName("DELETE internal/timetable-hearing/statements/{id}/documents/{filename}")
-  class DeleteStatementDocument {
-
-    @Test
-    void shouldDeleteStatementDocumentByDocumentId() throws Exception {
-      TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
-          TimetableHearingStatementModelV2.builder()
-              .timetableYear(YEAR)
-              .swissCanton(SwissCanton.BERN)
-              .statementSender(TimetableHearingStatementSenderModelV2.builder()
-                  .emails(Set.of("fabienne.mueller@sbb.ch"))
-                  .build())
-              .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-              .build(),
-          List.of(MULTIPART_FILES.getFirst()));
-
-      mvc.perform(delete(
-              "/internal/timetable-hearing/statements/" + statement.getId() + "/documents/" + MULTIPART_FILES.getFirst()
-                  .getOriginalFilename()))
-          .andExpect(status().isOk());
     }
   }
 

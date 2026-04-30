@@ -126,12 +126,6 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
   }
 
   @Override
-  public void deleteStatementDocument(Long id, String filename) {
-    timetableHearingStatementService.deleteStatementDocument(
-        timetableHearingStatementService.getTimetableHearingStatementById(id), filename);
-  }
-
-  @Override
   public TimetableHearingStatementModelV2 createStatement(TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(statement.getTimetableYear());

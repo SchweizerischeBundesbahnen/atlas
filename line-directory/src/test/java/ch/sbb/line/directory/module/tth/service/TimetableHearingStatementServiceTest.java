@@ -2,7 +2,6 @@ package ch.sbb.line.directory.module.tth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
@@ -15,7 +14,6 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
@@ -153,67 +151,6 @@ class TimetableHearingStatementServiceTest {
         originalFilename);
     //then
     assertThat(statementDocument.getName()).contains("dummy.pdf");
-  }
-
-  @Test
-  void shouldDeleteDocumentFromHearingStatement() {
-    //given
-    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
-    TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
-
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
-        timetableHearingStatementModel, Collections.emptyList());
-    TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapperV2.toEntity(createdStatement);
-
-    TimetableHearingStatement timetableHearingStatement = timetableHearingStatementService.getTimetableHearingStatementById(
-        createdStatement.getId());
-
-    //when
-    timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
-        PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename());
-    //then
-    assertThatThrownBy(() -> timetableHearingStatementService.getStatementDocument(timetableHearingStatement,
-        PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename())).isInstanceOf(
-        FileNotFoundException.class);
-  }
-
-  @Test
-  void shouldThrowIllegalArgumentExceptionWhenDeletingDocument() {
-    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
-
-    assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(new TimetableHearingStatement(),
-        PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename())).isInstanceOf(
-        IllegalArgumentException.class);
-  }
-
-  @Test
-  void shouldThrowIllegalArgumentExceptionWhenDeletingEmptyStringDocumentName() {
-    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
-    TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
-
-    List<MultipartFile> documents = new ArrayList<>();
-    documents.add(PdfFiles.MULTIPART_FILES.getFirst());
-    documents.add(PdfFiles.MULTIPART_FILES.get(1));
-
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
-        timetableHearingStatementModel, documents);
-    TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapperV2.toEntity(createdStatement);
-
-    assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, "")).isInstanceOf(
-        IllegalArgumentException.class);
-  }
-
-  @Test
-  void shouldNotDoAnythingIfDeleteUnknownDocument() {
-    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
-    TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
-
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
-        timetableHearingStatementModel, Collections.emptyList());
-    TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapperV2.toEntity(createdStatement);
-
-    assertDoesNotThrow(() -> timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
-        PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename()));
   }
 
   @Test

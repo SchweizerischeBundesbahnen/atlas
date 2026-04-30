@@ -36,7 +36,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -185,23 +184,6 @@ public class TimetableHearingStatementService {
     log.info("Starting PDF filetype validation.");
     statementDocumentFilesValidationService.validateAllFilesArePdfs(files);
     log.info("Concluded files validation.");
-  }
-
-  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).TIMETABLE_HEARING, #timetableHearingStatement)")
-  public void deleteStatementDocument(TimetableHearingStatement timetableHearingStatement, String documentFilename) {
-    if (timetableHearingStatement.getId() == null || StringUtils.isBlank(documentFilename)) {
-      throw new IllegalArgumentException();
-    }
-    if (timetableHearingStatement.checkIfStatementDocumentExists(documentFilename)) {
-      removeDocumentFromS3andDB(documentFilename, timetableHearingStatement);
-    }
-  }
-
-  private void removeDocumentFromS3andDB(String documentFilename, TimetableHearingStatement timetableHearingStatement) {
-    timetableHearingStatement.removeDocument(documentFilename);
-    timetableHearingStatementRepository.save(timetableHearingStatement);
-    pdfsUploadAmazonService.deletePdfFile(timetableHearingStatement.getId().toString(), documentFilename);
   }
 
   private List<File> getFilesFromMultipartFiles(List<MultipartFile> documents, Set<StatementDocument> alreadySavedDocuments) {
