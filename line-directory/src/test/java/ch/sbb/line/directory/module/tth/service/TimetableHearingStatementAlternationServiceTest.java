@@ -19,7 +19,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @IntegrationTest
 class TimetableHearingStatementAlternationServiceTest {
@@ -30,7 +32,7 @@ class TimetableHearingStatementAlternationServiceTest {
           .canton(SwissCanton.BERN)
           .timetableHearingYear(YEAR)
           .build();
-  private static final Pageable PAGEABLE = Pageable.ofSize(1);
+  private static final Pageable PAGEABLE = PageRequest.of(0, 1, Sort.by("id"));
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
