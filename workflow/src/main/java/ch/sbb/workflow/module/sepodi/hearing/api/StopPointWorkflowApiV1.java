@@ -1,5 +1,8 @@
 package ch.sbb.workflow.module.sepodi.hearing.api;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.ReadStopPointWorkflowModel;
@@ -29,9 +32,11 @@ public interface StopPointWorkflowApiV1 {
 
   String BASE_PATH = "/v1/stop-point/workflows";
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
   @GetMapping("{id}")
   ReadStopPointWorkflowModel getStopPointWorkflow(@PathVariable Long id);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
   @GetMapping
   @PageableAsQueryParam
   Container<ReadStopPointWorkflowModel> getStopPointWorkflows(
@@ -39,6 +44,7 @@ public interface StopPointWorkflowApiV1 {
           StopPointWorkflow.Fields.versionValidFrom}) Pageable pageable,
       @ParameterObject StopPointWorkflowRequestParams stopPointWorkflowRequestParams);
 
+  @AuthorizedOnly
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {

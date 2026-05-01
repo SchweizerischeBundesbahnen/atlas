@@ -24,7 +24,6 @@ import ch.sbb.workflow.module.sepodi.hearing.service.StopPointWorkflowService;
 import ch.sbb.workflow.module.sepodi.hearing.service.StopPointWorkflowTransitionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -42,32 +41,21 @@ public class StopPointWorkflowApiInternalController implements StopPointWorkflow
     return service.getExaminantsByServicePointVersionId(servicePointVersionId);
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel startStopPointWorkflow(Long id) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.startWorkflow(id));
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.rejectWorkflow(id, workflowModel));
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(service.editWorkflow(id, workflowModel));
   }
 
-  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService."
-      + "isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public void addExaminantsToStopPointWorkflow(Long id, AddExaminantsModel addExaminantsModel) {
     service.addExaminants(id, addExaminantsModel);
@@ -99,26 +87,17 @@ public class StopPointWorkflowApiInternalController implements StopPointWorkflow
     workflowTransitionService.progressWorkflowWithNewDecision(id);
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
     service.overrideVoteWorkflow(id, personId, decisionModel);
     workflowTransitionService.progressWorkflowWithNewDecision(id);
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel restartStopPointWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.restartWorkflow(id, restartWorkflowModel));
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel cancelStopPointWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.cancelWorkflow(id, stopPointCancelWorkflowModel));
