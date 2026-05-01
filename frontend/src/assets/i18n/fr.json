@@ -1167,7 +1167,8 @@
       "DISSOLVE_DOSSIER": "Fermer le dossier",
       "TOPIC": "Thème",
       "ADD_TO_DOSSIER_INFO": "Après l’ajout, il n’est plus possible d’éditer individuellement. Les modifications concernent toujours toutes les prises de position d’un dossier.",
-      "ID_AND_TOPIC": "Dossier-ID et thème"
+      "ID_AND_TOPIC": "Dossier-ID et thème",
+      "DATA_PROTECTION_NOT_COMPLETED": "Des prises de position sans vérification de la protection des données se trouvent dans ce dossier. L’entreprise de transport ne peut ni lire le texte d’accompagnement ni consulter d’éventuelles pièces jointes PDF pour les prises de position concernées. Voulez-vous quand même continuer?"
     },
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Clôture de l'année horaire",

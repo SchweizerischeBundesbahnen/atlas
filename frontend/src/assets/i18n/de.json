@@ -1167,7 +1167,8 @@
       "DISSOLVE_DOSSIER": "Dossier auflösen",
       "TOPIC": "Thema",
       "ADD_TO_DOSSIER_INFO": "Nach dem Hinzufügen, ist individuelles Editieren nicht mehr möglich. Änderungen betreffen immer alle Stellungnahmen in einem Dossier.",
-      "ID_AND_TOPIC": "Dossier-ID und Thema"
+      "ID_AND_TOPIC": "Dossier-ID und Thema",
+      "DATA_PROTECTION_NOT_COMPLETED": "Es befinden sich Stellungnahmen ohne Datenschutzprüfung in diesem Dossier. Das Transportunternehmen kann bei den betreffenden Stellungnahmen weder den Begleittext lesen noch allfällige PDF-Anhänge sehen. Möchten Sie trotzdem fortfahren?"
     },
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Fahrplanjahr schliessen",

@@ -5,7 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
 import { of } from 'rxjs';
-import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import {
+  TimetableHearingStatementInternalService
+} from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TthDossier } from '../../../../../api/model/tthDossier';
 import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
@@ -14,6 +16,7 @@ import { DossierStatus } from '../../../../../api/model/dossierStatus';
 import { FormatPipe } from '../../../../../core/components/table/pipe/format.pipe';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { OpenCantonDossierInMailService } from './open-canton-dossier-in-mail.service';
+import { mock, mockClear } from 'vitest-mock-extended';
 
 const statement: TimetableHearingStatementV2 = {
   id: 456,
@@ -54,12 +57,10 @@ const notificationService: Mocked<Pick<NotificationService, 'success'>> = {
 const openDossierInMailService: Mocked<Pick<OpenCantonDossierInMailService, 'openDossierInMailClient'>> = {
   openDossierInMailClient: vi.fn(),
 };
-const dialogService: Mocked<
-  Pick<DialogService, 'openDialogDataWithConfirmationResult' | 'openDialogDataWithCustomResult'>
-> = {
-  openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
-  openDialogDataWithCustomResult: vi.fn().mockReturnValue(of([1, 2])),
-};
+const dialogService = mock<DialogService>();
+dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
+dialogService.openDialogDataWithCustomResult.mockReturnValue(of([1, 2]));
+
 let router: Mocked<Pick<Router, 'navigate'>>;
 
 describe('DossierDetailComponent', () => {
@@ -117,6 +118,8 @@ describe('DossierDetailComponent', () => {
         },
       };
       await setupTestBed(activatedRoute);
+
+      mockClear(dialogService);
     });
 
     it('should create', () => {
