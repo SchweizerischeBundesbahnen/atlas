@@ -36,17 +36,11 @@ class TimetableHearingYearControllerInternalApiTest extends BaseControllerApiTes
       .hearingTo(LocalDate.of(2021, 2, 1))
       .build();
 
-  private final TimetableHearingYearRepository timetableHearingYearRepository;
-  private final TimetableHearingYearControllerInternal timetableHearingYearController;
+  @Autowired
+  private TimetableHearingYearRepository timetableHearingYearRepository;
+
   private TimetableHearingYear timetableHearingYear;
 
-  @Autowired
-  TimetableHearingYearControllerInternalApiTest(
-      TimetableHearingYearRepository timetableHearingYearRepository,
-      TimetableHearingYearControllerInternal timetableHearingYearController) {
-    this.timetableHearingYearRepository = timetableHearingYearRepository;
-    this.timetableHearingYearController = timetableHearingYearController;
-  }
 
   @BeforeEach
   void setUp() {

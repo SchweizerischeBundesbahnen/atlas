@@ -2,6 +2,7 @@ package ch.sbb.line.directory.module.tth.controller;
 
 import static ch.sbb.line.directory.helper.PdfFiles.MULTIPART_FILES;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -59,6 +60,7 @@ import ch.sbb.line.directory.module.tth.entity.TimetableHearingYear;
 import ch.sbb.line.directory.module.tth.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.module.tth.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.module.tth.mapper.ResponsibleTransportCompanyMapper;
+import ch.sbb.line.directory.module.tth.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.module.tth.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.shared.transportcompany.entity.SharedTransportCompany;
@@ -81,6 +83,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -904,6 +907,15 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     @Test
     void shouldCreateStatementWithTwoDocuments() throws Exception {
+      createStatementWithTwoDocuments()
+          .andExpect(status().isCreated())
+          .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+          .andExpect(jsonPath("$.creationDate", notNullValue()))
+          .andExpect(jsonPath("$.editionDate", notNullValue()))
+          .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(2)));
+    }
+
+    private ResultActions createStatementWithTwoDocuments() throws Exception {
       TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
           .timetableYear(YEAR)
           .swissCanton(SwissCanton.BERN)
@@ -916,18 +928,43 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
       MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE,
           mapper.writeValueAsString(statement));
 
-      mvc.perform(multipart(HttpMethod.POST, "/internal/timetable-hearing/statements")
-              .file(statementJson)
-              .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
-                  MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
-              .file(
-                  new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
-                      MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
-          .andExpect(status().isCreated())
-          .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-          .andExpect(jsonPath("$.creationDate", notNullValue()))
-          .andExpect(jsonPath("$.editionDate", notNullValue()))
-          .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(2)));
+      return mvc.perform(multipart(HttpMethod.POST, "/internal/timetable-hearing/statements")
+          .file(statementJson)
+          .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
+              MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
+          .file(
+              new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
+                  MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotCreateStatementWithTwoDocumentsAsUnauthorized() throws Exception {
+      createStatementWithTwoDocuments().andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldNotCreateStatementWithTwoDocumentsAsStandardUser() throws Exception {
+      createStatementWithTwoDocuments().andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldCreateStatementWithTwoDocumentsAsWriter() throws Exception {
+      Permission permission = Permission.builder()
+          .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+          .application(ApplicationType.TIMETABLE_HEARING)
+          .role(ApplicationRole.WRITER)
+          .build();
+      permission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .permission(permission)
+          .type(PermissionRestrictionType.CANTON)
+          .restriction(SwissCanton.BERN.name())
+          .build()));
+      permissionRepository.saveAndFlush(permission);
+
+      createStatementWithTwoDocuments().andExpect(status().isCreated());
     }
 
     @Test
@@ -998,27 +1035,64 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     @Test
     void shouldUpdateStatement() throws Exception {
-      TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
-          TimetableHearingStatementModelV2.builder()
-              .timetableYear(YEAR)
-              .swissCanton(SwissCanton.BERN)
-              .statementSender(TimetableHearingStatementSenderModelV2.builder()
-                  .emails(Set.of("fabienne.mueller@sbb.ch"))
-                  .build())
-              .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-              .build(),
-          Collections.emptyList());
+      updateStatement()
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
+          .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(0)));
+    }
 
+    private ResultActions updateStatement() throws Exception {
+      TimetableHearingStatement existingStatement = timetableHearingStatementRepository.saveAndFlush(
+          TimetableHearingStatement.builder()
+              .timetableYear(YEAR)
+              .statementStatus(StatementStatus.RECEIVED)
+              .swissCanton(SwissCanton.BERN)
+              .statementSender(StatementSender.builder()
+                  .emails(List.of("fabienne.mueller@sbb.ch"))
+                  .build())
+              .responsibleTransportCompanies(Collections.emptySet())
+              .documents(Collections.emptySet())
+              .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+              .build());
+
+      TimetableHearingStatementModelV2 statement = TimetableHearingStatementMapperV2.toModel(existingStatement);
       statement.setStatementStatus(StatementStatus.JUNK);
 
       MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
           MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-      mvc.perform(multipart(HttpMethod.PUT, "/internal/timetable-hearing/statements/" + statement.getId())
-              .file(statementJson))
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
-          .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(0)));
+      return mvc.perform(multipart(HttpMethod.PUT, "/internal/timetable-hearing/statements/" + statement.getId())
+          .file(statementJson));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotUpdateStatementAsUnauthorized() throws Exception {
+      updateStatement().andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldNotUpdateStatementAsStandardUser() throws Exception {
+      updateStatement().andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldUpdateStatementAsWriter() throws Exception {
+      Permission permission = Permission.builder()
+          .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+          .application(ApplicationType.TIMETABLE_HEARING)
+          .role(ApplicationRole.WRITER)
+          .build();
+      permission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .permission(permission)
+          .type(PermissionRestrictionType.CANTON)
+          .restriction(SwissCanton.BERN.name())
+          .build()));
+      permissionRepository.saveAndFlush(permission);
+
+      updateStatement().andExpect(status().isOk());
     }
 
     @Test
@@ -1232,6 +1306,13 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
           .andExpect(jsonPath("$", hasSize(1)))
           .andExpect(jsonPath("$[0].id", is(sharedTransportCompany.getId().intValue())));
     }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotGetResponsibleTransportCompaniesAsUnauthorized() throws Exception {
+      mvc.perform(get("/internal/timetable-hearing/statements/responsible-transport-companies/" + TTFNID + "/" + YEAR))
+          .andExpect(status().isForbidden());
+    }
   }
 
   @Nested
@@ -1349,19 +1430,31 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   @DisplayName("POST internal/timetable-hearing/statements/check-data-protection")
   class CheckDataProtection {
 
+    private TimetableHearingStatement statement;
+
     @Test
     void shouldCheckDataProtectionForExistingStatement() {
+      // when
+      checkDataProtectionForExistingStatement();
+
+      // then
+      TimetableHearingStatementModelV2 updatedStatement = timetableHearingStatementControllerInternal.getStatement(
+          statement.getId());
+      assertThat(updatedStatement.isDataProtectionChecked()).isTrue();
+    }
+
+    private void checkDataProtectionForExistingStatement() {
       // Given
-      TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
-          TimetableHearingStatementModelV2.builder()
-              .timetableYear(YEAR)
-              .swissCanton(SwissCanton.BERN)
-              .statementSender(TimetableHearingStatementSenderModelV2.builder()
-                  .emails(Set.of("fabienne.mueller@sbb.ch"))
-                  .build())
-              .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-              .build(),
-          Collections.emptyList());
+      statement = timetableHearingStatementRepository.saveAndFlush(TimetableHearingStatement.builder()
+          .timetableYear(YEAR)
+          .statementStatus(StatementStatus.RECEIVED)
+          .swissCanton(SwissCanton.BERN)
+          .statementSender(StatementSender.builder()
+              .emails(List.of("fabienne.mueller@sbb.ch"))
+              .build())
+          .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+          .build());
+
       assertThat(statement.isDataProtectionChecked()).isFalse();
 
       // when
@@ -1369,11 +1462,12 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
           .id(statement.getId())
           .statementAnonymous(true)
           .build());
+    }
 
-      // then
-      TimetableHearingStatementModelV2 updatedStatement = timetableHearingStatementControllerInternal.getStatement(
-          statement.getId());
-      assertThat(updatedStatement.isDataProtectionChecked()).isTrue();
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotCheckDataProtectionForExistingStatementAsUnauthorized() {
+      assertThatExceptionOfType(AccessDeniedException.class).isThrownBy(this::checkDataProtectionForExistingStatement);
     }
 
     @Test
