@@ -1,16 +1,17 @@
 # Atlas
 
-This is the repository for business relevant services for ATLAS.
+:construction: **At this point we do not accept opensource contributions or issues.** :construction:
+
+ATLAS is the SKI business application for public transport in Switzerland.
+
+It enables modular digitization of SKI business processes, which are checked, optimized, standardized and then digitized using workflows. This enables more efficient collaboration between the BAV, infrastructure operators, transport companies and SKI.
+
+Thanks to the modular structure implemented using state-of-the-art technologies, the platform can be expanded with additional business processes within a short period of time and cost-effectively in the coming years.
 
 <!-- toc -->
 
-- [CI/CD Status](#cicd-status)
-- [SonarQube Static Code Analysis](#sonarqube-static-code-analysis)
-- [Opensource](#opensource)
 - [Big Picture](#big-picture)
-- [Monorepo](#monorepo)
-- [Structure](#structure)
-  * [APIM-configuration](#apim-configuration)
+- [Links](#links)
   * [Api Auth Gateway](#api-auth-gateway)
   * [Gateway](#gateway)
   * [Kafka](#kafka)
@@ -25,136 +26,87 @@ This is the repository for business relevant services for ATLAS.
   * [Location Service](#location-service)
   * [Base Service lib](#base-service-lib)
   * [Frontend](#frontend)
-- [ATLAS CI/CD with Tekton](#atlas-cicd-with-tekton)
-  * [Gradle build automation](#gradle-build-automation)
-  * [Continuous Deployment Pipeline](#continuous-deployment-pipeline)
-  * [E2E Videos Results](#e2e-videos-results)
-  * [Opengrep Results](#opengrep-results)
-- [Stages and their purpose](#stages-and-their-purpose)
-- [Monitoring and Logging](#monitoring-and-logging)
-- [Hotfix Build and Deployment](#hotfix-build-and-deployment)
-  * [Correlation-Id](#correlation-id)
-- [Timeouts](#timeouts)
-- [Development](#development)
-  * [Run locally](#run-locally)
-  * [Code-Formatting](#code-formatting)
-- [Troubleshooting](#troubleshooting)
-- [Links](#links)
+- [How to](#how-to)
+  * [Prerequisite](#prerequisite)
+  * [Development](#development)
+  * [Start atlas locally](#start-atlas-locally)
+  * [Start frontend locally](#start-frontend-locally)
+  * [Transfer Pull Request from GitHub to BitBucket](#transfer-pull-request-from-github-to-bitbucket)
+    + [Setup](#setup)
+    + [Transfer Pull Request](#transfer-pull-request)
+- [Mocks](#mocks)
+  * [SMTP Server](#smtp-server)
+  * [Wiremock](#wiremock)
+  * [DB local](#db-local)
+- [Sync forked project to atlas](#sync-forked-project-to-atlas)
+  * [Trubleshooting](#trubleshooting)
 
 <!-- tocstop -->
 
-Application **MEGAID**: `ADB3AE9A60E510ED`
-
-## CI/CD Status
-
-| Pipeline                 | Status                                                                                                                                                                                                                                    |
-|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Tekton CI Build**      | [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas/build)](https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas)                           |
-| **Tekton CD -> DEV/INT** | [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-dev/build)](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-dev/build)   |
-| **Tekton CD -> TEST**    | [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-test/build)](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-test/build) |
-
-## SonarQube Static Code Analysis
-
-* [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-* [![Maintainability Rating](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_rating&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-* [![Vulnerabilities](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=vulnerabilities&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-* [![Technical Debt](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_index&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-* [![Coverage](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=coverage&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-
-## Opensource
-
-**atlas** is opensource and published on [GitHub](https://github.com/SchweizerischeBundesbahnen/atlas) 
-
 ## Big Picture
 
-ATLAS shall be a platform, on which relevant data for customer information can be managed. \
+ATLAS shall be a platform, on which relevant data for customer information can be managed. 
 Applications on this platform share their tech stack and have the same monitoring and logging.
 
-It's applications share the following architectural goal:
-![ATLAS Big Picture](documentation/image/ATLAS_Infrastruktur.svg)
+## Links
 
-
-
-## Monorepo
-
-ATLAS has a Monorepo project structure. The CI/CD is executed on each module. For each push event on
-master a Jenkins pipiline is executed. The modules are versionied and deployed with the same version
-number.
-
-![ATLAS Monorepo](documentation/image/ATLAS-Mono-Repo.svg)
-
-## Structure
-
-Quick overview of the modules. There are more detailed `README`s available within each module.
-
-### APIM-configuration
-
-Module, which will be published to APIM and served on the SBB developer portal.
-
-The module combines the APIs from services into one composed API.
+* [atlas web application](https://atlas.app.sbb.ch/)
+* [atlas release notes](https://atlas-info.app.sbb.ch/static/atlas-release-notes.html)
+* [atlas API](https://developer.sbb.ch/apis/atlas/information)
 
 ### Api Auth Gateway
 
 Gateway used by the frontend to fake authenticate read access to the atlas platform.
-See [Api Auth Gateway documentation](api-auth-gateway/README.md);
 
 ### Gateway
 
 Module to handle routing of API endpoints to the respective business applications. Start this
 locally, if you want to run the angular UI.
-See [Gateway documentation](gateway/README.md);
 
 ### Kafka
 
 This folder [kafka](kafka) is used to store `json` files that create topics using kafka-automation
 with estaCloudPipeline.
-More information can be found in the [kafka documentation](documentation/kafka.md).
 
 ### Line-directory
 
 Business service for lines, sublines and timetable field numbers. All of these business objects use
 the atlas own versioning.
-See [Line-directory documentation](line-directory/README.md);
 
 ### Business-organisation-directory
 
 Business service for business organisations. All of these business objects use the atlas own
 versioning.
-See [Business-Organisation-directory documentation](business-organisation-directory/README.md);
 
 ### Mail Service
 
-Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
+Service used by Atlas to send emails.
 
 ### Workflow
 
-Service used to implement ATLAS Workflows. See [documentation](workflow/README.md)
+Service used to implement ATLAS Workflows.
 
 ### User Administration
 
 User Administration provides the backend for creating and maintaining role and business organisation assignments for user.
-See [UserAdministration Documentation](user-administration/README.md) for more.
 
 ### Service-Point-Directory
 
 Business service for `ServicePoints`, `TrafficPointElements` and `LoadingPoints`. All of these business objects use the atlas own
 versioning.
-See [Service-Point-Directory documentation](service-point-directory/README.md);
 
 ### Prm-Directory
 
 Business service for PRM (Person with Reduced Mobility) Data. All of these business objects use the atlas own
 versioning.
-See [Prm-Directory documentation](prm-directory/README.md);
 
 ### Bulk Import Service
 
-Spring Batch Job to import CSV File. See [Bulk-Import-Service documentation](bulk-import-service/README.md);
+Spring Batch Job to import CSV File.
 
 ### Location Service
 
 Service to assign SLOIDs centrally for all ATLAS applications.
-See [Location Service documentation](location/README.md);
 
 ### Base Service lib
 
@@ -169,148 +121,135 @@ Libraries used to perform:
 
 ### Frontend
 
-ATLAS Angular App. See [Frontend documentation](frontend/README.md);
+ATLAS Angular App.
 
-## ATLAS CI/CD with Tekton
+## How to
 
-![ATLAS CI/CD](documentation/image/ATLAS-CI-CD.svg)
+### Prerequisite
 
-To apply the CI/CD we use the following additional repository:
+To run atlas locally, the following tools are required:
 
-* [atlas-tekton-pipeline-templates](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-tekton-pipeline-templates/browse): Custom
-  templates for esta-tekton which will be automatically applied to the atlas-tekton. See
-  the [documentation](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-tekton-pipeline-templates/browse/README.md)
-* [docker](https://code.sbb.ch/projects/KI_ATLAS/repos/docker/browse): Atlas custom docker images. See
-  the [documentation](https://code.sbb.ch/projects/KI_ATLAS/repos/docker/browse/README.md)
-* [atlas-argocd](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse): contains the Charts used to deploy atlas Apps,
-  Jobs, Atlas ArgoCD, etc... See the [documentation](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/README.md)
+1. [Java JDK 25](https://jdk.java.net/25/)
+2. [Node 24](https://nodejs.org/en/download)
+3. [Docker](https://docs.docker.com/engine/install/)
+4. [docker-compose](https://docs.docker.com/compose/install/)
 
-### Gradle build automation
+### Development
 
-atlas is built with **Gradle**, for more information see [atlas Gradle](documentation/gradle.md).
+:warning: **At this point atlas can be started, but some issues still exist.
+We are working to resolve the issues as soon as possible.** :warning:
 
-### Continuous Deployment Pipeline
+Atlas uses [Gradle](https://gradle.org/).
 
-The atlas **Continuous Deployment** process is divided in multiple pipeline:
+1. Build: ```./gradlew build```
+2. Clean: ```./gradlew clean```
+3. Clean: ```./gradlew check```
+4. Build a single service: ```./gradlew :line-directory:build```. Generally to execute some Gradle task on a specific module use: ```./gradlew :{module}:{task}```
+5. Start app: ```./gradlew :{module}:bootRun```, e.g. ```./gradlew :line-directory:bootRun``` 
 
-1. _Tagging_: defined in [estaTektonPipeline.json](estaTektonPipeline.json)
-2. _Build/Release_: defined in [estaTektonPipeline.json](estaTektonPipeline.json)
-3. _DEV deploy, E2E-Tests, INT deploy_: defined
-   in [atlas-deploy-dev Repo](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-deploy-dev/browse)
-4. _TEST Deploy_: defined in [atlas-deploy-test Repo](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-deploy-test/browse)
+:warning:
+**Notice** to start Spring Boot services use the **github** profile:
+1. ```./gradlew :{module}:bootRun --args='--spring.profiles.active=github'```, e.g.: ```./gradlew :line-directory:bootRun --args='--spring.profiles.active=github'```
 
-### E2E Videos Results
+### Start atlas locally
 
-The Cypress Videos results are stored to the following Amazon S3 Bucket:
+1. ```./gradlew build```
+2. ```docker-compose up```
+3. ```./gradlew :{module}:bootRun --args='--spring.profiles.active=github'```: run for each service
+4. Change dir to frontend: ```cd frontend```
+5. ```npm start```
 
-* Bucket name: **atlas-cypress-ci-dev**
-* [Credentials](https://vault-nonprod.sbb.ch/ui/vault/secrets/kv/show/SKI/ATLAS/amazon_s3/cypress-ci)
+### Start frontend locally
 
-### Opengrep Results
+1. Change dir: ```cd frontend```
+2. Install dependencies: ```npm install```
+3. Run atlas: ```npm start```
 
-The [opengrep](https://github.com/opengrep/opengrep) scan result is stored to the following Amazon S3 Bucket:
+For a complete list of available commands, see [package.json](frontend/package.json)
 
-* Bucket name: **atlas-cypress-ci-dev**
-* Directory: continuous/{date-time}/
-* [Credentials](https://vault-nonprod.sbb.ch/ui/vault/secrets/kv/show/SKI/ATLAS/amazon_s3/cypress-ci)  
+### Transfer Pull Request from GitHub to BitBucket
 
-## Stages and their purpose
+#### Setup
 
-* [Stages](documentation/stages.md)
+1. Add GitHub remote in local atlas repo
 
-## Monitoring and Logging
+```
+cd atlas
+git remote add github <github-repo-clone-url>
+```
 
-* [Monitoring (Instana and Actuator)](documentation/Monitoring.md)
-* [Logging to Splunk](documentation/Logging.md)
+#### Transfer Pull Request
 
-## Hotfix Build and Deployment
+1. Checkout PR-Branch
 
-[Hotfix](documentation/hotfix.md)
+```
+git fetch github
+git checkout github/<pr-branch>
+```
 
-### Correlation-Id
+2. Push PR-Branch to Bitbucket
 
-The Atlas services use [Micrometer](https://micrometer.io/) to add to the log a
-**Correlation-Id** which spreads between the services up to the snack bar in the fronted.
+```
+git push origin <pr-branch>
+```
 
-We can use the **Correlation-Id** to search it in [Splunk](documentation/Logging.md) or [Instana](documentation/Monitoring.md).
+3. Create PR on BitBucket from <pr-branch> to master
 
-## Timeouts
+## Mocks
 
-At the moment there are no timeouts for requests to the atlas platform.
+### SMTP Server
 
-However, the used apim-gateway currently has a limited request time of one minute. The responsible property could be found
-here: https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/applications/apim-gateway/values.yaml#106
+See [Free SMTP Server for Testing](https://www.wpoven.com/tools/free-smtp-server-for-testing)
 
-API users experiencing timeouts when downloading a bigger json file should switch to the compressed (gzipped) version of the
-endpoint.
+### Wiremock
 
-## Development
+To run atlas locally, the Wiremock image must be started: 
+```docker-compose up wiremock -d```
 
-### Run locally
+### DB local
 
-- For an easy local development setup, we provide a [docker-compose.yml](docker-compose.yml), which
-  can be used to start dependent infrastructure for atlas.
-- Make sure your needed business services are up
-- Start the gateway (the frontend Angular application uses it as a target for API calls)
+To run atlas locally, the DB images must be started: 
 
-Run needed services for atlas in docker:
+```docker-compose up -d```
 
-~~~
-# -d to run in background
-docker-compose up -d
-~~~
+## Sync the forked project with atlas
 
-Stop infrastructure container:
+```bash
+# Make sure the upstream is set
+git remote add upstream https://github.com/SchweizerischeBundesbahnen/atlas.git
+# Fetch all commits from upstream
+git fetch upstream main
+# Create a new branch sync-branch 
+git checkout -b sync-branch
+# Apply the upstream commits to the branch sync-branch 
+git reset --hard upstream/main
+# Optional: push the branch sync-branch to origin
+git push -u origin sync-branch
 
-~~~
-docker-compose down
-~~~
+# Now you can merge or rebase the sync-branch to your main branch:
+# Option 1: Rebase if there are not too many conflicts
+# Option 2: Merge if there are too many conflicts
 
-Stop infrastructure container and remove volume (deletes persistent content):
+# Option 1: Rebase
+git rebase origin main
+# Resolve conflicts
+# Push to sync-branch
+git push -f
+# Merge to the main branch or open PR and merge to main
+# Done!
 
-~~~
-docker-compose down -v 
-~~~
+# Option 2: Merge
+git merge origin/main --allow-unrelated-histories
+# Accept the upstream changes
+git checkout --theirs .
+# Add, commit and push the changes 
+git add .
+git commit -m "Merge upstream with --allow-unrelated-histories"
+git push
+# Merge to the main branch or open PR and merge to main
+# Done!
+```
 
-### Code-Formatting
+### Trubleshooting
 
-Configuration for Prettier:
-
-![image](documentation/image/prettier-settings.png)
-
-Configuration for `Actions on Save`:
-
-![image](documentation/image/actions-on-save.png)
-
-## Troubleshooting
-
-* [Sonarqube](documentation/Troubleshooting.md)
-
-## Links
-
-- **Tekton**: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
-- **ArgoCD**:
-  - **DEV/TEST**: https://argocd-server-atlas-argocd.apps.aws01t.sbb-aws-test.net/
-  - **INT/PROD**: https://argocd-server-atlas-argocd.apps.maggie.sbb-aws.net/
-- **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
-- **JFrog Artifactory**:
-  - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker/atlas/atlas-frontend
-- **Openshift**:
-  - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-  - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
-  - **Int**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
-  - **Prod**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
-- **Deployment**:
-  - **Dev**: https://atlas.dev.sbb-cloud.net
-  - **Test**: https://atlas.test.sbb-cloud.net
-  - **Int**: https://atlas.int.sbb-cloud.net
-  - **Prod**: https://atlas.sbb-cloud.net
-- **Developer Portal**:
-  - **INT**: https://developer-int.sbb.ch/apis?text=atlas&all=
-  - **PROD**: https://developer.sbb.ch/apis?text=atlas&all=
-- **API Management - 3scale**:
-  - **INT**: https://api-management.int.sbb-cloud.net
-  - **PROD**: https://api-management.prod.sbb-cloud.net
-- **Vulnerability Management (VMC)**: https://vmc.sbb.ch/de/reporting/mg/ADB3AE9A60E510ED/vulnerabilitylist
-- **GitHub**: https://github.com/SchweizerischeBundesbahnen/atlas
-
+1. **npm install errors**: delete the package-lock.json and re run npm install
