@@ -1050,7 +1050,7 @@
       "STATUS_JUSTIFICATION": "Abschluss",
       "CLARIFICATION": "Interne Weiterleitung",
       "CLARIFICATION_POSTFIX": "(an Ihre Mitarbeiter*innen)",
-      "CLARIFICATION_INFO": "Geben Sie die Inhalte des Dossiers an eine Fachperson für eine Frage weiter. Die Inhalte erscheinen als Direkt-Link in Ihrer E-Mail.",
+      "CLARIFICATION_INFO": "Geben Sie die Inhalte des Dossiers an eine Fachperson für eine Frage weiter.",
       "CLARIFICATION_MAIL": "E-Mail öffnen",
       "REQUEST": "Anfrage Stellungnahme",
       "TTFN": "Fahrplanfeld",
@@ -1112,7 +1112,7 @@
       "NEW": "Neues Dossier",
       "INTERNAL_FEEDBACK": "Interne Rückfrage",
       "INTERNAL_FEEDBACK_HINT": "(an Ihre Mitarbeiter*innen)",
-      "INTERNAL_FEEDBACK_INFO": "Geben Sie die Inhalte des Dossiers an eine Fachperson für eine Frage weiter. Die Inhalte erscheinen als Direkt-Link in Ihrer E-Mail.",
+      "INTERNAL_FEEDBACK_INFO": "Geben Sie die Inhalte des Dossiers an eine Fachperson für eine Frage weiter.",
       "EXTERNAL_FEEDBACK": "Externe Rückfrage",
       "EXTERNAL_FEEDBACK_HINT": "(beim Transportunternehmen)",
       "EXTERNAL_FEEDBACK_INFO": "Hier geben Sie Inhalte des Dossiers an das Transportunternehmen für Fragen weiter. Das Transportunternehmen erhält einen Link zum Dossier. Wegen des Datenschutzes leiten wir diese Informationen nicht weiter:",
@@ -1167,7 +1167,8 @@
       "DISSOLVE_DOSSIER": "Dossier auflösen",
       "TOPIC": "Thema",
       "ADD_TO_DOSSIER_INFO": "Nach dem Hinzufügen, ist individuelles Editieren nicht mehr möglich. Änderungen betreffen immer alle Stellungnahmen in einem Dossier.",
-      "ID_AND_TOPIC": "Dossier-ID und Thema"
+      "ID_AND_TOPIC": "Dossier-ID und Thema",
+      "DATA_PROTECTION_NOT_COMPLETED": "Es befinden sich Stellungnahmen ohne Datenschutzprüfung in diesem Dossier. Das Transportunternehmen kann bei den betreffenden Stellungnahmen weder den Begleittext lesen noch allfällige PDF-Anhänge sehen. Möchten Sie trotzdem fortfahren?"
     },
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Fahrplanjahr schliessen",

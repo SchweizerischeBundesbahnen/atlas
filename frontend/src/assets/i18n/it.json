@@ -1050,7 +1050,7 @@
       "STATUS_JUSTIFICATION": "Epilogo",
       "CLARIFICATION": "Inoltro interno",
       "CLARIFICATION_POSTFIX": "(ai suoi dipendenti)",
-      "CLARIFICATION_INFO": "Inviare il contenuto del dossier a uno specialista con una domanda. Il contenuto apparirà come link diretto nella tua email.",
+      "CLARIFICATION_INFO": "Inviare il contenuto del dossier a uno specialista con una domanda.",
       "CLARIFICATION_MAIL": "Aprire un'e-mail ",
       "REQUEST": "Richiesta parere",
       "TTFN": "Numero del quadro d’orario",
@@ -1112,7 +1112,7 @@
       "NEW": "Nuovo Dossier",
       "INTERNAL_FEEDBACK": "Domanda di chiarimento interna",
       "INTERNAL_FEEDBACK_HINT": "((ai suoi collaboratori))",
-      "INTERNAL_FEEDBACK_INFO": "Trasferisci il contenuto del dossier a un esperto per una domanda. I contenuti appaiono come link diretto nella tua e-mail",
+      "INTERNAL_FEEDBACK_INFO": "Trasferisci il contenuto del dossier a un esperto per una domanda.",
       "EXTERNAL_FEEDBACK": "Domanda esterna",
       "EXTERNAL_FEEDBACK_HINT": "(presso l’impresa di trasporto)",
       "EXTERNAL_FEEDBACK_INFO": "Qui è possibile trasmettere all’impresa di trasporto le informazioni del suo dossier in caso di domande. L’impresa di trasporto riceve un link al dossier. Per motivi legati alla protezione dei dati, non trasmettiamo queste informazioni a terzi:",
@@ -1167,7 +1167,8 @@
       "DISSOLVE_DOSSIER": "Sciogliere dossier",
       "TOPIC": "Tema",
       "ADD_TO_DOSSIER_INFO": "Dopo aver aggiunto, non è più possibile effettuare modifiche individuali. Le modifiche riguardano sempre tutte le prese di posizione in un dossier.",
-      "ID_AND_TOPIC": "Dossier-ID e tema"
+      "ID_AND_TOPIC": "Dossier-ID e tema",
+      "DATA_PROTECTION_NOT_COMPLETED": "Si trovano dichiarazioni per l'orario senza verifica della protezione dei dati in questo dossier. L'azienda di trasporto non può né leggere il testo di accompagnamento né visualizzare eventuali allegati PDF nelle dichiarazioni interessate. Vuole comunque procedere?"
     },
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Chiusura dell'anno di calendario",
