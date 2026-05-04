@@ -1,5 +1,8 @@
 package ch.sbb.workflow.module.sepodi.termination.api;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
@@ -28,6 +31,7 @@ public interface TerminationStopPointWorkflowApiV1 {
 
   String BASE_PATH = "/v1/termination-stop-point/workflows";
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
   @GetMapping
   @PageableAsQueryParam
   Container<TerminationStopPointWorkflowModel> getTerminationStopPointWorkflows(
@@ -35,9 +39,11 @@ public interface TerminationStopPointWorkflowApiV1 {
       @ParameterObject TerminationStopPointWorkflowFilterParams filterParams
   );
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
   @GetMapping("{id}")
   TerminationStopPointWorkflowModel getTerminationStopPointWorkflow(@PathVariable Long id);
 
+  @AuthorizedOnly
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {

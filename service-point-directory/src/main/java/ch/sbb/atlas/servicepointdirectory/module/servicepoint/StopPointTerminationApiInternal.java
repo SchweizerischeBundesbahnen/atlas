@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.servicepoint;
 
 import ch.sbb.atlas.annotation.AdminOnly;
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Validated
 public interface StopPointTerminationApiInternal {
 
+  @AuthorizedOnly
   @PostMapping(path = "/start/{sloid}/{id}")
   ReadServicePointVersionModel startServicePointTermination(@PathVariable String sloid, @PathVariable Long id,
       @RequestBody @Valid UpdateTerminationServicePointModel updateTerminationServicePointModel);
