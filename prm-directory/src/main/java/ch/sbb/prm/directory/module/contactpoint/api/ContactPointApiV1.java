@@ -4,14 +4,17 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
-import ch.sbb.prm.directory.module.contactpoint.controller.model.ContactPointObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
+import ch.sbb.prm.directory.module.contactpoint.controller.model.ContactPointObjectRequestParams;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface ContactPointApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<ReadContactPointVersionModel> getContactPoints(
@@ -46,10 +50,12 @@ public interface ContactPointApiV1 {
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject ContactPointObjectRequestParams contactPointObjectRequestParams);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadContactPointVersionModel createContactPoint(@RequestBody @Valid @CreateIdCheck ContactPointVersionModel model);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
@@ -63,6 +69,7 @@ public interface ContactPointApiV1 {
   List<ReadContactPointVersionModel> updateContactPoint(@PathVariable Long id,
       @RequestBody @Valid ContactPointVersionModel model);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{sloid}")
   List<ReadContactPointVersionModel> getContactPointVersions(@PathVariable String sloid);
 

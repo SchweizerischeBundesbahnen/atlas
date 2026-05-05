@@ -4,14 +4,17 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
-import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
+import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface ToiletApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<ReadToiletVersionModel> getToilets(
@@ -46,10 +50,12 @@ public interface ToiletApiV1 {
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadToiletVersionModel createToiletVersion(@RequestBody @Valid @CreateIdCheck ToiletVersionModel toiletVersionModel);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
@@ -63,6 +69,7 @@ public interface ToiletApiV1 {
   List<ReadToiletVersionModel> updateToiletVersion(@PathVariable Long id,
       @RequestBody @Valid ToiletVersionModel model);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{sloid}")
   List<ReadToiletVersionModel> getToiletVersions(@PathVariable String sloid);
 

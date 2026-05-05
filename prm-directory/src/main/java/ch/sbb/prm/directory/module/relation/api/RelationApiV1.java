@@ -4,13 +4,16 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
-import ch.sbb.prm.directory.module.relation.controller.model.RelationRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
+import ch.sbb.prm.directory.module.relation.controller.model.RelationRequestParams;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("v1/relations")
 public interface RelationApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<ReadRelationVersionModel> getRelations(
@@ -42,9 +46,11 @@ public interface RelationApiV1 {
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject RelationRequestParams prmObjectRequestParams);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{sloid}")
   List<ReadRelationVersionModel> getRelationsBySloid(@PathVariable String sloid);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
