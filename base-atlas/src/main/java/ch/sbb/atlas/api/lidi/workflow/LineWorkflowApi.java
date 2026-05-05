@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.lidi.workflow;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.workflow.model.WorkflowEvent;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -12,6 +13,8 @@ public interface LineWorkflowApi {
 
   String BASEPATH = "v1/lines/workflow/";
 
+  // Permission check on LineWorkflowProcessingService.processLineWorkflow
+  @AuthorizedOnly
   @PostMapping(BASEPATH + "process")
   WorkflowStatus processWorkflow(@Valid @RequestBody WorkflowEvent workflowEvent);
 
