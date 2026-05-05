@@ -26,6 +26,8 @@ import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.business.organisation.directory.module.businessorganisation.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.module.businessorganisation.repository.BusinessOrganisationVersionRepository;
 import java.time.LocalDate;
@@ -168,6 +170,16 @@ public class BusinessOrganisationApiV1Test extends BaseControllerApiTest {
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetBusinessOrganisationVersionsBySboidRedactedAsUnauthorized() throws Exception {
+    //when and then
+    mvc.perform(get("/v1/business-organisations/versions/" + version.getSboid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].sboid").value(version.getSboid()))
+        .andExpect(jsonPath("$[0].contactEnterpriseEmail").value("*****"));
+  }
+
+  @Test
   void shouldGetAllBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
@@ -230,12 +242,35 @@ public class BusinessOrganisationApiV1Test extends BaseControllerApiTest {
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetAllBusinessOrganisationVersionsRedactedAsUnauthorized() throws Exception {
+    //when and then
+    mvc.perform(get("/v1/business-organisations"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1))
+        .andExpect(jsonPath("$.objects[0].sboid").value(version.getSboid()))
+        .andExpect(jsonPath("$.objects[0].contactEnterpriseEmail").value("*****"));
+  }
+
+  @Test
   void shouldGetBusinessOrganisationVersions() throws Exception {
     //when and then
     mvc.perform(get("/v1/business-organisations/versions"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount").value(1))
-        .andExpect(jsonPath("$.objects[0].sboid").value(version.getSboid()));
+        .andExpect(jsonPath("$.objects[0].sboid").value(version.getSboid()))
+        .andExpect(jsonPath("$.objects[0].contactEnterpriseEmail").value("mail@mail.ch"));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetBusinessOrganisationVersionsRedactedAsUnauthorized() throws Exception {
+    //when and then
+    mvc.perform(get("/v1/business-organisations/versions"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1))
+        .andExpect(jsonPath("$.objects[0].sboid").value(version.getSboid()))
+        .andExpect(jsonPath("$.objects[0].contactEnterpriseEmail").value("*****"));
   }
 
   @Test

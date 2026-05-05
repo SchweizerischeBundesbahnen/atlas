@@ -63,6 +63,7 @@ public interface BusinessOrganisationApiInternal {
       @PathVariable Long id,
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
+  @AdminOnly
   @DeleteMapping("{sboid}")
   void deleteBusinessOrganisation(@PathVariable String sboid);
 
