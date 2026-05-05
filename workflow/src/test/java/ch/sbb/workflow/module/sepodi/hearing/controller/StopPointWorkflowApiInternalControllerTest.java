@@ -586,6 +586,43 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
           .andExpect(jsonPath("$.firstName", is("Marek")))
           .andExpect(jsonPath("$.lastName", is("Hamsik")));
     }
+
+    @Test
+    void shouldNotVerifyPinCodeWhenNoOtpPresent() throws Exception {
+      //given
+      Person person = Person.builder()
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .function("Centrocampista")
+          .mail(MAIL_ADDRESS).build();
+
+      Long versionId = 123456L;
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+          .sloid("ch:1:sloid:1234")
+          .sboid("ch:1:sboid:666")
+          .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+          .localityName("Biel/Bienne")
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .status(WorkflowStatus.HEARING)
+          .examinants(Set.of(person))
+          .startDate(LocalDate.of(2000, 1, 1))
+          .endDate(LocalDate.of(2000, 12, 31))
+          .versionId(versionId)
+          .build();
+      person.setStopPointWorkflow(stopPointWorkflow);
+      workflowRepository.save(stopPointWorkflow);
+
+      String pinCode = "123456";
+
+      OtpVerificationModel otpRequest = OtpVerificationModel.builder().pinCode(pinCode).examinantMail(MAIL_ADDRESS).build();
+
+      //when & then
+      mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/verify-otp/" + stopPointWorkflow.getId())
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(otpRequest)))
+          .andExpect(status().isForbidden());
+    }
   }
 
   @Nested

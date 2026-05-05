@@ -60,6 +60,10 @@ public class StopPointWorkflowOtpService {
 
   private boolean isPinCodeValid(Person person, String pinCode) {
     Otp otp = otpRepository.findByPersonId(person.getId());
+    if (otp == null) {
+      log.info("Otp not found for workflow {}. Person: {}", person.getStopPointWorkflow().getId(), person.getMail());
+      return false;
+    }
     boolean stillValid = ChronoUnit.MINUTES.between(otp.getCreationTime(), LocalDateTime.now()) <= OTP_LIFESPAN_IN_MINUTES;
     log.info("Validating pin code for {}. OTP still valid: {}", person.getMail(), stillValid);
     boolean codeMatches = otp.getCode().equals(OtpHelper.hashPinCode(pinCode));
