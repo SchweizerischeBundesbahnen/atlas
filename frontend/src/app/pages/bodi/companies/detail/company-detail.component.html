@@ -18,7 +18,7 @@
                 controlName="uicCode"
                 data-cy="uicCode"
                 fieldLabel="BODI.COMPANIES.UIC_CODE"
-              ></atlas-text-field>
+              />
             </div>
 
             <div class="d-flex flex-column col-6 pe-3">
@@ -27,7 +27,7 @@
                 controlName="countryCodeIso"
                 data-cy="countryCodeIso"
                 fieldLabel="BODI.COMPANIES.COUNTRY_CODE"
-              ></atlas-text-field>
+              />
             </div>
           </div>
 
@@ -38,18 +38,13 @@
                 controlName="shortName"
                 data-cy="shortName"
                 fieldLabel="BODI.COMPANIES.SHORT_NAME"
-              ></atlas-text-field>
+              />
             </div>
           </div>
 
           <div class="col-12 d-flex">
             <div class="d-flex flex-column col-12 pe-3">
-              <atlas-text-field
-                [formGroup]="form"
-                controlName="name"
-                data-cy="name"
-                fieldLabel="BODI.COMPANIES.NAME"
-              ></atlas-text-field>
+              <atlas-text-field [formGroup]="form" controlName="name" data-cy="name" fieldLabel="BODI.COMPANIES.NAME" />
             </div>
           </div>
 
@@ -58,7 +53,7 @@
               <atlas-text-field [formGroup]="form" controlName="url" data-cy="url" fieldLabel="BODI.COMPANIES.URL">
                 <ng-template #customChildInputPostfixTemplate>
                   <a [attr.href]="prependHttp(form.value.url)" target="_blank" rel="noopener">
-                    <atlas-link-icon></atlas-link-icon>
+                    <atlas-link-icon />
                   </a>
                 </ng-template>
               </atlas-text-field>
@@ -74,8 +69,7 @@
         buttonDataCy="back-to-overview"
         buttonText="COMMON.BACK_TO_OVERVIEW"
         buttonType="whiteFooterNonEdit"
-      >
-      </atlas-button>
+      />
     </atlas-detail-footer>
   </atlas-detail-page-container>
 </div>

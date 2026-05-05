@@ -17,13 +17,13 @@
             [currentRecord]="selectedVersion"
             [records]="versions"
             [showStatus]="false"
-          ></atlas-switch-version>
+          />
         </div>
         <atlas-navigation-sepodi-prm
           targetPage="traffic-point-detail"
           [sloid]="selectedVersion.sloid"
           [number]="selectedVersion.number.number"
-        ></atlas-navigation-sepodi-prm>
+        />
       </div>
     }
     @if (!isNew) {
@@ -37,28 +37,25 @@
       <h2 class="font-bold-2xl color-gray-900">
         {{ 'FORM.KEY_DATA' | translate }}
       </h2>
-      <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
+      <atlas-form-date-range [formGroup]="form" />
     </div>
     <h2 class="font-bold-2xl color-gray-900 mt-3">
       {{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}
     </h2>
     @if (reduced) {
       <div>
-        <atlas-platform-reduced-form
-          [form]="reducedForm"
-          [meansOfTransport]="meansOfTransport"
-        ></atlas-platform-reduced-form>
+        <atlas-platform-reduced-form [form]="reducedForm" [meansOfTransport]="meansOfTransport" />
       </div>
     }
     @if (!reduced) {
       <div>
-        <atlas-platform-complete-form [form]="completeForm"></atlas-platform-complete-form>
+        <atlas-platform-complete-form [form]="completeForm" />
       </div>
     }
     @if (!isNew) {
       <div>
-        <mat-divider class="mt-4 mb-4"></mat-divider>
-        <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'PRM'"></atlas-user-detail-info>
+        <mat-divider class="mt-4 mb-4" />
+        <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'PRM'" />
       </div>
     }
   }
@@ -71,7 +68,7 @@
     buttonDataCy="back"
     buttonText="COMMON.BACK"
     buttonType="whiteFooterNonEdit"
-  ></atlas-button>
+  />
   @if (form.disabled) {
     <atlas-button
       (buttonClicked)="toggleEdit()"
@@ -81,7 +78,7 @@
       buttonText="COMMON.EDIT"
       buttonType="edit-service-point-dependent"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
   }
   <atlas-button
     (buttonClicked)="toggleEdit()"
@@ -89,7 +86,7 @@
     buttonDataCy="cancel"
     buttonText="COMMON.CANCEL"
     buttonType="whiteFooterEdit"
-  ></atlas-button>
+  />
   @if (mayCreate) {
     <atlas-button
       (buttonClicked)="save()"
@@ -99,6 +96,6 @@
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
   }
 </atlas-detail-footer>

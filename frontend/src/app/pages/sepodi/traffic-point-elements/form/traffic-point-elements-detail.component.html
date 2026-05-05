@@ -1,11 +1,7 @@
 <atlas-detail-page-content>
   @if (isNew) {
     <div class="new-sloid d-flex flex-column">
-      <atlas-sloid
-        [formGroup]="form"
-        [givenPrefix]="servicePointSloid + ':'"
-        [numberColons]="numberColons"
-      ></atlas-sloid>
+      <atlas-sloid [formGroup]="form" [givenPrefix]="servicePointSloid + ':'" [numberColons]="numberColons" />
     </div>
   }
 
@@ -18,7 +14,7 @@
           [records]="trafficPointVersions"
           [switchDisabled]="isSwitchVersionDisabled"
           [showStatus]="true"
-        ></atlas-switch-version>
+        />
       }
     </div>
     @if (!isNew && !isTrafficPointArea) {
@@ -27,7 +23,7 @@
         [number]="selectedVersion.servicePointNumber!.number"
         [parentSloid]="selectedVersion.servicePointSloid"
         [sloid]="selectedVersion.sloid"
-      ></atlas-navigation-sepodi-prm>
+      />
     }
   </div>
 
@@ -59,8 +55,7 @@
         [required]="false"
         controlName="designation"
         fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION"
-      >
-      </atlas-text-field>
+      />
     </div>
     @if (!isTrafficPointArea) {
       <div class="d-flex flex-column col-4 pe-3">
@@ -78,8 +73,7 @@
           [required]="false"
           controlName="designationOperational"
           fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL"
-        >
-        </atlas-text-field>
+        />
       </div>
     }
     <div class="d-flex flex-column col-4">
@@ -94,21 +88,20 @@
         dataCy="parentSloid"
         label="SEPODI.TRAFFIC_POINT_ELEMENTS.PARENT_SLOID"
         placeHolderLabel=""
-      >
-      </atlas-select>
+      />
     </div>
   </div>
 
   <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
   <div class="col-12 d-flex">
-    <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
+    <atlas-form-date-range [formGroup]="form" />
   </div>
 
   <atlas-sepodi-geography
     (geographyChanged)="$event ? geographyEnabled() : geographyDisabled()"
     [editMode]="form.enabled"
     [form]="form.controls.trafficPointElementGeolocation"
-  ></atlas-sepodi-geography>
+  />
 
   @if (!isTrafficPointArea) {
     <div class="font-bold-2xl mt-5">
@@ -130,8 +123,7 @@
           [required]="false"
           controlName="length"
           fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.LENGTH"
-        >
-        </atlas-text-field>
+        />
       </div>
       <div class="d-flex flex-column col-4 pe-3">
         <atlas-text-field
@@ -148,8 +140,7 @@
           [required]="false"
           controlName="boardingAreaHeight"
           fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.BOARDING_AREA_HEIGHT"
-        >
-        </atlas-text-field>
+        />
       </div>
       <div class="d-flex flex-column col-4">
         <atlas-text-field
@@ -166,15 +157,14 @@
           [required]="false"
           controlName="compassDirection"
           fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.COMPASS_DIRECTION"
-        >
-        </atlas-text-field>
+        />
       </div>
     </div>
   }
   @if (!isNew) {
     <div class="mb-3">
-      <mat-divider class="mt-4 mb-4"></mat-divider>
-      <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'SEPODI'"></atlas-user-detail-info>
+      <mat-divider class="mt-4 mb-4" />
+      <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'SEPODI'" />
     </div>
   }
 </atlas-detail-page-content>
@@ -186,8 +176,7 @@
     buttonDataCy="close-detail"
     buttonText="COMMON.BACK"
     buttonType="whiteFooterNonEdit"
-  >
-  </atlas-button>
+  />
   @if (form.disabled && (isNew || selectedVersion.status !== 'REVOKED')) {
     <atlas-button
       (buttonClicked)="toggleEdit()"
@@ -198,10 +187,10 @@
       buttonType="edit-service-point-dependent"
       [businessOrganisations]="servicePointBusinessOrganisations"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
   }
   @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-    <atlas-revoke-button (revokeClicked)="revoke()" applicationType="LIDI"></atlas-revoke-button>
+    <atlas-revoke-button (revokeClicked)="revoke()" applicationType="LIDI" />
   }
   <atlas-button
     (buttonClicked)="toggleEdit()"
@@ -210,7 +199,7 @@
     buttonText="COMMON.CANCEL"
     buttonType="whiteFooterEdit"
     wrapperStyleClass="ms-3"
-  ></atlas-button>
+  />
   <atlas-button
     (buttonClicked)="save()"
     [disabled]="!form.dirty"
@@ -220,6 +209,5 @@
     buttonText="COMMON.SAVE"
     buttonType="whiteFooterEdit"
     wrapperStyleClass="ms-3"
-  >
-  </atlas-button>
+  />
 </atlas-detail-footer>

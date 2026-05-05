@@ -1,10 +1,9 @@
 <div [formGroup]="formGroup" class="atlas-select">
   @if (label) {
-    <atlas-label-field [required]="required" fieldLabel="{{ label }}" infoIconTitle="{{ infoIconTitle }}">
-    </atlas-label-field>
+    <atlas-label-field [required]="required" fieldLabel="{{ label }}" infoIconTitle="{{ infoIconTitle }}" />
   }
   @if (additionalLabelspace) {
-    <atlas-spacer height="{{ additionalLabelspace + 'px' }}"></atlas-spacer>
+    <atlas-spacer height="{{ additionalLabelspace + 'px' }}" />
   }
 
   <mat-select
@@ -31,7 +30,7 @@
     }
     @for (option of options; track option) {
       <mat-option [value]="valueExtractor(option)" (click)="deselectAllCheckboxUnlessAllSelected()">
-        <ng-container *ngTemplateOutlet="matOptionPrefix; context: getAsObject(option)"></ng-container>
+        <ng-container *ngTemplateOutlet="matOptionPrefix; context: getAsObject(option)" />
         @if (optionTranslateLabelPrefix) {
           {{ optionTranslateLabelPrefix + displayExtractor(option) | translate }}
         } @else {
@@ -42,7 +41,7 @@
 
     @for (optionGroup of optionsGroup!.options; track optionGroup) {
       <mat-optgroup>
-        <ng-template *ngTemplateOutlet="matOptionGroupPrefix; context: getAsObject(optionGroup)"></ng-template>
+        <ng-template *ngTemplateOutlet="matOptionGroupPrefix; context: getAsObject(optionGroup)" />
         @for (list of optionGroup[optionsGroup!.groupValueExtractorProperty]; track list) {
           <mat-option [value]="optionsGroup!.valueExtractor(list)">
             {{ optionsGroup!.valueExtractor(list) }}
@@ -52,6 +51,6 @@
     }
   </mat-select>
   @if (controlName) {
-    <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
+    <atlas-field-error [control]="formGroup.get(controlName)" />
   }
 </div>

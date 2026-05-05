@@ -22,7 +22,7 @@
     </div>
     @if (formGroup && controlName) {
       <div class="d-flex">
-        <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
+        <atlas-field-error [control]="formGroup.get(controlName)" />
       </div>
     }
   } @else {
@@ -44,6 +44,6 @@
         </mat-chip>
       }
     </mat-chip-set>
-    <ng-content></ng-content>
+    <ng-content />
   </div>
 </div>

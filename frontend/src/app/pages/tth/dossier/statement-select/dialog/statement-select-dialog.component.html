@@ -7,8 +7,8 @@
   <div class="font-bold-2xl">
     {{ 'TTH.DOSSIER.STATEMENT_SELECT.CURRENT_STATEMENTS' | translate }}
   </div>
-  <atlas-statement-select [(selectedStatements)]="selectedStatements"></atlas-statement-select>
-  <atlas-spacer [divider]="true"></atlas-spacer>
+  <atlas-statement-select [(selectedStatements)]="selectedStatements" />
+  <atlas-spacer [divider]="true" />
   <div class="font-bold-2xl mt-5">
     {{ 'TTH.DOSSIER.STATEMENT_SELECT.ADDITIONAL_STATEMENTS' | translate }}
   </div>
@@ -22,7 +22,7 @@
     [totalCount]="totalCount$"
     [tableFilterConfig]="tableFilterConfig"
     data-cy="tthTable"
-  ></atlas-table>
+  />
   <mat-dialog-actions class="justify-content-end flex-nowrap">
     <atlas-button
       buttonType="cancel"
@@ -30,14 +30,12 @@
       class="me-3"
       data-cy="dialog-cancel-button"
       [buttonText]="data.cancelText!"
-    >
-    </atlas-button>
+    />
     <atlas-button
       buttonType="confirm"
       (buttonClicked)="confirm()"
       data-cy="dialog-confirm-button"
       [buttonText]="data.confirmText!"
-    >
-    </atlas-button>
+    />
   </mat-dialog-actions>
 </div>

@@ -4,7 +4,7 @@
       @for (filterConfig of row; track $index; let filterConfigIndex = $index) {
         @if (filterConfig | instanceOf: TableFilterChipClass; as chipSearch) {
           <div [class]="chipSearch.elementWidthCssClass" class="d-flex flex-column search-box">
-            <atlas-label-field [fieldLabel]="chipSearch.fieldLabel"></atlas-label-field>
+            <atlas-label-field [fieldLabel]="chipSearch.fieldLabel" />
             <div
               [ngClass]="chipSearch.disabled ? 'disabled' : ''"
               class="search-main-field mb-4"
@@ -35,12 +35,11 @@
         @if (filterConfig | instanceOf: TableFilterBooleanClass; as booleanFilter) {
           <div [class]="booleanFilter.elementWidthCssClass">
             <div class="slide-toggle-row-wrapper pb-3 mt-3">
-              <atlas-label-field [fieldLabel]="booleanFilter.fieldLabel"></atlas-label-field>
+              <atlas-label-field [fieldLabel]="booleanFilter.fieldLabel" />
               <atlas-slide-toggle
                 [toggle]="booleanFilter.getActiveSearch()"
                 (toggleChange)="booleanFilter.setActiveSearch($event); emitSearch()"
-              >
-              </atlas-slide-toggle>
+              />
             </div>
           </div>
         }
@@ -53,8 +52,7 @@
                 [formGroup]="searchSelect.formGroup!"
                 [formModus]="false"
                 controlName="businessOrganisation"
-              >
-              </atlas-bo-select>
+              />
             }
 
             @if (searchSelect.searchType === 'TIMETABLE_FIELD_NUMBER') {
@@ -65,8 +63,7 @@
                 [formModus]="false"
                 [required]="false"
                 controlName="ttfnid"
-              >
-              </atlas-ttfn-select>
+              />
             }
 
             @if (searchSelect.searchType === 'TRANSPORT_COMPANY') {
@@ -76,8 +73,7 @@
                 [formGroup]="searchSelect.formGroup!"
                 [formModus]="false"
                 controlName="transportCompany"
-              >
-              </atlas-tu-select>
+              />
             }
           </div>
         }
@@ -94,13 +90,13 @@
               [options]="multiSelect.selectOptions"
               [value]="multiSelect.activeSearch"
               dataCy="table-filter-multi-select-{{ rowIdx }}-{{ filterConfigIndex }}"
-            ></atlas-select>
+            />
           </div>
         }
 
         @if (filterConfig | instanceOf: TableFilterDateSelectClass; as dateSelect) {
           <div [class]="dateSelect.elementWidthCssClass">
-            <atlas-label-field fieldLabel="COMMON.SEARCH.VALIDITY"></atlas-label-field>
+            <atlas-label-field fieldLabel="COMMON.SEARCH.VALIDITY" />
             <div class="search-date-field">
               <div class="container-date-field">
                 <input
@@ -118,17 +114,17 @@
                   (keydown.enter)="picker.open()"
                   (keydown.space)="picker.open()"
                   [enabled]="true"
-                ></atlas-form-date-icon>
-                <mat-datepicker #picker></mat-datepicker>
+                />
+                <mat-datepicker #picker />
               </div>
             </div>
-            <atlas-field-error [control]="dateSelect.formControl"></atlas-field-error>
+            <atlas-field-error [control]="dateSelect.formControl" />
           </div>
         }
 
         @if (filterConfig | instanceOf: TableFilterSingleSearchClass; as singleSearch) {
           <div [class]="singleSearch.elementWidthCssClass">
-            <atlas-label-field [fieldLabel]="singleSearch.label"></atlas-label-field>
+            <atlas-label-field [fieldLabel]="singleSearch.label" />
             <div [ngClass]="singleSearch.disabled ? 'disabled' : ''" class="single-search">
               <mat-chip-grid #singleSearchChipList [disabled]="singleSearch.disabled">
                 @if (singleSearch.getActiveSearch(); as activeSearch) {
@@ -149,7 +145,7 @@
                 />
               </mat-chip-grid>
             </div>
-            <atlas-field-error [control]="singleSearch.formControl"></atlas-field-error>
+            <atlas-field-error [control]="singleSearch.formControl" />
           </div>
         }
       }

@@ -10,8 +10,7 @@
       [options]="vehicleAccess"
       [additionalLabelspace]="0"
       class="mb-3"
-    >
-    </atlas-select>
+    />
     <atlas-select
       [formGroup]="form"
       controlName="shuttle"
@@ -21,8 +20,7 @@
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="booleanOptionalAttributeTypes"
       [additionalLabelspace]="0"
-    >
-    </atlas-select>
+    />
   </div>
 
   <div class="d-flex flex-column col-6">
@@ -32,7 +30,7 @@
       controlName="additionalInformation"
       maxChars="2000"
       info="PRM.PLATFORMS.REDUCED.ADDITIONAL_INFORMATION_INFO"
-    ></atlas-form-comment>
+    />
   </div>
 </div>
 
@@ -47,8 +45,7 @@
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="booleanOptionalAttributeTypes"
       [additionalLabelspace]="0"
-    >
-    </atlas-select>
+    />
   </div>
 
   <div class="d-flex flex-column col-6 pe-3">
@@ -62,8 +59,7 @@
         optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
         [options]="booleanOptionalAttributeTypes"
         [additionalLabelspace]="0"
-      >
-      </atlas-select>
+      />
     }
   </div>
 </div>
@@ -83,17 +79,14 @@
       [formGroup]="form"
       controlName="inclinationLongitudinal"
       fieldLabel="PRM.PLATFORMS.REDUCED.INCLINATION_LONG"
-    >
-    </atlas-text-field>
+    />
   </div>
   <div class="d-flex flex-column col-6 pt-5" [formGroup]="form">
     <mat-checkbox formControlName="partialElevation" data-cy="partialElevation">
       {{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION' | translate }}
-      <atlas-form-info-icon
-        infoTitle="{{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION_INFO' | translate }}"
-      ></atlas-form-info-icon>
+      <atlas-form-info-icon infoTitle="{{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION_INFO' | translate }}" />
     </mat-checkbox>
-    <atlas-field-error [control]="form.get('partialElevation')"></atlas-field-error>
+    <atlas-field-error [control]="form.get('partialElevation')" />
   </div>
 </div>
 <div class="col-12 d-flex mt-4">
@@ -108,8 +101,7 @@
       optionTranslateLabelPrefix="PRM.ENUMS.INFO_OPPORTUNITY_TYPES."
       [options]="infoOpportunities"
       [additionalLabelspace]="0"
-    >
-    </atlas-select>
+    />
   </div>
 </div>
 
@@ -135,8 +127,7 @@
       ]"
       controlName="height"
       fieldLabel="PRM.PLATFORMS.REDUCED.HEIGHT"
-    >
-    </atlas-text-field>
+    />
   </div>
   <div class="d-flex flex-column col-4 pe-3">
     <atlas-text-field
@@ -152,8 +143,7 @@
       ]"
       controlName="wheelchairAreaLength"
       fieldLabel="PRM.PLATFORMS.REDUCED.WHEELCHAIR_AREA_LENGTH"
-    >
-    </atlas-text-field>
+    />
   </div>
   <div class="d-flex flex-column col-4">
     <atlas-text-field
@@ -169,7 +159,6 @@
       ]"
       controlName="wheelchairAreaWidth"
       fieldLabel="PRM.PLATFORMS.REDUCED.WHEELCHAIR_AREA_WIDTH"
-    >
-    </atlas-text-field>
+    />
   </div>
 </div>

@@ -2,7 +2,7 @@
   <div class="d-flex">
     @if (showDownloadCsvButton && isTimetableHearingYearFound()) {
       <div class="d-flex">
-        <atlas-spacer height="15px"></atlas-spacer>
+        <atlas-spacer height="15px" />
         <atlas-button
           (buttonClicked)="openTthExportAnonymizationChoiceDialog()"
           [canton]="cantonShort()"
@@ -13,7 +13,7 @@
           buttonType="cantonWritePermission"
         >
           <ng-template #rightIcon>
-            <atlas-download-icon [readonly]="!isCheckBoxModeActive" class="ps-2"></atlas-download-icon>
+            <atlas-download-icon [readonly]="!isCheckBoxModeActive" class="ps-2" />
           </ng-template>
         </atlas-button>
       </div>
@@ -21,7 +21,7 @@
 
     @if (showManageTimetableHearingButton && isTimetableHearingYearFound()) {
       <div class="d-flex left-position ms-3">
-        <atlas-spacer height="15px"></atlas-spacer>
+        <atlas-spacer height="15px" />
         <atlas-button
           (buttonClicked)="manageTimetableHearing()"
           [disabled]="isCheckBoxModeActive"
@@ -30,14 +30,13 @@
           buttonText="TTH.BUTTON.MANAGE_TIMETABLE_HEARING"
           buttonType="manageTimetableHearing"
           wrapperStyleClass="text-align-end"
-        >
-        </atlas-button>
+        />
       </div>
     }
 
     @if (showAddNewStatementButton && isTimetableHearingYearFound() && timetableYear().statementCreatableInternal) {
       <div class="d-flex left-position ms-3">
-        <atlas-spacer height="15px"></atlas-spacer>
+        <atlas-spacer height="15px" />
         <atlas-button
           (buttonClicked)="addNewStatement()"
           [canton]="cantonShort()"
@@ -47,14 +46,13 @@
           buttonText="TTH.BUTTON.ADD_NEW_STATEMENT"
           buttonType="cantonWritePermission"
           wrapperStyleClass="text-align-end"
-        >
-        </atlas-button>
+        />
       </div>
     }
 
     @if (showStartTimetableHearingButton && isTimetableHearingYearFound()) {
       <div class="d-flex ms-3">
-        <atlas-spacer height="15px"></atlas-spacer>
+        <atlas-spacer height="15px" />
         <atlas-button
           (buttonClicked)="startTimetableHearing()"
           applicationType="TIMETABLE_HEARING"
@@ -62,14 +60,13 @@
           buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
           buttonText="TTH.BUTTON.START_TIMETABLE_HEARING"
           buttonType="supervisorButton"
-        >
-        </atlas-button>
+        />
       </div>
     }
 
     @if (showAddNewTimetableHearingButton && isHearingYearPlanned()) {
       <div class="d-flex left-position ms-3">
-        <atlas-spacer height="15px"></atlas-spacer>
+        <atlas-spacer height="15px" />
         <atlas-button
           (buttonClicked)="addNewTimetableHearing()"
           applicationType="TIMETABLE_HEARING"
@@ -78,8 +75,7 @@
           buttonText="TTH.BUTTON.ADD_NEW_TIMETABLE_HEARING"
           buttonType="supervisorButton"
           wrapperStyleClass="text-align-end"
-        >
-        </atlas-button>
+        />
       </div>
     }
   </div>
@@ -100,11 +96,7 @@
     data-cy="tthTable"
   >
     <ng-template #customCell let-row let-column="column">
-      <atlas-statement-overview-menu
-        [row]="row"
-        [column]="column"
-        [hearingStatus]="hearingStatus()"
-      ></atlas-statement-overview-menu>
+      <atlas-statement-overview-menu [row]="row" [column]="column" [hearingStatus]="hearingStatus()" />
     </ng-template>
     @if (isTimetableHearingYearFound()) {
       <div class="d-flex flex-row col-12 mb-3 mt-5">
@@ -205,8 +197,7 @@
                   dataCy="collect-status-change-action-type"
                   optionTranslateLabelPrefix="TTH.STATEMENT_STATUS."
                   placeHolderLabel="TTH.DROPDOWN.COLLECTING_STATUS_CHANGE_ACTION.PLACEHOLDER"
-                >
-                </atlas-select>
+                />
               </div>
             }
 

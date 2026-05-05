@@ -14,7 +14,7 @@
           <span data-cy="detail-subheading-id">{{ lineVersionSnapshot.slnid }}</span>
           <span data-cy="total-range">
             -
-            <atlas-date-range-text [dateRange]="lineVersionSnapshot"></atlas-date-range-text>
+            <atlas-date-range-text [dateRange]="lineVersionSnapshot" />
           </span>
         </div>
 
@@ -26,14 +26,14 @@
           [formGroup]="workflowStartedFormGroup"
           commentLabel="WORKFLOW.START.COMMENT"
           personLabel="WORKFLOW.START.KEY_DATA"
-        ></atlas-workflow-form>
+        />
         @if (showWorkflowCheckForm) {
           <atlas-workflow-form
             [formGroup]="workflowCheckFormGroup"
             [hasMail]="false"
             commentLabel="WORKFLOW.CHECK.COMMENT"
             personLabel="WORKFLOW.CHECK.KEY_DATA"
-          ></atlas-workflow-form>
+          />
         }
 
         <div class="mt-5 mb-3">
@@ -48,7 +48,7 @@
           }
           <a (click)="navigateToLine()" class="font-bold-base color-primary-400 mb-2" target="_blank"
             >{{ 'LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_VERSION' | translate }}
-            <atlas-link-icon></atlas-link-icon>
+            <atlas-link-icon />
           </a>
         </div>
 
@@ -60,13 +60,9 @@
             {{ 'LIDI.LINE.TYPES.' + lineVersionSnapshot.lineType | translate }}
           </span>
         </div>
-        <atlas-line-detail-form
-          class="detail-wrapper"
-          [form]="lineVersionSnapshotForm"
-          [newRecord]="false"
-        ></atlas-line-detail-form>
+        <atlas-line-detail-form class="detail-wrapper" [form]="lineVersionSnapshotForm" [newRecord]="false" />
         <div class="mt-5">
-          <atlas-user-detail-info [record]="lineVersionSnapshot" [applicationType]="'LIDI'"></atlas-user-detail-info>
+          <atlas-user-detail-info [record]="lineVersionSnapshot" [applicationType]="'LIDI'" />
         </div>
       </div>
     </atlas-detail-page-content>
@@ -77,8 +73,7 @@
         buttonDataCy="back-to-overview"
         buttonText="COMMON.BACK_TO_OVERVIEW"
         buttonType="whiteFooterNonEdit"
-      >
-      </atlas-button>
+      />
     </atlas-detail-footer>
   </atlas-detail-page-container>
 </div>

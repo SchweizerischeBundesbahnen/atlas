@@ -80,7 +80,7 @@ class MockMatDatepickerInputComponent {
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'mat-chip-grid',
-  template: '<ng-content></ng-content>',
+  template: '<ng-content />',
 })
 class MockMatChipGridComponent {
   @Input() disabled = false;

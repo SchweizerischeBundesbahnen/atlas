@@ -2,7 +2,7 @@
   <div class="col-12 d-flex">
     <div class="d-flex flex-column col-5">
       <div class="d-flex flex-column col-11 me-3 mb-3">
-        <atlas-form-comment [formGroup]="formGroup" [label]="commentLabel" [required]="true"></atlas-form-comment>
+        <atlas-form-comment [formGroup]="formGroup" [label]="commentLabel" [required]="true" />
       </div>
     </div>
     <div class="w-50">
@@ -15,8 +15,7 @@
             controlName="firstName"
             data-cy="workflowPersonFirstName"
             fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
-          >
-          </atlas-text-field>
+          />
         </div>
         <div class="d-flex flex-column col-7 pe-3">
           <atlas-text-field
@@ -25,8 +24,7 @@
             controlName="lastName"
             data-cy="workflowPersonLastName"
             fieldLabel="WORKFLOW.PERSON.LASTNAME"
-          >
-          </atlas-text-field>
+          />
         </div>
       </div>
       <div class="col-12 d-flex">
@@ -37,8 +35,7 @@
             controlName="function"
             data-cy="workflowPersonFunction"
             fieldLabel="WORKFLOW.PERSON.FUNCTION"
-          >
-          </atlas-text-field>
+          />
         </div>
         @if (hasMail) {
           <div class="d-flex flex-column col-7 pe-3">
@@ -48,8 +45,7 @@
               controlName="mail"
               data-cy="workflowPersonMail"
               fieldLabel="WORKFLOW.PERSON.MAIL"
-            >
-            </atlas-text-field>
+            />
           </div>
         }
       </div>

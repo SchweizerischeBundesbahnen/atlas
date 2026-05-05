@@ -9,7 +9,7 @@
         applicationType="LIDI"
         businessOrganisation="{{ lineRecord.businessOrganisation }}"
         wrapperStyleClass="me-3"
-      ></atlas-button>
+      />
       @if (lineRecord.status === 'DRAFT') {
         <atlas-button
           (buttonClicked)="skipWorkflow()"
@@ -17,7 +17,7 @@
           buttonDataCy="workflow-skip"
           buttonText="WORKFLOW.BUTTON.SKIP"
           buttonType="skipworkflow"
-        ></atlas-button>
+        />
       }
     </div>
   }
@@ -29,7 +29,7 @@
         buttonDataCy="workflow-open"
         buttonText="WORKFLOW.BUTTON.OPEN"
         wrapperStyleClass="me-3"
-      ></atlas-button>
+      />
     </div>
   }
 </div>

@@ -25,7 +25,7 @@
       <div class="mb-1">
         <mat-label class="font-bold-lg">{{ 'USER_ADMIN.TABLE_HEADER' | translate }} </mat-label>
       </div>
-      <atlas-user-select (selectionChange)="onUserFilterChanged($event)" [form]="userSearchForm"></atlas-user-select>
+      <atlas-user-select (selectionChange)="onUserFilterChanged($event)" [form]="userSearchForm" />
     } @else if (selectedSearch === 'FILTER') {
       <div class="d-flex flex-row">
         <atlas-bo-select
@@ -34,7 +34,7 @@
           [formGroup]="boForm"
           [formModus]="false"
           class="col-6 pe-1"
-        ></atlas-bo-select>
+        />
 
         <div class="d-flex flex-column col-6 ps-3">
           <atlas-select
@@ -45,8 +45,7 @@
             optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
             [options]="applicationBoOptions"
             [multiple]="true"
-          >
-          </atlas-select>
+          />
         </div>
       </div>
     } @else {
@@ -61,8 +60,7 @@
             [options]="cantonOptions"
             [multiple]="true"
             [displayExtractor]="getCantonAbbreviation"
-          >
-          </atlas-select>
+          />
         </div>
 
         <div class="d-flex flex-column col-6 ps-3">
@@ -74,11 +72,10 @@
             optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
             [options]="applicationCantonOptions"
             [multiple]="true"
-          >
-          </atlas-select>
+          />
         </div>
       </div>
     }
   </div>
 </atlas-table>
-<router-outlet></router-outlet>
+<router-outlet />

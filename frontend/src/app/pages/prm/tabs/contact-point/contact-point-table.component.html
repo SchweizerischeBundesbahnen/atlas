@@ -7,7 +7,7 @@
       buttonText="PRM.CONTACT_POINTS.BUTTON_NEW"
       buttonType="createCheckingPermission"
       wrapperStyleClass="mb-5"
-    ></atlas-button>
+    />
     <atlas-table
       data-cy="contact-points-overview-table"
       [tableData]="contactPoints"
@@ -17,7 +17,7 @@
       (editElementEvent)="rowClicked($event)"
       (tableChanged)="getOverview($event)"
       (tableInitialized)="getOverview($event)"
-    ></atlas-table>
+    />
   </div>
   <atlas-detail-footer>
     <atlas-button
@@ -26,7 +26,6 @@
       buttonType="whiteFooterNonEdit"
       (buttonClicked)="closeSidePanel()"
       [footerEdit]="false"
-    >
-    </atlas-button>
+    />
   </atlas-detail-footer>
 }

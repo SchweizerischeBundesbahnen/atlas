@@ -1,4 +1,4 @@
-<atlas-dialog-close class="pe-2" (clicked)="cancel()"></atlas-dialog-close>
+<atlas-dialog-close class="pe-2" (clicked)="cancel()" />
 
 <atlas-dialog-content>
   <h1>{{ 'WORKFLOW.DECISION.DIALOG_TITLE' | translate }}</h1>
@@ -20,8 +20,7 @@
           [required]="true"
           controlName="mail"
           fieldLabel="WORKFLOW.PERSON.MAIL"
-        >
-        </atlas-text-field>
+        />
         <div class="d-flex justify-content-center">
           <button class="atlas-primary-btn me-3" (click)="cancel()">
             {{ 'COMMON.CANCEL' | translate }}
@@ -46,8 +45,7 @@
           [required]="true"
           controlName="pin"
           fieldLabel="WORKFLOW.DECISION.PIN_CODE"
-        >
-        </atlas-text-field>
+        />
         <p>{{ 'WORKFLOW.DECISION.NO_PIN_RECEIVED' | translate }}</p>
         <ul>
           <li>{{ 'WORKFLOW.DECISION.CHECK_YOUR_SPAM' | translate }}</li>
@@ -75,7 +73,7 @@
     </mat-step>
 
     <mat-step [completed]="isStepThreeCompl$ | async" [label]="'WORKFLOW.DECISION.DECISION' | translate">
-      <atlas-decision-form [form]="decision"></atlas-decision-form>
+      <atlas-decision-form [form]="decision" />
 
       <div class="d-flex justify-content-center mt-4">
         <button class="atlas-primary-btn me-3" (click)="cancel()">
@@ -89,4 +87,4 @@
   </mat-stepper>
 </atlas-dialog-content>
 
-<atlas-loading-spinner [isLoading]="loading"></atlas-loading-spinner>
+<atlas-loading-spinner [isLoading]="loading" />

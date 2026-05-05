@@ -1,4 +1,4 @@
-<atlas-dialog-close (clicked)="closeDialog()"></atlas-dialog-close>
+<atlas-dialog-close (clicked)="closeDialog()" />
 <atlas-dialog-content>
   <div class="mb-5 dialog-title">
     <span class="font-bold-4xl">{{ titleTranslationKey | translate }}</span>
@@ -13,8 +13,7 @@
           data-cy="stopPointRejectWorkflowPersonFirstName"
           fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
           class="col-5"
-        >
-        </atlas-text-field>
+        />
         <atlas-text-field
           [formGroup]="formGroup"
           [required]="true"
@@ -22,8 +21,7 @@
           data-cy="stopPointRejectWorkflowPersonLastName"
           fieldLabel="WORKFLOW.PERSON.LASTNAME"
           class="col-5"
-        >
-        </atlas-text-field>
+        />
       </div>
       <div class="d-flex justify-content-between mt-2">
         <atlas-text-field
@@ -33,8 +31,7 @@
           data-cy="stopPointRejectWorkflowPersonOrganisation"
           fieldLabel="WORKFLOW.PERSON.ORGANISATION"
           class="col-5"
-        >
-        </atlas-text-field>
+        />
         <atlas-text-field
           [formGroup]="formGroup"
           [required]="true"
@@ -42,8 +39,7 @@
           data-cy="stopPointRejectWorkflowPersonMail"
           fieldLabel="WORKFLOW.PERSON.MAIL"
           class="col-5"
-        >
-        </atlas-text-field>
+        />
       </div>
       <div class="d-flex flex-column col-12 pb-3">
         <atlas-form-comment
@@ -51,7 +47,7 @@
           label="WORKFLOW.START.COMMENT"
           [required]="true"
           controlName="motivationComment"
-        ></atlas-form-comment>
+        />
       </div>
     </div>
   </form>

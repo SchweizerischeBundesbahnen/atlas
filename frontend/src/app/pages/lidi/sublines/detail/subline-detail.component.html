@@ -18,7 +18,7 @@
           <span data-cy="detail-subheading-id">{{ selectedVersion.slnid }}</span>
           <span data-cy="total-range">
             -
-            <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
+            <atlas-date-range-text [dateRange]="maxValidity" />
           </span>
         </div>
 
@@ -30,7 +30,7 @@
                 [currentRecord]="selectedVersion!"
                 [records]="versions!"
                 [switchDisabled]="form.enabled"
-              ></atlas-switch-version>
+              />
             }
           </div>
         </div>
@@ -74,7 +74,7 @@
             @if (!isNew) {
               <div class="mainline-link d-flex flex-column">
                 <a [attr.href]="mainlineUrl()" target="_blank" rel="noopener">
-                  <atlas-link-icon></atlas-link-icon>
+                  <atlas-link-icon />
                 </a>
               </div>
             }
@@ -117,8 +117,7 @@
               [options]="TYPE_OPTIONS"
               [required]="true"
               [additionalLabelspace]="24"
-            >
-            </atlas-select>
+            />
           </div>
 
           @if (form.controls.sublineType.value === 'CONCESSION') {
@@ -132,8 +131,7 @@
                 [options]="CONCESSION_TYPE_OPTIONS"
                 [required]="true"
                 [additionalLabelspace]="24"
-              >
-              </atlas-select>
+              />
             </div>
           }
 
@@ -154,8 +152,7 @@
                 [required]="true"
                 controlName="swissSublineNumber"
                 fieldLabel="LIDI.SWISS_SUBLINE_NUMBER"
-              >
-              </atlas-text-field>
+              />
             </div>
           }
 
@@ -176,7 +173,7 @@
               controlName="linienId"
               fieldLabel="LIDI.LINE.LINE_ID"
               infoIconTitle="LIDI.LINE.LINE_ID_INFO"
-            ></atlas-text-field>
+            />
           </div>
         }
       </div>
@@ -198,8 +195,7 @@
             controlName="description"
             fieldLabel="LIDI.SUBLINE.DESCRIPTION"
             [required]="true"
-          >
-          </atlas-text-field>
+          />
         </div>
 
         <div class="d-flex flex-column col-8">
@@ -220,14 +216,13 @@
             [formGroup]="form"
             controlName="longName"
             fieldLabel="LIDI.LONG_NAME"
-          >
-          </atlas-text-field>
+          />
         </div>
       </div>
 
       <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
       <div class="w-50">
-        <atlas-form-date-range [formGroup]="form" [showMaxValidityAutoFill]="false"></atlas-form-date-range>
+        <atlas-form-date-range [formGroup]="form" [showMaxValidityAutoFill]="false" />
       </div>
 
       <div class="col-12 d-flex pt-3 pb-3">
@@ -237,13 +232,13 @@
             [sboidsRestrictions]="boSboidRestriction"
             controlName="businessOrganisation"
             data-cy="businessOrganisation"
-          ></atlas-bo-select>
+          />
         </div>
       </div>
 
       <div class="mt-5">
         @if (!isNew) {
-          <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'LIDI'"></atlas-user-detail-info>
+          <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'LIDI'" />
         }
       </div>
     </div>
@@ -256,8 +251,7 @@
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
       buttonType="whiteFooterNonEdit"
-    >
-    </atlas-button>
+    />
     <atlas-button
       (buttonClicked)="toggleEdit()"
       [footerEdit]="form.enabled"
@@ -265,8 +259,7 @@
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="me-3"
-    >
-    </atlas-button>
+    />
     <atlas-button
       (click)="save()"
       [disabled]="!form.dirty"
@@ -275,8 +268,7 @@
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
-    >
-    </atlas-button>
+    />
     @if (!isNew) {
       <atlas-button
         (buttonClicked)="toggleEdit()"
@@ -287,9 +279,9 @@
         buttonText="COMMON.EDIT"
         buttonType="edit"
         wrapperStyleClass="ms-3"
-      ></atlas-button>
+      />
       @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-        <atlas-revoke-button (revokeClicked)="revoke()" applicationType="LIDI"></atlas-revoke-button>
+        <atlas-revoke-button (revokeClicked)="revoke()" applicationType="LIDI" />
       }
       <atlas-button
         (buttonClicked)="delete()"
@@ -298,8 +290,7 @@
         buttonText="COMMON.DELETE"
         buttonType="delete"
         wrapperStyleClass="ms-3"
-      >
-      </atlas-button>
+      />
     }
   </atlas-detail-footer>
 </atlas-detail-page-container>

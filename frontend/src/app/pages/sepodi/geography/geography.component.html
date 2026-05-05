@@ -3,10 +3,8 @@
   {{ geographyOptional ? '' : '*' }}
 
   @if (geographyOptional) {
-    <atlas-form-info-icon
-      infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}"
-    ></atlas-form-info-icon>
-    <atlas-slide-toggle [(toggle)]="geographyActive" [disabled]="!editMode"></atlas-slide-toggle>
+    <atlas-form-info-icon infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}" />
+    <atlas-slide-toggle [(toggle)]="geographyActive" [disabled]="!editMode" />
   }
 </div>
 
@@ -30,8 +28,7 @@
                 controlName="east"
                 fieldLabel="SEPODI.GEOLOCATION.LV95.EAST"
                 [atlasRemoveChars]="['\'']"
-              >
-              </atlas-text-field>
+              />
             </div>
             <div class="col-3 pe-3">
               <atlas-text-field
@@ -44,8 +41,7 @@
                 controlName="north"
                 fieldLabel="SEPODI.GEOLOCATION.LV95.NORTH"
                 [atlasRemoveChars]="['\'']"
-              >
-              </atlas-text-field>
+              />
             </div>
             <div class="col-3">
               <atlas-text-field
@@ -58,8 +54,7 @@
                 controlName="height"
                 fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
                 [atlasRemoveChars]="['\'']"
-              >
-              </atlas-text-field>
+              />
             </div>
           </div>
         }
@@ -100,8 +95,7 @@
                 [required]="true"
                 controlName="east"
                 fieldLabel="SEPODI.GEOLOCATION.WGS84.EAST"
-              >
-              </atlas-text-field>
+              />
             </div>
             <div class="col-3 pe-3">
               <atlas-text-field
@@ -113,8 +107,7 @@
                 [required]="true"
                 controlName="north"
                 fieldLabel="SEPODI.GEOLOCATION.WGS84.NORTH"
-              >
-              </atlas-text-field>
+              />
             </div>
             <div class="col-3">
               <atlas-text-field
@@ -126,8 +119,7 @@
                 [required]="false"
                 controlName="height"
                 fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
-              >
-              </atlas-text-field>
+              />
             </div>
           </div>
         }

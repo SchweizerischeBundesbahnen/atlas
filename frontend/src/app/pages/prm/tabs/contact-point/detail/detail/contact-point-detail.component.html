@@ -6,7 +6,7 @@
   }
   @if (isNew) {
     <div class="new-sloid d-flex flex-column">
-      <atlas-sloid [formGroup]="form" [givenPrefix]="servicePoint.sloid + ':'" [numberColons]="0"></atlas-sloid>
+      <atlas-sloid [formGroup]="form" [givenPrefix]="servicePoint.sloid + ':'" [numberColons]="0" />
     </div>
   }
   @if (showVersionSwitch) {
@@ -17,7 +17,7 @@
           [currentRecord]="selectedVersion"
           [records]="versions"
           [showStatus]="false"
-        ></atlas-switch-version>
+        />
       </div>
     </div>
   }
@@ -30,11 +30,11 @@
     </h2>
   }
 
-  <atlas-contact-point-form [form]="form"></atlas-contact-point-form>
+  <atlas-contact-point-form [form]="form" />
   @if (!isNew) {
     <div>
-      <mat-divider class="mt-4 mb-4"></mat-divider>
-      <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'PRM'"></atlas-user-detail-info>
+      <mat-divider class="mt-4 mb-4" />
+      <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'PRM'" />
     </div>
   }
 </atlas-detail-page-content>
@@ -47,7 +47,7 @@
     buttonDataCy="back"
     buttonText="COMMON.BACK"
     buttonType="whiteFooterNonEdit"
-  ></atlas-button>
+  />
   @if (form.disabled) {
     <atlas-button
       (buttonClicked)="toggleEdit()"
@@ -57,7 +57,7 @@
       buttonText="COMMON.EDIT"
       buttonType="edit-service-point-dependent"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
   }
   <atlas-button
     (buttonClicked)="toggleEdit()"
@@ -65,7 +65,7 @@
     buttonDataCy="cancel"
     buttonText="COMMON.CANCEL"
     buttonType="whiteFooterEdit"
-  ></atlas-button>
+  />
   <atlas-button
     (buttonClicked)="save()"
     [footerEdit]="form.enabled"
@@ -74,5 +74,5 @@
     buttonText="COMMON.SAVE"
     buttonType="whiteFooterEdit"
     wrapperStyleClass="ms-3"
-  ></atlas-button>
+  />
 </atlas-detail-footer>

@@ -9,8 +9,7 @@
         (buttonClicked)="addSectorGroup()"
         wrapperStyleClass="mb-5"
         [disabled]="!hasAtLeastTwoSectors"
-      >
-      </atlas-button>
+      />
     }
 
     <div class="font-bold-2xl mt-5 mb-3">
@@ -26,7 +25,7 @@
       (editElementEvent)="editSectorGroup($event)"
       (tableChanged)="getSectorGroupOverview($event)"
       (tableInitialized)="getSectorGroupOverview($event)"
-    ></atlas-table>
+    />
   </div>
 </atlas-detail-page-content>
 <atlas-detail-footer>
@@ -35,6 +34,5 @@
     buttonText="COMMON.BACK"
     buttonType="whiteFooterNonEdit"
     (buttonClicked)="backToServicePoint()"
-  >
-  </atlas-button>
+  />
 </atlas-detail-footer>

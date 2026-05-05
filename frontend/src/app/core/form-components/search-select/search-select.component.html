@@ -1,5 +1,5 @@
 <div [formGroup]="formGroup">
-  <ng-content></ng-content>
+  <ng-content />
   <ng-select
     #ngSelect
     (change)="changeTrigger.emit($event)"
@@ -16,12 +16,12 @@
     typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
   >
     <ng-template let-item="item" ng-label-tmp>
-      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"></ng-container>
+      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }" />
     </ng-template>
     <ng-template let-item="item" ng-option-tmp>
-      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"></ng-container>
+      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }" />
     </ng-template>
   </ng-select>
 
-  <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
+  <atlas-field-error [control]="formGroup.get(controlName)" />
 </div>

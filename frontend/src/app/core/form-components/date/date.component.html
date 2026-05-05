@@ -16,7 +16,7 @@
       [required]="required"
       [fieldLabel]="label"
       [infoIconTitle]="infoIconTitle"
-    ></atlas-label-field>
+    />
     <div class="text-field-flex">
       <input
         [matDatepicker]="datePicker"
@@ -32,10 +32,10 @@
           (keydown.enter)="datePicker.open()"
           (keydown.space)="datePicker.open()"
           [enabled]="controlFrom.enabled"
-        ></atlas-form-date-icon>
-        <mat-datepicker #datePicker> </mat-datepicker>
+        />
+        <mat-datepicker #datePicker />
       </div>
     </div>
-    <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
+    <atlas-field-error [control]="formGroup.get(controlName)" />
   </div>
 </div>

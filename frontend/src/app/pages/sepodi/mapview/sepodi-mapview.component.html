@@ -12,7 +12,7 @@
 
 <div [ngClass]="showSearchPanel ? 'search-open' : 'search-close'" class="page-with-map">
   <div #detailContainer class="detail-container">
-    <router-outlet (activate)="setRouteActive(true)" (deactivate)="setRouteActive(false)"></router-outlet>
+    <router-outlet (activate)="setRouteActive(true)" (deactivate)="setRouteActive(false)" />
   </div>
-  <atlas-map class="map-container" [isSidePanelOpen]="isSidePanelOpen"></atlas-map>
+  <atlas-map class="map-container" [isSidePanelOpen]="isSidePanelOpen" />
 </div>

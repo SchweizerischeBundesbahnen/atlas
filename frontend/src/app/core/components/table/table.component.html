@@ -1,11 +1,11 @@
 <div class="overview-table pb-xl-5">
-  <atlas-loading-spinner [isLoading]="isLoading"></atlas-loading-spinner>
+  <atlas-loading-spinner [isLoading]="isLoading" />
 
   @if (showTableFilter) {
-    <atlas-table-filter (searchEvent)="searchData()" [filterConfigurations]="tableFilterConfig"></atlas-table-filter>
+    <atlas-table-filter (searchEvent)="searchData()" [filterConfigurations]="tableFilterConfig" />
   }
 
-  <ng-content></ng-content>
+  <ng-content />
 
   <table
     (matSortChange)="sortData($event)"
@@ -36,7 +36,7 @@
               (click)="$event.stopPropagation()"
               [checked]="isAllSelected()"
               data-cy="tableCheckboxAll"
-            ></mat-checkbox>
+            />
           } @else {
             {{ column.headerTitle | translate }}
           }
@@ -74,7 +74,7 @@
               [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"
               [options]="column.dropdown.options"
               [value]="value[column.value]"
-            ></atlas-select>
+            />
           </td>
         }
         @if (column.checkbox) {
@@ -83,7 +83,7 @@
               (change)="toggleCheckBox($event, row)"
               (click)="$event.stopPropagation()"
               [checked]="checkBoxSelection.isSelected(row)"
-            ></mat-checkbox>
+            />
           </td>
         }
         @if (column.button) {
@@ -118,7 +118,7 @@
             class="table-cell bordered-cell"
             mat-cell
           >
-            <ng-container *ngTemplateOutlet="customCell(); context: { $implicit: row, column: column }"></ng-container>
+            <ng-container *ngTemplateOutlet="customCell(); context: { $implicit: row, column: column }" />
           </td>
         }
 
@@ -161,7 +161,6 @@
       [pageSizeOptions]="pageSizeOptions"
       [pageSize]="pageSize"
       class="font-regular-base"
-    >
-    </mat-paginator>
+    />
   }
 </div>

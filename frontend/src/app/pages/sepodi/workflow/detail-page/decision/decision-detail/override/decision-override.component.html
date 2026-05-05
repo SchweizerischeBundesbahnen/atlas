@@ -11,8 +11,7 @@
           [required]="true"
           controlName="firstName"
           fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
-        >
-        </atlas-text-field>
+        />
       </div>
       <div class="col-5" [title]="formGroup.controls.lastName.value ?? ''">
         <atlas-text-field
@@ -20,8 +19,7 @@
           [required]="true"
           controlName="lastName"
           fieldLabel="WORKFLOW.PERSON.LASTNAME"
-        >
-        </atlas-text-field>
+        />
       </div>
     </div>
 
@@ -32,7 +30,7 @@
       <mat-radio-button [value]="JudgementType.No">
         {{ 'WORKFLOW.DECISION.OVERRIDE_DECLINE' | translate }}
       </mat-radio-button>
-      <atlas-field-error [control]="formGroup.get('fotJudgement')"></atlas-field-error>
+      <atlas-field-error [control]="formGroup.get('fotJudgement')" />
     </mat-radio-group>
 
     <div class="mt-3">
@@ -41,7 +39,7 @@
         [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
         controlName="fotMotivation"
         [required]="true"
-      ></atlas-form-comment>
+      />
     </div>
   </div>
 }

@@ -6,8 +6,7 @@
     wrapperStyleClass="mb-5"
     (buttonClicked)="newBusinessOrganisation()"
     buttonText="BODI.BUSINESS_ORGANISATION.NEW"
-  >
-  </atlas-button>
+  />
 
   <nav mat-tab-nav-bar class="tabs" data-cy="tabs" [tabPanel]="tabPanel">
     @for (tab of TABS; track tab) {
@@ -24,7 +23,7 @@
   </nav>
   <div class="white-table-container-tabs">
     <mat-tab-nav-panel #tabPanel>
-      <router-outlet></router-outlet>
+      <router-outlet />
     </mat-tab-nav-panel>
   </div>
 </div>

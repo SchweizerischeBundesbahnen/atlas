@@ -13,7 +13,7 @@
       [required]="required"
       fieldLabel="{{ label }}"
       infoIconTitle="{{ info }}"
-    ></atlas-label-field>
+    />
   }
   <textarea
     [attr.data-cy]="controlName"
@@ -22,5 +22,5 @@
     rows="7"
     [readonly]="readonly"
   ></textarea>
-  <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
+  <atlas-field-error [control]="formGroup.get(controlName)" />
 </div>

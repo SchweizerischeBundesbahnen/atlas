@@ -1,17 +1,17 @@
 @if (authenticated$ | async) {
   <div class="d-flex flex-column full-height-no-scroll">
-    <atlas-loading-spinner [isLoading]="!!(loadingSpinnerService.loading | async)"> </atlas-loading-spinner>
-    <atlas-header></atlas-header>
+    <atlas-loading-spinner [isLoading]="!!(loadingSpinnerService.loading | async)" />
+    <atlas-header />
     <div class="app-body">
       <mat-sidenav-container class="page-container">
         <mat-sidenav mode="side" [opened]="true">
           <mat-nav-list>
-            <atlas-side-nav></atlas-side-nav>
+            <atlas-side-nav />
           </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content>
           <div id="scrollbar-content-container" class="full-height">
-            <router-outlet></router-outlet>
+            <router-outlet />
           </div>
         </mat-sidenav-content>
       </mat-sidenav-container>

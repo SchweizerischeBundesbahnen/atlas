@@ -1,4 +1,4 @@
-<atlas-dialog-close class="pe-2" (clicked)="close()"></atlas-dialog-close>
+<atlas-dialog-close class="pe-2" (clicked)="close()" />
 
 <atlas-dialog-content>
   <div class="font-bold-4xl mb-1">
@@ -22,12 +22,12 @@
           **
         }
       </mat-radio-button>
-      <atlas-field-error [control]="form.get('judgement')"></atlas-field-error>
+      <atlas-field-error [control]="form.get('judgement')" />
     </mat-radio-group>
 
     @if (form.controls.judgement.value === 'YES') {
       <div class="d-flex flex-column pb-3">
-        <atlas-label-field fieldLabel="TERMINATION_WORKFLOW.DECISION.TERMINATION_DATE"></atlas-label-field>
+        <atlas-label-field fieldLabel="TERMINATION_WORKFLOW.DECISION.TERMINATION_DATE" />
 
         <div class="text-field-flex">
           <input
@@ -44,11 +44,11 @@
               (keydown.enter)="terminationDatePicker.open()"
               (keydown.space)="terminationDatePicker.open()"
               [enabled]="form.enabled"
-            ></atlas-form-date-icon>
-            <mat-datepicker #terminationDatePicker></mat-datepicker>
+            />
+            <mat-datepicker #terminationDatePicker />
           </div>
         </div>
-        <atlas-field-error [control]="form.get('terminationDate')"></atlas-field-error>
+        <atlas-field-error [control]="form.get('terminationDate')" />
       </div>
     }
 
@@ -56,7 +56,7 @@
       [formGroup]="form"
       [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
       controlName="motivation"
-    ></atlas-form-comment>
+    />
   </form>
 
   @if (!readOnly) {

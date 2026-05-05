@@ -2,9 +2,7 @@
   <div class="d-flex flex-column">
     <span class="font-bold-sm pb-2">
       {{ 'SEPODI.SERVICE_POINTS.NAVIGATION' | translate }}
-      <atlas-form-info-icon
-        infoTitle="{{ 'SEPODI.SERVICE_POINTS.NAVIGATION_INFO' | translate }}"
-      ></atlas-form-info-icon>
+      <atlas-form-info-icon infoTitle="{{ 'SEPODI.SERVICE_POINTS.NAVIGATION_INFO' | translate }}" />
     </span>
   </div>
   <ng-select
@@ -16,6 +14,5 @@
     notFoundText="{{ resultMsg | translate }}"
     loadingText="{{ 'COMMON.LOADING' | translate }}"
     [clearable]="false"
-  >
-  </ng-select>
+  />
 </div>

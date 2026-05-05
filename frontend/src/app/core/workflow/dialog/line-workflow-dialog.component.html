@@ -1,4 +1,4 @@
-<atlas-dialog-close (clicked)="closeDialog()"></atlas-dialog-close>
+<atlas-dialog-close (clicked)="closeDialog()" />
 <atlas-dialog-content>
   <div class="mb-2">
     <span class="font-bold-4xl">{{ data.title | translate }}</span>
@@ -15,14 +15,11 @@
       [formGroup]="workflowStartFormGroup"
       commentLabel="WORKFLOW.START.COMMENT"
       personLabel="WORKFLOW.START.KEY_DATA"
-    ></atlas-workflow-form>
+    />
 
     @if (workflowId) {
       <div>
-        <atlas-workflow-check-form
-          [workflowId]="workflowId"
-          (workflowChecked)="closeDialog()"
-        ></atlas-workflow-check-form>
+        <atlas-workflow-check-form [workflowId]="workflowId" (workflowChecked)="closeDialog()" />
       </div>
     }
   </div>

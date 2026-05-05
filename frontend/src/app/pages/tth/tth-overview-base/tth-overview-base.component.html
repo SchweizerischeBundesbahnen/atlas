@@ -5,7 +5,7 @@
     [hearingStatus]="hearingStatus()"
     [isTimetableHearingYearFound]="isTimetableHearingYearFound()"
     [isPlannedTimetableHearingYearFound]="isPlannedTimetableHearingYearFound()"
-  ></atlas-timetable-hearing-overview-tab-heading>
+  />
 
   <div>
     <div class="d-flex flex-row col-12">
@@ -18,8 +18,7 @@
             [value]="yearSelection()"
             dataCy="selectTthYear"
             label="TTH.SELECT_YEAR"
-          >
-          </atlas-select>
+          />
         </div>
       }
 
@@ -49,5 +48,5 @@
     </div>
   </div>
 
-  <router-outlet></router-outlet>
+  <router-outlet />
 </div>

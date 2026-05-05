@@ -6,13 +6,13 @@
       [disabled]="isNew || !form.enabled"
       [showInfo]="true"
       [meansOfTransportToShow]="meansOfTransportToShow"
-    ></atlas-means-of-transport-picker>
+    />
   </div>
   <div class="col-6" [formGroup]="form">
     <mat-checkbox formControlName="interoperable" data-cy="interoperable">
       {{ 'PRM.STOP_POINTS.FORM.INTEROPERABLE' | translate }}
     </mat-checkbox>
-    <atlas-field-error [control]="form.get('interoperable')"></atlas-field-error>
+    <atlas-field-error [control]="form.get('interoperable')" />
   </div>
 </div>
 <div class="col-12 d-flex mt-4">
@@ -23,7 +23,7 @@
       info="PRM.STOP_POINTS.FORM.FREE_TEXT_INFO"
       controlName="freeText"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
   <div class="d-flex flex-column col-6">
     <atlas-text-field
@@ -37,13 +37,12 @@
       [formGroup]="form"
       controlName="url"
       fieldLabel="PRM.STOP_POINTS.FORM.URL"
-    >
-    </atlas-text-field>
+    />
   </div>
 </div>
 <div class="font-bold-2xl mt-3">{{ 'FORM.KEY_DATA' | translate }}</div>
 <div class="col-6 pb-3">
-  <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
+  <atlas-form-date-range [formGroup]="form" />
 </div>
 <div class="font-bold-2xl mt-3">
   {{ 'PRM.STOP_POINTS.FORM.ADDRESS_KEY_DATA' | translate }}
@@ -61,8 +60,7 @@
       [formGroup]="form"
       controlName="address"
       fieldLabel="PRM.STOP_POINTS.FORM.ADDRESS"
-    >
-    </atlas-text-field>
+    />
   </div>
   <div class="d-flex flex-column col-3 pe-2">
     <atlas-text-field
@@ -76,8 +74,7 @@
       [formGroup]="form"
       controlName="zipCode"
       fieldLabel="PRM.STOP_POINTS.FORM.ZIP"
-    >
-    </atlas-text-field>
+    />
   </div>
   <div class="d-flex flex-column col-3 ps-2">
     <atlas-text-field
@@ -91,8 +88,7 @@
       [formGroup]="form"
       controlName="city"
       fieldLabel="PRM.STOP_POINTS.FORM.CITY"
-    >
-    </atlas-text-field>
+    />
   </div>
 </div>
 <div class="font-bold-2xl mt-3">
@@ -109,8 +105,7 @@
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  />
   <atlas-select
     class="col-4 ps-3 pe-2"
     [formGroup]="form"
@@ -121,8 +116,7 @@
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  />
   <atlas-select
     class="col-4 ps-3"
     [formGroup]="form"
@@ -133,8 +127,7 @@
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  />
 </div>
 <div class="col-12 d-flex mt-4">
   <div class="d-flex flex-column col-6 pe-3">
@@ -143,7 +136,7 @@
       label="PRM.STOP_POINTS.FORM.ADDITIONAL_INFORMATION"
       controlName="additionalInformation"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
 </div>
 <div class="font-bold-2xl mt-3">
@@ -159,8 +152,7 @@
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="booleanOptionalAttributeTypes"
     [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  />
   <atlas-select
     class="col-4 ps-3 pe-2"
     [formGroup]="form"
@@ -171,8 +163,7 @@
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  />
   <atlas-select
     class="col-4 ps-3"
     [formGroup]="form"
@@ -183,8 +174,7 @@
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  />
 </div>
 <div class="col-12 d-flex mt-4">
   <div class="d-flex flex-column col-6 pe-3">
@@ -193,7 +183,7 @@
       label="PRM.STOP_POINTS.FORM.INFO_TICKET_MACHINE"
       controlName="infoTicketMachine"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
 </div>
 
@@ -213,8 +203,7 @@
     [options]="booleanOptionalAttributeTypes"
     [additionalLabelspace]="0"
     (selectChanged)="updateRelatedFieldsContent($event)"
-  >
-  </atlas-select>
+  />
   <atlas-select
     class="col-4 ps-3 pe-2"
     [formGroup]="form"
@@ -225,8 +214,7 @@
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  />
   <atlas-select
     class="col-4 ps-3"
     [formGroup]="form"
@@ -237,8 +225,7 @@
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  />
 </div>
 <div class="col-12 d-flex mt-4">
   <div class="d-flex flex-column col-6 pe-3">
@@ -248,7 +235,7 @@
       info="PRM.STOP_POINTS.FORM.ASSISTANCE_CONDITION_INFO"
       controlName="assistanceCondition"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
 </div>
 <div class="col-12 d-flex mt-5">
@@ -263,8 +250,7 @@
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="standardAttributeTypes"
       [additionalLabelspace]="28"
-    >
-    </atlas-select>
+    />
     <atlas-select
       class="pe-3 mt-3"
       [formGroup]="form"
@@ -275,8 +261,7 @@
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="standardAttributeTypes"
       [additionalLabelspace]="10"
-    >
-    </atlas-select>
+    />
   </div>
   <div class="d-flex flex-column col-6">
     <atlas-form-comment
@@ -285,6 +270,6 @@
       info="PRM.STOP_POINTS.FORM.ALTERNATIVE_TRANSPORT_CONDITION_INFO"
       controlName="alternativeTransportCondition"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
 </div>

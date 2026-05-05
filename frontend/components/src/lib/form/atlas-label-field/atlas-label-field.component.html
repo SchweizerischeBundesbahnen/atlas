@@ -1,18 +1,14 @@
 <div>
-  <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg"
-    >{{ fieldLabel | translate }}
-  </span>
+  <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg">{{ fieldLabel | translate }}</span>
   @if (infoIconLink) {
     <atlas-form-info-icon
       atlasInfoLink
       infoLinkTranslationKey="{{ infoIconLink }}"
       infoTitle="{{ infoIconTitle | translate }}"
-    ></atlas-form-info-icon>
+    />
   }
   @if (infoIconTitle && !infoIconLink) {
-    <atlas-form-info-icon
-      infoTitle="{{ infoIconTitle | translate }}"
-    ></atlas-form-info-icon>
+    <atlas-form-info-icon infoTitle="{{ infoIconTitle | translate }}" />
   }
 </div>
 @for (fieldExample of fieldExamples; track $index) {

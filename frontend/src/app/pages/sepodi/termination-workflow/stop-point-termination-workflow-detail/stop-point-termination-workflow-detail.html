@@ -7,7 +7,7 @@
     <div>
       <h1 class="font-bold-2xl pt-4">
         {{ 'TERMINATION_WORKFLOW.PROPOSAL' | translate }}
-        <atlas-spacer [divider]="true" height="0"></atlas-spacer>
+        <atlas-spacer [divider]="true" height="0" />
       </h1>
 
       <div class="row mb-3">
@@ -29,7 +29,7 @@
           <span class="font-bold-base">
             <em class="bi bi-geo-alt-fill"></em>{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
           </span>
-          <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
+          <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()" />
         </div>
         @if (
           [TerminationWorkflowStatus.Canceled, TerminationWorkflowStatus.TerminationNotApprovedClosed].includes(
@@ -41,7 +41,7 @@
               [formGroup]="form"
               label="TERMINATION_WORKFLOW.TERMINATION_ABORT_COMMENT"
               controlName="abortComment"
-            ></atlas-form-comment>
+            />
           </div>
         }
       </div>
@@ -53,28 +53,28 @@
             [formGroup]="form"
             controlName="boTerminationDate"
             fieldLabel="TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.TRANSPORT_COMPANY_DATE"
-          ></atlas-text-field>
+          />
 
           <atlas-text-field
             class="ms-5 col-3"
             [formGroup]="form"
             controlName="infoPlusTerminationDate"
             fieldLabel="TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.INFO+_DATE"
-          ></atlas-text-field>
+          />
 
           <atlas-text-field
             class="ms-5 col-3"
             [formGroup]="form"
             controlName="novaTerminationDate"
             fieldLabel="TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.NOVA_DATE"
-          ></atlas-text-field>
+          />
         </div>
         <div class="d-flex flex-column col-12 mb-5">
           <atlas-form-comment
             [formGroup]="form"
             label="SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT"
             controlName="workflowComment"
-          ></atlas-form-comment>
+          />
         </div>
       </div>
     </div>
@@ -97,16 +97,16 @@
       @for (formDecision of form.controls.examinants.controls; track $index) {
         <div class="row">
           <div class="col" [title]="formDecision.controls.firstName.value ?? ''">
-            <atlas-text-field [formGroup]="formDecision" controlName="firstName"></atlas-text-field>
+            <atlas-text-field [formGroup]="formDecision" controlName="firstName" />
           </div>
           <div class="col" [title]="formDecision.controls.lastName.value ?? ''">
-            <atlas-text-field [formGroup]="formDecision" controlName="lastName"></atlas-text-field>
+            <atlas-text-field [formGroup]="formDecision" controlName="lastName" />
           </div>
           <div class="col" [title]="formDecision.controls.organisation.value ?? ''">
-            <atlas-text-field [formGroup]="formDecision" controlName="organisation"></atlas-text-field>
+            <atlas-text-field [formGroup]="formDecision" controlName="organisation" />
           </div>
           <div class="col" [title]="formDecision.controls.examinantMail.value ?? ''">
-            <atlas-text-field [formGroup]="formDecision" controlName="examinantMail"></atlas-text-field>
+            <atlas-text-field [formGroup]="formDecision" controlName="examinantMail" />
           </div>
           <div class="col">
             @if (
@@ -138,11 +138,7 @@
       <div class="font-bold-base">
         {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.APPLICANT' | translate }}
       </div>
-      <atlas-user-detail-info
-        [record]="workflow"
-        [applicationType]="'SEPODI'"
-        [showEditor]="false"
-      ></atlas-user-detail-info>
+      <atlas-user-detail-info [record]="workflow" [applicationType]="'SEPODI'" [showEditor]="false" />
     </div>
   </atlas-detail-page-content>
   <atlas-detail-footer>
@@ -153,7 +149,7 @@
       buttonText="COMMON.BACK_TO_OVERVIEW"
       buttonType="whiteFooterNonEdit"
       wrapperStyleClass="me-3"
-    ></atlas-button>
+    />
     @if (showDecisionButton) {
       <atlas-button
         [footerEdit]="form.enabled"

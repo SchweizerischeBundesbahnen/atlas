@@ -10,14 +10,14 @@
   @if (!isNew) {
     <div class="font-xl mb-2">
       <span data-cy="total-range">
-        <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
+        <atlas-date-range-text [dateRange]="maxValidity" />
       </span>
     </div>
   }
   <div class="d-flex flex-row mb-5" data-cy="traffic-point-header-title">
     @if (!isNew) {
       <div class="d-flex flex-row mb-3 me-5">
-        <atlas-sloid-container [sloid]="selectedVersion.sloid!"></atlas-sloid-container>
+        <atlas-sloid-container [sloid]="selectedVersion.sloid!" />
       </div>
     }
     <div class="d-flex flex-column">
@@ -45,10 +45,10 @@
     </nav>
     <div class="tab-content">
       <mat-tab-nav-panel #tabPanel>
-        <router-outlet></router-outlet>
+        <router-outlet />
       </mat-tab-nav-panel>
     </div>
   } @else {
-    <router-outlet></router-outlet>
+    <router-outlet />
   }
 </atlas-detail-page-container>

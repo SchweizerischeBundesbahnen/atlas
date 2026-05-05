@@ -4,15 +4,7 @@
     {{ 'PRM.CONTACT_POINTS.CONTACT_POINT' | translate }}
     {{ isNew ? '' : selectedVersion.designation }}
   </div>
-  <atlas-prm-detail-panel
-    [isNew]="isNew"
-    [selectedVersion]="selectedVersion"
-    [maxValidity]="maxValidity"
-  ></atlas-prm-detail-panel>
+  <atlas-prm-detail-panel [isNew]="isNew" [selectedVersion]="selectedVersion" [maxValidity]="maxValidity" />
 
-  <atlas-prm-detail-with-relation-tab
-    [isNew]="isNew"
-    [isReduced]="isReduced"
-    detailTitle="PRM.TABS.CONTACT_POINT"
-  ></atlas-prm-detail-with-relation-tab>
+  <atlas-prm-detail-with-relation-tab [isNew]="isNew" [isReduced]="isReduced" detailTitle="PRM.TABS.CONTACT_POINT" />
 </atlas-detail-page-container>

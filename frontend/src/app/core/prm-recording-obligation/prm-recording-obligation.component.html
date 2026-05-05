@@ -5,10 +5,7 @@
         {{ 'PRM.STOP_POINTS.RECORDING_OBLIGATION' | translate }}
       </div>
       <div class="pt-1">
-        <atlas-slide-toggle
-          [toggle]="recordingObligation"
-          (toggleChange)="toggleRecordingObligation()"
-        ></atlas-slide-toggle>
+        <atlas-slide-toggle [toggle]="recordingObligation" (toggleChange)="toggleRecordingObligation()" />
       </div>
     </div>
   }
