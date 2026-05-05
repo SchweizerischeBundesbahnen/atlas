@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, inject } from '@angular/core';
+import { Component, HostListener, Input, inject, input } from '@angular/core';
 import { NotificationService } from '../../notification/notification.service';
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -11,8 +11,11 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class AtlasClipboardComponent {
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() value: string | undefined;
-  @Input() showMe = true;
+  readonly showMe = input(true);
 
   private notificationService = inject(NotificationService);
 

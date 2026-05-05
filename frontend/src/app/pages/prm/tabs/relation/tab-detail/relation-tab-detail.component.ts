@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ReadReferencePointVersion,
@@ -19,7 +19,6 @@ import { map, tap } from 'rxjs/operators';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { RelationFormGroup, RelationFormGroupBuilder } from './relation-form-group';
-import { MatSelectChange } from '@angular/material/select';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { SelectComponent } from '../../../../../core/form-components/select/select.component';

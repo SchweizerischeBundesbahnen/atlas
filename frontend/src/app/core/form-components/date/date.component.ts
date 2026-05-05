@@ -22,18 +22,20 @@ import { DateIconComponent } from '../date-icon/date-icon.component';
   providers: [TranslatePipe],
 })
 export class DateComponent {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup!: FormGroup;
-  @Input() label = 'COMMON.VALID_FROM';
-  @Input() labelExample = '';
-  @Input() labelUntil = 'COMMON.VALID_TO';
-  @Input() labelUntilExample = '';
-  @Input() infoIconTitle = '';
-  @Input() required = true;
-  @Input() setDateExamples = false;
+  readonly label = input('COMMON.VALID_FROM');
+  readonly labelExample = input('');
+  readonly labelUntil = input('COMMON.VALID_TO');
+  readonly labelUntilExample = input('');
+  readonly infoIconTitle = input('');
+  readonly required = input(true);
+  readonly setDateExamples = input(false);
 
-  @Input() controlName = 'validFrom';
-  @Input() controlNameTo = 'validTo';
-  @Input() readonly = false;
+  readonly controlName = input('validFrom');
+  readonly controlNameTo = input('validTo');
+  readonly readonly = input(false);
 
   minDate = input(MIN_DATE);
   maxDate = input(MAX_DATE);
@@ -41,6 +43,6 @@ export class DateComponent {
   readonly EXAMPLE_DATE = '21.01.2021';
 
   get controlFrom() {
-    return this.formGroup.get(this.controlName)!;
+    return this.formGroup.get(this.controlName())!;
   }
 }

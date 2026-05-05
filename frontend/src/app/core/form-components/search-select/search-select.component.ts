@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, TemplateRef, ViewChild, output } from '@angular/core';
+import { Component, ContentChild, Input, TemplateRef, ViewChild, output, input } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
@@ -22,14 +22,18 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
   providers: [TranslatePipe],
 })
 export class SearchSelectComponent<TYPE> {
-  @Input() items$: Observable<TYPE[]> = of([]);
-  @Input() multiple = false;
-  @Input() placeholderTextKey = '';
+  readonly items$ = input<Observable<TYPE[]>>(of([]));
+  readonly multiple = input(false);
+  readonly placeholderTextKey = input('');
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName!: string;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup!: FormGroup;
-  @Input() bindValueInp = '';
-  @Input() pipe?: TranslatePipe;
-  @Input() disabled!: boolean;
+  readonly bindValueInp = input('');
+  readonly pipe = input<TranslatePipe>();
+  readonly disabled = input(false);
 
   protected readonly searchTrigger = output<string>();
   protected readonly searchTriggerSubject = new Subject<string>();
@@ -43,7 +47,7 @@ export class SearchSelectComponent<TYPE> {
 
   constructor() {
     this.searchTriggerSubject.asObservable().subscribe({
-      next: value => this.searchTrigger.emit(value)
+      next: (value) => this.searchTrigger.emit(value),
     });
   }
 

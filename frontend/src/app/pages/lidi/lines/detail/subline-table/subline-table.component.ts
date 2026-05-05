@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
@@ -16,7 +16,9 @@ import { LineInternalService } from '../../../../../api/service/lidi/line-intern
   imports: [TableComponent, TranslatePipe],
 })
 export class SublineTableComponent implements OnInit, OnDestroy {
-  @Input() mainLineSlnid!: string;
+  readonly mainLineSlnid = input.required<string>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() eventSubject!: Observable<boolean>;
 
   private onDestroy$ = new Subject<boolean>();
@@ -66,7 +68,7 @@ export class SublineTableComponent implements OnInit, OnDestroy {
     this.lineInternalService
       .getLines(
         undefined,
-        [this.mainLineSlnid + ':'],
+        [this.mainLineSlnid() + ':'],
         undefined,
         undefined,
         [ElementType.Subline],

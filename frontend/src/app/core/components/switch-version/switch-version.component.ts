@@ -9,6 +9,7 @@ import {
   ViewChildren,
   inject,
   output,
+  input,
 } from '@angular/core';
 import { Record } from '../../model/record';
 import { DateService } from '../../date/date.service';
@@ -50,10 +51,14 @@ import { NgClass } from '@angular/common';
   providers: [TranslatePipe],
 })
 export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() records!: Array<Record>;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() currentRecord!: Record;
-  @Input() switchDisabled = false;
-  @Input() showStatus = true;
+  readonly switchDisabled = input(false);
+  readonly showStatus = input(true);
   readonly switchVersion = output<number>();
 
   @ViewChildren(MatRow, { read: ElementRef }) versionRows!: QueryList<ElementRef<HTMLTableRowElement>>;
@@ -76,7 +81,7 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
       },
       { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
     ];
-    if (this.showStatus) {
+    if (this.showStatus()) {
       this.tableColumns = [
         ...this.tableColumns,
         {
@@ -118,7 +123,7 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   setCurrentRecord(clickedRecord: Record) {
-    if (this.switchDisabled) {
+    if (this.switchDisabled()) {
       return;
     }
     this.currentIndex = this.getIndexOfRecord(clickedRecord);

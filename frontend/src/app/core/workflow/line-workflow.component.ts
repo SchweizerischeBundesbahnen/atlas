@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit, output } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, output, input } from '@angular/core';
 import { LineRecord } from './model/line-record';
 import { LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
 import { LineInternalService } from '../../api/service/lidi/line-internal.service';
@@ -17,8 +17,10 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
   private readonly lineInternalService = inject(LineInternalService);
   private readonly dialogService = inject(DialogService);
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() lineRecord!: LineRecord;
-  @Input() descriptionForWorkflow!: string;
+  readonly descriptionForWorkflow = input.required<string>();
 
   readonly workflowEvent = output<void>();
 
@@ -58,7 +60,7 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
       cancelText: 'WORKFLOW.BUTTON.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.START',
       lineRecord: this.lineRecord,
-      descriptionForWorkflow: this.descriptionForWorkflow,
+      descriptionForWorkflow: this.descriptionForWorkflow(),
       number: this.lineRecord.number,
     };
     this.dialogService
@@ -77,7 +79,7 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
       cancelText: 'COMMON.BACK',
       confirmText: 'WORKFLOW.BUTTON.START',
       lineRecord: this.lineRecord,
-      descriptionForWorkflow: this.descriptionForWorkflow,
+      descriptionForWorkflow: this.descriptionForWorkflow(),
       number: this.lineRecord.number,
     };
 

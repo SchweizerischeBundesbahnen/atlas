@@ -1,9 +1,8 @@
-import { Component, Input, inject, output } from '@angular/core';
+import { Component, Input, inject, output, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { StatusChangeData } from '../tth-change-status-dialog/model/status-change-data';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -15,12 +14,17 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class BaseChangeDialogComponent {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup!: FormGroup;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName!: string;
-  @Input() maxChars!: string;
+  readonly maxChars = input.required<string>();
   readonly changeEvent = output();
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  @Input() dialogRef!: MatDialogRef<any>;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
+  @Input() dialogRef!: MatDialogRef<BaseChangeDialogComponent, boolean>;
 
   public data: StatusChangeData = inject(MAT_DIALOG_DATA);
   private readonly dialogService = inject(DialogService);

@@ -1,6 +1,6 @@
 <div [formGroup]="formGroup" class="atlas-select">
   @if (label) {
-    <atlas-label-field [required]="required" fieldLabel="{{ label }}" infoIconTitle="{{ infoIconTitle }}" />
+    <atlas-label-field [required]="required()" fieldLabel="{{ label }}" infoIconTitle="{{ infoIconTitle() }}" />
   }
   @if (additionalLabelspace) {
     <atlas-spacer height="{{ additionalLabelspace + 'px' }}" />
@@ -10,25 +10,25 @@
     class="atlas-select-dropdown"
     (selectionChange)="onMatSelectionChange($event)"
     [formControlName]="controlName"
-    [attr.data-cy]="dataCy"
-    placeholder="{{ placeHolderLabel | translate }}"
-    [multiple]="multiple"
+    [attr.data-cy]="dataCy()"
+    placeholder="{{ placeHolderLabel() | translate }}"
+    [multiple]="multiple()"
     [hideSingleSelectionIndicator]="true"
   >
-    @if (isOptional) {
+    @if (isOptional()) {
       <mat-option>{{ '-' }}</mat-option>
     }
-    @if (isSelectAllEnabled) {
+    @if (isSelectAllEnabled()) {
       <mat-option
         #allSelected
         tabindex="0"
         (click)="toggleAllSelection()"
         (keydown.enter)="toggleAllSelection()"
         (keydown.space)="toggleAllSelection()"
-        >{{ selectAll | translate }}</mat-option
+        >{{ selectAll() | translate }}</mat-option
       >
     }
-    @for (option of options; track option) {
+    @for (option of options(); track option) {
       <mat-option [value]="valueExtractor(option)" (click)="deselectAllCheckboxUnlessAllSelected()">
         <ng-container *ngTemplateOutlet="matOptionPrefix; context: getAsObject(option)" />
         @if (optionTranslateLabelPrefix) {
@@ -39,12 +39,12 @@
       </mat-option>
     }
 
-    @for (optionGroup of optionsGroup!.options; track optionGroup) {
+    @for (optionGroup of optionsGroup().options; track optionGroup) {
       <mat-optgroup>
         <ng-template *ngTemplateOutlet="matOptionGroupPrefix; context: getAsObject(optionGroup)" />
-        @for (list of optionGroup[optionsGroup!.groupValueExtractorProperty]; track list) {
-          <mat-option [value]="optionsGroup!.valueExtractor(list)">
-            {{ optionsGroup!.valueExtractor(list) }}
+        @for (list of optionGroup[optionsGroup().groupValueExtractorProperty]; track list) {
+          <mat-option [value]="optionsGroup().valueExtractor(list)">
+            {{ optionsGroup().valueExtractor(list) }}
           </mat-option>
         }
       </mat-optgroup>

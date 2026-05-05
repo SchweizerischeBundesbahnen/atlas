@@ -5,7 +5,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { provideRouter } from '@angular/router';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ServicePointSearchType } from '../../../core/search-service-point/service-point-search';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -15,7 +15,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
   imports: [AppTestingModule],
 })
 class SearchServicePointPanelMockComponent {
-  @Input() searchType!: ServicePointSearchType;
+  readonly searchType = input.required<ServicePointSearchType>();
 }
 
 describe('PrmHomeSearchComponent', () => {

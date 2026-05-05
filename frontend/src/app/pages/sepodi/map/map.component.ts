@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild, input } from '@angular/core';
 import { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options';
@@ -24,7 +24,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly userService = inject(UserService);
   private readonly permissionService = inject(PermissionService);
 
-  @Input() public isSidePanelOpen = false;
+  public readonly isSidePanelOpen = input(false);
 
   public canCreateServicePoint = false;
   servicePointsShown = false;

@@ -16,8 +16,14 @@ type FileEvent =
   imports: [FileSizePipe, NgTemplateOutlet],
 })
 export class FileComponent {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() file!: File | { name: string; size: number };
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() deleteEnabled = false;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() downloadEnabled = false;
 
   readonly fileDeleted = output<FileEvent>();

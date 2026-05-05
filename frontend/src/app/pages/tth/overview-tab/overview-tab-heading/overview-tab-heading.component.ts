@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, input } from '@angular/core';
 import { HearingStatus, TimetableHearingYear } from '../../../../api';
 import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -12,11 +12,17 @@ import { OverviewToTabShareDataService } from '../service/overview-to-tab-share-
   imports: [DisplayDatePipe, TranslatePipe, NgOptimizedImage],
 })
 export class OverviewTabHeadingComponent {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() cantonShort!: string;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() foundTimetableHearingYear!: TimetableHearingYear;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() hearingStatus!: HearingStatus;
-  @Input() isTimetableHearingYearFound!: boolean;
-  @Input() isPlannedTimetableHearingYearFound!: boolean;
+  readonly isTimetableHearingYearFound = input.required<boolean>();
+  readonly isPlannedTimetableHearingYearFound = input.required<boolean>();
 
   overviewToTabShareDataService = inject(OverviewToTabShareDataService);
 

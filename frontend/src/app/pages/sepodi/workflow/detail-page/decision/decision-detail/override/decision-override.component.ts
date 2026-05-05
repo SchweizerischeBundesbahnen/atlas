@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, inject, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder } from './decision-override-form-group';
@@ -39,10 +39,14 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
 
   protected readonly JudgementType = JudgementType;
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() workflowId!: number;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() examinantId!: number;
-  @Input() existingDecision?: ReadDecision;
-  @Input() enabled = true;
+  readonly existingDecision = input<ReadDecision>();
+  readonly enabled = input(true);
 
   isSepodiSupervisor = false;
   formGroup!: FormGroup<DecisionOverrideFormGroup>;
@@ -57,10 +61,10 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
   }
 
   private init() {
-    this.formGroup = DecisionOverrideFormGroupBuilder.buildFormGroup(this.existingDecision);
+    this.formGroup = DecisionOverrideFormGroupBuilder.buildFormGroup(this.existingDecision());
     this.isSepodiSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi);
     this.formGroup.disable();
-    if (this.enabled && this.isSepodiSupervisor) {
+    if (this.enabled() && this.isSepodiSupervisor) {
       this.formGroup.enable();
     }
   }

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TransportCompany } from '../../../api';
@@ -15,11 +15,15 @@ import { TransportCompanyService } from '../../../api/service/bodi/transport-com
   providers: [TranslatePipe],
 })
 export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() valueExtraction = '';
+  readonly valueExtraction = input('');
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName!: string;
-  @Input() formModus = true;
+  readonly formModus = input(true);
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup!: FormGroup;
-  @Input() disabled!: boolean;
+  readonly disabled = input(false);
 
   readonly selectedTransportCompanyChanged = output();
   readonly tuSelectionChanged = output<TransportCompany>();

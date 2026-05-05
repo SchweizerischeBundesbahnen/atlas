@@ -1,21 +1,20 @@
 @if (fieldLabel) {
   <atlas-label-field
-    [fieldExamples]="fieldExamples"
-    [required]="required"
+    [fieldExamples]="fieldExamples()"
+    [required]="required()"
     fieldLabel="{{ fieldLabel }}"
-    infoIconLink="{{ infoIconLink }}"
-    infoIconTitle="{{ infoIconTitle }}"
+    [infoIconLink]="infoIconLink()"
+    [infoIconTitle]="infoIconTitle()"
   />
 }
 <form [formGroup]="formGroup">
-  <div [class]="{ 'text-field-wrapper': paddingBottom }">
+  <div [class]="{ 'text-field-wrapper': paddingBottom() }">
     <div class="text-field-flex">
       <ng-container #customChildInputPrefixTemplate *ngTemplateOutlet="customChildInputPrefixTemplate" />
       <input
         [formControlName]="controlName"
-        [ngStyle]="customInputNgStyle"
         type="text"
-        placeholder="{{ placeholder | translate }}"
+        placeholder="{{ placeholder() | translate }}"
         [attr.data-cy]="controlName"
         atlasEmptyToNull
       />

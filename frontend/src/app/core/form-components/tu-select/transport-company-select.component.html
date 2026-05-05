@@ -1,9 +1,9 @@
 <atlas-form-search-select
   (changeTrigger)="tuSelectionChanged.emit($event)"
   (searchTrigger)="searchTransportCompany($event)"
-  [bindValueInp]="valueExtraction"
+  [bindValueInp]="valueExtraction()"
   [controlName]="controlName"
-  [disabled]="disabled"
+  [disabled]="disabled()"
   [formGroup]="formGroup"
   [items$]="transportCompanies"
   [multiple]="true"
@@ -12,7 +12,7 @@
     <atlas-label-field
       fieldLabel="BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANIES"
       [fieldExamples]="
-        formModus
+        formModus()
           ? [
               {
                 label: 'BODI.TRANSPORT_COMPANIES.ABBREVIATION',

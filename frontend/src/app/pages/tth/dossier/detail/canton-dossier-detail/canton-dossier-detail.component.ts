@@ -3,9 +3,7 @@ import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TthDossier } from '../../../../../api/model/tthDossier';
-import {
-  DetailPageContainerComponent
-} from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
@@ -17,7 +15,10 @@ import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atla
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { DateComponent } from '../../../../../core/form-components/date/date.component';
 import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
-import { DetailDialogHelperService, DetailWithCancelEdit, } from '../../../../../core/detail/detail-dialog-helper.service';
+import {
+  DetailDialogHelperService,
+  DetailWithCancelEdit,
+} from '../../../../../core/detail/detail-dialog-helper.service';
 import { ValidationService } from '../../../../../core/validation/validation.service';
 import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
 import { catchError, EMPTY, forkJoin, mergeMap, of } from 'rxjs';
@@ -25,9 +26,7 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import { toNumberArrayStrict } from '../../../../../core/util/arrays';
 import { StatementSelectComponent } from '../../statement-select/statement-select.component';
 import { SwissCanton } from '../../../../../api';
-import {
-  TimetableHearingStatementInternalService
-} from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { UserSelectComponent } from '../../../../user-administration/user/user-select/user-select.component';
 import { Cantons } from '../../../../../core/cantons/Cantons';

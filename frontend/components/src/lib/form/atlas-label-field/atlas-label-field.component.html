@@ -1,6 +1,6 @@
 <div>
-  <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg">{{ fieldLabel | translate }}</span>
-  @if (infoIconLink) {
+  <span [ngClass]="required() ? 'required-indicator' : ''" class="font-bold-lg">{{ fieldLabel() | translate }}</span>
+  @if (infoIconLink && infoIconTitle) {
     <atlas-form-info-icon
       atlasInfoLink
       infoLinkTranslationKey="{{ infoIconLink }}"

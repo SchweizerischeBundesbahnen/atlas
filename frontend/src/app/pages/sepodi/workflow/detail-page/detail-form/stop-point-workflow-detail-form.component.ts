@@ -62,9 +62,19 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   readonly WorkflowStatus = WorkflowStatus;
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() stopPoint!: ReadServicePointVersion;
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() oldDesignation?: string;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() currentWorkflow?: ReadStopPointWorkflow;
 
   specialDecision?: StopPointPerson;

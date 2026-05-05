@@ -49,7 +49,7 @@
     </div>
   </div>
 
-  @if (showJudgement) {
+  @if (showJudgement()) {
     <div class="mb-2">{{ 'WORKFLOW.DECISION.DECISION_INFO' | translate }}</div>
     <mat-radio-group formControlName="judgement" class="d-grid mb-3">
       <mat-radio-button [value]="JudgementType.Yes">

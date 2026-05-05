@@ -1,18 +1,18 @@
 <atlas-form-search-select
   (changeTrigger)="boSelectionChanged.emit($event)"
   (searchTrigger)="searchBusinessOrganisation($event)"
-  [bindValueInp]="valueExtraction"
+  [bindValueInp]="valueExtraction()"
   [controlName]="controlName"
   [formGroup]="formGroup"
   [items$]="businessOrganisations"
-  [disabled]="disabled"
+  [disabled]="disabled()"
 >
   <div class="d-flex flex-column">
     <atlas-label-field
       fieldLabel="BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION"
-      [required]="formModus"
+      [required]="formModus()"
       [fieldExamples]="
-        formModus
+        formModus()
           ? [
               {
                 label: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',

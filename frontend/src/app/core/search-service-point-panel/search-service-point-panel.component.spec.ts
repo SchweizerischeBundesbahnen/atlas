@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchServicePointPanelComponent } from './search-service-point-panel.component';
-import { Component, Input } from '@angular/core';
-import { ServicePointSearchType } from '../search-service-point/service-point-search';
+import { Component, input, inputBinding } from '@angular/core';
+import { ServicePointSearch, ServicePointSearchType } from '../search-service-point/service-point-search';
 import { translateServiceProvider } from '../../app.testing.mocks';
 import { SearchServicePointComponent } from '../search-service-point/search-service-point.component';
 
@@ -11,7 +11,7 @@ import { SearchServicePointComponent } from '../search-service-point/search-serv
   template: '<h1>SearchServicePointComponent</h1>',
 })
 class SearchServicePointMockComponent {
-  @Input() searchType!: ServicePointSearchType;
+  readonly searchType = input.required<ServicePointSearchType>();
 }
 
 describe('SearchServicePointPanelComponent', () => {
@@ -19,6 +19,8 @@ describe('SearchServicePointPanelComponent', () => {
   let fixture: ComponentFixture<SearchServicePointPanelComponent>;
 
   beforeEach(() => {
+    const searchTypeInputName: keyof SearchServicePointPanelComponent = 'searchType';
+
     fixture = TestBed.configureTestingModule({
       providers: [translateServiceProvider],
     })
@@ -30,7 +32,9 @@ describe('SearchServicePointPanelComponent', () => {
           imports: [SearchServicePointMockComponent],
         },
       })
-      .createComponent(SearchServicePointPanelComponent);
+      .createComponent(SearchServicePointPanelComponent, {
+        bindings: [inputBinding(searchTypeInputName, () => ServicePointSearch.SePoDi)],
+      });
 
     component = fixture.componentInstance;
     fixture.detectChanges();

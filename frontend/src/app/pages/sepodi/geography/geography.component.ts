@@ -7,6 +7,7 @@ import {
   OnDestroy,
   SimpleChanges,
   output,
+  input,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
@@ -53,6 +54,8 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
 
   _form?: FormGroup<GeographyFormGroup>;
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set form(form: FormGroup<GeographyFormGroup> | undefined) {
     this._form = form;
     if (form) {
@@ -75,8 +78,8 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     }
   }
 
-  @Input() editMode = false;
-  @Input() geographyOptional = true;
+  readonly editMode = input(false);
+  readonly geographyOptional = input(true);
   readonly geographyChanged = output<boolean>();
   readonly coordinatesChanged = output<CoordinatePair>();
 
@@ -209,7 +212,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (!this.mapService.mapInitialized.value) {
       return;
     }
-    if (this.editMode && this.geographyActive) {
+    if (this.editMode() && this.geographyActive) {
       this.mapService.enterCoordinateSelectionMode();
     } else {
       this.mapService.exitCoordinateSelectionMode();

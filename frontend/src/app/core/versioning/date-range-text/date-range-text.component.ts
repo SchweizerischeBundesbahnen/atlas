@@ -10,5 +10,7 @@ import { DisplayDatePipe } from '../../pipe/display-date.pipe';
   providers: [TranslatePipe],
 })
 export class DateRangeTextComponent {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() dateRange!: DateRange;
 }

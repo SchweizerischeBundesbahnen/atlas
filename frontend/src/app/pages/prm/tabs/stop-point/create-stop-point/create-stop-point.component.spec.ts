@@ -11,6 +11,7 @@ import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../util/stop-point-test-d
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { inputBinding } from '@angular/core';
 
 describe('CreateStopPointComponent', () => {
   let component: CreateStopPointComponent;
@@ -33,7 +34,10 @@ describe('CreateStopPointComponent', () => {
       ],
     });
 
-    fixture = TestBed.createComponent(CreateStopPointComponent);
+    const isAuthorizedToCreateStopPointInputName: keyof CreateStopPointComponent = 'isAuthorizedToCreateStopPoint';
+    fixture = TestBed.createComponent(CreateStopPointComponent, {
+      bindings: [inputBinding(isAuthorizedToCreateStopPointInputName, () => false)],
+    });
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.stepper = { selectedIndex: 0 } as MatStepper;

@@ -49,7 +49,7 @@
   </div>
 
   <div class="d-flex flex-column col-6 pe-3">
-    @if (meansOfTransport.includes(MeanOfTransport.Tram) || meansOfTransport.includes(MeanOfTransport.Bus)) {
+    @if (meansOfTransport().includes(MeanOfTransport.Tram) || meansOfTransport().includes(MeanOfTransport.Bus)) {
       <atlas-select
         [formGroup]="form"
         controlName="attentionField"

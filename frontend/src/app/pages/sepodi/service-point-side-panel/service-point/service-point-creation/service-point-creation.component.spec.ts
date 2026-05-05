@@ -71,15 +71,14 @@ describe('ServicePointCreationComponent', () => {
         { provide: MapService, useValue: mapServiceSpy },
         translateServiceProvider,
       ],
-    })
-      .overrideComponent(ServicePointCreationComponent, {
-        remove: {
-          imports: [GeographyComponent]
-        },
-        add: {
-          imports: [MockGeographyComponent]
-        }
-      });
+    }).overrideComponent(ServicePointCreationComponent, {
+      remove: {
+        imports: [GeographyComponent],
+      },
+      add: {
+        imports: [MockGeographyComponent],
+      },
+    });
 
     component = TestBed.createComponent(ServicePointCreationComponent).componentInstance;
   });

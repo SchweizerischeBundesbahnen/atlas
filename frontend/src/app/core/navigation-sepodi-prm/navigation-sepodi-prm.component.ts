@@ -21,10 +21,18 @@ export type TargetPageType =
   imports: [TranslatePipe],
 })
 export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() targetPage!: TargetPageType;
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() sloid?: string;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() number?: number;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() parentSloid?: string;
 
   isTargetViewSepodi!: boolean;

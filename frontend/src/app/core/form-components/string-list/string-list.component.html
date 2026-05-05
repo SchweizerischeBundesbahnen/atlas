@@ -5,12 +5,12 @@
         <atlas-text-field
           [controlName]="inputCtrlName"
           [formGroup]="strListFormGroup"
-          [fieldLabel]="fieldLabel"
-          [infoIconTitle]="infoIconTitle"
-          [infoIconLink]="infoIconLink"
-          [required]="required"
-          [fieldExamples]="fieldExamples"
-          [placeholder]="(showPlaceHolder$ | async) ? placeHolderText : ''"
+          [fieldLabel]="fieldLabel()"
+          [infoIconTitle]="infoIconTitle()"
+          [infoIconLink]="infoIconLink()"
+          [required]="required()"
+          [fieldExamples]="fieldExamples()"
+          [placeholder]="(showPlaceHolder$ | async) ? placeHolderText() : ''"
           (keyup.enter)="addItem()"
           [paddingBottom]="false"
         >
@@ -26,7 +26,9 @@
       </div>
     }
   } @else {
-    <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg mb-1">{{ fieldLabel | translate }}</span>
+    <span [ngClass]="required() ? 'required-indicator' : ''" class="font-bold-lg mb-1">{{
+      fieldLabel() | translate
+    }}</span>
   }
   <div class="d-flex flex-row">
     @if (strListCtrl.value.length === 0 && formGroup?.disabled) {

@@ -1,7 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import { Tab } from '../../../../tab';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
-
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -15,9 +14,9 @@ export const PRM_RELATIONS_TAB_LINK = 'relations';
   imports: [MatTabNav, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, TranslatePipe],
 })
 export class DetailWithRelationTabComponent implements OnInit, OnChanges {
-  @Input() isNew = false;
-  @Input() isReduced = false;
-  @Input() detailTitle!: string;
+  readonly isNew = input(false);
+  readonly isReduced = input(false);
+  readonly detailTitle = input.required<string>();
 
   showTabs = false;
 
@@ -27,7 +26,7 @@ export class DetailWithRelationTabComponent implements OnInit, OnChanges {
     this.tabs = [
       {
         link: PRM_DETAIL_TAB_LINK,
-        title: this.detailTitle,
+        title: this.detailTitle(),
       },
       {
         link: PRM_RELATIONS_TAB_LINK,
@@ -45,6 +44,6 @@ export class DetailWithRelationTabComponent implements OnInit, OnChanges {
   }
 
   private calculateShowTabs() {
-    this.showTabs = !this.isReduced && !this.isNew;
+    this.showTabs = !this.isReduced() && !this.isNew();
   }
 }

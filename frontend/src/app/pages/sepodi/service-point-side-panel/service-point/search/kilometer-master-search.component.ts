@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, output } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, output, input } from '@angular/core';
 import { ServicePointSearchResult } from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,11 +18,15 @@ import { ServicePointInternalService } from '../../../../../api/service/sepodi/s
 export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
   private readonly servicePointInternalService = inject(ServicePointInternalService);
 
-  @Input() valueExtraction = 'number';
+  readonly valueExtraction = input('number');
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName!: string;
-  @Input() formModus = true;
+  readonly formModus = input(true);
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup!: FormGroup;
-  @Input() disabled = false;
+  readonly disabled = input(false);
 
   readonly selectedServicePointChanged = output();
   readonly spSelectionChanged = output<ServicePointSearchResult>();

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, output, SimpleChanges, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
@@ -26,12 +26,20 @@ import { distinctUntilChanged, of, startWith } from 'rxjs';
   providers: [TranslatePipe],
 })
 export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName!: string;
-  @Input() disabled = false;
+  readonly disabled = input(false);
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup!: FormGroup;
-  @Input() showInfo = false;
-  @Input() meansOfTransportToShow: MeanOfTransport[] | undefined;
+  readonly showInfo = input(false);
+  readonly meansOfTransportToShow = input<MeanOfTransport[]>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() showSectorWarning = false;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() multiSelectMode = true;
   selectChange = output<MeanOfTransport[]>();
 
@@ -54,7 +62,8 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   private initMeansOfTransportToShow() {
-    this.means = this.meansOfTransportToShow ? this.meansOfTransportToShow : Object.values(MeanOfTransport);
+    const meansOfTransportToShow = this.meansOfTransportToShow();
+    this.means = meansOfTransportToShow ? meansOfTransportToShow : Object.values(MeanOfTransport);
   }
 
   protected onSelection(meanOfTransport: MeanOfTransport) {

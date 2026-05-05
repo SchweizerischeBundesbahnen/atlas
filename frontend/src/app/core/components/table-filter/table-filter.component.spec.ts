@@ -4,7 +4,7 @@ import { TableFilterComponent } from './table-filter.component';
 import { By } from '@angular/platform-browser';
 import moment from 'moment';
 import { MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow } from '@angular/material/chips';
-import { Component, Input, output } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import {
   MatDatepickerControl,
   MatDatepickerInput,
@@ -39,8 +39,8 @@ import { translateServiceProvider } from '../../../app.testing.mocks';
   template: '',
 })
 class MockMatChipInputComponent {
-  @Input() matChipInputFor: any;
-  @Input() formControl = new FormControl();
+  readonly matChipInputFor = input<any>();
+  readonly formControl = input(new FormControl());
   readonly matChipInputTokenEnd = output<MatChipInputEvent>();
 }
 
@@ -49,20 +49,20 @@ class MockMatChipInputComponent {
   template: '',
 })
 class MockAtlasSelectComponent {
-  readonly selectChanged = output<{value: string[]}>();
+  readonly selectChanged = output<{ value: string[] }>();
 
-  @Input() label: string | undefined;
-  @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
-  @Input() optionTranslateLabelPrefix: string | undefined;
-  @Input() multiple = false;
-  @Input() dataCy!: string;
-  @Input() controlName: string | null = null;
-  @Input() formGroup!: FormGroup;
-  @Input() options: any[] = [];
-  @Input() value: any;
-  @Input() additionalLabelspace = true;
-  @Input() required = false;
-  @Input() disabled = false;
+  readonly label = input<string>();
+  readonly placeHolderLabel = input('FORM.DROPDOWN_PLACEHOLDER');
+  readonly optionTranslateLabelPrefix = input<string>();
+  readonly multiple = input(false);
+  readonly dataCy = input.required<string>();
+  readonly controlName = input<string | null>(null);
+  readonly formGroup = input.required<FormGroup>();
+  readonly options = input<any[]>([]);
+  readonly value = input<any>();
+  readonly additionalLabelspace = input(true);
+  readonly required = input(false);
+  readonly disabled = input(false);
 }
 
 @Component({
@@ -73,8 +73,8 @@ class MockAtlasSelectComponent {
 class MockMatDatepickerInputComponent {
   readonly dateChange = output<Partial<MatDatepickerInputEvent<Moment | null, any>>>();
 
-  @Input() matDatepicker!: MatDatepickerPanel<MatDatepickerControl<any>, any | null, any>;
-  @Input() formControl: FormControl = new FormControl();
+  readonly matDatepicker = input.required<MatDatepickerPanel<MatDatepickerControl<any>, any | null, any>>();
+  readonly formControl = input<FormControl>(new FormControl());
 }
 
 @Component({
@@ -83,7 +83,7 @@ class MockMatDatepickerInputComponent {
   template: '<ng-content />',
 })
 class MockMatChipGridComponent {
-  @Input() disabled = false;
+  readonly disabled = input(false);
 }
 
 describe('TableFilterComponent', () => {

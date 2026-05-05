@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BusinessOrganisation } from '../../../api';
@@ -14,12 +14,16 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
   imports: [SearchSelectComponent, ReactiveFormsModule, AtlasLabelFieldComponent, BoSelectionDisplayPipe],
 })
 export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() valueExtraction = 'sboid';
+  readonly valueExtraction = input('sboid');
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName!: string;
-  @Input() formModus = true;
+  readonly formModus = input(true);
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup!: FormGroup;
-  @Input() sboidsRestrictions: string[] = [];
-  @Input() disabled = false;
+  readonly sboidsRestrictions = input<string[]>([]);
+  readonly disabled = input(false);
 
   readonly selectedBusinessOrganisationChanged = output();
   readonly boSelectionChanged = output<BusinessOrganisation>();
@@ -57,7 +61,7 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
       this.businessOrganisations = this.businessOrganisationService
         .getAllBusinessOrganisations(
           [searchString],
-          this.sboidsRestrictions,
+          this.sboidsRestrictions(),
           undefined,
           undefined,
           undefined,

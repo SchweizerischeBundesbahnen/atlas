@@ -62,7 +62,7 @@ export class BulkImportLogComponent implements OnInit {
   }
 
   pageChanged(
-    e: Pick<PageEvent, 'pageSize'|'pageIndex'>,
+    e: Pick<PageEvent, 'pageSize' | 'pageIndex'>,
     array?: Array<BulkImportLogEntryTemplate>
   ): Array<BulkImportLogEntryTemplate> {
     if (!array || array.length === 0) {

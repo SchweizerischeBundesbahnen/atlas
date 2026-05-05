@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, output } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -7,11 +7,17 @@ import { AbstractControl, FormGroup } from '@angular/forms';
   styleUrls: ['./atlas-slide-toggle.component.scss'],
 })
 export class AtlasSlideToggleComponent implements OnInit, OnChanges {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() toggle = false;
-  @Input() disabled = false;
-  @Input() slideTrackNeutral = false;
+  readonly disabled = input(false);
+  readonly slideTrackNeutral = input(false);
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup?: FormGroup;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName?: string;
 
   readonly toggleChange = output<boolean>();

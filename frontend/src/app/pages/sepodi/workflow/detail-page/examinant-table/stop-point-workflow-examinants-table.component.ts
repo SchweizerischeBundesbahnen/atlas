@@ -1,4 +1,4 @@
-import { Component, Input, output } from '@angular/core';
+import { Component, Input, output, input } from '@angular/core';
 import { ControlContainer, FormArray, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { WorkflowStatus } from 'src/app/api';
 import {
@@ -21,8 +21,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class StopPointWorkflowExaminantsTableComponent {
   readonly WorkflowStatus = WorkflowStatus;
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() form!: FormGroup;
-  @Input() currentWorkflowStatus?: WorkflowStatus;
+  readonly currentWorkflowStatus = input<WorkflowStatus>();
 
   readonly openDecision = output<number>();
 

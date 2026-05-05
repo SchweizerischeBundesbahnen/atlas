@@ -4,6 +4,7 @@ import { LineWorkflowFormComponent } from './line-workflow-form.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { WorkflowFormGroup } from '../workflow-form-group';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { inputBinding } from '@angular/core';
 
 describe('LineWorkflowFormComponent', () => {
   let component: LineWorkflowFormComponent;
@@ -16,7 +17,14 @@ describe('LineWorkflowFormComponent', () => {
     });
 
     // Arrangement
-    fixture = TestBed.createComponent(LineWorkflowFormComponent);
+    const commentLabelInputName: keyof LineWorkflowFormComponent = 'commentLabel';
+    const personLabelInputName: keyof LineWorkflowFormComponent = 'personLabel';
+    fixture = TestBed.createComponent(LineWorkflowFormComponent, {
+      bindings: [
+        inputBinding(commentLabelInputName, () => 'test comment label'),
+        inputBinding(personLabelInputName, () => 'test person label'),
+      ],
+    });
     component = fixture.componentInstance;
     component.formGroup = new FormGroup<WorkflowFormGroup>({
       comment: new FormControl(''),

@@ -17,7 +17,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import moment from 'moment';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
@@ -42,12 +42,12 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
   imports: [AppTestingModule],
 })
 class MockAppTthOverviewTabHeadingComponent {
-  @Input() cantonShort!: string;
-  @Input() foundTimetableHearingYear!: TimetableHearingYear;
-  @Input() hearingStatus!: HearingStatus;
-  @Input() noActiveTimetableHearingYearFound!: boolean;
-  @Input() noTimetableHearingYearFound!: boolean;
-  @Input() noPlannedTimetableHearingYearFound!: boolean;
+  readonly cantonShort = input.required<string>();
+  readonly foundTimetableHearingYear = input.required<TimetableHearingYear>();
+  readonly hearingStatus = input.required<HearingStatus>();
+  readonly noActiveTimetableHearingYearFound = input.required<boolean>();
+  readonly noTimetableHearingYearFound = input.required<boolean>();
+  readonly noPlannedTimetableHearingYearFound = input.required<boolean>();
 }
 
 const mockTimetableHearingYearsService: Mocked<Pick<TimetableHearingYearInternalService, 'getHearingYears'>> = {

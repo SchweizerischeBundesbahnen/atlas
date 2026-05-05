@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { SepodiMapviewComponent } from './sepodi-mapview.component';
 import { AuthService } from '../../../core/auth/auth.service';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ServicePointSearchType } from '../../../core/search-service-point/service-point-search';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -19,7 +19,7 @@ import { translateServiceProvider } from '../../../app.testing.mocks';
   template: '',
 })
 export class MockAtlasMapComponent {
-  @Input() isSidePanelOpen = false;
+  readonly isSidePanelOpen = input(false);
 }
 
 @Component({
@@ -27,7 +27,7 @@ export class MockAtlasMapComponent {
   template: '<h1>SearchServicePointMockComponent</h1>',
 })
 class SearchServicePointMockComponent {
-  @Input() searchType!: ServicePointSearchType;
+  readonly searchType = input.required<ServicePointSearchType>();
 }
 
 describe('SepodiMapviewComponent', () => {

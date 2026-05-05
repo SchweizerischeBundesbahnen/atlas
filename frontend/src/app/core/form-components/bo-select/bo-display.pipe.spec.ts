@@ -27,8 +27,8 @@ const version: BusinessOrganisationVersion = {
 describe('BoDisplayPipe', () => {
   let boDisplayPipe: BoDisplayPipe;
 
-  let boSelectionDisplayPipe = mock<BoSelectionDisplayPipe>();
-  let businessOrganisationsService = mock<BusinessOrganisationService>();
+  const boSelectionDisplayPipe = mock<BoSelectionDisplayPipe>();
+  const businessOrganisationsService = mock<BusinessOrganisationService>();
 
   beforeEach(() => {
     boSelectionDisplayPipe.transform.mockReturnValue('123 - 123 - 123 - sboid');

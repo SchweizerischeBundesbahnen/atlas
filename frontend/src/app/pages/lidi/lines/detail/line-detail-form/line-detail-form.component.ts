@@ -1,8 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LineConcessionType, LineType, MeanOfTransport, OfferCategory } from '../../../../../api';
 import { SelectComponent, SelectOptionGroup } from '../../../../../core/form-components/select/select.component';
-import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
 import { NgOptimizedImage } from '@angular/common';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
@@ -35,9 +34,15 @@ interface OfferCategoryGroup {
   ],
 })
 export class LineDetailFormComponent {
-  @Input() form!: FormGroup;
+  readonly form = input.required<FormGroup>();
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() newRecord = false;
-  @Input() boSboidRestriction: string[] = [];
+  readonly boSboidRestriction = input<string[]>([]);
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() isLineConcessionTypeRequired = true;
 
   TYPE_OPTIONS = Object.values(LineType);
@@ -120,8 +125,8 @@ export class LineDetailFormComponent {
 
   updateMandatoryFields(lineTypes: LineType[]) {
     if (!lineTypes.includes(LineType.Orderly)) {
-      this.form.controls.lineConcessionType.reset();
-      this.form.controls.swissLineNumber.reset();
+      this.form().controls.lineConcessionType.reset();
+      this.form().controls.swissLineNumber.reset();
     }
   }
 }

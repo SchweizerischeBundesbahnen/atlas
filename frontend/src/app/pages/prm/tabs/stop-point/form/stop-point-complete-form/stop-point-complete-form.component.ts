@@ -1,9 +1,8 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, input, OnInit } from '@angular/core';
 import { StopPointDetailFormGroup, StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
 import { BooleanOptionalAttributeType, MeanOfTransport, StandardAttributeType } from '../../../../../../api';
 import { TranslationSortingService } from '../../../../../../core/translation/translation-sorting.service';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
 import { PrmVariantInfoService } from '../../prm-variant-info.service';
 import { MeansOfTransportPickerComponent } from '../../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -32,9 +31,11 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe, TranslationSortingService],
 })
 export class StopPointCompleteFormComponent implements OnInit {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
-  @Input() selectedMeansOfTransport!: MeanOfTransport[];
-  @Input() isNew = false;
+  readonly selectedMeansOfTransport = input<MeanOfTransport[]>();
+  readonly isNew = input(false);
   standardAttributeTypes: string[] = [];
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   meansOfTransportToShow: MeanOfTransport[] | undefined;
@@ -43,7 +44,7 @@ export class StopPointCompleteFormComponent implements OnInit {
   private readonly prmVariantInfoService = inject(PrmVariantInfoService);
 
   ngOnInit(): void {
-    if (this.isNew) {
+    if (this.isNew()) {
       this.initForm();
     }
     this.meansOfTransportToShow = this.prmVariantInfoService.getPrmMeansOfTransportToShow(
@@ -58,7 +59,7 @@ export class StopPointCompleteFormComponent implements OnInit {
   }
 
   private populateCompleteForm() {
-    this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
+    this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport());
     StopPointFormGroupBuilder.populateDropdownsForCompleteWithDefaultValue(this.form);
   }
 
@@ -70,7 +71,8 @@ export class StopPointCompleteFormComponent implements OnInit {
   };
 
   updateRelatedFieldsContent(selectedAssistanceRequestFulfilled: BooleanOptionalAttributeType) {
-    if (this.isNew) {
+    const isNew = this.isNew();
+    if (isNew) {
       if (selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.Yes) {
         this.form.controls.assistanceService.setValue(StandardAttributeType.NotApplicable);
         this.form.controls.assistanceAvailability.setValue(StandardAttributeType.NotApplicable);
@@ -83,7 +85,7 @@ export class StopPointCompleteFormComponent implements OnInit {
         this.form.controls.assistanceAvailability.setValue(StandardAttributeType.ToBeCompleted);
       }
     } else if (
-      !this.isNew &&
+      !isNew &&
       (selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.No ||
         selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.ToBeCompleted)
     ) {

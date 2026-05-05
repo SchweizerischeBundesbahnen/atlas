@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DecisionFormGroup } from './decision-form-group';
 import { JudgementType } from 'src/app/api';
@@ -29,10 +29,16 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class DecisionFormComponent {
   protected readonly JudgementType = JudgementType;
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() form!: FormGroup<DecisionFormGroup>;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() hasOverride = false;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() hasDecisionTypeVotedExpired = false;
-  @Input() showJudgement = true;
+  readonly showJudgement = input(true);
 
   get warningChipMessage(): string | undefined {
     if (this.hasOverride) {

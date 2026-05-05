@@ -1,9 +1,9 @@
-import {Component, inject, Input} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
-import {NgClass} from '@angular/common';
-import {FieldExample} from '../../../../../src/app/core/form-components/text-field/field-example';
-import {InfoLinkDirective} from '../info-icon/info-link.directive';
-import {InfoIconComponent} from '../info-icon/info-icon.component';
+import { Component, inject, Input, input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { NgClass } from '@angular/common';
+import { FieldExample } from '../../../../../src/app/core/form-components/text-field/field-example';
+import { InfoLinkDirective } from '../info-icon/info-link.directive';
+import { InfoIconComponent } from '../info-icon/info-icon.component';
 
 @Component({
   selector: 'atlas-label-field',
@@ -14,10 +14,18 @@ import {InfoIconComponent} from '../info-icon/info-icon.component';
 export class AtlasLabelFieldComponent {
   private readonly translatePipe = inject(TranslatePipe);
 
-  @Input() required!: boolean;
-  @Input() fieldLabel!: string;
-  @Input() infoIconTitle!: string;
-  @Input() infoIconLink!: string;
+  readonly required = input(false);
+  readonly fieldLabel = input.required<string>();
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
+  @Input() infoIconTitle?: string;
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
+  @Input() infoIconLink?: string;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() fieldExamples!: Array<FieldExample>;
 
   translate(fieldExample: FieldExample): string {

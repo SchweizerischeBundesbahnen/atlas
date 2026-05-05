@@ -174,7 +174,7 @@ export class ApplicationPermissionComponent implements OnInit {
   }
 
   onRoleChanged(applicationRoles: ApplicationRole[]) {
-    this.currentRole = applicationRoles[0] ?? "READER";
+    this.currentRole = applicationRoles[0] ?? 'READER';
     const availableConfig = this.applicationConfig.roles.find((i) => i.role === this.currentRole);
     if (!availableConfig) {
       throw new Error('Available Config not found for ' + applicationRoles);

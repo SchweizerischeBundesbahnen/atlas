@@ -17,7 +17,7 @@ export class LanguageSwitcherComponent {
   languages = [Language.DE, Language.FR, Language.IT];
 
   private translateService = inject(TranslateService);
-  private dateAdapter = inject(DateAdapter<any>);
+  private dateAdapter = inject(DateAdapter<Date>);
 
   constructor() {
     const language =

@@ -75,7 +75,7 @@ export class LineWorkflowDialogComponent implements OnInit {
   workflowId?: number;
   workflowStatusTranslated$?: Observable<string>;
 
-  public readonly dialogRef: MatDialogRef<LineWorkflowDialogComponent> = inject(MatDialogRef as any);
+  public readonly dialogRef = inject(MatDialogRef<LineWorkflowDialogComponent>);
   public readonly data: LineWorkflowDialogData = inject(MAT_DIALOG_DATA);
   private readonly notificationService = inject(NotificationService);
   private readonly lineWorkflowService = inject(LineWorkflowService);

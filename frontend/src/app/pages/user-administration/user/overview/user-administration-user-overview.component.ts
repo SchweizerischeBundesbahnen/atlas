@@ -8,7 +8,6 @@ import { SearchType, SearchTypes } from './search-type';
 import { Cantons } from '../../../../core/cantons/Cantons';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
-import { MatSelectChange } from '@angular/material/select';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { MatLabel } from '@angular/material/form-field';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';

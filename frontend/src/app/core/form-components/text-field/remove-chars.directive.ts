@@ -1,8 +1,8 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, inject, Input } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener, inject, input } from '@angular/core';
 
 @Directive({ selector: '[atlasRemoveChars]' })
 export class RemoveCharsDirective implements AfterViewInit {
-  @Input() atlasRemoveChars: string[] = [];
+  readonly atlasRemoveChars = input<string[]>([]);
 
   private inputElement?: HTMLInputElement;
   private value?: string;
@@ -17,7 +17,7 @@ export class RemoveCharsDirective implements AfterViewInit {
   @HostListener('keyup') onKeyUp() {
     if (this.inputElement) {
       if (this.value !== this.inputElement.value) {
-        for (const charToRemove of this.atlasRemoveChars) {
+        for (const charToRemove of this.atlasRemoveChars()) {
           this.inputElement.value = this.inputElement.value.replace(charToRemove, '');
         }
         this.inputElement.dispatchEvent(new Event('input'));

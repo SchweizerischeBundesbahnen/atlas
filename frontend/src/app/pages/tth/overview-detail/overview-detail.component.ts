@@ -13,7 +13,6 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { Pages } from '../../pages';
 import { take } from 'rxjs';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
-import { MatSelectChange } from '@angular/material/select';
 import { TthUtils } from '../util/tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';

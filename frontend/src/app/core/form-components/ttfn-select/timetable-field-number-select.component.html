@@ -1,18 +1,18 @@
 <atlas-form-search-select
   (changeTrigger)="ttfnSelectionChanged.emit($event)"
   (searchTrigger)="searchTimetableFieldNumber($event)"
-  [bindValueInp]="valueExtraction"
+  [bindValueInp]="valueExtraction()"
   [controlName]="controlName"
-  [disabled]="disabled"
+  [disabled]="disabled()"
   [formGroup]="formGroup"
   [items$]="timetableFieldNumbers"
 >
   <div class="d-flex flex-column">
     <atlas-label-field
       fieldLabel="TTFN.TTFN"
-      [required]="required"
+      [required]="required()"
       [fieldExamples]="
-        formModus
+        formModus()
           ? [
               {
                 label: 'TTFN.NUMBER',

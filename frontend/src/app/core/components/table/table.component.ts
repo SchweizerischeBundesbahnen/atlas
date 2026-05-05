@@ -1,4 +1,4 @@
-import { Component, contentChild, Input, OnInit, TemplateRef, inject, output } from '@angular/core';
+import { Component, contentChild, Input, OnInit, TemplateRef, inject, output, input } from '@angular/core';
 import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
@@ -65,16 +65,20 @@ import { FormatPipe } from './pipe/format.pipe';
   providers: [TranslatePipe],
 })
 export class TableComponent<DATATYPE> implements OnInit {
-  @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
-  @Input() tableFilterConfig: TableFilter<unknown>[][] = [];
+  readonly checkBoxSelection = input(new SelectionModel<DATATYPE>(true, []));
+  readonly tableFilterConfig = input<TableFilter<unknown>[][]>([]);
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() tableColumns!: TableColumn<DATATYPE>[];
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() totalCount!: number;
-  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
-  @Input() sortingDisabled = false;
-  @Input() showTableFilter = true;
-  @Input() showPaginator = true;
-  @Input() checkBoxModeEnabled = false;
-  @Input() additionalTableStyleClass!: string;
+  readonly pageSizeOptions = input<number[]>([5, 10, 25, 100]);
+  readonly sortingDisabled = input(false);
+  readonly showTableFilter = input(true);
+  readonly showPaginator = input(true);
+  readonly checkBoxModeEnabled = input(false);
+  readonly additionalTableStyleClass = input('');
 
   readonly editElementEvent = output<DATATYPE>();
   readonly tableChanged = output<TablePagination>();
@@ -95,6 +99,8 @@ export class TableComponent<DATATYPE> implements OnInit {
     return this._tableData;
   }
 
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input()
   set tableData(data: DATATYPE[]) {
     this._tableData = data;
@@ -134,9 +140,9 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   edit(row: DATATYPE) {
-    if (this.checkBoxModeEnabled) {
-      this.checkBoxSelection.toggle(row);
-      this.checkedBoxEvent.emit(this.checkBoxSelection);
+    if (this.checkBoxModeEnabled()) {
+      this.checkBoxSelection().toggle(row);
+      this.checkedBoxEvent.emit(this.checkBoxSelection());
     } else {
       this.editElementEvent.emit(row);
     }
@@ -169,29 +175,29 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   isAllSelected() {
-    const numSelected = this.checkBoxSelection.selected.length;
+    const numSelected = this.checkBoxSelection().selected.length;
     return numSelected === this.pageSize || numSelected === this.totalCount;
   }
 
   toggleAll() {
     if (this.isAllSelected()) {
-      this.checkBoxSelection.clear();
+      this.checkBoxSelection().clear();
     } else {
-      this.tableData.forEach((row) => this.checkBoxSelection.select(row));
+      this.tableData.forEach((row) => this.checkBoxSelection().select(row));
     }
-    this.checkedBoxEvent.emit(this.checkBoxSelection);
+    this.checkedBoxEvent.emit(this.checkBoxSelection());
   }
 
   toggleCheckBox($event: MatCheckboxChange, row: DATATYPE) {
     if ($event) {
-      this.checkBoxSelection.toggle(row);
+      this.checkBoxSelection().toggle(row);
     }
-    this.checkedBoxEvent.emit(this.checkBoxSelection);
+    this.checkedBoxEvent.emit(this.checkBoxSelection());
   }
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   stopPropagation($event: any) {
-    if (!this.checkBoxModeEnabled) {
+    if (!this.checkBoxModeEnabled()) {
       $event.stopPropagation();
     }
   }

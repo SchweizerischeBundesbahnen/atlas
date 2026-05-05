@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'atlas-form-info-icon',
@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./info-icon.component.scss'],
 })
 export class InfoIconComponent {
-  @Input() infoTitle = '';
+  readonly infoTitle = input('');
 }

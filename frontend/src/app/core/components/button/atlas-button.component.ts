@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, TemplateRef, inject, output } from '@angular/core';
+import { Component, ContentChild, Input, TemplateRef, inject, output, input } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
@@ -15,21 +15,29 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class AtlasButtonComponent {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() applicationType!: ApplicationType;
-  @Input() businessOrganisation!: string;
+  readonly businessOrganisation = input<string>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() businessOrganisations: string[] = [];
-  @Input() canton!: string;
+  readonly canton = input<string>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() uicCountryCode?: number;
-  @Input() disabled!: boolean;
+  readonly disabled = input(false);
 
-  @Input() wrapperStyleClass!: string;
-  @Input() buttonDataCy!: string;
+  readonly wrapperStyleClass = input('');
+  readonly buttonDataCy = input<string>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() buttonType!: AtlasButtonType;
-  @Input() footerEdit = false;
-  @Input() submitButton!: boolean;
-  @Input() buttonText!: string;
-  @Input() title!: string;
-  @Input() buttonStyleClass: string | undefined;
+  readonly footerEdit = input(false);
+  readonly submitButton = input(false);
+  readonly buttonText = input<string>();
+  readonly title = input<string>();
+  readonly buttonStyleClass = input<string>();
 
   readonly buttonClicked = output<void>();
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -66,10 +74,10 @@ export class AtlasButtonComponent {
       return this.hasWritePermissionsForCanton();
     }
     if (AtlasButtonType.WHITE_FOOTER_NON_EDIT === this.buttonType) {
-      return !this.footerEdit;
+      return !this.footerEdit();
     }
     if (AtlasButtonType.WHITE_FOOTER_EDIT_MODE === this.buttonType) {
-      return this.footerEdit;
+      return this.footerEdit();
     }
     return true;
   }
@@ -85,18 +93,19 @@ export class AtlasButtonComponent {
     if (!this.applicationType) {
       throw new Error('Edit button needs applicationType');
     }
-    if (this.applicationType !== ApplicationType.Bodi && !this.businessOrganisation) {
+    const businessOrganisation = this.businessOrganisation();
+    if (this.applicationType !== ApplicationType.Bodi && !businessOrganisation) {
       throw new Error('Edit button needs businessOrganisation');
     }
     if (this.uicCountryCode) {
       return this.mayEditWithUicCountryCode();
     }
-    return this.permissionService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation);
+    return this.permissionService.hasPermissionsToWrite(this.applicationType, businessOrganisation);
   }
 
   private mayEditWithUicCountryCode() {
     return (
-      this.permissionService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation) &&
+      this.permissionService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation()) &&
       this.permissionService.hasPermissionsToWrite(
         this.applicationType,
         Countries.fromUicCode(this.uicCountryCode!).enumCountry
@@ -116,12 +125,13 @@ export class AtlasButtonComponent {
   }
 
   hasWritePermissionsForCanton() {
-    return this.permissionService.hasWritePermissionsToForCanton(this.applicationType, this.canton);
+    return this.permissionService.hasWritePermissionsToForCanton(this.applicationType, this.canton());
   }
 
   getButtonStyleClass() {
-    if (this.buttonStyleClass) {
-      return this.buttonStyleClass;
+    const buttonStyleClass = this.buttonStyleClass();
+    if (buttonStyleClass) {
+      return buttonStyleClass;
     }
     if (this.buttonType === AtlasButtonType.DEFAULT_PRIMARY) {
       return 'atlas-primary-btn';

@@ -4,9 +4,9 @@
   } @else {
     <div class="container-sp-create-and-search">
       @if (searchNavigationType === 'NAVIGATION') {
-        <atlas-navigate-service-point [searchNavigationType]="searchNavigationType" [searchType]="searchType" />
+        <atlas-navigate-service-point [searchNavigationType]="searchNavigationType" [searchType]="searchType()" />
       } @else {
-        <atlas-search-service-point [searchType]="searchType" />
+        <atlas-search-service-point [searchType]="searchType()" />
       }
 
       <div class="font-bold-sm ps-3">

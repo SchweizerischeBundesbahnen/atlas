@@ -3,13 +3,13 @@
   <ng-select
     #ngSelect
     (change)="changeTrigger.emit($event)"
-    [bindValue]="bindValueInp"
+    [bindValue]="bindValueInp()"
     [formControlName]="controlName"
-    [items]="(items$ | async) ?? []"
+    [items]="(items$() | async) ?? []"
     [minTermLength]="2"
-    [multiple]="multiple"
-    [placeholder]="placeholderTextKey | translate"
-    [readonly]="disabled"
+    [multiple]="multiple()"
+    [placeholder]="placeholderTextKey() | translate"
+    [readonly]="disabled()"
     [typeahead]="searchTriggerSubject"
     appearance="outline"
     notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"

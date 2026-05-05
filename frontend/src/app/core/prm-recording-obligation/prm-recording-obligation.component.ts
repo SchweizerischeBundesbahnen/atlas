@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
 import { StopPointInternalService } from '../../api/service/prm/stop-point/stop-point-internal.service';
@@ -16,8 +16,8 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
   recordingObligation = true;
   isPrmSupervisor = false;
 
-  @Input() sloid!: string;
-  @Input() showToggle = true;
+  readonly sloid = input.required<string>();
+  readonly showToggle = input(true);
 
   private readonly stopPointInternalService = inject(StopPointInternalService);
   private permissionService = inject(PermissionService);
@@ -37,13 +37,13 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
 
   private initCurrentRecordingObligation() {
     this.stopPointInternalService
-      .getRecordingObligation(this.sloid)
+      .getRecordingObligation(this.sloid())
       .subscribe((recordingObligation) => (this.recordingObligation = recordingObligation.value));
   }
 
   toggleRecordingObligation() {
     this.stopPointInternalService
-      .updateRecordingObligation(this.sloid, {
+      .updateRecordingObligation(this.sloid(), {
         value: !this.recordingObligation,
       })
       .subscribe(() => {

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, input } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { FieldExample } from '../text-field/field-example';
 import { concat, Observable, of } from 'rxjs';
@@ -25,19 +25,25 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class StringListComponent implements OnChanges {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup?: FormGroup;
-  @Input() formGroupEnabled?: boolean;
+  readonly formGroupEnabled = input<boolean>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName?: string;
-  @Input() maxItems = 10;
+  readonly maxItems = input(10);
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set itemValidator(validators: ValidatorFn[]) {
     this._inputCtrl.setValidators(validators);
   }
-  @Input() fieldLabel!: string;
-  @Input() infoIconTitle!: string;
-  @Input() infoIconLink!: string;
-  @Input() required!: boolean;
-  @Input() fieldExamples!: Array<FieldExample>;
-  @Input() placeHolderText!: string;
+  readonly fieldLabel = input.required<string>();
+  readonly infoIconTitle = input<string>();
+  readonly infoIconLink = input<string>();
+  readonly required = input.required<boolean>();
+  readonly fieldExamples = input<FieldExample[]>([]);
+  readonly placeHolderText = input.required<string>();
 
   showPlaceHolder$: Observable<boolean> = of(false);
   readonly inputCtrlName = 'input';
@@ -87,7 +93,7 @@ export class StringListComponent implements OnChanges {
   }
 
   private _handleFormStateChange() {
-    if (this.strListCtrl.value.length === this.maxItems) {
+    if (this.strListCtrl.value.length === this.maxItems()) {
       this._inputCtrl.disable();
     } else {
       this._inputCtrl.enable();
@@ -97,10 +103,10 @@ export class StringListComponent implements OnChanges {
 
   private _getShowPlaceHolderObservable() {
     return concat(
-      of(this.strListCtrl.value.length === this.maxItems),
+      of(this.strListCtrl.value.length === this.maxItems()),
       this.strListCtrl.valueChanges.pipe(
         map((val) => {
-          if (val.length === this.maxItems) {
+          if (val.length === this.maxItems()) {
             this._inputCtrl?.disable();
             return true;
           } else {

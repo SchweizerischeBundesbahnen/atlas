@@ -5,7 +5,11 @@ import { Component, Input } from '@angular/core';
   templateUrl: './download-icon.component.html',
 })
 export class DownloadIconComponent {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() readonly!: boolean;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() disabled!: boolean;
 
   get fill(): string {

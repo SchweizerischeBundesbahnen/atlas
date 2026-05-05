@@ -1,21 +1,19 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {beforeEach, describe, expect, it, type Mocked, vi} from 'vitest';
-import {BoDossierDetailComponent} from './bo-dossier-detail.component';
-import {TthDossier} from '../../../../../api/model/tthDossier';
-import {SwissCanton, TimetableHearingStatementV2} from '../../../../../api';
-import {DossierStatus} from '../../../../../api/model/dossierStatus';
-import {ActivatedRoute} from '@angular/router';
-import {of} from 'rxjs';
-import {
-  TimetableHearingStatementInternalService
-} from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
-import {FormatPipe} from '../../../../../core/components/table/pipe/format.pipe';
-import {DossierInternalService} from '../../../../../api/service/workflow/dossier-internal.service';
-import {NotificationService} from '../../../../../core/notification/notification.service';
-import {OpenBoDossierInMailService} from './open-bo-dossier-in-mail.service';
-import {mock} from 'vitest-mock-extended';
-import {TranslatePipe} from '@ngx-translate/core';
-import {AppTestingModule} from '../../../../../app.testing.module';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import { BoDossierDetailComponent } from './bo-dossier-detail.component';
+import { TthDossier } from '../../../../../api/model/tthDossier';
+import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
+import { DossierStatus } from '../../../../../api/model/dossierStatus';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { FormatPipe } from '../../../../../core/components/table/pipe/format.pipe';
+import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { OpenBoDossierInMailService } from './open-bo-dossier-in-mail.service';
+import { mock } from 'vitest-mock-extended';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AppTestingModule } from '../../../../../app.testing.module';
 
 const dossier: TthDossier = {
   swissCanton: SwissCanton.Bern,

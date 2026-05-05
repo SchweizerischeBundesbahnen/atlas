@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, inject, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Directive({ selector: '[atlasInfoLink]' })
@@ -6,7 +6,7 @@ export class InfoLinkDirective {
   private readonly element = inject(ElementRef);
   private readonly translateService = inject(TranslateService);
 
-  @Input() infoLinkTranslationKey = '';
+  readonly infoLinkTranslationKey = input('');
 
   constructor() {
     this.element.nativeElement.classList.add('atlas-info-link');
@@ -14,8 +14,8 @@ export class InfoLinkDirective {
 
   @HostListener('click') onClick() {
     try {
-      this.translateService.get(this.infoLinkTranslationKey).subscribe((link) => {
-        if (link === this.infoLinkTranslationKey) {
+      this.translateService.get(this.infoLinkTranslationKey()).subscribe((link) => {
+        if (link === this.infoLinkTranslationKey()) {
           throw new Error('Could not evaluate translationKey correctly');
         }
         window.open(link, '_blank');

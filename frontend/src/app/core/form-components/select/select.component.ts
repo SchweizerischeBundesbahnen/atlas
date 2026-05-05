@@ -8,6 +8,7 @@ import {
   TemplateRef,
   ViewChild,
   output,
+  input,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatOptgroup, MatOption } from '@angular/material/core';
@@ -44,9 +45,15 @@ export interface SelectOptionGroup {
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class SelectComponent<TYPE> implements OnInit, OnChanges {
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() label: string | undefined;
-  @Input() infoIconTitle?: string;
-  @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
+  readonly infoIconTitle = input<string>();
+  readonly placeHolderLabel = input('FORM.DROPDOWN_PLACEHOLDER');
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() optionTranslateLabelPrefix: string | undefined;
 
   @Input()
@@ -59,13 +66,18 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     return option;
   }
 
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() additionalLabelspace = 30;
-  @Input() isSelectAllEnabled = false;
-  @Input() required = false;
+  readonly isSelectAllEnabled = input(false);
+  readonly required = input(false);
 
-  @Input() selectAll = 'TTH.ALL_COUNTRIES';
+  readonly selectAll = input('TTH.ALL_COUNTRIES');
 
   private _disabled = false;
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input()
   set disabled(value: boolean) {
     this._disabled = value;
@@ -82,44 +94,47 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     return this._disabled;
   }
 
-  @Input() multiple = false;
+  readonly multiple = input(false);
 
-  @Input() dataCy!: string;
+  readonly dataCy = input<string>();
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() controlName: string | null = null;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() formGroup!: FormGroup;
 
-  @Input() options: TYPE[] = [];
-  @Input() optionsGroup?: SelectOptionGroup = {
+  readonly options = input<TYPE[]>([]);
+  readonly optionsGroup = input<SelectOptionGroup>({
     options: [],
     valueExtractor: Function,
     groupValueExtractorProperty: '',
-  };
-  @Input() value: any;
+  });
+  readonly value = input<any>();
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
   @ContentChild('matOptionGroupPrefix') matOptionGroupPrefix!: TemplateRef<any>;
 
-  readonly selectChanged = output<{value: TYPE[]}>();
+  readonly selectChanged = output<{ value: TYPE[] }>();
 
   @ViewChild('allSelected') private allSelected!: MatOption;
 
   private _isDummyForm = false;
 
   private _isAllSelected = false;
-  @Input() isOptional = false;
-
-  @Input() groupValueExtractorProperty!: string;
+  readonly isOptional = input(false);
 
   ngOnInit(): void {
-    if (this.optionsGroup!.options.length > 0 && this.options.length > 0) {
+    if (this.optionsGroup().options.length > 0 && this.options().length > 0) {
       throw new Error('You cannot select both options!!!');
     }
     if (!this.formGroup) {
       this.initDummyForm();
     }
-    if (this.value) {
-      this.getFormControlName()?.setValue(this.value);
+    const value = this.value();
+    if (value) {
+      this.getFormControlName()?.setValue(value);
     }
   }
 
@@ -141,8 +156,9 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
 
   toggleAllSelection() {
     if (this.allSelected.selected) {
-      this.getFormControlName()?.setValue(this.options);
-      this.selectChanged.emit({ value: this.options });
+      const options = this.options();
+      this.getFormControlName()?.setValue(options);
+      this.selectChanged.emit({ value: options });
       this.allSelected.select();
       this._isAllSelected = true;
     } else {
@@ -156,7 +172,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
       if (this.allSelected.selected) {
         this.allSelected.deselect();
       }
-      if (this.getFormControlName()?.value.length == this.options.length) {
+      if (this.getFormControlName()?.value.length == this.options().length) {
         this.allSelected.select();
       }
     }

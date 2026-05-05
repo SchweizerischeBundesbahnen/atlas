@@ -8,6 +8,7 @@ import { FormatPipe } from '../../../../../core/components/table/pipe/format.pip
 import { TranslatePipe } from '@ngx-translate/core';
 import { mock } from 'vitest-mock-extended';
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
+import { inputBinding } from '@angular/core';
 
 const subline: Line = {
   swissLineNumber: 'IC6',
@@ -45,7 +46,10 @@ describe('SublineTableComponent', () => {
       ],
     });
 
-    fixture = TestBed.createComponent(SublineTableComponent);
+    const mainLineSlnidInputName: keyof SublineTableComponent = 'mainLineSlnid';
+    fixture = TestBed.createComponent(SublineTableComponent, {
+      bindings: [inputBinding(mainLineSlnidInputName, () => 'ch:1:slnid:1')],
+    });
     component = fixture.componentInstance;
     eventSubject = new Subject<boolean>();
     component.eventSubject = eventSubject;

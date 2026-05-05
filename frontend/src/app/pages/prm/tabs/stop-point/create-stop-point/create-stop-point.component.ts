@@ -1,4 +1,4 @@
-import { Component, inject, Input, ViewChild } from '@angular/core';
+import { Component, inject, Input, ViewChild, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatStep, MatStepLabel, MatStepper, MatStepperIcon } from '@angular/material/stepper';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
@@ -35,8 +35,10 @@ export class CreateStopPointComponent implements DetailFormComponent {
   private readonly dialogService = inject(DialogService);
 
   @ViewChild('stepper') stepper!: MatStepper;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
-  @Input() isAuthorizedToCreateStopPoint!: boolean;
+  readonly isAuthorizedToCreateStopPoint = input.required<boolean>();
 
   selectedMeansOfTransport!: MeanOfTransport[];
   isReduced = false;

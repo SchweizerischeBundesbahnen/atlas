@@ -4,6 +4,7 @@ import { LinkComponent } from './link.component';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { inputBinding } from '@angular/core';
 
 describe('LinkComponent', () => {
   let component: LinkComponent;
@@ -13,10 +14,11 @@ describe('LinkComponent', () => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting(), translateServiceProvider],
     });
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LinkComponent);
+    const labelInputName: keyof LinkComponent = 'label';
+    fixture = TestBed.createComponent(LinkComponent, {
+      bindings: [inputBinding(labelInputName, () => 'test label')],
+    });
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

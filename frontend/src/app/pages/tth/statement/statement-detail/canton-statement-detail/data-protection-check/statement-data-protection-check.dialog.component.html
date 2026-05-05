@@ -10,7 +10,10 @@
       <div>
         {{ 'TTH.STATEMENT.DATA_PROTECTION_CHECK_TEXT_QUESTION' | translate }}
       </div>
-      <mat-radio-group formControlName="hasStatementPersonalInformation" (change)="statementPersonalInformationChanged($event.value)">
+      <mat-radio-group
+        formControlName="hasStatementPersonalInformation"
+        (change)="statementPersonalInformationChanged($event.value)"
+      >
         <mat-radio-button [value]="true">
           {{ 'COMMON.YES' | translate }}
         </mat-radio-button>

@@ -1,4 +1,4 @@
-<ng-container [formGroup]="form">
+<ng-container [formGroup]="form()">
   @if (newRecord) {
     <h2 class="font-bold-2xl mb-4">
       {{ 'LIDI.NEW_LINE_INFORMATION' | translate }}
@@ -8,7 +8,7 @@
     @if (newRecord) {
       <div class="d-flex flex-column col-3 pe-3 pb-3">
         <atlas-select
-          [formGroup]="form"
+          [formGroup]="form()"
           controlName="lineType"
           dataCy="type"
           label="LIDI.TYPE"
@@ -24,7 +24,7 @@
     @if (isLineConcessionTypeRequired) {
       <div class="d-flex flex-column col-3 pe-3">
         <atlas-select
-          [formGroup]="form"
+          [formGroup]="form()"
           controlName="lineConcessionType"
           dataCy="lineConcessionType"
           label="LIDI.LINE_CONCESSION.TYPE"
@@ -47,7 +47,7 @@
               arg: { key: 'numberOfChars', value: '50' },
             },
           ]"
-          [formGroup]="form"
+          [formGroup]="form()"
           [required]="true"
           controlName="swissLineNumber"
           fieldLabel="LIDI.SWISS_LINE_NUMBER"
@@ -69,7 +69,7 @@
             arg: { key: 'numberOfChars', value: '255' },
           },
         ]"
-        [formGroup]="form"
+        [formGroup]="form()"
         [required]="true"
         controlName="description"
         fieldLabel="LIDI.LINE.DESCRIPTION"
@@ -88,7 +88,7 @@
             arg: { key: 'numberOfChars', value: '255' },
           },
         ]"
-        [formGroup]="form"
+        [formGroup]="form()"
         controlName="longName"
         fieldLabel="LIDI.LONG_NAME"
         infoIconTitle="LIDI.LINE.LONG_NAME_INFO"
@@ -106,7 +106,7 @@
             arg: { key: 'numberOfChars', value: '20' },
           },
         ]"
-        [formGroup]="form"
+        [formGroup]="form()"
         [required]="false"
         controlName="linienId"
         fieldLabel="LIDI.LINE.LINE_ID"
@@ -128,7 +128,7 @@
           },
         ]"
         [required]="true"
-        [formGroup]="form"
+        [formGroup]="form()"
         controlName="number"
         fieldLabel="LIDI.LINE.NUMBER"
         infoIconTitle="LIDI.LINE.NUMBER_INFO"
@@ -146,14 +146,14 @@
             arg: { key: 'numberOfChars', value: '8' },
           },
         ]"
-        [formGroup]="form"
+        [formGroup]="form()"
         controlName="shortNumber"
         fieldLabel="LIDI.SHORT_NUMBER"
       />
     </div>
     <div class="d-flex flex-column col-4">
       <atlas-select
-        [formGroup]="form"
+        [formGroup]="form()"
         controlName="offerCategory"
         dataCy="offerCategory"
         label="LIDI.OFFER_CATEGORY.TYPE"
@@ -181,14 +181,14 @@
   <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
 
   <div class="w-50">
-    <atlas-form-date-range [formGroup]="form" [showMaxValidityAutoFill]="false" />
+    <atlas-form-date-range [formGroup]="form()" [showMaxValidityAutoFill]="false" />
   </div>
 
   <div class="col-12 d-flex mt-3 pb-3">
     <div class="d-flex flex-column col-6 pe-3">
       <atlas-bo-select
-        [formGroup]="form"
-        [sboidsRestrictions]="boSboidRestriction"
+        [formGroup]="form()"
+        [sboidsRestrictions]="boSboidRestriction()"
         controlName="businessOrganisation"
         data-cy="businessOrganisation"
       />
@@ -198,7 +198,7 @@
   <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-6">
-      <atlas-form-comment [formGroup]="form" />
+      <atlas-form-comment [formGroup]="form()" />
     </div>
   </div>
 </ng-container>

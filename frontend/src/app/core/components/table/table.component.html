@@ -1,8 +1,8 @@
 <div class="overview-table pb-xl-5">
   <atlas-loading-spinner [isLoading]="isLoading" />
 
-  @if (showTableFilter) {
-    <atlas-table-filter (searchEvent)="searchData()" [filterConfigurations]="tableFilterConfig" />
+  @if (showTableFilter()) {
+    <atlas-table-filter (searchEvent)="searchData()" [filterConfigurations]="tableFilterConfig()" />
   }
 
   <ng-content />
@@ -12,10 +12,10 @@
     [dataSource]="tableData"
     [matSortActive]="sortActive"
     [matSortDirection]="sortDirection"
-    [matSortDisabled]="sortingDisabled"
+    [matSortDisabled]="sortingDisabled()"
     aria-describedby="atlas-table"
     class="atlas-table"
-    [ngClass]="additionalTableStyleClass"
+    [ngClass]="additionalTableStyleClass()"
     mat-table
     matSort
   >
@@ -82,7 +82,7 @@
             <mat-checkbox
               (change)="toggleCheckBox($event, row)"
               (click)="$event.stopPropagation()"
-              [checked]="checkBoxSelection.isSelected(row)"
+              [checked]="checkBoxSelection().isSelected(row)"
             />
           </td>
         }
@@ -152,13 +152,13 @@
     </tr>
   </table>
 
-  @if (showPaginator) {
+  @if (showPaginator()) {
     <mat-paginator
       (page)="pageChanged($event)"
-      [disabled]="checkBoxModeEnabled"
+      [disabled]="checkBoxModeEnabled()"
       [length]="totalCount"
       [pageIndex]="pageIndex"
-      [pageSizeOptions]="pageSizeOptions"
+      [pageSizeOptions]="pageSizeOptions()"
       [pageSize]="pageSize"
       class="font-regular-base"
     />

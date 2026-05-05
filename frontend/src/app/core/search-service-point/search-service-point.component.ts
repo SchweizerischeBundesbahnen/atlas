@@ -35,6 +35,8 @@ export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;
   _DEBOUNCE_TIME = 500;
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() searchType!: ServicePointSearchType;
 
   private _searchValue = '';

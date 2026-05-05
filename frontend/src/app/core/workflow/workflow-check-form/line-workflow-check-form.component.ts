@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, output } from '@angular/core';
+import { Component, inject, OnInit, output, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
@@ -22,7 +22,7 @@ import { LineWorkflowService } from '../../../api/service/workflow/line-workflow
   providers: [TranslatePipe],
 })
 export class LineWorkflowCheckFormComponent implements OnInit {
-  @Input() workflowId: number | undefined;
+  readonly workflowId = input.required<number>();
   readonly workflowChecked = output<void>();
 
   formGroup: FormGroup<LineWorkflowCheckFormGroup> = new FormGroup<LineWorkflowCheckFormGroup>({
@@ -78,7 +78,7 @@ export class LineWorkflowCheckFormComponent implements OnInit {
 
     if (this.formGroup.valid) {
       this.workflowService
-        .examinantCheck(this.workflowId!, {
+        .examinantCheck(this.workflowId(), {
           accepted: accepted,
           checkComment: this.formGroup.value.comment!,
           examinant: {

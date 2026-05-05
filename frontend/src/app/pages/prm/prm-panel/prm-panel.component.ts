@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BusinessOrganisationVersion, ReadServicePointVersion, ReadStopPointVersion } from '../../../api';
 import { DateRange } from '../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -9,7 +9,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PrmTabsService } from './prm-tabs.service';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
-
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../core/prm-recording-obligation/prm-recording-obligation.component';

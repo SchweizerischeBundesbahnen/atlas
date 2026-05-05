@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RelationComponent } from './relation.component';
 import { By } from '@angular/platform-browser';
 import { translateServiceProvider } from '../../../app.testing.mocks';
-import { firstValueFrom } from 'rxjs';
 
 describe('TransportCompanyRelationComponent', () => {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any

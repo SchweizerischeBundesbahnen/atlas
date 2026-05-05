@@ -1,5 +1,5 @@
 <div class="d-flex flex-row">
-  @if (showToggle && isPrmSupervisor) {
+  @if (showToggle() && isPrmSupervisor) {
     <div class="d-flex flex-column pe-3">
       <div class="font-bold-base">
         {{ 'PRM.STOP_POINTS.RECORDING_OBLIGATION' | translate }}
