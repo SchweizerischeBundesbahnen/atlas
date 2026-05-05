@@ -67,7 +67,7 @@
     "@ng-select/ng-select": "21.8.2",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
-    "angular-auth-oidc-client": "21.0.1",
+    "angular-auth-oidc-client": "21.0.2",
     "angular-server-side-configuration": "^21.0.0",
     "bootstrap": "^5.3",
     "jwt-decode": "^4.0.0",
