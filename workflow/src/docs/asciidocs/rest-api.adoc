@@ -16,14 +16,14 @@ include::{snippets}/add-stop-point-workflow/should-add-workflow/atlas-doc.adoc[]
 
 = Stop Point Termination Workflow
 
-== Get Stop Point Termination Workflow - Successfully
+== Get Stop Point Termination Workflows - Successfully
 
-include::{snippets}/termination-stop-point-workflow-api-v1-controller-test/should-get-termination-stop-point-by-id/atlas-doc.adoc[]
+include::{snippets}/get-termination-stop-point-workflows/should-return-filtered-sorted-paged-list-of-workflows/atlas-doc.adoc[]
 
 == Get Stop Point Termination Workflow by ID- Successfully
 
-include::{snippets}/termination-stop-point-workflow-api-v1-controller-test/should-get-termination-stop-point-by-id/atlas-doc.adoc[]
+include::{snippets}/get-termination-stop-point-workflow/should-get-termination-stop-point-by-id/atlas-doc.adoc[]
 
-== Create Stop Point Termination Workflow Workflow - Successfully
+== Create Stop Point Termination Workflow - Successfully
 
-include::{snippets}/termination-stop-point-workflow-api-v1-controller-test/should-save-termination-stop-point/atlas-doc.adoc[]
+include::{snippets}/start-termination-stop-point-workflow/should-save-termination-stop-point/atlas-doc.adoc[]
