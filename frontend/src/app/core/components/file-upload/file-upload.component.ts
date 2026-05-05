@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, output, ViewChild } from '@angular/core';
 import { FileUploadError } from './file-upload-error';
 import { FileDropDirective } from './file-drop/file-drop.directive';
 import { NgStyle } from '@angular/common';
@@ -34,12 +34,12 @@ export class FileUploadComponent {
 
   @Input() uploadedFiles: File[] = [];
   @Input() alreadySavedFileNames: string[] = [];
-  @Output() uploadedFilesChange = new EventEmitter<File[]>();
+  readonly uploadedFilesChange = output<File[]>();
 
   @Input() isDownloadButtonVisible: boolean = false;
   @Input() isDownloadButtonDisabled: boolean = false;
 
-  @Output() downloadExcelClick = new EventEmitter<void>();
+  readonly downloadExcelClick = output<void>();
 
   errorFiles: FileUploadError[] = [];
 

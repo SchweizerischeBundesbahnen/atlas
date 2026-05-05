@@ -157,11 +157,11 @@ export class UserAdministrationUserOverviewComponent {
 
   readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
 
-  applicationChanged($event: MatSelectChange) {
-    this.selectedApplicationOptions = $event.value;
+  applicationChanged(applicationTypes: ApplicationType[]) {
+    this.selectedApplicationOptions = applicationTypes;
   }
 
-  cantonChanged($event: MatSelectChange) {
-    this.selectedCantonOptions = $event.value;
+  cantonChanged(cantons: SwissCanton[]) {
+    this.selectedCantonOptions = cantons;
   }
 }

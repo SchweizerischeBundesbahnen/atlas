@@ -1,4 +1,4 @@
-import { Component, ContentChild, EventEmitter, input, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, ContentChild, input, Input, OnDestroy, OnInit, inject, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ServicePointDetailFormGroup } from './form-group/service-point-detail-form-group';
 import { ServicePointType } from '../service-point-type';
@@ -78,10 +78,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   selectableStopPointTypes = input.required<StopPointType[]>();
 
-  @Output()
-  selectedServicePointTypeChange: EventEmitter<ServicePointType | null | undefined> = new EventEmitter<
-    ServicePointType | null | undefined
-  >();
+  readonly selectedServicePointTypeChange = output<ServicePointType | null | undefined>();
 
   @Input() set form(form: FormGroup<ServicePointDetailFormGroup>) {
     this._form = form;

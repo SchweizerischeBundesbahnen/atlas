@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { TthOverviewBaseComponent } from './tth-overview-base.component';
 import { HearingStatus, TimetableHearingYear } from '../../../api';
 import moment from 'moment';
@@ -10,7 +10,6 @@ import { of, Subject } from 'rxjs';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../app.testing.mocks';
-import { MatSelectChange } from '@angular/material/select';
 import { TthUtils } from '../util/tth-utils';
 
 const mockTimetableHearingYearsService: Mocked<Pick<TimetableHearingYearInternalService, 'getHearingYears'>> = {
@@ -156,14 +155,10 @@ describe('TthOverviewBaseComponent', () => {
     });
 
     it('should change canton and navigate', () => {
-      const mockSelectChange = {
-        value: 'ZH',
-      } as MatSelectChange;
-
       vi.spyOn(overviewToTabService, 'setCantonShort');
       vi.spyOn(component, 'navigateTo').mockImplementation(() => {});
 
-      component.changeSelectedCantonFromDropdown(mockSelectChange);
+      component.changeSelectedCantonFromDropdown('ZH');
 
       expect(overviewToTabService.setCantonShort).toHaveBeenCalledWith('zh');
       expect(component.navigateTo).toHaveBeenCalledWith('zh', 2024);
@@ -171,14 +166,10 @@ describe('TthOverviewBaseComponent', () => {
     });
 
     it('should convert canton to lowercase', () => {
-      const mockSelectChange = {
-        value: 'BE',
-      } as MatSelectChange;
-
       vi.spyOn(overviewToTabService, 'setCantonShort');
       vi.spyOn(component, 'navigateTo').mockImplementation(() => {});
 
-      component.changeSelectedCantonFromDropdown(mockSelectChange);
+      component.changeSelectedCantonFromDropdown('BE');
 
       expect(overviewToTabService.setCantonShort).toHaveBeenCalledWith('be');
       expect(component.navigateTo).toHaveBeenCalledWith('be', 2024);
@@ -197,16 +188,12 @@ describe('TthOverviewBaseComponent', () => {
     });
 
     it('should change year and navigate', () => {
-      const mockSelectChange = {
-        value: 2025,
-      } as MatSelectChange;
-
       vi.spyOn(overviewToTabService, 'setYearSelection');
       vi.spyOn(component, 'navigateTo').mockImplementation(() => {});
 
-      component.changeSelectedYearFromDropdown(mockSelectChange);
+      component.changeSelectedYearFromDropdown(2025);
 
-      expect(overviewToTabService.setYearSelection).toHaveBeenCalledWith(mockSelectChange.value);
+      expect(overviewToTabService.setYearSelection).toHaveBeenCalledWith(2025);
       expect(component.yearSelection()).toBe(2025);
       expect(component.navigateTo).toHaveBeenCalledWith('zh', 2025);
       expect(tableService.resetTableSettings).toHaveBeenCalledTimes(1);
@@ -214,14 +201,11 @@ describe('TthOverviewBaseComponent', () => {
 
     it('should update timetable hearing year object', () => {
       overviewToTabService.setCantonShort('BE');
-      const mockSelectChange = {
-        value: 2026,
-      } as MatSelectChange;
 
       vi.spyOn(overviewToTabService, 'setTimetableHearingYear');
       vi.spyOn(component, 'navigateTo').mockImplementation(() => {});
 
-      component.changeSelectedYearFromDropdown(mockSelectChange);
+      component.changeSelectedYearFromDropdown(2026);
 
       expect(component.yearSelection()).toBe(2026);
     });

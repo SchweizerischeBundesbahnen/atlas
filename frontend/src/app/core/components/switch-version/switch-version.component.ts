@@ -1,4 +1,15 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  QueryList,
+  ViewChildren,
+  inject,
+  output,
+} from '@angular/core';
 import { Record } from '../../model/record';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
@@ -43,7 +54,7 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
   @Input() currentRecord!: Record;
   @Input() switchDisabled = false;
   @Input() showStatus = true;
-  @Output() switchVersion = new EventEmitter<number>();
+  readonly switchVersion = output<number>();
 
   @ViewChildren(MatRow, { read: ElementRef }) versionRows!: QueryList<ElementRef<HTMLTableRowElement>>;
 

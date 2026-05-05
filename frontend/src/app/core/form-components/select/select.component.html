@@ -8,7 +8,7 @@
 
   <mat-select
     class="atlas-select-dropdown"
-    (selectionChange)="selectChanged.emit($event)"
+    (selectionChange)="onMatSelectionChange($event)"
     [formControlName]="controlName"
     [attr.data-cy]="dataCy"
     placeholder="{{ placeHolderLabel | translate }}"

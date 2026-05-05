@@ -111,7 +111,7 @@
               dataCy="stopPointType"
               label="SEPODI.SERVICE_POINTS.STOP_POINT_TYPE"
               optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.STOP_POINT_TYPES."
-              (selectChanged)="onStopPointChange($event.value)"
+              (selectChanged)="onStopPointChange($event.value[0])"
               [options]="selectableStopPointTypes()"
               [additionalLabelspace]="10"
               [required]="true"

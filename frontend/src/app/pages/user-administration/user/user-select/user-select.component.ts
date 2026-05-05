@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, input, Input, OnInit, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { ApplicationType, User } from '../../../../api';
@@ -25,7 +25,7 @@ export class UserSelectComponent implements OnInit {
   controlName = input<string>('userSearch');
   bindValue = input<string>('');
 
-  @Output() selectionChange: EventEmitter<User> = new EventEmitter<User>();
+  readonly selectionChange = output<User>();
   userSearchResults$: Observable<User[]> = of([]);
 
   ngOnInit() {

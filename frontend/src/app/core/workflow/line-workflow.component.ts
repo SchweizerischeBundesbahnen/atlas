@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, output } from '@angular/core';
 import { LineRecord } from './model/line-record';
 import { LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
 import { LineInternalService } from '../../api/service/lidi/line-internal.service';
@@ -20,7 +20,7 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
   @Input() lineRecord!: LineRecord;
   @Input() descriptionForWorkflow!: string;
 
-  @Output() workflowEvent = new EventEmitter<void>();
+  readonly workflowEvent = output<void>();
 
   workflowInProgress = false;
   workflowId: number | undefined;

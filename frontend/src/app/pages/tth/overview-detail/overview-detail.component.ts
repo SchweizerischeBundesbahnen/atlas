@@ -338,13 +338,13 @@ export class OverviewDetailComponent extends StatementTableHandler {
       });
   }
 
-  collectingActions(action: MatSelectChange) {
-    if (action.value === 'STATUS_CHANGE') {
+  collectingActions(action: string) {
+    if (action === 'STATUS_CHANGE') {
       this.statusChangeCollectingActionsEnabled = true;
       this.showCollectingActionButton = false;
       this.loadData();
     }
-    if (action.value === 'CANTON_DELIVERY') {
+    if (action === 'CANTON_DELIVERY') {
       this.cantonDeliveryCollectingActionsEnabled = true;
       this.showCollectingActionButton = false;
       this.loadData();
@@ -375,7 +375,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
     this.loadData();
   }
 
-  collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
+  collectingStatusChangeAction(changedStatus: StatementStatus) {
     if (this.selectedItems.length > 0) {
       const dialogData: StatusChangeData = {
         title: 'TTH.DIALOG.STATUS_CHANGE',
@@ -383,7 +383,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
         cancelText: 'TTH.DIALOG.BACK',
         confirmText: 'TTH.DIALOG.STATUS_CHANGE',
         tths: this.selectedItems,
-        statementStatus: changedStatus.value,
+        statementStatus: changedStatus,
         type: 'MULTIPLE',
       };
 
@@ -401,7 +401,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
     }
   }
 
-  collectingCantonDeliveryAction($event: MatSelectChange) {
+  collectingCantonDeliveryAction(canton: string) {
     if (this.selectedItems.length > 0) {
       const dialogData: ChangeCantonData = {
         title: 'TTH.STATEMENT.DIALOG.TITLE',
@@ -409,7 +409,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
         cancelText: 'TTH.DIALOG.BACK',
         confirmText: 'TTH.DIALOG.CANTON_CHANGE',
         tths: this.selectedItems,
-        swissCanton: Cantons.getSwissCantonEnum($event.value),
+        swissCanton: Cantons.getSwissCantonEnum(canton),
       };
       this.dialogService
         .openDialogDataWithConfirmationResult(dialogData, TthChangeCantonDialogComponent)

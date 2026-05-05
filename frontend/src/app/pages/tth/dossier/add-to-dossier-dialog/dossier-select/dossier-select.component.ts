@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { SearchSelectComponent } from '../../../../../core/form-components/search-select/search-select.component';
@@ -25,7 +25,7 @@ export class DossierSelectComponent implements OnInit {
   statusRestriction = input<DossierStatus[]>();
   bindValue = input<string>('');
 
-  @Output() selectionChange: EventEmitter<TthDossier> = new EventEmitter<TthDossier>();
+  readonly selectionChange = output<TthDossier>();
   searchResults$: Observable<TthDossier[]> = of([]);
 
   ngOnInit() {

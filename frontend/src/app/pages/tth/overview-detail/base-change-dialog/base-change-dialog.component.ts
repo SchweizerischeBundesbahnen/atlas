@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, Input, inject, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { StatusChangeData } from '../tth-change-status-dialog/model/status-change-data';
@@ -18,7 +18,7 @@ export class BaseChangeDialogComponent {
   @Input() formGroup!: FormGroup;
   @Input() controlName!: string;
   @Input() maxChars!: string;
-  @Output() changeEvent = new EventEmitter();
+  readonly changeEvent = output();
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() dialogRef!: MatDialogRef<any>;
 

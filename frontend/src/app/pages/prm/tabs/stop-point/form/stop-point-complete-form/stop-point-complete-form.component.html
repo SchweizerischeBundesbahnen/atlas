@@ -202,7 +202,7 @@
     [required]="true"
     [options]="booleanOptionalAttributeTypes"
     [additionalLabelspace]="0"
-    (selectChanged)="updateRelatedFieldsContent($event)"
+    (selectChanged)="updateRelatedFieldsContent($event.value[0])"
   />
   <atlas-select
     class="col-4 ps-3 pe-2"

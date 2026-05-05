@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { Moment } from 'moment/moment';
 import { TableFilterChip } from './config/table-filter-chip';
@@ -52,7 +52,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class TableFilterComponent<TFilterConfig> {
   @Input() filterConfigurations: TableFilter<TFilterConfig>[][] = [];
-  @Output() searchEvent: EventEmitter<void> = new EventEmitter();
+  readonly searchEvent = output<void>();
 
   public readonly TableFilterChipClass = TableFilterChip;
   public readonly TableFilterSearchSelectClass = TableFilterSearchSelect;

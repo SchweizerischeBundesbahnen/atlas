@@ -1,14 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TransportCompany } from '../../../api';
@@ -31,8 +21,8 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   @Input() formGroup!: FormGroup;
   @Input() disabled!: boolean;
 
-  @Output() selectedTransportCompanyChanged = new EventEmitter();
-  @Output() tuSelectionChanged = new EventEmitter<TransportCompany>();
+  readonly selectedTransportCompanyChanged = output();
+  readonly tuSelectionChanged = output<TransportCompany>();
 
   transportCompanies: Observable<TransportCompany[]> = of([]);
   alreadySelectedTransportCompany: TransportCompany[] = [];

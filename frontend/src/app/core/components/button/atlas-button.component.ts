@@ -1,4 +1,4 @@
-import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef, inject } from '@angular/core';
+import { Component, ContentChild, Input, TemplateRef, inject, output } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
@@ -31,7 +31,7 @@ export class AtlasButtonComponent {
   @Input() title!: string;
   @Input() buttonStyleClass: string | undefined;
 
-  @Output() buttonClicked = new EventEmitter<void>();
+  readonly buttonClicked = output<void>();
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('rightIcon') rightIcon!: TemplateRef<any>;
 

@@ -1,4 +1,4 @@
-import { Component, contentChild, EventEmitter, Input, OnInit, Output, TemplateRef, inject } from '@angular/core';
+import { Component, contentChild, Input, OnInit, TemplateRef, inject, output } from '@angular/core';
 import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
@@ -76,13 +76,13 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Input() checkBoxModeEnabled = false;
   @Input() additionalTableStyleClass!: string;
 
-  @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() tableChanged = new EventEmitter<TablePagination>();
-  @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
-  @Output() changeDropdownEvent = new EventEmitter<ColumnDropDownEvent>();
+  readonly editElementEvent = output<DATATYPE>();
+  readonly tableChanged = output<TablePagination>();
+  readonly tableInitialized = output<TablePagination>();
+  readonly changeDropdownEvent = output<ColumnDropDownEvent>();
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  @Output() buttonClickEvent = new EventEmitter<any>();
-  @Output() checkedBoxEvent = new EventEmitter<SelectionModel<DATATYPE>>();
+  readonly buttonClickEvent = output<any>();
+  readonly checkedBoxEvent = output<SelectionModel<DATATYPE>>();
   isLoading = true;
 
   customCell = contentChild(TemplateRef);

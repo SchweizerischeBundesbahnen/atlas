@@ -1,14 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BusinessOrganisation } from '../../../api';
@@ -31,8 +21,8 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   @Input() sboidsRestrictions: string[] = [];
   @Input() disabled = false;
 
-  @Output() selectedBusinessOrganisationChanged = new EventEmitter();
-  @Output() boSelectionChanged = new EventEmitter<BusinessOrganisation>();
+  readonly selectedBusinessOrganisationChanged = output();
+  readonly boSelectionChanged = output<BusinessOrganisation>();
 
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
   private formSubscription!: Subscription;

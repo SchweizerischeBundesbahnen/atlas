@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
@@ -27,6 +27,7 @@ import { Page } from './core/model/page';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { Mocked, vi } from 'vitest';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'atlas-switch-version',
@@ -37,7 +38,7 @@ export class MockSwitchVersionComponent {
   @Input() currentRecord!: Record;
   @Input() switchDisabled = false;
   @Input() showStatus = true;
-  @Output() switchVersion = new EventEmitter<number>();
+  readonly switchVersion = output<number>();
 }
 
 @Component({
@@ -69,8 +70,8 @@ export class MockTuSelectComponent {
   @Input() controlName!: string;
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;
-  @Output() selectedTransportCompanyChanged = new EventEmitter();
-  @Output() tuSelectionChanged = new EventEmitter<TransportCompany>();
+  readonly selectedTransportCompanyChanged = output();
+  readonly tuSelectionChanged = output<TransportCompany>();
 
   transportCompanies: Observable<TransportCompany[]> = of([]);
 }
@@ -94,8 +95,8 @@ export class MockTimetableFieldNumberSelectComponent {
   @Input() validOn: Date | undefined = undefined;
   @Input() disabled!: boolean;
 
-  @Output() selectedTimetableFieldNumberChanged = new EventEmitter();
-  @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
+  readonly selectedTimetableFieldNumberChanged = output();
+  readonly ttfnSelectionChanged = output<TimetableFieldNumber>();
 }
 
 @Component({
@@ -122,7 +123,7 @@ export class MockSelectComponent {
   /* eslint-enable  @typescript-eslint/no-explicit-any */
   @Input() disabled = false;
   @Input() isOptional = false;
-  @Output() selectChanged = new EventEmitter();
+  readonly selectChanged = output();
 }
 
 @Component({
@@ -142,8 +143,8 @@ export class MockTableComponent<DATATYPE> {
   @Input() showPaginator = true;
 
   @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatementV2>(true, []);
-  @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
+  readonly editElementEvent = output<DATATYPE>();
+  readonly getTableElementsEvent = output<TablePagination>();
 }
 
 @Component({
@@ -194,7 +195,7 @@ export class MockMatPaginatorComponent {
   @Input() pageSizeOptions?: number[];
   @Input() length?: number;
 
-  @Output() page = new EventEmitter();
+  readonly page = output<Pick<PageEvent, 'pageSize'|'pageIndex'>>();
 }
 
 @Component({

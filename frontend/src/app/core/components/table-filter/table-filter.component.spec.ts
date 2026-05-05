@@ -4,7 +4,7 @@ import { TableFilterComponent } from './table-filter.component';
 import { By } from '@angular/platform-browser';
 import moment from 'moment';
 import { MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow } from '@angular/material/chips';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import {
   MatDatepickerControl,
   MatDatepickerInput,
@@ -41,7 +41,7 @@ import { translateServiceProvider } from '../../../app.testing.mocks';
 class MockMatChipInputComponent {
   @Input() matChipInputFor: any;
   @Input() formControl = new FormControl();
-  @Output() matChipInputTokenEnd: EventEmitter<MatChipInputEvent> = new EventEmitter<MatChipInputEvent>();
+  readonly matChipInputTokenEnd = output<MatChipInputEvent>();
 }
 
 @Component({
@@ -49,7 +49,7 @@ class MockMatChipInputComponent {
   template: '',
 })
 class MockAtlasSelectComponent {
-  @Output() selectChanged = new EventEmitter();
+  readonly selectChanged = output<{value: string[]}>();
 
   @Input() label: string | undefined;
   @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
@@ -71,7 +71,7 @@ class MockAtlasSelectComponent {
   template: '',
 })
 class MockMatDatepickerInputComponent {
-  @Output() dateChange: EventEmitter<Partial<MatDatepickerInputEvent<Moment | null, any>>> = new EventEmitter();
+  readonly dateChange = output<Partial<MatDatepickerInputEvent<Moment | null, any>>>();
 
   @Input() matDatepicker!: MatDatepickerPanel<MatDatepickerControl<any>, any | null, any>;
   @Input() formControl: FormControl = new FormControl();

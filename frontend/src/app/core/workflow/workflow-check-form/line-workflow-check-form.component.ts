@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, inject, Input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
@@ -9,7 +9,6 @@ import { NotificationService } from '../../notification/notification.service';
 import { ValidationService } from '../../validation/validation.service';
 import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
 import { PermissionService } from '../../auth/permission/permission.service';
-
 import { LineWorkflowFormComponent } from '../workflow-form/line-workflow-form.component';
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -24,7 +23,7 @@ import { LineWorkflowService } from '../../../api/service/workflow/line-workflow
 })
 export class LineWorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
-  @Output() workflowChecked = new EventEmitter<void>();
+  readonly workflowChecked = output<void>();
 
   formGroup: FormGroup<LineWorkflowCheckFormGroup> = new FormGroup<LineWorkflowCheckFormGroup>({
     comment: new FormControl('', [

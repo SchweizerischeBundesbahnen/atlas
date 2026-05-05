@@ -90,7 +90,11 @@ describe('TransportCompanyRelationComponent', () => {
       { id: 2, value: 'test2' },
     ];
     component.editable = true;
-    const indexPromise = firstValueFrom(component.selectedIndexChanged);
+    const indexPromise = new Promise((resolve) => {
+      component.selectedIndexChanged.subscribe((selectedIndex) => {
+        resolve(selectedIndex);
+      });
+    });
     component.selectRecord(component._records[1]);
     const index = await indexPromise;
     expect(index).toBe(1);

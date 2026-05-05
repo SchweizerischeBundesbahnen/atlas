@@ -149,7 +149,7 @@
           <div class="d-flex flex-column col-2 left-position">
             @if (showCollectingActionButton) {
               <atlas-select
-                (selectChanged)="collectingActions($event)"
+                (selectChanged)="collectingActions($event.value[0])"
                 [additionalLabelspace]="0"
                 [disabled]="totalCount === 0 || !this.timetableYear().statementEditable!"
                 [options]="COLLECTING_ACTION_DROPDOWN_OPTIONS"
@@ -162,7 +162,7 @@
                     alt="{{ action }}"
                     class="pe-2"
                     height="24"
-                    src="assets/images/collecting_action/{{ action.toUpperCase() }}.svg"
+                    ngSrc="assets/images/collecting_action/{{ action.toUpperCase() }}.svg"
                     width="24"
                   />
                 </ng-template>
@@ -190,7 +190,7 @@
             @if (statusChangeCollectingActionsEnabled) {
               <div class="d-flex flex-column col-6 mt-2">
                 <atlas-select
-                  (selectChanged)="collectingStatusChangeAction($event)"
+                  (selectChanged)="collectingStatusChangeAction($event.value[0])"
                   [additionalLabelspace]="0"
                   [disabled]="selectedItems.length === 0"
                   [options]="STATUS_OPTIONS"
@@ -204,7 +204,7 @@
             @if (cantonDeliveryCollectingActionsEnabled) {
               <div class="d-flex flex-column col-6 mt-2">
                 <atlas-select
-                  (selectChanged)="collectingCantonDeliveryAction($event)"
+                  (selectChanged)="collectingCantonDeliveryAction($event.value[0])"
                   [additionalLabelspace]="0"
                   [disabled]="selectedItems.length === 0"
                   [options]="CANTON_DROPDOWN_OPTIONS_WITHOUT_SWISS"

@@ -10,7 +10,7 @@
         [displayExtractor]="displayExtractor"
         [additionalLabelspace]="10"
         [disabled]="editing"
-        (selectChanged)="referencePointChanged($event)"
+        (selectChanged)="referencePointChanged($event.value[0])"
       />
     } @else {
       {{ 'PRM.RELATIONS.NO_REFERENCE_POINT' | translate }}

@@ -69,23 +69,23 @@ export class StopPointCompleteFormComponent implements OnInit {
     );
   };
 
-  updateRelatedFieldsContent(selectedAssistanceRequestFulfilled: MatSelectChange) {
+  updateRelatedFieldsContent(selectedAssistanceRequestFulfilled: BooleanOptionalAttributeType) {
     if (this.isNew) {
-      if (selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.Yes) {
+      if (selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.Yes) {
         this.form.controls.assistanceService.setValue(StandardAttributeType.NotApplicable);
         this.form.controls.assistanceAvailability.setValue(StandardAttributeType.NotApplicable);
       }
       if (
-        selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.No ||
-        selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.ToBeCompleted
+        selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.No ||
+        selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.ToBeCompleted
       ) {
         this.form.controls.assistanceService.setValue(StandardAttributeType.ToBeCompleted);
         this.form.controls.assistanceAvailability.setValue(StandardAttributeType.ToBeCompleted);
       }
     } else if (
       !this.isNew &&
-      (selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.No ||
-        selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.ToBeCompleted)
+      (selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.No ||
+        selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.ToBeCompleted)
     ) {
       this.form.controls.assistanceService.setValue(StandardAttributeType.ToBeCompleted);
       this.form.controls.assistanceAvailability.setValue(StandardAttributeType.ToBeCompleted);

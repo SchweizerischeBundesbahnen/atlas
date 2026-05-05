@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, output } from '@angular/core';
 
 @Component({
   selector: 'atlas-dialog-close',
@@ -6,5 +6,5 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./dialog-close.component.scss'],
 })
 export class DialogCloseComponent {
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+  readonly clicked = output<void>();
 }

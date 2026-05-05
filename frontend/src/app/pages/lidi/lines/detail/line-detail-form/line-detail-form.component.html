@@ -17,7 +17,7 @@
           [required]="true"
           [disabled]="!newRecord"
           [additionalLabelspace]="22"
-          (selectChanged)="updateMandatoryFields($event)"
+          (selectChanged)="updateMandatoryFields($event.value)"
         />
       </div>
     }

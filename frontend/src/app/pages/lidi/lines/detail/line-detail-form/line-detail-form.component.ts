@@ -118,8 +118,8 @@ export class LineDetailFormComponent {
     valueExtractor: (category: Category) => category.value,
   };
 
-  updateMandatoryFields($event: ColumnDropDownEvent) {
-    if ($event.value !== LineType.Orderly) {
+  updateMandatoryFields(lineTypes: LineType[]) {
+    if (!lineTypes.includes(LineType.Orderly)) {
       this.form.controls.lineConcessionType.reset();
       this.form.controls.swissLineNumber.reset();
     }

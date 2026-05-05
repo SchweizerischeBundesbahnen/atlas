@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, Input, output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
@@ -65,10 +65,10 @@ export class RelationComponent<RECORD_TYPE> {
   @Input() deleteBtnNameTranslationKey = 'RELATION.DELETE';
   @Input() updateBtnNameTranslationKey = 'RELATION.UPDATE';
 
-  @Output() deleteRelation = new EventEmitter<void>();
-  @Output() updateRelation = new EventEmitter<void>();
-  @Output() editModeChanged = new EventEmitter<void>();
-  @Output() selectedIndexChanged = new EventEmitter<number>();
+  readonly deleteRelation = output<void>();
+  readonly updateRelation = output<void>();
+  readonly editModeChanged = output<void>();
+  readonly selectedIndexChanged = output<number>();
 
   _records: RECORD_TYPE[] = [];
 

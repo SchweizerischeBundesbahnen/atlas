@@ -1,13 +1,12 @@
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   inject,
   Input,
   OnChanges,
   OnDestroy,
-  Output,
   SimpleChanges,
+  output,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
@@ -20,7 +19,6 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InfoIconComponent } from '@atlas/form';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
@@ -69,7 +67,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
         )
         .subscribe(() => {
           this.onChangeCoordinatesManually(this.currentCoordinates!, true);
-          this.coordinatesChanged.emit(this.currentCoordinates);
+          this.coordinatesChanged.emit(this.currentCoordinates!);
         });
     } else {
       this._geographyActive = false;
@@ -79,8 +77,8 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   @Input() editMode = false;
   @Input() geographyOptional = true;
-  @Output() geographyChanged = new EventEmitter<boolean>();
-  @Output() coordinatesChanged = new EventEmitter<CoordinatePair>();
+  readonly geographyChanged = output<boolean>();
+  readonly coordinatesChanged = output<CoordinatePair>();
 
   private _geographyActive = false;
 

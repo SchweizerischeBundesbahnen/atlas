@@ -1,14 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TimetableFieldNumber } from '../../../api';
@@ -32,8 +22,8 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   @Input() validOn: Date | undefined = undefined;
   @Input() disabled!: boolean;
 
-  @Output() selectedTimetableFieldNumberChanged = new EventEmitter();
-  @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
+  readonly selectedTimetableFieldNumberChanged = output();
+  readonly ttfnSelectionChanged = output<TimetableFieldNumber>();
 
   private readonly timetableFieldNumbersService = inject(TimetableFieldNumberInternalService);
 

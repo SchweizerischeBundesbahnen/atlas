@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, output } from '@angular/core';
 import { ServicePointSearchResult } from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,8 +24,8 @@ export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChan
   @Input() formGroup!: FormGroup;
   @Input() disabled = false;
 
-  @Output() selectedServicePointChanged = new EventEmitter();
-  @Output() spSelectionChanged = new EventEmitter<ServicePointSearchResult>();
+  readonly selectedServicePointChanged = output();
+  readonly spSelectionChanged = output<ServicePointSearchResult>();
 
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
   private formSubscription!: Subscription;

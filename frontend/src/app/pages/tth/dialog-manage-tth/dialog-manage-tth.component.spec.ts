@@ -6,7 +6,7 @@ import { TimetableHearingYear } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { of } from 'rxjs';
 import { MockAtlasButtonComponent, translateServiceProvider } from '../../../app.testing.mocks';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { TthYearInternalService } from '../../../api/service/workflow/tth-year-internal.service';
@@ -18,7 +18,7 @@ import { TthYearInternalService } from '../../../api/service/workflow/tth-year-i
 })
 class MockAtlasSlideToggleComponent {
   @Input() toggle = false;
-  @Output() toggleChange = new EventEmitter<boolean>();
+  readonly toggleChange = output<boolean>();
 }
 
 describe('DialogManageTthComponent', () => {

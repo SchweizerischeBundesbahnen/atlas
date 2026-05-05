@@ -1,21 +1,20 @@
 import {
   Component,
   ContentChild,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
+  output,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatOptgroup, MatOption } from '@angular/material/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasSpacerComponent } from '../../components/spacer/atlas-spacer.component';
-import { MatSelect } from '@angular/material/select';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -90,7 +89,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() controlName: string | null = null;
   @Input() formGroup!: FormGroup;
 
-  @Input() options?: TYPE[] = [];
+  @Input() options: TYPE[] = [];
   @Input() optionsGroup?: SelectOptionGroup = {
     options: [],
     valueExtractor: Function,
@@ -101,7 +100,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
   @ContentChild('matOptionGroupPrefix') matOptionGroupPrefix!: TemplateRef<any>;
 
-  @Output() selectChanged = new EventEmitter();
+  readonly selectChanged = output<{value: TYPE[]}>();
 
   @ViewChild('allSelected') private allSelected!: MatOption;
 
@@ -113,7 +112,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() groupValueExtractorProperty!: string;
 
   ngOnInit(): void {
-    if (this.optionsGroup!.options.length > 0 && this.options!.length > 0) {
+    if (this.optionsGroup!.options.length > 0 && this.options.length > 0) {
       throw new Error('You cannot select both options!!!');
     }
     if (!this.formGroup) {
@@ -157,7 +156,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
       if (this.allSelected.selected) {
         this.allSelected.deselect();
       }
-      if (this.getFormControlName()?.value.length == this.options?.length) {
+      if (this.getFormControlName()?.value.length == this.options.length) {
         this.allSelected.select();
       }
     }
@@ -173,5 +172,9 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     if (this.disabled) {
       this.formGroup.disable();
     }
+  }
+
+  protected onMatSelectionChange(event: MatSelectChange) {
+    this.selectChanged.emit({ value: [event.value] });
   }
 }

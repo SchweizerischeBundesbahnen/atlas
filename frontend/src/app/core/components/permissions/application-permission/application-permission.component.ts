@@ -126,7 +126,7 @@ export class ApplicationPermissionComponent implements OnInit {
     this.applicationConfig = ApplicationPermissionConfig.get(this.form.controls.application.value!);
     this.showAllSpecialPermissions = this.userPermissionProviderService.showAllSpecialPermissions();
 
-    this.onRoleChanged(this.form.controls.role.value ?? ApplicationRole.Reader);
+    this.onRoleChanged(this.form.controls.role.value ? [this.form.controls.role.value] : []);
 
     this.permissionsForm.controls.sboidsRestrictions?.value?.forEach((sboid) => {
       this.currentBusinessOrganisations = [];
@@ -173,13 +173,13 @@ export class ApplicationPermissionComponent implements OnInit {
     });
   }
 
-  onRoleChanged(applicationRole: ApplicationRole) {
-    this.currentRole = applicationRole;
-    const availableConfig = this.applicationConfig.roles.find((i) => i.role === applicationRole);
+  onRoleChanged(applicationRoles: ApplicationRole[]) {
+    this.currentRole = applicationRoles[0] ?? "READER";
+    const availableConfig = this.applicationConfig.roles.find((i) => i.role === this.currentRole);
     if (!availableConfig) {
-      throw new Error('Available Config not found for ' + applicationRole);
+      throw new Error('Available Config not found for ' + applicationRoles);
     }
-    this.currentRoleConfig = availableConfig!;
+    this.currentRoleConfig = availableConfig;
   }
 
   get showBusinessOrganisationRestriction() {

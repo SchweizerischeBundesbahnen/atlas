@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { BulkImportLogEntry, BulkImportResult } from '../../../api';
 import { AsyncPipe, DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
@@ -62,7 +62,7 @@ export class BulkImportLogComponent implements OnInit {
   }
 
   pageChanged(
-    e: { pageIndex: number; pageSize: number },
+    e: Pick<PageEvent, 'pageSize'|'pageIndex'>,
     array?: Array<BulkImportLogEntryTemplate>
   ): Array<BulkImportLogEntryTemplate> {
     if (!array || array.length === 0) {

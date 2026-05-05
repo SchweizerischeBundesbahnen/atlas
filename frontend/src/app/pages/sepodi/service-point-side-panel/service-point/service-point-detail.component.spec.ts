@@ -15,7 +15,7 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { Country, ReadServicePointVersion, Status, StopPointType } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MapService } from '../../map/map.service';
-import { Component, EventEmitter, input, Input, Output } from '@angular/core';
+import { Component, input, Input, output } from '@angular/core';
 import { BERN } from '../../../../../test/data/service-point';
 import { ValidityService } from '../../validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
@@ -51,7 +51,7 @@ class ServicePointFormMockComponent {
 class ServicePointGeographyMockComponent {
   @Input() form?: FormGroup;
   @Input() editMode?: boolean;
-  @Output() geographyChanged = new EventEmitter();
+  readonly geographyChanged = output();
 }
 
 describe('ServicePointDetailComponent', () => {
