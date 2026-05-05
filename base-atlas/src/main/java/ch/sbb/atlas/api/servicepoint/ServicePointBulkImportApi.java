@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.servicepoint;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -16,14 +17,17 @@ public interface ServicePointBulkImportApi {
 
   String BASEPATH = "internal/service-points/bulk-import";
 
+  @AuthorizedOnly
   @PostMapping(value = BASEPATH + "/update")
   List<BulkImportItemExecutionResult> bulkImportUpdate(
       @RequestBody List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers);
 
+  @AuthorizedOnly
   @PostMapping(value = BASEPATH + "/create")
   List<BulkImportItemExecutionResult> bulkImportCreate(
       @RequestBody List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> bulkImportContainers);
 
+  @AuthorizedOnly
   @PostMapping(value = BASEPATH + "/terminate")
   List<BulkImportItemExecutionResult> bulkImportTerminate(
       @RequestBody List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> bulkImportContainers);

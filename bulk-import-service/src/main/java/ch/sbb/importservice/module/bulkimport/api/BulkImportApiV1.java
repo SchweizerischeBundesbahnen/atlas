@@ -1,5 +1,7 @@
 package ch.sbb.importservice.module.bulkimport.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.imports.bulk.BulkImportRequest;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
@@ -43,6 +45,7 @@ public interface BulkImportApiV1 {
       @Parameter(description = "File to upload") @RequestPart(value = "file")
       @Schema(type = "string", format = "binary") MultipartFile file);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("template/{applicationType}/{objectType}/{importType}")
   @Operation(summary = "Download bulk import template",
       description = "Downloads a template file for the specified business object type and import type")
@@ -55,6 +58,7 @@ public interface BulkImportApiV1 {
       @PathVariable BusinessObjectType objectType,
       @PathVariable ImportType importType);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{id}")
   BulkImportResult getBulkImportResults(@PathVariable Long id);
 

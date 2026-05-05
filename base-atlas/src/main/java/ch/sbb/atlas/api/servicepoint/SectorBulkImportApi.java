@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.servicepoint;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -14,6 +15,7 @@ public interface SectorBulkImportApi {
 
   String BASEPATH = "internal/sectors/bulk-import";
 
+  @AuthorizedOnly
   @PostMapping(value = BASEPATH + "/create")
   List<BulkImportItemExecutionResult> bulkImportCreate(
       @RequestBody List<BulkImportUpdateContainer<SectorCreateCsvModel>> bulkImportCreateContainers);

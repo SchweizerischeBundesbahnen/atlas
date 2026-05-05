@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.prm;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -15,10 +16,12 @@ public interface PlatformBulkImportApi {
 
   String BASEPATH = "internal/platform/bulk-import";
 
+  @AuthorizedOnly
   @PostMapping(value = BASEPATH + "/update-platform-reduced")
   List<BulkImportItemExecutionResult> bulkImportPlatformReducedUpdate(
       @RequestBody List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> bulkImportUpdateContainers);
 
+  @AuthorizedOnly
   @PostMapping(value = BASEPATH + "/update-platform-complete")
   List<BulkImportItemExecutionResult> bulkImportPlatformCompleteUpdate(
       @RequestBody List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> bulkImportUpdateContainers);

@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.lidi;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -14,6 +15,7 @@ public interface LineBulkImportApiInternal {
 
   String BASEPATH = "internal/line/bulk-import";
 
+  @AuthorizedOnly
   @PostMapping(value = BASEPATH + "/update")
   List<BulkImportItemExecutionResult> lineUpdate(
       @RequestBody List<BulkImportUpdateContainer<LineUpdateCsvModel>> bulkImportUpdateContainers);
