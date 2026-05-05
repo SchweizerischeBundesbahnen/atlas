@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.servicepoint;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.search.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.search.ServicePointSearchResult;
@@ -14,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("internal/service-points")
 public interface ServicePointSearchApiInternal {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @PostMapping("search")
   List<ServicePointSearchResult> searchServicePoints(@RequestBody @Valid ServicePointSearchRequest value);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @PostMapping("search-sp-with-route-network")
   List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(@RequestBody @Valid ServicePointSearchRequest value);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @PostMapping("search-swiss-only")
   List<ServicePointSearchResult> searchSwissOnlyServicePoints(@RequestBody @Valid ServicePointSearchRequest value);
 

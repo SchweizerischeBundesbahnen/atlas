@@ -1,5 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
@@ -22,14 +25,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface SectorGroupApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{sloid}")
   List<ReadSectorGroupVersionModel> getSectorGroup(@PathVariable String sloid);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadSectorGroupVersionModel createSectorGroupVersion(
       @Valid @RequestBody @CreateIdCheck CreateSectorGroupVersionModel createSectorGroupVersionModel);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadSectorGroupVersionModel> updateSectorGroupVersion(

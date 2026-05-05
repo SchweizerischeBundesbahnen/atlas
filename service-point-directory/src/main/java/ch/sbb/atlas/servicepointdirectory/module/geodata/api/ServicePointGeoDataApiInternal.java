@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.module.geodata.api;
 
 import ch.sbb.atlas.annotation.AdminOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile;
@@ -19,6 +21,7 @@ public interface ServicePointGeoDataApiInternal {
 
   String MEDIA_TYPE_PROTOBUF = "application/x-protobuf";
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping(value = "/internal/service-points/geodata/{z}/{x}/{y}.pbf", produces = MEDIA_TYPE_PROTOBUF)
   @Hidden
   VectorTile.Tile getServicePointsGeoData(@PathVariable Integer z, @PathVariable Integer x, @PathVariable Integer y,

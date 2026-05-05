@@ -1,9 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.module.sectorgroup.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -26,11 +28,13 @@ public interface SectorGroupApiInternal {
   @PostMapping("{sloid}/revoke")
   void revokeSector(@PathVariable String sloid);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{trafficPointSloid}/overview")
   @PageableAsQueryParam
   Container<ReadSectorGroupVersionModel> getSectorGroupsOfTrafficPoint(@PathVariable String trafficPointSloid,
       @Parameter(hidden = true) Pageable pageable);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{sectorGroupSloid}/sectors")
   List<ReadSectorVersionModel> getSectorsBySectorGroupSloid(@PathVariable String sectorGroupSloid);
 }

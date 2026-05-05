@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.trafficpoint.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
@@ -23,18 +25,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Validated
 public interface TrafficPointElementApiInternal {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @PageableAsQueryParam
   @GetMapping("/areas/{servicePointNumber}")
   Container<ReadTrafficPointElementVersionModel> getAreasOfServicePoint(@PathVariable Integer servicePointNumber,
       @Parameter(hidden = true)
       @PageableDefault(sort = {Fields.sloid, Fields.validFrom}, direction = Direction.ASC, size = 500) Pageable pageable);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @PageableAsQueryParam
   @GetMapping("/platforms/{servicePointNumber}")
   Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(@PathVariable Integer servicePointNumber,
       @Parameter(hidden = true)
       @PageableDefault(sort = {Fields.sloid, Fields.validFrom}, direction = Direction.ASC, size = 500) Pageable pageable);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("actual-date/{servicePointNumber}")
   List<ReadTrafficPointElementVersionModel> getTrafficPointsOfServicePointValidToday(@PathVariable Integer servicePointNumber);
 

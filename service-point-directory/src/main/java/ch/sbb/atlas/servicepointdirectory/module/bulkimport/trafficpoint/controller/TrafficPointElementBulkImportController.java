@@ -10,7 +10,6 @@ import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.trafficpoint.service.TrafficPointElementBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -21,9 +20,6 @@ public class TrafficPointElementBulkImportController extends BaseBulkImportContr
   private final TrafficPointElementBulkImportService trafficPointElementBulkImportService;
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).CREATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportCreate(
       List<BulkImportUpdateContainer<TrafficPointCreateCsvModel>> bulkImportCreateContainers) {
     return executeBulkImport(bulkImportCreateContainers,
@@ -32,9 +28,6 @@ public class TrafficPointElementBulkImportController extends BaseBulkImportContr
   }
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportUpdate(
       List<BulkImportUpdateContainer<TrafficPointUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,

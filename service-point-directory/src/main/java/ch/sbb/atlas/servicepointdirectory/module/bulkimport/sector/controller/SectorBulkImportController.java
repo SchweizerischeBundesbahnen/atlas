@@ -8,7 +8,6 @@ import ch.sbb.atlas.imports.model.create.SectorCreateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.sector.service.SectorBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -19,9 +18,6 @@ public class SectorBulkImportController extends BaseBulkImportControllerInternal
   private final SectorBulkImportService sectorBulkImportService;
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).CREATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportCreate(
       List<BulkImportUpdateContainer<SectorCreateCsvModel>> bulkImportCreateContainers) {
     return executeBulkImport(bulkImportCreateContainers,

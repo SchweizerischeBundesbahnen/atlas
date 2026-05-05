@@ -9,7 +9,6 @@ import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -19,9 +18,6 @@ public class PlatformBulkImportController extends BaseBulkImportControllerIntern
   private final PlatformBulkImportService platformBulkImportService;
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public List<BulkImportItemExecutionResult> bulkImportPlatformReducedUpdate(
       List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
@@ -30,9 +26,6 @@ public class PlatformBulkImportController extends BaseBulkImportControllerIntern
   }
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public List<BulkImportItemExecutionResult> bulkImportPlatformCompleteUpdate(
       List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> bulkImportUpdateContainers) {
     return executeBulkImport(bulkImportUpdateContainers,

@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.loadingpoint.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("internal/loading-points")
 public interface LoadingPointApiInternal {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{servicePointNumber}")
   @PageableAsQueryParam
   Container<ReadLoadingPointVersionModel> getLoadingPointOverview(

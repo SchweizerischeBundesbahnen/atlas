@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.sector.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
@@ -25,11 +27,13 @@ public interface SectorApiInternal {
   @PostMapping("{sloid}/revoke")
   void revokeSector(@PathVariable String sloid);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{trafficPointSloid}/overview")
   @PageableAsQueryParam
   Container<ReadSectorVersionModel> getSectorsOfTrafficPoint(@PathVariable String trafficPointSloid,
       @Parameter(hidden = true) Pageable pageable);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("actual-date/{trafficPointSloid}")
   List<ReadSectorVersionModel> getSectorsOfTrafficPointValidToday(@PathVariable String trafficPointSloid);
 }
