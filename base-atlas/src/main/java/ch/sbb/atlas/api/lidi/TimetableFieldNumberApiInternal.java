@@ -1,6 +1,8 @@
 package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.annotation.AdminOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.Status;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("internal/field-numbers")
 public interface TimetableFieldNumberApiInternal {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<TimetableFieldNumberModel> getOverview(
@@ -39,6 +42,7 @@ public interface TimetableFieldNumberApiInternal {
       + ".ApplicationType).TTFN)")
   List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(@PathVariable String ttfnId);
 
+  @AdminOnly
   @DeleteMapping("/{ttfnid}")
   void deleteVersions(@PathVariable String ttfnid);
 

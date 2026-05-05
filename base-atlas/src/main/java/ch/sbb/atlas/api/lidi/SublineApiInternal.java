@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.lidi;
 
+import ch.sbb.atlas.annotation.AdminOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ public interface SublineApiInternal {
       + ".ApplicationType).LIDI)")
   void revokeSubline(@PathVariable String slnid);
 
+  @AdminOnly
   @DeleteMapping("{slnid}")
   void deleteSublines(@PathVariable String slnid);
 

@@ -8,7 +8,6 @@ import ch.sbb.atlas.imports.model.LineUpdateCsvModel;
 import ch.sbb.line.directory.module.bulkimport.line.service.LineBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -18,9 +17,6 @@ public class LineBulkImportControllerInternal extends BaseBulkImportControllerIn
   private final LineBulkImportService lineBulkImportService;
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
   public List<BulkImportItemExecutionResult> lineUpdate(
       List<BulkImportUpdateContainer<LineUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,

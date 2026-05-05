@@ -1,5 +1,8 @@
 package ch.sbb.atlas.api.lidi;
 
+import ch.sbb.atlas.annotation.AdminOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -33,6 +36,7 @@ public interface LineApiInternal {
       + ".ApplicationType).LIDI)")
   void revokeLine(@PathVariable String slnid);
 
+  @AdminOnly
   @DeleteMapping("{slnid}")
   void deleteLines(@PathVariable String slnid);
 
@@ -44,6 +48,7 @@ public interface LineApiInternal {
       + ".ApplicationType).LIDI)")
   void skipWorkflow(@PathVariable Long id);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @Operation(description = "Returns all line versions with its related workflow id")
   @GetMapping("/workflows")
   @PageableAsQueryParam
@@ -53,21 +58,25 @@ public interface LineApiInternal {
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validOn,
       @Parameter @RequestParam(required = false) List<WorkflowStatus> statusChoices);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("/workflows/{id}")
   @Operation(description = "Returns a versions with its related workflow id")
   LineVersionSnapshotModel getLineVersionSnapshotById(@PathVariable Long id);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @PostMapping("/affectedSublines/{id}")
   @Operation(description = "Returns checked Sublines to short")
   AffectedSublinesModel checkAffectedSublines(@PathVariable Long id,
       @RequestBody @Valid UpdateLineVersionModelV2 newVersion
   );
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<LineModel> getOverview(@Parameter(hidden = true) Pageable pageable,
       @Valid @ParameterObject LineRequestParams lineRequestParams);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{slnid}")
   LineModel getLine(@PathVariable String slnid);
 

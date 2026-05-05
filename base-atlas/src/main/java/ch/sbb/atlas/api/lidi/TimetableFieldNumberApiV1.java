@@ -4,6 +4,9 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,9 +31,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface TimetableFieldNumberApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("/versions/{ttfnId}")
   List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
+  @AuthorizedOnly
   @PutMapping("/versions/{id}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
@@ -47,6 +52,7 @@ public interface TimetableFieldNumberApiV1 {
   List<TimetableFieldNumberVersionModel> updateVersionWithVersioning(@PathVariable Long id,
       @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
+  @AuthorizedOnly
   @PostMapping("/versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
