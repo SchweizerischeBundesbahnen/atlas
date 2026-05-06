@@ -12,7 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class ErrorNotificationComponent {
-  public snackBarRef = inject(MatSnackBarRef<ErrorNotificationComponent>);
-  public notificationService = inject(NotificationService);
-  public data: ErrorResponse = inject(MAT_SNACK_BAR_DATA);
+  protected readonly snackBarRef = inject(MatSnackBarRef<ErrorNotificationComponent>);
+  protected readonly notificationService = inject(NotificationService);
+  protected readonly data: ErrorResponse = inject(MAT_SNACK_BAR_DATA);
 }

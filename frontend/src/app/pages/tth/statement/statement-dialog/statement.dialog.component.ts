@@ -19,12 +19,12 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class StatementDialogComponent {
-  private ngUnsubscribe = new Subject<void>();
-
-  public dialogRef = inject(MatDialogRef<StatementDialogComponent, boolean>);
-  public form: FormGroup<StatementDetailFormGroup> = inject(MAT_DIALOG_DATA);
+  protected readonly form: FormGroup<StatementDetailFormGroup> = inject(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<StatementDialogComponent, boolean>);
   private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
   private readonly notificationService = inject(NotificationService);
+
+  private readonly ngUnsubscribe = new Subject<void>();
 
   changeCantonAndAddComment() {
     const hearingStatement = this.form.value as TimetableHearingStatementV2;

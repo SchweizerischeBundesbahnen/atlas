@@ -2,12 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { PermissionComponent } from './permission.component';
 import { UserPermissionProviderService } from './application-permission/user-permission-provider-service';
-import { MockUserPermissionProviderService } from './application-permission/application-permission.component.spec';
 import { By } from '@angular/platform-browser';
 import { ApplicationType } from '../../../api';
 import { DialogService } from '../dialog/dialog.service';
 import { of } from 'rxjs';
-import { translateServiceProvider } from '../../../app.testing.mocks';
+import { MockUserPermissionProviderService, translateServiceProvider } from '../../../app.testing.mocks';
 
 describe('PermissionComponent', () => {
   let component: PermissionComponent;

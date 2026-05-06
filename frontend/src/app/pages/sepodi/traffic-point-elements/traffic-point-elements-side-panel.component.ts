@@ -32,6 +32,10 @@ import { SloidContainerComponent } from '../../../core/sloid-container/sloid-con
   ],
 })
 export class TrafficPointElementsSidePanelComponent implements OnInit, OnDestroy {
+  private readonly route = inject(ActivatedRoute);
+  private readonly trafficPointMapService = inject(TrafficPointMapService);
+  private readonly sectorMapService = inject(SectorMapService);
+
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
@@ -55,10 +59,6 @@ export class TrafficPointElementsSidePanelComponent implements OnInit, OnDestroy
     },
   ];
   showTabs = true;
-
-  route = inject(ActivatedRoute);
-  trafficPointMapService = inject(TrafficPointMapService);
-  sectorMapService = inject(SectorMapService);
 
   ngOnInit() {
     this.route.data.subscribe((next) => {

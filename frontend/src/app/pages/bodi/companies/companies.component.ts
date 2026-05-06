@@ -24,7 +24,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly tableService = inject(TableService);
 
-  tableColumns: TableColumn<Company>[] = [
+  protected readonly tableColumns: TableColumn<Company>[] = [
     { headerTitle: 'BODI.COMPANIES.UIC_CODE', value: 'uicCode' },
     {
       headerTitle: 'BODI.COMPANIES.SHORT_NAME',
@@ -38,11 +38,11 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     { headerTitle: 'BODI.COMPANIES.URL', value: 'url' },
   ];
 
-  tableFilterConfig!: TableFilter<unknown>[][];
-  companies: Company[] = [];
-  totalCount = 0;
+  protected tableFilterConfig!: TableFilter<unknown>[][];
+  protected companies: Company[] = [];
+  protected totalCount = 0;
 
-  private tableFilterConfigIntern = {
+  private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
   };
   private companiesSubscription?: Subscription;

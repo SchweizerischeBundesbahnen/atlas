@@ -12,6 +12,8 @@ import { OverviewToTabShareDataService } from '../service/overview-to-tab-share-
   imports: [DisplayDatePipe, TranslatePipe, NgOptimizedImage],
 })
 export class OverviewTabHeadingComponent {
+  private readonly overviewToTabShareDataService = inject(OverviewToTabShareDataService);
+
   // TODO: Skipped for migration because:
   //  Your application code writes to the input. This prevents migration.
   @Input() cantonShort!: string;
@@ -23,8 +25,6 @@ export class OverviewTabHeadingComponent {
   @Input() hearingStatus!: HearingStatus;
   readonly isTimetableHearingYearFound = input.required<boolean>();
   readonly isPlannedTimetableHearingYearFound = input.required<boolean>();
-
-  overviewToTabShareDataService = inject(OverviewToTabShareDataService);
 
   readonly isHearingYearActive = this.overviewToTabShareDataService.isHearingYearActive;
   readonly isHearingYearPlanned = this.overviewToTabShareDataService.isHearingYearPlanned;

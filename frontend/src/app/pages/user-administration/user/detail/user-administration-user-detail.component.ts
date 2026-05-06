@@ -15,8 +15,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class UserAdministrationUserDetailComponent implements OnInit, DetailFormComponent {
-  activatedRoute = inject(ActivatedRoute);
-  userPermissionGivenUserService = inject(UserPermissionGivenUserService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly userPermissionGivenUserService = inject(UserPermissionGivenUserService);
 
   user?: User;
 

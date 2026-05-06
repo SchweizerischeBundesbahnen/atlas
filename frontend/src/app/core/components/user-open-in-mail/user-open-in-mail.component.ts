@@ -9,8 +9,8 @@ import { PermissionService } from '../../auth/permission/permission.service';
   templateUrl: './user-open-in-mail.component.html',
 })
 export class UserOpenInMailComponent {
-  userId = input.required<string>();
-  applicationType = input.required<ApplicationType>();
+  readonly userId = input.required<string>();
+  readonly applicationType = input.required<ApplicationType>();
 
   readonly userAdministrationService = inject(UserAdministrationService);
   readonly permissionService = inject(PermissionService);

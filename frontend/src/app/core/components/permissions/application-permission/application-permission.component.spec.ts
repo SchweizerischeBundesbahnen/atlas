@@ -3,32 +3,9 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { ApplicationPermissionComponent } from './application-permission.component';
 import { UserPermissionProviderService } from './user-permission-provider-service';
 import { ApplicationType, BusinessOrganisation } from '../../../../api';
-import { FormGroup } from '@angular/forms';
-import {
-  ApplicationPermission,
-  ApplicationPermissionFormGroupBuilder,
-} from '../form/application-permission-form-group';
 import { of } from 'rxjs';
 import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
-import { translateServiceProvider } from '../../../../app.testing.mocks';
-
-export class MockUserPermissionProviderService extends UserPermissionProviderService {
-  applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
-
-  getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
-    return this.applicationPermissionFormGroup;
-  }
-
-  showAllSpecialPermissions(): boolean {
-    return false;
-  }
-
-  loadFormGroup(): void {
-    const formGroup = ApplicationPermissionFormGroupBuilder.buildFormGroup();
-    formGroup.controls.application.setValue(ApplicationType.Ttfn);
-    this.applicationPermissionFormGroup = formGroup;
-  }
-}
+import { MockUserPermissionProviderService, translateServiceProvider } from '../../../../app.testing.mocks';
 
 describe('ApplicationPermissionComponent', () => {
   let component: ApplicationPermissionComponent;

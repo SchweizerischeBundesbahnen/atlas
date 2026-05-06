@@ -16,8 +16,8 @@ export class LanguageSwitcherComponent {
   static readonly STORED_LANGUAGE_KEY = 'language';
   languages = [Language.DE, Language.FR, Language.IT];
 
-  private translateService = inject(TranslateService);
-  private dateAdapter = inject(DateAdapter<Date>);
+  private readonly translateService = inject(TranslateService);
+  private readonly dateAdapter = inject(DateAdapter<Date>);
 
   constructor() {
     const language =

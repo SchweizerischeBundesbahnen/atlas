@@ -22,9 +22,9 @@ export class NotificationService {
     verticalPosition: 'top',
   };
   correlationId: string | null | undefined;
-  private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
-  private translateService = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly translateService = inject(TranslateService);
   private routerEventSubscription?: Subscription;
   private readonly routerEventPipe = this.router.events.pipe(
     first(

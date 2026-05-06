@@ -22,12 +22,12 @@ import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVer
   styleUrls: ['./sector-group-overview.component.scss'],
 })
 export class SectorGroupOverviewComponent implements OnInit {
-  sectorGroupInternalService = inject(SectorGroupInternalService);
-  sectorInternalService = inject(SectorInternalService);
-  tableService = inject(TableService);
-  router = inject(Router);
-  route = inject(ActivatedRoute);
-  sectorPermissionService = inject(SectorPermissionService);
+  private readonly sectorGroupInternalService = inject(SectorGroupInternalService);
+  private readonly sectorInternalService = inject(SectorInternalService);
+  private readonly tableService = inject(TableService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly sectorPermissionService = inject(SectorPermissionService);
 
   trafficPointSloid!: string;
 

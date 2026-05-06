@@ -1,4 +1,4 @@
-import { Component, ContentChild, input, Input, OnDestroy, OnInit, inject, output } from '@angular/core';
+import { Component, ContentChild, inject, Input, input, OnDestroy, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ServicePointDetailFormGroup } from './form-group/service-point-detail-form-group';
 import { ServicePointType } from '../service-point-type';
@@ -74,9 +74,8 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   categories = Object.values(Category);
   isNew = false;
   private _isMeanOfTransportOnDemandSelected: boolean = false;
-  private _isStopPointOnDemandSelected: boolean = false;
 
-  selectableStopPointTypes = input.required<StopPointType[]>();
+  readonly selectableStopPointTypes = input.required<StopPointType[]>();
 
   readonly selectedServicePointTypeChange = output<ServicePointType | null | undefined>();
 

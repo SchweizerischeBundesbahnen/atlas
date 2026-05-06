@@ -25,9 +25,9 @@ export class UserSelectComponent implements OnInit {
   //  Your application code writes to the input. This prevents migration.
   @Input() applicationType?: ApplicationType;
 
-  searchMode = input<SearchMode>('default');
-  controlName = input<string>('userSearch');
-  bindValue = input<string>('');
+  readonly searchMode = input<SearchMode>('default');
+  readonly controlName = input<string>('userSearch');
+  readonly bindValue = input<string>('');
 
   readonly selectionChange = output<User>();
   userSearchResults$: Observable<User[]> = of([]);

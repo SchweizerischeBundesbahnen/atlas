@@ -33,16 +33,16 @@ import { ConvertUserPermissionToRecordHelper } from '../../../../../core/compone
   providers: [TranslatePipe],
 })
 export class UserAdministrationClientEditComponent implements OnInit {
-  client = input.required<ClientCredential>();
+  private readonly userPermissionGivenClientService = inject(UserPermissionGivenClientService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
+  private readonly dialogService = inject(DialogService);
+
+  readonly client = input.required<ClientCredential>();
 
   editMode = false;
   saveEnabled = true;
   record!: CreationEditionRecord;
-
-  userPermissionGivenClientService = inject(UserPermissionGivenClientService);
-  notificationService = inject(NotificationService);
-  clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
-  dialogService = inject(DialogService);
 
   ngOnInit() {
     this.userPermissionGivenClientService.clientCredential = this.client();

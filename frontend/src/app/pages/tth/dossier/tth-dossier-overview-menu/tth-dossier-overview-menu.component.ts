@@ -33,9 +33,9 @@ export class TthDossierOverviewMenuComponent {
   private readonly dossierInternalService = inject(DossierInternalService);
   private readonly notificationService = inject(NotificationService);
 
-  hearingStatus = input(HearingStatus.Active);
-  row = input.required<TthDossier>();
-  column = input.required<TableColumn<TthDossier>>();
+  readonly hearingStatus = input(HearingStatus.Active);
+  readonly row = input.required<TthDossier>();
+  readonly column = input.required<TableColumn<TthDossier>>();
 
   allowedDossierStatusForDissolve = [DossierStatus.Accepted, DossierStatus.Rejected, DossierStatus.Moved];
 
@@ -47,7 +47,7 @@ export class TthDossierOverviewMenuComponent {
 
   isDossierCompletable = computed(() => this.isDossierCancelable() || this.isDossierDissolvable());
 
-  reloadTable = output();
+  readonly reloadTable = output();
 
   completeDossier(status: DossierStatus) {
     this.dialogService

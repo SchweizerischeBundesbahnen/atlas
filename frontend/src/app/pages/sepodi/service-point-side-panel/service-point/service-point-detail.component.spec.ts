@@ -40,7 +40,7 @@ class ServicePointFormMockComponent {
   readonly form = input<FormGroup>();
   readonly currentVersion = input<object>();
   readonly locationInformation = input<object>();
-  selectableStopPointTypes = input.required<StopPointType[]>();
+  readonly selectableStopPointTypes = input.required<StopPointType[]>();
 }
 
 @Component({

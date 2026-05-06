@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output, input } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
@@ -55,7 +55,7 @@ export class LineWorkflowCheckFormComponent implements OnInit {
   private readonly workflowService = inject(LineWorkflowService);
   private readonly notificationService = inject(NotificationService);
   private readonly userAdministrationService = inject(UserAdministrationService);
-  public permissionService = inject(PermissionService);
+  protected readonly permissionService = inject(PermissionService);
 
   ngOnInit(): void {
     this.fillDefaultExaminant();

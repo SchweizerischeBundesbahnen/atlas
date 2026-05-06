@@ -37,11 +37,11 @@ export class StatementOverviewMenuComponent {
   private readonly dialogService = inject(DialogService);
   private readonly statementShareService = inject(StatementShareService);
 
-  hearingStatus = input(HearingStatus.Active);
-  row = input.required<TimetableHearingStatementV2>();
-  column = input.required<TableColumn<TimetableHearingStatementV2>>();
+  readonly hearingStatus = input(HearingStatus.Active);
+  readonly row = input.required<TimetableHearingStatementV2>();
+  readonly column = input.required<TableColumn<TimetableHearingStatementV2>>();
 
-  reloadTable = output();
+  readonly reloadTable = output();
 
   duplicate($event: TimetableHearingStatementV2) {
     this.dialogService

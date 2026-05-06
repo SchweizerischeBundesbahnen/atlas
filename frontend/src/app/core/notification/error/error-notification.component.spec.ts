@@ -5,6 +5,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar'
 import { HttpErrorResponse } from '@angular/common/http';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { By } from '@angular/platform-browser';
+import { NotificationService } from '../notification.service';
 
 const errorResponse = new HttpErrorResponse({
   status: 404,
@@ -68,7 +69,7 @@ describe('Error Notification component', () => {
   });
 
   it('should display details', () => {
-    component.notificationService.error(errorResponse);
+    TestBed.inject(NotificationService).error(errorResponse);
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('li')).nativeElement.textContent).include('TTFN.CONFLICT.NUMBER');

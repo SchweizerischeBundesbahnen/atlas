@@ -24,7 +24,7 @@ export class TrafficPointMapService implements OnDestroy {
   private readonly mapService = inject(MapService);
   private readonly trafficPointElementInternalService = inject(TrafficPointElementInternalService);
 
-  private onDestroy$ = new Subject<boolean>();
+  private readonly onDestroy$ = new Subject<boolean>();
 
   static buildTrafficPointPopupInformation(features: MapGeoJSONFeature[]) {
     let popupHtml = '';

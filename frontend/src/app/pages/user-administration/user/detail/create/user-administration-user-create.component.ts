@@ -29,15 +29,15 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
   providers: [TranslatePipe],
 })
 export class UserAdministrationUserCreateComponent {
+  private readonly userService = inject(UserAdministrationService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly dialogService = inject(DialogService);
+
   readonly userSearchForm: FormGroup = new FormGroup({
     userSearch: new FormControl<string | null>(null),
   });
-
-  userService = inject(UserAdministrationService);
-  notificationService = inject(NotificationService);
-  router = inject(Router);
-  route = inject(ActivatedRoute);
-  dialogService = inject(DialogService);
 
   selectedUser?: User;
   userHasAlreadyPermissions = false;

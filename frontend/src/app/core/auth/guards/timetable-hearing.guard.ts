@@ -8,9 +8,9 @@ import { UserService } from '../user/user.service';
   providedIn: 'root',
 })
 export class TimetableHearingGuard {
-  private permissionService = inject(PermissionService);
-  private userService = inject(UserService);
-  private router = inject(Router);
+  private readonly permissionService = inject(PermissionService);
+  private readonly userService = inject(UserService);
+  private readonly router = inject(Router);
 
   canActivate() {
     return this.userService.onPermissionsLoaded().pipe(

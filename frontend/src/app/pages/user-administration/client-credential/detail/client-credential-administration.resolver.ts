@@ -9,8 +9,8 @@ import { ClientCredentialAdministrationService } from '../../../../api/service/u
   providedIn: 'root',
 })
 export class ClientCredentialAdministrationResolver {
-  clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
-  router = inject(Router);
+  private readonly clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<ClientCredential> {
     const clientIdParam = route.paramMap.get('clientId');

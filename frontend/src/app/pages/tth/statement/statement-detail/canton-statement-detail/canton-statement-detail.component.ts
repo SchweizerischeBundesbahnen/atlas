@@ -94,10 +94,9 @@ export class CantonStatementDetailComponent
   isDuplicating = false;
   isInitializingComponent = true;
 
-  loadingSpinnerService = inject(LoadingSpinnerService);
-
   private readonly ngUnsubscribe = new Subject<void>();
 
+  private readonly loadingSpinnerService = inject(LoadingSpinnerService);
   private readonly dialogService = inject(DialogService);
   private readonly notificationService = inject(NotificationService);
   private readonly permissionService = inject(PermissionService);

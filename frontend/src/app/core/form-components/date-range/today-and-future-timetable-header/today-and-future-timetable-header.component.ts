@@ -12,8 +12,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatButton, MatCalendarHeader, TranslatePipe],
 })
 export class TodayAndFutureTimetableHeaderComponent {
-  private timetableYearChangeService = inject(TimetableYearChangeInternalService);
-  private datepicker = inject(MatDatepicker<Moment>);
+  private readonly timetableYearChangeService = inject(TimetableYearChangeInternalService);
+  private readonly datepicker = inject(MatDatepicker<Moment>);
 
   selectToday() {
     this.selectPredefinedDate(moment());

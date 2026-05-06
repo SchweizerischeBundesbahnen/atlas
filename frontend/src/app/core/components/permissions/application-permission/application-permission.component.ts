@@ -42,39 +42,33 @@ import { AtlasLabelFieldComponent } from '@atlas/form';
   ],
 })
 export class ApplicationPermissionComponent implements OnInit {
-  readonly ApplicationType = ApplicationType;
+  private readonly businessOrganisationService = inject(BusinessOrganisationService);
+  private readonly boLanguageService = inject(BusinessOrganisationLanguageService);
+  private readonly userPermissionProviderService = inject(UserPermissionProviderService);
 
+  readonly application = input.required<ApplicationType>();
+
+  availableRoles: ApplicationRole[] = [];
+  applicationConfig: ApplicationConfig = ApplicationPermissionConfig.get(ApplicationType.Ttfn);
+  form!: FormGroup<ApplicationPermission>;
+  permissionsForm!: FormGroup<PermissionRestriction>;
+  currentRole!: ApplicationRole;
+  currentRoleConfig!: RoleConfig;
+  showAllSpecialPermissions = false;
+  currentBusinessOrganisations: BusinessOrganisation[] = [];
+  selectedBusinessOrganisationIndex = -1;
+
+  readonly ApplicationType = ApplicationType;
   readonly getCountryEnum = Countries.getCountryEnum;
   readonly SWISS_COUNTRIES_PREFIX_LABEL = 'TTH.COUNTRY.';
-
   readonly COUNTRIES = this.filterAndSortCountries();
-
-  private filterAndSortCountries(): Country[] {
-    const sortedCountryArray: Country[] = [];
-    sortedCountryArray.push(
-      Country.Switzerland,
-      Country.GermanyBus,
-      Country.AustriaBus,
-      Country.ItalyBus,
-      Country.FranceBus
-    );
-    const filteredCountries = Countries.filteredCountries();
-    filteredCountries.sort(Countries.compareFn);
-    return sortedCountryArray.concat(filteredCountries);
-  }
-
   readonly SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
   readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
   readonly SWISS_CANTONS = Object.values(SwissCanton);
-
-  private readonly businessOrganisationService = inject(BusinessOrganisationService);
-  private readonly boLanguageService = inject(BusinessOrganisationLanguageService);
   readonly boFormCtrlName = 'businessOrganisation';
   readonly businessOrganisationForm: FormGroup = new FormGroup({
     [this.boFormCtrlName]: new FormControl<BusinessOrganisation | null>(null),
   });
-  currentBusinessOrganisations: BusinessOrganisation[] = [];
-  selectedBusinessOrganisationIndex = -1;
   readonly tableColumnDef: TableColumn<BusinessOrganisation>[] = [
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
@@ -98,24 +92,26 @@ export class ApplicationPermissionComponent implements OnInit {
     },
   ];
 
-  application = input.required<ApplicationType>();
-
-  availableRoles: ApplicationRole[] = [];
-  applicationConfig: ApplicationConfig = ApplicationPermissionConfig.get(ApplicationType.Ttfn);
-  form!: FormGroup<ApplicationPermission>;
-  permissionsForm!: FormGroup<PermissionRestriction>;
-  currentRole!: ApplicationRole;
-  currentRoleConfig!: RoleConfig;
-  showAllSpecialPermissions = false;
-
-  userPermissionProviderService = inject(UserPermissionProviderService);
-
   ngOnInit(): void {
     this.userPermissionProviderService.loadFormGroup(this.application());
     this.initializeView();
     this.userPermissionProviderService.formChanged.subscribe(() => {
       this.initializeView();
     });
+  }
+
+  private filterAndSortCountries(): Country[] {
+    const sortedCountryArray: Country[] = [];
+    sortedCountryArray.push(
+      Country.Switzerland,
+      Country.GermanyBus,
+      Country.AustriaBus,
+      Country.ItalyBus,
+      Country.FranceBus
+    );
+    const filteredCountries = Countries.filteredCountries();
+    filteredCountries.sort(Countries.compareFn);
+    return sortedCountryArray.concat(filteredCountries);
   }
 
   private initializeView(): void {

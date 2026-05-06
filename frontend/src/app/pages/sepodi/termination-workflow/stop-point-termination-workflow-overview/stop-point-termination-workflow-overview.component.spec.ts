@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { StopPointTerminationWorkflowOverviewComponent } from './stop-point-termination-workflow-overview.component';
 import { Component, input, output } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -16,12 +16,12 @@ import { ActivatedRoute } from '@angular/router';
   template: 'MockTableComponent',
 })
 class MockTableComponent {
-  tableInitialized = output<TablePagination>();
-  tableChanged = output<TablePagination>();
-  tableData = input<TerminationStopPointWorkflowModel[]>();
-  totalCount = input();
-  tableColumns = input();
-  tableFilterConfig = input();
+  readonly tableInitialized = output<TablePagination>();
+  readonly tableChanged = output<TablePagination>();
+  readonly tableData = input<TerminationStopPointWorkflowModel[]>();
+  readonly totalCount = input();
+  readonly tableColumns = input();
+  readonly tableFilterConfig = input();
 }
 
 describe('StopPointTerminationWorkflowOverviewComponent', () => {

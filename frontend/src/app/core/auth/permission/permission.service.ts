@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { ApplicationRole, ApplicationType, Permission, PermissionRestrictionType } from '../../../api';
 import { Cantons } from '../../cantons/Cantons';
@@ -16,7 +16,7 @@ export const TthApplicationUserType = {
   providedIn: 'root',
 })
 export class PermissionService {
-  private userService = inject(UserService);
+  private readonly userService = inject(UserService);
 
   public static getSboidRestrictions(userPermission: Permission): string[] {
     return userPermission.permissionRestrictions.map((restriction) => restriction.valueAsString!);

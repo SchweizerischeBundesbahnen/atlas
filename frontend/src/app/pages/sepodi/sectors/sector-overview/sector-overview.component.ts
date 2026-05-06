@@ -21,11 +21,11 @@ import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
   styleUrls: ['./sector-overview.component.scss'],
 })
 export class SectorOverviewComponent implements OnInit {
-  sectorInternalService = inject(SectorInternalService);
-  tableService = inject(TableService);
-  router = inject(Router);
-  route = inject(ActivatedRoute);
-  sectorPermissionService = inject(SectorPermissionService);
+  private readonly sectorInternalService = inject(SectorInternalService);
+  private readonly tableService = inject(TableService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly sectorPermissionService = inject(SectorPermissionService);
 
   trafficPointSloid!: string;
 

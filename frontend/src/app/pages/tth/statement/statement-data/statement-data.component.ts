@@ -26,10 +26,10 @@ import { Pages } from '../../../pages';
   styleUrls: ['./statement-data.component.scss'],
 })
 export class StatementDataComponent {
-  form = input.required<FormGroup<StatementDetailFormGroup>>();
-  ttfnValidOn = input.required<Date>();
-  statement = input.required<TimetableHearingStatementV2>();
-  isNew = input<boolean>();
+  readonly form = input.required<FormGroup<StatementDetailFormGroup>>();
+  readonly ttfnValidOn = input.required<Date>();
+  readonly statement = input.required<TimetableHearingStatementV2>();
+  readonly isNew = input<boolean>();
 
   private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
   private readonly router = inject(Router);

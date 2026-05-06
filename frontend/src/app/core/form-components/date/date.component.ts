@@ -37,8 +37,8 @@ export class DateComponent {
   readonly controlNameTo = input('validTo');
   readonly readonly = input(false);
 
-  minDate = input(MIN_DATE);
-  maxDate = input(MAX_DATE);
+  readonly minDate = input(MIN_DATE);
+  readonly maxDate = input(MAX_DATE);
 
   readonly EXAMPLE_DATE = '21.01.2021';
 

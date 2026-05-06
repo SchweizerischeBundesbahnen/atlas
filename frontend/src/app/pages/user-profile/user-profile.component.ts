@@ -12,7 +12,7 @@ import { PermissionComponent } from '../../core/components/permissions/permissio
   providers: [TranslatePipe],
 })
 export class UserProfileComponent implements OnInit {
-  userService = inject(UserService);
+  private readonly userService = inject(UserService);
 
   currentUser!: User;
 

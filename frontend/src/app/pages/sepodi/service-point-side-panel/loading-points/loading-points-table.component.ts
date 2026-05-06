@@ -51,7 +51,7 @@ export class LoadingPointsTableComponent implements OnInit {
   elements: ReadLoadingPointVersion[] = [];
   totalCount$ = 0;
 
-  private ngUnsubscribe = new Subject<void>();
+  private readonly ngUnsubscribe = new Subject<void>();
 
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.LOADING_POINTS);

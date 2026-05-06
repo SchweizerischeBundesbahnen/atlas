@@ -21,8 +21,8 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
   providers: [TranslatePipe],
 })
 export class StatementTextComponent implements OnInit {
-  form = input.required<FormGroup<StatementDetailFormGroup>>();
-  isNew = input.required<boolean>();
+  readonly form = input.required<FormGroup<StatementDetailFormGroup>>();
+  readonly isNew = input.required<boolean>();
 
   showOriginalText = false;
   hasAnonymousText = false;

@@ -21,8 +21,8 @@ export const NAVIGATION_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.NAVIGATION_PLACEHOL
   styleUrls: ['./navigate-service-point.component.scss'],
 })
 export class NavigateServicePointComponent {
-  searchNavigationType = input.required<SearchNavigationType>();
-  searchType = input.required<ServicePointSearchType>();
+  readonly searchNavigationType = input.required<SearchNavigationType>();
+  readonly searchType = input.required<ServicePointSearchType>();
   ngSelect = viewChild.required(NgSelectComponent);
 
   private _resultMsg = NAVIGATION_PLACEHOLDER;

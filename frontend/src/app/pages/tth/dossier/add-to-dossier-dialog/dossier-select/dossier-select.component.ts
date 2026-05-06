@@ -17,13 +17,13 @@ import { DossierStatus } from '../../../../../api/model/dossierStatus';
 export class DossierSelectComponent implements OnInit {
   private readonly dossierInternalService = inject(DossierInternalService);
 
-  form = input.required<FormGroup>();
+  readonly form = input.required<FormGroup>();
 
-  controlName = input<string>('dossier');
-  canton = input<SwissCanton>();
-  year = input<number>();
-  statusRestriction = input<DossierStatus[]>();
-  bindValue = input<string>('');
+  readonly controlName = input<string>('dossier');
+  readonly canton = input<SwissCanton>();
+  readonly year = input<number>();
+  readonly statusRestriction = input<DossierStatus[]>();
+  readonly bindValue = input<string>('');
 
   readonly selectionChange = output<TthDossier>();
   searchResults$: Observable<TthDossier[]> = of([]);
