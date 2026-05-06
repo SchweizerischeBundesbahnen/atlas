@@ -161,7 +161,7 @@ class TimetableHearingYearControllerInternalApiTest extends BaseControllerApiTes
   }
 
   @Nested
-  @DisplayName("POST internal/timetable-hearing/years/{year}/start")
+  @DisplayName("PUT internal/timetable-hearing/years/{year}")
   class UpdateTimetableHearingSettings {
 
     @Test
