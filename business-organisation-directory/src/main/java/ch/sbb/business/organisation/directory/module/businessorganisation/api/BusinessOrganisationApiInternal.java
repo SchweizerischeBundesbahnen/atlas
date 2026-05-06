@@ -4,9 +4,9 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AdminOnly;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,10 +63,11 @@ public interface BusinessOrganisationApiInternal {
       @PathVariable Long id,
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
+  @AdminOnly
   @DeleteMapping("{sboid}")
   void deleteBusinessOrganisation(@PathVariable String sboid);
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @AdminOnly
   @PostMapping("/sync-business-organisations")
   @Operation(description = "Write all Business Organisations to kafka again for redistribution")
   void syncBusinessOrganisations();

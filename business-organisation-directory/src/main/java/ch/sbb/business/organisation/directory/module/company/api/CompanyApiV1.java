@@ -1,5 +1,7 @@
 package ch.sbb.business.organisation.directory.module.company.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.bodi.CompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("v1/companies")
 public interface CompanyApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<CompanyModel> getCompanies(
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{uic}")
   CompanyModel getCompany(@PathVariable String uic);
 

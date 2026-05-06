@@ -20,8 +20,6 @@ import ch.sbb.atlas.user.administration.module.useradministration.mapper.UserPer
 import ch.sbb.atlas.user.administration.module.useradministration.service.UserAdministrationService;
 import ch.sbb.atlas.user.administration.module.useradministration.service.UserPermissionDistributor;
 import ch.sbb.atlas.user.administration.module.userinformation.service.GraphApiService;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -93,24 +91,6 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
         .stream()
         .findFirst().orElseThrow(() -> displayUserNotFoundException(userId));
     return UserDisplayNameModel.toModel(userModel);
-  }
-
-  @Override
-  public List<UserDisplayNameModel> getUserInformation(List<String> userIds) {
-    if (userIds == null || userIds.isEmpty()) {
-      return Collections.emptyList();
-    }
-    List<UserDisplayNameModel> result = new ArrayList<>();
-
-    // Add all ClientCredential Display Information
-    userIds.forEach(userId -> getClientCredentialAlias(userId).ifPresent(result::add));
-
-    // Add all User Information
-    List<String> userIdList = userIds.stream().filter(userId -> result.stream()
-        .noneMatch(i -> i.getSbbUserId().equals(userId))).toList();
-    result.addAll(graphApiService.resolveUsers(userIdList).stream().map(UserDisplayNameModel::toModel).toList());
-
-    return result;
   }
 
   private Optional<UserDisplayNameModel> getClientCredentialAlias(String clientId) {

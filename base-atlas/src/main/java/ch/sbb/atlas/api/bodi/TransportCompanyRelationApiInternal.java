@@ -4,6 +4,9 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AdminOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,12 +37,15 @@ public interface TransportCompanyRelationApiInternal {
       + ".ApplicationType).BODI)")
   TransportCompanyBoRelationModel createTransportCompanyRelation(@RequestBody @Valid TransportCompanyRelationModel model);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{transportCompanyId}")
   List<TransportCompanyBoRelationModel> getTransportCompanyBoRelations(@PathVariable Long transportCompanyId);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("tc-of-bo")
   List<BoTransportCompanyRelationModel> getBoTransportCompanyRelations(@RequestParam String sboid);
 
+  @AdminOnly
   @DeleteMapping("{relationId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   void deleteTransportCompanyRelation(@PathVariable Long relationId);

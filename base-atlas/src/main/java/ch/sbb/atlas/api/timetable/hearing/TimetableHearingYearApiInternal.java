@@ -4,6 +4,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,6 +30,7 @@ public interface TimetableHearingYearApiInternal {
 
   String BASE_PATH = "internal/timetable-hearing/years";
 
+  @AuthorizedOnly
   @GetMapping(BASE_PATH)
   List<TimetableHearingYearModel> getHearingYears(
       @Parameter @RequestParam(required = false) List<HearingStatus> statusChoices);

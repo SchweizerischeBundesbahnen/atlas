@@ -4,6 +4,9 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
@@ -38,6 +41,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface LoadingPointApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<ReadLoadingPointVersionModel> getLoadingPoints(
@@ -46,13 +50,16 @@ public interface LoadingPointApiV1 {
           LoadingPointVersion.Fields.number, LoadingPointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject LoadingPointRequestParams loadingPointRequestParams);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{servicePointNumber}/{loadingPointNumber}")
   List<ReadLoadingPointVersionModel> getLoadingPoint(@PathVariable Integer servicePointNumber,
       @PathVariable Integer loadingPointNumber);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("versions/{id}")
   ReadLoadingPointVersionModel getLoadingPointVersion(@PathVariable Long id);
 
+  @AuthorizedOnly
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
@@ -62,6 +69,7 @@ public interface LoadingPointApiV1 {
   })
   ReadLoadingPointVersionModel createLoadingPoint(@RequestBody @Valid @CreateIdCheck CreateLoadingPointVersionModel newVersion);
 
+  @AuthorizedOnly
   @PutMapping({"{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),

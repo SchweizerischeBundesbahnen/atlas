@@ -1,9 +1,8 @@
 package ch.sbb.importservice.module.geo.api;
 
-import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.annotation.AdminOnly;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.batch.core.job.JobExecutionException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("v1/service-point-job")
 public interface ServicePointUpdateGeoApiV1 {
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @AdminOnly
   @PostMapping("update-geo")
   void startServicePointUpdateGeoLocation() throws JobExecutionException;
 

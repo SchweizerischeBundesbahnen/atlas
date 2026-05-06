@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.module.parkinglot.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("internal/parking-lots")
 public interface ParkingLotApiInternal {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("overview/{parentServicePointSloid}")
   List<ParkingLotOverviewModel> getParkingLotsOverview(@PathVariable String parentServicePointSloid);
 

@@ -4,6 +4,9 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.validation.CreateIdCheck;
@@ -33,14 +36,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface SublineApiV2 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("versions")
   @PageableAsQueryParam
   Container<ReadSublineVersionModelV2> getSublineVersions(@Parameter(hidden = true) Pageable pageable,
       @Valid @ParameterObject SublineVersionRequestParams sublineVersionRequestParams);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("versions/{slnid}")
   List<ReadSublineVersionModelV2> getSublineVersionV2(@PathVariable String slnid);
 
+  @AuthorizedOnly
   @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
@@ -51,6 +57,7 @@ public interface SublineApiV2 {
   ReadSublineVersionModelV2 createSublineVersionV2(
       @RequestBody @Valid @CreateIdCheck CreateSublineVersionModelV2 newSublineVersion);
 
+  @AuthorizedOnly
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),

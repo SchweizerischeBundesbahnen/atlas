@@ -1,5 +1,7 @@
 package ch.sbb.atlas.api.bodi;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.Status;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("v1/business-organisations")
 public interface BusinessOrganisationApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
   @Operation(deprecated = true, summary = "Use /v1/business-organisations/versions instead. Will be removed by 01.03.2026.")
   @GetMapping
   @PageableAsQueryParam
@@ -32,12 +35,14 @@ public interface BusinessOrganisationApiV1 {
       @Parameter @RequestParam(required = false) List<Status> statusChoices
   );
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
   @GetMapping("versions")
   @PageableAsQueryParam
   Container<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(
       @Parameter(hidden = true) Pageable pageable,
       @ParameterObject BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.REDACTED)
   @GetMapping("versions/{sboid}")
   List<BusinessOrganisationVersionModel> getVersions(@PathVariable String sboid);
 }

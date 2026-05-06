@@ -23,7 +23,8 @@ public class StopPointWorkflowTestData {
 
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+
+    return StopPointAddWorkflowModel.builder()
         .sloid(sloid)
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
@@ -31,8 +32,6 @@ public class StopPointWorkflowTestData {
         .ccEmails(List.of("a@b.ch", "b@c.it"))
         .versionId(versionId)
         .build();
-
-    return workflowModel;
   }
 
   public static StopPointAddWorkflowModel getAddStopPointWorkflowWithMultipleExaminants() {
@@ -43,7 +42,8 @@ public class StopPointWorkflowTestData {
 
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+
+    return StopPointAddWorkflowModel.builder()
         .sloid(sloid)
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
@@ -51,8 +51,6 @@ public class StopPointWorkflowTestData {
         .ccEmails(List.of("a@b.ch", "b@c.it"))
         .versionId(versionId)
         .build();
-
-    return workflowModel;
   }
 
   public static StopPointAddWorkflowModel getAddStopPointWorkflow2() {
@@ -61,7 +59,8 @@ public class StopPointWorkflowTestData {
 
     long versionId = 654321L;
     String sloid = "ch:1:sloid:4321";
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+
+    return StopPointAddWorkflowModel.builder()
         .sloid(sloid)
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("Commentaros")
@@ -69,38 +68,33 @@ public class StopPointWorkflowTestData {
         .ccEmails(List.of("a@b.ch", "b@c.it"))
         .versionId(versionId)
         .build();
-
-    return workflowModel;
   }
 
   public static StopPointClientPersonModel getClientPerson() {
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+    return StopPointClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
         .organisation("BAV")
         .mail(MAIL_ADDRESS).build();
-    return person;
   }
 
   public static StopPointClientPersonModel getMunicipalityPerson() {
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+    return StopPointClientPersonModel.builder()
         .firstName("Name")
         .lastName("Lastname")
         .personFunction("Verkehrsplanung")
         .organisation("Amt für öffentlichen Verkehr, Bau-, Verkehrs- und Energiedirektion")
         .mail("TechSupport-ATLAS-fake@sbb.ch").build();
-    return person;
   }
 
   public static StopPointClientPersonModel getAtlasPerson() {
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+    return StopPointClientPersonModel.builder()
         .firstName("atlas")
         .lastName("SKI")
         .personFunction("Fachstelle atlas")
         .organisation("SKI - Systemaufgaben Kundeninformation")
         .mail("testuser-atlas-fake@sbb.ch").build();
-    return person;
   }
 
   public static Decision getDecisionWithExaminant(Person person) {

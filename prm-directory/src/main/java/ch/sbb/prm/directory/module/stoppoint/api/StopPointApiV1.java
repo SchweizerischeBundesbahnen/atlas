@@ -4,6 +4,9 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
@@ -39,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface StopPointApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<ReadStopPointVersionModel> getStopPoints(
@@ -46,13 +50,16 @@ public interface StopPointApiV1 {
           StopPointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject StopPointRequestParams stopPointRequestParams);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{sloid}")
   List<ReadStopPointVersionModel> getStopPointVersions(@PathVariable String sloid);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadStopPointVersionModel createStopPoint(@RequestBody @Valid @CreateIdCheck StopPointVersionModel stopPointVersionModel);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
@@ -66,6 +73,7 @@ public interface StopPointApiV1 {
   List<ReadStopPointVersionModel> updateStopPoint(@PathVariable Long id,
       @RequestBody @Valid StopPointVersionModel stopPointVersionModel);
 
+  @AuthorizedOnly
   @PutMapping("/terminate/{sloid}/{validTo}")
   List<ReadStopPointVersionModel> terminateStopPoint(
       @Parameter(description = "Sloid in the format 'ch:1:sloid:1400015'", example = "ch:1:sloid:1400015")

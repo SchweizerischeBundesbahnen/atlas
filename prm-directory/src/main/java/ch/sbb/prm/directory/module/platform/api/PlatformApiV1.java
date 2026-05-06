@@ -4,14 +4,17 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
-import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
+import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface PlatformApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<ReadPlatformVersionModel> getPlatforms(
@@ -47,10 +51,12 @@ public interface PlatformApiV1 {
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadPlatformVersionModel createPlatform(@RequestBody @Valid @CreateIdCheck PlatformVersionModel model);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
@@ -64,9 +70,11 @@ public interface PlatformApiV1 {
   List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
       @RequestBody @Valid PlatformVersionModel platformVersionModel);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{sloid}")
   List<ReadPlatformVersionModel> getPlatformVersions(@PathVariable String sloid);
 
+  @AuthorizedOnly
   @PutMapping("/terminate/{sloid}/{validTo}")
   List<ReadPlatformVersionModel> terminatePlatform(
       @Parameter(description = "Sloid in the format 'ch:1:sloid:1400015:0:55555'", example = "ch:1:sloid:1400015:0:55555")

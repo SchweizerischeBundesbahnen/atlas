@@ -1,20 +1,20 @@
-import { inject, Injectable } from '@angular/core';
-import { AtlasApiService } from '../atlas-api.service';
-import { Observable } from 'rxjs';
-import { StopPointAddWorkflow } from '../../model/stopPointAddWorkflow';
-import { ReadStopPointWorkflow } from '../../model/readStopPointWorkflow';
-import { EditStopPointWorkflow } from '../../model/editStopPointWorkflow';
-import { AddExaminants } from '../../model/addExaminants';
-import { ReadDecision } from '../../model/readDecision';
-import { OverrideDecision } from '../../model/overrideDecision';
-import { OtpRequest } from '../../model/otpRequest';
-import { StopPointPerson } from '../../model/stopPointPerson';
-import { OtpVerification } from '../../model/otpVerification';
-import { Decision } from '../../model/decision';
-import { WorkflowStatus } from '../../model/workflowStatus';
-import { ContainerReadStopPointWorkflow } from '../../model/containerReadStopPointWorkflow';
-import { StopPointRejectWorkflow } from '../../model/stopPointRejectWorkflow';
-import { StopPointRestartWorkflow } from '../../model/stopPointRestartWorkflow';
+import {inject, Injectable} from '@angular/core';
+import {AtlasApiService} from '../atlas-api.service';
+import {Observable} from 'rxjs';
+import {StopPointAddWorkflow} from '../../model/stopPointAddWorkflow';
+import {ReadStopPointWorkflow} from '../../model/readStopPointWorkflow';
+import {EditStopPointWorkflow} from '../../model/editStopPointWorkflow';
+import {AddExaminants} from '../../model/addExaminants';
+import {ReadDecision} from '../../model/readDecision';
+import {OverrideDecision} from '../../model/overrideDecision';
+import {OtpRequest} from '../../model/otpRequest';
+import {StopPointPerson} from '../../model/stopPointPerson';
+import {OtpVerification} from '../../model/otpVerification';
+import {Decision} from '../../model/decision';
+import {WorkflowStatus} from '../../model/workflowStatus';
+import {ContainerReadStopPointWorkflow} from '../../model/containerReadStopPointWorkflow';
+import {StopPointRejectWorkflow} from '../../model/stopPointRejectWorkflow';
+import {StopPointRestartWorkflow} from '../../model/stopPointRestartWorkflow';
 
 @Injectable({
   providedIn: 'root',
@@ -69,7 +69,7 @@ export class StopPointWorkflowService {
   }
 
   getDecision(personId: number):Observable<ReadDecision>{
-    return this.atlasApiService.post(`${this.STOP_POINT_WORKFLOW_INTERNAL}/decisions/${encodeURIComponent(String(personId))}`);
+    return this.atlasApiService.get(`${this.STOP_POINT_WORKFLOW_INTERNAL}/decisions/${encodeURIComponent(String(personId))}`);
   }
 
   overrideVoteWorkflow(id: number, personId: number, overrideDecision: OverrideDecision):Observable<void>{

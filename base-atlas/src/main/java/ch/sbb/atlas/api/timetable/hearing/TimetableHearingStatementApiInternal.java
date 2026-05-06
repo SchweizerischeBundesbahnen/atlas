@@ -4,6 +4,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -28,7 +29,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +45,7 @@ public interface TimetableHearingStatementApiInternal {
 
   String BASE_PATH = "internal/timetable-hearing/statements";
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = BASE_PATH + "/update-statement-status")
   @ApiResponses(value = {
@@ -57,6 +58,7 @@ public interface TimetableHearingStatementApiInternal {
   })
   void updateHearingStatementStatus(@RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = BASE_PATH + "/update-canton")
   @ApiResponses(value = {
@@ -85,6 +87,7 @@ public interface TimetableHearingStatementApiInternal {
       @RequestParam boolean anonymized,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
+  @AuthorizedOnly
   @GetMapping(path = BASE_PATH + "/{id}")
   TimetableHearingStatementModelV2 getStatement(@PathVariable Long id);
 
@@ -108,11 +111,9 @@ public interface TimetableHearingStatementApiInternal {
           TimetableHearingStatementDataProtectionModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
+  @AuthorizedOnly
   @GetMapping(path = BASE_PATH + "/{id}/documents/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
   Resource getStatementDocument(@PathVariable Long id, @PathVariable String filename);
-
-  @DeleteMapping(path = BASE_PATH + "/{id}/documents/{filename}")
-  void deleteStatementDocument(@PathVariable Long id, @PathVariable String filename);
 
   // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
   @ResponseStatus(HttpStatus.CREATED)
@@ -124,6 +125,7 @@ public interface TimetableHearingStatementApiInternal {
       @RequestPart(required = false) List<MultipartFile> documents);
 
   // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = BASE_PATH + "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ApiResponses(value = {
@@ -140,12 +142,15 @@ public interface TimetableHearingStatementApiInternal {
       @RequestPart(required = false) List<MultipartFile> documents
   );
 
+  @AuthorizedOnly
   @GetMapping(path = BASE_PATH + "/responsible-transport-companies/{ttfnid}/{year}")
   List<TransportCompanyModel> getResponsibleTransportCompanies(@PathVariable String ttfnid, @PathVariable Long year);
 
+  @AuthorizedOnly
   @PostMapping(path = BASE_PATH + "/batch-update-statements")
   void updateStatements(@Valid @RequestBody BatchUpdateTimetableHearingStatementsModel batchUpdateModel);
 
+  @AuthorizedOnly
   @PostMapping(path = BASE_PATH + "/check-data-protection")
   void checkDataProtection(@Valid @RequestBody TimetableHearingStatementDataProtectionModel timetableHearingStatementDataProtectionModel);
 }

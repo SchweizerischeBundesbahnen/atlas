@@ -123,7 +123,7 @@ describe('StopPointWorkflowService', () => {
     service.getDecision(154);
 
     // then
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/workflow/internal/stop-point/workflows/decisions/154');
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/workflow/internal/stop-point/workflows/decisions/154');
   });
 
   it('should overrideVoteWorkflow', () => {

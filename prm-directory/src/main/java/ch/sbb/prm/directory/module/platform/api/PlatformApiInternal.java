@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.module.platform.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("internal/platforms")
 public interface PlatformApiInternal {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @PageableAsQueryParam
   @GetMapping("/overview/{parentSloid}")
   List<PlatformOverviewModel> getPlatformOverview(@PathVariable String parentSloid);

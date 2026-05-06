@@ -7,6 +7,6 @@ link:rest-api.html[*< Back to main*]
 
 == Create Hearing Statement from External V2 (e.g. SKI Web) - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-create-statement-external-v2-from-ski-web/atlas-doc.adoc[]
+include::{snippets}/create-statement-external/should-create-statement-external-v2-from-ski-web/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]

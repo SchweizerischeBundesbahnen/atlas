@@ -4,6 +4,9 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
@@ -42,6 +45,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface TrafficPointElementApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   @Operation(description = "INFO: Versions of DiDok3 were merged during migration, so there are now a few versions less here.")
@@ -50,17 +54,21 @@ public interface TrafficPointElementApiV1 {
           Fields.validFrom}, direction = Direction.ASC) Pageable pageable,
       @Valid @ParameterObject TrafficPointElementRequestParams trafficPointElementRequestParams);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{sloid}")
   List<ReadTrafficPointElementVersionModel> getTrafficPointElement(@PathVariable String sloid);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("versions/{id}")
   ReadTrafficPointElementVersionModel getTrafficPointElementVersion(@PathVariable Long id);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadTrafficPointElementVersionModel createTrafficPoint(
       @RequestBody @Valid @CreateIdCheck CreateTrafficPointElementVersionModel trafficPointElementVersionModel);
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
@@ -76,6 +84,7 @@ public interface TrafficPointElementApiV1 {
       @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
   );
 
+  @AuthorizedOnly
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "403", description = "Termination not allowed", content =

@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.user.administration;
 
+import ch.sbb.atlas.annotation.AdminOnly;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,20 +22,24 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/v1/client-credentials")
 public interface ClientCredentialAdministrationApiV1 {
 
+  @AdminOnly
   @GetMapping
   @PageableAsQueryParam
   @Operation(description = "Retrieve Overview for all the managed Users")
   Container<ClientCredentialModel> getClientCredentials(@Parameter(hidden = true) Pageable pageable);
 
+  @AdminOnly
   @GetMapping("{clientId}")
   @Operation(description = "Retrieve Information for a given clientId")
   ClientCredentialModel getClientCredential(@PathVariable String clientId);
 
+  @AdminOnly
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(description = "Register a client")
   ClientCredentialModel createClientCredential(@RequestBody @Valid ClientCredentialCreateModel client);
 
+  @AdminOnly
   @PutMapping("/{clientId}/{application}")
   @Operation(description = "Update the permissions of a client")
   ClientCredentialModel updateClientCredential(@PathVariable String clientId,

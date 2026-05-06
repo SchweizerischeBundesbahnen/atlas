@@ -4,6 +4,9 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.validation.CreateIdCheck;
@@ -33,14 +36,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Validated
 public interface LineApiV2 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("versions")
   @PageableAsQueryParam
   Container<LineVersionModelV2> getLineVersions(@Parameter(hidden = true) Pageable pageable,
       @Valid @ParameterObject LineVersionRequestParams lineRequestParams);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("versions/{slnid}")
   List<LineVersionModelV2> getLineVersionsV2(@PathVariable String slnid);
 
+  @AuthorizedOnly
   @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
@@ -50,6 +56,7 @@ public interface LineApiV2 {
   })
   LineVersionModelV2 createLineVersionV2(@RequestBody @Valid @CreateIdCheck LineVersionModelV2 newVersion);
 
+  @AuthorizedOnly
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),

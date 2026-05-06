@@ -11,7 +11,6 @@ import ch.sbb.workflow.module.lidi.line.service.LineWorkflowService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,8 +38,6 @@ public class LineWorkflowApiInternalController implements LineWorkflowApiInterna
   }
 
   @Override
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).LIDI)")
   public WorkflowModel examinantCheck(Long id, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
     log.info("Checking workflow");
     LineWorkflow lineWorkflow = service.examinantCheck(id, examinantWorkflowCheckModel);

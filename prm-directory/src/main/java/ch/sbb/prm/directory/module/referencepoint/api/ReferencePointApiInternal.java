@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.module.referencepoint.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("internal/reference-points")
 public interface ReferencePointApiInternal {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("overview/{parentServicePointSloid}")
   List<ReadReferencePointVersionModel> getReferencePointsOverview(@PathVariable String parentServicePointSloid);
 

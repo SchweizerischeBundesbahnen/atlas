@@ -1,5 +1,6 @@
 package ch.sbb.workflow.module.lidi.tth.api;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.workflow.tth.dossier.BoAnswerModel;
@@ -27,26 +28,33 @@ public interface TthDossierApiInternal {
 
   String BASE_PATH = "/internal/tth/dossier";
 
+  @AuthorizedOnly
   @GetMapping
   @PageableAsQueryParam
   Container<TthDossierModel> getDossiers(@Parameter(hidden = true) @PageableDefault(sort = {TthDossier.Fields.id,
       TthDossier.Fields.topic}) Pageable pageable, @ParameterObject TthDossierRequestParams requestParams);
 
+  @AuthorizedOnly
   @GetMapping("{dossierId}")
   TthDossierModel getDossier(@PathVariable Long dossierId);
 
+  @AuthorizedOnly
   @PostMapping
   TthDossierModel createDossier(@Valid @RequestBody TthDossierModel dossierModel);
 
+  @AuthorizedOnly
   @PostMapping("{dossierId}/send-to-bo")
   void sendDossierToBo(@PathVariable Long dossierId);
 
+  @AuthorizedOnly
   @PostMapping("/answer/{questionId}")
   void answerQuestion(@PathVariable Long questionId, @Valid @RequestBody BoAnswerModel boAnswer);
 
+  @AuthorizedOnly
   @PostMapping("{dossierId}/complete/{status}")
   void completeDossier(@PathVariable Long dossierId, @PathVariable DossierStatus status);
 
+  @AuthorizedOnly
   @PutMapping("{dossierId}")
   TthDossierModel updateDossier(@PathVariable Long dossierId, @Valid @RequestBody TthDossierModel dossierModel);
 }

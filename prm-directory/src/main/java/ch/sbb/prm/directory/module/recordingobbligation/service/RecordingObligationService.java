@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +15,6 @@ public class RecordingObligationService {
 
   private final RecordingObligationRepository recordingObligationRepository;
 
-  @PreAuthorize("@prmUserAdministrationService.isAtLeastPrmSupervisor()")
   public void setRecordingObligation(String sloid, boolean value) {
     Optional<RecordingObligation> existingObligation = recordingObligationRepository.findById(sloid);
     if (existingObligation.isPresent()) {

@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,6 +18,8 @@ import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -43,10 +46,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 class StopPointWorkflowApiV1ControllerTest extends BaseControllerApiTest {
 
@@ -77,589 +83,673 @@ class StopPointWorkflowApiV1ControllerTest extends BaseControllerApiTest {
     workflowRepository.deleteAll();
   }
 
-  @Test
-  void shouldGetWorkflows() throws Exception {
+  @Nested
+  @DisplayName("GET /v1/stop-point/workflows/{id}")
+  class GetStopPointWorkflow {
 
-    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+    @Test
+    void shouldGetWorkflowById() throws Exception {
+      getWorkflowById()
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1234")));
+    }
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel());
+    private ResultActions getWorkflowById() throws Exception {
+      StopPointWorkflow workflow = StopPointWorkflow.builder()
+          .sloid("ch:1:sloid:1234")
+          .sboid("ch:1:sboid:666")
+          .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+          .localityName("Biel/Bienne")
+          .workflowComment("WF comment")
+          .startDate(LocalDate.of(2000, 1, 1))
+          .endDate(LocalDate.of(2000, 12, 31))
+          .versionId(123456L)
+          .status(WorkflowStatus.ADDED)
+          .build();
+      workflow.setExaminants(Set.of(Person.builder()
+          .stopPointWorkflow(workflow)
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .function("Centrocampista")
+          .organisation("FC Napoli")
+          .mail(MAIL_ADDRESS).build()));
 
-    controller.addStopPointWorkflow(workflowModel);
+      StopPointWorkflow entity = workflowRepository.save(workflow);
 
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects[0].examinants", hasSize(3)));
+      return mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "/" + entity.getId()))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1234")));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldGetWorkflowByIdAsUnauthorizedRedacted() throws Exception {
+      getWorkflowById()
+          .andExpect(status().isOk())
+          .andDo(print())
+          .andExpect(jsonPath("$.examinants[0].mail", is("m*****")))
+          .andExpect(jsonPath("$.examinants[0].firstName", is("M*****")))
+          .andExpect(jsonPath("$.examinants[0].lastName", is("H*****")))
+          .andExpect(jsonPath("$.examinants[0].organisation", is("FC Napoli")))
+          .andExpect(jsonPath("$.examinants[0].personFunction", is("Centrocampista")));
+    }
   }
 
-  @Test
-  void shouldFilterWorkflowsByNoDecision() throws Exception {
-    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflowWithMultipleExaminants();
+  @Nested
+  @DisplayName("GET /v1/stop-point/workflows")
+  class GetStopPointWorkflows {
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel());
+    @Test
+    void shouldGetWorkflows() throws Exception {
+      getWorkflows()
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)));
+    }
 
-    controller.addStopPointWorkflow(workflowModel);
+    private ResultActions getWorkflows() throws Exception {
+      StopPointWorkflow workflow = StopPointWorkflow.builder()
+          .sloid("ch:1:sloid:1234")
+          .sboid("ch:1:sboid:666")
+          .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+          .localityName("Biel/Bienne")
+          .workflowComment("WF comment")
+          .startDate(LocalDate.of(2000, 1, 1))
+          .endDate(LocalDate.of(2000, 12, 31))
+          .versionId(123456L)
+          .status(WorkflowStatus.ADDED)
+          .build();
+      workflow.setExaminants(Set.of(Person.builder()
+          .stopPointWorkflow(workflow)
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .function("Centrocampista")
+          .organisation("FC Napoli")
+          .mail(MAIL_ADDRESS).build()));
 
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(0)));
+      workflowRepository.save(workflow);
+
+      return mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldGetWorkflowsAsUnauthorizedRedacted() throws Exception {
+      getWorkflows()
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)))
+          .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)))
+          .andExpect(jsonPath("$.objects[0].examinants[0].mail", is("m*****")))
+          .andExpect(jsonPath("$.objects[0].examinants[0].firstName", is("M*****")))
+          .andExpect(jsonPath("$.objects[0].examinants[0].lastName", is("H*****")))
+          .andExpect(jsonPath("$.objects[0].examinants[0].organisation", is("FC Napoli")))
+          .andExpect(jsonPath("$.objects[0].examinants[0].personFunction", is("Centrocampista")));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecision() throws Exception {
+      StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflowWithMultipleExaminants();
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      controller.addStopPointWorkflow(workflowModel);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(0)));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecisionWhenWorkflowStatusNotHearing() throws Exception {
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+      stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
+      StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+      Person person = StopPointWorkflowTestData.getPerson();
+      person.setStopPointWorkflow(saved);
+      Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+      decisionRepository.save(decision);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(0)));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecisionWhenDecisionTypeNotVoted() throws Exception {
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+      StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+      Person person = StopPointWorkflowTestData.getPerson();
+      person.setStopPointWorkflow(saved);
+      Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+      decision.setDecisionType(DecisionType.CANCELED);
+      decisionRepository.save(decision);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(0)));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecisionWhenDecisionTypeVoted() throws Exception {
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+      StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+      Person person = StopPointWorkflowTestData.getPerson();
+      person.setStopPointWorkflow(saved);
+      Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+      decisionRepository.save(decision);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)))
+          .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecisionWhenJudgementTypeYes() throws Exception {
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+      StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+      Person person = StopPointWorkflowTestData.getPerson();
+      person.setStopPointWorkflow(saved);
+      Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+      decision.setJudgement(JudgementType.YES);
+      decisionRepository.save(decision);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(0)));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecisionWhenJudgementNull() throws Exception {
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+      StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+      Person person = StopPointWorkflowTestData.getPerson();
+      person.setStopPointWorkflow(saved);
+      Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+      decision.setJudgement(null);
+      decisionRepository.save(decision);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(0)));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecisionWhenFotJudgementNull() throws Exception {
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+      StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+      Person person = StopPointWorkflowTestData.getPerson();
+      person.setStopPointWorkflow(saved);
+      Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+      decision.setFotJudgement(null);
+      decisionRepository.save(decision);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)))
+          .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecisionWhenFotJudgementNo() throws Exception {
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+      StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+      Person person = StopPointWorkflowTestData.getPerson();
+      person.setStopPointWorkflow(saved);
+      Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+      decision.setFotJudgement(JudgementType.NO);
+      decisionRepository.save(decision);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(0)));
+    }
+
+    @Test
+    void shouldFilterWorkflowsByNoDecisionWhenFotJudgementYes() throws Exception {
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+      StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+      Person person = StopPointWorkflowTestData.getPerson();
+      person.setStopPointWorkflow(saved);
+      Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+      decision.setFotJudgement(JudgementType.YES);
+      decisionRepository.save(decision);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(0)));
+    }
+
+    @Test
+    void shouldFindWorkflowsByFilterSloid() throws Exception {
+      StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+      StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel2());
+
+      controller.addStopPointWorkflow(workflowModel1);
+      controller.addStopPointWorkflow(workflowModel2);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?sloids=ch:1:sloid:1234"
+          ))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)));
+    }
+
+    @Test
+    void shouldFindWorkflowsByFilterLocalityName() throws Exception {
+      StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+      StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel2());
+
+      controller.addStopPointWorkflow(workflowModel1);
+      controller.addStopPointWorkflow(workflowModel2);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?localityName=Bern"
+          ))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)));
+    }
+
+    @Test
+    void shouldFindWorkflowsByFilterDesignation() throws Exception {
+      StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+      StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel2());
+
+      controller.addStopPointWorkflow(workflowModel1);
+      controller.addStopPointWorkflow(workflowModel2);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?designationOfficial=Aargau Strasse"
+          ))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)));
+    }
+
+    @Test
+    void shouldFindWorkflowsByFilterVersionValidFrom() throws Exception {
+      StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+      StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel2());
+
+      controller.addStopPointWorkflow(workflowModel1);
+      controller.addStopPointWorkflow(workflowModel2);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?versionValidFrom=2010-12-11"
+          ))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(1)));
+    }
+
+    @Test
+    void shouldFindWorkflowsByFilterStatus() throws Exception {
+      StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+      StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel2());
+
+      controller.addStopPointWorkflow(workflowModel1);
+      controller.addStopPointWorkflow(workflowModel2);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?status=ADDED"
+          ))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(2)));
+    }
+
+    @Test
+    void shouldFindWorkflowsByFilterSboid() throws Exception {
+      StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+      StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
+          .thenReturn(getUpdateServicePointVersionModel2());
+
+      controller.addStopPointWorkflow(workflowModel1);
+      controller.addStopPointWorkflow(workflowModel2);
+
+      mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?sboid=ch:1:sboid:100900"
+          ))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects", hasSize(2)));
+    }
   }
 
-  @Test
-  void shouldFilterWorkflowsByNoDecisionWhenWorkflowStatusNotHearing() throws Exception {
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
-    stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
-    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
-
-    Person person = StopPointWorkflowTestData.getPerson();
-    person.setStopPointWorkflow(saved);
-    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
-    decisionRepository.save(decision);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(0)));
-  }
-
-  @Test
-  void shouldFilterWorkflowsByNoDecisionWhenDecisionTypeNotVoted() throws Exception {
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
-    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
-
-    Person person = StopPointWorkflowTestData.getPerson();
-    person.setStopPointWorkflow(saved);
-    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
-    decision.setDecisionType(DecisionType.CANCELED);
-    decisionRepository.save(decision);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(0)));
-  }
-
-  @Test
-  void shouldFilterWorkflowsByNoDecisionWhenDecisionTypeVoted() throws Exception {
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
-    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
-
-    Person person = StopPointWorkflowTestData.getPerson();
-    person.setStopPointWorkflow(saved);
-    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
-    decisionRepository.save(decision);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
-  }
-
-  @Test
-  void shouldFilterWorkflowsByNoDecisionWhenJudgementTypeYes() throws Exception {
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
-    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
-
-    Person person = StopPointWorkflowTestData.getPerson();
-    person.setStopPointWorkflow(saved);
-    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
-    decision.setJudgement(JudgementType.YES);
-    decisionRepository.save(decision);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(0)));
-  }
-
-  @Test
-  void shouldFilterWorkflowsByNoDecisionWhenJudgementNull() throws Exception {
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
-    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
-
-    Person person = StopPointWorkflowTestData.getPerson();
-    person.setStopPointWorkflow(saved);
-    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
-    decision.setJudgement(null);
-    decisionRepository.save(decision);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(0)));
-  }
-
-  @Test
-  void shouldFilterWorkflowsByNoDecisionWhenFotJudgementNull() throws Exception {
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
-    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
-
-    Person person = StopPointWorkflowTestData.getPerson();
-    person.setStopPointWorkflow(saved);
-    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
-    decision.setFotJudgement(null);
-    decisionRepository.save(decision);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
-  }
-
-  @Test
-  void shouldFilterWorkflowsByNoDecisionWhenFotJudgementNo() throws Exception {
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
-    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
-
-    Person person = StopPointWorkflowTestData.getPerson();
-    person.setStopPointWorkflow(saved);
-    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
-    decision.setFotJudgement(JudgementType.NO);
-    decisionRepository.save(decision);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(0)));
-  }
-
-  @Test
-  void shouldFilterWorkflowsByNoDecisionWhenFotJudgementYes() throws Exception {
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
-    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
-
-    Person person = StopPointWorkflowTestData.getPerson();
-    person.setStopPointWorkflow(saved);
-    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
-    decision.setFotJudgement(JudgementType.YES);
-    decisionRepository.save(decision);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?filterByNoDecision=yes"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(0)));
-  }
-
-  @Test
-  void shouldFindWorkflowsByFilterSloid() throws Exception {
-    StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
-    StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel2());
-
-    controller.addStopPointWorkflow(workflowModel1);
-    controller.addStopPointWorkflow(workflowModel2);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?sloids=ch:1:sloid:1234"
-        ))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)));
-  }
-
-  @Test
-  void shouldFindWorkflowsByFilterLocalityName() throws Exception {
-    StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
-    StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel2());
-
-    controller.addStopPointWorkflow(workflowModel1);
-    controller.addStopPointWorkflow(workflowModel2);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?localityName=Bern"
-        ))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)));
-  }
-
-  @Test
-  void shouldFindWorkflowsByFilterDesignation() throws Exception {
-    StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
-    StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel2());
-
-    controller.addStopPointWorkflow(workflowModel1);
-    controller.addStopPointWorkflow(workflowModel2);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?designationOfficial=Aargau Strasse"
-        ))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)));
-  }
-
-  @Test
-  void shouldFindWorkflowsByFilterVersionValidFrom() throws Exception {
-    StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
-    StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel2());
-
-    controller.addStopPointWorkflow(workflowModel1);
-    controller.addStopPointWorkflow(workflowModel2);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?versionValidFrom=2010-12-11"
-        ))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)));
-  }
-
-  @Test
-  void shouldFindWorkflowsByFilterStatus() throws Exception {
-    StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
-    StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel2());
-
-    controller.addStopPointWorkflow(workflowModel1);
-    controller.addStopPointWorkflow(workflowModel2);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?status=ADDED"
-        ))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(2)));
-  }
-
-  @Test
-  void shouldFindWorkflowsByFilterSboid() throws Exception {
-    StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
-    StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-        .thenReturn(getUpdateServicePointVersionModel2());
-
-    controller.addStopPointWorkflow(workflowModel1);
-    controller.addStopPointWorkflow(workflowModel2);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "?sboid=ch:1:sboid:100900"
-        ))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(2)));
-  }
-
-  @Test
-  void shouldGetWorkflowById() throws Exception {
-    Person person = Person.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .function("Centrocampista")
-        .mail(MAIL_ADDRESS).build();
-    StopPointWorkflow workflow = StopPointWorkflow.builder()
-        .sloid("ch:1:sloid:1234")
-        .sboid("ch:1:sboid:666")
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .localityName("Biel/Bienne")
-        .workflowComment("WF comment")
-        .examinants(Set.of(person))
-        .startDate(LocalDate.of(2000, 1, 1))
-        .endDate(LocalDate.of(2000, 12, 31))
-        .versionId(123456L)
-        .status(WorkflowStatus.ADDED)
-        .build();
-
-    StopPointWorkflow entity = workflowRepository.save(workflow);
-
-    mvc.perform(get(StopPointWorkflowApiV1.BASE_PATH + "/" + entity.getId()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1234")));
-  }
-
-  @Test
-  void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
-    //when
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
-        .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .organisation("BAV")
-        .mail(MAIL_ADDRESS).build();
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid("ch:1:sloid:1234")
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .applicantMail("a@b.ch")
-        .examinants(List.of(person))
-        .versionId(123456L)
-        .build();
-
-    //given
-    mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(workflowModel))
-        ).andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.message",
-            is("Following constraints were violated: [Property 'examinants[0].firstName' has invalid value: "
-                + "'\uD83D\uDE00\uD83D\uDE01?']")))
-        .andExpect(jsonPath("$.error", is("Constraint violation")))
-        .andExpect(jsonPath("$.details[0].message", is("must match \"[\\u0000-\\u00ff]*\"")))
-        .andExpect(jsonPath("$.details[0].field", is("examinants[0].firstName")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.PATTERN")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("propertyPath")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("examinants[0].firstName")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("\uD83D\uDE00\uD83D\uDE01?")));
-  }
-
-  @Test
-  void shouldNotCreateWorkflowWhenWorkflowPersonMandatoryDataIsEmpty() throws Exception {
-    //when
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder().build();
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid("ch:1:sloid:1234")
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .examinants(List.of(person))
-        .applicantMail("a@s.ch")
-        .versionId(123456L)
-        .build();
-
-    //given
-    mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(workflowModel))
-        ).andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.message",
-            is("Following constraints were violated: [Property 'examinants[0].mail' has invalid value: 'null', Property "
-                + "'examinants[0].organisation' has invalid value: 'null']")))
-        .andExpect(jsonPath("$.error", is("Constraint violation")))
-        .andExpect(jsonPath("$.details[0].message", is("must not be blank")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.NOT_BLANK")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("propertyPath")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", startsWith("examinants[0].")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("null")))
-        .andExpect(jsonPath("$.details[1].message", is("must not be blank")))
-        .andExpect(jsonPath("$.details[1].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.NOT_BLANK")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].key", is("propertyPath")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].value", startsWith("examinants[0].")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].key", is("value")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].value", is("null")));
-  }
-
-  @Test
-  void shouldAddWorkflow() throws Exception {
-    //given
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .organisation("BAV")
-        .mail(MAIL_ADDRESS).build();
-    long versionId = 123456L;
-    String sloid = "ch:1:sloid:1234";
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid(sloid)
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .examinants(List.of(person))
-        .applicantMail("a@b.ch")
-        .versionId(versionId)
-        .build();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    //when
-    MvcResult mvcResult = mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
-        .contentType(contentType)
-        .content(mapper.writeValueAsString(workflowModel))
-    ).andExpect(status().isCreated()).andReturn();
-    ReadStopPointWorkflowModel workflow = mapper.readValue(mvcResult.getResponse().getContentAsString(),
-        ReadStopPointWorkflowModel.class);
-
-    // then
-    assertThat(workflow.getExaminants()).hasSize(3);
-    assertThat(workflow.getExaminants().stream().filter(StopPointClientPersonModel::isDefaultExaminant).toList()).hasSize(2);
-  }
-
-  @Test
-  void shouldNotAddWorkflowWhenTerminationInProgress() throws Exception {
-    //given
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .organisation("BAV")
-        .mail(MAIL_ADDRESS).build();
-    long versionId = 123456L;
-    String sloid = "ch:1:sloid:1234";
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid(sloid)
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .examinants(List.of(person))
-        .applicantMail("a@b.ch")
-        .versionId(versionId)
-        .build();
-    ReadServicePointVersionModel updateServicePointVersionModel = getUpdateServicePointVersionModel();
-    updateServicePointVersionModel.setTerminationInProgress(true);
-    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
-        .thenReturn(updateServicePointVersionModel);
-
-    //when && then
-    mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
-        .contentType(contentType)
-        .content(mapper.writeValueAsString(workflowModel))
-    ).andExpect(status().isConflict());
-  }
-
-  @Test
-  void shouldThrowErrorWhenAddingWorkflowWithExaminantsWithTheSameEmailAddress() throws Exception {
-    //when
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .organisation("BAV")
-        .mail(MAIL_ADDRESS).build();
-    StopPointClientPersonModel person1 = StopPointClientPersonModel.builder()
-        .firstName("Marek1")
-        .lastName("Hamsik1")
-        .personFunction("Centrocampista1")
-        .organisation("BAV1")
-        .mail(MAIL_ADDRESS).build();
-    long versionId = 123456L;
-    String sloid = "ch:1:sloid:1234";
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid(sloid)
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .examinants(List.of(person, person1))
-        .applicantMail("a@b.ch")
-        .versionId(versionId)
-        .build();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    //given
-    mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(workflowModel))
-        )
-        .andExpect(status().isBadRequest())
-        .andExpect(result -> {
-          assertThat(result.getResolvedException()).isInstanceOf(StopPointWorkflowExaminantEmailNotUniqueException.class);
-          assertThat(Objects.requireNonNull(result.getResolvedException()).getMessage()).contains(
-              StopPointWorkflowExaminantEmailNotUniqueException.UNIQUE_EMAIL_MESSAGE);
-        });
-
-  }
-
-  @Test
-  void shouldNotAddWorkflowWhenStopPointVersionIdNotFound() throws Exception {
-    //when
-    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .organisation("BAV")
-        .mail(MAIL_ADDRESS).build();
-    long versionId = 123456L;
-    String sloid = "ch:1:sloid:1234";
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid(sloid)
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .examinants(List.of(person))
-        .applicantMail("a@b.ch")
-        .versionId(versionId)
-        .build();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
-        .thenThrow(new IdNotFoundException(versionId));
-
-    //given
-    mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(workflowModel))
-        ).andExpect(status().isNotFound())
-        .andExpect(jsonPath("$.status", is(404)))
-        .andExpect(jsonPath("$.message", is("Entity not found")))
-        .andExpect(jsonPath("$.error", is("Not found")))
-        .andExpect(jsonPath("$.details[0].message", is("Object with id " + versionId + " not found")))
-        .andExpect(jsonPath("$.details[0].field", is("id")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("id")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is(String.valueOf(versionId))));
-  }
-
-  @Test
-  void shouldNotAddWhenWorkflowAlreadyInStatusAdded() throws Exception {
-    //when
-    Person person = Person.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .function("Centrocampista")
-        .mail(MAIL_ADDRESS).build();
-
-    Long versionId = 123456L;
-    String sloid = "ch:1:sloid:1234";
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
-        .sloid(sloid)
-        .sboid("ch:1:sboid:666")
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .localityName("Biel/Bienne")
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .status(WorkflowStatus.ADDED)
-        .examinants(Set.of(person))
-        .startDate(LocalDate.of(2000, 1, 1))
-        .endDate(LocalDate.of(2000, 12, 31))
-        .versionId(versionId)
-        .build();
-    workflowRepository.save(stopPointWorkflow);
-
-    StopPointClientPersonModel personModel = StopPointClientPersonModel.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .organisation("BAV")
-        .mail(MAIL_ADDRESS).build();
-    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid(sloid)
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .examinants(List.of(personModel))
-        .applicantMail("a@b.ch")
-        .versionId(versionId)
-        .build();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
-        .thenReturn(getUpdateServicePointVersionModel());
-
-    //given
-    mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(workflowModel))
-        ).andExpect(status().isPreconditionRequired())
-        .andExpect(jsonPath("$.status", is(428)))
-        .andExpect(jsonPath("$.message", is("Workflow already in status ADDED")))
-        .andExpect(jsonPath("$.error", is("Workflow error")))
-        .andExpect(jsonPath("$.details[0].message", is("Wrong status")))
-        .andExpect(jsonPath("$.details[0].field", is("status")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("WORKFLOW.ERROR.WRONG_CHANGING_STATUS")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("status")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("ADDED")));
+  @Nested
+  @DisplayName("POST /v1/stop-point/workflows")
+  class AddStopPointWorkflow {
+
+    @Test
+    void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
+      //when
+      StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+          .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
+          .lastName("Hamsik")
+          .personFunction("Centrocampista")
+          .organisation("BAV")
+          .mail(MAIL_ADDRESS).build();
+      StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+          .sloid("ch:1:sloid:1234")
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .applicantMail("a@b.ch")
+          .examinants(List.of(person))
+          .versionId(123456L)
+          .build();
+
+      //given
+      mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(workflowModel))
+          ).andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.status", is(400)))
+          .andExpect(jsonPath("$.message",
+              is("Following constraints were violated: [Property 'examinants[0].firstName' has invalid value: "
+                  + "'\uD83D\uDE00\uD83D\uDE01?']")))
+          .andExpect(jsonPath("$.error", is("Constraint violation")))
+          .andExpect(jsonPath("$.details[0].message", is("must match \"[\\u0000-\\u00ff]*\"")))
+          .andExpect(jsonPath("$.details[0].field", is("examinants[0].firstName")))
+          .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.PATTERN")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("propertyPath")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("examinants[0].firstName")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("\uD83D\uDE00\uD83D\uDE01?")));
+    }
+
+    @Test
+    void shouldNotCreateWorkflowWhenWorkflowPersonMandatoryDataIsEmpty() throws Exception {
+      //when
+      StopPointClientPersonModel person = StopPointClientPersonModel.builder().build();
+      StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+          .sloid("ch:1:sloid:1234")
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .examinants(List.of(person))
+          .applicantMail("a@s.ch")
+          .versionId(123456L)
+          .build();
+
+      //given
+      mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(workflowModel))
+          ).andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.status", is(400)))
+          .andExpect(jsonPath("$.message",
+              is("Following constraints were violated: [Property 'examinants[0].mail' has invalid value: 'null', Property "
+                  + "'examinants[0].organisation' has invalid value: 'null']")))
+          .andExpect(jsonPath("$.error", is("Constraint violation")))
+          .andExpect(jsonPath("$.details[0].message", is("must not be blank")))
+          .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.NOT_BLANK")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("propertyPath")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", startsWith("examinants[0].")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("null")))
+          .andExpect(jsonPath("$.details[1].message", is("must not be blank")))
+          .andExpect(jsonPath("$.details[1].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.NOT_BLANK")))
+          .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].key", is("propertyPath")))
+          .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].value", startsWith("examinants[0].")))
+          .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].key", is("value")))
+          .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].value", is("null")));
+    }
+
+    @Test
+    void shouldAddWorkflow() throws Exception {
+      MvcResult mvcResult = addWorkflow()
+          .andExpect(status().isCreated())
+          .andReturn();
+
+      ReadStopPointWorkflowModel workflow = mapper.readValue(mvcResult.getResponse().getContentAsString(),
+          ReadStopPointWorkflowModel.class);
+
+      // then
+      assertThat(workflow.getExaminants()).hasSize(3);
+      assertThat(workflow.getExaminants().stream().filter(StopPointClientPersonModel::isDefaultExaminant).toList()).hasSize(2);
+    }
+
+    private ResultActions addWorkflow() throws Exception {
+      //given
+      StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .personFunction("Centrocampista")
+          .organisation("BAV")
+          .mail(MAIL_ADDRESS).build();
+      long versionId = 123456L;
+      String sloid = "ch:1:sloid:1234";
+      StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+          .sloid(sloid)
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .examinants(List.of(person))
+          .applicantMail("a@b.ch")
+          .versionId(versionId)
+          .build();
+      when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      //when
+      return mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
+          .contentType(contentType)
+          .content(mapper.writeValueAsString(workflowModel)));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotAddWorkflowAsUnauthorized() throws Exception {
+      addWorkflow().andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldAddWorkflowAsUserWithoutPermissions() throws Exception {
+      // Workflow delegates create check to sepodi service point
+      addWorkflow().andExpect(status().isCreated());
+    }
+
+    @Test
+    void shouldNotAddWorkflowWhenTerminationInProgress() throws Exception {
+      //given
+      StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .personFunction("Centrocampista")
+          .organisation("BAV")
+          .mail(MAIL_ADDRESS).build();
+      long versionId = 123456L;
+      String sloid = "ch:1:sloid:1234";
+      StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+          .sloid(sloid)
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .examinants(List.of(person))
+          .applicantMail("a@b.ch")
+          .versionId(versionId)
+          .build();
+      ReadServicePointVersionModel updateServicePointVersionModel = getUpdateServicePointVersionModel();
+      updateServicePointVersionModel.setTerminationInProgress(true);
+      when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
+          .thenReturn(updateServicePointVersionModel);
+
+      //when && then
+      mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
+          .contentType(contentType)
+          .content(mapper.writeValueAsString(workflowModel))
+      ).andExpect(status().isConflict());
+    }
+
+    @Test
+    void shouldThrowErrorWhenAddingWorkflowWithExaminantsWithTheSameEmailAddress() throws Exception {
+      //when
+      StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .personFunction("Centrocampista")
+          .organisation("BAV")
+          .mail(MAIL_ADDRESS).build();
+      StopPointClientPersonModel person1 = StopPointClientPersonModel.builder()
+          .firstName("Marek1")
+          .lastName("Hamsik1")
+          .personFunction("Centrocampista1")
+          .organisation("BAV1")
+          .mail(MAIL_ADDRESS).build();
+      long versionId = 123456L;
+      String sloid = "ch:1:sloid:1234";
+      StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+          .sloid(sloid)
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .examinants(List.of(person, person1))
+          .applicantMail("a@b.ch")
+          .versionId(versionId)
+          .build();
+      when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      //given
+      mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(workflowModel))
+          )
+          .andExpect(status().isBadRequest())
+          .andExpect(result -> {
+            assertThat(result.getResolvedException()).isInstanceOf(StopPointWorkflowExaminantEmailNotUniqueException.class);
+            assertThat(Objects.requireNonNull(result.getResolvedException()).getMessage()).contains(
+                StopPointWorkflowExaminantEmailNotUniqueException.UNIQUE_EMAIL_MESSAGE);
+          });
+
+    }
+
+    @Test
+    void shouldNotAddWorkflowWhenStopPointVersionIdNotFound() throws Exception {
+      //when
+      StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .personFunction("Centrocampista")
+          .organisation("BAV")
+          .mail(MAIL_ADDRESS).build();
+      long versionId = 123456L;
+      String sloid = "ch:1:sloid:1234";
+      StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+          .sloid(sloid)
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .examinants(List.of(person))
+          .applicantMail("a@b.ch")
+          .versionId(versionId)
+          .build();
+      when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
+          .thenThrow(new IdNotFoundException(versionId));
+
+      //given
+      mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(workflowModel))
+          ).andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.status", is(404)))
+          .andExpect(jsonPath("$.message", is("Entity not found")))
+          .andExpect(jsonPath("$.error", is("Not found")))
+          .andExpect(jsonPath("$.details[0].message", is("Object with id " + versionId + " not found")))
+          .andExpect(jsonPath("$.details[0].field", is("id")))
+          .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("id")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is(String.valueOf(versionId))));
+    }
+
+    @Test
+    void shouldNotAddWhenWorkflowAlreadyInStatusAdded() throws Exception {
+      //when
+      Person person = Person.builder()
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .function("Centrocampista")
+          .mail(MAIL_ADDRESS).build();
+
+      Long versionId = 123456L;
+      String sloid = "ch:1:sloid:1234";
+      StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+          .sloid(sloid)
+          .sboid("ch:1:sboid:666")
+          .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+          .localityName("Biel/Bienne")
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .status(WorkflowStatus.ADDED)
+          .examinants(Set.of(person))
+          .startDate(LocalDate.of(2000, 1, 1))
+          .endDate(LocalDate.of(2000, 12, 31))
+          .versionId(versionId)
+          .build();
+      workflowRepository.save(stopPointWorkflow);
+
+      StopPointClientPersonModel personModel = StopPointClientPersonModel.builder()
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .personFunction("Centrocampista")
+          .organisation("BAV")
+          .mail(MAIL_ADDRESS).build();
+      StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+          .sloid(sloid)
+          .ccEmails(List.of(MAIL_ADDRESS))
+          .workflowComment("WF comment")
+          .examinants(List.of(personModel))
+          .applicantMail("a@b.ch")
+          .versionId(versionId)
+          .build();
+      when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
+          .thenReturn(getUpdateServicePointVersionModel());
+
+      //given
+      mvc.perform(post(StopPointWorkflowApiV1.BASE_PATH)
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(workflowModel))
+          ).andExpect(status().isPreconditionRequired())
+          .andExpect(jsonPath("$.status", is(428)))
+          .andExpect(jsonPath("$.message", is("Workflow already in status ADDED")))
+          .andExpect(jsonPath("$.error", is("Workflow error")))
+          .andExpect(jsonPath("$.details[0].message", is("Wrong status")))
+          .andExpect(jsonPath("$.details[0].field", is("status")))
+          .andExpect(jsonPath("$.details[0].displayInfo.code", is("WORKFLOW.ERROR.WRONG_CHANGING_STATUS")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("status")))
+          .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("ADDED")));
+    }
   }
 
   private static ReadServicePointVersionModel getUpdateServicePointVersionModel() {

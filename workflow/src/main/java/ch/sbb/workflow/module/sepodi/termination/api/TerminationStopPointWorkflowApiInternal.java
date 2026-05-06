@@ -1,5 +1,7 @@
 package ch.sbb.workflow.module.sepodi.termination.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationDecisionModel;
@@ -22,6 +24,7 @@ public interface TerminationStopPointWorkflowApiInternal {
 
   String BASE_PATH = "/internal/termination-stop-point/workflows";
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("/termination-info/{sloid}")
   TerminationInfoModel getTerminationInfoBySloid(@PathVariable String sloid);
 

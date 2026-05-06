@@ -1,5 +1,7 @@
 package ch.sbb.business.organisation.directory.module.transportcompany.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import ch.sbb.atlas.api.model.Container;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("v1/transport-companies")
 public interface TransportCompanyApiV1 {
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping
   @PageableAsQueryParam
   Container<TransportCompanyModel> getTransportCompanies(
@@ -24,6 +27,7 @@ public interface TransportCompanyApiV1 {
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
       @Parameter @RequestParam(required = false) List<TransportCompanyStatus> statusChoices);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("{id}")
   TransportCompanyModel getTransportCompany(@PathVariable Long id);
 

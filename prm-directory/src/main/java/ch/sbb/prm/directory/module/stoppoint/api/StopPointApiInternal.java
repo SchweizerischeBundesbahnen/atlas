@@ -1,10 +1,13 @@
 package ch.sbb.prm.directory.module.stoppoint.api;
 
+import ch.sbb.atlas.annotation.UnauthorizedAllowed;
+import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligationModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,10 +19,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("internal/stop-points")
 public interface StopPointApiInternal {
 
+  @PreAuthorize("@prmUserAdministrationService.isAtLeastPrmSupervisor()")
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "/recording-obligation/{sloid}")
   void updateRecordingObligation(@PathVariable String sloid, @RequestBody @Valid RecordingObligationModel recordingObligation);
 
+  @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(path = "/recording-obligation/{sloid}")
   RecordingObligationModel getRecordingObligation(@PathVariable String sloid);

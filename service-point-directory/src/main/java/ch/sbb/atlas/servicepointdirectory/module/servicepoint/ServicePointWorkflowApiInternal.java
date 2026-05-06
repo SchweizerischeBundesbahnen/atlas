@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.module.servicepoint;
 
+import ch.sbb.atlas.annotation.AuthorizedOnly;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
@@ -35,6 +36,7 @@ public interface ServicePointWorkflowApiInternal {
       @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
   );
 
+  @AuthorizedOnly
   @PutMapping(path = "/status/{sloid}/{id}")
   ReadServicePointVersionModel updateServicePointStatus(@PathVariable String sloid, @PathVariable Long id,
       @RequestBody @Valid Status status);

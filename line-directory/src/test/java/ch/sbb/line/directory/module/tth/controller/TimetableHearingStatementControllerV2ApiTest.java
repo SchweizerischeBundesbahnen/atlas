@@ -39,9 +39,10 @@ import ch.sbb.line.directory.shared.transportcompany.repository.SharedTransportC
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -163,77 +164,82 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
     sharedTransportCompanyRepository.deleteAll();
   }
 
-  @Test
-  void shouldThrowExceptionWhenNotClientCredentialsAuthUsedForExternalEndpointV2() throws Exception {
-    final MockMultipartFile statementJson = getMockMultipartFile();
+  @Nested
+  @DisplayName("POST v2/timetable-hearing/statements/external")
+  class createStatementExternal {
 
-    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
-            .file(statementJson))
-        .andExpect(status().isBadRequest())
-        .andExpect(result -> assertInstanceOf(NoClientCredentialAuthUsedException.class, result.getResolvedException()))
-        .andExpect(result -> assertEquals("Bad authentication used",
-            ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
-                .getMessage()));
-  }
+    @Test
+    void shouldThrowExceptionWhenNotClientCredentialsAuthUsedForExternalEndpointV2() throws Exception {
+      final MockMultipartFile statementJson = getMockMultipartFile();
 
-  @Test
-  @WithMockJwtAuthentication(role = MockRole.ATLAS_ADMIN, user = MockUser.CLIENT_CREDENTIAL)
-  void shouldThrowForbiddenExceptionWhenStatementCreatableExternalV2IsFalse() throws Exception {
-    TimetableHearingYearModel hearingYearModel = timetableHearingYearController.startHearingYear(YEAR);
-    hearingYearModel.setStatementCreatableExternal(false);
-    timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
+      mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
+              .file(statementJson))
+          .andExpect(status().isBadRequest())
+          .andExpect(result -> assertInstanceOf(NoClientCredentialAuthUsedException.class, result.getResolvedException()))
+          .andExpect(result -> assertEquals("Bad authentication used",
+              ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
+                  .getMessage()));
+    }
 
-    final MockMultipartFile statementJson = getMockMultipartFile();
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.ATLAS_ADMIN, user = MockUser.CLIENT_CREDENTIAL)
+    void shouldThrowForbiddenExceptionWhenStatementCreatableExternalV2IsFalse() throws Exception {
+      TimetableHearingYearModel hearingYearModel = timetableHearingYearController.startHearingYear(YEAR);
+      hearingYearModel.setStatementCreatableExternal(false);
+      timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
 
-    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
-            .file(statementJson))
-        .andExpect(status().isForbidden())
-        .andExpect(result -> assertInstanceOf(ForbiddenDueToHearingYearSettingsException.class, result.getResolvedException()))
-        .andExpect(result -> assertEquals("Operation not allowed",
-            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
-                result.getResolvedException())).getErrorResponse()
-                .getMessage()));
-  }
+      final MockMultipartFile statementJson = getMockMultipartFile();
 
-  @Test
-  @WithMockJwtAuthentication(role = MockRole.ATLAS_ADMIN, user = MockUser.CLIENT_CREDENTIAL)
-  void shouldCreateStatementExternalV2FromSkiWeb() throws Exception {
-    timetableHearingYearController.startHearingYear(YEAR);
+      mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
+              .file(statementJson))
+          .andExpect(status().isForbidden())
+          .andExpect(result -> assertInstanceOf(ForbiddenDueToHearingYearSettingsException.class, result.getResolvedException()))
+          .andExpect(result -> assertEquals("Operation not allowed",
+              ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
+                  result.getResolvedException())).getErrorResponse()
+                  .getMessage()));
+    }
 
-    final MockMultipartFile statementJson = getMockMultipartFile();
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.ATLAS_ADMIN, user = MockUser.CLIENT_CREDENTIAL)
+    void shouldCreateStatementExternalV2FromSkiWeb() throws Exception {
+      timetableHearingYearController.startHearingYear(YEAR);
 
-    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
-            .file(statementJson)
-            .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
-                MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
-            .file(
-                new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
-                    MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(2)))
-        .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents + "[0].id", notNullValue()));
-  }
+      final MockMultipartFile statementJson = getMockMultipartFile();
 
-  private static @NotNull MockMultipartFile getMockMultipartFile() {
-    final String statement = """
-         {
-         	"statement": "I need some more busses please.",
-         	"statementSender": {
-         		"emails": ["maurer@post.ch", "max@post.ch"],
-         		"firstName": "Fabienne",
-         		"lastName": "Maurer",
-         		"organisation": "Post AG",
-         		"street": "Bahnhofstrasse 12",
-         		"zip": 3000,
-         		"city": "Bern"
-         	},
-         	"timetableFieldNumber": "1.1",
-         	"swissCanton": "BERN",
-         	"stopPlace": "Bern, Wyleregg"
-         }
-        """;
-    return new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, statement);
+      mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
+              .file(statementJson)
+              .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
+                  MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
+              .file(
+                  new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
+                      MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
+          .andExpect(status().isCreated())
+          .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+          .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(2)))
+          .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents + "[0].id", notNullValue()));
+    }
+
+    private static MockMultipartFile getMockMultipartFile() {
+      final String statement = """
+           {
+           	"statement": "I need some more busses please.",
+           	"statementSender": {
+           		"emails": ["maurer@post.ch", "max@post.ch"],
+           		"firstName": "Fabienne",
+           		"lastName": "Maurer",
+           		"organisation": "Post AG",
+           		"street": "Bahnhofstrasse 12",
+           		"zip": 3000,
+           		"city": "Bern"
+           	},
+           	"timetableFieldNumber": "1.1",
+           	"swissCanton": "BERN",
+           	"stopPlace": "Bern, Wyleregg"
+           }
+          """;
+      return new AtlasMockMultipartFile("statement", null,
+          MediaType.APPLICATION_JSON_VALUE, statement);
+    }
   }
 }
