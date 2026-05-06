@@ -7,9 +7,8 @@ import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlatformReducedAccessibilityCalculator implements PlatformAccessibilityCalculator {
+public class PlatformReducedAccessibilityCalculator {
 
-  @Override
   public WheelchairAccessibilityState calculate(PlatformVersion platformVersion) {
     if (platformVersion.getShuttle() == BooleanOptionalAttributeType.YES) {
       return WheelchairAccessibilityState.SHUTTLE;

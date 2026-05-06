@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
+import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.PlatformCompleteAccessibilityCalculator;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.PlatformReducedAccessibilityCalculator;
@@ -25,7 +26,7 @@ class WheelchairAccessibilityServiceTest {
   @BeforeEach
   void setUp() {
     completeCalculator = mock(PlatformCompleteAccessibilityCalculator.class);
-    service = new WheelchairAccessibilityService(new PlatformReducedAccessibilityCalculator(), completeCalculator);
+    service = new WheelchairAccessibilityService(new PlatformReducedAccessibilityCalculator(), completeCalculator, null);
   }
 
   @Test
@@ -43,7 +44,9 @@ class WheelchairAccessibilityServiceTest {
   @Test
   void shouldDelegateToCompleteCalculatorWhenStopPointIsComplete() {
     PlatformVersion platform = PlatformVersion.builder().build();
-    when(completeCalculator.calculate(platform)).thenReturn(WheelchairAccessibilityState.AUTONOMY);
+    RelationVersion relationVersion = RelationVersion.builder().build();
+    when(completeCalculator.calculatePlatform(platform, List.of(relationVersion))).thenReturn(
+        WheelchairAccessibilityState.AUTONOMY);
 
     WheelchairAccessibilityState result = service.calculateForPlatform(platform, false);
 
