@@ -10,7 +10,6 @@ import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.servicepoint.service.ServicePointBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -20,9 +19,6 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
   private final ServicePointBulkImportService servicePointBulkImportService;
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportUpdate(
       List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
@@ -31,9 +27,6 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
   }
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).CREATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportCreate(
       List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
@@ -42,9 +35,6 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
   }
 
   @Override
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).TERMINATE,
-      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportTerminate(
       List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
