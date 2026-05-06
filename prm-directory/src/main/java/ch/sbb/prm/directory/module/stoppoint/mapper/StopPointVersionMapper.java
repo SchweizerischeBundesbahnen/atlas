@@ -6,12 +6,13 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ServicePointNonSwissCountryNotAllowedException;
+import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -131,6 +132,13 @@ public class StopPointVersionMapper {
         .editor(version.getEditor())
         .editionDate(version.getEditionDate())
         .build();
+  }
+
+  public static ReadStopPointVersionModel toModelWithAccessibility(StopPointVersion version,
+      WheelchairAccessibilityState wheelchairAccessibility) {
+    ReadStopPointVersionModel model = toModel(version);
+    model.setWheelchairAccessibility(wheelchairAccessibility);
+    return model;
   }
 
 }

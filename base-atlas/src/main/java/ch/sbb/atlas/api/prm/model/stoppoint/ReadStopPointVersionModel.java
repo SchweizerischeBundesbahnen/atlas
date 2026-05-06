@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.prm.model.stoppoint;
 
+import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -26,5 +27,8 @@ public class ReadStopPointVersionModel extends StopPointVersionModel {
 
   @Schema(description = "A stop point is reduced/complete based on the means of transport selected")
   private boolean isReduced;
+
+  @Schema(description = "Calculated wheelchair accessibility")
+  private WheelchairAccessibilityState wheelchairAccessibility;
 
 }

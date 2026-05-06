@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.prm.model.platform;
 
+import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -23,5 +24,7 @@ public class ReadPlatformVersionModel extends PlatformVersionModel {
   @NotNull
   @Valid
   private ServicePointNumber number;
+
+  private WheelchairAccessibilityState wheelchairAccessibility;
 
 }
