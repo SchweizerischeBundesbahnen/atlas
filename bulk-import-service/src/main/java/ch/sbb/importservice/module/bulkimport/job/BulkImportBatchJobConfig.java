@@ -50,7 +50,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class BulkImportBatchJobConfig {
 
   private static final int CHUNK_SIZE = 20;
-  private static final int THREAD_EXECUTION_SIZE = 64;
+  private static final int THREAD_EXECUTION_SIZE = 10;
 
   private final JobRepository jobRepository;
   private final PlatformTransactionManager transactionManager;

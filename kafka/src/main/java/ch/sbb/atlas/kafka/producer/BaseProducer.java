@@ -20,7 +20,7 @@ public abstract class BaseProducer<T extends AtlasEvent> {
     future.whenComplete((result, exception) -> {
       String traceparent = new String(result.getProducerRecord().headers().headers("traceparent").iterator().next().value());
       if (exception == null) {
-        log.info("Kafka, traceparent={}: Sent message with offset=[{}]", traceparent, result.getRecordMetadata().offset());
+        log.debug("Kafka, traceparent={}: Sent message with offset=[{}]", traceparent, result.getRecordMetadata().offset());
       } else {
         log.error("Kafka, traceparent={}: Unable to send message due to {}: ", traceparent, exception.getMessage());
       }
