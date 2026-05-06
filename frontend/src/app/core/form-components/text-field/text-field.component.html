@@ -7,19 +7,19 @@
     [infoIconTitle]="infoIconTitle()"
   />
 }
-<form [formGroup]="formGroup">
+<form [formGroup]="formGroup()">
   <div [class]="{ 'text-field-wrapper': paddingBottom() }">
     <div class="text-field-flex">
       <ng-container #customChildInputPrefixTemplate *ngTemplateOutlet="customChildInputPrefixTemplate" />
       <input
-        [formControlName]="controlName"
+        [formControlName]="controlName()"
         type="text"
         placeholder="{{ placeholder() | translate }}"
-        [attr.data-cy]="controlName"
+        [attr.data-cy]="controlName()"
         atlasEmptyToNull
       />
       <ng-container #customChildInputPostfixTemplate *ngTemplateOutlet="customChildInputPostfixTemplate" />
     </div>
-    <atlas-field-error [control]="formGroup.get(controlName)" />
+    <atlas-field-error [control]="formGroup().get(controlName())" />
   </div>
 </form>

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, Mocked, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigationSepodiPrmComponent } from './navigation-sepodi-prm.component';
+import { NavigationSepodiPrmComponent, TargetPageType } from './navigation-sepodi-prm.component';
 import { AppTestingModule } from '../../app.testing.module';
 import { Router } from '@angular/router';
 import { ReadServicePointVersion, ReadStopPointVersion } from '../../api';
@@ -9,17 +9,23 @@ import { of } from 'rxjs';
 import { STOP_POINT } from '../../pages/prm/util/stop-point-test-data';
 import { ServicePointService } from '../../api/service/sepodi/service-point.service';
 import { StopPointService } from '../../api/service/prm/stop-point/stop-point.service';
+import { inputBinding, signal } from '@angular/core';
 
 describe('NavigationSepodiPrmComponent', () => {
+  let component: NavigationSepodiPrmComponent;
+  let fixture: ComponentFixture<NavigationSepodiPrmComponent>;
+
   type RouterMock = Mocked<Pick<Router, 'navigateByUrl'>>;
   type StopPointServiceMock = Mocked<Pick<StopPointService, 'getStopPointVersions'>>;
   type ServicePointServiceMock = Mocked<Pick<ServicePointService, 'getServicePointVersions'>>;
 
-  let component: NavigationSepodiPrmComponent;
-  let fixture: ComponentFixture<NavigationSepodiPrmComponent>;
   let routerMock: RouterMock;
   let stopPointServiceMock: StopPointServiceMock;
   let servicePointServiceMock: ServicePointServiceMock;
+  let targetPageInput: ReturnType<typeof signal<TargetPageType>>;
+  let sloidInput: ReturnType<typeof signal<string | undefined>>;
+  let numberInput: ReturnType<typeof signal<number | undefined>>;
+  let parentSloidInput: ReturnType<typeof signal<string | undefined>>;
 
   beforeEach(() => {
     stopPointServiceMock = {
@@ -41,9 +47,23 @@ describe('NavigationSepodiPrmComponent', () => {
       ],
     });
 
-    fixture = TestBed.createComponent(NavigationSepodiPrmComponent);
+    const targetPageInputName: keyof NavigationSepodiPrmComponent = 'targetPage';
+    const sloidInputName: keyof NavigationSepodiPrmComponent = 'sloid';
+    const numberInputName: keyof NavigationSepodiPrmComponent = 'number';
+    const parentSloidInputName: keyof NavigationSepodiPrmComponent = 'parentSloid';
+    targetPageInput = signal('stop-point');
+    sloidInput = signal(undefined);
+    numberInput = signal(undefined);
+    parentSloidInput = signal(undefined);
+    fixture = TestBed.createComponent(NavigationSepodiPrmComponent, {
+      bindings: [
+        inputBinding(targetPageInputName, targetPageInput),
+        inputBinding(sloidInputName, sloidInput),
+        inputBinding(numberInputName, numberInput),
+        inputBinding(parentSloidInputName, parentSloidInput),
+      ],
+    });
     component = fixture.componentInstance;
-    component.targetPage = 'stop-point';
     servicePointServiceMock.getServicePointVersions.mockReturnValue(of([BERN_WYLEREGG]));
   });
 
@@ -58,86 +78,86 @@ describe('NavigationSepodiPrmComponent', () => {
 
     it('should navigate to the correct URL when targetPage is stop point', () => {
       stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
-      component.sloid = 'ch:1:sloid:89008';
-
+      sloidInput.set('ch:1:sloid:89008');
+      fixture.detectChanges();
       component.init();
       component.navigate();
 
       expect(component.isTargetViewSepodi).toBe(false);
       expect(routerMock.navigateByUrl).toHaveBeenCalledExactlyOnceWith(
-        `/prm-directory/stop-points/${component.sloid}/stop-point`
+        `/prm-directory/stop-points/${sloidInput()}/stop-point`
       );
     });
 
     it('should navigate to the correct URL when targetPage is service point', () => {
       stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
-      component.number = 8589008;
-      component.targetPage = 'service-point';
-
+      numberInput.set(8589008);
+      targetPageInput.set('service-point');
+      fixture.detectChanges();
       component.init();
       component.navigate();
 
       expect(component.isTargetViewSepodi).toBe(true);
       expect(routerMock.navigateByUrl).toHaveBeenCalledExactlyOnceWith(
-        `/service-point-directory/service-points/${component.number}/service-point`
+        `/service-point-directory/service-points/${numberInput()}/service-point`
       );
     });
 
     it('should navigate to the correct URL when targetPage is traffic point table', () => {
       stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
-      component.number = 8589008;
-      component.targetPage = 'traffic-point-table';
-
+      numberInput.set(8589008);
+      targetPageInput.set('traffic-point-table');
+      fixture.detectChanges();
       component.init();
       component.navigate();
 
       expect(component.isTargetViewSepodi).toBe(true);
       expect(routerMock.navigateByUrl).toHaveBeenCalledExactlyOnceWith(
-        `/service-point-directory/service-points/${component.number}/traffic-point-elements`
+        `/service-point-directory/service-points/${numberInput()}/traffic-point-elements`
       );
     });
 
     it('should navigate to the correct URL when targetPage is traffic point detail', () => {
       stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
-      component.sloid = 'ch:1:sloid:89008';
-      component.number = 8589008;
-      component.targetPage = 'traffic-point-detail';
-
+      sloidInput.set('ch:1:sloid:89008');
+      numberInput.set(8589008);
+      targetPageInput.set('traffic-point-detail');
+      fixture.detectChanges();
       component.init();
       component.navigate();
 
       expect(component.isTargetViewSepodi).toBe(true);
       expect(routerMock.navigateByUrl).toHaveBeenCalledExactlyOnceWith(
-        `/service-point-directory/service-points/${component.number}/traffic-point-elements/${component.sloid}`
+        `/service-point-directory/service-points/${numberInput()}/traffic-point-elements/${sloidInput()}`
       );
     });
 
     it('should navigate to the correct URL when targetPage is platform table', () => {
       stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
-      component.sloid = 'ch:1:sloid:89008';
-      component.targetPage = 'platform-table';
-
+      sloidInput.set('ch:1:sloid:89008');
+      targetPageInput.set('platform-table');
+      fixture.detectChanges();
       component.init();
       component.navigate();
 
       expect(component.isTargetViewSepodi).toBe(false);
       expect(routerMock.navigateByUrl).toHaveBeenCalledExactlyOnceWith(
-        `/prm-directory/stop-points/${component.sloid}/platforms`
+        `/prm-directory/stop-points/${sloidInput()}/platforms`
       );
     });
 
     it('should navigate to the correct URL when targetPage is platform detail', () => {
       stopPointServiceMock.getStopPointVersions.mockReturnValue(of([STOP_POINT]));
-      component.parentSloid = 'ch:1:sloid:89008';
-      component.sloid = 'ch:1:sloid:89008:0:1';
-      component.targetPage = 'platform-detail';
-
+      parentSloidInput.set('ch:1:sloid:89008');
+      sloidInput.set('ch:1:sloid:89008:0:1');
+      targetPageInput.set('platform-detail');
+      fixture.detectChanges();
       component.init();
       component.navigate();
 
       expect(component.isTargetViewSepodi).toBe(false);
       expect(routerMock.navigateByUrl).toHaveBeenCalledExactlyOnceWith(
-        `/prm-directory/stop-points/${component.parentSloid}/platforms/${component.sloid}/detail`
+        `/prm-directory/stop-points/${parentSloidInput()}/platforms/${sloidInput()}/detail`
       );
     });
 

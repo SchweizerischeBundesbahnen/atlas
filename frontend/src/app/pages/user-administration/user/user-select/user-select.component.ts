@@ -18,11 +18,9 @@ export class UserSelectComponent implements OnInit {
   private readonly userService = inject(UserAdministrationService);
   private readonly tthUserService = inject(TthUserAdministrationService);
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() applicationType?: ApplicationType;
 
   readonly searchMode = input<SearchMode>('default');

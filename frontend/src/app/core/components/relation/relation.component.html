@@ -8,13 +8,13 @@
   <table
     (matSortChange)="sortChanged($event)"
     [dataSource]="_records"
-    [ngClass]="{ admin: editable }"
+    [ngClass]="{ admin: editable() }"
     aria-describedby="relation-table"
     class="atlas-table"
     mat-table
     matSort
   >
-    @for (column of tableColumns; track column) {
+    @for (column of tableColumns(); track column) {
       <ng-container matColumnDef="{{ column.columnDef }}">
         <th
           *matHeaderCellDef
@@ -35,7 +35,7 @@
     <tr
       (click)="selectRecord(row)"
       *matRowDef="let row; columns: columnValues()"
-      [ngClass]="{ 'selected-row': isRowSelected(row) && editable }"
+      [ngClass]="{ 'selected-row': isRowSelected(row) && editable() }"
       mat-row
     ></tr>
 
@@ -47,7 +47,7 @@
 
 <ng-content select="[table-button-between]" />
 
-@if (editable) {
+@if (editable()) {
   <div>
     <button
       (click)="editModeChanged.emit()"
@@ -60,7 +60,7 @@
     @if (relationEditable()) {
       <button
         (click)="editRelation()"
-        [disabled]="editMode() || selectedIndex === -1"
+        [disabled]="editMode() || selectedIndex() === -1"
         class="atlas-primary-btn me-2"
         data-cy="edit-relation-btn"
       >
@@ -69,7 +69,7 @@
     }
     <button
       (click)="deleteRelation.emit()"
-      [disabled]="selectedIndex === -1 || editMode()"
+      [disabled]="selectedIndex() === -1 || editMode()"
       class="atlas-primary-btn"
       data-cy="delete-relation-btn"
     >

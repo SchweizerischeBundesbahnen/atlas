@@ -21,8 +21,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class StopPointWorkflowExaminantsTableComponent {
   readonly WorkflowStatus = WorkflowStatus;
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() form!: FormGroup;
   readonly currentWorkflowStatus = input<WorkflowStatus>();
 

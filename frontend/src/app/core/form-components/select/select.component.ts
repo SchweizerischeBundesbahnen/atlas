@@ -2,13 +2,13 @@ import {
   Component,
   ContentChild,
   Input,
+  input,
   OnChanges,
   OnInit,
+  output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  output,
-  input,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatOptgroup, MatOption } from '@angular/material/core';
@@ -45,15 +45,10 @@ export interface SelectOptionGroup {
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class SelectComponent<TYPE> implements OnInit, OnChanges {
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
   @Input() label: string | undefined;
   readonly infoIconTitle = input<string>();
   readonly placeHolderLabel = input('FORM.DROPDOWN_PLACEHOLDER');
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+
   @Input() optionTranslateLabelPrefix: string | undefined;
 
   @Input()
@@ -66,9 +61,6 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     return option;
   }
 
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
   @Input() additionalLabelspace = 30;
   readonly isSelectAllEnabled = input(false);
   readonly required = input(false);
@@ -76,8 +68,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   readonly selectAll = input('TTH.ALL_COUNTRIES');
 
   private _disabled = false;
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
+
   @Input()
   set disabled(value: boolean) {
     this._disabled = value;
@@ -98,11 +89,8 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
 
   readonly dataCy = input<string>();
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() controlName: string | null = null;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() formGroup!: FormGroup;
 
   readonly options = input<TYPE[]>([]);

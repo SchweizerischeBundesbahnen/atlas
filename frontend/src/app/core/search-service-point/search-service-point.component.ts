@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { ServicePointSearchResult } from '../../api';
 import { catchError, concat, debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,9 +35,7 @@ export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;
   _DEBOUNCE_TIME = 500;
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() searchType!: ServicePointSearchType;
+  readonly searchType = input.required<ServicePointSearchType>();
 
   private _searchValue = '';
   isSearchBySloid = false;
@@ -51,7 +49,7 @@ export class SearchServicePointComponent implements OnInit {
   private readonly translatePipe = inject(TranslatePipe);
 
   get searchPlaceholder() {
-    return this.searchType === ServicePointSearch.SePoDi
+    return this.searchType() === ServicePointSearch.SePoDi
       ? SEARCH_SERVICE_POINT_PLACEHOLDER
       : SEARCH_STOP_POINT_PLACEHOLDER;
   }
@@ -115,7 +113,7 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   private search(term: string) {
-    if (this.searchType === ServicePointSearch.SePoDi) {
+    if (this.searchType() === ServicePointSearch.SePoDi) {
       return this.searchServicePoint(term);
     }
     return this.searchSwissOnlyServicePointAsStopPoint(term);
@@ -144,8 +142,8 @@ export class SearchServicePointComponent implements OnInit {
     this.router
       .navigate(
         [
-          this.searchType.navigationPath,
-          this.searchType === ServicePointSearch.SePoDi ? searchResultSelected.number : searchResultSelected.sloid,
+          this.searchType().navigationPath,
+          this.searchType() === ServicePointSearch.SePoDi ? searchResultSelected.number : searchResultSelected.sloid,
         ],
         { relativeTo: this.route }
       )

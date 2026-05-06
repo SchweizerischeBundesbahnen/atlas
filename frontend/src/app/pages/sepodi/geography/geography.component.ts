@@ -1,14 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  SimpleChanges,
-  output,
-  input,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, input, OnChanges, OnDestroy, output, SimpleChanges, } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -54,8 +44,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
 
   _form?: FormGroup<GeographyFormGroup>;
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
+
   @Input() set form(form: FormGroup<GeographyFormGroup> | undefined) {
     this._form = form;
     if (form) {

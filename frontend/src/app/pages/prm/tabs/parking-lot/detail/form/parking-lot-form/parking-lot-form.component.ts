@@ -23,8 +23,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class ParkingLotFormComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup<ParkingLotFormGroup>;
   readonly isNew = input(false);
 

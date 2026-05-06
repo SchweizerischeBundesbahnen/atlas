@@ -1,4 +1,4 @@
-import { Component, Input, output, ViewChild, input } from '@angular/core';
+import { Component, Input, input, output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
@@ -46,8 +46,6 @@ export class RelationComponent<RECORD_TYPE> {
   @ViewChild(MatTable) table!: MatTable<any>;
   @ViewChild(MatSort) matSort!: MatSort;
 
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set records(value: RECORD_TYPE[] | null) {
     this._records = value ?? [];
     if (this.matSort?.active && this.matSort.direction) {
@@ -57,21 +55,13 @@ export class RelationComponent<RECORD_TYPE> {
       });
     }
   }
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+
   @Input() titleTranslationKey = '';
   readonly relationEditable = input(true);
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() editable = false;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
+  readonly editable = input(false);
+  readonly tableColumns = input.required<TableColumn<RECORD_TYPE>[]>();
   readonly editMode = input(false);
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() selectedIndex = -1;
+  readonly selectedIndex = input(-1);
   readonly addBtnNameTranslationKey = input('RELATION.ADD');
   readonly deleteBtnNameTranslationKey = input('RELATION.DELETE');
   readonly updateBtnNameTranslationKey = input('RELATION.UPDATE');
@@ -84,7 +74,7 @@ export class RelationComponent<RECORD_TYPE> {
   _records: RECORD_TYPE[] = [];
 
   columnValues(): string[] {
-    return this.tableColumns.map((item) => item.columnDef!);
+    return this.tableColumns().map((item) => item.columnDef!);
   }
 
   formatDate(date: Date): string {
@@ -104,11 +94,11 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   isRowSelected(row: RECORD_TYPE): boolean {
-    return this.selectedIndex === this._records.indexOf(row);
+    return this.selectedIndex() === this._records.indexOf(row);
   }
 
   selectRecord(record: RECORD_TYPE): void {
-    if (this.editable) {
+    if (this.editable()) {
       this.selectedIndexChanged.emit(this._records.indexOf(record));
     }
   }
@@ -142,7 +132,10 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   private getValuePathFromColumnName(column: string): string {
-    const filteredColumn = this.tableColumns.filter((i) => i.columnDef == column)[0];
+    const filteredColumn = this.tableColumns().find((tableColumn) => tableColumn.columnDef === column);
+    if (!filteredColumn) {
+      throw new Error(`Column with name ${column} not found in table columns`);
+    }
     return filteredColumn.value ?? filteredColumn.valuePath!;
   }
 

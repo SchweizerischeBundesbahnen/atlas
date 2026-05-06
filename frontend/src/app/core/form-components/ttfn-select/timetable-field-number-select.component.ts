@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TimetableFieldNumber } from '../../../api';
@@ -15,14 +15,10 @@ import { SearchSelectComponent } from '../search-select/search-select.component'
 })
 export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, OnChanges {
   readonly valueExtraction = input('ttfnid');
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() controlName!: string;
+  readonly controlName = input.required<string>();
   readonly formModus = input(true);
   readonly required = input(true);
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() formGroup!: FormGroup;
+  readonly formGroup = input.required<FormGroup>();
   readonly validOn = input<Date>();
   readonly disabled = input(false);
 
@@ -48,7 +44,7 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   }
 
   init() {
-    const ttfnControl = this.formGroup.get(this.controlName)!;
+    const ttfnControl = this.formGroup().get(this.controlName())!;
     this.formSubscription = ttfnControl.valueChanges.subscribe((change) => {
       this.selectedTimetableFieldNumberChanged.emit(change);
       this.searchTimetableFieldNumber(change);

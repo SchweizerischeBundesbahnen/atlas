@@ -1,4 +1,4 @@
-import { Component, contentChild, Input, OnInit, TemplateRef, inject, output, input } from '@angular/core';
+import { Component, contentChild, inject, Input, input, OnInit, output, TemplateRef } from '@angular/core';
 import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
@@ -62,17 +62,12 @@ import { FormatPipe } from './pipe/format.pipe';
     FormatPipe,
     NgTemplateOutlet,
   ],
-  providers: [TranslatePipe],
 })
 export class TableComponent<DATATYPE> implements OnInit {
   readonly checkBoxSelection = input(new SelectionModel<DATATYPE>(true, []));
   readonly tableFilterConfig = input<TableFilter<unknown>[][]>([]);
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() tableColumns!: TableColumn<DATATYPE>[];
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() totalCount!: number;
+  readonly tableColumns = input.required<TableColumn<DATATYPE>[]>();
+  readonly totalCount = input<number>();
   readonly pageSizeOptions = input<number[]>([5, 10, 25, 100]);
   readonly sortingDisabled = input(false);
   readonly showTableFilter = input(true);
@@ -99,8 +94,6 @@ export class TableComponent<DATATYPE> implements OnInit {
     return this._tableData;
   }
 
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
   @Input()
   set tableData(data: DATATYPE[]) {
     this._tableData = data;
@@ -136,7 +129,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   getColumnDefs(): string[] {
-    return this.tableColumns.map((i) => (i.columnDef ?? i.value) as string);
+    return this.tableColumns().map((i) => (i.columnDef ?? i.value) as string);
   }
 
   edit(row: DATATYPE) {
@@ -176,7 +169,7 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   isAllSelected() {
     const numSelected = this.checkBoxSelection().selected.length;
-    return numSelected === this.pageSize || numSelected === this.totalCount;
+    return numSelected === this.pageSize || numSelected === this.totalCount();
   }
 
   toggleAll() {

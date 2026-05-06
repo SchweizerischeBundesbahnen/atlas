@@ -1,5 +1,5 @@
 <div class="d-flex flex-wrap">
-  @for (row of filterConfigurations; track $index; let rowIdx = $index) {
+  @for (row of filterConfigurations(); track $index; let rowIdx = $index) {
     <div class="search-row">
       @for (filterConfig of row; track $index; let filterConfigIndex = $index) {
         @if (filterConfig | instanceOf: TableFilterChipClass; as chipSearch) {

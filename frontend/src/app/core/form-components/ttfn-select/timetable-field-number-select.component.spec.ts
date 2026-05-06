@@ -9,10 +9,13 @@ import { SearchSelectComponent } from '../search-select/search-select.component'
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { inputBinding, signal } from '@angular/core';
 
 describe('TimetableFieldNumberSelectComponent', () => {
   let component: TimetableFieldNumberSelectComponent;
   let fixture: ComponentFixture<TimetableFieldNumberSelectComponent>;
+  let formGroupInput: ReturnType<typeof signal<FormGroup>>;
+  let controlNameInput: ReturnType<typeof signal<string>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,12 +29,21 @@ describe('TimetableFieldNumberSelectComponent', () => {
       providers: [TranslatePipe, translateServiceProvider, provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TimetableFieldNumberSelectComponent);
-    component = fixture.componentInstance;
-    component.formGroup = new FormGroup({
-      testControl: new FormControl(null),
+    const formGroupInputName: keyof TimetableFieldNumberSelectComponent = 'formGroup';
+    const controlNameInputName: keyof TimetableFieldNumberSelectComponent = 'controlName';
+    formGroupInput = signal(
+      new FormGroup({
+        testControl: new FormControl(null),
+      })
+    );
+    controlNameInput = signal('testControl');
+    fixture = TestBed.createComponent(TimetableFieldNumberSelectComponent, {
+      bindings: [
+        inputBinding(formGroupInputName, formGroupInput),
+        inputBinding(controlNameInputName, controlNameInput),
+      ],
     });
-    component.controlName = 'testControl';
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 

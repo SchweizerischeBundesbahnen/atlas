@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="formGroup()">
   <div class="picker">
     <atlas-label-field
       [required]="true"
@@ -20,8 +20,8 @@
         </button>
       }
     </div>
-    <atlas-field-error [control]="formGroup.get(controlName)" />
-    @if (showSectorWarning && sectorWarning) {
+    <atlas-field-error [control]="formGroup().get(controlName())" />
+    @if (showSectorWarning() && sectorWarning) {
       <div class="sector-warning font-regular-sm mt-1">
         {{ 'SEPODI.SECTORS.MOT_CHANGE_WARNING' | translate }}
       </div>

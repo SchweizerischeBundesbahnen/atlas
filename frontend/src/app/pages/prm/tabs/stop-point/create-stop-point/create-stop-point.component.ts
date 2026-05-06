@@ -35,8 +35,7 @@ export class CreateStopPointComponent implements DetailFormComponent {
   private readonly dialogService = inject(DialogService);
 
   @ViewChild('stepper') stepper!: MatStepper;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
   readonly isAuthorizedToCreateStopPoint = input.required<boolean>();
 

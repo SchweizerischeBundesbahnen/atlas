@@ -2,9 +2,9 @@
   (changeTrigger)="tuSelectionChanged.emit($event)"
   (searchTrigger)="searchTransportCompany($event)"
   [bindValueInp]="valueExtraction()"
-  [controlName]="controlName"
+  [controlName]="controlName()"
   [disabled]="disabled()"
-  [formGroup]="formGroup"
+  [formGroup]="formGroup()"
   [items$]="transportCompanies"
   [multiple]="true"
 >

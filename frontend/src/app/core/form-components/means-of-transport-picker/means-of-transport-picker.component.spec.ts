@@ -5,10 +5,14 @@ import { MeansOfTransportPickerComponent } from './means-of-transport-picker.com
 import { MeanOfTransport } from '../../../api';
 import { By } from '@angular/platform-browser';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { inputBinding, signal } from '@angular/core';
 
 describe('MeansOfTransportPickerComponent', () => {
   let component: MeansOfTransportPickerComponent;
   let fixture: ComponentFixture<MeansOfTransportPickerComponent>;
+  let formGroupInput: ReturnType<typeof signal<FormGroup>>;
+  let multiSelectModeInput: ReturnType<typeof signal<boolean>>;
+  let showSectorWarningInput: ReturnType<typeof signal<boolean>>;
 
   const getSectorWarningEl = (fixture: ComponentFixture<MeansOfTransportPickerComponent>) =>
     fixture.debugElement.query(By.css('.sector-warning'));
@@ -18,12 +22,26 @@ describe('MeansOfTransportPickerComponent', () => {
       providers: [translateServiceProvider],
     });
 
-    fixture = TestBed.createComponent(MeansOfTransportPickerComponent);
-    component = fixture.componentInstance;
-    component.formGroup = new FormGroup({
-      meansOfTransport: new FormControl([MeanOfTransport.Bus]),
+    const formGroupInputName: keyof MeansOfTransportPickerComponent = 'formGroup';
+    const controlNameInputName: keyof MeansOfTransportPickerComponent = 'controlName';
+    const multiSelectModeInputName: keyof MeansOfTransportPickerComponent = 'multiSelectMode';
+    const showSectorWarningInputName: keyof MeansOfTransportPickerComponent = 'showSectorWarning';
+    formGroupInput = signal(
+      new FormGroup({
+        meansOfTransport: new FormControl([MeanOfTransport.Bus]),
+      })
+    );
+    multiSelectModeInput = signal(true);
+    showSectorWarningInput = signal(false);
+    fixture = TestBed.createComponent(MeansOfTransportPickerComponent, {
+      bindings: [
+        inputBinding(formGroupInputName, formGroupInput),
+        inputBinding(controlNameInputName, () => 'meansOfTransport'),
+        inputBinding(multiSelectModeInputName, multiSelectModeInput),
+        inputBinding(showSectorWarningInputName, showSectorWarningInput),
+      ],
     });
-    component.controlName = 'meansOfTransport';
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
@@ -31,7 +49,7 @@ describe('MeansOfTransportPickerComponent', () => {
     const trainImage = fixture.debugElement.query(By.css('[data-cy=TRAIN]'));
     trainImage.nativeElement.click();
 
-    const currentMeans = component.formGroup.value.meansOfTransport;
+    const currentMeans = component.formGroup().value.meansOfTransport;
     expect(currentMeans).toEqual([MeanOfTransport.Bus, MeanOfTransport.Train]);
   });
 
@@ -39,33 +57,37 @@ describe('MeansOfTransportPickerComponent', () => {
     const busImage = fixture.debugElement.query(By.css('[data-cy=BUS]'));
     busImage.nativeElement.click();
 
-    const currentMeans = component.formGroup.value.meansOfTransport;
+    const currentMeans = component.formGroup().value.meansOfTransport;
     expect(currentMeans).toEqual([]);
   });
 
   it('should switch to train on click (single select mode)', () => {
-    component.multiSelectMode = false;
+    multiSelectModeInput.set(false);
+    fixture.detectChanges();
     const trainImage = fixture.debugElement.query(By.css('[data-cy=TRAIN]'));
     trainImage.nativeElement.click();
 
-    const currentMeans = component.formGroup.value.meansOfTransport;
+    const currentMeans = component.formGroup().value.meansOfTransport;
     expect(currentMeans).toEqual([MeanOfTransport.Train]);
   });
 
   it('should remove bus on click (single select mode)', () => {
-    component.multiSelectMode = false;
+    multiSelectModeInput.set(false);
+    fixture.detectChanges();
     const busImage = fixture.debugElement.query(By.css('[data-cy=BUS]'));
     busImage.nativeElement.click();
 
-    const currentMeans = component.formGroup.value.meansOfTransport;
+    const currentMeans = component.formGroup().value.meansOfTransport;
     expect(currentMeans).toEqual([]);
   });
 
   it('should show sector warning on TRAIN removed', () => {
-    component.formGroup = new FormGroup({
-      meansOfTransport: new FormControl([MeanOfTransport.Train]),
-    });
-    component.showSectorWarning = true;
+    formGroupInput.set(
+      new FormGroup({
+        meansOfTransport: new FormControl([MeanOfTransport.Train]),
+      })
+    );
+    showSectorWarningInput.set(true);
     fixture.detectChanges();
     expect(getSectorWarningEl(fixture)).toBeNull();
 

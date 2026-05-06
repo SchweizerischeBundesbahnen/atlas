@@ -1,5 +1,5 @@
 @if (isButtonVisible()) {
-  <div [ngClass]="wrapperStyleClass() + ' btn-' + buttonType">
+  <div [ngClass]="wrapperStyleClass() + ' btn-' + buttonType()">
     <button
       (click)="buttonClicked.emit()"
       [class]="getButtonStyleClass()"

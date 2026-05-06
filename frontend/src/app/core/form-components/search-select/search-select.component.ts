@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, TemplateRef, ViewChild, output, input } from '@angular/core';
+import { Component, ContentChild, TemplateRef, ViewChild, output, input } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
@@ -25,12 +25,8 @@ export class SearchSelectComponent<TYPE> {
   readonly items$ = input<Observable<TYPE[]>>(of([]));
   readonly multiple = input(false);
   readonly placeholderTextKey = input('');
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() controlName!: string;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() formGroup!: FormGroup;
+  readonly controlName = input.required<string>();
+  readonly formGroup = input.required<FormGroup>();
   readonly bindValueInp = input('');
   readonly pipe = input<TranslatePipe>();
   readonly disabled = input(false);

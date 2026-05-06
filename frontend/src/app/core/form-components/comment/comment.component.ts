@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { MatInput } from '@angular/material/input';
@@ -13,9 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class CommentComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() formGroup!: FormGroup;
+  readonly formGroup = input.required<FormGroup>();
   readonly displayLabel = input(true);
   readonly required = input(false);
   readonly label = input('FORM.COMMENT');

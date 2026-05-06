@@ -27,8 +27,6 @@ export class UserDetailInfoComponent {
 
   readonly userAdministrationService = inject(UserAdministrationService);
 
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
   @Input()
   set record(record: CreationEditionRecord) {
     this._record$ = this.getProcessedCreationEdition(record);

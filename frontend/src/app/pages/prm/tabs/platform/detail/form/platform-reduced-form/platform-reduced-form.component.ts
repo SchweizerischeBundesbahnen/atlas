@@ -32,8 +32,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class PlatformReducedFormComponent implements OnInit {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup<ReducedPlatformFormGroup>;
   readonly meansOfTransport = input<MeanOfTransport[]>([]);
   readonly isNew = input(false);

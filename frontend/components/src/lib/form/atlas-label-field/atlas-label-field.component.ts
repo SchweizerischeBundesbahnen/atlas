@@ -16,16 +16,11 @@ export class AtlasLabelFieldComponent {
 
   readonly required = input(false);
   readonly fieldLabel = input.required<string>();
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+
   @Input() infoIconTitle?: string;
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+
   @Input() infoIconLink?: string;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() fieldExamples!: Array<FieldExample>;
 
   translate(fieldExample: FieldExample): string {

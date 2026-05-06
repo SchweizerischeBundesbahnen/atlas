@@ -14,16 +14,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class BaseChangeDialogComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() formGroup!: FormGroup;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() controlName!: string;
   readonly maxChars = input.required<string>();
   readonly changeEvent = output();
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() dialogRef!: MatDialogRef<BaseChangeDialogComponent, boolean>;
 
   public data: StatusChangeData = inject(MAT_DIALOG_DATA);

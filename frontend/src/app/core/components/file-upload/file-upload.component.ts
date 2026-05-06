@@ -26,30 +26,23 @@ import { FileSizePipe } from './file-size/file-size.pipe';
   providers: [TranslatePipe],
 })
 export class FileUploadComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() acceptedFileExtension!: string;
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() acceptedFileType!: string[];
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() maxFileSize!: number;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() maxFileCount!: number;
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() uploadedFiles: File[] = [];
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() alreadySavedFileNames: string[] = [];
   readonly uploadedFilesChange = output<File[]>();
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() isDownloadButtonVisible: boolean = false;
   readonly isDownloadButtonDisabled = input<boolean>(false);
 

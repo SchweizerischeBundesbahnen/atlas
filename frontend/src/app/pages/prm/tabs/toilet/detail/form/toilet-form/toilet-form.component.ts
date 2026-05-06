@@ -22,8 +22,7 @@ import { DateRangeComponent } from '../../../../../../../core/form-components/da
   providers: [TranslatePipe],
 })
 export class ToiletFormComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup<ToiletFormGroup>;
 
   standardAttributeTypes = Object.values(StandardAttributeType);

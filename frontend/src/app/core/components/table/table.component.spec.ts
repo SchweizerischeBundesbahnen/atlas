@@ -8,11 +8,14 @@ import { FormatPipe } from './pipe/format.pipe';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { TranslatePipe } from '@ngx-translate/core';
 import { mock } from 'vitest-mock-extended';
+import { inputBinding, signal } from '@angular/core';
 
 describe('TableComponent', () => {
   /*eslint-disable */
   let component: TableComponent<any>;
   let fixture: ComponentFixture<TableComponent<any>>;
+  let tableColumnsInput: ReturnType<typeof signal<any[]>>;
+  let totalCountInput: ReturnType<typeof signal<number>>;
   /*eslint-enable */
 
   beforeEach(() => {
@@ -27,7 +30,16 @@ describe('TableComponent', () => {
       ],
     });
 
-    fixture = TestBed.createComponent(TableComponent);
+    const tableColumnsInputName: keyof TableComponent<unknown> = 'tableColumns';
+    const totalCountInputName: keyof TableComponent<unknown> = 'totalCount';
+    tableColumnsInput = signal([]);
+    totalCountInput = signal(10);
+    fixture = TestBed.createComponent(TableComponent, {
+      bindings: [
+        inputBinding(tableColumnsInputName, tableColumnsInput),
+        inputBinding(totalCountInputName, totalCountInput),
+      ],
+    });
     component = fixture.componentInstance;
 
     function mapToCommaSeparated(props: { prop: string }[]) {
@@ -41,7 +53,7 @@ describe('TableComponent', () => {
       console.log('change me');
     }
 
-    component.tableColumns = [
+    tableColumnsInput.set([
       {
         headerTitle: 'TTFN.VALID_FROM',
         value: 'validFrom',
@@ -74,7 +86,7 @@ describe('TableComponent', () => {
           selectedOption: StatementStatus.Accepted,
         },
       },
-    ];
+    ]);
     component.tableData = [
       {
         validFrom: new Date('2021-12-31'),
@@ -95,7 +107,6 @@ describe('TableComponent', () => {
         relations: [],
       },
     ];
-    component.totalCount = 10;
     component.isLoading = false;
   });
 

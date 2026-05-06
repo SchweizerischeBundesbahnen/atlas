@@ -29,14 +29,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class DecisionFormComponent {
   protected readonly JudgementType = JudgementType;
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup<DecisionFormGroup>;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() hasOverride = false;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() hasDecisionTypeVotedExpired = false;
   readonly showJudgement = input(true);
 

@@ -9,13 +9,10 @@ import { SloidContainerComponent } from '../../../../core/sloid-container/sloid-
   imports: [DateRangeTextComponent, SloidContainerComponent],
 })
 export class PrmDetailPanelComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() isNew = false;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() selectedVersion!: { sloid?: string };
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() maxValidity!: DateRange;
 }

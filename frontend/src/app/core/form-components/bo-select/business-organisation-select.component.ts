@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BusinessOrganisation } from '../../../api';
@@ -15,13 +15,9 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
 })
 export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, OnChanges {
   readonly valueExtraction = input('sboid');
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() controlName!: string;
+  readonly controlName = input.required<string>();
   readonly formModus = input(true);
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() formGroup!: FormGroup;
+  readonly formGroup = input.required<FormGroup>();
   readonly sboidsRestrictions = input<string[]>([]);
   readonly disabled = input(false);
 
@@ -47,7 +43,7 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   }
 
   init() {
-    const boControl = this.formGroup.get(this.controlName)!;
+    const boControl = this.formGroup().get(this.controlName())!;
     this.formSubscription = boControl.valueChanges.subscribe((change) => {
       this.selectedBusinessOrganisationChanged.emit(change);
       this.searchBusinessOrganisation(change);

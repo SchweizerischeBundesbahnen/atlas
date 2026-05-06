@@ -1,4 +1,4 @@
-import { Component, Input, input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
+import { Component, input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
@@ -26,21 +26,13 @@ import { distinctUntilChanged, of, startWith } from 'rxjs';
   providers: [TranslatePipe],
 })
 export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() controlName!: string;
+  readonly controlName = input.required<string>();
   readonly disabled = input(false);
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() formGroup!: FormGroup;
+  readonly formGroup = input.required<FormGroup>();
   readonly showInfo = input(false);
   readonly meansOfTransportToShow = input<MeanOfTransport[]>();
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() showSectorWarning = false;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() multiSelectMode = true;
+  readonly showSectorWarning = input(false);
+  readonly multiSelectMode = input(true);
   readonly selectChange = output<MeanOfTransport[]>();
 
   protected selectedMeans$ = of([]);
@@ -67,7 +59,7 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   protected onSelection(meanOfTransport: MeanOfTransport) {
-    if (this.multiSelectMode) {
+    if (this.multiSelectMode()) {
       this.setControlForMultiSelect(meanOfTransport);
     } else {
       this.setControlForSingleSelect(meanOfTransport);
@@ -101,6 +93,6 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   private get formControl() {
-    return required(this.formGroup.get(this.controlName), 'mean of transport control must be defined');
+    return required(this.formGroup().get(this.controlName()), 'mean of transport control must be defined');
   }
 }

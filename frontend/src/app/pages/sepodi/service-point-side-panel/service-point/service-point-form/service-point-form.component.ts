@@ -79,8 +79,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   readonly selectedServicePointTypeChange = output<ServicePointType | null | undefined>();
 
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set form(form: FormGroup<ServicePointDetailFormGroup>) {
     this._form = form;
     this._currentSelectedServicePointType = form.controls.selectedType.value;
@@ -92,8 +90,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     return this._form;
   }
 
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set currentVersion(version: ReadServicePointVersion | undefined) {
     this._currentVersion = version;
     this.locationInformation$ = of({

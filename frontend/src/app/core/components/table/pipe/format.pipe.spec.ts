@@ -1,21 +1,16 @@
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { FormatPipe } from './format.pipe';
-import { TranslatePipe } from '@ngx-translate/core';
 import { TableColumn } from '../table-column';
 import { TestBed } from '@angular/core/testing';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
+import { TranslateService } from '@ngx-translate/core';
 
 describe('FormatPipe', () => {
   let formatPipe: FormatPipe;
 
-  let translatePipeStub: Mocked<Pick<TranslatePipe, 'transform'>>;
-
   beforeEach(() => {
-    translatePipeStub = {
-      transform: vi.fn(),
-    };
-
     TestBed.configureTestingModule({
-      providers: [{ provide: TranslatePipe, useValue: translatePipeStub }, FormatPipe],
+      providers: [translateServiceProvider, FormatPipe],
     });
 
     formatPipe = TestBed.inject(FormatPipe);
@@ -49,8 +44,10 @@ describe('FormatPipe', () => {
         withPrefix: 'prefix.',
       },
     } as TableColumn<object>;
+    const translateService = TestBed.inject(TranslateService);
+    vi.spyOn(translateService, 'instant');
     formatPipe.transform(value, tableColumn);
-    expect(translatePipeStub.transform).toHaveBeenCalledExactlyOnceWith('prefix.test');
+    expect(translateService.instant).toHaveBeenCalledExactlyOnceWith('prefix.test');
   });
 
   it('should call column callback', () => {

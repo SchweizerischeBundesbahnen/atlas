@@ -1,10 +1,10 @@
-<div [formGroup]="formGroup">
+<div [formGroup]="formGroup()">
   <ng-content />
   <ng-select
     #ngSelect
     (change)="changeTrigger.emit($event)"
     [bindValue]="bindValueInp()"
-    [formControlName]="controlName"
+    [formControlName]="controlName()"
     [items]="(items$() | async) ?? []"
     [minTermLength]="2"
     [multiple]="multiple()"
@@ -23,5 +23,5 @@
     </ng-template>
   </ng-select>
 
-  <atlas-field-error [control]="formGroup.get(controlName)" />
+  <atlas-field-error [control]="formGroup().get(controlName())" />
 </div>

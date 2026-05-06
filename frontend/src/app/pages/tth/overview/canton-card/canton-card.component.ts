@@ -11,7 +11,6 @@ import { NgOptimizedImage } from '@angular/common';
   providers: [TranslatePipe],
 })
 export class CantonCardComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() canton!: Canton;
 }

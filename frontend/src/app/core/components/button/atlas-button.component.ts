@@ -1,4 +1,4 @@
-import { Component, ContentChild, inject, Input, input, output, TemplateRef } from '@angular/core';
+import { Component, ContentChild, inject, input, output, TemplateRef } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
@@ -15,24 +15,16 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class AtlasButtonComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() applicationType!: ApplicationType;
+  readonly applicationType = input<ApplicationType>();
   readonly businessOrganisation = input<string>();
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() businessOrganisations: string[] = [];
+  readonly businessOrganisations = input<string[]>([]);
   readonly canton = input<string>();
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() uicCountryCode?: number;
+  readonly uicCountryCode = input<number>();
   readonly disabled = input(false);
 
   readonly wrapperStyleClass = input('');
   readonly buttonDataCy = input<string>();
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() buttonType!: AtlasButtonType;
+  readonly buttonType = input.required<AtlasButtonType>();
   readonly footerEdit = input(false);
   readonly submitButton = input(false);
   readonly buttonText = input<string>();
@@ -46,13 +38,13 @@ export class AtlasButtonComponent {
   private readonly permissionService = inject(PermissionService);
 
   isButtonVisible() {
-    if (this.buttonType === AtlasButtonType.CREATE_CHECKING_PERMISSION) {
+    if (this.buttonType() === AtlasButtonType.CREATE_CHECKING_PERMISSION) {
       return this.mayCreate();
     }
-    if (this.buttonType === AtlasButtonType.EDIT) {
+    if (this.buttonType() === AtlasButtonType.EDIT) {
       return this.mayEdit();
     }
-    if (this.buttonType === AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT) {
+    if (this.buttonType() === AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT) {
       return this.mayEditServicePointDependentObject();
     }
     if (
@@ -63,61 +55,61 @@ export class AtlasButtonComponent {
           AtlasButtonType.SUPERVISOR_BUTTON,
           AtlasButtonType.MANAGE_TIMETABLE_HEARING,
         ] as readonly AtlasButtonType[]
-      ).includes(this.buttonType)
+      ).includes(this.buttonType())
     ) {
       return this.isAtLeastSupervisor();
     }
-    if (this.buttonType === AtlasButtonType.DELETE) {
+    if (this.buttonType() === AtlasButtonType.DELETE) {
       return this.mayDelete();
     }
-    if (this.buttonType === AtlasButtonType.CANTON_WRITE_PERMISSION) {
+    if (this.buttonType() === AtlasButtonType.CANTON_WRITE_PERMISSION) {
       return this.hasWritePermissionsForCanton();
     }
-    if (AtlasButtonType.WHITE_FOOTER_NON_EDIT === this.buttonType) {
+    if (AtlasButtonType.WHITE_FOOTER_NON_EDIT === this.buttonType()) {
       return !this.footerEdit();
     }
-    if (AtlasButtonType.WHITE_FOOTER_EDIT_MODE === this.buttonType) {
+    if (AtlasButtonType.WHITE_FOOTER_EDIT_MODE === this.buttonType()) {
       return this.footerEdit();
     }
     return true;
   }
 
   mayCreate() {
-    if (!this.applicationType) {
+    if (!this.applicationType()) {
       throw new Error('Permission checking button needs applicationtype');
     }
-    return this.permissionService.hasPermissionsToCreate(this.applicationType);
+    return this.permissionService.hasPermissionsToCreate(this.applicationType()!);
   }
 
   mayEdit() {
-    if (!this.applicationType) {
+    if (!this.applicationType()) {
       throw new Error('Edit button needs applicationType');
     }
     const businessOrganisation = this.businessOrganisation();
-    if (this.applicationType !== ApplicationType.Bodi && !businessOrganisation) {
+    if (this.applicationType() !== ApplicationType.Bodi && !businessOrganisation) {
       throw new Error('Edit button needs businessOrganisation');
     }
-    if (this.uicCountryCode) {
+    if (this.uicCountryCode()) {
       return this.mayEditWithUicCountryCode();
     }
-    return this.permissionService.hasPermissionsToWrite(this.applicationType, businessOrganisation);
+    return this.permissionService.hasPermissionsToWrite(this.applicationType()!, businessOrganisation);
   }
 
   private mayEditWithUicCountryCode() {
     return (
-      this.permissionService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation()) &&
+      this.permissionService.hasPermissionsToWrite(this.applicationType()!, this.businessOrganisation()) &&
       this.permissionService.hasPermissionsToWrite(
-        this.applicationType,
-        Countries.fromUicCode(this.uicCountryCode!).enumCountry
+        this.applicationType()!,
+        Countries.fromUicCode(this.uicCountryCode()!).enumCountry
       )
     );
   }
 
   isAtLeastSupervisor(): boolean {
-    if (!this.applicationType) {
+    if (!this.applicationType()) {
       throw new Error('Revoke button needs applicationtype');
     }
-    return this.permissionService.isAtLeastSupervisor(this.applicationType);
+    return this.permissionService.isAtLeastSupervisor(this.applicationType()!);
   }
 
   mayDelete(): boolean {
@@ -125,7 +117,7 @@ export class AtlasButtonComponent {
   }
 
   hasWritePermissionsForCanton() {
-    return this.permissionService.hasWritePermissionsToForCanton(this.applicationType, this.canton());
+    return this.permissionService.hasWritePermissionsToForCanton(this.applicationType()!, this.canton());
   }
 
   getButtonStyleClass() {
@@ -133,10 +125,10 @@ export class AtlasButtonComponent {
     if (buttonStyleClass) {
       return buttonStyleClass;
     }
-    if (this.buttonType === AtlasButtonType.DEFAULT_PRIMARY) {
+    if (this.buttonType() === AtlasButtonType.DEFAULT_PRIMARY) {
       return 'atlas-primary-btn';
     }
-    if (this.buttonType === AtlasButtonType.ICON) {
+    if (this.buttonType() === AtlasButtonType.ICON) {
       return 'atlas-icon-btn';
     }
     if (
@@ -147,19 +139,19 @@ export class AtlasButtonComponent {
           AtlasButtonType.CANTON_WRITE_PERMISSION,
           AtlasButtonType.MANAGE_TIMETABLE_HEARING,
         ] as readonly AtlasButtonType[]
-      ).includes(this.buttonType)
+      ).includes(this.buttonType())
     ) {
       return 'atlas-raised-button mat-mdc-raised-button';
     }
-    if (this.buttonType === AtlasButtonType.CONFIRM) {
+    if (this.buttonType() === AtlasButtonType.CONFIRM) {
       return 'atlas-primary-btn primary-color-btn';
     }
     return 'atlas-primary-btn';
   }
 
   private mayEditServicePointDependentObject() {
-    return this.businessOrganisations
-      .map((organisation) => this.permissionService.hasPermissionsToWrite(this.applicationType, organisation))
+    return this.businessOrganisations()
+      .map((organisation) => this.permissionService.hasPermissionsToWrite(this.applicationType()!, organisation))
       .includes(true);
   }
 }

@@ -22,8 +22,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ContactPointFormComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup<ContactPointFormGroup>;
   readonly isNew = input(false);
 

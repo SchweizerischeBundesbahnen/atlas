@@ -39,11 +39,9 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
 
   protected readonly JudgementType = JudgementType;
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() workflowId!: number;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() examinantId!: number;
   readonly existingDecision = input<ReadDecision>();
   readonly enabled = input(true);

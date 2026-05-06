@@ -1,4 +1,4 @@
-<div [formGroup]="formGroup" class="d-flex flex-column">
+<div [formGroup]="formGroup()" class="d-flex flex-column">
   @if (displayLabel()) {
     <atlas-label-field
       [fieldExamples]="[
@@ -22,5 +22,5 @@
     rows="7"
     [readonly]="readonly()"
   ></textarea>
-  <atlas-field-error [control]="formGroup.get(controlName())" />
+  <atlas-field-error [control]="formGroup().get(controlName())" />
 </div>

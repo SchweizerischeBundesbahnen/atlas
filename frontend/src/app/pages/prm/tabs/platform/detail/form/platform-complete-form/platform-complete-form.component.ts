@@ -19,8 +19,7 @@ import { LevelAccessWheelchairAttributeType } from '../../../../../../../api/mod
   imports: [CommentComponent, ReactiveFormsModule, TextFieldComponent, SelectComponent, TranslatePipe],
 })
 export class PlatformCompleteFormComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup<CompletePlatformFormGroup>;
   readonly isNew = input(false);
 

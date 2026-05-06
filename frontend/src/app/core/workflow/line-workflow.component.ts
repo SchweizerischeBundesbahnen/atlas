@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit, output, input } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, output, input } from '@angular/core';
 import { LineRecord } from './model/line-record';
 import { LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
 import { LineInternalService } from '../../api/service/lidi/line-internal.service';
@@ -17,9 +17,7 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
   private readonly lineInternalService = inject(LineInternalService);
   private readonly dialogService = inject(DialogService);
 
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() lineRecord!: LineRecord;
+  readonly lineRecord = input.required<LineRecord>();
   readonly descriptionForWorkflow = input.required<string>();
 
   readonly workflowEvent = output<void>();
@@ -49,7 +47,7 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
 
   private filterWorkflowsInProgress() {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
-    this.lineRecord.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
+    this.lineRecord().lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
     return lineVersionWorkflows.filter((lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress);
   }
 
@@ -59,9 +57,9 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
       message: '',
       cancelText: 'WORKFLOW.BUTTON.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.START',
-      lineRecord: this.lineRecord,
+      lineRecord: this.lineRecord(),
       descriptionForWorkflow: this.descriptionForWorkflow(),
-      number: this.lineRecord.number,
+      number: this.lineRecord().number,
     };
     this.dialogService
       .openDialogDataWithConfirmationResult(dialogData, LineWorkflowDialogComponent)
@@ -78,9 +76,9 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
       message: '',
       cancelText: 'COMMON.BACK',
       confirmText: 'WORKFLOW.BUTTON.START',
-      lineRecord: this.lineRecord,
+      lineRecord: this.lineRecord(),
       descriptionForWorkflow: this.descriptionForWorkflow(),
-      number: this.lineRecord.number,
+      number: this.lineRecord().number,
     };
 
     this.dialogService
@@ -93,6 +91,6 @@ export class LineWorkflowComponent implements OnInit, OnChanges {
   }
 
   skipWorkflow() {
-    this.lineInternalService.skipWorkflow(this.lineRecord.id!).subscribe(() => this.workflowEvent.emit());
+    this.lineInternalService.skipWorkflow(this.lineRecord().id!).subscribe(() => this.workflowEvent.emit());
   }
 }

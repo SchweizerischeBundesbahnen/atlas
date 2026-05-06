@@ -1,44 +1,35 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
-
 import { CommentComponent } from './comment.component';
-import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
-import { TextFieldComponent } from '../text-field/text-field.component';
-import { TranslatePipe } from '@ngx-translate/core';
+import { inputBinding } from '@angular/core';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 describe('CommentComponent', () => {
   let component: CommentComponent;
   let fixture: ComponentFixture<CommentComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        CommentComponent,
-        InfoIconComponent,
-        AtlasFieldErrorComponent,
-        InfoIconComponent,
-        AtlasLabelFieldComponent,
-        TextFieldComponent,
-      ],
-      providers: [{ provide: TranslatePipe }],
-    }).compileComponents();
-  });
+  let formGroupInput: FormGroup;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommentComponent);
-    component = fixture.componentInstance;
-    component.formGroup = new FormGroup({
+    formGroupInput = new FormGroup({
       comment: new FormControl('test'),
     });
+
+    TestBed.configureTestingModule({
+      providers: [translateServiceProvider],
+    });
+
+    const formGroupInputName: keyof CommentComponent = 'formGroup';
+    fixture = TestBed.createComponent(CommentComponent, {
+      bindings: [inputBinding(formGroupInputName, () => formGroupInput)],
+    });
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.formGroup.value).toEqual({ comment: 'test' });
+    expect(component.formGroup().value).toEqual({ comment: 'test' });
   });
 });

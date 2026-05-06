@@ -1,4 +1,4 @@
-import { Component, Input, output } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { Moment } from 'moment/moment';
 import { TableFilterChip } from './config/table-filter-chip';
@@ -51,9 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class TableFilterComponent<TFilterConfig> {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() filterConfigurations: TableFilter<TFilterConfig>[][] = [];
+  readonly filterConfigurations = input<TableFilter<TFilterConfig>[][]>([]);
   readonly searchEvent = output<void>();
 
   public readonly TableFilterChipClass = TableFilterChip;

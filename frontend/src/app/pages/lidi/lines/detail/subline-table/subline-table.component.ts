@@ -17,8 +17,7 @@ import { LineInternalService } from '../../../../../api/service/lidi/line-intern
 })
 export class SublineTableComponent implements OnInit, OnDestroy {
   readonly mainLineSlnid = input.required<string>();
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() eventSubject!: Observable<boolean>;
 
   private onDestroy$ = new Subject<boolean>();

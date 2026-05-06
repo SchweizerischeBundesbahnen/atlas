@@ -35,14 +35,10 @@ interface OfferCategoryGroup {
 })
 export class LineDetailFormComponent {
   readonly form = input.required<FormGroup>();
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+
   @Input() newRecord = false;
   readonly boSboidRestriction = input<string[]>([]);
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+
   @Input() isLineConcessionTypeRequired = true;
 
   TYPE_OPTIONS = Object.values(LineType);

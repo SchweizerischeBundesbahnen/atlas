@@ -19,12 +19,10 @@ export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChan
   private readonly servicePointInternalService = inject(ServicePointInternalService);
 
   readonly valueExtraction = input('number');
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() controlName!: string;
   readonly formModus = input(true);
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() formGroup!: FormGroup;
   readonly disabled = input(false);
 

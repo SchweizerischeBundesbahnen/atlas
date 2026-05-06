@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -15,8 +15,8 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 import { Pages } from '../../pages';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { TranslatePipe } from '@ngx-translate/core';
 import { LineInternalService } from '../../../api/service/lidi/line-internal.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'atlas-lidi-lines',

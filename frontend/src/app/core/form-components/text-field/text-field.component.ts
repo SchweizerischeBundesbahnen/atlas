@@ -22,12 +22,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class TextFieldComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() controlName!: string;
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  readonly controlName = input.required<string>();
+
   @Input() fieldLabel?: string;
   readonly infoIconTitle = input<string>();
   readonly infoIconLink = input<string>();
@@ -40,8 +36,6 @@ export class TextFieldComponent {
   @ContentChild('customChildInputPrefixTemplate')
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   customChildInputPrefixTemplate!: TemplateRef<any>;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() formGroup!: FormGroup;
+  readonly formGroup = input.required<FormGroup>();
   readonly placeholder = input('');
 }

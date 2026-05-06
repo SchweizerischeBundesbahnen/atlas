@@ -69,10 +69,10 @@ public class TransportCompanyExportBatchConfig {
   // --- CSV ---
   @Bean
   @Qualifier(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME)
-  public Job exportTransportCompanyCsvJob() {
+  public Job exportTransportCompanyCsvJob(Step exportTransportCompanyCsvStep) {
     return new JobBuilder(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
-        .flow(exportTransportCompanyCsvStep(null))
+        .flow(exportTransportCompanyCsvStep)
         .next(uploadTransportCompanyCsvFileStep())
         .next(deleteTransportCompanyCsvFileStep())
         .end()
@@ -147,10 +147,10 @@ public class TransportCompanyExportBatchConfig {
   // --- JSON ---
   @Bean
   @Qualifier(EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME)
-  public Job exportTransportCompanyJsonJob() {
+  public Job exportTransportCompanyJsonJob(Step exportTransportCompanyJsonStep) {
     return new JobBuilder(EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
-        .flow(exportTransportCompanyJsonStep(null))
+        .flow(exportTransportCompanyJsonStep)
         .next(uploadTransportCompanyJsonFileStep())
         .next(deleteTransportCompanyJsonFileStep())
         .end()

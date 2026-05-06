@@ -1,8 +1,7 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { UserAdministrationService } from '../../api/service/user-administration/user-administration.service';
-import { inject } from '@angular/core';
 
 @Pipe({
   name: 'userDisplayName',

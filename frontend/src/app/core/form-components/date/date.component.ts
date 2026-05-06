@@ -1,4 +1,4 @@
-import { Component, input, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasLabelFieldComponent } from '@atlas/form';
@@ -22,9 +22,7 @@ import { DateIconComponent } from '../date-icon/date-icon.component';
   providers: [TranslatePipe],
 })
 export class DateComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() formGroup!: FormGroup;
+  readonly formGroup = input.required<FormGroup>();
   readonly label = input('COMMON.VALID_FROM');
   readonly labelExample = input('');
   readonly labelUntil = input('COMMON.VALID_TO');
@@ -43,6 +41,6 @@ export class DateComponent {
   readonly EXAMPLE_DATE = '21.01.2021';
 
   get controlFrom() {
-    return this.formGroup.get(this.controlName())!;
+    return this.formGroup().get(this.controlName())!;
   }
 }

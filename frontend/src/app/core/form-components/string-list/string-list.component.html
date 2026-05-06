@@ -1,5 +1,5 @@
 <div class="d-flex flex-column col-12">
-  @if (formGroup?.enabled) {
+  @if (formGroup()?.enabled) {
     <div class="d-flex flex-row col-12">
       <div class="d-flex flex-grow-1">
         <atlas-text-field
@@ -20,9 +20,11 @@
         </atlas-text-field>
       </div>
     </div>
-    @if (formGroup && controlName) {
+    @let _formGroup = formGroup();
+    @let _controlName = controlName();
+    @if (_formGroup && _controlName) {
       <div class="d-flex">
-        <atlas-field-error [control]="formGroup.get(controlName)" />
+        <atlas-field-error [control]="_formGroup.get(_controlName)" />
       </div>
     }
   } @else {
@@ -31,14 +33,14 @@
     }}</span>
   }
   <div class="d-flex flex-row">
-    @if (strListCtrl.value.length === 0 && formGroup?.disabled) {
+    @if (strListCtrl.value.length === 0 && formGroup()?.disabled) {
       -
     }
-    <mat-chip-set [disabled]="formGroup?.disabled">
+    <mat-chip-set [disabled]="formGroup()?.disabled">
       @for (value of strListCtrl.value; track value; let i = $index) {
         <mat-chip (removed)="removeItem(i)" class="font-bold-sm">
           {{ value }}
-          @if (formGroup?.enabled) {
+          @if (formGroup()?.enabled) {
             <button matChipRemove>
               <i class="bi bi-x-circle-fill"></i>
             </button>

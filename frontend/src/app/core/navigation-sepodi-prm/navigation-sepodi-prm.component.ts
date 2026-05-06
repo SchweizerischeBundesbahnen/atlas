@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Country } from '../../api';
 import { Countries } from '../country/Countries';
@@ -21,19 +21,10 @@ export type TargetPageType =
   imports: [TranslatePipe],
 })
 export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() targetPage!: TargetPageType;
-
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() sloid?: string;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() number?: number;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() parentSloid?: string;
+  readonly targetPage = input.required<TargetPageType>();
+  readonly sloid = input<string>();
+  readonly number = input<number>();
+  readonly parentSloid = input<string>();
 
   isTargetViewSepodi!: boolean;
   isStopPoint!: boolean;
@@ -53,38 +44,38 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 
   init() {
     const sepodiPages = ['service-point', 'traffic-point-table', 'traffic-point-detail'];
-    this.isTargetViewSepodi = sepodiPages.includes(this.targetPage);
+    this.isTargetViewSepodi = sepodiPages.includes(this.targetPage());
     if (!this.isTargetViewSepodi) {
-      this.checkServicePointIsLocatedInSwitzerland(this.number!);
+      this.checkServicePointIsLocatedInSwitzerland(this.number()!);
     }
   }
 
   navigate() {
     if (!this.isTargetViewSepodi) {
-      const sloid = this.parentSloid || this.sloid!;
+      const sloid = this.parentSloid() || this.sloid()!;
       this.checkStopPointExists(sloid);
     }
 
-    switch (this.targetPage) {
+    switch (this.targetPage()) {
       case 'stop-point':
-        this.router.navigateByUrl(`/prm-directory/stop-points/${this.sloid}/stop-point`);
+        this.router.navigateByUrl(`/prm-directory/stop-points/${this.sloid()}/stop-point`);
         break;
       case 'service-point':
-        this.router.navigateByUrl(`/service-point-directory/service-points/${this.number}/service-point`);
+        this.router.navigateByUrl(`/service-point-directory/service-points/${this.number()}/service-point`);
         break;
       case 'traffic-point-table':
-        this.router.navigateByUrl(`/service-point-directory/service-points/${this.number}/traffic-point-elements`);
+        this.router.navigateByUrl(`/service-point-directory/service-points/${this.number()}/traffic-point-elements`);
         break;
       case 'traffic-point-detail':
         this.router.navigateByUrl(
-          `/service-point-directory/service-points/${this.number}/traffic-point-elements/${this.sloid}`
+          `/service-point-directory/service-points/${this.number()}/traffic-point-elements/${this.sloid()}`
         );
         break;
       case 'platform-table':
-        this.router.navigateByUrl(`/prm-directory/stop-points/${this.sloid}/platforms`);
+        this.router.navigateByUrl(`/prm-directory/stop-points/${this.sloid()}/platforms`);
         break;
       case 'platform-detail':
-        this.router.navigateByUrl(`/prm-directory/stop-points/${this.parentSloid}/platforms/${this.sloid}/detail`);
+        this.router.navigateByUrl(`/prm-directory/stop-points/${this.parentSloid()}/platforms/${this.sloid()}/detail`);
         break;
       default:
         this.router.navigateByUrl('');

@@ -2,9 +2,9 @@
   (changeTrigger)="ttfnSelectionChanged.emit($event)"
   (searchTrigger)="searchTimetableFieldNumber($event)"
   [bindValueInp]="valueExtraction()"
-  [controlName]="controlName"
+  [controlName]="controlName()"
   [disabled]="disabled()"
-  [formGroup]="formGroup"
+  [formGroup]="formGroup()"
   [items$]="timetableFieldNumbers"
 >
   <div class="d-flex flex-column">

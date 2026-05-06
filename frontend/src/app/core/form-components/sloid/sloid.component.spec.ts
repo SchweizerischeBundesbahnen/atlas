@@ -3,25 +3,38 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { SloidComponent } from './sloid.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { inputBinding, signal } from '@angular/core';
 
 describe('SloidComponent', () => {
   let component: SloidComponent;
   let fixture: ComponentFixture<SloidComponent>;
+
+  let formGroupInput: FormGroup;
+  let givenPrefixInput: ReturnType<typeof signal<string>>;
+  let numberColonsInput: ReturnType<typeof signal<number>>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [translateServiceProvider],
     });
 
-    fixture = TestBed.createComponent(SloidComponent);
-    component = fixture.componentInstance;
-
-    component.formGroup = new FormGroup({
+    formGroupInput = new FormGroup({
       sloid: new FormControl(),
     });
-    component.givenPrefix = 'ch:1:sloid:851:';
-    component.numberColons = 0;
+    givenPrefixInput = signal('ch:1:sloid:851:');
+    numberColonsInput = signal(0);
 
+    const formGroupInputName: keyof SloidComponent = 'formGroup';
+    const givenPrefixInputName: keyof SloidComponent = 'givenPrefix';
+    const numberColonsInputName: keyof SloidComponent = 'numberColons';
+    fixture = TestBed.createComponent(SloidComponent, {
+      bindings: [
+        inputBinding(formGroupInputName, () => formGroupInput),
+        inputBinding(givenPrefixInputName, () => givenPrefixInput()),
+        inputBinding(numberColonsInputName, () => numberColonsInput()),
+      ],
+    });
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
@@ -31,15 +44,14 @@ describe('SloidComponent', () => {
 
   it('should be null for automatic sloid', () => {
     expect(component.automaticSloid).toBe(true);
-    expect(component.formGroup.valid).toBe(true);
-
-    expect(component.formGroup.controls.sloid.value).toBeNull();
+    expect(component.formGroup().valid).toBe(true);
+    expect(component.formGroup().controls.sloid.value).toBeNull();
   });
 
   it('should be invalid if manual sloid selected without value', () => {
     component.automaticSloid = false;
 
-    expect(component.formGroup.valid).toBe(false);
+    expect(component.formGroup().valid).toBe(false);
     expect(component.form.valid).toBe(false);
   });
 
@@ -54,10 +66,9 @@ describe('SloidComponent', () => {
     component.automaticSloid = false;
     component.form.controls.sloid.setValue('123');
 
-    expect(component.formGroup.valid).toBe(true);
+    expect(component.formGroup().valid).toBe(true);
     expect(component.form.valid).toBe(true);
-
-    expect(component.formGroup.controls.sloid.value).toBe('ch:1:sloid:851:123');
+    expect(component.formGroup().controls.sloid.value).toBe('ch:1:sloid:851:123');
   });
 
   it('should switch back to automatic correctly', () => {
@@ -67,9 +78,8 @@ describe('SloidComponent', () => {
     // switch back
     component.automaticSloid = true;
 
-    expect(component.formGroup.valid).toBe(true);
+    expect(component.formGroup().valid).toBe(true);
     expect(component.form.valid).toBe(true);
-
-    expect(component.formGroup.controls.sloid.value).toBeUndefined();
+    expect(component.formGroup().controls.sloid.value).toBeUndefined();
   });
 });

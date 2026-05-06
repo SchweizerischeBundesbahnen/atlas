@@ -5,20 +5,20 @@
   (keydown.enter)="$event.stopPropagation()"
 >
   <div class="d-flex flex-column col-8">
-    <div class="text-truncate" [title]="file.name">{{ file.name }}</div>
+    <div class="text-truncate" [title]="file().name">{{ file().name }}</div>
   </div>
   <div class="d-flex flex-column col-3">
-    <div class="text-align-end">{{ file.size | fileSize }}</div>
+    <div class="text-align-end">{{ file().size | fileSize }}</div>
   </div>
   <div class="d-flex flex-row col-1">
-    @if (deleteEnabled) {
+    @if (deleteEnabled()) {
       <i
         class="bi bi-trash"
         (click)="onDelete(); $event.stopPropagation()"
         (keydown.enter)="onDelete(); $event.stopPropagation()"
       ></i>
     }
-    @if (downloadEnabled) {
+    @if (downloadEnabled()) {
       <i
         class="bi bi-download"
         (click)="download(); $event.stopPropagation()"

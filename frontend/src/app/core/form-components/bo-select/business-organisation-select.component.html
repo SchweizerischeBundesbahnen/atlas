@@ -2,8 +2,8 @@
   (changeTrigger)="boSelectionChanged.emit($event)"
   (searchTrigger)="searchBusinessOrganisation($event)"
   [bindValueInp]="valueExtraction()"
-  [controlName]="controlName"
-  [formGroup]="formGroup"
+  [controlName]="controlName()"
+  [formGroup]="formGroup()"
   [items$]="businessOrganisations"
   [disabled]="disabled()"
 >

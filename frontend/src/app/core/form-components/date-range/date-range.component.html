@@ -1,4 +1,4 @@
-<div [formGroup]="formGroup" class="col-12 d-flex mt-3">
+<div [formGroup]="formGroup()" class="col-12 d-flex mt-3">
   <div class="d-flex flex-column col-6 pe-3">
     <atlas-label-field
       [fieldExamples]="[
@@ -32,7 +32,7 @@
         <mat-datepicker #validFromPicker [calendarHeaderComponent]="validFromHeader" />
       </div>
     </div>
-    <atlas-field-error [control]="formGroup.get(controlNameFrom())" />
+    <atlas-field-error [control]="formGroup().get(controlNameFrom())" />
   </div>
   <div class="d-flex flex-column col-6 pe-3">
     <atlas-label-field
@@ -73,6 +73,6 @@
         <mat-datepicker #validToPicker />
       </div>
     </div>
-    <atlas-field-error [control]="formGroup.get(controlNameTo())" />
+    <atlas-field-error [control]="formGroup().get(controlNameTo())" />
   </div>
 </div>

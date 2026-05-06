@@ -2,14 +2,13 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  Input,
+  inject,
+  input,
   OnChanges,
   OnInit,
+  output,
   QueryList,
   ViewChildren,
-  inject,
-  output,
-  input,
 } from '@angular/core';
 import { Record } from '../../model/record';
 import { DateService } from '../../date/date.service';
@@ -51,12 +50,8 @@ import { NgClass } from '@angular/common';
   providers: [TranslatePipe],
 })
 export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() records!: Array<Record>;
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() currentRecord!: Record;
+  readonly records = input.required<Array<Record>>();
+  readonly currentRecord = input.required<Record>();
   readonly switchDisabled = input(false);
   readonly showStatus = input(true);
   readonly switchVersion = output<number>();
@@ -143,11 +138,11 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   getIndexOfRecord(record: Record) {
-    return this.records.findIndex((element) => element === record);
+    return this.records().indexOf(record);
   }
 
   hasGapToNextRecord(record: Record): boolean {
-    const nextRecord = this.records[this.getIndexOfRecord(record) + 1];
+    const nextRecord = this.records()[this.getIndexOfRecord(record) + 1];
     if (nextRecord) {
       return DateService.differenceInDays(record.validTo!, nextRecord.validFrom!) > 1;
     }
@@ -155,8 +150,8 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   getCurrentIndex() {
-    this.records.forEach((record, index) => {
-      if (record.id === this.currentRecord.id) {
+    this.records().forEach((record, index) => {
+      if (record.id === this.currentRecord().id) {
         this.currentIndex = index;
         this.scrollToCurrentRow();
       }

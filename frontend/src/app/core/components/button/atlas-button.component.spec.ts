@@ -5,11 +5,16 @@ import { ApplicationRole, ApplicationType, Permission } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { By } from '@angular/platform-browser';
 import { PermissionService } from '../../auth/permission/permission.service';
+import { inputBinding, signal } from '@angular/core';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 
 describe('AtlasButtonComponent', () => {
-  let component: AtlasButtonComponent;
   let fixture: ComponentFixture<AtlasButtonComponent>;
+  let buttonTypeInput: ReturnType<typeof signal<AtlasButtonType>>;
+  let applicationTypeInput: ReturnType<typeof signal<ApplicationType>>;
+  let businessOrganisationsInput: ReturnType<typeof signal<string[]>>;
+  let businessOrganisationInput: ReturnType<typeof signal<string | undefined>>;
+  let uicCountryCodeInput: ReturnType<typeof signal<number | undefined>>;
 
   let isAdmin = true;
   let isAtLeastSupervisor = true;
@@ -46,8 +51,27 @@ describe('AtlasButtonComponent', () => {
     });
 
     // Arrangement
-    fixture = TestBed.createComponent(AtlasButtonComponent);
-    component = fixture.componentInstance;
+    const buttonTypeInputName: keyof AtlasButtonComponent = 'buttonType';
+    const applicationTypeInputName: keyof AtlasButtonComponent = 'applicationType';
+    const businessOrganisationsInputName: keyof AtlasButtonComponent = 'businessOrganisations';
+    const businessOrganisationInputName: keyof AtlasButtonComponent = 'businessOrganisation';
+    const uicCountryCodeInputName: keyof AtlasButtonComponent = 'uicCountryCode';
+
+    buttonTypeInput = signal(AtlasButtonType.DEFAULT_PRIMARY);
+    applicationTypeInput = signal(ApplicationType.Bodi);
+    businessOrganisationsInput = signal([]);
+    businessOrganisationInput = signal(undefined);
+    uicCountryCodeInput = signal(undefined);
+
+    fixture = TestBed.createComponent(AtlasButtonComponent, {
+      bindings: [
+        inputBinding(buttonTypeInputName, buttonTypeInput),
+        inputBinding(applicationTypeInputName, applicationTypeInput),
+        inputBinding(businessOrganisationsInputName, businessOrganisationsInput),
+        inputBinding(businessOrganisationInputName, businessOrganisationInput),
+        inputBinding(uicCountryCodeInputName, uicCountryCodeInput),
+      ],
+    });
 
     isAdmin = true;
     isAtLeastSupervisor = true;
@@ -57,7 +81,7 @@ describe('AtlasButtonComponent', () => {
 
   describe('Visibility', () => {
     it('should be visible for type CREATE', () => {
-      component.buttonType = AtlasButtonType.CREATE;
+      buttonTypeInput.set(AtlasButtonType.CREATE);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -65,8 +89,8 @@ describe('AtlasButtonComponent', () => {
     });
 
     it('should be visible for type CREATE_CHECKING_PERMISSION', () => {
-      component.buttonType = AtlasButtonType.CREATE_CHECKING_PERMISSION;
-      component.applicationType = ApplicationType.Bodi;
+      buttonTypeInput.set(AtlasButtonType.CREATE_CHECKING_PERMISSION);
+      applicationTypeInput.set(ApplicationType.Bodi);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -75,8 +99,8 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type CREATE_CHECKING_PERMISSION', () => {
       hasPermissionsToCreate = false;
-      component.buttonType = AtlasButtonType.CREATE_CHECKING_PERMISSION;
-      component.applicationType = ApplicationType.Bodi;
+      buttonTypeInput.set(AtlasButtonType.CREATE_CHECKING_PERMISSION);
+      applicationTypeInput.set(ApplicationType.Bodi);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -84,8 +108,8 @@ describe('AtlasButtonComponent', () => {
     });
 
     it('should be visible for type EDIT', () => {
-      component.buttonType = AtlasButtonType.EDIT;
-      component.applicationType = ApplicationType.Bodi;
+      buttonTypeInput.set(AtlasButtonType.EDIT);
+      applicationTypeInput.set(ApplicationType.Bodi);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -94,8 +118,8 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type EDIT', () => {
       hasPermissionsToWrite = false;
-      component.buttonType = AtlasButtonType.EDIT;
-      component.applicationType = ApplicationType.Bodi;
+      buttonTypeInput.set(AtlasButtonType.EDIT);
+      applicationTypeInput.set(ApplicationType.Bodi);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -104,9 +128,9 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type EDIT with uicCountryCode', () => {
       hasPermissionsToWrite = false;
-      component.buttonType = AtlasButtonType.EDIT;
-      component.applicationType = ApplicationType.Bodi;
-      component.uicCountryCode = 85;
+      buttonTypeInput.set(AtlasButtonType.EDIT);
+      applicationTypeInput.set(ApplicationType.Bodi);
+      uicCountryCodeInput.set(85);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -114,8 +138,8 @@ describe('AtlasButtonComponent', () => {
     });
 
     it('should be visible for type REVOKE', () => {
-      component.buttonType = AtlasButtonType.REVOKE;
-      component.applicationType = ApplicationType.Bodi;
+      buttonTypeInput.set(AtlasButtonType.REVOKE);
+      applicationTypeInput.set(ApplicationType.Bodi);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -126,8 +150,8 @@ describe('AtlasButtonComponent', () => {
       isAdmin = false;
       isAtLeastSupervisor = false;
       role = ApplicationRole.Reader;
-      component.buttonType = AtlasButtonType.REVOKE;
-      component.applicationType = ApplicationType.Bodi;
+      buttonTypeInput.set(AtlasButtonType.REVOKE);
+      applicationTypeInput.set(ApplicationType.Bodi);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -135,8 +159,8 @@ describe('AtlasButtonComponent', () => {
     });
 
     it('should be visible for type DELETE', () => {
-      component.buttonType = AtlasButtonType.DELETE;
-      component.applicationType = ApplicationType.Bodi;
+      buttonTypeInput.set(AtlasButtonType.DELETE);
+      applicationTypeInput.set(ApplicationType.Bodi);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -145,8 +169,8 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type DELETE', () => {
       isAdmin = false;
-      component.buttonType = AtlasButtonType.DELETE;
-      component.applicationType = ApplicationType.Bodi;
+      buttonTypeInput.set(AtlasButtonType.DELETE);
+      applicationTypeInput.set(ApplicationType.Bodi);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -155,9 +179,9 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type EDIT_SERVICE_POINT_DEPENDENT', () => {
       hasPermissionsToWrite = false;
-      component.buttonType = AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT;
-      component.applicationType = ApplicationType.Sepodi;
-      component.businessOrganisations = ['sboid'];
+      buttonTypeInput.set(AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT);
+      applicationTypeInput.set(ApplicationType.Sepodi);
+      businessOrganisationsInput.set(['sboid']);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));
@@ -166,9 +190,9 @@ describe('AtlasButtonComponent', () => {
 
     it('should be visible for type EDIT_SERVICE_POINT_DEPENDENT', () => {
       hasPermissionsToWrite = true;
-      component.buttonType = AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT;
-      component.applicationType = ApplicationType.Sepodi;
-      component.businessOrganisations = ['sboid'];
+      buttonTypeInput.set(AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT);
+      applicationTypeInput.set(ApplicationType.Sepodi);
+      businessOrganisationsInput.set(['sboid']);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('button'));

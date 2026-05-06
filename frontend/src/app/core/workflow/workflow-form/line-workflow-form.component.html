@@ -1,8 +1,8 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="formGroup()">
   <div class="col-12 d-flex">
     <div class="d-flex flex-column col-5">
       <div class="d-flex flex-column col-11 me-3 mb-3">
-        <atlas-form-comment [formGroup]="formGroup" [label]="commentLabel()" [required]="true" />
+        <atlas-form-comment [formGroup]="formGroup()" [label]="commentLabel()" [required]="true" />
       </div>
     </div>
     <div class="w-50">
@@ -10,7 +10,7 @@
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-7 pe-3">
           <atlas-text-field
-            [formGroup]="formGroup"
+            [formGroup]="formGroup()"
             [required]="true"
             controlName="firstName"
             data-cy="workflowPersonFirstName"
@@ -19,7 +19,7 @@
         </div>
         <div class="d-flex flex-column col-7 pe-3">
           <atlas-text-field
-            [formGroup]="formGroup"
+            [formGroup]="formGroup()"
             [required]="true"
             controlName="lastName"
             data-cy="workflowPersonLastName"
@@ -30,7 +30,7 @@
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-7 pe-3">
           <atlas-text-field
-            [formGroup]="formGroup"
+            [formGroup]="formGroup()"
             [required]="true"
             controlName="function"
             data-cy="workflowPersonFunction"
@@ -40,7 +40,7 @@
         @if (hasMail()) {
           <div class="d-flex flex-column col-7 pe-3">
             <atlas-text-field
-              [formGroup]="formGroup"
+              [formGroup]="formGroup()"
               [required]="true"
               controlName="mail"
               data-cy="workflowPersonMail"

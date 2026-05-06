@@ -29,8 +29,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class ReferencePointCompleteFormComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
+
   @Input() form!: FormGroup<CompleteReferencePointFormGroup>;
   readonly isNew = input(false);
 

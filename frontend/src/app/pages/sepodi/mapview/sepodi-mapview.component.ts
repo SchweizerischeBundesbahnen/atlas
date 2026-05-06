@@ -62,7 +62,7 @@ export class SepodiMapviewComponent implements OnInit, AfterViewInit, OnDestroy 
     this.router
       .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path])
       .then()
-      .catch((reason) => console.error('Navigation failed: ', reason));
+      .catch((error) => console.error('Navigation failed: ', error));
   }
 
   private styleDetailContainer() {

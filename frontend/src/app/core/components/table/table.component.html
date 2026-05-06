@@ -19,7 +19,7 @@
     mat-table
     matSort
   >
-    @for (column of tableColumns; track column.headerTitle) {
+    @for (column of tableColumns(); track column.headerTitle) {
       <ng-container matColumnDef="{{ column.columnDef ?? column.value }}">
         <th
           *matHeaderCellDef
@@ -156,7 +156,7 @@
     <mat-paginator
       (page)="pageChanged($event)"
       [disabled]="checkBoxModeEnabled()"
-      [length]="totalCount"
+      [length]="totalCount()"
       [pageIndex]="pageIndex"
       [pageSizeOptions]="pageSizeOptions()"
       [pageSize]="pageSize"
