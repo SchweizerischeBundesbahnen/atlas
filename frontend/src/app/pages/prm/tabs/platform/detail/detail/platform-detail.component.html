@@ -27,11 +27,27 @@
       </div>
     }
     @if (!isNew) {
-      <h2 class="font-bold-2xl color-gray-900">
-        {{ 'PRM.PLATFORMS.DETAIL_INFORMATION' | translate }} -
-        {{ 'COMMON.VERSION' | translate }}
-        {{ selectedVersionIndex + 1 }}
-      </h2>
+      <div class="d-flex flex-row align-items-center">
+        <h2 class="font-bold-2xl color-gray-900 mb-0">
+          {{ 'PRM.PLATFORMS.DETAIL_INFORMATION' | translate }} -
+          {{ 'COMMON.VERSION' | translate }}
+          {{ selectedVersionIndex + 1 }}
+        </h2>
+        @if (selectedVersion.wheelchairAccessibility) {
+          <div class="d-flex flex-row align-items-start">
+          <img
+            class="ms-5"
+            ngSrc="assets/images/prm/wheelchair-accessibility/{{selectedVersion.wheelchairAccessibility.toLowerCase()}}.svg"
+               height="50" width="50" [alt]="selectedVersion.wheelchairAccessibility.toLowerCase()" />
+
+          <atlas-form-info-icon
+            [infoTitle]=" ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.TODAY_ACCESSIBILITY' | translate) + ': ' +
+            ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.' + selectedVersion.wheelchairAccessibility | translate)"
+          ></atlas-form-info-icon>
+          </div>
+        }
+      </div>
+
     }
     <div class="col-6 pb-3 mt-3">
       <h2 class="font-bold-2xl color-gray-900">

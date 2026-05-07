@@ -9,6 +9,7 @@
  */
 import { BooleanOptionalAttributeType } from './booleanOptionalAttributeType';
 import { BasicAttributeType } from './basicAttributeType';
+import { LevelAccessWheelchairAttributeType } from './levelAccessWheelchairAttributeType';
 import { BoardingDeviceAttributeType } from './boardingDeviceAttributeType';
 
 
@@ -25,7 +26,7 @@ export interface PlatformCompleteUpdateCsvModel {
     dynamicVisual?: BasicAttributeType;
     inclination?: number;
     inclinationWidth?: number;
-    levelAccessWheelchair?: BasicAttributeType;
+    levelAccessWheelchair?: LevelAccessWheelchairAttributeType;
     superelevation?: number;
 }
 export namespace PlatformCompleteUpdateCsvModel {

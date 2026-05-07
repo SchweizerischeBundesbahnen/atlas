@@ -32,9 +32,11 @@ import { UserDetailInfoComponent } from '../../../../../../core/components/user-
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
 import { Data } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgOptimizedImage } from '@angular/common';
+import { InfoIconComponent } from '@atlas/form';
+import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
 
 @Component({
   selector: 'atlas-platforms',
@@ -53,6 +55,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     DetailFooterComponent,
     AtlasButtonComponent,
     TranslatePipe,
+    NgOptimizedImage,
+    InfoIconComponent,
   ],
 })
 export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatformVersion> implements OnInit {

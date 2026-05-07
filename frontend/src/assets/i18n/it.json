@@ -1644,6 +1644,15 @@
         "YES_WITH_STAFF_ASSISTANCE": "Sì, con assistenza del personale di guida",
         "NO": "No",
         "NOT_APPLICABLE": "Non applicabile"
+      },
+      "WHEELCHAIR_ACCESSIBILITY": {
+        "TODAY_ACCESSIBILITY": "Accessibilità odierna",
+        "AUTONOMY": "Autonomia",
+        "NO_ACCESS": "Nessun accesso",
+        "NO_INFO": "Nessuna informazione",
+        "PRE_REGISTRATION": "Pre-registrazione",
+        "RAMP_USE": "Utilizzo della rampa",
+        "SHUTTLE": "Servizio navetta"
       }
     },
     "INFO_BOX": {

@@ -1644,6 +1644,15 @@
         "YES_WITH_STAFF_ASSISTANCE": "Oui, avec l’aide du personnel roulant",
         "NO": "Non",
         "NOT_APPLICABLE": "Non applicable"
+      },
+      "WHEELCHAIR_ACCESSIBILITY": {
+        "TODAY_ACCESSIBILITY": "Accessibilité aujourd'hui",
+        "AUTONOMY": "Autonomie",
+        "NO_ACCESS": "Pas d'accès",
+        "NO_INFO": "Pas d'informations",
+        "PRE_REGISTRATION": "Pré-inscription",
+        "RAMP_USE": "Utilisation de la rampe",
+        "SHUTTLE": "Transport de remplacement"
       }
     },
     "INFO_BOX": {
