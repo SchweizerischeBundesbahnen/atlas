@@ -118,7 +118,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     if (!new DateRange(version.getValidFrom(), version.getValidTo()).containsToday()) {
       return PlatformVersionMapper.toModel(version);
     }
-    WheelchairAccessibilityState state = wheelchairAccessibilityService.calculateForPlatform(version, isReduced);
+    WheelchairAccessibilityState state = wheelchairAccessibilityService.calculateForPlatformToday(version, isReduced);
     return PlatformVersionMapper.toModelWithAccessibility(version, state);
   }
 

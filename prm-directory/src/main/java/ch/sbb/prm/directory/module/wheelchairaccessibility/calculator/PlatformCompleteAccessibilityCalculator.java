@@ -61,7 +61,7 @@ public class PlatformCompleteAccessibilityCalculator {
   }
 
   private boolean isSuperElevationBelowLimit(Double superelevation) {
-    return superelevation != null && superelevation < SUPERELEVATION_LEGAL_LIMIT_MM;
+    return superelevation == null || superelevation < SUPERELEVATION_LEGAL_LIMIT_MM;
   }
 
   private boolean isBoardingDeviceLiftOrRamp(BoardingDeviceAttributeType boardingDevice) {

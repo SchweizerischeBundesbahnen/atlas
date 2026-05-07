@@ -20,20 +20,21 @@ import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.module.platform.PlatformTestData;
-import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
-import ch.sbb.prm.directory.shared.servicepoint.SharedServicePointTestData;
-import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.module.platform.PlatformTestData;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.repository.PlatformRepository;
+import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
 import ch.sbb.prm.directory.module.referencepoint.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.module.referencepoint.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.service.RelationService;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.repository.StopPointRepository;
+import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import ch.sbb.prm.directory.shared.servicepoint.SharedServicePointTestData;
 import ch.sbb.prm.directory.shared.servicepoint.entity.SharedServicePoint;
 import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
 import java.time.LocalDate;
@@ -68,7 +69,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
       StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository,
       SharedServicePointRepository sharedServicePointRepository,
-      RelationService relationService, PrmLocationService prmLocationService) {
+      RelationService relationService, PrmLocationService prmLocationService, StopPointService stopPointService) {
     this.platformRepository = platformRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
@@ -134,10 +135,14 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetPlatformBySloid() throws Exception {
     //given
-    platformRepository.save(PlatformTestData.getPlatformVersion());
+    PlatformVersion platform = PlatformTestData.getPlatformVersion();
+    StopPointVersion stopPoint = StopPointTestData.getStopPointVersion();
+    stopPoint.setSloid(platform.getParentServicePointSloid());
+    stopPoint.setMeansOfTransport(Set.of(MeanOfTransport.BUS));  // reduced
+    stopPointRepository.save(stopPoint);
+    platformRepository.save(platform);
 
-    //when & then
-    mvc.perform(get("/v1/platforms/" + PlatformTestData.getPlatformVersion().getSloid()))
+    mvc.perform(get("/v1/platforms/" + platform.getSloid()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }

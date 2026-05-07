@@ -7,26 +7,40 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.PlatformCompleteAccessibilityCalculator;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.PlatformReducedAccessibilityCalculator;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.StopPointCompleteAccessibilityCalculator;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.combiner.PlatformCompleteAccessibilityCombiner;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.helper.WheelchairAccessibilityDataLoader;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class WheelchairAccessibilityServiceTest {
 
   private WheelchairAccessibilityService service;
-  private PlatformCompleteAccessibilityCalculator completeCalculator;
+  private PlatformCompleteAccessibilityCalculator platformCompleteCalculator;
+  private StopPointCompleteAccessibilityCalculator stopPointCompleteCalculator;
+  private PlatformCompleteAccessibilityCombiner combiner;
+  private WheelchairAccessibilityDataLoader dataLoader;
 
   @BeforeEach
   void setUp() {
-    completeCalculator = mock(PlatformCompleteAccessibilityCalculator.class);
-    service = new WheelchairAccessibilityService(new PlatformReducedAccessibilityCalculator(), completeCalculator, null);
+    platformCompleteCalculator = mock(PlatformCompleteAccessibilityCalculator.class);
+    stopPointCompleteCalculator = mock(StopPointCompleteAccessibilityCalculator.class);
+    combiner = mock(PlatformCompleteAccessibilityCombiner.class);
+    dataLoader = mock(WheelchairAccessibilityDataLoader.class);
+
+    service = new WheelchairAccessibilityService(
+        new PlatformReducedAccessibilityCalculator(),
+        platformCompleteCalculator,
+        stopPointCompleteCalculator,
+        combiner,
+        dataLoader
+    );
   }
 
   @Test
@@ -36,19 +50,25 @@ class WheelchairAccessibilityServiceTest {
         .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED)
         .build();
 
-    WheelchairAccessibilityState result = service.calculateForPlatform(platform, true);
+    WheelchairAccessibilityState result = service.calculateForPlatformToday(platform, true);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }
 
   @Test
   void shouldDelegateToCompleteCalculatorWhenStopPointIsComplete() {
-    PlatformVersion platform = PlatformVersion.builder().build();
-    RelationVersion relationVersion = RelationVersion.builder().build();
-    when(completeCalculator.calculatePlatform(platform, List.of(relationVersion))).thenReturn(
-        WheelchairAccessibilityState.AUTONOMY);
+    PlatformVersion platform = PlatformVersion.builder().sloid("plat-1").parentServicePointSloid("sp-1").build();
+    StopPointVersion stopPoint = StopPointVersion.builder().build();
+    List<RelationVersion> relations = List.of(RelationVersion.builder().build());
 
-    WheelchairAccessibilityState result = service.calculateForPlatform(platform, false);
+    when(dataLoader.loadStopPointValidToday("sp-1")).thenReturn(stopPoint);
+    when(dataLoader.loadRelationsValidToday("plat-1")).thenReturn(relations);
+    when(platformCompleteCalculator.calculatePlatform(platform, relations)).thenReturn(WheelchairAccessibilityState.AUTONOMY);
+    when(stopPointCompleteCalculator.calculateStopPoint(stopPoint)).thenReturn(WheelchairAccessibilityState.AUTONOMY);
+    when(combiner.combine(WheelchairAccessibilityState.AUTONOMY, WheelchairAccessibilityState.AUTONOMY))
+        .thenReturn(WheelchairAccessibilityState.AUTONOMY);
+
+    WheelchairAccessibilityState result = service.calculateForPlatformToday(platform, false);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.AUTONOMY);
   }
@@ -64,7 +84,7 @@ class WheelchairAccessibilityServiceTest {
         .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED)
         .build();
 
-    WheelchairAccessibilityState result = service.calculateForStopPoint(true, List.of(autonomous, noInfo));
+    WheelchairAccessibilityState result = service.calculateForStopPointToday(true, List.of(autonomous, noInfo));
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }
@@ -80,21 +100,16 @@ class WheelchairAccessibilityServiceTest {
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITHOUT_ASSISTANCE)
         .build();
 
-    WheelchairAccessibilityState result = service.calculateForStopPoint(true, List.of(autonomous, shuttle));
+    WheelchairAccessibilityState result = service.calculateForStopPointToday(true, List.of(autonomous, shuttle));
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }
 
-  //TODO prüfen ob "NO_INFO" fachlich korrekt ist.
   @Test
   void shouldReturnNoInfoWhenStopPointHasNoPlatforms() {
-    WheelchairAccessibilityState result = service.calculateForStopPoint(true, List.of());
+    WheelchairAccessibilityState result = service.calculateForStopPointToday(true, List.of());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
-  }
-
-  private static StopPointVersion stopPointWithMeans(MeanOfTransport mean) {
-    return StopPointVersion.builder().meansOfTransport(Set.of(mean)).build();
   }
 
 }
