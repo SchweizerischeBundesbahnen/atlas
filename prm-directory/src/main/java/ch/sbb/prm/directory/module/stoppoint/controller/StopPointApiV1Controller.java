@@ -15,6 +15,7 @@ import ch.sbb.prm.directory.module.stoppoint.exception.StopPointAlreadyExistsExc
 import ch.sbb.prm.directory.module.stoppoint.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.module.stoppoint.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.module.stoppoint.service.PrmChangeRecordingVariantService;
+import ch.sbb.prm.directory.module.stoppoint.service.StopPointReadVersionService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointApiV1Controller implements StopPointApiV1 {
 
   private final StopPointService stopPointService;
+  private final StopPointReadVersionService stopPointReadVersionService;
   private final PlatformService platformService;
   private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
 
@@ -50,9 +52,7 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
 
   @Override
   public List<ReadStopPointVersionModel> getStopPointVersions(String sloid) {
-    return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream()
-        .map(StopPointVersionMapper::toModel)
-        .toList();
+    return stopPointReadVersionService.getAllVersionsWithCalculatedAccessibility(sloid);
   }
 
   @Override
