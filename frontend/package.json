@@ -105,7 +105,7 @@
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.0.0",
     "jsdom": "^29.0.0",
-    "lint-staged": "^16.0.0",
+    "lint-staged": "^17.0.0",
     "ng-packagr": "^21.1.0",
     "prettier": "^3.7.3",
     "puppeteer": "^24.0.0",
