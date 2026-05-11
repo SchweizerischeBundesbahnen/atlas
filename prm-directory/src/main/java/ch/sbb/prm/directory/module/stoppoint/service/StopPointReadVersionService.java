@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.module.stoppoint.service;
 
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.atlas.model.DateRange;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.service.PlatformService;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
@@ -35,7 +34,7 @@ public class StopPointReadVersionService {
   }
 
   private ReadStopPointVersionModel toReadModel(StopPointVersion version, boolean isReduced, List<PlatformVersion> platforms) {
-    if (!new DateRange(version.getValidFrom(), version.getValidTo()).containsToday()) {
+    if (!ValidityHelper.isValidToday(version.getValidFrom(), version.getValidTo())) {
       return StopPointVersionMapper.toModel(version);
     }
     List<PlatformVersion> currentPlatforms = platforms.stream()

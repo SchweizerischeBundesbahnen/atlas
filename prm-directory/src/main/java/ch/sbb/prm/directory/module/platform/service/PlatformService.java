@@ -26,6 +26,7 @@ import ch.sbb.prm.directory.module.platform.util.PlatformRecordingStatusEvaluato
 import ch.sbb.prm.directory.module.referencepoint.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.module.relation.service.RelationService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.helper.ValidityHelper;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.service.WheelchairAccessibilityService;
 import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.service.PrmRelatableVersionableService;
@@ -96,10 +97,6 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
-  //TODO improve later
-  //TODO do we need separate method for read models or can we directly convert in getAllVersions?
-  //TODO is it simple to extend for 30 days accessibility state?
-  //TODO add tests
   public List<ReadPlatformVersionModel> getAllVersionsWithCalculatedAccessibility(String sloid) {
     List<PlatformVersion> versions = platformRepository.findAllBySloidOrderByValidFrom(sloid);
     if (versions.isEmpty()) {
@@ -113,9 +110,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
         .toList();
   }
 
-  //TODO can i improve this?
   private ReadPlatformVersionModel toReadModel(PlatformVersion version, boolean isReduced) {
-    if (!new DateRange(version.getValidFrom(), version.getValidTo()).containsToday()) {
+    if (!ValidityHelper.isValidToday(version.getValidFrom(), version.getValidTo())) {
       return PlatformVersionMapper.toModel(version);
     }
     WheelchairAccessibilityState state = wheelchairAccessibilityService.calculateForPlatformToday(version, isReduced);

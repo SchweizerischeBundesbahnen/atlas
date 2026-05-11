@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.module.wheelchairaccessibility.calculator;
+package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,8 +7,8 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
-import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnShuttleWhenShuttleIsYes() {
-    PlatformVersion platform = PlatformVersion.builder()
+    AccessibilityPlatform platform = AccessibilityPlatform.builder()
         .shuttle(BooleanOptionalAttributeType.YES)
         .build();
 
@@ -29,8 +29,8 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoAccessWhenNoStepFreeAccessRelationExists() {
-    PlatformVersion platform = platformBuilder().build();
-    List<RelationVersion> relations = List.of(relationWith(StepFreeAccessAttributeType.NO));
+    AccessibilityPlatform platform = platformBuilder().build();
+    List<AccessibilityRelation> relations = List.of(relationWith(StepFreeAccessAttributeType.NO));
 
     WheelchairAccessibilityState result = calculator.calculatePlatform(platform, relations);
 
@@ -39,7 +39,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoAccessWhenRelationsListIsEmpty() {
-    PlatformVersion platform = platformBuilder().build();
+    AccessibilityPlatform platform = platformBuilder().build();
 
     WheelchairAccessibilityState result = calculator.calculatePlatform(platform, List.of());
 
@@ -48,7 +48,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnRampUseWhenLevelAccessIsYesWithStaffAssistance() {
-    PlatformVersion platform = platformBuilder()
+    AccessibilityPlatform platform = platformBuilder()
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES_WITH_STAFF_ASSISTANCE)
         .build();
 
@@ -59,7 +59,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnAutonomyWhenSuperElevationBelowLimitAndLevelAccessYes() {
-    PlatformVersion platform = platformBuilder()
+    AccessibilityPlatform platform = platformBuilder()
         .superelevation(39.99D)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
         .build();
@@ -71,7 +71,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnPreRegistrationWhenSuperElevationBelowLimitButLevelAccessNotYesAndBoardingDeviceIsLifts() {
-    PlatformVersion platform = platformBuilder()
+    AccessibilityPlatform platform = platformBuilder()
         .superelevation(39.99D)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
@@ -84,7 +84,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnPreRegistrationWhenSuperElevationAtOrAboveLimitAndBoardingDeviceIsRamps() {
-    PlatformVersion platform = platformBuilder()
+    AccessibilityPlatform platform = platformBuilder()
         .superelevation(40.0D)
         .boardingDevice(BoardingDeviceAttributeType.RAMPS)
         .build();
@@ -96,7 +96,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoAccessWhenBoardingDeviceNotLiftOrRampAndLevelAccessIsNo() {
-    PlatformVersion platform = platformBuilder()
+    AccessibilityPlatform platform = platformBuilder()
         .superelevation(50.0D)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
         .boardingDevice(BoardingDeviceAttributeType.NO)
@@ -109,7 +109,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoAccessWhenBoardingDeviceIsNo() {
-    PlatformVersion platform = platformBuilder()
+    AccessibilityPlatform platform = platformBuilder()
         .superelevation(50.0D)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED)
         .boardingDevice(BoardingDeviceAttributeType.NO)
@@ -122,7 +122,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoInfoWhenNoOtherConditionMatches() {
-    PlatformVersion platform = platformBuilder()
+    AccessibilityPlatform platform = platformBuilder()
         .superelevation(50.0D)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED)
         .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
@@ -135,7 +135,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoInfoWhenSuperElevationIsNullAndOtherConditionsDoNotMatch() {
-    PlatformVersion platform = platformBuilder()
+    AccessibilityPlatform platform = platformBuilder()
         .superelevation(null)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED)
         .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
@@ -146,16 +146,16 @@ class PlatformCompleteAccessibilityCalculatorTest {
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }
 
-  private static PlatformVersion.PlatformVersionBuilder<?, ?> platformBuilder() {
-    return PlatformVersion.builder()
+  private static AccessibilityPlatform.AccessibilityPlatformBuilder platformBuilder() {
+    return AccessibilityPlatform.builder()
         .shuttle(BooleanOptionalAttributeType.NO);
   }
 
-  private static List<RelationVersion> validRelations() {
+  private static List<AccessibilityRelation> validRelations() {
     return List.of(relationWith(StepFreeAccessAttributeType.YES));
   }
 
-  private static RelationVersion relationWith(StepFreeAccessAttributeType stepFreeAccess) {
-    return RelationVersion.builder().stepFreeAccess(stepFreeAccess).build();
+  private static AccessibilityRelation relationWith(StepFreeAccessAttributeType stepFreeAccess) {
+    return AccessibilityRelation.builder().stepFreeAccess(stepFreeAccess).build();
   }
 }

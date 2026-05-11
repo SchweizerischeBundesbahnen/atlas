@@ -1,14 +1,18 @@
 package ch.sbb.prm.directory.module.wheelchairaccessibility.service;
 
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
+import ch.sbb.atlas.wheelchairaccessibility.calculator.PlatformCompleteAccessibilityCalculator;
+import ch.sbb.atlas.wheelchairaccessibility.calculator.PlatformReducedAccessibilityCalculator;
+import ch.sbb.atlas.wheelchairaccessibility.calculator.StopPointCompleteAccessibilityCalculator;
+import ch.sbb.atlas.wheelchairaccessibility.combiner.PlatformCompleteAccessibilityCombiner;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.PlatformCompleteAccessibilityCalculator;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.PlatformReducedAccessibilityCalculator;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.StopPointCompleteAccessibilityCalculator;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.combiner.PlatformCompleteAccessibilityCombiner;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.helper.WheelchairAccessibilityDataLoader;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.mapper.AccessibilityMapper;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -22,19 +26,25 @@ public class WheelchairAccessibilityService {
   private final PlatformReducedAccessibilityCalculator platformReducedCalculator;
   private final PlatformCompleteAccessibilityCalculator platformCompleteCalculator;
   private final StopPointCompleteAccessibilityCalculator stopPointCompleteCalculator;
-  private final PlatformCompleteAccessibilityCombiner combiner;
+  private final PlatformCompleteAccessibilityCombiner platformCompleteAccessibilityCombiner;
   private final WheelchairAccessibilityDataLoader dataLoader;
 
   public WheelchairAccessibilityState calculateForReducedPlatform(PlatformVersion platform) {
-    return platformReducedCalculator.calculate(platform);
+    AccessibilityPlatform accessibilityPlatform = AccessibilityMapper.toAccessibilityPlatform(platform);
+    return platformReducedCalculator.calculate(accessibilityPlatform);
   }
 
   public WheelchairAccessibilityState calculateForCompletePlatform(PlatformVersion platform,
       StopPointVersion stopPoint,
       List<RelationVersion> relations) {
-    WheelchairAccessibilityState platformState = platformCompleteCalculator.calculatePlatform(platform, relations);
-    WheelchairAccessibilityState stopPointState = stopPointCompleteCalculator.calculateStopPoint(stopPoint);
-    return combiner.combine(stopPointState, platformState);
+    AccessibilityPlatform accessibilityPlatform = AccessibilityMapper.toAccessibilityPlatform(platform);
+    AccessibilityStopPoint accessibilityStopPoint = AccessibilityMapper.toAccessibilityStopPoint(stopPoint);
+    List<AccessibilityRelation> accessibilityRelations = AccessibilityMapper.toAccessibilityRelations(relations);
+
+    WheelchairAccessibilityState platformState = platformCompleteCalculator.calculatePlatform(accessibilityPlatform,
+        accessibilityRelations);
+    WheelchairAccessibilityState stopPointState = stopPointCompleteCalculator.calculateStopPoint(accessibilityStopPoint);
+    return platformCompleteAccessibilityCombiner.combine(stopPointState, platformState);
   }
 
   public WheelchairAccessibilityState calculateForPlatformToday(PlatformVersion platform, boolean isReduced) {

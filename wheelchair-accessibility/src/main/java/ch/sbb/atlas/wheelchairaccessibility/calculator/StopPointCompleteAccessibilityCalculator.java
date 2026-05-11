@@ -1,13 +1,11 @@
-package ch.sbb.prm.directory.module.wheelchairaccessibility.calculator;
+package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import java.util.Set;
-import org.springframework.stereotype.Component;
 
-@Component
 public class StopPointCompleteAccessibilityCalculator {
 
   private static final Set<StandardAttributeType> YES_OR_PARTIALLY = Set.of(
@@ -15,7 +13,7 @@ public class StopPointCompleteAccessibilityCalculator {
       StandardAttributeType.PARTIALLY
   );
 
-  public WheelchairAccessibilityState calculateStopPoint(StopPointVersion stopPoint) {
+  public WheelchairAccessibilityState calculateStopPoint(AccessibilityStopPoint stopPoint) {
 
     if (YES_OR_PARTIALLY.contains(stopPoint.getAlternativeTransport())) {
       return WheelchairAccessibilityState.SHUTTLE;

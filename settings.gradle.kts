@@ -13,6 +13,7 @@ include(":auto-rest-doc")
 include(":kafka")
 include(":base-atlas")
 include(":user-administration-security")
+include(":wheelchair-accessibility")
 
 include(":mail")
 include(":scheduling")

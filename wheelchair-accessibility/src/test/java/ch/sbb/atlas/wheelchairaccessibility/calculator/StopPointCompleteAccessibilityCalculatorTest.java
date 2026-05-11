@@ -1,11 +1,11 @@
-package ch.sbb.prm.directory.module.wheelchairaccessibility.calculator;
+package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -18,7 +18,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
   @ParameterizedTest
   @EnumSource(value = StandardAttributeType.class, names = {"YES", "PARTIALLY"})
   void shouldReturnShuttleWhenAlternativeTransportIsYesOrPartially(StandardAttributeType alternativeTransport) {
-    StopPointVersion stopPoint = StopPointVersion.builder()
+    AccessibilityStopPoint stopPoint = AccessibilityStopPoint.builder()
         .alternativeTransport(alternativeTransport)
         .build();
 
@@ -30,7 +30,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
   @ParameterizedTest
   @EnumSource(value = StandardAttributeType.class, names = {"YES", "PARTIALLY"})
   void shouldReturnPreRegistrationWhenAssistanceServiceAndAvailabilityAreYesOrPartially(StandardAttributeType availability) {
-    StopPointVersion stopPoint = stopPointBuilder()
+    AccessibilityStopPoint stopPoint = stopPointBuilder()
         .assistanceService(StandardAttributeType.YES)
         .assistanceAvailability(availability)
         .build();
@@ -42,7 +42,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnRampUseWhenAssistanceServiceIsYesAndAvailabilityIsNo() {
-    StopPointVersion stopPoint = stopPointBuilder()
+    AccessibilityStopPoint stopPoint = stopPointBuilder()
         .assistanceService(StandardAttributeType.YES)
         .assistanceAvailability(StandardAttributeType.NO)
         .build();
@@ -54,7 +54,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnPreRegistrationWhenRequestFulfilledYesAndServiceNotApplicable() {
-    StopPointVersion stopPoint = stopPointBuilder()
+    AccessibilityStopPoint stopPoint = stopPointBuilder()
         .assistanceService(StandardAttributeType.NOT_APPLICABLE)
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.YES)
         .build();
@@ -66,7 +66,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoAccessWhenAssistanceRequestFulfilledIsNo() {
-    StopPointVersion stopPoint = stopPointBuilder()
+    AccessibilityStopPoint stopPoint = stopPointBuilder()
         .assistanceService(StandardAttributeType.NOT_APPLICABLE)
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.NO)
         .build();
@@ -78,7 +78,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoAccessWhenAssistanceServiceIsNo() {
-    StopPointVersion stopPoint = stopPointBuilder()
+    AccessibilityStopPoint stopPoint = stopPointBuilder()
         .assistanceService(StandardAttributeType.NO)
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .build();
@@ -90,7 +90,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnNoInfoWhenNoConditionMatches() {
-    StopPointVersion stopPoint = stopPointBuilder()
+    AccessibilityStopPoint stopPoint = stopPointBuilder()
         .assistanceService(StandardAttributeType.NOT_APPLICABLE)
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .build();
@@ -106,7 +106,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
     if (availability == StandardAttributeType.NO) {
       return;
     }
-    StopPointVersion stopPoint = stopPointBuilder()
+    AccessibilityStopPoint stopPoint = stopPointBuilder()
         .assistanceService(StandardAttributeType.YES)
         .assistanceAvailability(availability)
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
@@ -117,8 +117,9 @@ class StopPointCompleteAccessibilityCalculatorTest {
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }
 
-  private static StopPointVersion.StopPointVersionBuilder<?, ?> stopPointBuilder() {
-    return StopPointVersion.builder()
+  private static AccessibilityStopPoint.AccessibilityStopPointBuilder stopPointBuilder() {
+    return AccessibilityStopPoint.builder()
         .alternativeTransport(StandardAttributeType.NO);
   }
+
 }

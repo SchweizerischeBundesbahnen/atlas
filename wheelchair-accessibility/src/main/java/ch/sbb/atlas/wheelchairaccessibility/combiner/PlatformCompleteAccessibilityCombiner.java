@@ -1,9 +1,7 @@
-package ch.sbb.prm.directory.module.wheelchairaccessibility.combiner;
+package ch.sbb.atlas.wheelchairaccessibility.combiner;
 
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import org.springframework.stereotype.Component;
 
-@Component
 public class PlatformCompleteAccessibilityCombiner {
 
   public WheelchairAccessibilityState combine(WheelchairAccessibilityState stopPoint, WheelchairAccessibilityState platform) {

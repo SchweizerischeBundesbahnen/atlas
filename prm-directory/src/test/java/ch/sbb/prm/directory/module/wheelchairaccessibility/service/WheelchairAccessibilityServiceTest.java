@@ -1,19 +1,20 @@
 package ch.sbb.prm.directory.module.wheelchairaccessibility.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
+import ch.sbb.atlas.wheelchairaccessibility.calculator.PlatformCompleteAccessibilityCalculator;
+import ch.sbb.atlas.wheelchairaccessibility.calculator.PlatformReducedAccessibilityCalculator;
+import ch.sbb.atlas.wheelchairaccessibility.calculator.StopPointCompleteAccessibilityCalculator;
+import ch.sbb.atlas.wheelchairaccessibility.combiner.PlatformCompleteAccessibilityCombiner;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.PlatformCompleteAccessibilityCalculator;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.PlatformReducedAccessibilityCalculator;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.calculator.StopPointCompleteAccessibilityCalculator;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.combiner.PlatformCompleteAccessibilityCombiner;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.helper.WheelchairAccessibilityDataLoader;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,8 +64,8 @@ class WheelchairAccessibilityServiceTest {
 
     when(dataLoader.loadStopPointValidToday("sp-1")).thenReturn(stopPoint);
     when(dataLoader.loadRelationsValidToday("plat-1")).thenReturn(relations);
-    when(platformCompleteCalculator.calculatePlatform(platform, relations)).thenReturn(WheelchairAccessibilityState.AUTONOMY);
-    when(stopPointCompleteCalculator.calculateStopPoint(stopPoint)).thenReturn(WheelchairAccessibilityState.AUTONOMY);
+    when(platformCompleteCalculator.calculatePlatform(any(), any())).thenReturn(WheelchairAccessibilityState.AUTONOMY);
+    when(stopPointCompleteCalculator.calculateStopPoint(any())).thenReturn(WheelchairAccessibilityState.AUTONOMY);
     when(combiner.combine(WheelchairAccessibilityState.AUTONOMY, WheelchairAccessibilityState.AUTONOMY))
         .thenReturn(WheelchairAccessibilityState.AUTONOMY);
 

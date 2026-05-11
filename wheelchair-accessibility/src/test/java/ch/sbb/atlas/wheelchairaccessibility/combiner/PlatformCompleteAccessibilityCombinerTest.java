@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.module.wheelchairaccessibility.combiner;
+package ch.sbb.atlas.wheelchairaccessibility.combiner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

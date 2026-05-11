@@ -1,12 +1,12 @@
-package ch.sbb.prm.directory.module.wheelchairaccessibility.calculator;
+package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
-import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Component;
@@ -22,8 +22,8 @@ public class PlatformCompleteAccessibilityCalculator {
 
   private static final double SUPERELEVATION_LEGAL_LIMIT_MM = 40.0D;
 
-  public WheelchairAccessibilityState calculatePlatform(PlatformVersion platformVersion,
-      List<RelationVersion> relations) {
+  public WheelchairAccessibilityState calculatePlatform(AccessibilityPlatform platformVersion,
+      List<AccessibilityRelation> relations) {
 
     if (platformVersion.getShuttle() == BooleanOptionalAttributeType.YES) {
       return WheelchairAccessibilityState.SHUTTLE;
@@ -54,9 +54,9 @@ public class PlatformCompleteAccessibilityCalculator {
     return WheelchairAccessibilityState.NO_INFO;
   }
 
-  private boolean hasAtLeastOneStepFreeAccess(List<RelationVersion> relations) {
+  private boolean hasAtLeastOneStepFreeAccess(List<AccessibilityRelation> relations) {
     return relations.stream()
-        .map(RelationVersion::getStepFreeAccess)
+        .map(AccessibilityRelation::getStepFreeAccess)
         .anyMatch(STEP_FREE_ACCESS_VALID_VALUES::contains);
   }
 
