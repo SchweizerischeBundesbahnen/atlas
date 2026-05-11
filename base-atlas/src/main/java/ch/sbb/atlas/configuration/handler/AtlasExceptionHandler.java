@@ -6,7 +6,6 @@ import ch.sbb.atlas.model.exception.NotFoundException;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.Set;
@@ -93,10 +92,10 @@ public class AtlasExceptionHandler {
   }
 
   @ExceptionHandler(value = FeignException.class)
-  public ResponseEntity<ErrorResponse> handleFeignException(FeignException feignException) throws IOException {
+  public ResponseEntity<ErrorResponse> handleFeignException(FeignException feignException) {
     Optional<ByteBuffer> responseBody = feignException.responseBody();
-    log.info("FeignException occurred on {} {}: ", feignException.request().httpMethod(),
-        feignException.request().url(), feignException);
+    log.info("FeignException occurred calling {} {}", feignException.request().httpMethod(), feignException.request().url());
+    log.info("Response status was {}, body present {}", feignException.status(), responseBody.isPresent());
 
     if (responseBody.isPresent()) {
       String responseBodyContent = new String(responseBody.get().array());
