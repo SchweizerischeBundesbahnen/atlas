@@ -15,6 +15,7 @@ export abstract class StatementTableHandler {
   protected readonly lastNameColumn: TableColumn<TimetableHearingStatementV2> = {
     headerTitle: 'TTH.TIMETABLE_FIELD_LASTNAME',
     value: 'statementSender',
+    valuePath: 'statementSender.lastName',
     callback: this.mapToLastname,
   };
   protected readonly transportCompanyColumn: TableColumn<TimetableHearingStatementV2> = {
