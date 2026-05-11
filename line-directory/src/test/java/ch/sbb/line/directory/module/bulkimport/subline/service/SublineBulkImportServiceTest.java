@@ -5,10 +5,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.SublineUpdateCsvModel;
 import ch.sbb.atlas.imports.model.SublineUpdateCsvModel.Fields;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.line.directory.module.line.LineTestData;
@@ -26,6 +29,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class SublineBulkImportServiceTest {
+
+  private static final String[] IGNORE_FIELDS = new String[]{"version", "editionDate", "creationDate", "editor", "creator"};
 
   @MockitoBean
   private BusinessOrganisationBasedUserAdministrationService userAdministrationService;
@@ -81,6 +86,48 @@ class SublineBulkImportServiceTest {
     SublineVersion version =
         sublineVersionRepository.findById(sublineVersion.getId()).orElseThrow();
     assertThat(version.getLongName()).isEqualTo("LongName");
+  }
+
+  @Test
+  void shouldUpdateEveryAttribute() {
+    sublineVersion.setSublineType(SublineType.CONCESSION);
+    sublineVersion.setConcessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE);
+    sublineVersion.setSwissSublineNumber("b0.BEX:a");
+    sublineVersion = sublineVersionRepository.save(sublineVersion);
+
+    sublineBulkImportService.updateSubline(BulkImportUpdateContainer.<SublineUpdateCsvModel>builder()
+        .object(SublineUpdateCsvModel.builder()
+            .slnid(sublineVersion.getSlnid())
+            .validFrom(sublineVersion.getValidFrom())
+            .validTo(sublineVersion.getValidTo())
+            .longName("new")
+            .linienId("new")
+            .description("new")
+            .swissSublineNumber("new")
+            .businessOrganisation("new")
+            .sublineConcessionType(SublineConcessionType.NOT_LICENSED_UNPUBLISHED_LINE)
+            .build())
+        .build());
+
+    SublineVersion expected = SublineVersion.builder()
+        .id(sublineVersion.getId())
+        .slnid(sublineVersion.getSlnid())
+        .mainlineSlnid(sublineVersion.getMainlineSlnid())
+        .validFrom(sublineVersion.getValidFrom())
+        .validTo(sublineVersion.getValidTo())
+        .longName("new")
+        .linienId("new")
+        .description("new")
+        .swissSublineNumber("new")
+        .businessOrganisation("new")
+        .concessionType(SublineConcessionType.NOT_LICENSED_UNPUBLISHED_LINE)
+        .sublineType(SublineType.CONCESSION)
+        .status(Status.VALIDATED)
+        .build();
+
+    SublineVersion version =
+        sublineVersionRepository.findById(sublineVersion.getId()).orElseThrow();
+    assertThat(version).usingRecursiveComparison().ignoringFields(IGNORE_FIELDS).isEqualTo(expected);
   }
 
   @Test

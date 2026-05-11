@@ -1,5 +1,6 @@
 package ch.sbb.importservice.module.bulkimport.template;
 
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.imports.model.SublineUpdateCsvModel;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
@@ -12,13 +13,15 @@ public class SublineTemplateGenerator {
 
   public static SublineUpdateCsvModel getUpdateExample() {
     return SublineUpdateCsvModel.builder()
-        .slnid("ch:1:slnid:1024320:1")
-        .linienId("320")
+        .slnid("ch:1:slnid:1024328:1")
+        .linienId("328:1")
         .validFrom(VALID_FROM)
         .validTo(VALID_TO)
-        .description("Chur - Thusis - St. Moritz - Pontresina - Tirano")
-        .longName("Bernina Express")
-        .businessOrganisation("ch:1:sboid:100053")
+        .sublineConcessionType(SublineConcessionType.FEDERALLY_LICENSED_OR_APPROVED_LINE)
+        .swissSublineNumber("b0.BEX:a")
+        .description("Bern - Thun")
+        .longName("Thun - Spiez")
+        .businessOrganisation("ch:1:sboid:100001")
         .build();
   }
 

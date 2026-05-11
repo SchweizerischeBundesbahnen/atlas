@@ -56,7 +56,6 @@ public class SublineUpdateCsvModel implements Validatable<SublineUpdateCsvModel>
   private String description;
 
   @DefaultMapping
-  @Nulling
   private String swissSublineNumber;
 
   private SublineConcessionType sublineConcessionType;
