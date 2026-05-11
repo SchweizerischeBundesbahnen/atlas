@@ -15,7 +15,7 @@ import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { ReferencePointCreationHintService } from './reference-point-creation-hint/reference-point-creation-hint.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 import { filter, map } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { CreateStopPointComponent } from '../create-stop-point/create-stop-point.component';
 import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
 import { NavigationSepodiPrmComponent } from '../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
@@ -28,6 +28,7 @@ import { AtlasButtonComponent } from '../../../../../core/components/button/atla
 import { TranslatePipe } from '@ngx-translate/core';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { StopPointService } from '../../../../../api/service/prm/stop-point/stop-point.service';
+import { InfoIconComponent } from '@atlas/form';
 
 @Component({
   selector: 'atlas-stop-point-detail',
@@ -45,6 +46,8 @@ import { StopPointService } from '../../../../../api/service/prm/stop-point/stop
     AtlasButtonComponent,
     AsyncPipe,
     TranslatePipe,
+    InfoIconComponent,
+    NgOptimizedImage,
   ],
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {

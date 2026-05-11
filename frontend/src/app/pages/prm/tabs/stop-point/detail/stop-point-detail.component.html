@@ -28,6 +28,20 @@
             {{ selectedVersionIndex + 1 }}
           </h2>
         </div>
+
+        @if (selectedVersion.wheelchairAccessibility) {
+          <div class="d-flex flex-row align-items-start">
+            <img
+              class="ms-5"
+              ngSrc="assets/images/prm/wheelchair-accessibility/{{selectedVersion.wheelchairAccessibility.toLowerCase()}}.svg"
+              height="50" width="50" [alt]="selectedVersion.wheelchairAccessibility.toLowerCase()" />
+
+            <atlas-form-info-icon
+              [infoTitle]=" ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.TODAY_ACCESSIBILITY' | translate) + ': ' +
+            ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.' + selectedVersion.wheelchairAccessibility | translate)"
+            ></atlas-form-info-icon>
+          </div>
+        }
       }
     </div>
     @if (isReduced) {
