@@ -42,7 +42,8 @@ public class Translation {
           "point de référence", "punto di riferimento")),
       Map.entry(BusinessObjectType.RELATION, new Values("Verbindungen", "relations", "collegamenti")),
       Map.entry(BusinessObjectType.TOILET, new Values("Toilette", "toilettes", "servizi igienici")),
-      Map.entry(BusinessObjectType.LINE, new Values("Linie", "ligne", "linea"))
+      Map.entry(BusinessObjectType.LINE, new Values("Linie", "ligne", "linea")),
+      Map.entry(BusinessObjectType.SUBLINE, new Values("Teillinie", "ligne partielle", "linea parziale"))
   );
 
   private final static Map<ImportType, Values> importTypeTranslations = Map.of(

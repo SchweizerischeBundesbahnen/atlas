@@ -230,6 +230,7 @@
       "PLATFORM_REDUCED": "Bordures d’arrêt (réduit)",
       "PLATFORM_COMPLETE": "Bordures d’arrêt (complet)",
       "LINE": "Ligne",
+      "SUBLINE": "Ligne partielle",
       "TOILET": "Toilette",
       "SCENARIO": "Scénario",
       "CREATE": "Création",

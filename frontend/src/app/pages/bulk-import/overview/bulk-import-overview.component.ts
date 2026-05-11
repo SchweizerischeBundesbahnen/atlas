@@ -42,6 +42,7 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = 
   [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Update],
   [ApplicationType.Prm, BusinessObjectType.PlatformComplete, ImportType.Update],
   [ApplicationType.Lidi, BusinessObjectType.Line, ImportType.Update],
+  [ApplicationType.Lidi, BusinessObjectType.Subline, ImportType.Update],
 ];
 
 @Component({

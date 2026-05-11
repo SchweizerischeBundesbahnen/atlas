@@ -21,12 +21,13 @@ public enum BusinessObjectType {
   RELATION,
 
   LINE,
+  SUBLINE,
 
   ;
 
   public static final Set<BusinessObjectType> SEPODI_BUSINESS_OBJECTS = Set.of(SERVICE_POINT, TRAFFIC_POINT, LOADING_POINT, SECTOR);
   public static final Set<BusinessObjectType> PRM_BUSINESS_OBJECTS = Set.of(STOP_POINT, PLATFORM_REDUCED, PLATFORM_COMPLETE,
       REFERENCE_POINT, PARKING_LOT, CONTACT_POINT, TOILET, RELATION);
-  public static final Set<BusinessObjectType> LIDI_BUSINESS_OBJECTS = Set.of(LINE);
+  public static final Set<BusinessObjectType> LIDI_BUSINESS_OBJECTS = Set.of(LINE, SUBLINE);
 
 }

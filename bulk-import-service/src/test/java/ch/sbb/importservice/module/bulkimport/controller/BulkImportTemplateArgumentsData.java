@@ -13,16 +13,24 @@ import org.junit.jupiter.params.provider.Arguments;
 public class BulkImportTemplateArgumentsData {
 
   private static final List<Arguments> IMPLEMENTED_TEMPLATES_LIST = List.of(
+      // SEPODI
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.UPDATE)),
+      Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.TERMINATE)),
+
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.TERMINATE)),
+
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.CREATE)),
+
+      // PRM
       Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM_REDUCED, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM_COMPLETE, ImportType.UPDATE)),
+
+      // LIDI
       Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.UPDATE)),
-      Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.TERMINATE))
+      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.SUBLINE, ImportType.UPDATE))
   );
 
   public static Stream<Arguments> implementedTemplates() {
@@ -30,13 +38,18 @@ public class BulkImportTemplateArgumentsData {
   }
 
   private static final List<Arguments> NOT_IMPLEMENTED_TEMPLATES_LIST = List.of(
+      // SEPODI
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.TERMINATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.TERMINATE)),
+
+      // LIDI
       Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.CREATE)),
-      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.TERMINATE))
+      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.TERMINATE)),
+      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.SUBLINE, ImportType.CREATE)),
+      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.SUBLINE, ImportType.TERMINATE))
   );
 
   public static Stream<Arguments> notImplementedTemplates() {

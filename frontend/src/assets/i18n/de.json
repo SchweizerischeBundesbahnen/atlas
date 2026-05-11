@@ -230,6 +230,7 @@
       "PLATFORM_REDUCED": "Haltekante (reduziert)",
       "PLATFORM_COMPLETE": "Haltekante (komplett)",
       "LINE": "Linie",
+      "SUBLINE": "Teillinie",
       "TOILET": "Toilette",
       "SCENARIO": "Szenario",
       "CREATE": "Erfassung",
