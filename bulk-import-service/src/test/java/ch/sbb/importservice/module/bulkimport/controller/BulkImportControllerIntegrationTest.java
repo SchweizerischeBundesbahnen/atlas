@@ -25,6 +25,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.module.bulkimport.client.LineBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.PlatformBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
+import ch.sbb.importservice.module.bulkimport.client.SublineBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
 import ch.sbb.importservice.module.bulkimport.listener.BulkImportJobCompletionListener;
@@ -63,6 +64,9 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @MockitoBean
   private LineBulkImportClient lineBulkImportClient;
+
+  @MockitoBean
+  private SublineBulkImportClient sublineBulkImportClient;
 
   @MockitoBean
   private AmazonService amazonService;
@@ -294,6 +298,38 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/line-update.csv");
 
     verify(lineBulkImportClient, atLeastOnce()).lineUpdate(any());
+  }
+
+  @Test
+  void shouldImportSublineUpdate() throws IOException {
+    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+        + "/LIDI/SUBLINE/UPDATE";
+    File file = ImportFiles.getFileByPath("import-files/valid/update_subline.csv");
+
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "update_subline.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+        .applicationType(ApplicationType.LIDI)
+        .objectType(BusinessObjectType.SUBLINE)
+        .importType(ImportType.UPDATE)
+        .emails(List.of("test-cc@atlas.ch"))
+        .build();
+
+    when(sublineBulkImportClient.sublineUpdate(any())).thenReturn(
+        List.of(BulkImportItemExecutionResult.builder()
+            .lineNumber(2)
+            .build()));
+    bulkImportController.startBulkImport(bulkImportRequest, multipartFile);
+
+    List<BulkImport> bulkImports = bulkImportRepository.findAll();
+    assertThat(bulkImports).hasSize(1);
+
+    BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
+    assertThat(bulkImport.getId()).isNotNull();
+    assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/update_subline.csv");
+
+    verify(sublineBulkImportClient, atLeastOnce()).sublineUpdate(any());
   }
 
   @Test

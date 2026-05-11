@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.module.bulkimport.controller;
+package ch.sbb.line.directory.module.bulkimport.line.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.never;
@@ -7,15 +7,16 @@ import static org.mockito.Mockito.verify;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.LineUpdateCsvModel;
-import ch.sbb.line.directory.module.bulkimport.line.controller.LineBulkImportControllerInternal;
 import ch.sbb.line.directory.module.bulkimport.line.service.LineBulkImportService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-class LineBulkImportControllerTest {
+@ExtendWith(MockitoExtension.class)
+class LineBulkImportControllerInternalTest {
 
   @Mock
   private LineBulkImportService lineBulkImportService;
@@ -24,7 +25,6 @@ class LineBulkImportControllerTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
     lineBulkImportController = new LineBulkImportControllerInternal(lineBulkImportService);
   }
 

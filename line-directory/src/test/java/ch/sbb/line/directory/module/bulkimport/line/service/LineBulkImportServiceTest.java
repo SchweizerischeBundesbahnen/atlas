@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.module.bulkimport.service;
+package ch.sbb.line.directory.module.bulkimport.line.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -11,7 +11,6 @@ import ch.sbb.atlas.imports.model.LineUpdateCsvModel;
 import ch.sbb.atlas.imports.model.LineUpdateCsvModel.Fields;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
-import ch.sbb.line.directory.module.bulkimport.line.service.LineBulkImportService;
 import ch.sbb.line.directory.module.line.LineTestData;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.repository.LineVersionRepository;

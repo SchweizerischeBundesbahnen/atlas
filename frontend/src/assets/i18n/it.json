@@ -230,6 +230,7 @@
       "PLATFORM_REDUCED": "Bordi fermata (ridotto)",
       "PLATFORM_COMPLETE": "Bordi fermata (completo)",
       "LINE": "Linea",
+      "SUBLINE": "Linea parziale",
       "TOILET": "Servizi igienici",
       "SCENARIO": "Scenario",
       "CREATE": "Creazione",
