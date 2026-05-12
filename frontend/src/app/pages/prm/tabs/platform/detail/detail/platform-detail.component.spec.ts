@@ -37,6 +37,9 @@ import { SplitServicePointNumberPipe } from '../../../../../../core/search-servi
 import moment from 'moment';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
 import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
+import {
+  WheelchairAccessibilityInternalService
+} from '../../../../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -197,6 +200,10 @@ describe('PlatformDetailComponent', () => {
         },
         { provide: DialogService, useValue: dialogService },
         { provide: Router, useValue: routerSpy },
+        {
+          provide: WheelchairAccessibilityInternalService,
+          useValue: { getPlatformAccessibilityToday: () => of({}) },
+        },
         TranslatePipe,
         SplitServicePointNumberPipe,
       ],

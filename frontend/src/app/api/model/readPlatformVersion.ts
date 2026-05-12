@@ -110,18 +110,8 @@ export interface ReadPlatformVersion {
      */
     wheelchairAreaWidth?: number;
     number: ServicePointNumber;
-    wheelchairAccessibility?: ReadPlatformVersion.WheelchairAccessibilityEnum;
 }
 export namespace ReadPlatformVersion {
-    export type WheelchairAccessibilityEnum = 'AUTONOMY' | 'RAMP_USE' | 'PRE_REGISTRATION' | 'NO_ACCESS' | 'NO_INFO' | 'SHUTTLE';
-    export const WheelchairAccessibilityEnum = {
-        Autonomy: 'AUTONOMY' as WheelchairAccessibilityEnum,
-        RampUse: 'RAMP_USE' as WheelchairAccessibilityEnum,
-        PreRegistration: 'PRE_REGISTRATION' as WheelchairAccessibilityEnum,
-        NoAccess: 'NO_ACCESS' as WheelchairAccessibilityEnum,
-        NoInfo: 'NO_INFO' as WheelchairAccessibilityEnum,
-        Shuttle: 'SHUTTLE' as WheelchairAccessibilityEnum
-    };
 }
 
 

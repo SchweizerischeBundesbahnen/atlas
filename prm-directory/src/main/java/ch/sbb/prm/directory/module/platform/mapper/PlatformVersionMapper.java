@@ -8,7 +8,6 @@ import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
-import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -137,13 +136,6 @@ public class PlatformVersionMapper {
     } else {
       initDefaultDropdownDataComplete(platformVersion);
     }
-  }
-
-  public static ReadPlatformVersionModel toModelWithAccessibility(PlatformVersion version,
-      WheelchairAccessibilityState wheelchairAccessibility) {
-    ReadPlatformVersionModel model = toModel(version);
-    model.setWheelchairAccessibility(wheelchairAccessibility);
-    return model;
   }
 
   private static void initDefaultDropdownDataReduced(PlatformVersion platformVersion, Set<MeanOfTransport> meansOfTransport) {

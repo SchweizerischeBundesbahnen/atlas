@@ -111,6 +111,7 @@ export * from './readStopPointWorkflow';
 export * from './readSublineVersionV2';
 export * from './readToiletVersion';
 export * from './readTrafficPointElementVersion';
+export * from './readWheelchairAccessibility';
 export * from './recordingStatus';
 export * from './referencePointAttributeType';
 export * from './referencePointElementType';
