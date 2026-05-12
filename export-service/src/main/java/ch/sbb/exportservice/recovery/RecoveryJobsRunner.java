@@ -188,7 +188,10 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void cleanDownloadedFiles() {
     log.info("Clearing export directory");
-    fileService.clearDir();
+    boolean dirCleared = fileService.clearDir();
+    if (!dirCleared) {
+      log.error("Could not clear export directory, there might be some files left from previous exports!");
+    }
   }
 
   private void checkExportServicePointJobToRecover() {

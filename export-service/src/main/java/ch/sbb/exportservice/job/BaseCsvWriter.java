@@ -25,7 +25,6 @@ public abstract class BaseCsvWriter<T> {
   public FlatFileItemWriter<T> csvWriter(ExportObjectV2 exportType, ExportTypeV2 exportFileName) {
     FlatFileItemWriter<T> writer = new FlatFileItemWriter<>(getLineAggregator());
     writer.setResource(new FileSystemResource(getFilePath(exportType, exportFileName)));
-    writer.setAppendAllowed(true);
     writer.setHeaderCallback(new CsvFlatFileHeaderCallback(getCsvHeader()));
     writer.setEncoding(StandardCharsets.UTF_8.name());
     writer.close();
