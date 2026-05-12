@@ -10,7 +10,7 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import java.util.List;
 import java.util.Set;
 
-public class PlatformCompleteAccessibilityCalculator {
+final class PlatformCompleteAccessibilityCalculator {
 
   private static final Set<StepFreeAccessAttributeType> STEP_FREE_ACCESS_VALID_VALUES = Set.of(
       StepFreeAccessAttributeType.YES,
@@ -20,10 +20,13 @@ public class PlatformCompleteAccessibilityCalculator {
 
   private static final double SUPERELEVATION_LEGAL_LIMIT_MM = 40.0D;
 
-  public WheelchairAccessibilityState calculatePlatform(AccessibilityPlatform platformVersion,
+  private PlatformCompleteAccessibilityCalculator() {
+  }
+
+  static WheelchairAccessibilityState calculate(AccessibilityPlatform platform,
       List<? extends AccessibilityRelation> relations) {
 
-    if (platformVersion.getShuttle() == BooleanOptionalAttributeType.YES) {
+    if (platform.getShuttle() == BooleanOptionalAttributeType.YES) {
       return WheelchairAccessibilityState.SHUTTLE;
     }
 
@@ -31,38 +34,38 @@ public class PlatformCompleteAccessibilityCalculator {
       return WheelchairAccessibilityState.NO_ACCESS;
     }
 
-    if (platformVersion.getLevelAccessWheelchair() == LevelAccessWheelchairAttributeType.YES_WITH_STAFF_ASSISTANCE) {
+    if (platform.getLevelAccessWheelchair() == LevelAccessWheelchairAttributeType.YES_WITH_STAFF_ASSISTANCE) {
       return WheelchairAccessibilityState.RAMP_USE;
     }
 
-    if (isSuperElevationBelowLimit(platformVersion.getSuperelevation())
-        && platformVersion.getLevelAccessWheelchair() == LevelAccessWheelchairAttributeType.YES) {
+    if (isSuperElevationBelowLimit(platform.getSuperelevation())
+        && platform.getLevelAccessWheelchair() == LevelAccessWheelchairAttributeType.YES) {
       return WheelchairAccessibilityState.AUTONOMY;
     }
 
-    if (isBoardingDeviceLiftOrRamp(platformVersion.getBoardingDevice())) {
+    if (isBoardingDeviceLiftOrRamp(platform.getBoardingDevice())) {
       return WheelchairAccessibilityState.PRE_REGISTRATION;
     }
 
-    if (platformVersion.getLevelAccessWheelchair() == LevelAccessWheelchairAttributeType.NO
-        || platformVersion.getBoardingDevice() == BoardingDeviceAttributeType.NO) {
+    if (platform.getLevelAccessWheelchair() == LevelAccessWheelchairAttributeType.NO
+        || platform.getBoardingDevice() == BoardingDeviceAttributeType.NO) {
       return WheelchairAccessibilityState.NO_ACCESS;
     }
 
     return WheelchairAccessibilityState.NO_INFO;
   }
 
-  private boolean hasAtLeastOneStepFreeAccess(List<? extends AccessibilityRelation> relations) {
+  private static boolean hasAtLeastOneStepFreeAccess(List<? extends AccessibilityRelation> relations) {
     return relations.stream()
         .map(AccessibilityRelation::getStepFreeAccess)
         .anyMatch(STEP_FREE_ACCESS_VALID_VALUES::contains);
   }
 
-  private boolean isSuperElevationBelowLimit(Double superelevation) {
+  private static boolean isSuperElevationBelowLimit(Double superelevation) {
     return superelevation == null || superelevation < SUPERELEVATION_LEGAL_LIMIT_MM;
   }
 
-  private boolean isBoardingDeviceLiftOrRamp(BoardingDeviceAttributeType boardingDevice) {
+  private static boolean isBoardingDeviceLiftOrRamp(BoardingDeviceAttributeType boardingDevice) {
     return boardingDevice == BoardingDeviceAttributeType.LIFTS
         || boardingDevice == BoardingDeviceAttributeType.RAMPS;
   }

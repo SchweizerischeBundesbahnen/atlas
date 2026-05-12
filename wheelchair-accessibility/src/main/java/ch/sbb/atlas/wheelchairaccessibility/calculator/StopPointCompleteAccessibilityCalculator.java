@@ -6,14 +6,17 @@ import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilit
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import java.util.Set;
 
-public class StopPointCompleteAccessibilityCalculator {
+final class StopPointCompleteAccessibilityCalculator {
 
   private static final Set<StandardAttributeType> YES_OR_PARTIALLY = Set.of(
       StandardAttributeType.YES,
       StandardAttributeType.PARTIALLY
   );
 
-  public WheelchairAccessibilityState calculateStopPoint(AccessibilityStopPoint stopPoint) {
+  private StopPointCompleteAccessibilityCalculator() {
+  }
+
+  static WheelchairAccessibilityState calculate(AccessibilityStopPoint stopPoint) {
 
     if (YES_OR_PARTIALLY.contains(stopPoint.getAlternativeTransport())) {
       return WheelchairAccessibilityState.SHUTTLE;
@@ -40,6 +43,5 @@ public class StopPointCompleteAccessibilityCalculator {
     }
 
     return WheelchairAccessibilityState.NO_INFO;
-
   }
 }

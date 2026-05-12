@@ -6,9 +6,7 @@ import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilit
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-class PlatformCompleteAccessibilityCombinerTest {
-
-  private final PlatformCompleteAccessibilityCombiner combiner = new PlatformCompleteAccessibilityCombiner();
+class WheelchairAccessibilityCombinerTest {
 
   @ParameterizedTest(name = "stopPoint={0}, platform={1} -> {2}")
   @CsvSource({
@@ -58,7 +56,7 @@ class PlatformCompleteAccessibilityCombinerTest {
   void shouldCombineCorrectly(WheelchairAccessibilityState stopPoint,
       WheelchairAccessibilityState platform,
       WheelchairAccessibilityState expected) {
-    WheelchairAccessibilityState result = combiner.combine(stopPoint, platform);
+    WheelchairAccessibilityState result = WheelchairAccessibilityCombiner.combine(stopPoint, platform);
 
     assertThat(result).isEqualTo(expected);
   }

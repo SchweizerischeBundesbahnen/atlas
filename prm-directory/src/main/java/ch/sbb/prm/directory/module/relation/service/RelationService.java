@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.module.relation.service;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -35,6 +37,12 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   public List<RelationVersion> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
     return relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+  }
+
+  public List<RelationVersion> findValidTodayByPlatform(String platformSloid) {
+    return relationRepository.findAllBySloidAndReferencePointElementType(platformSloid, ReferencePointElementType.PLATFORM).stream()
+        .filter(relation -> new DateRange(relation.getValidFrom(), relation.getValidTo()).containsToday())
+        .toList();
   }
 
   @Override

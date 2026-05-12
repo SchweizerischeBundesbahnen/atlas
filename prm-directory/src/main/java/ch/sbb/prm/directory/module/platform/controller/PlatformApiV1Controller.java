@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.module.platform.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.platform.api.PlatformApiV1;
@@ -10,6 +11,7 @@ import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.module.platform.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.module.platform.service.PlatformService;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.service.WheelchairAccessibilityService;
 import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlatformApiV1Controller implements PlatformApiV1 {
 
   private final PlatformService platformService;
+  private final WheelchairAccessibilityService wheelchairAccessibilityService;
 
   @Override
   public Container<ReadPlatformVersionModel> getPlatforms(Pageable pageable, PrmObjectRequestParams prmObjectRequestParams) {
@@ -58,7 +61,9 @@ public class PlatformApiV1Controller implements PlatformApiV1 {
 
   @Override
   public List<ReadPlatformVersionModel> getPlatformVersions(String sloid) {
-    return platformService.getAllVersionsWithCalculatedAccessibility(sloid);
+    return platformService.getAllVersions(sloid).stream()
+        .map(this::toReadModel)
+        .toList();
   }
 
   @Override
@@ -73,6 +78,14 @@ public class PlatformApiV1Controller implements PlatformApiV1 {
     PlatformVersion platformVersion = platformService.terminate(currentVersion, validTo);
 
     return platformService.getAllVersions(platformVersion.getSloid()).stream().map(PlatformVersionMapper::toModel).toList();
+  }
+
+  private ReadPlatformVersionModel toReadModel(PlatformVersion version) {
+    if (!DateRange.fromVersionable(version).containsToday()) {
+      return PlatformVersionMapper.toModel(version);
+    }
+    return PlatformVersionMapper.toModelWithAccessibility(version,
+        wheelchairAccessibilityService.calculateForPlatformToday(version));
   }
 
 }

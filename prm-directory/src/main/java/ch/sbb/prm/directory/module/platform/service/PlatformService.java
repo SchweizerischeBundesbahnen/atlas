@@ -6,8 +6,6 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
-import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
-import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.helper.TerminationHelper;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -26,8 +24,6 @@ import ch.sbb.prm.directory.module.platform.util.PlatformRecordingStatusEvaluato
 import ch.sbb.prm.directory.module.referencepoint.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.module.relation.service.RelationService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.helper.ValidityHelper;
-import ch.sbb.prm.directory.module.wheelchairaccessibility.service.WheelchairAccessibilityService;
 import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.service.PrmRelatableVersionableService;
 import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointService;
@@ -52,18 +48,15 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   private final PlatformRepository platformRepository;
   private final SharedServicePointService sharedServicePointService;
   private final PlatformValidationService platformValidationService;
-  private final WheelchairAccessibilityService wheelchairAccessibilityService;
 
   public PlatformService(StopPointService stopPointService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService, SharedServicePointService sharedServicePointService,
-      PlatformValidationService platformValidationService, PrmLocationService locationService,
-      WheelchairAccessibilityService wheelchairAccessibilityService) {
+      PlatformValidationService platformValidationService, PrmLocationService locationService) {
     super(versionableService, stopPointService, relationService, referencePointRepository, locationService);
     this.platformRepository = platformRepository;
     this.sharedServicePointService = sharedServicePointService;
     this.platformValidationService = platformValidationService;
-    this.wheelchairAccessibilityService = wheelchairAccessibilityService;
   }
 
   @Override
@@ -95,27 +88,6 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   @Override
   public List<PlatformVersion> getAllVersions(String sloid) {
     return platformRepository.findAllBySloidOrderByValidFrom(sloid);
-  }
-
-  public List<ReadPlatformVersionModel> getAllVersionsWithCalculatedAccessibility(String sloid) {
-    List<PlatformVersion> versions = platformRepository.findAllBySloidOrderByValidFrom(sloid);
-    if (versions.isEmpty()) {
-      return List.of();
-    }
-    String parentSloid = versions.getFirst().getParentServicePointSloid();
-    boolean isReduced = stopPointService.isReduced(parentSloid);
-
-    return versions.stream()
-        .map(version -> toReadModel(version, isReduced))
-        .toList();
-  }
-
-  private ReadPlatformVersionModel toReadModel(PlatformVersion version, boolean isReduced) {
-    if (!ValidityHelper.isValidToday(version.getValidFrom(), version.getValidTo())) {
-      return PlatformVersionMapper.toModel(version);
-    }
-    WheelchairAccessibilityState state = wheelchairAccessibilityService.calculateForPlatformToday(version, isReduced);
-    return PlatformVersionMapper.toModelWithAccessibility(version, state);
   }
 
   @Override

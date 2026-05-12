@@ -5,8 +5,10 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
+import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.service.PlatformService;
 import ch.sbb.prm.directory.module.stoppoint.api.StopPointApiV1;
 import ch.sbb.prm.directory.module.stoppoint.controller.model.StopPointRequestParams;
@@ -15,8 +17,8 @@ import ch.sbb.prm.directory.module.stoppoint.exception.StopPointAlreadyExistsExc
 import ch.sbb.prm.directory.module.stoppoint.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.module.stoppoint.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.module.stoppoint.service.PrmChangeRecordingVariantService;
-import ch.sbb.prm.directory.module.stoppoint.service.StopPointReadVersionService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.service.WheelchairAccessibilityService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointApiV1Controller implements StopPointApiV1 {
 
   private final StopPointService stopPointService;
-  private final StopPointReadVersionService stopPointReadVersionService;
   private final PlatformService platformService;
   private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
+  private final WheelchairAccessibilityService wheelchairAccessibilityService;
 
   @Override
   public Container<ReadStopPointVersionModel> getStopPoints(Pageable pageable,
@@ -52,7 +54,14 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
 
   @Override
   public List<ReadStopPointVersionModel> getStopPointVersions(String sloid) {
-    return stopPointReadVersionService.getAllVersionsWithCalculatedAccessibility(sloid);
+    List<StopPointVersion> versions = stopPointService.findAllBySloidOrderByValidFrom(sloid);
+    if (versions.isEmpty()) {
+      return List.of();
+    }
+    List<PlatformVersion> platforms = platformService.getPlatformsByStopPoint(sloid);
+    return versions.stream()
+        .map(version -> toReadModel(version, platforms))
+        .toList();
   }
 
   @Override
@@ -94,6 +103,17 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
     StopPointVersion stopPointVersion = stopPointService.terminate(currentVersion, validTo);
     return stopPointService.findAllBySloidOrderByValidFrom(stopPointVersion.getSloid()).stream()
         .map(StopPointVersionMapper::toModel).toList();
+  }
+
+  private ReadStopPointVersionModel toReadModel(StopPointVersion version, List<PlatformVersion> platforms) {
+    if (!new DateRange(version.getValidFrom(), version.getValidTo()).containsToday()) {
+      return StopPointVersionMapper.toModel(version);
+    }
+    List<PlatformVersion> currentPlatforms = platforms.stream()
+        .filter(platform -> new DateRange(platform.getValidFrom(), platform.getValidTo()).containsToday())
+        .toList();
+    return StopPointVersionMapper.toModelWithAccessibility(version,
+        wheelchairAccessibilityService.calculateForStopPointToday(version, currentPlatforms));
   }
 
 }

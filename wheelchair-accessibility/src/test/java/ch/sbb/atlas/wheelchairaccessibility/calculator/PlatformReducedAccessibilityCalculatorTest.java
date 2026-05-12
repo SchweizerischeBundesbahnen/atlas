@@ -13,8 +13,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class PlatformReducedAccessibilityCalculatorTest {
 
-  private final PlatformReducedAccessibilityCalculator calculator = new PlatformReducedAccessibilityCalculator();
-
   @Test
   void shouldReturnShuttleWhenShuttleIsYes() {
     AccessibilityPlatform platform = AccessibilityPlatformTestData.builder()
@@ -22,7 +20,7 @@ class PlatformReducedAccessibilityCalculatorTest {
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculate(platform);
+    WheelchairAccessibilityState result = PlatformReducedAccessibilityCalculator.calculate(platform);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }
@@ -42,7 +40,7 @@ class PlatformReducedAccessibilityCalculatorTest {
         .vehicleAccess(vehicleAccess)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculate(platform);
+    WheelchairAccessibilityState result = PlatformReducedAccessibilityCalculator.calculate(platform);
 
     assertThat(result).isEqualTo(expected);
   }
@@ -54,7 +52,7 @@ class PlatformReducedAccessibilityCalculatorTest {
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITHOUT_ASSISTANCE)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculate(platform);
+    WheelchairAccessibilityState result = PlatformReducedAccessibilityCalculator.calculate(platform);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.AUTONOMY);
   }

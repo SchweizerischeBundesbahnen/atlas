@@ -14,8 +14,6 @@ import org.junit.jupiter.params.provider.EnumSource.Mode;
 
 class StopPointCompleteAccessibilityCalculatorTest {
 
-  private final StopPointCompleteAccessibilityCalculator calculator = new StopPointCompleteAccessibilityCalculator();
-
   @ParameterizedTest
   @EnumSource(value = StandardAttributeType.class, names = {"YES", "PARTIALLY"})
   void shouldReturnShuttleWhenAlternativeTransportIsYesOrPartially(StandardAttributeType alternativeTransport) {
@@ -23,7 +21,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
         .alternativeTransport(alternativeTransport)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculateStopPoint(stopPoint);
+    WheelchairAccessibilityState result = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }
@@ -36,7 +34,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
         .assistanceAvailability(availability)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculateStopPoint(stopPoint);
+    WheelchairAccessibilityState result = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.PRE_REGISTRATION);
   }
@@ -48,7 +46,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
         .assistanceAvailability(StandardAttributeType.NO)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculateStopPoint(stopPoint);
+    WheelchairAccessibilityState result = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.RAMP_USE);
   }
@@ -60,7 +58,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.YES)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculateStopPoint(stopPoint);
+    WheelchairAccessibilityState result = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.PRE_REGISTRATION);
   }
@@ -72,7 +70,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.NO)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculateStopPoint(stopPoint);
+    WheelchairAccessibilityState result = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_ACCESS);
   }
@@ -84,7 +82,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculateStopPoint(stopPoint);
+    WheelchairAccessibilityState result = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_ACCESS);
   }
@@ -96,7 +94,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculateStopPoint(stopPoint);
+    WheelchairAccessibilityState result = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }
@@ -113,7 +111,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .build();
 
-    WheelchairAccessibilityState result = calculator.calculateStopPoint(stopPoint);
+    WheelchairAccessibilityState result = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }

@@ -5,13 +5,16 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
 
-public class PlatformReducedAccessibilityCalculator {
+final class PlatformReducedAccessibilityCalculator {
 
-  public WheelchairAccessibilityState calculate(AccessibilityPlatform platformVersion) {
-    if (platformVersion.getShuttle() == BooleanOptionalAttributeType.YES) {
+  private PlatformReducedAccessibilityCalculator() {
+  }
+
+  static WheelchairAccessibilityState calculate(AccessibilityPlatform platform) {
+    if (platform.getShuttle() == BooleanOptionalAttributeType.YES) {
       return WheelchairAccessibilityState.SHUTTLE;
     }
-    return mapVehicleAccess(platformVersion.getVehicleAccess());
+    return mapVehicleAccess(platform.getVehicleAccess());
   }
 
   private static WheelchairAccessibilityState mapVehicleAccess(VehicleAccessAttributeType vehicleAccess) {
