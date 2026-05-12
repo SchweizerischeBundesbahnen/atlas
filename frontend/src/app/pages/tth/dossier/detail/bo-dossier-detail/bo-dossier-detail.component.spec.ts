@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { BoDossierDetailComponent } from './bo-dossier-detail.component';
-import { AppTestingModule } from '../../../../../app.testing.module';
 import { TthDossier } from '../../../../../api/model/tthDossier';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
 import { DossierStatus } from '../../../../../api/model/dossierStatus';
@@ -13,6 +12,8 @@ import { DossierInternalService } from '../../../../../api/service/workflow/doss
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { OpenBoDossierInMailService } from './open-bo-dossier-in-mail.service';
 import { mock } from 'vitest-mock-extended';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AppTestingModule } from '../../../../../app.testing.module';
 
 const dossier: TthDossier = {
   swissCanton: SwissCanton.Bern,
@@ -66,8 +67,8 @@ describe('BoDossierDetail', () => {
       },
     };
 
-    await TestBed.configureTestingModule({
-      imports: [BoDossierDetailComponent, AppTestingModule],
+    TestBed.configureTestingModule({
+      imports: [AppTestingModule],
       providers: [
         {
           provide: ActivatedRoute,
@@ -85,13 +86,25 @@ describe('BoDossierDetail', () => {
           provide: NotificationService,
           useValue: notificationService,
         },
+        {
+          provide: TranslatePipe,
+          useValue: mock<TranslatePipe>(),
+        },
         FormatPipe,
       ],
-    })
-      .overrideProvider(OpenBoDossierInMailService, {
-        useValue: openBoDossierInMailService,
-      })
-      .compileComponents();
+    }).overrideComponent(BoDossierDetailComponent, {
+      remove: {
+        providers: [OpenBoDossierInMailService],
+      },
+      add: {
+        providers: [
+          {
+            provide: OpenBoDossierInMailService,
+            useValue: openBoDossierInMailService,
+          },
+        ],
+      },
+    });
 
     fixture = TestBed.createComponent(BoDossierDetailComponent);
     component = fixture.componentInstance;

@@ -16,19 +16,15 @@
     @if (isDownloadButtonVisible) {
       <atlas-button
         (buttonClicked)="downloadExcel()"
-        [disabled]="isDownloadButtonDisabled"
+        [disabled]="isDownloadButtonDisabled()"
         buttonDataCy="download-csv"
         buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
         buttonType="create"
-        [attr.title]="isDownloadButtonDisabled ? ('BULK_IMPORT.BUTTON.DISABLED_MESSAGE' | translate) : ''"
+        [attr.title]="isDownloadButtonDisabled() ? ('BULK_IMPORT.BUTTON.DISABLED_MESSAGE' | translate) : ''"
         (click)="$event.stopPropagation()"
       >
         <ng-template #rightIcon>
-          <atlas-download-icon
-            [readonly]="true"
-            [disabled]="isDownloadButtonDisabled"
-            class="ps-2"
-          ></atlas-download-icon>
+          <atlas-download-icon [readonly]="true" [disabled]="isDownloadButtonDisabled()" class="ps-2" />
         </ng-template>
       </atlas-button>
     }
@@ -44,7 +40,7 @@
       [disabled]="maxFileCount === uploadedFiles.length"
     >
       <ng-template #rightIcon>
-        <atlas-upload-icon class="ps-2"></atlas-upload-icon>
+        <atlas-upload-icon class="ps-2" />
       </ng-template>
     </atlas-button>
   </div>
@@ -63,7 +59,7 @@
       [ngStyle]="{ width: '100%' }"
       [deleteEnabled]="true"
       (fileDeleted)="fileDeleted($event)"
-    ></atlas-file>
+    />
   }
 
   @if (errorFiles) {

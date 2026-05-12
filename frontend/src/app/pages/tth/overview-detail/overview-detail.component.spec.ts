@@ -7,6 +7,7 @@ import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import {
   ContainerTimetableHearingStatementV2,
   HearingStatus,
+  StatementStatus,
   SwissCanton,
   TimetableHearingStatementDocument,
   TimetableHearingStatementSenderV2,
@@ -16,7 +17,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import moment from 'moment';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
@@ -32,7 +33,6 @@ import { TimetableHearingYearInternalService } from '../../../api/service/lidi/t
 import { TableComponent } from '../../../core/components/table/table.component';
 import { MatDialog } from '@angular/material/dialog';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
-import { MatSelectChange } from '@angular/material/select';
 import { TthYearInternalService } from '../../../api/service/workflow/tth-year-internal.service';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 
@@ -42,12 +42,12 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
   imports: [AppTestingModule],
 })
 class MockAppTthOverviewTabHeadingComponent {
-  @Input() cantonShort!: string;
-  @Input() foundTimetableHearingYear!: TimetableHearingYear;
-  @Input() hearingStatus!: HearingStatus;
-  @Input() noActiveTimetableHearingYearFound!: boolean;
-  @Input() noTimetableHearingYearFound!: boolean;
-  @Input() noPlannedTimetableHearingYearFound!: boolean;
+  readonly cantonShort = input.required<string>();
+  readonly foundTimetableHearingYear = input.required<TimetableHearingYear>();
+  readonly hearingStatus = input.required<HearingStatus>();
+  readonly noActiveTimetableHearingYearFound = input.required<boolean>();
+  readonly noTimetableHearingYearFound = input.required<boolean>();
+  readonly noPlannedTimetableHearingYearFound = input.required<boolean>();
 }
 
 const mockTimetableHearingYearsService: Mocked<Pick<TimetableHearingYearInternalService, 'getHearingYears'>> = {
@@ -208,19 +208,14 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
     it('should open dialog on collectingStatusChangeAction()', () => {
       component.selectedItems = [{} as TimetableHearingStatementV2];
-      component.collectingStatusChangeAction({
-        $event: {},
-        value: {},
-      });
+      component.collectingStatusChangeAction({} as StatementStatus);
 
       expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
     });
 
     it('should open dialog on collectingCantonDeliveryAction()', () => {
       component.selectedItems = [{} as TimetableHearingStatementV2];
-      component.collectingCantonDeliveryAction({
-        value: null,
-      } as MatSelectChange);
+      component.collectingCantonDeliveryAction('be');
 
       expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
     });
@@ -394,29 +389,24 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       });
 
       it('should enable status change collecting actions when STATUS_CHANGE is selected', () => {
-        const mockSelectChange = { value: 'STATUS_CHANGE' } as MatSelectChange;
         vi.spyOn(component, 'loadData').mockImplementation(() => {});
-        component.collectingActions(mockSelectChange);
+        component.collectingActions('STATUS_CHANGE');
         expect(component.statusChangeCollectingActionsEnabled).toBe(true);
         expect(component.showCollectingActionButton).toBe(false);
         expect(component.loadData).toHaveBeenCalledTimes(1);
       });
 
       it('should enable canton delivery collecting actions when CANTON_DELIVERY is selected', () => {
-        const mockSelectChange = {
-          value: 'CANTON_DELIVERY',
-        } as MatSelectChange;
         vi.spyOn(component, 'loadData').mockImplementation(() => {});
-        component.collectingActions(mockSelectChange);
+        component.collectingActions('CANTON_DELIVERY');
         expect(component.cantonDeliveryCollectingActionsEnabled).toBe(true);
         expect(component.showCollectingActionButton).toBe(false);
         expect(component.loadData).toHaveBeenCalledTimes(1);
       });
 
       it('should not change state when other value is selected', () => {
-        const mockSelectChange = { value: 'OTHER_ACTION' } as MatSelectChange;
         vi.spyOn(component, 'loadData').mockImplementation(() => {});
-        component.collectingActions(mockSelectChange);
+        component.collectingActions('OTHER_ACTION');
         expect(component.statusChangeCollectingActionsEnabled).toBe(false);
         expect(component.cantonDeliveryCollectingActionsEnabled).toBe(false);
         expect(component.showCollectingActionButton).toBe(true);
@@ -424,34 +414,26 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       });
 
       it('should call loadData only once for STATUS_CHANGE', () => {
-        const mockSelectChange = { value: 'STATUS_CHANGE' } as MatSelectChange;
         vi.spyOn(component, 'loadData').mockImplementation(() => {});
-        component.collectingActions(mockSelectChange);
+        component.collectingActions('STATUS_CHANGE');
         expect(component.loadData).toHaveBeenCalledTimes(1);
       });
 
       it('should call loadData only once for CANTON_DELIVERY', () => {
-        const mockSelectChange = {
-          value: 'CANTON_DELIVERY',
-        } as MatSelectChange;
         vi.spyOn(component, 'loadData').mockImplementation(() => {});
-        component.collectingActions(mockSelectChange);
+        component.collectingActions('CANTON_DELIVERY');
         expect(component.loadData).toHaveBeenCalledTimes(1);
       });
 
       it('should not affect cantonDelivery when STATUS_CHANGE is selected', () => {
-        const mockSelectChange = { value: 'STATUS_CHANGE' } as MatSelectChange;
         vi.spyOn(component, 'loadData').mockImplementation(() => {});
-        component.collectingActions(mockSelectChange);
+        component.collectingActions('STATUS_CHANGE');
         expect(component.cantonDeliveryCollectingActionsEnabled).toBe(false);
       });
 
       it('should not affect statusChange when CANTON_DELIVERY is selected', () => {
-        const mockSelectChange = {
-          value: 'CANTON_DELIVERY',
-        } as MatSelectChange;
         vi.spyOn(component, 'loadData').mockImplementation(() => {});
-        component.collectingActions(mockSelectChange);
+        component.collectingActions('CANTON_DELIVERY');
         expect(component.statusChangeCollectingActionsEnabled).toBe(false);
       });
     });

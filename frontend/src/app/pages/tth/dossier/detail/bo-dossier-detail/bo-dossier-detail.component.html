@@ -10,7 +10,7 @@
           <div class="d-flex">
             <atlas-label-field fieldLabel="TTH.STATEMENT.TOPIC" [required]="true" />
             <div class="col-8 ms-2">
-              <atlas-text-field [formGroup]="dossierForm" controlName="topic" [required]="true"> </atlas-text-field>
+              <atlas-text-field [formGroup]="dossierForm" controlName="topic" [required]="true" />
             </div>
           </div>
         </div>
@@ -23,8 +23,7 @@
             [(selectedStatements)]="selectedStatements"
             [removeOptionEnabled]="dossierForm.enabled"
             [showRemoveOption]="false"
-          >
-          </atlas-statement-select>
+          />
         </div>
 
         <div>
@@ -34,7 +33,7 @@
           <span class="font-base-xl">
             {{ 'TTH.DOSSIER.BO_EXTERNAL_FEEDBACK_HINT' | translate }}
           </span>
-          <atlas-spacer [divider]="true" height="10px"></atlas-spacer>
+          <atlas-spacer [divider]="true" height="10px" />
           <div class="mt-4">
             <atlas-form-date
               [formGroup]="dossierForm"
@@ -42,8 +41,7 @@
               label="TTH.DOSSIER.BO_DEADLINE_TO_ANSWER"
               [required]="false"
               [readonly]="true"
-            >
-            </atlas-form-date>
+            />
           </div>
           <div class="d-flex flex-column col-12 mt-4">
             <span class="font-bold-lg">{{ 'TTH.DOSSIER.INQUIRY_FROM_THE_CANTON' | translate }}</span>
@@ -55,14 +53,18 @@
           <span class="font-bold-xl">
             {{ 'TTH.DOSSIER.BO_EXTERNAL_FEEDBACK_ANSWER' | translate }}
           </span>
-          <atlas-spacer [divider]="true" height="10px"></atlas-spacer>
+          <atlas-spacer [divider]="true" height="10px" />
           <div class="font-regular mt-4 mb-2">
             {{ 'TTH.DOSSIER.BO_EXTERNAL_FEEDBACK_ANSWER_INFO' | translate }}
           </div>
 
           <div class="d-flex flex-column col-12 mb-4">
-            <atlas-form-comment [formGroup]="form" controlName="answerToCanton" [displayLabel]="false" maxChars="5000">
-            </atlas-form-comment>
+            <atlas-form-comment
+              [formGroup]="form"
+              controlName="answerToCanton"
+              [displayLabel]="false"
+              maxChars="5000"
+            />
           </div>
 
           <div class="d-flex flex-column col-6 mt-2">
@@ -82,7 +84,7 @@
           <span class="font-base-xl">
             {{ 'TTH.DOSSIER.INTERNAL_FEEDBACK_HINT' | translate }}
           </span>
-          <atlas-spacer [divider]="true" height="10px"></atlas-spacer>
+          <atlas-spacer [divider]="true" height="10px" />
           <div class="d-flex flex-column col-8 font-regular mt-4 mb-2">
             {{ 'TTH.DOSSIER.INTERNAL_FEEDBACK_INFO' | translate }}
           </div>
@@ -110,8 +112,7 @@
         buttonText="COMMON.BACK_TO_OVERVIEW"
         buttonType="whiteFooterNonEdit"
         wrapperStyleClass="me-3"
-      >
-      </atlas-button>
+      />
     </atlas-detail-footer>
   </atlas-detail-page-container>
 </div>

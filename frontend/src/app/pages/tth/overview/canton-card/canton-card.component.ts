@@ -11,5 +11,6 @@ import { NgOptimizedImage } from '@angular/common';
   providers: [TranslatePipe],
 })
 export class CantonCardComponent {
+
   @Input() canton!: Canton;
 }

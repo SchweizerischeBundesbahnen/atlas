@@ -23,7 +23,7 @@
                 [formGroup]="transportFormGroup"
                 controlName="number"
                 fieldLabel="BODI.TRANSPORT_COMPANIES.NUMBER"
-              ></atlas-text-field>
+              />
             </div>
 
             <div class="d-flex flex-column col-6 pe-3">
@@ -31,7 +31,7 @@
                 [formGroup]="transportFormGroup"
                 controlName="abbreviation"
                 fieldLabel="BODI.TRANSPORT_COMPANIES.ABBREVIATION"
-              ></atlas-text-field>
+              />
             </div>
           </div>
 
@@ -41,14 +41,14 @@
                 [formGroup]="transportFormGroup"
                 controlName="description"
                 fieldLabel="BODI.TRANSPORT_COMPANIES.DESCRIPTION"
-              ></atlas-text-field>
+              />
             </div>
             <div class="d-flex flex-column col-6 pe-3">
               <atlas-text-field
                 [formGroup]="transportFormGroup"
                 controlName="enterpriseId"
                 fieldLabel="BODI.TRANSPORT_COMPANIES.ENTERPRISE_ID"
-              ></atlas-text-field>
+              />
             </div>
           </div>
 
@@ -59,7 +59,7 @@
                 [formGroup]="transportFormGroup"
                 controlName="businessRegisterName"
                 fieldLabel="BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME"
-              ></atlas-text-field>
+              />
             </div>
           </div>
 
@@ -69,7 +69,7 @@
                 [formGroup]="transportFormGroup"
                 controlName="businessRegisterNumber"
                 fieldLabel="BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NUMBER"
-              ></atlas-text-field>
+              />
             </div>
           </div>
         </form>
@@ -77,11 +77,7 @@
         <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
         <div class="col-12 d-flex mt-3">
           <div class="d-flex flex-column col-6">
-            <atlas-form-comment
-              [displayLabel]="false"
-              [formGroup]="transportFormGroup"
-              [required]="false"
-            ></atlas-form-comment>
+            <atlas-form-comment [displayLabel]="false" [formGroup]="transportFormGroup" [required]="false" />
           </div>
         </div>
 
@@ -107,9 +103,8 @@
                   controlName="businessOrganisation"
                   data-cy="businessOrganisation"
                   valueExtraction=""
-                >
-                </atlas-bo-select>
-                <atlas-form-date-range [formGroup]="form" class="col-6"></atlas-form-date-range>
+                />
+                <atlas-form-date-range [formGroup]="form" class="col-6" />
               </form>
             }
           </atlas-relation>
@@ -124,8 +119,7 @@
         buttonDataCy="back-to-overview"
         buttonText="COMMON.BACK_TO_OVERVIEW"
         buttonType="whiteFooterNonEdit"
-      >
-      </atlas-button>
+      />
       <atlas-button
         (buttonClicked)="leaveEditMode()"
         [footerEdit]="editMode"
@@ -133,8 +127,7 @@
         buttonText="COMMON.CANCEL"
         buttonType="whiteFooterEdit"
         wrapperStyleClass="me-3"
-      >
-      </atlas-button>
+      />
       <atlas-button
         (click)="save()"
         [disabled]="!form.dirty"
@@ -143,8 +136,7 @@
         buttonDataCy="save-item"
         buttonText="COMMON.SAVE"
         buttonType="whiteFooterEdit"
-      >
-      </atlas-button>
+      />
     </atlas-detail-footer>
   </atlas-detail-page-container>
 </div>

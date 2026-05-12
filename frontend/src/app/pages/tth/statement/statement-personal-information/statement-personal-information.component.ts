@@ -16,8 +16,8 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
   templateUrl: './statement-personal-information.component.html',
 })
 export class StatementPersonalInformationComponent {
-  form = input.required<FormGroup<StatementDetailFormGroup>>();
-  statement = input<TimetableHearingStatementV2>();
+  readonly form = input.required<FormGroup<StatementDetailFormGroup>>();
+  readonly statement = input<TimetableHearingStatementV2>();
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   get emails(): string {

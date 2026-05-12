@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ReducedPlatformFormGroup } from '../platform-form-group';
 import {
@@ -32,9 +32,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class PlatformReducedFormComponent implements OnInit {
+
   @Input() form!: FormGroup<ReducedPlatformFormGroup>;
-  @Input() meansOfTransport: MeanOfTransport[] = [];
-  @Input() isNew = false;
+  readonly meansOfTransport = input<MeanOfTransport[]>([]);
+  readonly isNew = input(false);
 
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   vehicleAccess = Object.values(VehicleAccessAttributeType);

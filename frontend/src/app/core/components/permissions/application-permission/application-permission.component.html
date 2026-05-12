@@ -9,8 +9,7 @@
         [additionalLabelspace]="0"
         [options]="availableRoles"
         optionTranslateLabelPrefix="COMMON.ROLES."
-      >
-      </atlas-select>
+      />
     </div>
     <div class="role d-flex flex-column justify-content-center font-regular-sm">
       {{ 'PROFILE.ROLE_DESCRIPTION.' + currentRole | translate }}
@@ -18,7 +17,7 @@
   </div>
 
   @if (currentRoleConfig.permissions.restrictions.length > 0) {
-    <atlas-spacer height="20px" [divider]="false"></atlas-spacer>
+    <atlas-spacer height="20px" [divider]="false" />
     <div class="restrictions col-12 d-flex flex-column mb-3">
       <div class="d-flex font-bold-xl">
         {{ 'PROFILE.PERMISSIONS' | translate }}
@@ -36,8 +35,7 @@
               [isSelectAllEnabled]="true"
               controlName="countryRestrictions"
               [formGroup]="permissionsForm"
-            >
-            </atlas-select>
+            />
           </div>
         }
         @if (showBusinessOrganisationRestriction) {
@@ -58,10 +56,7 @@
           >
             @if (form.enabled) {
               <div class="mb-3 bo-select-wrapper" table-button-between>
-                <atlas-bo-select
-                  [controlName]="boFormCtrlName"
-                  [formGroup]="businessOrganisationForm"
-                ></atlas-bo-select>
+                <atlas-bo-select [controlName]="boFormCtrlName" [formGroup]="businessOrganisationForm" />
               </div>
             }
           </atlas-relation>
@@ -76,15 +71,14 @@
             [displayExtractor]="getCantonAbbreviation"
             [options]="SWISS_CANTONS"
             [multiple]="true"
-          >
-          </atlas-select>
+          />
         }
       </div>
     </div>
   }
 
   @if (showSpecialPermissions) {
-    <atlas-spacer height="20px" [divider]="false"></atlas-spacer>
+    <atlas-spacer height="20px" [divider]="false" />
     <div class="special-permissions">
       <div class="d-flex font-bold-xl">
         {{ 'PROFILE.SPECIAL_PERMISSIONS' | translate }}
@@ -92,45 +86,45 @@
       <div class="special-permissions d-flex flex-row">
         @if (showBulkImport) {
           <div class="me-5">
-            <atlas-label-field fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"></atlas-label-field>
+            <atlas-label-field fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU" />
             <atlas-slide-toggle
               [formGroup]="permissionsForm"
               controlName="bulkImportRestriction"
               [disabled]="form.disabled"
-            ></atlas-slide-toggle>
+            />
           </div>
         }
         @if (showNovaTerminationVote) {
           <div class="me-5">
-            <atlas-label-field fieldLabel="USER_ADMIN.NOVA"></atlas-label-field>
+            <atlas-label-field fieldLabel="USER_ADMIN.NOVA" />
             <atlas-slide-toggle
               (toggleChange)="onNovaToggle($event)"
               [formGroup]="permissionsForm"
               controlName="novaTerminationVote"
               [disabled]="form.disabled"
-            ></atlas-slide-toggle>
+            />
           </div>
         }
         @if (showInfoPlusTerminationVote) {
           <div class="me-5">
-            <atlas-label-field fieldLabel="USER_ADMIN.INFO_PLUS"></atlas-label-field>
+            <atlas-label-field fieldLabel="USER_ADMIN.INFO_PLUS" />
             <atlas-slide-toggle
               (toggleChange)="onInfoPlusToggle($event)"
               [formGroup]="permissionsForm"
               controlName="infoPlusTerminationVote"
               [disabled]="form.disabled"
-            ></atlas-slide-toggle>
+            />
           </div>
         }
         @if (showTransportCompanyDossierAnswer) {
           <div class="me-5">
-            <atlas-label-field fieldLabel="USER_ADMIN.TRANSPORT_COMPANY"></atlas-label-field>
+            <atlas-label-field fieldLabel="USER_ADMIN.TRANSPORT_COMPANY" />
             <atlas-slide-toggle
               (toggleChange)="onTransportCompanyDossierToggle($event)"
               [formGroup]="permissionsForm"
               controlName="transportCompanyDossierAnswer"
               [disabled]="form.disabled"
-            ></atlas-slide-toggle>
+            />
           </div>
         }
       </div>

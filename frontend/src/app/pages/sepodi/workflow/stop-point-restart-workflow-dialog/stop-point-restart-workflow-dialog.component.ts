@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   StopPointRestartWorkflowFormGroup,
@@ -39,16 +39,13 @@ import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-
 export class StopPointRestartWorkflowDialogComponent implements OnInit {
   formGroup!: FormGroup<StopPointRestartWorkflowFormGroup>;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA)
-    private readonly data: StopPointRejectWorkflowDialogData,
-    private readonly dialogRef: MatDialogRef<StopPointRestartWorkflowDialogComponent>,
-    private readonly detailHelperService: DetailDialogHelperService,
-    private readonly router: Router,
-    private readonly notificationService: NotificationService,
-    private readonly stopPointWorkflowService: StopPointWorkflowService,
-    private readonly userAdministrationService: UserAdministrationService
-  ) {}
+  private readonly data: StopPointRejectWorkflowDialogData = inject(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<StopPointRestartWorkflowDialogComponent>);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
+  private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  private readonly userAdministrationService = inject(UserAdministrationService);
 
   ngOnInit(): void {
     this.formGroup = StopPointRestartWorkflowFormGroupBuilder.initFormGroup();

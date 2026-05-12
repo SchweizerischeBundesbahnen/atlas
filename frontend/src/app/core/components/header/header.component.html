@@ -16,11 +16,11 @@
     <div class="font-regular-sm">
       <span>Version {{ version }}</span>
       <a href="{{ environmentReleaseNotesUrl }}" target="_blank" rel="noopener">
-        <atlas-form-info-icon infoTitle="Release Notes"></atlas-form-info-icon>
+        <atlas-form-info-icon infoTitle="Release Notes" />
       </a>
       @if (isItWednesday) {
         <div class="d-flex flex-row maintenance-info">
-          <atlas-maintenance-icon></atlas-maintenance-icon>
+          <atlas-maintenance-icon />
           <span class="ms-2 wrap">{{ 'COMMON.MAINTENANCE_WINDOW' | translate }}</span>
         </div>
       }
@@ -31,6 +31,6 @@
       {{ environmentLabel }}
     </span>
   }
-  <atlas-language-switcher class="ms-auto"></atlas-language-switcher>
-  <atlas-user class="ms-4 me-5"></atlas-user>
+  <atlas-language-switcher class="ms-auto" />
+  <atlas-user class="ms-4 me-5" />
 </mat-toolbar>

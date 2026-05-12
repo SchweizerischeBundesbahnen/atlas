@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
@@ -27,17 +27,23 @@ import { Page } from './core/model/page';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { Mocked, vi } from 'vitest';
+import { PageEvent } from '@angular/material/paginator';
+import { UserPermissionProviderService } from './core/components/permissions/application-permission/user-permission-provider-service';
+import {
+  ApplicationPermission,
+  ApplicationPermissionFormGroupBuilder,
+} from './core/components/permissions/form/application-permission-form-group';
 
 @Component({
   selector: 'atlas-switch-version',
   template: '<h1>version switch mock</h1>',
 })
 export class MockSwitchVersionComponent {
-  @Input() records!: Array<Record>;
-  @Input() currentRecord!: Record;
-  @Input() switchDisabled = false;
-  @Input() showStatus = true;
-  @Output() switchVersion = new EventEmitter<number>();
+  readonly records = input.required<Array<Record>>();
+  readonly currentRecord = input.required<Record>();
+  readonly switchDisabled = input(false);
+  readonly showStatus = input(true);
+  readonly switchVersion = output<number>();
 }
 
 @Component({
@@ -45,7 +51,7 @@ export class MockSwitchVersionComponent {
   template: '',
 })
 export class MockInfoIconComponent {
-  @Input() infoTitle = '';
+  readonly infoTitle = input('');
 }
 
 @Component({
@@ -53,11 +59,11 @@ export class MockInfoIconComponent {
   template: '<p>Mock Business Organisation Select Component</p>',
 })
 export class MockBoSelectComponent {
-  @Input() valueExtraction = 'sboid';
-  @Input() controlName!: string;
-  @Input() formModus = true;
-  @Input() formGroup!: FormGroup;
-  @Input() sboidsRestrictions: string[] = [];
+  readonly valueExtraction = input('sboid');
+  readonly controlName = input.required<string>();
+  readonly formModus = input(true);
+  readonly formGroup = input.required<FormGroup>();
+  readonly sboidsRestrictions = input<string[]>([]);
 }
 
 @Component({
@@ -65,31 +71,37 @@ export class MockBoSelectComponent {
   template: '<p>Mock TU Select Component</p>',
 })
 export class MockTuSelectComponent {
-  @Input() valueExtraction = '';
-  @Input() controlName!: string;
-  @Input() formModus = true;
-  @Input() formGroup!: FormGroup;
-  @Output() selectedTransportCompanyChanged = new EventEmitter();
-  @Output() tuSelectionChanged = new EventEmitter<TransportCompany>();
+  readonly valueExtraction = input('');
+  readonly controlName = input.required<string>();
+  readonly formModus = input(true);
+  readonly formGroup = input.required<FormGroup>();
+  readonly selectedTransportCompanyChanged = output();
+  readonly tuSelectionChanged = output<TransportCompany>();
 
   transportCompanies: Observable<TransportCompany[]> = of([]);
 }
+
+@Component({
+  selector: 'atlas-sepodi-geography',
+  template: `<h1>Mock Geography Component</h1>`,
+})
+export class MockGeographyComponent {}
 
 @Component({
   selector: 'atlas-ttfn-select',
   template: '<p>Mock TTFN Select Component</p>',
 })
 export class MockTimetableFieldNumberSelectComponent {
-  @Input() valueExtraction = 'ttfnid';
-  @Input() controlName!: string;
-  @Input() formModus = true;
-  @Input() required = true;
-  @Input() formGroup!: FormGroup;
-  @Input() validOn: Date | undefined = undefined;
-  @Input() disabled!: boolean;
+  readonly valueExtraction = input('ttfnid');
+  readonly controlName = input.required<string>();
+  readonly formModus = input(true);
+  readonly required = input(true);
+  readonly formGroup = input.required<FormGroup>();
+  readonly validOn = input<Date>();
+  readonly disabled = input.required<boolean>();
 
-  @Output() selectedTimetableFieldNumberChanged = new EventEmitter();
-  @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
+  readonly selectedTimetableFieldNumberChanged = output();
+  readonly ttfnSelectionChanged = output<TimetableFieldNumber>();
 }
 
 @Component({
@@ -97,26 +109,26 @@ export class MockTimetableFieldNumberSelectComponent {
   template: '<p>Mock Select Component</p>',
 })
 export class MockSelectComponent {
-  @Input() label: string | undefined;
-  @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
-  @Input() optionTranslateLabelPrefix: string | undefined;
-  @Input() additionalLabelspace = true;
-  @Input() required = false;
-  @Input() multiple = false;
-  @Input() dataCy!: string;
-  @Input() controlName: string | null = null;
-  @Input() formGroup!: FormGroup;
-  @Input() options = [];
+  readonly label = input<string>();
+  readonly placeHolderLabel = input('FORM.DROPDOWN_PLACEHOLDER');
+  readonly optionTranslateLabelPrefix = input<string>();
+  readonly additionalLabelspace = input(true);
+  readonly required = input(false);
+  readonly multiple = input(false);
+  readonly dataCy = input.required<string>();
+  readonly controlName = input<string | null>(null);
+  readonly formGroup = input.required<FormGroup>();
+  readonly options = input([]);
   /* eslint-disable  @typescript-eslint/no-explicit-any */
-  @Input() optionsGroup?: any[] = [];
+  readonly optionsGroup = input<any[] | undefined>([]);
   /* eslint-disable  @typescript-eslint/no-explicit-any */
-  @Input() value: any;
-  @Input() valueExtractor: any;
-  @Input() displayExtractor: any;
+  readonly value = input<any>();
+  readonly valueExtractor = input<any>();
+  readonly displayExtractor = input<any>();
   /* eslint-enable  @typescript-eslint/no-explicit-any */
-  @Input() disabled = false;
-  @Input() isOptional = false;
-  @Output() selectChanged = new EventEmitter();
+  readonly disabled = input(false);
+  readonly isOptional = input(false);
+  readonly selectChanged = output();
 }
 
 @Component({
@@ -124,20 +136,20 @@ export class MockSelectComponent {
   template: '<p>Mock Table Component</p>',
 })
 export class MockTableComponent<DATATYPE> {
-  @Input() tableData: DATATYPE[] = [];
-  @Input() tableFilterConfig: TableFilter<unknown>[][] = [];
-  @Input() tableColumns!: TableColumn<DATATYPE>[];
-  @Input() canEdit = true;
-  @Input() totalCount!: number;
-  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
-  @Input() sortingDisabled = false;
-  @Input() showTableFilter = true;
-  @Input() checkBoxModeEnabled = false;
-  @Input() showPaginator = true;
+  readonly tableData = input<DATATYPE[]>([]);
+  readonly tableFilterConfig = input<TableFilter<unknown>[][]>([]);
+  readonly tableColumns = input.required<TableColumn<DATATYPE>[]>();
+  readonly canEdit = input(true);
+  readonly totalCount = input.required<number>();
+  readonly pageSizeOptions = input<number[]>([5, 10, 25, 100]);
+  readonly sortingDisabled = input(false);
+  readonly showTableFilter = input(true);
+  readonly checkBoxModeEnabled = input(false);
+  readonly showPaginator = input(true);
 
-  @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatementV2>(true, []);
-  @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
+  readonly checkBoxSelection = input(new SelectionModel<TimetableHearingStatementV2>(true, []));
+  readonly editElementEvent = output<DATATYPE>();
+  readonly getTableElementsEvent = output<TablePagination>();
 }
 
 @Component({
@@ -145,19 +157,19 @@ export class MockTableComponent<DATATYPE> {
   template: '',
 })
 export class MockAtlasButtonComponent {
-  @Input() applicationType!: ApplicationType;
-  @Input() businessOrganisation!: string;
-  @Input() businessOrganisations: string[] = [];
-  @Input() canton!: string;
-  @Input() uicCountryCode?: number;
-  @Input() disabled!: boolean;
+  readonly applicationType = input.required<ApplicationType>();
+  readonly businessOrganisation = input.required<string>();
+  readonly businessOrganisations = input<string[]>([]);
+  readonly canton = input.required<string>();
+  readonly uicCountryCode = input<number>();
+  readonly disabled = input.required<boolean>();
 
-  @Input() wrapperStyleClass!: string;
-  @Input() buttonDataCy!: string;
-  @Input() buttonType!: AtlasButtonType;
-  @Input() footerEdit = false;
-  @Input() submitButton!: boolean;
-  @Input() buttonText!: string;
+  readonly wrapperStyleClass = input.required<string>();
+  readonly buttonDataCy = input.required<string>();
+  readonly buttonType = input.required<AtlasButtonType>();
+  readonly footerEdit = input(false);
+  readonly submitButton = input.required<boolean>();
+  readonly buttonText = input.required<string>();
 }
 
 @Component({
@@ -165,7 +177,7 @@ export class MockAtlasButtonComponent {
   template: '',
 })
 export class MockUserDetailInfoComponent {
-  @Input() record!: CreationEditionRecord;
+  readonly record = input.required<CreationEditionRecord>();
 }
 
 @Component({
@@ -173,10 +185,10 @@ export class MockUserDetailInfoComponent {
   template: '',
 })
 export class MockAtlasFieldErrorComponent {
-  @Input() controlName!: string;
-  @Input() form: FormGroup = new FormGroup({});
-  @Input() control!: FormControl;
-  @Input() customError!: AtlasFieldCustomError;
+  readonly controlName = input.required<string>();
+  readonly form = input<FormGroup>(new FormGroup({}));
+  readonly control = input.required<FormControl>();
+  readonly customError = input.required<AtlasFieldCustomError>();
 }
 
 @Component({
@@ -185,10 +197,10 @@ export class MockAtlasFieldErrorComponent {
   template: '',
 })
 export class MockMatPaginatorComponent {
-  @Input() pageSizeOptions?: number[];
-  @Input() length?: number;
+  readonly pageSizeOptions = input<number[]>();
+  readonly length = input<number>();
 
-  @Output() page = new EventEmitter();
+  readonly page = output<Pick<PageEvent, 'pageSize' | 'pageIndex'>>();
 }
 
 @Component({
@@ -196,11 +208,11 @@ export class MockMatPaginatorComponent {
   template: '',
 })
 export class MockAtlasLabelFieldComponent {
-  @Input() required!: boolean;
-  @Input() fieldLabel!: string;
-  @Input() infoIconTitle!: string;
-  @Input() infoIconLink!: string;
-  @Input() fieldExamples!: Array<FieldExample>;
+  readonly required = input.required<boolean>();
+  readonly fieldLabel = input.required<string>();
+  readonly infoIconTitle = input.required<string>();
+  readonly infoIconLink = input.required<string>();
+  readonly fieldExamples = input.required<Array<FieldExample>>();
 }
 
 @Component({
@@ -208,10 +220,10 @@ export class MockAtlasLabelFieldComponent {
   template: '<h1>MockNavigationSepodiPrmComponent</h1>',
 })
 export class MockNavigationSepodiPrmComponent {
-  @Input() targetPage!: TargetPageType;
-  @Input() sloid?: string;
-  @Input() number?: number;
-  @Input() parentSloid?: string;
+  readonly targetPage = input.required<TargetPageType>();
+  readonly sloid = input<string>();
+  readonly number = input<number>();
+  readonly parentSloid = input<string>();
 }
 
 @Component({
@@ -219,8 +231,8 @@ export class MockNavigationSepodiPrmComponent {
   template: '<h1>MockPrmRecordingObligationComponent</h1>',
 })
 export class MockPrmRecordingObligationComponent {
-  @Input() sloid!: string;
-  @Input() showToggle = true;
+  readonly sloid = input.required<string>();
+  readonly showToggle = input(true);
 }
 
 export type ActivatedRouteMockType = {
@@ -283,4 +295,20 @@ export const translateServiceProvider = provideTranslateService({
   }),
 });
 
-// Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
+export class MockUserPermissionProviderService extends UserPermissionProviderService {
+  applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
+
+  getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
+    return this.applicationPermissionFormGroup;
+  }
+
+  showAllSpecialPermissions(): boolean {
+    return false;
+  }
+
+  loadFormGroup(): void {
+    const formGroup = ApplicationPermissionFormGroupBuilder.buildFormGroup();
+    formGroup.controls.application.setValue(ApplicationType.Ttfn);
+    this.applicationPermissionFormGroup = formGroup;
+  }
+}

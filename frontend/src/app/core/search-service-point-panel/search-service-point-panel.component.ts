@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { ServicePointSearchType } from '../search-service-point/service-point-search';
 import { NgClass } from '@angular/common';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
@@ -27,8 +27,8 @@ export const SearchNavigationType = {
   ],
 })
 export class SearchServicePointPanelComponent {
-  @Input() searchType!: ServicePointSearchType;
-  @Output() toggleEvent = new EventEmitter<boolean>();
+  readonly searchType = input.required<ServicePointSearchType>();
+  readonly toggleEvent = output<void>();
 
   private _showSearchPanel = true;
   private _searchNavigationType: SearchNavigationType = 'SEARCH';

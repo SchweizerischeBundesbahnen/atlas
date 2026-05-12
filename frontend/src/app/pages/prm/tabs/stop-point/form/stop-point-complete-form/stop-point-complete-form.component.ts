@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, input, OnInit } from '@angular/core';
 import { StopPointDetailFormGroup, StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
 import { BooleanOptionalAttributeType, MeanOfTransport, StandardAttributeType } from '../../../../../../api';
 import { TranslationSortingService } from '../../../../../../core/translation/translation-sorting.service';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
 import { PrmVariantInfoService } from '../../prm-variant-info.service';
 import { MeansOfTransportPickerComponent } from '../../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -32,20 +31,19 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe, TranslationSortingService],
 })
 export class StopPointCompleteFormComponent implements OnInit {
+
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
-  @Input() selectedMeansOfTransport!: MeanOfTransport[];
-  @Input() isNew = false;
+  readonly selectedMeansOfTransport = input<MeanOfTransport[]>();
+  readonly isNew = input(false);
   standardAttributeTypes: string[] = [];
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   meansOfTransportToShow: MeanOfTransport[] | undefined;
 
-  constructor(
-    private readonly translationSortingService: TranslationSortingService,
-    private readonly prmVariantInfoService: PrmVariantInfoService
-  ) {}
+  private readonly translationSortingService = inject(TranslationSortingService);
+  private readonly prmVariantInfoService = inject(PrmVariantInfoService);
 
   ngOnInit(): void {
-    if (this.isNew) {
+    if (this.isNew()) {
       this.initForm();
     }
     this.meansOfTransportToShow = this.prmVariantInfoService.getPrmMeansOfTransportToShow(
@@ -60,7 +58,7 @@ export class StopPointCompleteFormComponent implements OnInit {
   }
 
   private populateCompleteForm() {
-    this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
+    this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport());
     StopPointFormGroupBuilder.populateDropdownsForCompleteWithDefaultValue(this.form);
   }
 
@@ -71,23 +69,24 @@ export class StopPointCompleteFormComponent implements OnInit {
     );
   };
 
-  updateRelatedFieldsContent(selectedAssistanceRequestFulfilled: MatSelectChange) {
-    if (this.isNew) {
-      if (selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.Yes) {
+  updateRelatedFieldsContent(selectedAssistanceRequestFulfilled: BooleanOptionalAttributeType) {
+    const isNew = this.isNew();
+    if (isNew) {
+      if (selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.Yes) {
         this.form.controls.assistanceService.setValue(StandardAttributeType.NotApplicable);
         this.form.controls.assistanceAvailability.setValue(StandardAttributeType.NotApplicable);
       }
       if (
-        selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.No ||
-        selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.ToBeCompleted
+        selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.No ||
+        selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.ToBeCompleted
       ) {
         this.form.controls.assistanceService.setValue(StandardAttributeType.ToBeCompleted);
         this.form.controls.assistanceAvailability.setValue(StandardAttributeType.ToBeCompleted);
       }
     } else if (
-      !this.isNew &&
-      (selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.No ||
-        selectedAssistanceRequestFulfilled.value === BooleanOptionalAttributeType.ToBeCompleted)
+      !isNew &&
+      (selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.No ||
+        selectedAssistanceRequestFulfilled === BooleanOptionalAttributeType.ToBeCompleted)
     ) {
       this.form.controls.assistanceService.setValue(StandardAttributeType.ToBeCompleted);
       this.form.controls.assistanceAvailability.setValue(StandardAttributeType.ToBeCompleted);

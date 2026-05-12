@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ContactPointFormGroup } from '../contact-point-form-group';
 import { ContactPointType, StandardAttributeType } from '../../../../../../../api';
@@ -22,8 +22,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ContactPointFormComponent {
+
   @Input() form!: FormGroup<ContactPointFormGroup>;
-  @Input() isNew = false;
+  readonly isNew = input(false);
 
   standardAttributeType = Object.values(StandardAttributeType);
   types = Object.values(ContactPointType);

@@ -9,17 +9,13 @@
       [stopPoint]="stopPoint"
       [oldDesignation]="oldDesignation"
       [currentWorkflow]="workflow"
-    ></atlas-stop-point-workflow-detail-form>
+    />
 
     <div class="mt-5">
       <div class="font-bold-base">
         {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.APPLICANT' | translate }}
       </div>
-      <atlas-user-detail-info
-        [record]="workflow"
-        [showEditor]="false"
-        [applicationType]="'SEPODI'"
-      ></atlas-user-detail-info>
+      <atlas-user-detail-info [record]="workflow" [showEditor]="false" [applicationType]="'SEPODI'" />
     </div>
   </atlas-detail-page-content>
 
@@ -31,8 +27,7 @@
       buttonText="COMMON.BACK_TO_OVERVIEW"
       buttonType="whiteFooterNonEdit"
       wrapperStyleClass="me-3"
-    >
-    </atlas-button>
+    />
     @if (isAtLeastSupervisor && workflow.status === WorkflowStatus.Added) {
       <atlas-button
         [footerEdit]="form.disabled"
@@ -41,8 +36,7 @@
         buttonText="COMMON.EDIT"
         buttonType="whiteFooterEdit"
         wrapperStyleClass="me-3"
-      >
-      </atlas-button>
+      />
     }
     @if (isAtLeastSupervisor && workflow.status === WorkflowStatus.Hearing) {
       <atlas-button
@@ -52,8 +46,7 @@
         buttonText="COMMON.EDIT"
         buttonType="whiteFooterEdit"
         wrapperStyleClass="me-3"
-      >
-      </atlas-button>
+      />
     }
     <atlas-button
       [footerEdit]="(isFormEnabled$ | async) ?? false"
@@ -62,8 +55,7 @@
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="me-3"
-    >
-    </atlas-button>
+    />
     <atlas-button
       (click)="save()"
       [footerEdit]="(isFormEnabled$ | async) ?? false"
@@ -73,8 +65,7 @@
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="me-3"
-    >
-    </atlas-button>
+    />
     @if (workflow.status === WorkflowStatus.Added && form.disabled) {
       <atlas-button
         buttonDataCy="start-wf"
@@ -82,8 +73,7 @@
         buttonType="supervisorButton"
         applicationType="SEPODI"
         (buttonClicked)="startWorkflow()"
-      >
-      </atlas-button>
+      />
       <atlas-button
         buttonDataCy="reject-wf"
         buttonText="WORKFLOW.BUTTON.REJECT"
@@ -91,8 +81,7 @@
         applicationType="SEPODI"
         wrapperStyleClass="ms-3"
         (buttonClicked)="rejectWorkflow()"
-      >
-      </atlas-button>
+      />
     }
     @if (workflow.status === WorkflowStatus.Hearing) {
       <atlas-button
@@ -102,8 +91,7 @@
         applicationType="SEPODI"
         wrapperStyleClass="me-3"
         (buttonClicked)="cancelWorkflow()"
-      >
-      </atlas-button>
+      />
       <atlas-button
         buttonDataCy="restart-wf"
         buttonText="WORKFLOW.BUTTON.RESTART"
@@ -111,16 +99,14 @@
         wrapperStyleClass="me-3"
         applicationType="SEPODI"
         (buttonClicked)="restartWorkflow()"
-      >
-      </atlas-button>
+      />
       <atlas-button
         [footerEdit]="form.enabled"
         buttonDataCy="decide-btn"
         buttonText="WORKFLOW.BUTTON.DECIDE"
         buttonType="whiteFooterNonEdit"
         (buttonClicked)="openDecisionDialog()"
-      >
-      </atlas-button>
+      />
     }
   </atlas-detail-footer>
 </atlas-detail-page-container>

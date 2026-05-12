@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
@@ -10,7 +10,6 @@ import { TableService } from '../../../../core/components/table/table.service';
 import { Pages } from '../../../pages';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
-
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
@@ -22,6 +21,10 @@ import { ContactPointInternalService } from '../../../../api/service/prm/contact
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
 export class ContactPointTableComponent extends BasePrmTabComponentService implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly contactPointInternalService = inject(ContactPointInternalService);
+  private readonly tableService = inject(TableService);
+
   tableColumns: TableColumn<ContactPointOverview>[] = [
     { headerTitle: 'PRM.CONTACT_POINTS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
@@ -47,13 +50,8 @@ export class ContactPointTableComponent extends BasePrmTabComponentService imple
   totalCount = 0;
   contactPoints: ContactPointOverview[] = [];
 
-  constructor(
-    protected readonly router: Router,
-    private route: ActivatedRoute,
-    private readonly contactPointInternalService: ContactPointInternalService,
-    private tableService: TableService
-  ) {
-    super(router);
+  constructor() {
+    super(inject(Router));
   }
 
   ngOnInit(): void {

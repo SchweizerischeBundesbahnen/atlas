@@ -5,13 +5,14 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AtlasLabelFieldComponent } from '@atlas/form';
+import { inputBinding } from '@angular/core';
 
 describe('AtlasLabelFieldComponent', () => {
   let component: AtlasLabelFieldComponent;
   let fixture: ComponentFixture<AtlasLabelFieldComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       providers: [
         provideTranslateService({
           loader: provideTranslateHttpLoader({
@@ -22,9 +23,12 @@ describe('AtlasLabelFieldComponent', () => {
           }),
         }),
       ],
-    }).compileComponents();
+    });
 
-    fixture = TestBed.createComponent(AtlasLabelFieldComponent);
+    const fieldLabelInputName: keyof AtlasLabelFieldComponent = 'fieldLabel';
+    fixture = TestBed.createComponent(AtlasLabelFieldComponent, {
+      bindings: [inputBinding(fieldLabelInputName, () => 'test label')],
+    });
     component = fixture.componentInstance;
   });
 

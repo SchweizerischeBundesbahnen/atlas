@@ -4,18 +4,18 @@
   </div>
   <div class="font-xl mb-2">
     <span data-cy="total-range">
-      <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
+      <atlas-date-range-text [dateRange]="maxValidity" />
     </span>
   </div>
   <div class="d-flex flex-row mb-3">
-    <atlas-sloid-container [sloid]="selectedVersion.sloid!"></atlas-sloid-container>
+    <atlas-sloid-container [sloid]="selectedVersion.sloid!" />
     <div class="d-flex flex-column ms-5" data-cy="selected-version-number">
       <div class="font-bold-base">
         {{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }}
       </div>
       <div class="d-flex"
         >{{ selectedVersion.number | splitServicePointNumber }}
-        <atlas-clipboard [value]="selectedVersion.number!.number.toString()" [showMe]="true"></atlas-clipboard>
+        <atlas-clipboard [value]="selectedVersion.number!.number.toString()" [showMe]="true" />
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@
   </nav>
   <div class="tab-content">
     <mat-tab-nav-panel #tabPanel>
-      <router-outlet></router-outlet>
+      <router-outlet />
     </mat-tab-nav-panel>
   </div>
 </atlas-detail-page-container>

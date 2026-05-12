@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, inject, Input, input } from '@angular/core';
 import { NotificationService } from '../../notification/notification.service';
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -12,9 +12,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AtlasClipboardComponent {
   @Input() value: string | undefined;
-  @Input() showMe = true;
+  readonly showMe = input(true);
 
-  constructor(private notificationService: NotificationService) {}
+  private readonly notificationService = inject(NotificationService);
 
   @HostListener('click')
   onClick() {

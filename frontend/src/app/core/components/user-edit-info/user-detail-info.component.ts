@@ -19,9 +19,9 @@ import { UserOpenInMailComponent } from '../user-open-in-mail/user-open-in-mail.
   providers: [TranslatePipe],
 })
 export class UserDetailInfoComponent {
-  short = input(false);
-  showEditor = input(true);
-  applicationType = input<ApplicationType>();
+  readonly short = input(false);
+  readonly showEditor = input(true);
+  readonly applicationType = input<ApplicationType>();
 
   private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
 

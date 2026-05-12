@@ -1,4 +1,11 @@
-import { ApplicationConfig, enableProdMode, ErrorHandler, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  enableProdMode,
+  ErrorHandler,
+  importProvidersFrom,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 import { CoreModule } from './core/module/core.module';
 import { DateModule } from './core/module/date.module';
 import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
@@ -14,13 +21,13 @@ import { environment } from '../environments/environment';
 import { provideServiceWorker } from '@angular/service-worker';
 import { GlobalErrorHandler } from './core/configuration/global-error-handler';
 import { ServerErrorInterceptor } from './core/configuration/server-error-interceptor';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslatedPaginator } from './core/components/table/translated-paginator';
 import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
 import { authInterceptor, provideAuth, withAppInitializerAuthCheck } from 'angular-auth-oidc-client';
+import { ServiceWorkerService } from './service-worker.service';
 
 if (environment.production) {
   enableProdMode();
@@ -51,7 +58,6 @@ export const appConfig: ApplicationConfig = {
       useClass: ServerErrorInterceptor,
       multi: true,
     },
-    provideAnimations(),
     provideServiceWorker('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
@@ -60,5 +66,8 @@ export const appConfig: ApplicationConfig = {
     }),
     provideHttpClient(withFetch(), withInterceptorsFromDi(), withInterceptors([authInterceptor()])),
     provideAuth(environment.authConfig, withAppInitializerAuthCheck()),
+    provideAppInitializer(() => {
+      inject(ServiceWorkerService);
+    }),
   ],
 };

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatCalendarHeader, MatDatepicker } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment/moment';
 import { TimetableYearChangeInternalService } from '../../../../api/service/lidi/timetable-year-change-internal.service';
@@ -12,10 +12,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatButton, MatCalendarHeader, TranslatePipe],
 })
 export class TodayAndFutureTimetableHeaderComponent {
-  constructor(
-    private timetableYearChangeService: TimetableYearChangeInternalService,
-    private datepicker: MatDatepicker<Moment>
-  ) {}
+  private readonly timetableYearChangeService = inject(TimetableYearChangeInternalService);
+  private readonly datepicker = inject(MatDatepicker<Moment>);
 
   selectToday() {
     this.selectPredefinedDate(moment());

@@ -3,10 +3,10 @@
     <atlas-means-of-transport-picker
       [formGroup]="form"
       controlName="meansOfTransport"
-      [disabled]="isNew || !form.enabled"
+      [disabled]="isNew() || !form.enabled"
       [showInfo]="true"
       [meansOfTransportToShow]="meansOfTransportToShow"
-    ></atlas-means-of-transport-picker>
+    />
   </div>
 </div>
 <div class="col-12 d-flex mt-4">
@@ -17,10 +17,10 @@
       info="PRM.STOP_POINTS.FORM.FREE_TEXT_INFO"
       controlName="freeText"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
 </div>
 <div class="font-bold-2xl mt-3">{{ 'FORM.KEY_DATA' | translate }}</div>
 <div class="col-6 pb-3">
-  <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
+  <atlas-form-date-range [formGroup]="form" />
 </div>

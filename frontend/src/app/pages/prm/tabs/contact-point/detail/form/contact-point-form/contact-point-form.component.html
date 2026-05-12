@@ -9,8 +9,7 @@
       optionTranslateLabelPrefix="PRM.CONTACT_POINTS.TYPES."
       [options]="types"
       [additionalLabelspace]="0"
-    >
-    </atlas-select>
+    />
   </div>
 </div>
 
@@ -28,8 +27,7 @@
       [formGroup]="form"
       controlName="designation"
       fieldLabel="PRM.CONTACT_POINTS.DESIGNATION"
-    >
-    </atlas-text-field>
+    />
   </div>
 </div>
 
@@ -37,7 +35,7 @@
   <h2 class="font-bold-2xl color-gray-900">
     {{ 'FORM.KEY_DATA' | translate }}
   </h2>
-  <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
+  <atlas-form-date-range [formGroup]="form" />
 </div>
 
 <h2 class="font-bold-2xl color-gray-900 mt-3">
@@ -54,8 +52,7 @@
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="standardAttributeType"
       [additionalLabelspace]="0"
-    >
-    </atlas-select>
+    />
   </div>
   <div class="d-flex flex-column col-6 ps-3">
     <atlas-select
@@ -67,8 +64,7 @@
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="standardAttributeType"
       [additionalLabelspace]="0"
-    >
-    </atlas-select>
+    />
   </div>
 </div>
 
@@ -80,7 +76,7 @@
       info="PRM.CONTACT_POINTS.OPENING_HOURS_INFO"
       controlName="openingHours"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
 </div>
 
@@ -91,6 +87,6 @@
       label="PRM.CONTACT_POINTS.ADDITIONAL_INFORMATION"
       controlName="additionalInformation"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
 </div>

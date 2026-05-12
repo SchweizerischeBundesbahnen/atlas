@@ -7,10 +7,8 @@ import { ReferencePointService } from '../../../../../../api/service/prm/referen
 
 @Injectable({ providedIn: 'root' })
 export class PrmReferencePointResolver {
-  constructor(
-    private readonly referencePointService: ReferencePointService,
-    private readonly router: Router
-  ) {}
+  private readonly referencePointService = inject(ReferencePointService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadReferencePointVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';

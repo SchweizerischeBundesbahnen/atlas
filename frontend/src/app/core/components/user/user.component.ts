@@ -17,15 +17,15 @@ import { Pages } from '../../../pages/pages';
   providers: [TranslatePipe],
 })
 export class UserComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
+
   user: User | undefined;
   userName: string | undefined;
   isLoggedIn = false;
   isAdmin = false;
   permissions: Permission[] | undefined;
-
-  router = inject(Router);
-  userService = inject(UserService);
-  authService = inject(AuthService);
 
   ngOnInit(): void {
     this.userService.userChanged.subscribe(() => this.init());

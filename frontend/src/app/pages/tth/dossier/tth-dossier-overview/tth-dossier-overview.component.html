@@ -9,11 +9,7 @@
     data-cy="tthTable"
   >
     <ng-template #customCell let-row let-column="column">
-      <atlas-tth-dossier-overview-menu
-        [row]="row"
-        [column]="column"
-        [hearingStatus]="hearingStatus()"
-      ></atlas-tth-dossier-overview-menu>
+      <atlas-tth-dossier-overview-menu [row]="row" [column]="column" [hearingStatus]="hearingStatus()" />
     </ng-template>
     <div class="d-flex flex-row col-12 mb-3 mt-5">
       @if (isHearingYearActive() && isSwissCanton()) {

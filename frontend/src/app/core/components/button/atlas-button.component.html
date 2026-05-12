@@ -1,15 +1,15 @@
 @if (isButtonVisible()) {
-  <div [ngClass]="wrapperStyleClass + ' btn-' + buttonType">
+  <div [ngClass]="wrapperStyleClass() + ' btn-' + buttonType()">
     <button
       (click)="buttonClicked.emit()"
       [class]="getButtonStyleClass()"
-      [disabled]="disabled"
-      [type]="submitButton ? 'submit' : 'button'"
-      [attr.data-cy]="buttonDataCy"
-      title="{{ title | translate }}"
+      [disabled]="disabled()"
+      [type]="submitButton() ? 'submit' : 'button'"
+      [attr.data-cy]="buttonDataCy()"
+      [title]="title() | translate"
     >
-      {{ buttonText | translate }}
-      <ng-container #rightIcon *ngTemplateOutlet="rightIcon"></ng-container>
+      {{ buttonText() | translate }}
+      <ng-container #rightIcon *ngTemplateOutlet="rightIcon" />
     </button>
   </div>
 }

@@ -1,9 +1,9 @@
-import { Directive, EventEmitter, HostBinding, HostListener, Output } from '@angular/core';
+import { Directive, HostBinding, HostListener, output } from '@angular/core';
 
 @Directive({ selector: '[atlasFileDrop]' })
 export class FileDropDirective {
   @HostBinding('class.fileover') fileOver!: boolean;
-  @Output() filesDropped = new EventEmitter<FileList>();
+  readonly filesDropped = output<FileList>();
 
   @HostListener('dragover', ['$event']) onDragOver(dragEvent: DragEvent) {
     dragEvent.preventDefault();

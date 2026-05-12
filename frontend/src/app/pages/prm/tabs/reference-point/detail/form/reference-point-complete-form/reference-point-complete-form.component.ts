@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CompleteReferencePointFormGroup } from '../reference-point-form-group';
 import { ReferencePointAttributeType } from '../../../../../../../api';
@@ -29,8 +29,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class ReferencePointCompleteFormComponent {
+
   @Input() form!: FormGroup<CompleteReferencePointFormGroup>;
-  @Input() isNew = false;
+  readonly isNew = input(false);
 
   referencePointTypes = Object.values(ReferencePointAttributeType);
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../../../core/versioning/date-range';
@@ -24,7 +24,7 @@ export class ContactPointDetailPanelComponent implements OnInit {
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
 
-  constructor(private route: ActivatedRoute) {}
+  private readonly route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {

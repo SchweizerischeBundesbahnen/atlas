@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { ReferencePointFormGroupBuilder } from './form/reference-point-form-group';
 import { DateRange } from '../../../../../core/versioning/date-range';
@@ -53,9 +53,7 @@ export class ReferencePointDetailComponent
   businessOrganisations: string[] = [];
   protected readonly nbrOfBackPaths = 1;
 
-  constructor(private readonly referencePointService: ReferencePointService) {
-    super();
-  }
+  private readonly referencePointService = inject(ReferencePointService);
 
   ngOnInit(): void {
     this.initSePoDiData();

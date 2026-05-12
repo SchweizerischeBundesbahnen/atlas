@@ -1,9 +1,6 @@
 <div class="tab-detail-container">
   @if (isNew) {
-    <atlas-create-stop-point
-      [form]="form"
-      [isAuthorizedToCreateStopPoint]="isAuthorizedToCreateStopPoint"
-    ></atlas-create-stop-point>
+    <atlas-create-stop-point [form]="form" [isAuthorizedToCreateStopPoint]="isAuthorizedToCreateStopPoint" />
   }
   @if (!isNew) {
     <div class="col-12 d-flex mt-3 flex-row">
@@ -16,13 +13,10 @@
               [records]="stopPointVersions"
               [switchDisabled]="isSwitchVersionDisabled"
               [showStatus]="false"
-            ></atlas-switch-version>
+            />
           }
         </div>
-        <atlas-navigation-sepodi-prm
-          [number]="selectedVersion.number.number"
-          targetPage="service-point"
-        ></atlas-navigation-sepodi-prm>
+        <atlas-navigation-sepodi-prm [number]="selectedVersion.number.number" targetPage="service-point" />
       </div>
     </div>
     <div class="col-12 d-flex mt-5">
@@ -38,18 +32,18 @@
     </div>
     @if (isReduced) {
       <div>
-        <atlas-stop-point-reduced-form [form]="form"></atlas-stop-point-reduced-form>
+        <atlas-stop-point-reduced-form [form]="form" />
       </div>
     }
     @if (!isReduced) {
       <div>
-        <atlas-stop-point-complete-form [form]="form"></atlas-stop-point-complete-form>
+        <atlas-stop-point-complete-form [form]="form" />
       </div>
     }
     <div>
-      <mat-divider class="mt-4 mb-4"></mat-divider>
+      <mat-divider class="mt-4 mb-4" />
       @if (!isNew) {
-        <atlas-user-detail-info [applicationType]="'PRM'" [record]="selectedVersion"></atlas-user-detail-info>
+        <atlas-user-detail-info [applicationType]="'PRM'" [record]="selectedVersion" />
       }
     </div>
   }
@@ -61,8 +55,7 @@
     buttonType="whiteFooterNonEdit"
     (buttonClicked)="backToSearchPrm()"
     [footerEdit]="(isFormEnabled$ | async) ?? false"
-  >
-  </atlas-button>
+  />
   @if (!isNew) {
     @if ((isFormEnabled$ | async) === false) {
       <atlas-button
@@ -73,7 +66,7 @@
         buttonText="COMMON.EDIT"
         buttonType="edit-service-point-dependent"
         wrapperStyleClass="ms-3"
-      ></atlas-button>
+      />
     }
     <atlas-button
       [footerEdit]="(isFormEnabled$ | async) ?? false"
@@ -82,7 +75,7 @@
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
   }
   @if (form) {
     <atlas-button
@@ -94,7 +87,6 @@
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
+    />
   }
 </atlas-detail-footer>

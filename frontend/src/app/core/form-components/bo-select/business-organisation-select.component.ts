@@ -1,14 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BusinessOrganisation } from '../../../api';
@@ -24,15 +14,15 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
   imports: [SearchSelectComponent, ReactiveFormsModule, AtlasLabelFieldComponent, BoSelectionDisplayPipe],
 })
 export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() valueExtraction = 'sboid';
-  @Input() controlName!: string;
-  @Input() formModus = true;
-  @Input() formGroup!: FormGroup;
-  @Input() sboidsRestrictions: string[] = [];
-  @Input() disabled = false;
+  readonly valueExtraction = input('sboid');
+  readonly controlName = input.required<string>();
+  readonly formModus = input(true);
+  readonly formGroup = input.required<FormGroup>();
+  readonly sboidsRestrictions = input<string[]>([]);
+  readonly disabled = input(false);
 
-  @Output() selectedBusinessOrganisationChanged = new EventEmitter();
-  @Output() boSelectionChanged = new EventEmitter<BusinessOrganisation>();
+  readonly selectedBusinessOrganisationChanged = output();
+  readonly boSelectionChanged = output<BusinessOrganisation>();
 
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
   private formSubscription!: Subscription;
@@ -53,7 +43,7 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   }
 
   init() {
-    const boControl = this.formGroup.get(this.controlName)!;
+    const boControl = this.formGroup().get(this.controlName())!;
     this.formSubscription = boControl.valueChanges.subscribe((change) => {
       this.selectedBusinessOrganisationChanged.emit(change);
       this.searchBusinessOrganisation(change);
@@ -67,7 +57,7 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
       this.businessOrganisations = this.businessOrganisationService
         .getAllBusinessOrganisations(
           [searchString],
-          this.sboidsRestrictions,
+          this.sboidsRestrictions(),
           undefined,
           undefined,
           undefined,

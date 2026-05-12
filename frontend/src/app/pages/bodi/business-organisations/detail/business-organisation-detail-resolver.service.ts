@@ -7,10 +7,8 @@ import { BusinessOrganisationService } from '../../../../api/service/bodi/busine
 
 @Injectable({ providedIn: 'root' })
 export class BusinessOrganisationDetailResolver {
-  constructor(
-    private readonly businessOrganisationService: BusinessOrganisationService,
-    private readonly router: Router
-  ) {}
+  private readonly businessOrganisationService = inject(BusinessOrganisationService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<BusinessOrganisationVersion>> {
     const idParameter = route.paramMap.get('id') || '';

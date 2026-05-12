@@ -13,24 +13,11 @@ import {
   StopPointType,
   SwissCanton,
 } from '../../../../../api';
-import { EventEmitter } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { EMPTY, firstValueFrom, of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
-import { BusinessOrganisationSelectComponent } from '../../../../../core/form-components/bo-select/business-organisation-select.component';
-import { MatLabel } from '@angular/material/form-field';
-import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { SelectComponent } from '../../../../../core/form-components/select/select.component';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MeansOfTransportPickerComponent } from '../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { KilometerMasterSearchComponent } from '../search/kilometer-master-search.component';
-import { DisplayCantonPipe } from '../../../../../core/cantons/display-canton.pipe';
-import { TranslatePipe } from '@ngx-translate/core';
+import { FormGroup } from '@angular/forms';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
@@ -38,6 +25,13 @@ import { LocationGeoInternalService } from '../../../../../api/service/location/
 import { ServicePointFormGroupBuilder } from './form-group/service-point-detail-form-group';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { StationGroup } from './form-group/station-form-group';
+
+@Component({
+  template: ``,
+})
+class MockGeographyComponent {
+  readonly coordinatesChanged = output<CoordinatePair>();
+}
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
@@ -62,7 +56,7 @@ describe('ServicePointFormComponent', () => {
     getApplicationUserPermission: () => permission,
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     translationSortingServiceSpy = {
       sort: vi.fn(),
       translateService: { onLangChange: { subscribe: vi.fn() } },
@@ -75,25 +69,7 @@ describe('ServicePointFormComponent', () => {
       getLocationInformation: vi.fn(),
     };
 
-    await TestBed.configureTestingModule({
-      imports: [
-        TextFieldComponent,
-        ReactiveFormsModule,
-        DateRangeComponent,
-        BusinessOrganisationSelectComponent,
-        MatLabel,
-        MatRadioGroup,
-        MatRadioButton,
-        AtlasFieldErrorComponent,
-        SelectComponent,
-        MatCheckbox,
-        MeansOfTransportPickerComponent,
-        NgTemplateOutlet,
-        KilometerMasterSearchComponent,
-        DisplayCantonPipe,
-        AsyncPipe,
-        TranslatePipe,
-      ],
+    TestBed.configureTestingModule({
       providers: [
         {
           provide: TranslationSortingService,
@@ -106,7 +82,7 @@ describe('ServicePointFormComponent', () => {
         },
         { provide: PermissionService, useValue: permissionServiceMock },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(ServicePointFormComponent);
     component = fixture.componentInstance;
@@ -114,9 +90,8 @@ describe('ServicePointFormComponent', () => {
 
   it('should update locationInformation when coordinates changed', async () => {
     component['_currentVersion'] = { id: 5 } as ReadServicePointVersion;
-    component.geographyComponent = {
-      coordinatesChanged: new EventEmitter<CoordinatePair>(),
-    } as GeographyComponent;
+    component.geographyComponent = TestBed.createComponent(MockGeographyComponent)
+      .componentInstance as GeographyComponent;
 
     const coordinatePair = {
       spatialReference: SpatialReference.Lv95,

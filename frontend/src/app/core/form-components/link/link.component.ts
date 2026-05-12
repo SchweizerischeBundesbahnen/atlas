@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { LinkIconComponent } from '../link-icon/link-icon.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -10,6 +10,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class LinkComponent {
-  @Input() label!: string;
-  @Output() linkClicked = new EventEmitter<void>();
+  readonly label = input.required<string>();
+  readonly linkClicked = output<void>();
 }

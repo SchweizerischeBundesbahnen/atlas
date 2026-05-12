@@ -16,14 +16,14 @@
       <span class="font-regular-lg message">{{ data.message | translate: { tthsLength: data.tths.length } }}</span>
     }
   </div>
-  <ng-content></ng-content>
+  <ng-content />
   <div class="pt-2 pb-5 comment">
     <atlas-form-comment
       [formGroup]="formGroup"
       controlName="{{ controlName }}"
       label="TTH.DIALOG.COMMENT_LABEL"
-      maxChars="{{ maxChars }}"
-    ></atlas-form-comment>
+      maxChars="{{ maxChars() }}"
+    />
   </div>
   <mat-dialog-actions class="justify-content-end">
     <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">

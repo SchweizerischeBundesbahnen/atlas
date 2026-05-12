@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ContactPointVersion, ReadContactPointVersion, ReadServicePointVersion } from '../../../../../../api';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ContactPointFormGroupBuilder } from '../form/contact-point-form-group';
@@ -8,7 +8,6 @@ import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 import { DetailPageContentComponent } from '../../../../../../core/components/detail-page-content/detail-page-content.component';
-
 import { SloidComponent } from '../../../../../../core/form-components/sloid/sloid.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
@@ -38,14 +37,12 @@ import { ContactPointService } from '../../../../../../api/service/prm/contact-p
   ],
 })
 export class ContactPointDetailComponent extends PrmTabDetailBaseComponent<ReadContactPointVersion> implements OnInit {
+  private readonly contactPointService = inject(ContactPointService);
+
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
   showVersionSwitch = false;
   businessOrganisations: string[] = [];
-
-  constructor(private readonly contactPointService: ContactPointService) {
-    super();
-  }
 
   ngOnInit(): void {
     this.initSePoDiData();

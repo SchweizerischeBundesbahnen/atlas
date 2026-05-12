@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, output, input } from '@angular/core';
 import { ControlContainer, FormArray, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { WorkflowStatus } from 'src/app/api';
 import {
@@ -22,9 +22,9 @@ export class StopPointWorkflowExaminantsTableComponent {
   readonly WorkflowStatus = WorkflowStatus;
 
   @Input() form!: FormGroup;
-  @Input() currentWorkflowStatus?: WorkflowStatus;
+  readonly currentWorkflowStatus = input<WorkflowStatus>();
 
-  @Output() openDecision = new EventEmitter<number>();
+  readonly openDecision = output<number>();
 
   onOpenDecision(index: number) {
     this.openDecision.emit(index);

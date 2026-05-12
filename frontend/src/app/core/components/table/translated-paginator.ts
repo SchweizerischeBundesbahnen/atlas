@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -9,7 +9,9 @@ const RANGE_LABEL1 = 'PAGINATOR.RANGE_LABEL1';
 const RANGE_LABEL2 = 'PAGINATOR.RANGE_LABEL2';
 @Injectable()
 export class TranslatedPaginator extends MatPaginatorIntl {
-  constructor(private translate: TranslateService) {
+  private readonly translate = inject(TranslateService);
+
+  constructor() {
     super();
     this.translateLabels();
     this.translate.onLangChange.subscribe(() => this.translateLabels());

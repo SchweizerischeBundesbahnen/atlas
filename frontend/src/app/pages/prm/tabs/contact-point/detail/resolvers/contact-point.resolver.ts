@@ -7,10 +7,8 @@ import { ContactPointService } from '../../../../../../api/service/prm/contact-p
 
 @Injectable({ providedIn: 'root' })
 export class PrmContactPointResolver {
-  constructor(
-    private readonly contactPointService: ContactPointService,
-    private readonly router: Router
-  ) {}
+  private readonly contactPointService = inject(ContactPointService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadContactPointVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';

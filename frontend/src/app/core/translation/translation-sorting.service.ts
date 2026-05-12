@@ -1,14 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslationSortingService {
-  constructor(
-    private translatePipe: TranslatePipe,
-    public translateService: TranslateService
-  ) {}
+  private readonly translatePipe = inject(TranslatePipe);
+  public readonly translateService = inject(TranslateService);
 
   sort(enumsValues: string[], translationPrefix: string): string[] {
     return enumsValues.sort((x, y) => {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Pages } from '../pages';
 import { Page } from '../../core/model/page';
 import { PageService } from '../../core/pages/page.service';
@@ -15,9 +15,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [RouterLink, AsyncPipe, TranslatePipe],
 })
 export class HomeComponent {
-  readonly enabledPages: Observable<Page[]>;
-
-  constructor(private readonly pageService: PageService) {
-    this.enabledPages = pageService.enabledPages.pipe(map((pages) => pages.filter((page) => page !== Pages.HOME)));
-  }
+  private readonly pageService = inject(PageService);
+  readonly enabledPages: Observable<Page[]> = this.pageService.enabledPages.pipe(
+    map((pages) => pages.filter((page) => page !== Pages.HOME))
+  );
 }

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StatusChangeData } from './model/status-change-data';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -16,17 +16,15 @@ import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dia
   imports: [BaseChangeDialogComponent, ReactiveFormsModule],
 })
 export class TthChangeStatusDialogComponent {
-  formGroup = new FormGroup<TthChangeStatusFormGroup>({
+  public readonly dialogRef = inject(MatDialogRef<TthChangeStatusDialogComponent, boolean>);
+  private readonly data: StatusChangeData = inject(MAT_DIALOG_DATA);
+  private readonly notificationService = inject(NotificationService);
+  private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
+
+  readonly formGroup = new FormGroup<TthChangeStatusFormGroup>({
     publicComment: new FormControl(this.data.publicComment, [AtlasFieldLengthValidator.statement]),
   });
-  private ngUnsubscribe = new Subject<void>();
-
-  constructor(
-    public dialogRef: MatDialogRef<TthChangeStatusDialogComponent, boolean>,
-    @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
-    private readonly notificationService: NotificationService,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService
-  ) {}
+  private readonly ngUnsubscribe = new Subject<void>();
 
   onClick(): void {
     let justification: string | undefined;

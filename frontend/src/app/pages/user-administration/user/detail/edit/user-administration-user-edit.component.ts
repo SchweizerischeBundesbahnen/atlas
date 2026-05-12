@@ -33,15 +33,15 @@ import { UserDetailInfoComponent } from '../../../../../core/components/user-edi
   providers: [TranslatePipe],
 })
 export class UserAdministrationUserEditComponent implements OnInit {
-  user = input.required<User>();
+  private readonly userPermissionGivenUserService = inject(UserPermissionGivenUserService);
+  private readonly userAdministrationService = inject(UserAdministrationService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly dialogService = inject(DialogService);
+
+  readonly user = input.required<User>();
 
   userRecord?: CreationEditionRecord;
   editMode = false;
-
-  userPermissionGivenUserService = inject(UserPermissionGivenUserService);
-  userAdministrationService = inject(UserAdministrationService);
-  notificationService = inject(NotificationService);
-  dialogService = inject(DialogService);
 
   ngOnInit() {
     this.userPermissionGivenUserService.user = this.user();

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { BaseChangeDialogComponent } from './base-change-dialog.component';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { of } from 'rxjs';
@@ -15,6 +15,7 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { By } from '@angular/platform-browser';
 import { mock, mockClear } from 'vitest-mock-extended';
+import { inputBinding } from '@angular/core';
 
 const statement: TimetableHearingStatementV2 = {
   id: 1,
@@ -35,9 +36,9 @@ describe('BaseChangeDialogComponent', () => {
   let component: BaseChangeDialogComponent;
   let fixture: ComponentFixture<BaseChangeDialogComponent>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mockClear(dialogRefSpy);
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [AppTestingModule, FormModule, BaseChangeDialogComponent],
       providers: [
         { provide: MatSnackBarRef, useValue: {} },
@@ -57,9 +58,12 @@ describe('BaseChangeDialogComponent', () => {
         },
         { provide: TranslatePipe },
       ],
-    }).compileComponents();
+    });
 
-    fixture = TestBed.createComponent(BaseChangeDialogComponent);
+    const maxCharsInputName: keyof BaseChangeDialogComponent = 'maxChars';
+    fixture = TestBed.createComponent(BaseChangeDialogComponent, {
+      bindings: [inputBinding(maxCharsInputName, () => 'test max chars')],
+    });
     component = fixture.componentInstance;
     component.controlName = 'publicComment';
     component.dialogRef = dialogRefSpy;

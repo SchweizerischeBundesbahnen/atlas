@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Pages } from '../../../pages';
 import { ReadLoadingPointVersion } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +21,11 @@ import { LoadingPointInternalService } from '../../../../api/service/sepodi/load
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent, TranslatePipe],
 })
 export class LoadingPointsTableComponent implements OnInit {
+  private readonly loadingPointInternalService = inject(LoadingPointInternalService);
+  private readonly tableService = inject(TableService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   tableColumns: TableColumn<ReadLoadingPointVersion>[] = [
     { headerTitle: 'SEPODI.LOADING_POINTS.NUMBER', value: 'number' },
     { headerTitle: 'SEPODI.LOADING_POINTS.DESIGNATION', value: 'designation' },
@@ -45,14 +50,8 @@ export class LoadingPointsTableComponent implements OnInit {
   tableFilterConfig!: TableFilter<unknown>[][];
   elements: ReadLoadingPointVersion[] = [];
   totalCount$ = 0;
-  private ngUnsubscribe = new Subject<void>();
 
-  constructor(
-    private readonly loadingPointInternalService: LoadingPointInternalService,
-    private readonly tableService: TableService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {}
+  private readonly ngUnsubscribe = new Subject<void>();
 
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.LOADING_POINTS);

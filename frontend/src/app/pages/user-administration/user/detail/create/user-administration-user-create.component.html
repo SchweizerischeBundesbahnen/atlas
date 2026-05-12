@@ -11,7 +11,7 @@
         <mat-label class="font-regular-sm">{{ 'FORM.FOR_EXAMPLE' | translate }} u123456 </mat-label>
       </div>
       <div style="margin-bottom: 15rem">
-        <atlas-user-select (selectionChange)="selectUser($event)" [form]="userSearchForm"></atlas-user-select>
+        <atlas-user-select (selectionChange)="selectUser($event)" [form]="userSearchForm" />
 
         @if (userHasAlreadyPermissions) {
           <p class="color-error">

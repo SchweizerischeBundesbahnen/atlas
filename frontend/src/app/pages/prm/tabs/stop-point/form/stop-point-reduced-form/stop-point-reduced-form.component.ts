@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, input } from '@angular/core';
 import { StopPointDetailFormGroup } from '../stop-point-detail-form-group';
 import { MeanOfTransport } from '../../../../../../api';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
@@ -16,15 +16,17 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class StopPointReducedFormComponent implements OnInit {
+  private readonly prmVariantInfoService = inject(PrmVariantInfoService);
+
+
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
-  @Input() selectedMeansOfTransport!: MeanOfTransport[];
-  @Input() isNew = false;
+  readonly selectedMeansOfTransport = input<MeanOfTransport[]>();
+  readonly isNew = input(false);
+
   meansOfTransportToShow: MeanOfTransport[] | undefined;
 
-  constructor(private readonly prmVariantInfoService: PrmVariantInfoService) {}
-
   ngOnInit(): void {
-    if (this.isNew) {
+    if (this.isNew()) {
       this.initForm();
     }
     this.meansOfTransportToShow = this.prmVariantInfoService.getPrmMeansOfTransportToShow(
@@ -33,6 +35,6 @@ export class StopPointReducedFormComponent implements OnInit {
   }
 
   private initForm() {
-    this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
+    this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport());
   }
 }

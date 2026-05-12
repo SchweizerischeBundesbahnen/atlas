@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, Input, input, output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
@@ -55,25 +55,26 @@ export class RelationComponent<RECORD_TYPE> {
       });
     }
   }
-  @Input() titleTranslationKey = '';
-  @Input() relationEditable = true;
-  @Input() editable = false;
-  @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
-  @Input() editMode = false;
-  @Input() selectedIndex = -1;
-  @Input() addBtnNameTranslationKey = 'RELATION.ADD';
-  @Input() deleteBtnNameTranslationKey = 'RELATION.DELETE';
-  @Input() updateBtnNameTranslationKey = 'RELATION.UPDATE';
 
-  @Output() deleteRelation = new EventEmitter<void>();
-  @Output() updateRelation = new EventEmitter<void>();
-  @Output() editModeChanged = new EventEmitter<void>();
-  @Output() selectedIndexChanged = new EventEmitter<number>();
+  @Input() titleTranslationKey = '';
+  readonly relationEditable = input(true);
+  readonly editable = input(false);
+  readonly tableColumns = input.required<TableColumn<RECORD_TYPE>[]>();
+  readonly editMode = input(false);
+  readonly selectedIndex = input(-1);
+  readonly addBtnNameTranslationKey = input('RELATION.ADD');
+  readonly deleteBtnNameTranslationKey = input('RELATION.DELETE');
+  readonly updateBtnNameTranslationKey = input('RELATION.UPDATE');
+
+  readonly deleteRelation = output<void>();
+  readonly updateRelation = output<void>();
+  readonly editModeChanged = output<void>();
+  readonly selectedIndexChanged = output<number>();
 
   _records: RECORD_TYPE[] = [];
 
   columnValues(): string[] {
-    return this.tableColumns.map((item) => item.columnDef!);
+    return this.tableColumns().map((item) => item.columnDef!);
   }
 
   formatDate(date: Date): string {
@@ -93,11 +94,11 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   isRowSelected(row: RECORD_TYPE): boolean {
-    return this.selectedIndex === this._records.indexOf(row);
+    return this.selectedIndex() === this._records.indexOf(row);
   }
 
   selectRecord(record: RECORD_TYPE): void {
-    if (this.editable) {
+    if (this.editable()) {
       this.selectedIndexChanged.emit(this._records.indexOf(record));
     }
   }
@@ -131,7 +132,10 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   private getValuePathFromColumnName(column: string): string {
-    const filteredColumn = this.tableColumns.filter((i) => i.columnDef == column)[0];
+    const filteredColumn = this.tableColumns().find((tableColumn) => tableColumn.columnDef === column);
+    if (!filteredColumn) {
+      throw new Error(`Column with name ${column} not found in table columns`);
+    }
     return filteredColumn.value ?? filteredColumn.valuePath!;
   }
 

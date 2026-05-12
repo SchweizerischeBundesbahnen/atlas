@@ -6,7 +6,7 @@
     buttonText="LIDI.LINE.NEW"
     buttonType="createCheckingPermission"
     wrapperStyleClass="mb-3"
-  ></atlas-button>
+  />
   <atlas-button
     (buttonClicked)="newSubline()"
     applicationType="LIDI"
@@ -14,7 +14,7 @@
     buttonText="LIDI.SUBLINE.NEW"
     buttonType="createCheckingPermission"
     wrapperStyleClass="mb-5"
-  ></atlas-button>
+  />
 
   <nav [tabPanel]="tabPanel" class="tabs" data-cy="tabs" mat-tab-nav-bar>
     @for (tab of TABS; track tab) {
@@ -25,7 +25,7 @@
   </nav>
   <div class="white-table-container-tabs">
     <mat-tab-nav-panel #tabPanel>
-      <router-outlet></router-outlet>
+      <router-outlet />
     </mat-tab-nav-panel>
   </div>
 </div>

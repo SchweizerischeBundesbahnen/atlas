@@ -13,8 +13,7 @@
             label="{{ 'PAGES.BULK_IMPORT.APPLICATION' | translate }}"
             optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
             [options]="OPTIONS_APPLICATION_TYPE"
-          >
-          </atlas-select>
+          />
         </div>
         <div class="d-flex flex-column col-3 pe-3">
           <atlas-select
@@ -23,8 +22,7 @@
             label="{{ 'PAGES.BULK_IMPORT.OBJECT' | translate }}"
             optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
             [options]="OPTIONS_OBJECT_TYPE"
-          >
-          </atlas-select>
+          />
         </div>
         <div class="d-flex flex-column col-3 pe-3">
           <atlas-select
@@ -33,8 +31,7 @@
             label="{{ 'PAGES.BULK_IMPORT.SCENARIO' | translate }}"
             optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
             [options]="OPTIONS_SCENARIO"
-          >
-          </atlas-select>
+          />
         </div>
       </div>
       <br />
@@ -60,7 +57,7 @@
               [form]="form.controls.userSearchForm"
               searchMode="inAtlas"
               [applicationType]="form.controls.applicationType.value!"
-            ></atlas-user-select>
+            />
           }
         </div>
         <div class="d-flex flex-column col-3 pe-3">
@@ -70,8 +67,7 @@
             [required]="false"
             placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
             controlName="emails"
-          >
-          </atlas-text-list>
+          />
         </div>
       </div>
       <div class="mt-5">
@@ -84,7 +80,7 @@
           [isDownloadButtonVisible]="true"
           [isDownloadButtonDisabled]="isDownloadButtonDisabled"
           (downloadExcelClick)="downloadExcel()"
-        ></atlas-file-upload>
+        />
       </div>
       <div class="mt-5 d-flex justify-content-end">
         <atlas-button
@@ -95,7 +91,7 @@
           buttonType="whiteFooterEdit"
           wrapperStyleClass="ms-3"
           [disabled]="!isEnabledToStartImport || !isFileUploaded || saving"
-        ></atlas-button>
+        />
       </div>
     </div>
   </form>

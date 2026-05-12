@@ -1,5 +1,5 @@
-import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Component, ContentChild, TemplateRef, ViewChild, output, input } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,21 +22,30 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
   providers: [TranslatePipe],
 })
 export class SearchSelectComponent<TYPE> {
-  @Input() items$: Observable<TYPE[]> = of([]);
-  @Input() multiple = false;
-  @Input() placeholderTextKey = '';
-  @Input() controlName!: string;
-  @Input() formGroup!: FormGroup;
-  @Input() bindValueInp = '';
-  @Input() pipe?: TranslatePipe;
-  @Input() disabled!: boolean;
-  @Output() searchTrigger = new EventEmitter<string>();
+  readonly items$ = input<Observable<TYPE[]>>(of([]));
+  readonly multiple = input(false);
+  readonly placeholderTextKey = input('');
+  readonly controlName = input.required<string>();
+  readonly formGroup = input.required<FormGroup>();
+  readonly bindValueInp = input('');
+  readonly pipe = input<TranslatePipe>();
+  readonly disabled = input(false);
 
-  @Output() changeTrigger = new EventEmitter<TYPE>();
+  protected readonly searchTrigger = output<string>();
+  protected readonly searchTriggerSubject = new Subject<string>();
+
+  protected readonly changeTrigger = output<TYPE>();
+
   @ViewChild('ngSelect') ngSelect?: NgSelectComponent;
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('labelOptionTemplates') labelOptionTemplates!: TemplateRef<any>;
+
+  constructor() {
+    this.searchTriggerSubject.asObservable().subscribe({
+      next: (value) => this.searchTrigger.emit(value),
+    });
+  }
 
   isDropdownOpen(): boolean {
     return this.ngSelect?.isOpen() ?? false;

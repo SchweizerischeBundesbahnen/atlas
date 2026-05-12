@@ -12,14 +12,14 @@
   @if (!isNew) {
     <div class="font-xl mb-2">
       <span data-cy="total-range">
-        <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
+        <atlas-date-range-text [dateRange]="maxValidity" />
       </span>
     </div>
   }
   <div class="d-flex flex-row mb-5" data-cy="sector-group-header-title">
     @if (!isNew) {
       <div class="me-5">
-        <atlas-sloid-container [sloid]="selectedVersion.sloid!"></atlas-sloid-container>
+        <atlas-sloid-container [sloid]="selectedVersion.sloid!" />
       </div>
     }
     <div class="d-flex flex-column me-5">
@@ -28,7 +28,7 @@
       </div>
       <div>
         {{ trafficPoint.designation ?? '-' }} - {{ trafficPoint.sloid }}
-        <atlas-clipboard [value]="trafficPoint.sloid" [showMe]="true"></atlas-clipboard>
+        <atlas-clipboard [value]="trafficPoint.sloid" [showMe]="true" />
       </div>
     </div>
     <div class="d-flex flex-column">
@@ -49,7 +49,7 @@
             [records]="sectorGroupVersions"
             [switchDisabled]="form.enabled"
             [showStatus]="true"
-          ></atlas-switch-version>
+          />
         </div>
       </div>
       <div class="col-12 d-flex flex-row justify-content-between">
@@ -68,8 +68,7 @@
             [showPaginator]="false"
             data-cy="sector-table"
             additionalTableStyleClass="scrollable-table"
-          >
-          </atlas-table>
+          />
         </div>
       </div>
 
@@ -104,8 +103,7 @@
           [required]="true"
           controlName="designation"
           fieldLabel="SEPODI.SECTORS.DESIGNATION"
-        >
-        </atlas-text-field>
+        />
       </div>
       @if (isNew) {
         <div class="d-flex flex-column col-6">
@@ -121,15 +119,14 @@
               [additionalLabelspace]="20"
               [multiple]="true"
               [required]="true"
-            >
-            </atlas-select>
+            />
           } @else {
-            <atlas-label-field fieldLabel="SEPODI.SECTORS.SECTORS" [required]="true"> </atlas-label-field>
+            <atlas-label-field fieldLabel="SEPODI.SECTORS.SECTORS" [required]="true" />
             <div>
               {{ 'COMMON.NODATAFOUND' | translate }}
             </div>
             @if (form.controls.sectorSloids) {
-              <atlas-field-error [control]="form.get('sectorSloids')"></atlas-field-error>
+              <atlas-field-error [control]="form.get('sectorSloids')" />
             }
           }
         </div>
@@ -138,7 +135,7 @@
 
     <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
     <div class="col-12 d-flex">
-      <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
+      <atlas-form-date-range [formGroup]="form" />
     </div>
 
     <div class="font-bold-2xl mt-5">
@@ -160,14 +157,13 @@
           [required]="false"
           controlName="length"
           fieldLabel="SEPODI.SECTORS.LENGTH"
-        >
-        </atlas-text-field>
+        />
       </div>
     </div>
     @if (!isNew) {
       <div class="mb-3">
-        <mat-divider class="mt-4 mb-4"></mat-divider>
-        <atlas-user-detail-info [applicationType]="'SEPODI'" [record]="selectedVersion"></atlas-user-detail-info>
+        <mat-divider class="mt-4 mb-4" />
+        <atlas-user-detail-info [applicationType]="'SEPODI'" [record]="selectedVersion" />
       </div>
     }
   </atlas-detail-page-content>
@@ -178,8 +174,7 @@
       buttonType="whiteFooterNonEdit"
       (buttonClicked)="back()"
       [footerEdit]="form.enabled"
-    >
-    </atlas-button>
+    />
     @if (form.disabled && (isNew || selectedVersion.status !== 'REVOKED')) {
       <atlas-button
         (buttonClicked)="toggleEdit()"
@@ -189,7 +184,7 @@
         buttonType="edit-service-point-dependent"
         [businessOrganisations]="servicePointBusinessOrganisations"
         wrapperStyleClass="ms-3"
-      ></atlas-button>
+      />
     }
     <atlas-button
       [footerEdit]="form.enabled"
@@ -198,7 +193,7 @@
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3 sector-cancel"
-    ></atlas-button>
+    />
     <atlas-button
       (buttonClicked)="save()"
       [disabled]="!form.dirty"
@@ -208,10 +203,9 @@
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3 sector-save"
-    >
-    </atlas-button>
+    />
     @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-      <atlas-revoke-button (revokeClicked)="revoke()" applicationType="SEPODI"></atlas-revoke-button>
+      <atlas-revoke-button (revokeClicked)="revoke()" applicationType="SEPODI" />
     }
   </atlas-detail-footer>
 </atlas-detail-page-container>

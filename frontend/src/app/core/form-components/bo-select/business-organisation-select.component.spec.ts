@@ -6,10 +6,13 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mock, mockClear } from 'vitest-mock-extended';
+import { inputBinding, signal } from '@angular/core';
 
 describe('BusinessOrganisationSelectComponent', () => {
   let component: BusinessOrganisationSelectComponent;
   let fixture: ComponentFixture<BusinessOrganisationSelectComponent>;
+  let formGroupInput: ReturnType<typeof signal<FormGroup>>;
+  let controlNameInput: ReturnType<typeof signal<string>>;
 
   const businessOrganisationServiceSpy = mock<BusinessOrganisationService>();
   businessOrganisationServiceSpy.getAllBusinessOrganisations.mockReturnValue(of({ objects: [] }));
@@ -27,13 +30,21 @@ describe('BusinessOrganisationSelectComponent', () => {
       ],
     });
 
-    fixture = TestBed.createComponent(BusinessOrganisationSelectComponent);
-    component = fixture.componentInstance;
-
-    component.formGroup = new FormGroup({
-      testControl: new FormControl(null),
+    const formGroupInputName: keyof BusinessOrganisationSelectComponent = 'formGroup';
+    const controlNameInputName: keyof BusinessOrganisationSelectComponent = 'controlName';
+    formGroupInput = signal(
+      new FormGroup({
+        testControl: new FormControl(null),
+      })
+    );
+    controlNameInput = signal('testControl');
+    fixture = TestBed.createComponent(BusinessOrganisationSelectComponent, {
+      bindings: [
+        inputBinding(formGroupInputName, formGroupInput),
+        inputBinding(controlNameInputName, controlNameInput),
+      ],
     });
-    component.controlName = 'testControl';
+    component = fixture.componentInstance;
 
     fixture.detectChanges();
   });

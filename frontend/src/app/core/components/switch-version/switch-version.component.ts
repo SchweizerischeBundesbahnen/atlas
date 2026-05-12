@@ -2,11 +2,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
-  Input,
+  inject,
+  input,
   OnChanges,
   OnInit,
-  Output,
+  output,
   QueryList,
   ViewChildren,
 } from '@angular/core';
@@ -50,20 +50,17 @@ import { NgClass } from '@angular/common';
   providers: [TranslatePipe],
 })
 export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() records!: Array<Record>;
-  @Input() currentRecord!: Record;
-  @Input() switchDisabled = false;
-  @Input() showStatus = true;
-  @Output() switchVersion = new EventEmitter<number>();
+  readonly records = input.required<Array<Record>>();
+  readonly currentRecord = input.required<Record>();
+  readonly switchDisabled = input(false);
+  readonly showStatus = input(true);
+  readonly switchVersion = output<number>();
 
   @ViewChildren(MatRow, { read: ElementRef }) versionRows!: QueryList<ElementRef<HTMLTableRowElement>>;
 
-  currentIndex: number;
   tableColumns: TableColumn<Record>[] = [];
-
-  constructor(private readonly translatePipe: TranslatePipe) {
-    this.currentIndex = 0;
-  }
+  private readonly translatePipe = inject(TranslatePipe);
+  currentIndex: number = 0;
 
   ngOnInit() {
     this.tableColumns = [
@@ -79,7 +76,7 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
       },
       { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
     ];
-    if (this.showStatus) {
+    if (this.showStatus()) {
       this.tableColumns = [
         ...this.tableColumns,
         {
@@ -121,7 +118,7 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   setCurrentRecord(clickedRecord: Record) {
-    if (this.switchDisabled) {
+    if (this.switchDisabled()) {
       return;
     }
     this.currentIndex = this.getIndexOfRecord(clickedRecord);
@@ -141,11 +138,11 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   getIndexOfRecord(record: Record) {
-    return this.records.findIndex((element) => element === record);
+    return this.records().indexOf(record);
   }
 
   hasGapToNextRecord(record: Record): boolean {
-    const nextRecord = this.records[this.getIndexOfRecord(record) + 1];
+    const nextRecord = this.records()[this.getIndexOfRecord(record) + 1];
     if (nextRecord) {
       return DateService.differenceInDays(record.validTo!, nextRecord.validFrom!) > 1;
     }
@@ -153,8 +150,8 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   getCurrentIndex() {
-    this.records.forEach((record, index) => {
-      if (record.id === this.currentRecord.id) {
+    this.records().forEach((record, index) => {
+      if (record.id === this.currentRecord().id) {
         this.currentIndex = index;
         this.scrollToCurrentRow();
       }

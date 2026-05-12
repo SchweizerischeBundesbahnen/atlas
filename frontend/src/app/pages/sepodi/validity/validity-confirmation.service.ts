@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Observable, of } from 'rxjs';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -8,7 +8,7 @@ import { Moment } from 'moment';
 
 @Injectable({ providedIn: 'root' })
 export class ValidityConfirmationService {
-  constructor(private dialogService: DialogService) {}
+  private readonly dialogService = inject(DialogService);
 
   confirmValidityOverServicePoint(
     servicePoint: ReadServicePointVersion[],

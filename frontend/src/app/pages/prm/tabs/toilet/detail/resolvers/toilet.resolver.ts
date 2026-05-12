@@ -7,10 +7,8 @@ import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.s
 
 @Injectable({ providedIn: 'root' })
 export class ToiletResolver {
-  constructor(
-    private readonly toiletService: ToiletService,
-    private readonly router: Router
-  ) {}
+  private readonly toiletService = inject(ToiletService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ToiletVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';

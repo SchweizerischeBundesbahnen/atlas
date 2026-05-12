@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Pages } from '../../pages';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
@@ -31,10 +31,8 @@ export class UserAdministrationOverviewComponent {
     },
   ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   newUser(): Promise<boolean> {
     return this.router.navigate([Pages.USERS.path, 'add'], {

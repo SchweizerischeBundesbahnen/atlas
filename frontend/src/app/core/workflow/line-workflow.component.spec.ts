@@ -2,20 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { LineWorkflowComponent } from './line-workflow.component';
 import { LineVersionWorkflow, Status } from '../../api';
+import { LineRecord } from './model/line-record';
 import { adminPermissionServiceMock, translateServiceProvider } from '../../app.testing.mocks';
 import { PermissionService } from '../auth/permission/permission.service';
+import { inputBinding } from '@angular/core';
 
 describe('LineWorkflowComponent', () => {
   let component: LineWorkflowComponent;
   let fixture: ComponentFixture<LineWorkflowComponent>;
+  let lineRecord: LineRecord;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [{ provide: PermissionService, useValue: adminPermissionServiceMock }, translateServiceProvider],
     });
 
-    fixture = TestBed.createComponent(LineWorkflowComponent);
-    fixture.componentInstance.lineRecord = {
+    lineRecord = {
       id: 123,
       validFrom: new Date(),
       validTo: new Date(),
@@ -31,6 +33,15 @@ describe('LineWorkflowComponent', () => {
       ]),
     };
 
+    const lineRecordInputName: keyof LineWorkflowComponent = 'lineRecord';
+    const descriptionForWorkflowInputName: keyof LineWorkflowComponent = 'descriptionForWorkflow';
+    fixture = TestBed.createComponent(LineWorkflowComponent, {
+      bindings: [
+        inputBinding(lineRecordInputName, () => lineRecord),
+        inputBinding(descriptionForWorkflowInputName, () => 'workflow description'),
+      ],
+    });
+
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -43,7 +54,7 @@ describe('LineWorkflowComponent', () => {
     //given
 
     //when
-    component.lineRecord.lineVersionWorkflows?.clear();
+    lineRecord.lineVersionWorkflows?.clear();
     component.initWorkflowButtons();
 
     //then

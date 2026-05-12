@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
@@ -16,7 +16,8 @@ import { LineInternalService } from '../../../../../api/service/lidi/line-intern
   imports: [TableComponent, TranslatePipe],
 })
 export class SublineTableComponent implements OnInit, OnDestroy {
-  @Input() mainLineSlnid!: string;
+  readonly mainLineSlnid = input.required<string>();
+
   @Input() eventSubject!: Observable<boolean>;
 
   private onDestroy$ = new Subject<boolean>();
@@ -39,10 +40,8 @@ export class SublineTableComponent implements OnInit, OnDestroy {
   tableFilterConfig!: TableFilter<unknown>[][];
   sublines: Array<Line> = [];
 
-  constructor(
-    private readonly lineInternalService: LineInternalService,
-    private readonly router: Router
-  ) {}
+  private readonly lineInternalService = inject(LineInternalService);
+  private readonly router = inject(Router);
 
   ngOnInit() {
     this.getOverview();
@@ -68,7 +67,7 @@ export class SublineTableComponent implements OnInit, OnDestroy {
     this.lineInternalService
       .getLines(
         undefined,
-        [this.mainLineSlnid + ':'],
+        [this.mainLineSlnid() + ':'],
         undefined,
         undefined,
         [ElementType.Subline],

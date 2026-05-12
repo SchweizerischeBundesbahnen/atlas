@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { ServicePointCreationComponent } from './service-point-creation.component';
 import {
   ApplicationRole,
@@ -18,9 +18,15 @@ import { TestBed } from '@angular/core/testing';
 import { MapService } from '../../../map/map.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 import { ServicePointService } from '../../../../../api/service/sepodi/service-point.service';
+import { MockGeographyComponent, translateServiceProvider } from '../../../../../app.testing.mocks';
+import { GeographyComponent } from '../../../geography/geography.component';
 
 class PermissionServiceMock implements Partial<PermissionService> {
-  getApplicationUserPermission = vi.fn();
+  getApplicationUserPermission = vi.fn().mockReturnValue({
+    role: ApplicationRole.Reader,
+    application: ApplicationType.Sepodi,
+    permissionRestrictions: [],
+  });
   isAdmin = false;
 }
 
@@ -42,7 +48,6 @@ describe('ServicePointCreationComponent', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        ServicePointCreationComponent,
         {
           provide: PermissionService,
           useValue: permissionServiceMock,
@@ -64,10 +69,18 @@ describe('ServicePointCreationComponent', () => {
           useValue: routerSpy,
         },
         { provide: MapService, useValue: mapServiceSpy },
+        translateServiceProvider,
       ],
+    }).overrideComponent(ServicePointCreationComponent, {
+      remove: {
+        imports: [GeographyComponent],
+      },
+      add: {
+        imports: [MockGeographyComponent],
+      },
     });
 
-    component = TestBed.inject(ServicePointCreationComponent);
+    component = TestBed.createComponent(ServicePointCreationComponent).componentInstance;
   });
 
   it('should create', () => {

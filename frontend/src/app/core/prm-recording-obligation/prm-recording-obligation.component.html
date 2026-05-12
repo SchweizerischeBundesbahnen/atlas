@@ -1,14 +1,11 @@
 <div class="d-flex flex-row">
-  @if (showToggle && isPrmSupervisor) {
+  @if (showToggle() && isPrmSupervisor) {
     <div class="d-flex flex-column pe-3">
       <div class="font-bold-base">
         {{ 'PRM.STOP_POINTS.RECORDING_OBLIGATION' | translate }}
       </div>
       <div class="pt-1">
-        <atlas-slide-toggle
-          [toggle]="recordingObligation"
-          (toggleChange)="toggleRecordingObligation()"
-        ></atlas-slide-toggle>
+        <atlas-slide-toggle [toggle]="recordingObligation" (toggleChange)="toggleRecordingObligation()" />
       </div>
     </div>
   }

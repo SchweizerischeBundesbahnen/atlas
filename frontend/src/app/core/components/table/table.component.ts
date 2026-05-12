@@ -1,4 +1,4 @@
-import { Component, contentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, contentChild, inject, Input, input, OnInit, output, TemplateRef } from '@angular/core';
 import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
@@ -62,32 +62,31 @@ import { FormatPipe } from './pipe/format.pipe';
     FormatPipe,
     NgTemplateOutlet,
   ],
-  providers: [TranslatePipe],
 })
 export class TableComponent<DATATYPE> implements OnInit {
-  @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
-  @Input() tableFilterConfig: TableFilter<unknown>[][] = [];
-  @Input() tableColumns!: TableColumn<DATATYPE>[];
-  @Input() totalCount!: number;
-  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
-  @Input() sortingDisabled = false;
-  @Input() showTableFilter = true;
-  @Input() showPaginator = true;
-  @Input() checkBoxModeEnabled = false;
-  @Input() additionalTableStyleClass!: string;
+  readonly checkBoxSelection = input(new SelectionModel<DATATYPE>(true, []));
+  readonly tableFilterConfig = input<TableFilter<unknown>[][]>([]);
+  readonly tableColumns = input.required<TableColumn<DATATYPE>[]>();
+  readonly totalCount = input<number>();
+  readonly pageSizeOptions = input<number[]>([5, 10, 25, 100]);
+  readonly sortingDisabled = input(false);
+  readonly showTableFilter = input(true);
+  readonly showPaginator = input(true);
+  readonly checkBoxModeEnabled = input(false);
+  readonly additionalTableStyleClass = input('');
 
-  @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() tableChanged = new EventEmitter<TablePagination>();
-  @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
-  @Output() changeDropdownEvent = new EventEmitter<ColumnDropDownEvent>();
+  readonly editElementEvent = output<DATATYPE>();
+  readonly tableChanged = output<TablePagination>();
+  readonly tableInitialized = output<TablePagination>();
+  readonly changeDropdownEvent = output<ColumnDropDownEvent>();
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  @Output() buttonClickEvent = new EventEmitter<any>();
-  @Output() checkedBoxEvent = new EventEmitter<SelectionModel<DATATYPE>>();
+  readonly buttonClickEvent = output<any>();
+  readonly checkedBoxEvent = output<SelectionModel<DATATYPE>>();
   isLoading = true;
 
   customCell = contentChild(TemplateRef);
 
-  constructor(private readonly tableService: TableService) {}
+  private readonly tableService = inject(TableService);
 
   private _tableData: DATATYPE[] = [];
 
@@ -130,13 +129,13 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   getColumnDefs(): string[] {
-    return this.tableColumns.map((i) => (i.columnDef ?? i.value) as string);
+    return this.tableColumns().map((i) => (i.columnDef ?? i.value) as string);
   }
 
   edit(row: DATATYPE) {
-    if (this.checkBoxModeEnabled) {
-      this.checkBoxSelection.toggle(row);
-      this.checkedBoxEvent.emit(this.checkBoxSelection);
+    if (this.checkBoxModeEnabled()) {
+      this.checkBoxSelection().toggle(row);
+      this.checkedBoxEvent.emit(this.checkBoxSelection());
     } else {
       this.editElementEvent.emit(row);
     }
@@ -169,29 +168,29 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   isAllSelected() {
-    const numSelected = this.checkBoxSelection.selected.length;
-    return numSelected === this.pageSize || numSelected === this.totalCount;
+    const numSelected = this.checkBoxSelection().selected.length;
+    return numSelected === this.pageSize || numSelected === this.totalCount();
   }
 
   toggleAll() {
     if (this.isAllSelected()) {
-      this.checkBoxSelection.clear();
+      this.checkBoxSelection().clear();
     } else {
-      this.tableData.forEach((row) => this.checkBoxSelection.select(row));
+      this.tableData.forEach((row) => this.checkBoxSelection().select(row));
     }
-    this.checkedBoxEvent.emit(this.checkBoxSelection);
+    this.checkedBoxEvent.emit(this.checkBoxSelection());
   }
 
   toggleCheckBox($event: MatCheckboxChange, row: DATATYPE) {
     if ($event) {
-      this.checkBoxSelection.toggle(row);
+      this.checkBoxSelection().toggle(row);
     }
-    this.checkedBoxEvent.emit(this.checkBoxSelection);
+    this.checkedBoxEvent.emit(this.checkBoxSelection());
   }
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   stopPropagation($event: any) {
-    if (!this.checkBoxModeEnabled) {
+    if (!this.checkBoxModeEnabled()) {
       $event.stopPropagation();
     }
   }

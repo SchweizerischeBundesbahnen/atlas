@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TodayAndFutureTimetableHeaderComponent } from './today-and-future-timetable-header/today-and-future-timetable-header.component';
@@ -25,19 +25,19 @@ import { DateIconComponent } from '../date-icon/date-icon.component';
 export class DateRangeComponent {
   validFromHeader = TodayAndFutureTimetableHeaderComponent;
 
-  @Input() formGroup!: FormGroup;
-  @Input() labelFrom = 'COMMON.VALID_FROM';
-  @Input() labelFromExample = '';
-  @Input() labelUntil = 'COMMON.VALID_TO';
-  @Input() labelUntilExample = '';
-  @Input() infoIconTitleFrom = '';
-  @Input() infoIconTitleUntil = '';
-  @Input() required = true;
-  @Input() setDateExamples = false;
-  @Input() showMaxValidityAutoFill = true;
+  readonly formGroup = input.required<FormGroup>();
+  readonly labelFrom = input('COMMON.VALID_FROM');
+  readonly labelFromExample = input('');
+  readonly labelUntil = input('COMMON.VALID_TO');
+  readonly labelUntilExample = input('');
+  readonly infoIconTitleFrom = input('');
+  readonly infoIconTitleUntil = input('');
+  readonly required = input(true);
+  readonly setDateExamples = input(false);
+  readonly showMaxValidityAutoFill = input(true);
 
-  @Input() controlNameFrom = 'validFrom';
-  @Input() controlNameTo = 'validTo';
+  readonly controlNameFrom = input('validFrom');
+  readonly controlNameTo = input('validTo');
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
@@ -46,10 +46,10 @@ export class DateRangeComponent {
   readonly EXAMPLE_DATE_TO = '31.12.9999';
 
   get controlFrom() {
-    return this.formGroup.get(this.controlNameFrom)!;
+    return this.formGroup().get(this.controlNameFrom())!;
   }
 
   get controlTo() {
-    return this.formGroup.get(this.controlNameTo)!;
+    return this.formGroup().get(this.controlNameTo())!;
   }
 }

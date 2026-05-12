@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { BehaviorSubject, catchError, EMPTY, finalize, from, Observable, of, switchMap, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
@@ -48,6 +48,16 @@ import { StopPointService } from '../../../../../api/service/prm/stop-point/stop
   ],
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly stopPointService = inject(StopPointService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly dialogService = inject(DialogService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly prmTabsService = inject(PrmTabsService);
+  private readonly referencePointCreationHintService = inject(ReferencePointCreationHintService);
+  private readonly validityService = inject(ValidityService);
+
   isNew = false;
   isAuthorizedToCreateStopPoint = true;
   stopPointVersions!: ReadStopPointVersion[];
@@ -59,21 +69,9 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   showVersionSwitch = false;
   isSwitchVersionDisabled = false;
   preferredId?: number;
-  public isFormEnabled$ = new BehaviorSubject<boolean>(false);
+  isFormEnabled$ = new BehaviorSubject<boolean>(false);
   isReduced!: boolean | undefined;
   saving = false;
-
-  constructor(
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly stopPointService: StopPointService,
-    private readonly notificationService: NotificationService,
-    private readonly dialogService: DialogService,
-    private readonly permissionService: PermissionService,
-    private readonly prmTabsService: PrmTabsService,
-    private readonly referencePointCreationHintService: ReferencePointCreationHintService,
-    private readonly validityService: ValidityService
-  ) {}
 
   ngOnInit(): void {
     this.route.parent?.data.subscribe((data) => {

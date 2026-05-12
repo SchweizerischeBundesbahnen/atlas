@@ -1,13 +1,13 @@
 <div class="ps-5 pt-5 pb-5">
   <div class="card-container pt-5 pb-4">
     <a (click)="onCantonCardClick('ch')" [routerLink]="'ch'">
-      <atlas-canton-card [canton]="swiss" data-cy="swiss-canton-card"></atlas-canton-card>
+      <atlas-canton-card [canton]="swiss" data-cy="swiss-canton-card" />
     </a>
   </div>
   <div class="card-container">
     @for (canton of cantons; track canton) {
       <a [routerLink]="canton.path" (click)="onCantonCardClick(canton.short)">
-        <atlas-canton-card [canton]="canton"></atlas-canton-card>
+        <atlas-canton-card [canton]="canton" />
       </a>
     }
   </div>

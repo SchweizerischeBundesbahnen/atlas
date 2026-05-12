@@ -19,8 +19,7 @@
         [required]="true"
         controlName="firstName"
         fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
-      >
-      </atlas-text-field>
+      />
     </div>
     <div class="col-5" [title]="form.controls.lastName.value ?? ''">
       <atlas-text-field
@@ -28,8 +27,7 @@
         [required]="true"
         controlName="lastName"
         fieldLabel="WORKFLOW.PERSON.LASTNAME"
-      >
-      </atlas-text-field>
+      />
     </div>
   </div>
   <div class="d-flex justify-content-between mb-3">
@@ -39,8 +37,7 @@
         [required]="true"
         controlName="organisation"
         fieldLabel="WORKFLOW.PERSON.ORGANISATION"
-      >
-      </atlas-text-field>
+      />
     </div>
     <div class="col-5" [title]="form.controls.personFunction.value ?? ''">
       <atlas-text-field
@@ -48,12 +45,11 @@
         [required]="true"
         controlName="personFunction"
         fieldLabel="WORKFLOW.PERSON.FUNCTION"
-      >
-      </atlas-text-field>
+      />
     </div>
   </div>
 
-  @if (showJudgement) {
+  @if (showJudgement()) {
     <div class="mb-2">{{ 'WORKFLOW.DECISION.DECISION_INFO' | translate }}</div>
     <mat-radio-group formControlName="judgement" class="d-grid mb-3">
       <mat-radio-button [value]="JudgementType.Yes">
@@ -62,7 +58,7 @@
       <mat-radio-button [value]="JudgementType.No">
         {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
       </mat-radio-button>
-      <atlas-field-error [control]="form.get('judgement')"></atlas-field-error>
+      <atlas-field-error [control]="form.get('judgement')" />
     </mat-radio-group>
   }
 
@@ -70,5 +66,5 @@
     [formGroup]="form"
     [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
     controlName="motivation"
-  ></atlas-form-comment>
+  />
 </form>

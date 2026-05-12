@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { LineVersionSnapshot, WorkflowStatus } from '../../../../api';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,12 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './lidi-workflow-overview.component.html',
   imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
-export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
+export class LidiWorkflowOverviewComponent implements OnDestroy {
+  private readonly lineInternalService = inject(LineInternalService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly tableService = inject(TableService);
+
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.NUMBER', value: 'number' },
     {
@@ -40,6 +45,9 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
     },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
+  tableFilterConfig!: TableFilter<unknown>[][];
+  lineVersionSnapshots: LineVersionSnapshot[] = [];
+  totalCount$ = 0;
 
   private tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
@@ -53,27 +61,13 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
     ),
     dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
   };
-
-  tableFilterConfig!: TableFilter<unknown>[][];
-
-  lineVersionSnapshots: LineVersionSnapshot[] = [];
-  totalCount$ = 0;
-
   private lineVersionSnapshotsSubscription?: Subscription;
 
-  constructor(
-    private lineInternalService: LineInternalService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private readonly tableService: TableService
-  ) {
+  constructor() {
     const slnidFromQueryParam: string | undefined = this.route.snapshot.queryParams.slnid;
     if (slnidFromQueryParam) {
       this.tableFilterConfigIntern.chipSearch.addSearchFromString(slnidFromQueryParam);
     }
-  }
-
-  ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.WORKFLOWS);
   }
 

@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { UserAdministrationService } from '../../api/service/user-administration/user-administration.service';
@@ -8,7 +8,7 @@ import { UserAdministrationService } from '../../api/service/user-administration
   standalone: true,
 })
 export class UserDisplayNamePipe implements PipeTransform {
-  constructor(private readonly userAdministrationService: UserAdministrationService) {}
+  private readonly userAdministrationService = inject(UserAdministrationService);
 
   transform(userId?: string): Observable<string | undefined> {
     if (!userId) {

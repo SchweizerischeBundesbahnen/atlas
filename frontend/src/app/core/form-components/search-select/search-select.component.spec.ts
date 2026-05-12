@@ -4,7 +4,7 @@ import { SearchSelectComponent } from './search-select.component';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { FormControl, FormGroup } from '@angular/forms';
 import { translateServiceProvider } from '../../../app.testing.mocks';
-import { signal } from '@angular/core';
+import { inputBinding, signal } from '@angular/core';
 import { mock } from 'vitest-mock-extended';
 
 describe('SearchSelectComponent', () => {
@@ -16,14 +16,21 @@ describe('SearchSelectComponent', () => {
       providers: [translateServiceProvider],
     });
 
-    fixture = TestBed.createComponent(SearchSelectComponent);
-    component = fixture.componentInstance;
-
-    component.formGroup = new FormGroup({
-      testControl: new FormControl(null),
+    const formGroupInputName: keyof SearchSelectComponent<unknown> = 'formGroup';
+    const controlNameInputName: keyof SearchSelectComponent<unknown> = 'controlName';
+    fixture = TestBed.createComponent(SearchSelectComponent, {
+      bindings: [
+        inputBinding(
+          formGroupInputName,
+          () =>
+            new FormGroup({
+              testControl: new FormControl(null),
+            })
+        ),
+        inputBinding(controlNameInputName, () => 'testControl'),
+      ],
     });
-    component.controlName = 'testControl';
-
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 

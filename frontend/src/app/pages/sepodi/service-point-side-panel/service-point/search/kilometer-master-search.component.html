@@ -1,11 +1,11 @@
 <atlas-form-search-select
   (changeTrigger)="spSelectionChanged.emit($event)"
   (searchTrigger)="searchServicePoint($event)"
-  [bindValueInp]="valueExtraction"
+  [bindValueInp]="valueExtraction()"
   [controlName]="controlName"
   [formGroup]="formGroup"
   [items$]="servicePointSearchResult$"
-  [disabled]="disabled"
+  [disabled]="disabled()"
 >
   <mat-label class="font-bold-sm">
     {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }} Master

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
@@ -10,7 +10,6 @@ import { TableService } from '../../../../core/components/table/table.service';
 import { Pages } from '../../../pages';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
-
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
@@ -22,6 +21,10 @@ import { ToiletInternalService } from '../../../../api/service/prm/toilet/toilet
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
 export class ToiletComponent extends BasePrmTabComponentService implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly toiletInternalService = inject(ToiletInternalService);
+  private readonly tableService = inject(TableService);
+
   tableColumns: TableColumn<ToiletOverview>[] = [
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
@@ -44,14 +47,11 @@ export class ToiletComponent extends BasePrmTabComponentService implements OnIni
 
   totalCount = 0;
   toilets: ToiletOverview[] = [];
-  constructor(
-    readonly router: Router,
-    private route: ActivatedRoute,
-    private readonly toiletInternalService: ToiletInternalService,
-    private tableService: TableService
-  ) {
-    super(router);
+
+  constructor() {
+    super(inject(Router));
   }
+
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);
     this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.TOILET);

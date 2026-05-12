@@ -17,9 +17,9 @@ import { StatementTableHandler } from '../../util/statement-table-handler';
   templateUrl: './statement-select.component.html',
 })
 export class StatementSelectComponent extends StatementTableHandler {
-  selectedStatements = model.required<number[]>();
-  removeOptionEnabled = input(true);
-  showRemoveOption = input(true);
+  readonly selectedStatements = model.required<number[]>();
+  readonly removeOptionEnabled = input(true);
+  readonly showRemoveOption = input(true);
 
   private readonly timetableHearingStatementInternalService = inject(TimetableHearingStatementInternalService);
   private readonly router = inject(Router);

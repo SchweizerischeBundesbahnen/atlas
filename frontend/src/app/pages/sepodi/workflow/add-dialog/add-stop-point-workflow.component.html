@@ -1,13 +1,10 @@
-<atlas-dialog-close (clicked)="cancel()"></atlas-dialog-close>
+<atlas-dialog-close (clicked)="cancel()" />
 
 <atlas-dialog-content>
   <div class="mb-2">
     <span class="font-bold-4xl">{{ data.title | translate }}</span>
   </div>
-  <atlas-stop-point-workflow-detail-form
-    [form]="form"
-    [stopPoint]="data.stopPoint"
-  ></atlas-stop-point-workflow-detail-form>
+  <atlas-stop-point-workflow-detail-form [form]="form" [stopPoint]="data.stopPoint" />
 </atlas-dialog-content>
 
 <atlas-dialog-footer>

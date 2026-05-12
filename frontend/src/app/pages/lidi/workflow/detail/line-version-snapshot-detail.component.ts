@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { LineVersionSnapshot, LineVersionV2, Workflow } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +13,6 @@ import { DetailPageContainerComponent } from '../../../../core/components/detail
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
 import { LineWorkflowFormComponent } from '../../../../core/workflow/workflow-form/line-workflow-form.component';
-
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/line-detail-form.component';
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
@@ -64,12 +63,10 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     function: new FormControl(''),
   });
 
-  constructor(
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly lineWorkflowService: LineWorkflowService,
-    private readonly lineService: LineService
-  ) {}
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly lineWorkflowService = inject(LineWorkflowService);
+  private readonly lineService = inject(LineService);
 
   ngOnInit() {
     this.lineVersionSnapshot = this.readRecord();

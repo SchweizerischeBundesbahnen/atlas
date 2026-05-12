@@ -1,13 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, input, OnChanges, OnDestroy, output, SimpleChanges, } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -19,7 +10,6 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InfoIconComponent } from '@atlas/form';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
@@ -45,10 +35,16 @@ export const WGS84_MAX_DIGITS = 11;
   ],
 })
 export class GeographyComponent implements OnDestroy, OnChanges {
+  private readonly coordinateTransformationService = inject(CoordinateTransformationService);
+  private readonly mapService = inject(MapService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly locationGeoInternalService = inject(LocationGeoInternalService);
+
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
 
   _form?: FormGroup<GeographyFormGroup>;
+
   @Input() set form(form: FormGroup<GeographyFormGroup> | undefined) {
     this._form = form;
     if (form) {
@@ -63,7 +59,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
         )
         .subscribe(() => {
           this.onChangeCoordinatesManually(this.currentCoordinates!, true);
-          this.coordinatesChanged.emit(this.currentCoordinates);
+          this.coordinatesChanged.emit(this.currentCoordinates!);
         });
     } else {
       this._geographyActive = false;
@@ -71,10 +67,10 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     }
   }
 
-  @Input() editMode = false;
-  @Input() geographyOptional = true;
-  @Output() geographyChanged = new EventEmitter<boolean>();
-  @Output() coordinatesChanged = new EventEmitter<CoordinatePair>();
+  readonly editMode = input(false);
+  readonly geographyOptional = input(true);
+  readonly geographyChanged = output<boolean>();
+  readonly coordinatesChanged = output<CoordinatePair>();
 
   private _geographyActive = false;
 
@@ -92,12 +88,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   private formDestroy$ = new Subject<void>();
 
-  constructor(
-    private coordinateTransformationService: CoordinateTransformationService,
-    private mapService: MapService,
-    private changeDetector: ChangeDetectorRef,
-    private readonly locationGeoInternalService: LocationGeoInternalService
-  ) {
+  constructor() {
     this.mapService.clickedGeographyCoordinates.pipe(takeUntilDestroyed()).subscribe((coordinatePairWGS84) => {
       this.onMapClick({
         north: coordinatePairWGS84.lat,
@@ -210,7 +201,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (!this.mapService.mapInitialized.value) {
       return;
     }
-    if (this.editMode && this.geographyActive) {
+    if (this.editMode() && this.geographyActive) {
       this.mapService.enterCoordinateSelectionMode();
     } else {
       this.mapService.exitCoordinateSelectionMode();

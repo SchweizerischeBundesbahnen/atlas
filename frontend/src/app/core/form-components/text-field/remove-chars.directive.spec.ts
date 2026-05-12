@@ -14,8 +14,7 @@ import { By } from '@angular/platform-browser';
     controlName="east"
     fieldLabel="SEPODI.GEOLOCATION.LV95.EAST"
     [atlasRemoveChars]="charsToRemove"
-  >
-  </atlas-text-field>`,
+  />`,
   imports: [TextFieldComponent, RemoveCharsDirective],
 })
 class TestComponent {

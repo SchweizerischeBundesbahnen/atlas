@@ -1,25 +1,25 @@
 <div class="overview-table pb-xl-5">
-  <atlas-loading-spinner [isLoading]="isLoading"></atlas-loading-spinner>
+  <atlas-loading-spinner [isLoading]="isLoading" />
 
-  @if (showTableFilter) {
-    <atlas-table-filter (searchEvent)="searchData()" [filterConfigurations]="tableFilterConfig"></atlas-table-filter>
+  @if (showTableFilter()) {
+    <atlas-table-filter (searchEvent)="searchData()" [filterConfigurations]="tableFilterConfig()" />
   }
 
-  <ng-content></ng-content>
+  <ng-content />
 
   <table
     (matSortChange)="sortData($event)"
     [dataSource]="tableData"
     [matSortActive]="sortActive"
     [matSortDirection]="sortDirection"
-    [matSortDisabled]="sortingDisabled"
+    [matSortDisabled]="sortingDisabled()"
     aria-describedby="atlas-table"
     class="atlas-table"
-    [ngClass]="additionalTableStyleClass"
+    [ngClass]="additionalTableStyleClass()"
     mat-table
     matSort
   >
-    @for (column of tableColumns; track column.headerTitle) {
+    @for (column of tableColumns(); track column.headerTitle) {
       <ng-container matColumnDef="{{ column.columnDef ?? column.value }}">
         <th
           *matHeaderCellDef
@@ -36,7 +36,7 @@
               (click)="$event.stopPropagation()"
               [checked]="isAllSelected()"
               data-cy="tableCheckboxAll"
-            ></mat-checkbox>
+            />
           } @else {
             {{ column.headerTitle | translate }}
           }
@@ -74,7 +74,7 @@
               [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"
               [options]="column.dropdown.options"
               [value]="value[column.value]"
-            ></atlas-select>
+            />
           </td>
         }
         @if (column.checkbox) {
@@ -82,8 +82,8 @@
             <mat-checkbox
               (change)="toggleCheckBox($event, row)"
               (click)="$event.stopPropagation()"
-              [checked]="checkBoxSelection.isSelected(row)"
-            ></mat-checkbox>
+              [checked]="checkBoxSelection().isSelected(row)"
+            />
           </td>
         }
         @if (column.button) {
@@ -118,7 +118,7 @@
             class="table-cell bordered-cell"
             mat-cell
           >
-            <ng-container *ngTemplateOutlet="customCell(); context: { $implicit: row, column: column }"></ng-container>
+            <ng-container *ngTemplateOutlet="customCell(); context: { $implicit: row, column: column }" />
           </td>
         }
 
@@ -152,16 +152,15 @@
     </tr>
   </table>
 
-  @if (showPaginator) {
+  @if (showPaginator()) {
     <mat-paginator
       (page)="pageChanged($event)"
-      [disabled]="checkBoxModeEnabled"
-      [length]="totalCount"
+      [disabled]="checkBoxModeEnabled()"
+      [length]="totalCount()"
       [pageIndex]="pageIndex"
-      [pageSizeOptions]="pageSizeOptions"
+      [pageSizeOptions]="pageSizeOptions()"
       [pageSize]="pageSize"
       class="font-regular-base"
-    >
-    </mat-paginator>
+    />
   }
 </div>

@@ -1,7 +1,5 @@
 @if (clientCredential.clientCredentialId) {
-  <atlas-client-credential-administration-edit
-    [client]="clientCredential"
-  ></atlas-client-credential-administration-edit>
+  <atlas-client-credential-administration-edit [client]="clientCredential" />
 } @else {
-  <atlas-client-credential-administration-create></atlas-client-credential-administration-create>
+  <atlas-client-credential-administration-create />
 }

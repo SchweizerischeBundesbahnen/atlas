@@ -4,7 +4,7 @@ import { TableFilterComponent } from './table-filter.component';
 import { By } from '@angular/platform-browser';
 import moment from 'moment';
 import { MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow } from '@angular/material/chips';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, inputBinding, output, signal } from '@angular/core';
 import {
   MatDatepickerControl,
   MatDatepickerInput,
@@ -30,6 +30,7 @@ import { TimetableFieldNumberSelectComponent } from '../../form-components/ttfn-
 import { SelectComponent } from '../../form-components/select/select.component';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { TableFilter } from './config/table-filter';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
@@ -39,9 +40,9 @@ import { translateServiceProvider } from '../../../app.testing.mocks';
   template: '',
 })
 class MockMatChipInputComponent {
-  @Input() matChipInputFor: any;
-  @Input() formControl = new FormControl();
-  @Output() matChipInputTokenEnd: EventEmitter<MatChipInputEvent> = new EventEmitter<MatChipInputEvent>();
+  readonly matChipInputFor = input<any>();
+  readonly formControl = input(new FormControl());
+  readonly matChipInputTokenEnd = output<MatChipInputEvent>();
 }
 
 @Component({
@@ -49,20 +50,20 @@ class MockMatChipInputComponent {
   template: '',
 })
 class MockAtlasSelectComponent {
-  @Output() selectChanged = new EventEmitter();
+  readonly selectChanged = output<{ value: string[] }>();
 
-  @Input() label: string | undefined;
-  @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
-  @Input() optionTranslateLabelPrefix: string | undefined;
-  @Input() multiple = false;
-  @Input() dataCy!: string;
-  @Input() controlName: string | null = null;
-  @Input() formGroup!: FormGroup;
-  @Input() options: any[] = [];
-  @Input() value: any;
-  @Input() additionalLabelspace = true;
-  @Input() required = false;
-  @Input() disabled = false;
+  readonly label = input<string>();
+  readonly placeHolderLabel = input('FORM.DROPDOWN_PLACEHOLDER');
+  readonly optionTranslateLabelPrefix = input<string>();
+  readonly multiple = input(false);
+  readonly dataCy = input.required<string>();
+  readonly controlName = input<string | null>(null);
+  readonly formGroup = input.required<FormGroup>();
+  readonly options = input<any[]>([]);
+  readonly value = input<any>();
+  readonly additionalLabelspace = input(true);
+  readonly required = input(false);
+  readonly disabled = input(false);
 }
 
 @Component({
@@ -71,24 +72,25 @@ class MockAtlasSelectComponent {
   template: '',
 })
 class MockMatDatepickerInputComponent {
-  @Output() dateChange: EventEmitter<Partial<MatDatepickerInputEvent<Moment | null, any>>> = new EventEmitter();
+  readonly dateChange = output<Partial<MatDatepickerInputEvent<Moment | null, any>>>();
 
-  @Input() matDatepicker!: MatDatepickerPanel<MatDatepickerControl<any>, any | null, any>;
-  @Input() formControl: FormControl = new FormControl();
+  readonly matDatepicker = input.required<MatDatepickerPanel<MatDatepickerControl<any>, any | null, any>>();
+  readonly formControl = input<FormControl>(new FormControl());
 }
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'mat-chip-grid',
-  template: '<ng-content></ng-content>',
+  template: '<ng-content />',
 })
 class MockMatChipGridComponent {
-  @Input() disabled = false;
+  readonly disabled = input(false);
 }
 
 describe('TableFilterComponent', () => {
   let component: TableFilterComponent<unknown>;
   let fixture: ComponentFixture<TableFilterComponent<unknown>>;
+  let filterConfigurationsInput: ReturnType<typeof signal<TableFilter<unknown>[][]>>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -112,13 +114,17 @@ describe('TableFilterComponent', () => {
       },
     });
 
-    fixture = TestBed.createComponent(TableFilterComponent);
+    const filterConfigurationsInputName: keyof TableFilterComponent<unknown> = 'filterConfigurations';
+    filterConfigurationsInput = signal([]);
+    fixture = TestBed.createComponent(TableFilterComponent, {
+      bindings: [inputBinding(filterConfigurationsInputName, filterConfigurationsInput)],
+    });
     component = fixture.componentInstance;
   });
 
   it('should emitSearch on multi select change', () => {
     const multiSelectFilter = new TableFilterMultiSelect('', '', ['one', 'two'], 1, 'col-3');
-    component.filterConfigurations = [[multiSelectFilter]];
+    filterConfigurationsInput.set([[multiSelectFilter]]);
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
@@ -138,7 +144,7 @@ describe('TableFilterComponent', () => {
 
   it('should emitSearch on valid Date', () => {
     const dateSelect = new TableFilterDateSelect(1, 'col-3');
-    component.filterConfigurations = [[dateSelect]];
+    filterConfigurationsInput.set([[dateSelect]]);
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
@@ -159,7 +165,7 @@ describe('TableFilterComponent', () => {
 
   it('should not set date when invalid', () => {
     const dateSelect = new TableFilterDateSelect(1, 'col-3');
-    component.filterConfigurations = [[dateSelect]];
+    filterConfigurationsInput.set([[dateSelect]]);
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
@@ -180,7 +186,7 @@ describe('TableFilterComponent', () => {
 
   it('should add Search', () => {
     const chipSelect = new TableFilterChip(0, 'col-6');
-    component.filterConfigurations = [[chipSelect]];
+    filterConfigurationsInput.set([[chipSelect]]);
     fixture.detectChanges();
 
     const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
@@ -205,7 +211,7 @@ describe('TableFilterComponent', () => {
   it("should not add search if it's already there", () => {
     const chipSelect = new TableFilterChip(0, 'col-6');
     chipSelect.addSearchFromString('Test');
-    component.filterConfigurations = [[chipSelect]];
+    filterConfigurationsInput.set([[chipSelect]]);
     fixture.detectChanges();
 
     const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
@@ -230,7 +236,7 @@ describe('TableFilterComponent', () => {
   it('should remove search', () => {
     const chipSelect = new TableFilterChip(0, 'col-6');
     chipSelect.addSearchFromString('Test');
-    component.filterConfigurations = [[chipSelect]];
+    filterConfigurationsInput.set([[chipSelect]]);
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
@@ -250,7 +256,7 @@ describe('TableFilterComponent', () => {
         businessOrganisation: new FormControl(),
       })
     );
-    component.filterConfigurations = [[searchSelect]];
+    filterConfigurationsInput.set([[searchSelect]]);
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
@@ -274,7 +280,7 @@ describe('TableFilterComponent', () => {
         ttfnid: new FormControl(),
       })
     );
-    component.filterConfigurations = [[searchSelect]];
+    filterConfigurationsInput.set([[searchSelect]]);
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
@@ -298,7 +304,7 @@ describe('TableFilterComponent', () => {
         transportCompany: new FormControl(),
       })
     );
-    component.filterConfigurations = [[searchSelect]];
+    filterConfigurationsInput.set([[searchSelect]]);
     fixture.detectChanges();
 
     vi.spyOn(component.searchEvent, 'emit').mockImplementation(() => {});
@@ -313,7 +319,7 @@ describe('TableFilterComponent', () => {
 
   it('should set single search', () => {
     const singleSearch = new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT', 'col-3');
-    component.filterConfigurations = [[singleSearch]];
+    filterConfigurationsInput.set([[singleSearch]]);
     fixture.detectChanges();
 
     const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
@@ -341,7 +347,7 @@ describe('TableFilterComponent', () => {
       'col-6 container-right-position',
       'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'
     );
-    component.filterConfigurations = [[booleanFilter]];
+    filterConfigurationsInput.set([[booleanFilter]]);
     fixture.detectChanges();
 
     expect(booleanFilter.getActiveSearch()).toBe(false);

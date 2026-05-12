@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { DateRange } from '../date-range';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../pipe/display-date.pipe';
@@ -10,5 +10,5 @@ import { DisplayDatePipe } from '../../pipe/display-date.pipe';
   providers: [TranslatePipe],
 })
 export class DateRangeTextComponent {
-  @Input() dateRange!: DateRange;
+  readonly dateRange = input.required<DateRange>();
 }

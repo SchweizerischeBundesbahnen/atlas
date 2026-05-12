@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
@@ -48,24 +48,23 @@ import { ServicePointService } from '../../../../../api/service/sepodi/service-p
   ],
   providers: [TranslatePipe, TranslationSortingService],
 })
-export class ServicePointCreationComponent implements OnInit, DetailFormComponent, OnDestroy {
-  public form: FormGroup<ServicePointDetailFormGroup>;
-  private readonly formDestroy$ = new Subject<void>();
+export class ServicePointCreationComponent implements DetailFormComponent, OnDestroy {
+  private readonly permissionService = inject(PermissionService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly servicePointService = inject(ServicePointService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly mapService = inject(MapService);
 
-  public countryOptions: Country[] = [];
-  public readonly getCountryEnum = Countries.getCountryEnum;
-  public servicePointTypeChanged$: Subject<ServicePointType | null | undefined> = new Subject<
+  readonly form: FormGroup<ServicePointDetailFormGroup>;
+  protected countryOptions: Country[] = [];
+  protected readonly getCountryEnum = Countries.getCountryEnum;
+  protected readonly servicePointTypeChanged$: Subject<ServicePointType | null | undefined> = new Subject<
     ServicePointType | null | undefined
   >();
+  private readonly formDestroy$ = new Subject<void>();
 
-  constructor(
-    private readonly permissionService: PermissionService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly servicePointService: ServicePointService,
-    private readonly notificationService: NotificationService,
-    private readonly mapService: MapService
-  ) {
+  constructor() {
     this.form = ServicePointFormGroupBuilder.buildEmptyFormGroup(this.formDestroy$);
 
     this.form.controls.country?.valueChanges
@@ -73,6 +72,11 @@ export class ServicePointCreationComponent implements OnInit, DetailFormComponen
       .subscribe(this.handleCountryOrTypeChange);
 
     this.form.controls.country?.valueChanges.pipe(takeUntilDestroyed()).subscribe(this.handleCountryChange);
+
+    this.countryOptions = this.getCountryOptions();
+    if (this.countryOptions.length === 1 && this.countryOptions[0] === Country.Switzerland) {
+      this.form.controls.country?.setValue(Country.Switzerland);
+    }
   }
 
   private handleCountryChange = (country: Country | null) => {
@@ -103,13 +107,6 @@ export class ServicePointCreationComponent implements OnInit, DetailFormComponen
       this.onGeographyEnabled();
     }
   };
-
-  ngOnInit() {
-    this.countryOptions = this.getCountryOptions();
-    if (this.countryOptions.length === 1 && this.countryOptions[0] === Country.Switzerland) {
-      this.form.controls.country?.setValue(Country.Switzerland);
-    }
-  }
 
   ngOnDestroy() {
     this.formDestroy$.next();

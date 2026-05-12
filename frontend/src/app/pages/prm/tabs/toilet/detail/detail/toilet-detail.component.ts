@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ToiletFormGroupBuilder } from '../form/toilet-form-group';
 import { ReadServicePointVersion, ReadToiletVersion, ToiletVersion } from '../../../../../../api';
@@ -8,7 +8,6 @@ import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 import { DetailPageContentComponent } from '../../../../../../core/components/detail-page-content/detail-page-content.component';
-
 import { SloidComponent } from '../../../../../../core/form-components/sloid/sloid.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
@@ -38,14 +37,12 @@ import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.s
   ],
 })
 export class ToiletDetailComponent extends PrmTabDetailBaseComponent<ReadToiletVersion> implements OnInit {
+  private readonly toiletService = inject(ToiletService);
+
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
   showVersionSwitch = false;
   businessOrganisations: string[] = [];
-
-  constructor(private readonly toiletService: ToiletService) {
-    super();
-  }
 
   ngOnInit(): void {
     this.initSePoDiData();

@@ -1,14 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TransportCompany } from '../../../api';
@@ -25,14 +15,14 @@ import { TransportCompanyService } from '../../../api/service/bodi/transport-com
   providers: [TranslatePipe],
 })
 export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() valueExtraction = '';
-  @Input() controlName!: string;
-  @Input() formModus = true;
-  @Input() formGroup!: FormGroup;
-  @Input() disabled!: boolean;
+  readonly valueExtraction = input('');
+  readonly controlName = input.required<string>();
+  readonly formModus = input(true);
+  readonly formGroup = input.required<FormGroup>();
+  readonly disabled = input(false);
 
-  @Output() selectedTransportCompanyChanged = new EventEmitter();
-  @Output() tuSelectionChanged = new EventEmitter<TransportCompany>();
+  readonly selectedTransportCompanyChanged = output();
+  readonly tuSelectionChanged = output<TransportCompany>();
 
   transportCompanies: Observable<TransportCompany[]> = of([]);
   alreadySelectedTransportCompany: TransportCompany[] = [];
@@ -53,7 +43,7 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   }
 
   init() {
-    const tuControl = this.formGroup.get(this.controlName)!;
+    const tuControl = this.formGroup().get(this.controlName())!;
     this.alreadySelectedTransportCompany = tuControl.value;
     this.formSubscription = tuControl.valueChanges.subscribe((change) => {
       this.alreadySelectedTransportCompany = change;

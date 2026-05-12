@@ -1,27 +1,27 @@
-<div [formGroup]="formGroup">
-  <ng-content></ng-content>
+<div [formGroup]="formGroup()">
+  <ng-content />
   <ng-select
     #ngSelect
     (change)="changeTrigger.emit($event)"
-    [bindValue]="bindValueInp"
-    [formControlName]="controlName"
-    [items]="(items$ | async) ?? []"
+    [bindValue]="bindValueInp()"
+    [formControlName]="controlName()"
+    [items]="(items$() | async) ?? []"
     [minTermLength]="2"
-    [multiple]="multiple"
-    [placeholder]="placeholderTextKey | translate"
-    [readonly]="disabled"
-    [typeahead]="searchTrigger"
+    [multiple]="multiple()"
+    [placeholder]="placeholderTextKey() | translate"
+    [readonly]="disabled()"
+    [typeahead]="searchTriggerSubject"
     appearance="outline"
     notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
     typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
   >
     <ng-template let-item="item" ng-label-tmp>
-      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"></ng-container>
+      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }" />
     </ng-template>
     <ng-template let-item="item" ng-option-tmp>
-      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"></ng-container>
+      <ng-container *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }" />
     </ng-template>
   </ng-select>
 
-  <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
+  <atlas-field-error [control]="formGroup().get(controlName())" />
 </div>

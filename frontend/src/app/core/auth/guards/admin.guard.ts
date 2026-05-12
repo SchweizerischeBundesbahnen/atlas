@@ -6,10 +6,8 @@ import { UserService } from '../user/user.service';
   providedIn: 'root',
 })
 export class AdminGuard {
-  constructor(
-    private readonly userService: UserService,
-    private readonly router: Router
-  ) {}
+  private readonly userService = inject(UserService);
+  private readonly router = inject(Router);
 
   canActivate() {
     if (this.userService.isAdmin) {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { MatInput } from '@angular/material/input';
@@ -13,13 +13,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class CommentComponent {
-  @Input() formGroup!: FormGroup;
-  @Input() displayLabel = true;
-  @Input() required = false;
-  @Input() label = 'FORM.COMMENT';
-  @Input() subLabel = 'FORM.TEXT';
-  @Input() controlName = 'comment';
-  @Input() maxChars = '1500';
-  @Input() info!: string;
-  @Input() readonly = false;
+  readonly formGroup = input.required<FormGroup>();
+  readonly displayLabel = input(true);
+  readonly required = input(false);
+  readonly label = input('FORM.COMMENT');
+  readonly subLabel = input('FORM.TEXT');
+  readonly controlName = input('comment');
+  readonly maxChars = input('1500');
+  readonly info = input<string>();
+  readonly readonly = input(false);
 }

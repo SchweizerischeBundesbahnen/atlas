@@ -15,8 +15,7 @@
         [required]="true"
         controlName="designationOfficial"
         fieldLabel="SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL"
-      >
-      </atlas-text-field>
+      />
     </div>
     <div class="d-flex flex-column col-6">
       <atlas-text-field
@@ -33,20 +32,19 @@
         [required]="false"
         controlName="designationLong"
         fieldLabel="SEPODI.SERVICE_POINTS.DESIGNATION_LONG"
-      >
-      </atlas-text-field>
+      />
     </div>
   </div>
 
   <div class="col-12 d-flex mt-2 flex-column">
-    <ng-content select="[abbreviation]"></ng-content>
+    <ng-content select="[abbreviation]" />
   </div>
 
   <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
 
   <div class="col-12 d-flex">
     <div class="col-6 d-flex pb-3">
-      <atlas-form-date-range [formGroup]="form.controls.validityGroup"></atlas-form-date-range>
+      <atlas-form-date-range [formGroup]="form.controls.validityGroup" />
     </div>
 
     <div class="col-6 d-flex pb-3">
@@ -56,7 +54,7 @@
         [sboidsRestrictions]="boSboidRestriction"
         controlName="businessOrganisation"
         data-cy="businessOrganisation"
-      ></atlas-bo-select>
+      />
     </div>
   </div>
 
@@ -72,7 +70,7 @@
         </mat-radio-button>
       }
     </mat-radio-group>
-    <atlas-field-error [control]="form.get('selectedType')"></atlas-field-error>
+    <atlas-field-error [control]="form.get('selectedType')" />
   </div>
 
   @if (form.controls.spTypeGroup) {
@@ -88,8 +86,7 @@
           [options]="operatingPointTypes"
           [required]="true"
           [additionalLabelspace]="0"
-        >
-        </atlas-select>
+        />
       </div>
     }
 
@@ -102,7 +99,7 @@
           <mat-checkbox formControlName="stopPoint" data-cy="checkboxStopPoint">
             {{ 'SEPODI.SERVICE_POINTS.STOP_POINT' | translate }}
           </mat-checkbox>
-          <atlas-field-error [control]="form.get('spTypeGroup.stopPoint')"></atlas-field-error>
+          <atlas-field-error [control]="form.get('spTypeGroup.stopPoint')" />
         </div>
 
         @if (form.controls.spTypeGroup.controls.stopPointGroup) {
@@ -114,19 +111,18 @@
               dataCy="stopPointType"
               label="SEPODI.SERVICE_POINTS.STOP_POINT_TYPE"
               optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.STOP_POINT_TYPES."
-              (selectChanged)="onStopPointChange($event.value)"
+              (selectChanged)="onStopPointChange($event.value[0])"
               [options]="selectableStopPointTypes()"
               [additionalLabelspace]="10"
               [required]="true"
-            >
-            </atlas-select>
+            />
             <div class="col-6 ps-2">
               <atlas-means-of-transport-picker
                 [formGroup]="form.controls.spTypeGroup.controls.stopPointGroup"
                 controlName="meansOfTransport"
                 [disabled]="form.disabled || isMeanOfTransportOnDemandSelected"
                 [showSectorWarning]="true"
-              ></atlas-means-of-transport-picker>
+              />
             </div>
           </div>
         }
@@ -135,7 +131,7 @@
           <mat-checkbox formControlName="freightServicePoint" data-cy="freightServicePoint">
             {{ 'SEPODI.SERVICE_POINTS.FREIGHT_SERVICE_POINT' | translate }}
           </mat-checkbox>
-          <atlas-field-error [control]="form.get('spTypeGroup.freightServicePoint')"></atlas-field-error>
+          <atlas-field-error [control]="form.get('spTypeGroup.freightServicePoint')" />
         </div>
 
         @if (form.controls.spTypeGroup.controls.freightPointGroup) {
@@ -154,15 +150,14 @@
               [required]="form.value.country === 'SWITZERLAND'"
               controlName="sortCodeOfDestinationStation"
               fieldLabel="SEPODI.SERVICE_POINTS.SORT_CODE_OF_DESTINATION_STATION"
-            >
-            </atlas-text-field>
+            />
           </div>
         }
       </div>
     }
   }
 
-  <ng-content select="[geography]"></ng-content>
+  <ng-content select="[geography]" />
 
   @if (form.value.servicePointGeolocation?.spatialReference && currentVersion) {
     <div>
@@ -173,7 +168,7 @@
       <ng-container
         [ngTemplateOutlet]="locationInformationTemplate"
         [ngTemplateOutletContext]="{ $implicit: locationInformation$ | async }"
-      ></ng-container>
+      />
 
       <ng-template #locationInformationTemplate let-locationInformation>
         <div class="d-flex flex-row mt-2">
@@ -234,8 +229,7 @@
       optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.CATEGORY."
       [options]="categories"
       [multiple]="true"
-    >
-    </atlas-select>
+    />
   </div>
 
   @if (form.controls.routeNetworkGroup) {
@@ -268,7 +262,7 @@
           [disabled]="form.controls.routeNetworkGroup.controls.operatingPointKilometerMaster.disabled"
           controlName="operatingPointKilometerMaster"
           data-cy="operatingPointKilometerMaster"
-        ></atlas-kilometer-master-search>
+        />
       </div>
     </div>
   }

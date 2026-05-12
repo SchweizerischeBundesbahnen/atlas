@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DecisionOverrideComponent } from './override/decision-override.component';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
@@ -44,12 +44,9 @@ export class DecisionDetailDialogComponent implements OnInit {
   title = 'WORKFLOW.PERSON.JUDGEMENT';
   specialDecision = false;
 
-  constructor(
-    private dialogRef: MatDialogRef<DecisionDetailDialogComponent>,
-    private stopPointWorkflowService: StopPointWorkflowService,
-    @Inject(MAT_DIALOG_DATA)
-    protected decisionDetailDialogData: DecisionDetailDialogData
-  ) {}
+  private readonly dialogRef = inject(MatDialogRef<DecisionDetailDialogComponent>);
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  protected readonly decisionDetailDialogData: DecisionDetailDialogData = inject(MAT_DIALOG_DATA);
 
   ngOnInit() {
     if (SPECIAL_DECISION_TYPES.includes(this.decisionDetailDialogData.examinant.value.decisionType!)) {

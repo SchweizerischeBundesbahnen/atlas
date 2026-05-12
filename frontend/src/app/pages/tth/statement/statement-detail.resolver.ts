@@ -7,10 +7,8 @@ import { TimetableHearingStatementInternalService } from '../../../api/service/l
 
 @Injectable({ providedIn: 'root' })
 export class StatementDetailResolver {
-  constructor(
-    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService,
-    private readonly router: Router
-  ) {}
+  private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<TimetableHearingStatementV2 | undefined> {
     const idParameter = route.paramMap.get('id') || '0';

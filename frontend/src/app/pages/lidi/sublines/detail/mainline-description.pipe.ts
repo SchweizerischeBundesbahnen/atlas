@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { Line } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -7,7 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   pure: true,
 })
 export class MainlineDescriptionPipe implements PipeTransform {
-  constructor(private readonly translatePipe: TranslatePipe) {}
+  private readonly translatePipe = inject(TranslatePipe);
 
   transform(value: Line): string {
     let desc = value.description;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
@@ -8,10 +8,8 @@ import { Pages } from '../../../../../pages';
   providedIn: 'root',
 })
 export class ReferencePointCreationHintService {
-  constructor(
-    private dialogService: DialogService,
-    private router: Router
-  ) {}
+  private readonly dialogService = inject(DialogService);
+  private readonly router = inject(Router);
 
   showHint() {
     this.dialogService

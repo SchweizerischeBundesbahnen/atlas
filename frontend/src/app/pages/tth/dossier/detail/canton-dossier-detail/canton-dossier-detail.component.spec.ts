@@ -2,12 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { CantonDossierDetailComponent } from './canton-dossier-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppTestingModule } from '../../../../../app.testing.module';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
 import { of } from 'rxjs';
-import {
-  TimetableHearingStatementInternalService
-} from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TthDossier } from '../../../../../api/model/tthDossier';
 import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
@@ -17,6 +14,7 @@ import { FormatPipe } from '../../../../../core/components/table/pipe/format.pip
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { OpenCantonDossierInMailService } from './open-canton-dossier-in-mail.service';
 import { mock, mockClear } from 'vitest-mock-extended';
+import { AppTestingModule } from '../../../../../app.testing.module';
 
 const statement: TimetableHearingStatementV2 = {
   id: 456,
@@ -191,8 +189,8 @@ describe('DossierDetailComponent', () => {
     router = {
       navigate: vi.fn().mockResolvedValue(true),
     };
-    await TestBed.configureTestingModule({
-      imports: [CantonDossierDetailComponent, AppTestingModule],
+    TestBed.configureTestingModule({
+      imports: [AppTestingModule],
       providers: [
         {
           provide: ActivatedRoute,
@@ -218,14 +216,24 @@ describe('DossierDetailComponent', () => {
           provide: Router,
           useValue: router,
         },
-        FormatPipe,
+        {
+          provide: FormatPipe,
+          useValue: { transform: () => 'transformed mock' },
+        },
       ],
-    })
-      .overrideProvider(OpenCantonDossierInMailService, {
-        useValue: openDossierInMailService,
-      })
-      .compileComponents()
-      .then();
+    }).overrideComponent(CantonDossierDetailComponent, {
+      remove: {
+        providers: [OpenCantonDossierInMailService],
+      },
+      add: {
+        providers: [
+          {
+            provide: OpenCantonDossierInMailService,
+            useValue: openDossierInMailService,
+          },
+        ],
+      },
+    });
 
     fixture = TestBed.createComponent(CantonDossierDetailComponent);
     component = fixture.componentInstance;

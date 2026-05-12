@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'atlas-loading-spinner',
@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoadingSpinnerComponent {
-  @Input() isLoading = false;
+  readonly isLoading = input(false);
 }

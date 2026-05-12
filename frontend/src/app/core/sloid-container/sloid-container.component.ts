@@ -9,6 +9,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class SloidContainerComponent {
-  sloid = input.required<string>();
-  label = input<string>('SEPODI.SERVICE_POINTS.SLOID');
+  readonly sloid = input.required<string>();
+  readonly label = input<string>('SEPODI.SERVICE_POINTS.SLOID');
 }

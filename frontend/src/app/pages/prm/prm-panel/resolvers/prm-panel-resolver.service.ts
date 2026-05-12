@@ -7,10 +7,8 @@ import { ServicePointService } from '../../../../api/service/sepodi/service-poin
 
 @Injectable({ providedIn: 'root' })
 export class PrmPanelResolver {
-  constructor(
-    private readonly servicePointService: ServicePointService,
-    private readonly router: Router
-  ) {}
+  private readonly servicePointService = inject(ServicePointService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadServicePointVersion>> {
     const sloidParameter = route.paramMap.get('stopPointSloid') || '';

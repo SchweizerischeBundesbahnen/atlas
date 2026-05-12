@@ -6,10 +6,8 @@ import { PermissionService } from '../../core/auth/permission/permission.service
 
 @Injectable({ providedIn: 'root' })
 export class CanActivateServicePointCreationGuard {
-  constructor(
-    private readonly permissionService: PermissionService,
-    private readonly router: Router
-  ) {}
+  private readonly permissionService = inject(PermissionService);
+  private readonly router = inject(Router);
 
   canActivate() {
     if (this.permissionService.hasPermissionsToCreate(ApplicationType.Sepodi)) {

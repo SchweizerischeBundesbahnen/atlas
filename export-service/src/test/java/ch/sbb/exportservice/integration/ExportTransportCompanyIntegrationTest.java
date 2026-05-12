@@ -16,6 +16,8 @@ import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.job.Job;
@@ -30,6 +32,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 @BoDiDbSchemaCreation
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
+@Slf4j
 class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegrationTest {
 
   @Autowired
@@ -46,6 +49,12 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
   @Test
   void shouldExecuteExportTransportCompanyCsvJob() throws Exception {
+    log.error("Working directory: " + System.getProperty("user.dir"));
+    log.error("Following files are in export folder before job execution:");
+    try (var files = Files.list(Path.of(".", "export"))) {
+      files.forEach(filePath -> log.error(filePath.toString()));
+    }
+
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(
         URI.create("https://sbb.ch").toURL());
     when(transportCompanyCsvFileDeletingTasklet.execute(any(), any())).thenReturn(null);
@@ -67,11 +76,11 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
     assertThat(fileContent)
         .isEqualToIgnoringNewLines(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + """
-        id;number;abbreviation;description;businessRegisterName;transportCompanyStatus;businessRegisterNumber;enterpriseId;ricsCode;businessOrganisationNumbers;comment;creationDate;editionDate
-        2893;#20001;#ALCOSUI;;Alcosuisse;OPERATING_PART;;CHE-100.966.104;;;;2022-08-04 16:13:51;2022-08-23 01:00:14
-        2895;#20005;COOP-Aclens;;Coop Société coopérative, Aclens;OPERATING_PART;;CHE-302.816.540;;;;2022-08-04 16:13:51;2022-08-23 01:00:14
-        2896;#20006;#HOLCIWL;;Holcim (Schweiz) AG, Würenlingen (Werk Siggenthal);OPERATING_PART;;CHE-105.953.103;;;;2022-08-04 16:13:51;2022-08-23 01:00:14
-        """);
+            id;number;abbreviation;description;businessRegisterName;transportCompanyStatus;businessRegisterNumber;enterpriseId;ricsCode;businessOrganisationNumbers;comment;creationDate;editionDate
+            2893;#20001;#ALCOSUI;;Alcosuisse;OPERATING_PART;;CHE-100.966.104;;;;2022-08-04 16:13:51;2022-08-23 01:00:14
+            2895;#20005;COOP-Aclens;;Coop Société coopérative, Aclens;OPERATING_PART;;CHE-302.816.540;;;;2022-08-04 16:13:51;2022-08-23 01:00:14
+            2896;#20006;#HOLCIWL;;Holcim (Schweiz) AG, Würenlingen (Werk Siggenthal);OPERATING_PART;;CHE-105.953.103;;;;2022-08-04 16:13:51;2022-08-23 01:00:14
+            """);
   }
 
   @Test

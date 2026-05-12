@@ -8,10 +8,8 @@ import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class TrafficPointElementsDetailResolver {
-  constructor(
-    private readonly trafficPointElementService: TrafficPointElementService,
-    private readonly router: Router
-  ) {}
+  private readonly trafficPointElementService = inject(TrafficPointElementService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadTrafficPointElementVersion>> {
     const trafficPointSloid = route.paramMap.get('trafficPointSloid') ?? '';

@@ -1,7 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CompletePlatformFormGroup } from '../platform-form-group';
-import { BasicAttributeType, BoardingDeviceAttributeType, BooleanOptionalAttributeType, } from '../../../../../../../api';
+import {
+  BasicAttributeType,
+  BoardingDeviceAttributeType,
+  BooleanOptionalAttributeType,
+} from '../../../../../../../api';
 import { CommentComponent } from '../../../../../../../core/form-components/comment/comment.component';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
 import { SelectComponent } from '../../../../../../../core/form-components/select/select.component';
@@ -15,8 +19,9 @@ import { LevelAccessWheelchairAttributeType } from '../../../../../../../api/mod
   imports: [CommentComponent, ReactiveFormsModule, TextFieldComponent, SelectComponent, TranslatePipe],
 })
 export class PlatformCompleteFormComponent {
+
   @Input() form!: FormGroup<CompletePlatformFormGroup>;
-  @Input() isNew = false;
+  readonly isNew = input(false);
 
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   basicAttributeType = Object.values(BasicAttributeType);

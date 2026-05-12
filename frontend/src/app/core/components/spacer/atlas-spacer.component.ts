@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 
 @Component({
   selector: 'atlas-spacer',
@@ -6,13 +6,12 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['atlas-spacer.component.scss'],
 })
 export class AtlasSpacerComponent implements OnInit {
-  @Input() height!: string;
-  @Input() wrapperStyleClass!: string;
-  @Input() divider = false;
+  readonly height = input('0');
+  readonly divider = input(false);
   styleClasses: string[] = ['spacer'];
 
   ngOnInit(): void {
-    if (this.divider) {
+    if (this.divider()) {
       this.styleClasses.push('divider');
     }
   }

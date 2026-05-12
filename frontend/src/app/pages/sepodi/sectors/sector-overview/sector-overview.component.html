@@ -8,8 +8,7 @@
         buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
         (buttonClicked)="addSector()"
         wrapperStyleClass="mb-5"
-      >
-      </atlas-button>
+      />
     }
 
     <div class="font-bold-2xl mb-3">
@@ -25,7 +24,7 @@
       (editElementEvent)="editSector($event)"
       (tableChanged)="getSectorOverview($event)"
       (tableInitialized)="getSectorOverview($event)"
-    ></atlas-table>
+    />
   </div>
 </atlas-detail-page-content>
 <atlas-detail-footer>
@@ -34,6 +33,5 @@
     buttonText="COMMON.BACK"
     buttonType="whiteFooterNonEdit"
     (buttonClicked)="backToServicePoint()"
-  >
-  </atlas-button>
+  />
 </atlas-detail-footer>

@@ -13,12 +13,13 @@ import { DialogService } from '../dialog/dialog.service';
   imports: [ApplicationPermissionComponent, TranslatePipe, MatTabGroup, MatTab, MatTabLabel, MatTabContent],
 })
 export class PermissionComponent implements OnInit {
+  private readonly userPermissionProviderService = inject(UserPermissionProviderService);
+  private readonly dialogService = inject(DialogService);
+
   protected readonly ApplicationType = ApplicationType;
   protected readonly applications: ApplicationType[] = Object.values(ApplicationType);
 
-  userPermissionProviderService = inject(UserPermissionProviderService);
-  dialogService = inject(DialogService);
-  applicationChanged = output<ApplicationType>();
+  readonly applicationChanged = output<ApplicationType>();
 
   @ViewChild(MatTabGroup, { static: true }) applicationTabs!: MatTabGroup;
 

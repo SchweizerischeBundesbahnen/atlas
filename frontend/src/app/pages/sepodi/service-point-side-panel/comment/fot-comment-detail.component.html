@@ -3,12 +3,7 @@
     <div class="detail-content">
       <span class="font-bold-2xl">{{ 'SEPODI.SERVICE_POINTS.FOT_COMMENT' | translate }}</span>
       <div class="col-12 d-flex mt-3">
-        <atlas-form-comment
-          [formGroup]="form"
-          maxChars="2000"
-          controlName="fotComment"
-          [displayLabel]="false"
-        ></atlas-form-comment>
+        <atlas-form-comment [formGroup]="form" maxChars="2000" controlName="fotComment" [displayLabel]="false" />
       </div>
     </div>
   </atlas-detail-page-content>
@@ -20,8 +15,7 @@
       buttonType="whiteFooterNonEdit"
       (buttonClicked)="closeSidePanel()"
       [footerEdit]="form.enabled"
-    >
-    </atlas-button>
+    />
     @if (form.disabled) {
       <atlas-button
         (buttonClicked)="toggleEdit()"
@@ -30,7 +24,7 @@
         buttonText="COMMON.EDIT"
         buttonType="supervisorButton"
         wrapperStyleClass="ms-3"
-      ></atlas-button>
+      />
     }
     <atlas-button
       [footerEdit]="form.enabled"
@@ -39,7 +33,7 @@
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
     <atlas-button
       (click)="save()"
       [disabled]="!form.dirty"
@@ -49,7 +43,6 @@
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
+    />
   </atlas-detail-footer>
 </form>

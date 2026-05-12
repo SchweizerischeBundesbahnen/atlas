@@ -8,13 +8,13 @@
   <table
     (matSortChange)="sortChanged($event)"
     [dataSource]="_records"
-    [ngClass]="{ admin: editable }"
+    [ngClass]="{ admin: editable() }"
     aria-describedby="relation-table"
     class="atlas-table"
     mat-table
     matSort
   >
-    @for (column of tableColumns; track column) {
+    @for (column of tableColumns(); track column) {
       <ng-container matColumnDef="{{ column.columnDef }}">
         <th
           *matHeaderCellDef
@@ -35,7 +35,7 @@
     <tr
       (click)="selectRecord(row)"
       *matRowDef="let row; columns: columnValues()"
-      [ngClass]="{ 'selected-row': isRowSelected(row) && editable }"
+      [ngClass]="{ 'selected-row': isRowSelected(row) && editable() }"
       mat-row
     ></tr>
 
@@ -45,37 +45,37 @@
   </table>
 </div>
 
-<ng-content select="[table-button-between]"></ng-content>
+<ng-content select="[table-button-between]" />
 
-@if (editable) {
+@if (editable()) {
   <div>
     <button
       (click)="editModeChanged.emit()"
-      [disabled]="editMode"
+      [disabled]="editMode()"
       class="atlas-primary-btn me-2"
       data-cy="add-relation-btn"
     >
-      {{ addBtnNameTranslationKey | translate }}
+      {{ addBtnNameTranslationKey() | translate }}
     </button>
-    @if (relationEditable) {
+    @if (relationEditable()) {
       <button
         (click)="editRelation()"
-        [disabled]="editMode || selectedIndex === -1"
+        [disabled]="editMode() || selectedIndex() === -1"
         class="atlas-primary-btn me-2"
         data-cy="edit-relation-btn"
       >
-        {{ updateBtnNameTranslationKey | translate }}
+        {{ updateBtnNameTranslationKey() | translate }}
       </button>
     }
     <button
       (click)="deleteRelation.emit()"
-      [disabled]="selectedIndex === -1 || editMode"
+      [disabled]="selectedIndex() === -1 || editMode()"
       class="atlas-primary-btn"
       data-cy="delete-relation-btn"
     >
-      {{ deleteBtnNameTranslationKey | translate }}
+      {{ deleteBtnNameTranslationKey() | translate }}
     </button>
   </div>
 }
 
-<ng-content></ng-content>
+<ng-content />

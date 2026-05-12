@@ -3,7 +3,7 @@
     <div class="label-and-toggle d-flex flex-row">
       <div class="font-bold-lg">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
       <div class="d-flex ps-2 align-items-center">
-        <atlas-slide-toggle [(toggle)]="automaticSloid"></atlas-slide-toggle>
+        <atlas-slide-toggle [(toggle)]="automaticSloid" />
       </div>
     </div>
     @if (automaticSloid) {
@@ -14,7 +14,7 @@
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
           {
-            label: numberColons === 0 ? 'ch:1:sloid:7000:088946' : 'ch:1:sloid:7000:1234:088946',
+              label: numberColons() === 0 ? 'ch:1:sloid:7000:088946' : 'ch:1:sloid:7000:1234:088946',
             translate: false,
           },
         ]"
@@ -23,7 +23,7 @@
         controlName="sloid"
       >
         <ng-template #customChildInputPrefixTemplate>
-          <div class="pe-1">{{ givenPrefix }}</div>
+          <div class="pe-1">{{ givenPrefix() }}</div>
         </ng-template>
       </atlas-text-field>
     }

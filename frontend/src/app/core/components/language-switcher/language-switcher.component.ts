@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { InterpolatableTranslationObject, TranslateService } from '@ngx-translate/core';
 import { DateAdapter } from '@angular/material/core';
 import { Language } from './language';
@@ -16,14 +16,13 @@ export class LanguageSwitcherComponent {
   static readonly STORED_LANGUAGE_KEY = 'language';
   languages = [Language.DE, Language.FR, Language.IT];
 
-  constructor(
-    private translateService: TranslateService,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private dateAdapter: DateAdapter<any>
-  ) {
+  private readonly translateService = inject(TranslateService);
+  private readonly dateAdapter = inject(DateAdapter<Date>);
+
+  constructor() {
     const language =
       this.languages.find((lang) => lang === localStorage.getItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY)) ||
-      this.languages.find((lang) => lang === translateService.getBrowserLang()) ||
+      this.languages.find((lang) => lang === this.translateService.getBrowserLang()) ||
       this.languages[0];
     this.setLanguage(language);
   }

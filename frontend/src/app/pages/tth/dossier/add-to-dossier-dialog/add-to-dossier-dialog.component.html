@@ -15,7 +15,7 @@
     [canton]="data.statement.swissCanton"
     [year]="data.statement.timetableYear"
     [statusRestriction]="addableDossierStates"
-  ></atlas-dossier-select>
+  />
 
   <mat-dialog-actions class="justify-content-end">
     <atlas-button
@@ -23,15 +23,11 @@
       (buttonClicked)="cancel()"
       class="me-3"
       data-cy="dialog-cancel-button"
-      [buttonText]="data.cancelText!"
-    >
-    </atlas-button>
+      [buttonText]="data.cancelText!" />
     <atlas-button
       buttonType="confirm"
       (buttonClicked)="confirm()"
       data-cy="dialog-confirm-button"
       [buttonText]="data.confirmText!"
-    >
-    </atlas-button
-  ></mat-dialog-actions>
+  /></mat-dialog-actions>
 </div>

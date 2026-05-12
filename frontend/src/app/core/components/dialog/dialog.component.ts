@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { DialogData } from './dialog.data';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,5 +10,5 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class DialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  public data: DialogData = inject(MAT_DIALOG_DATA);
 }

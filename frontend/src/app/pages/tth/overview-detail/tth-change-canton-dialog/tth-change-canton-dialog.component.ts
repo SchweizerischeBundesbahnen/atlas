@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { Subject } from 'rxjs';
@@ -21,22 +21,19 @@ import { Canton } from '../../../../core/cantons/Canton';
   imports: [BaseChangeDialogComponent, ReactiveFormsModule, SelectComponent, NgOptimizedImage],
 })
 export class TthChangeCantonDialogComponent implements OnInit {
+  protected readonly dialogRef = inject(MatDialogRef<TthChangeCantonDialogComponent>);
+  private readonly data: ChangeCantonData = inject(MAT_DIALOG_DATA);
+  private readonly notificationService = inject(NotificationService);
+  private readonly timetableHearingStatementsServiceV2 = inject(TimetableHearingStatementInternalService);
+
   formGroup!: FormGroup<TthChangeCantonFormGroup>;
   showSwissCantonDropdown = false;
 
   readonly CANTON_DROPDOWN_OPTIONS_WITHOUT_SWISS = Cantons.cantons;
   readonly extractEnumCanton = (option: Canton) => option.enumCanton;
-
   readonly extractShort = (option: Canton) => option.short;
 
-  private ngUnsubscribe = new Subject<void>();
-
-  constructor(
-    public dialogRef: MatDialogRef<TthChangeCantonDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ChangeCantonData,
-    private readonly notificationService: NotificationService,
-    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementInternalService
-  ) {}
+  private readonly ngUnsubscribe = new Subject<void>();
 
   ngOnInit() {
     this.formGroup = new FormGroup<TthChangeCantonFormGroup>({

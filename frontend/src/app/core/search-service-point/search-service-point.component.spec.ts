@@ -10,6 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointSearch } from './service-point-search';
 import { BERN_WYLEREGG } from '../../../test/data/service-point';
 import { ServicePointInternalService } from '../../api/service/sepodi/service-point-internal.service';
+import { inputBinding } from '@angular/core';
 
 type ServicePointInternalServiceMock = Mocked<Pick<ServicePointInternalService, 'searchServicePoints'>>;
 
@@ -45,10 +46,12 @@ describe('SearchServicePointComponent', () => {
 
     // Arrangement
     router = TestBed.inject(Router);
-    fixture = TestBed.createComponent(SearchServicePointComponent);
+    const searchTypeInputName: keyof SearchServicePointComponent = 'searchType';
+    fixture = TestBed.createComponent(SearchServicePointComponent, {
+      bindings: [inputBinding(searchTypeInputName, () => ServicePointSearch.SePoDi)],
+    });
     component = fixture.componentInstance;
 
-    component.searchType = ServicePointSearch.SePoDi;
     component._DEBOUNCE_TIME = 0;
     fixture.detectChanges();
   });

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -23,8 +23,17 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
   imports: [TableComponent, TranslatePipe],
   providers: [TranslatePipe],
 })
-export class BusinessOrganisationComponent implements OnInit, OnDestroy {
+export class BusinessOrganisationComponent implements OnDestroy {
+  private readonly businessOrganisationService = inject(BusinessOrganisationService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly businessOrganisationLanguageService = inject(BusinessOrganisationLanguageService);
+  private readonly tableService = inject(TableService);
+
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();
+  tableFilterConfig!: TableFilter<unknown>[][];
+  businessOrganisations: BusinessOrganisation[] = [];
+  totalCount$ = 0;
 
   private tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
@@ -38,28 +47,14 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
     ),
     dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
   };
-
-  tableFilterConfig!: TableFilter<unknown>[][];
-
-  businessOrganisations: BusinessOrganisation[] = [];
-  totalCount$ = 0;
-
   private businessOrganisationsSubscription?: Subscription;
   private langChangeSubscription: Subscription;
 
-  constructor(
-    private readonly businessOrganisationService: BusinessOrganisationService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    private readonly tableService: TableService
-  ) {
+  constructor() {
     this.langChangeSubscription = this.businessOrganisationLanguageService
       .languageChanged()
       .subscribe(() => (this.tableColumns = this.getColumns()));
-  }
 
-  ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(
       this.tableFilterConfigIntern,
       Pages.BUSINESS_ORGANISATIONS

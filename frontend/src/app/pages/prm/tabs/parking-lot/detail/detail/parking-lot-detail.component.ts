@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ParkingLotVersion, ReadParkingLotVersion, ReadServicePointVersion } from '../../../../../../api';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ParkingLotFormGroupBuilder } from '../form/parking-lot-form-group';
@@ -8,7 +8,6 @@ import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 import { DetailPageContentComponent } from '../../../../../../core/components/detail-page-content/detail-page-content.component';
-
 import { SloidComponent } from '../../../../../../core/form-components/sloid/sloid.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
@@ -38,14 +37,12 @@ import { ParkingLotService } from '../../../../../../api/service/prm/parking-lot
   ],
 })
 export class ParkingLotDetailComponent extends PrmTabDetailBaseComponent<ReadParkingLotVersion> implements OnInit {
+  private readonly parkingLotService = inject(ParkingLotService);
+
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
   showVersionSwitch = false;
   businessOrganisations: string[] = [];
-
-  constructor(private readonly parkingLotService: ParkingLotService) {
-    super();
-  }
 
   ngOnInit(): void {
     this.initSePoDiData();

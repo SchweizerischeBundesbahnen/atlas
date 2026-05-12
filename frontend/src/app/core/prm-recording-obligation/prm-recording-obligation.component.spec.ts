@@ -5,6 +5,7 @@ import { StopPointInternalService } from '../../api/service/prm/stop-point/stop-
 import { EMPTY, of } from 'rxjs';
 import { PermissionService } from '../auth/permission/permission.service';
 import { adminPermissionServiceMock, translateServiceProvider } from '../../app.testing.mocks';
+import { inputBinding } from '@angular/core';
 
 describe('PrmRecordingObligationComponent', () => {
   type StopPointInternalServiceMock = Mocked<
@@ -32,7 +33,10 @@ describe('PrmRecordingObligationComponent', () => {
       ],
     });
 
-    fixture = TestBed.createComponent(PrmRecordingObligationComponent);
+    const sloidInputName: keyof PrmRecordingObligationComponent = 'sloid';
+    fixture = TestBed.createComponent(PrmRecordingObligationComponent, {
+      bindings: [inputBinding(sloidInputName, () => 'ch:1:sloid:1')],
+    });
     component = fixture.componentInstance;
   });
 
@@ -41,10 +45,12 @@ describe('PrmRecordingObligationComponent', () => {
 
     expect(component).toBeTruthy();
     expect(component.recordingObligation).toBe(true);
-    expect(stopPointInternalServiceMock.getRecordingObligation).toHaveBeenCalledExactlyOnceWith(undefined);
+    expect(stopPointInternalServiceMock.getRecordingObligation).toHaveBeenCalledTimes(2); // onInit & onChanges
+    expect(stopPointInternalServiceMock.getRecordingObligation).toHaveBeenCalledWith('ch:1:sloid:1');
   });
 
   it('should toggle recording obligation', () => {
+    fixture.detectChanges();
     expect(component.recordingObligation).toBe(true);
 
     component.toggleRecordingObligation();

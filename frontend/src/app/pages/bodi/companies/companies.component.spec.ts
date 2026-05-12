@@ -61,9 +61,8 @@ describe('CompaniesComponent', () => {
     });
 
     expect(companyService.getCompanies).toHaveBeenCalledExactlyOnceWith([], 0, 10, ['uicCode,asc']);
-
-    expect(component.companies.length).toEqual(1);
-    expect(component.companies[0].uicCode).toEqual('1');
-    expect(component.totalCount).toEqual(1);
+    expect(component['companies'].length).toEqual(1);
+    expect(component['companies'][0].uicCode).toEqual('1');
+    expect(component['totalCount']).toEqual(1);
   });
 });

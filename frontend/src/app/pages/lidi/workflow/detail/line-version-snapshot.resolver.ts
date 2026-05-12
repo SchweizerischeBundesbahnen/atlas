@@ -7,10 +7,8 @@ import { LineInternalService } from '../../../../api/service/lidi/line-internal.
 
 @Injectable({ providedIn: 'root' })
 export class LineVersionSnapshotResolver {
-  constructor(
-    private readonly lineInternalService: LineInternalService,
-    private readonly router: Router
-  ) {}
+  private readonly lineInternalService = inject(LineInternalService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<LineVersionSnapshot | never[]> {
     const idParameter = route.params.id;

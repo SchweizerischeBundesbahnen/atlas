@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AddExaminants, StopPointPerson } from 'src/app/api';
 import { DetailDialogHelperService } from '../../../../../core/detail/detail-dialog-helper.service';
@@ -40,14 +40,12 @@ import { StopPointWorkflowService } from '../../../../../api/service/workflow/st
 export class AddExaminantsComponent implements OnInit {
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) readonly data: AddExaminantsDialogData,
-    private readonly dialogRef: MatDialogRef<AddExaminantsComponent>,
-    private readonly detailHelperService: DetailDialogHelperService,
-    private readonly stopPointWorkflowService: StopPointWorkflowService,
-    private readonly notificationService: NotificationService,
-    private readonly router: Router
-  ) {}
+  protected readonly data: AddExaminantsDialogData = inject(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<AddExaminantsComponent>);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly router = inject(Router);
 
   form!: FormGroup<AddExaminantsFormGroup>;
 

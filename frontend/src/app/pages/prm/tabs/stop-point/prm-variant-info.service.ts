@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ApplicationType, MeanOfTransport } from '../../../../api';
 import {
   completeMeansOfTransport,
@@ -15,7 +15,7 @@ export const prmMeansOfTransport: MeanOfTransport[] = Object.values(MeanOfTransp
   providedIn: 'root',
 })
 export class PrmVariantInfoService {
-  constructor(private permissionService: PermissionService) {}
+  private readonly permissionService = inject(PermissionService);
 
   getPrmMeansOfTransportToShow(meansOfTransport: MeanOfTransport[]): MeanOfTransport[] | undefined {
     const isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Prm);

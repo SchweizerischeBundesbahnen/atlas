@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 import { mock } from 'vitest-mock-extended';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
+import { TestBed } from '@angular/core/testing';
 
 const version: BusinessOrganisationVersion = {
   id: 1234,
@@ -27,13 +28,25 @@ describe('BoDisplayPipe', () => {
   let boDisplayPipe: BoDisplayPipe;
 
   const boSelectionDisplayPipe = mock<BoSelectionDisplayPipe>();
-  boSelectionDisplayPipe.transform.mockReturnValue('123 - 123 - 123 - sboid');
-
   const businessOrganisationsService = mock<BusinessOrganisationService>();
-  businessOrganisationsService.getVersions.mockReturnValue(of([version]));
 
   beforeEach(() => {
-    boDisplayPipe = new BoDisplayPipe(boSelectionDisplayPipe, businessOrganisationsService);
+    boSelectionDisplayPipe.transform.mockReturnValue('123 - 123 - 123 - sboid');
+    businessOrganisationsService.getVersions.mockReturnValue(of([version]));
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: BusinessOrganisationService,
+          useValue: businessOrganisationsService,
+        },
+        {
+          provide: BoSelectionDisplayPipe,
+          useValue: boSelectionDisplayPipe,
+        },
+        BoDisplayPipe,
+      ],
+    });
+    boDisplayPipe = TestBed.inject(BoDisplayPipe);
   });
 
   it('create an instance', () => {
@@ -44,7 +57,7 @@ describe('BoDisplayPipe', () => {
     const result = await firstValueFrom(boDisplayPipe.transform('sboid'));
     expect(result).toBe('123 - 123 - 123 - sboid');
 
-    expect(boSelectionDisplayPipe.transform).toHaveBeenCalled();
-    expect(businessOrganisationsService.getVersions).toHaveBeenCalled();
+    expect(businessOrganisationsService.getVersions).toHaveBeenCalledTimes(1);
+    expect(boSelectionDisplayPipe.transform).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,6 +1,13 @@
-import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { Component, ContentChild, input, output, TemplateRef } from '@angular/core';
 import { FileSizePipe } from '../file-size/file-size.pipe';
 import { NgTemplateOutlet } from '@angular/common';
+
+type FileEvent =
+  | File
+  | {
+      name: string;
+      size: number;
+    };
 
 @Component({
   selector: 'atlas-file',
@@ -9,21 +16,21 @@ import { NgTemplateOutlet } from '@angular/common';
   imports: [FileSizePipe, NgTemplateOutlet],
 })
 export class FileComponent {
-  @Input() file!: File | { name: string; size: number };
-  @Input() deleteEnabled = false;
-  @Input() downloadEnabled = false;
+  readonly file = input.required<FileEvent>();
+  readonly deleteEnabled = input(false);
+  readonly downloadEnabled = input(false);
 
-  @Output() fileDeleted = new EventEmitter<File | { name: string; size: number }>();
-  @Output() downloadFile = new EventEmitter<File | { name: string; size: number }>();
+  readonly fileDeleted = output<FileEvent>();
+  readonly downloadFile = output<FileEvent>();
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('checkBox') checkBox!: TemplateRef<any>;
 
   onDelete() {
-    this.fileDeleted.emit(this.file);
+    this.fileDeleted.emit(this.file());
   }
 
   download() {
-    this.downloadFile.emit(this.file);
+    this.downloadFile.emit(this.file());
   }
 }

@@ -1,26 +1,25 @@
 @if (fieldLabel) {
   <atlas-label-field
-    [fieldExamples]="fieldExamples"
-    [required]="required"
+    [fieldExamples]="fieldExamples()"
+    [required]="required()"
     fieldLabel="{{ fieldLabel }}"
-    infoIconLink="{{ infoIconLink }}"
-    infoIconTitle="{{ infoIconTitle }}"
-  ></atlas-label-field>
+    [infoIconLink]="infoIconLink()"
+    [infoIconTitle]="infoIconTitle()"
+  />
 }
-<form [formGroup]="formGroup">
-  <div [class]="{ 'text-field-wrapper': paddingBottom }">
+<form [formGroup]="formGroup()">
+  <div [class]="{ 'text-field-wrapper': paddingBottom() }">
     <div class="text-field-flex">
-      <ng-container #customChildInputPrefixTemplate *ngTemplateOutlet="customChildInputPrefixTemplate"> </ng-container>
+      <ng-container #customChildInputPrefixTemplate *ngTemplateOutlet="customChildInputPrefixTemplate" />
       <input
-        [formControlName]="controlName"
-        [ngStyle]="customInputNgStyle"
+        [formControlName]="controlName()"
         type="text"
-        placeholder="{{ placeholder | translate }}"
-        [attr.data-cy]="controlName"
+        placeholder="{{ placeholder() | translate }}"
+        [attr.data-cy]="controlName()"
         atlasEmptyToNull
       />
-      <ng-container #customChildInputPostfixTemplate *ngTemplateOutlet="customChildInputPostfixTemplate"></ng-container>
+      <ng-container #customChildInputPostfixTemplate *ngTemplateOutlet="customChildInputPostfixTemplate" />
     </div>
-    <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
+    <atlas-field-error [control]="formGroup().get(controlName())" />
   </div>
 </form>

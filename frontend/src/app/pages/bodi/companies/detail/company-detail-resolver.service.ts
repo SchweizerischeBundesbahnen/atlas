@@ -8,11 +8,9 @@ import { CompanyService } from '../../../../api/service/bodi/company.service';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyDetailResolver {
-  constructor(
-    private readonly companyInternalService: CompanyService,
-    private readonly notificationService: NotificationService,
-    private readonly router: Router
-  ) {}
+  private readonly companyInternalService = inject(CompanyService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Company> {
     const idParameter = parseInt(route.paramMap.get('id') || '0');

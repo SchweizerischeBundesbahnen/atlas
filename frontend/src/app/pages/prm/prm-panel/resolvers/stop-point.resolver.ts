@@ -7,10 +7,8 @@ import { StopPointService } from '../../../../api/service/prm/stop-point/stop-po
 
 @Injectable({ providedIn: 'root' })
 export class StopPointResolver {
-  constructor(
-    private readonly stopPointService: StopPointService,
-    private readonly router: Router
-  ) {}
+  private readonly stopPointService = inject(StopPointService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadStopPointVersion>> {
     const sloidParameter = route.paramMap.get('stopPointSloid') || '';

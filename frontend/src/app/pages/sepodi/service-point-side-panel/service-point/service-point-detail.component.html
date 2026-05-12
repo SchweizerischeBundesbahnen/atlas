@@ -8,7 +8,7 @@
             [currentRecord]="selectedVersion"
             [records]="servicePointVersions"
             [switchDisabled]="isSwitchVersionDisabled"
-          ></atlas-switch-version>
+          />
         }
       </div>
       <div class="d-flex flex-column">
@@ -16,18 +16,15 @@
           [number]="(selectedVersion?.number)!.number"
           [sloid]="selectedVersion?.sloid"
           targetPage="stop-point"
-        ></atlas-navigation-sepodi-prm>
+        />
         @if (selectedVersion?.sloid) {
           <div class="align-self-center">
-            <atlas-prm-recording-obligation
-              [showToggle]="false"
-              [sloid]="selectedVersion?.sloid!"
-            ></atlas-prm-recording-obligation>
+            <atlas-prm-recording-obligation [showToggle]="false" [sloid]="selectedVersion?.sloid!" />
           </div>
         }
         @if (isTerminationInProgress) {
           <div class="align-self-center">
-            <atlas-stop-point-termination-info [sloid]="selectedVersion?.sloid!"></atlas-stop-point-termination-info>
+            <atlas-stop-point-termination-info [sloid]="selectedVersion?.sloid!" />
           </div>
         }
       </div>
@@ -72,8 +69,7 @@
             [required]="false"
             controlName="abbreviation"
             fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
-          >
-          </atlas-text-field>
+          />
         }
         @if (hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected) {
           <div>
@@ -92,14 +88,14 @@
         [form]="form.controls.servicePointGeolocation"
         [editMode]="form.enabled"
         (geographyChanged)="$event ? onGeographyEnabled() : onGeographyDisabled()"
-      ></atlas-sepodi-geography>
+      />
     </atlas-service-point-form>
   }
 
   @if (selectedVersion) {
     <div class="mb-3">
-      <mat-divider class="mt-4 mb-4"></mat-divider>
-      <atlas-user-detail-info [applicationType]="'SEPODI'" [record]="selectedVersion"></atlas-user-detail-info>
+      <mat-divider class="mt-4 mb-4" />
+      <atlas-user-detail-info [applicationType]="'SEPODI'" [record]="selectedVersion" />
     </div>
   }
 </atlas-detail-page-container>
@@ -110,8 +106,7 @@
     buttonType="whiteFooterNonEdit"
     (buttonClicked)="closeSidePanel()"
     [footerEdit]="form?.enabled ?? false"
-  >
-  </atlas-button>
+  />
   @if (form?.disabled && !isTerminationInProgress) {
     <atlas-button
       (buttonClicked)="toggleEdit()"
@@ -126,7 +121,7 @@
       buttonText="COMMON.EDIT"
       buttonType="edit"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
   }
   <atlas-button
     [footerEdit]="form?.enabled ?? false"
@@ -135,7 +130,7 @@
     buttonText="COMMON.CANCEL"
     buttonType="whiteFooterEdit"
     wrapperStyleClass="ms-3"
-  ></atlas-button>
+  />
 
   @if (form?.disabled && selectedVersion?.status === 'DRAFT' && !isTerminationInProgress) {
     <atlas-button
@@ -151,7 +146,7 @@
       buttonText="WORKFLOW.BUTTON.ADD"
       buttonType="edit"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
   }
   <atlas-button
     (click)="save()"
@@ -162,8 +157,7 @@
     buttonText="COMMON.SAVE"
     buttonType="whiteFooterEdit"
     wrapperStyleClass="ms-3"
-  >
-  </atlas-button>
+  />
 
   @if (!isTerminationInProgress) {
     <atlas-revoke-button
@@ -171,7 +165,7 @@
       (revokeClicked)="revoke()"
       [hidden]="!showRevokeButton"
       [disabled]="isSwitchVersionDisabled"
-    ></atlas-revoke-button>
+    />
 
     <atlas-button
       (buttonClicked)="validate()"
@@ -182,7 +176,6 @@
       buttonText="WORKFLOW.BUTTON.SKIP"
       buttonType="skipworkflow"
       wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
+    />
   }
 </atlas-detail-footer>

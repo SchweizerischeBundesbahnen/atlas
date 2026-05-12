@@ -18,7 +18,7 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import moment from 'moment';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { LineService } from '../../../../api/service/lidi/line.service';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
@@ -33,8 +33,8 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
   imports: [FormModule],
 })
 export class MockSublineTableComponent {
-  @Input() mainLineSlnid!: string;
-  @Input() eventSubject!: Observable<boolean>;
+  readonly mainLineSlnid = input.required<string>();
+  readonly eventSubject = input.required<Observable<boolean>>();
 }
 
 @Component({

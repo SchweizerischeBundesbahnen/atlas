@@ -32,6 +32,12 @@ import { ClientCredentialCreate } from '../../../../../api/model/clientCredentia
   providers: [TranslatePipe],
 })
 export class UserAdministrationClientCreateComponent {
+  private readonly clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly dialogService = inject(DialogService);
+
   saveEnabled = true;
 
   form = new FormGroup<ClientCredentialCreateFormGroup>({
@@ -53,12 +59,6 @@ export class UserAdministrationClientCreateComponent {
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
   });
-
-  clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
-  notificationService = inject(NotificationService);
-  router = inject(Router);
-  route = inject(ActivatedRoute);
-  dialogService = inject(DialogService);
 
   create(): void {
     this.form.markAllAsTouched();

@@ -63,8 +63,11 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   @Input() stopPoint!: ReadServicePointVersion;
+
   @Input() oldDesignation?: string;
+
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
+
   @Input() currentWorkflow?: ReadStopPointWorkflow;
 
   specialDecision?: StopPointPerson;

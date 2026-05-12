@@ -7,12 +7,11 @@
           [formGroup]="form"
           label="TTH.STATEMENT.STATEMENT_TEXT"
           [controlName]="getStatementControlName()"
-        >
-        </atlas-form-comment>
+        />
       </div>
       @if (anonymDocuments && anonymDocuments.length > 0) {
         <div class="mb-3 mt-4">
-          <atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS"></atlas-label-field>
+          <atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS" />
           @for (document of anonymDocuments; track document) {
             <atlas-file
               (downloadFile)="downloadFile($event.name)"
@@ -22,8 +21,7 @@
                 name: document.getRawValue().fileName!,
                 size: document.getRawValue().fileSize!,
               }"
-            >
-            </atlas-file>
+            />
           }
         </div>
       }
@@ -36,7 +34,6 @@
       buttonText="COMMON.BACK_TO_OVERVIEW"
       buttonType="whiteFooterNonEdit"
       wrapperStyleClass="me-3"
-    >
-    </atlas-button>
+    />
   </atlas-detail-footer>
 </atlas-detail-page-container>

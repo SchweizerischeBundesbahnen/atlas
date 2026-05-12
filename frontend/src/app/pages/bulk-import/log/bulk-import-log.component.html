@@ -31,7 +31,7 @@
           ];
           track $index
         ) {
-          <ng-container [ngTemplateOutlet]="resultInfo" [ngTemplateOutletContext]="item"> </ng-container>
+          <ng-container [ngTemplateOutlet]="resultInfo" [ngTemplateOutletContext]="item" />
         }
 
         @if (data.importResult.inNameOf) {
@@ -41,7 +41,7 @@
               label: 'BULK_IMPORT.LABEL.IN_NAME_OF' | translate,
               value: data.importResult.inNameOf | userDisplayName | async,
             }"
-          ></ng-container>
+          />
         }
 
         <ng-template #statusTemplate let-color="color" let-text="text" let-nbOfLines="nbOfLines">
@@ -72,7 +72,7 @@
           ];
           track $index
         ) {
-          <ng-container [ngTemplateOutlet]="statusTemplate" [ngTemplateOutletContext]="item"></ng-container>
+          <ng-container [ngTemplateOutlet]="statusTemplate" [ngTemplateOutletContext]="item" />
         }
       </section>
 
@@ -128,12 +128,12 @@
           [pageSizeOptions]="[5, 20]"
           [length]="data.importResult.logEntries?.length"
           (page)="pagedLogEntries = pageChanged($event, data.importResult.logEntries)"
-        ></mat-paginator>
+        />
       </main>
     </div>
   } @else {
     <p>{{ 'BULK_IMPORT.LABEL.NOT_VALID_ID' | translate: { id: data.id } }}</p>
   }
 } @else {
-  <atlas-loading-spinner [isLoading]="true"></atlas-loading-spinner>
+  <atlas-loading-spinner [isLoading]="true" />
 }

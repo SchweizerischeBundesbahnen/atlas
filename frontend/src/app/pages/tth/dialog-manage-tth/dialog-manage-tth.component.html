@@ -4,7 +4,7 @@
   </button>
 </div>
 <div class="dialog" data-cy="dialog">
-  <ng-container *ngTemplateOutlet="currentView"></ng-container>
+  <ng-container *ngTemplateOutlet="currentView" />
 
   <ng-template #loadingView>
     <div class="dialog-container p-3 font-bold-4xl">
@@ -22,17 +22,17 @@
 
       <div class="slide-toggle-row-wrapper pb-3">
         <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_EXTERNAL' | translate }}</span>
-        <atlas-slide-toggle [(toggle)]="statementCreatableExternalSliderValue"></atlas-slide-toggle>
+        <atlas-slide-toggle [(toggle)]="statementCreatableExternalSliderValue" />
       </div>
 
       <div class="slide-toggle-row-wrapper">
         <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_INTERNAL' | translate }}</span>
-        <atlas-slide-toggle [(toggle)]="statementCreatableInternalSliderValue"></atlas-slide-toggle>
+        <atlas-slide-toggle [(toggle)]="statementCreatableInternalSliderValue" />
       </div>
 
       <div class="slide-toggle-row-wrapper pt-3">
         <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.EDIT_STATEMENT' | translate }}</span>
-        <atlas-slide-toggle [(toggle)]="statementEditableSliderValue"></atlas-slide-toggle>
+        <atlas-slide-toggle [(toggle)]="statementEditableSliderValue" />
       </div>
 
       <div class="one-action-btn-wrapper-right mt-3 pt-5">
@@ -41,7 +41,7 @@
           [disabled]="actionButtonsDisabled"
           buttonText="COMMON.SAVE_AND_CLOSE"
           buttonType="confirm"
-        ></atlas-button>
+        />
       </div>
 
       <div class="two-action-btn-wrapper mt-3 pt-5">
@@ -50,14 +50,14 @@
           [disabled]="actionButtonsDisabled"
           buttonText="COMMON.CANCEL"
           buttonType="cancel"
-        ></atlas-button>
+        />
         <atlas-button
           (buttonClicked)="handleManageViewTthCloseClick()"
           [disabled]="actionButtonsDisabled"
           buttonDataCy="closeTthYearButton"
           buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
           buttonType="confirm"
-        ></atlas-button>
+        />
       </div>
     </div>
   </ng-template>
@@ -159,14 +159,14 @@
           [disabled]="actionButtonsDisabled"
           buttonText="COMMON.CANCEL"
           buttonType="cancel"
-        ></atlas-button>
+        />
         <atlas-button
           (buttonClicked)="handleCloseViewTthCloseClick()"
           [disabled]="actionButtonsDisabled"
           buttonDataCy="closeTthTimetableHearingButton"
           buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
           buttonType="confirm"
-        ></atlas-button>
+        />
       </div>
     </div>
   </ng-template>

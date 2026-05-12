@@ -14,6 +14,7 @@ import { DateRangeValidator } from '../../validation/date-range/date-range-valid
 import { MatDatepicker } from '@angular/material/datepicker';
 import moment from 'moment';
 import { TimetableYearChangeInternalService } from '../../../api/service/lidi/timetable-year-change-internal.service';
+import { inputBinding, signal } from '@angular/core';
 
 const nextTimetableYearChange = new Date('2024-12-15');
 
@@ -21,6 +22,7 @@ describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
   let fixture: ComponentFixture<DateRangeComponent>;
   let timetableYearChangeServiceMock: Mocked<Pick<TimetableYearChangeInternalService, 'getNextTimetablesYearChange'>>;
+  let formGroupInput: ReturnType<typeof signal<FormGroup>>;
 
   beforeEach(async () => {
     timetableYearChangeServiceMock = {
@@ -50,15 +52,20 @@ describe('DateRangeComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DateRangeComponent);
-    component = fixture.componentInstance;
-    component.formGroup = new FormGroup(
-      {
-        validFrom: new FormControl(),
-        validTo: new FormControl(),
-      },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+    const formGroupInputName: keyof DateRangeComponent = 'formGroup';
+    formGroupInput = signal(
+      new FormGroup(
+        {
+          validFrom: new FormControl(),
+          validTo: new FormControl(),
+        },
+        [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+      )
     );
+    fixture = TestBed.createComponent(DateRangeComponent, {
+      bindings: [inputBinding(formGroupInputName, formGroupInput)],
+    });
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
@@ -79,7 +86,7 @@ describe('DateRangeComponent', () => {
     todayButton.nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.formGroup.controls.validFrom.value).toEqual(moment().startOf('day'));
+    expect(component.formGroup().controls.validFrom.value).toEqual(moment().startOf('day'));
   });
 
   it('should open validFrom picker and select future timetable', () => {
@@ -89,7 +96,7 @@ describe('DateRangeComponent', () => {
     futureTimetableButton.nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.formGroup.controls.validFrom.value).toEqual(moment(nextTimetableYearChange).startOf('day'));
+    expect(component.formGroup().controls.validFrom.value).toEqual(moment(nextTimetableYearChange).startOf('day'));
   });
 
   function openValidFromPickerAndSelectHeader() {
@@ -117,7 +124,7 @@ describe('DateRangeComponent', () => {
     fixture.debugElement.queryAll(By.css('.mat-calendar-body-today'))[1].nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.formGroup.controls.validFrom.value.isSame(moment().startOf('day'))).toBe(true);
-    expect(component.formGroup.controls.validTo.value.isSame(moment().startOf('day'))).toBe(true);
+    expect(component.formGroup().controls.validFrom.value.isSame(moment().startOf('day'))).toBe(true);
+    expect(component.formGroup().controls.validTo.value.isSame(moment().startOf('day'))).toBe(true);
   });
 });

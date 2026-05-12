@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
+import { Component, input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
@@ -26,14 +26,14 @@ import { distinctUntilChanged, of, startWith } from 'rxjs';
   providers: [TranslatePipe],
 })
 export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
-  @Input() controlName!: string;
-  @Input() disabled = false;
-  @Input() formGroup!: FormGroup;
-  @Input() showInfo = false;
-  @Input() meansOfTransportToShow: MeanOfTransport[] | undefined;
-  @Input() showSectorWarning = false;
-  @Input() multiSelectMode = true;
-  selectChange = output<MeanOfTransport[]>();
+  readonly controlName = input.required<string>();
+  readonly disabled = input(false);
+  readonly formGroup = input.required<FormGroup>();
+  readonly showInfo = input(false);
+  readonly meansOfTransportToShow = input<MeanOfTransport[]>();
+  readonly showSectorWarning = input(false);
+  readonly multiSelectMode = input(true);
+  readonly selectChange = output<MeanOfTransport[]>();
 
   protected selectedMeans$ = of([]);
   protected means!: MeanOfTransport[];
@@ -54,11 +54,12 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   private initMeansOfTransportToShow() {
-    this.means = this.meansOfTransportToShow ? this.meansOfTransportToShow : Object.values(MeanOfTransport);
+    const meansOfTransportToShow = this.meansOfTransportToShow();
+    this.means = meansOfTransportToShow ?? Object.values(MeanOfTransport);
   }
 
   protected onSelection(meanOfTransport: MeanOfTransport) {
-    if (this.multiSelectMode) {
+    if (this.multiSelectMode()) {
       this.setControlForMultiSelect(meanOfTransport);
     } else {
       this.setControlForSingleSelect(meanOfTransport);
@@ -92,6 +93,6 @@ export class MeansOfTransportPickerComponent implements OnInit, OnChanges {
   }
 
   private get formControl() {
-    return required(this.formGroup.get(this.controlName), 'mean of transport control must be defined');
+    return required(this.formGroup().get(this.controlName()), 'mean of transport control must be defined');
   }
 }

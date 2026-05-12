@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../../../core/versioning/date-range';
@@ -27,18 +27,16 @@ import { DetailWithRelationTabComponent } from '../../relation/tab/detail-with-r
   ],
 })
 export class PlatformDetailPanelComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+
   isNew = false;
   platform: ReadPlatformVersion[] = [];
   selectedVersion!: ReadPlatformVersion;
-
   servicePoint!: ReadServicePointVersion;
   trafficPoint!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
   stopPoint!: ReadStopPointVersion[];
-
   isReduced = false;
-
-  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {

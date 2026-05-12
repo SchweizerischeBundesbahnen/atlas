@@ -7,10 +7,8 @@ import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable
 
 @Injectable({ providedIn: 'root' })
 export class TimetableFieldNumberDetailResolver {
-  constructor(
-    private readonly timetableFieldNumbersService: TimetableFieldNumberService,
-    private readonly router: Router
-  ) {}
+  private readonly timetableFieldNumbersService = inject(TimetableFieldNumberService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<TimetableFieldNumberVersion>> {
     const idParameter = route.paramMap.get('id') || '';

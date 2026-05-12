@@ -20,5 +20,5 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
   templateUrl: './stop-point-workflow-basic-info.html',
 })
 export class StopPointWorkflowBasicInfo {
-  stopPoint = input.required<ReadServicePointVersion>();
+  readonly stopPoint = input.required<ReadServicePointVersion>();
 }

@@ -13,7 +13,6 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { Pages } from '../../pages';
 import { take } from 'rxjs';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
-import { MatSelectChange } from '@angular/material/select';
 import { TthUtils } from '../util/tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
@@ -67,15 +66,18 @@ import { StatementTableHandler } from '../util/statement-table-handler';
   ],
 })
 export class OverviewDetailComponent extends StatementTableHandler {
-  readonly cantonShort = this.overviewToTabService.cantonShort;
-  readonly timetableYear = this.overviewToTabService.timetableYear;
-  readonly hearingStatus = this.overviewToTabService.hearingStatus;
-  readonly isTimetableHearingYearFound = this.overviewToTabService.isTimetableHearingYearFound;
-  readonly isHearingYearActive = this.overviewToTabService.isHearingYearActive;
-  readonly isHearingYearPlanned = this.overviewToTabService.isHearingYearPlanned;
-  readonly isHearingYearArchived = this.overviewToTabService.isHearingYearArchived;
-  readonly isSwissCanton = this.overviewToTabService.isSwissCanton;
-  readonly isYearLoading = this.overviewToTabService.isYearLoading;
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
+  private readonly timetableHearingYearsService = inject(TimetableHearingYearInternalService);
+  private readonly tthYearInternalService = inject(TthYearInternalService);
+  private readonly overviewToTabService = inject(OverviewToTabShareDataService);
+  private readonly dialogService = inject(DialogService);
+  private readonly tableService = inject(TableService);
+  private readonly translateService = inject(TranslateService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly destroyRef = inject(DestroyRef);
 
   timeTableHearingStatements: TimetableHearingStatementV2[] = [];
   totalCount = 0;
@@ -104,23 +106,20 @@ export class OverviewDetailComponent extends StatementTableHandler {
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatementV2>(true, []);
   isCheckBoxModeActive = false;
-  private destroyRef = inject(DestroyRef);
 
   tableFilterConfig!: TableFilter<unknown>[][];
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService,
-    private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
-    private readonly tthYearInternalService: TthYearInternalService,
-    private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly dialogService: DialogService,
-    private readonly tableService: TableService,
-    private readonly translateService: TranslateService,
-    private readonly permissionService: PermissionService,
-    private readonly matDialog: MatDialog
-  ) {
+  readonly cantonShort = this.overviewToTabService.cantonShort;
+  readonly timetableYear = this.overviewToTabService.timetableYear;
+  readonly hearingStatus = this.overviewToTabService.hearingStatus;
+  readonly isTimetableHearingYearFound = this.overviewToTabService.isTimetableHearingYearFound;
+  readonly isHearingYearActive = this.overviewToTabService.isHearingYearActive;
+  readonly isHearingYearPlanned = this.overviewToTabService.isHearingYearPlanned;
+  readonly isHearingYearArchived = this.overviewToTabService.isHearingYearArchived;
+  readonly isSwissCanton = this.overviewToTabService.isSwissCanton;
+  readonly isYearLoading = this.overviewToTabService.isYearLoading;
+
+  constructor() {
     super();
     effect(() => {
       if (!this.isYearLoading()) {
@@ -338,13 +337,13 @@ export class OverviewDetailComponent extends StatementTableHandler {
       });
   }
 
-  collectingActions(action: MatSelectChange) {
-    if (action.value === 'STATUS_CHANGE') {
+  collectingActions(action: string) {
+    if (action === 'STATUS_CHANGE') {
       this.statusChangeCollectingActionsEnabled = true;
       this.showCollectingActionButton = false;
       this.loadData();
     }
-    if (action.value === 'CANTON_DELIVERY') {
+    if (action === 'CANTON_DELIVERY') {
       this.cantonDeliveryCollectingActionsEnabled = true;
       this.showCollectingActionButton = false;
       this.loadData();
@@ -375,7 +374,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
     this.loadData();
   }
 
-  collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
+  collectingStatusChangeAction(changedStatus: StatementStatus) {
     if (this.selectedItems.length > 0) {
       const dialogData: StatusChangeData = {
         title: 'TTH.DIALOG.STATUS_CHANGE',
@@ -383,7 +382,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
         cancelText: 'TTH.DIALOG.BACK',
         confirmText: 'TTH.DIALOG.STATUS_CHANGE',
         tths: this.selectedItems,
-        statementStatus: changedStatus.value,
+        statementStatus: changedStatus,
         type: 'MULTIPLE',
       };
 
@@ -401,7 +400,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
     }
   }
 
-  collectingCantonDeliveryAction($event: MatSelectChange) {
+  collectingCantonDeliveryAction(canton: string) {
     if (this.selectedItems.length > 0) {
       const dialogData: ChangeCantonData = {
         title: 'TTH.STATEMENT.DIALOG.TITLE',
@@ -409,7 +408,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
         cancelText: 'TTH.DIALOG.BACK',
         confirmText: 'TTH.DIALOG.CANTON_CHANGE',
         tths: this.selectedItems,
-        swissCanton: Cantons.getSwissCantonEnum($event.value),
+        swissCanton: Cantons.getSwissCantonEnum(canton),
       };
       this.dialogService
         .openDialogDataWithConfirmationResult(dialogData, TthChangeCantonDialogComponent)

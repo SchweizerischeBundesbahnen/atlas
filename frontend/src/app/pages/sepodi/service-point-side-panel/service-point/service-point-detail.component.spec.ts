@@ -15,7 +15,7 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { Country, ReadServicePointVersion, Status, StopPointType } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MapService } from '../../map/map.service';
-import { Component, EventEmitter, input, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { BERN } from '../../../../../test/data/service-point';
 import { ValidityService } from '../../validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
@@ -37,10 +37,10 @@ import { ServicePointInternalService } from '../../../../api/service/sepodi/serv
   standalone: true,
 })
 class ServicePointFormMockComponent {
-  @Input() form?: FormGroup;
-  @Input() currentVersion?: object;
-  @Input() locationInformation?: object;
-  selectableStopPointTypes = input.required<StopPointType[]>();
+  readonly form = input<FormGroup>();
+  readonly currentVersion = input<object>();
+  readonly locationInformation = input<object>();
+  readonly selectableStopPointTypes = input.required<StopPointType[]>();
 }
 
 @Component({
@@ -49,9 +49,9 @@ class ServicePointFormMockComponent {
   standalone: true,
 })
 class ServicePointGeographyMockComponent {
-  @Input() form?: FormGroup;
-  @Input() editMode?: boolean;
-  @Output() geographyChanged = new EventEmitter();
+  readonly form = input<FormGroup>();
+  readonly editMode = input<boolean>();
+  readonly geographyChanged = output();
 }
 
 describe('ServicePointDetailComponent', () => {

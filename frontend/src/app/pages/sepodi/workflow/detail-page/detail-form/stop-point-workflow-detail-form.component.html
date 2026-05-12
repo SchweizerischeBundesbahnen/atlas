@@ -5,8 +5,7 @@
         'SEPODI.SERVICE_POINTS.WORKFLOW.PREVIOUS_WORKFLOW' | translate: { number: currentWorkflow!.previousWorkflowId! }
       }}"
       (linkClicked)="goToWorkflow(currentWorkflow!.previousWorkflowId!)"
-    >
-    </atlas-link>
+    />
   </div>
 }
 @if (currentWorkflow?.followUpWorkflowId) {
@@ -17,8 +16,7 @@
           | translate: { number: currentWorkflow!.followUpWorkflowId! }
       }}"
       (linkClicked)="goToWorkflow(currentWorkflow!.followUpWorkflowId!)"
-    >
-    </atlas-link>
+    />
   </div>
 }
 
@@ -27,7 +25,7 @@
 <div class="workflow">
   <h1 class="font-bold-2xl pt-5">
     {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.PROPOSAL' | translate }}
-    <atlas-spacer [divider]="true" height="0"></atlas-spacer>
+    <atlas-spacer [divider]="true" height="0" />
   </h1>
 
   @if (currentWorkflow) {
@@ -63,7 +61,7 @@
       }
 
       @if (currentWorkflow) {
-        <atlas-text-field [formGroup]="form" controlName="designationOfficial"></atlas-text-field>
+        <atlas-text-field [formGroup]="form" controlName="designationOfficial" />
       }
     </div>
 
@@ -94,10 +92,10 @@
           <em class="bi bi-geo-alt-fill"></em>{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
         </span>
         @if (stopPoint.servicePointGeolocation?.lv95) {
-          <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
+          <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()" />
           /
         }
-        <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
+        <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()" />
       </div>
     </div>
   }
@@ -111,7 +109,7 @@
     subLabel="SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT_SUB_LABEL"
     controlName="workflowComment"
     maxChars="1500"
-  ></atlas-form-comment>
+  />
 </div>
 
 <div [formGroup]="form" class="examinant-section col-12">
@@ -119,9 +117,7 @@
     <div class="font-bold-2xl">
       {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS' | translate }}
 
-      <atlas-form-info-icon
-        infoTitle="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_INFO' | translate }}"
-      ></atlas-form-info-icon>
+      <atlas-form-info-icon infoTitle="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_INFO' | translate }}" />
     </div>
     @if (form.enabled) {
       <div class="translated-paragraph">
@@ -134,7 +130,7 @@
     (openDecision)="openDecision($event)"
     [form]="form"
     [currentWorkflowStatus]="currentWorkflow?.status"
-  ></atlas-stop-point-workflow-examinants-table>
+  />
 </div>
 
 <div class="d-flex mt-5">
@@ -154,6 +150,5 @@
       },
     ]"
     controlName="ccEmails"
-  >
-  </atlas-text-list>
+  />
 </div>

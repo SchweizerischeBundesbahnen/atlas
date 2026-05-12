@@ -5,7 +5,6 @@ import { TimetableHearingYearInternalService } from '../../../api/service/lidi/t
 import { HearingStatus, TimetableHearingYear } from '../../../api';
 import { Cantons } from '../../../core/cantons/Cantons';
 import { TthUtils } from '../util/tth-utils';
-import { MatSelectChange } from '@angular/material/select';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Pages } from '../../pages';
 import { OverviewTabHeadingComponent } from '../overview-tab/overview-tab-heading/overview-tab-heading.component';
@@ -72,16 +71,16 @@ export class TthOverviewBaseComponent implements OnInit {
     }
   }
 
-  changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange): void {
-    const canton = selectedCanton.value.toLowerCase();
+  changeSelectedCantonFromDropdown(selectedCanton: string): void {
+    const canton = selectedCanton.toLowerCase();
     this.overviewToTabService.setCantonShort(canton);
     this.navigateTo(canton, this.timetableYear().timetableYear);
     this.tableService.resetTableSettings();
   }
 
-  changeSelectedYearFromDropdown(selectedYear: MatSelectChange): void {
-    this.overviewToTabService.setYearSelection(selectedYear.value);
-    this.navigateTo(this.cantonShort().toLowerCase(), selectedYear.value);
+  changeSelectedYearFromDropdown(selectedYear: number): void {
+    this.overviewToTabService.setYearSelection(selectedYear);
+    this.navigateTo(this.cantonShort().toLowerCase(), selectedYear);
     this.tableService.resetTableSettings();
   }
 

@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Page } from '../../model/page';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs/operators';
@@ -50,17 +50,17 @@ export class SideNavComponent {
     return links;
   });
 
-  constructor(
-    private readonly router: Router,
-    protected readonly pageService: PageService,
-    private readonly overviewToTabService: OverviewToTabShareDataService
-  ) {
+  private readonly router = inject(Router);
+  protected readonly pageService = inject(PageService);
+  private readonly overviewToTabService = inject(OverviewToTabShareDataService);
+
+  constructor() {
     this.router.events
       .pipe(
         takeUntilDestroyed(),
         filter((event) => event instanceof NavigationEnd),
         switchMap((event) => {
-          return pageService.enabledPages.pipe(map((pages) => [event, pages] as [NavigationEnd, Page[]]));
+          return this.pageService.enabledPages.pipe(map((pages) => [event, pages] as [NavigationEnd, Page[]]));
         })
       )
       .subscribe(([event, pages]) => {

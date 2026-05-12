@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { TableColumn } from '../table-column';
 import { FormatPipe } from './format.pipe';
 
@@ -9,7 +9,7 @@ import { FormatPipe } from './format.pipe';
 export class ShowTitlePipe implements PipeTransform {
   private readonly SHOW_TOOLTIP_LENGTH = 15;
 
-  constructor(private readonly formatPipe: FormatPipe) {}
+  private readonly formatPipe = inject(FormatPipe);
 
   transform<T>(value: string | Date, column: TableColumn<T>): string {
     const content = this.formatPipe.transform(value, column);

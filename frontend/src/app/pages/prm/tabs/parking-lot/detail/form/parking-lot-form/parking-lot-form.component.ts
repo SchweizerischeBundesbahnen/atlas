@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ParkingLotFormGroup } from '../parking-lot-form-group';
 import { BooleanOptionalAttributeType } from '../../../../../../../api';
@@ -23,8 +23,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class ParkingLotFormComponent {
+
   @Input() form!: FormGroup<ParkingLotFormGroup>;
-  @Input() isNew = false;
+  readonly isNew = input(false);
 
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
 }

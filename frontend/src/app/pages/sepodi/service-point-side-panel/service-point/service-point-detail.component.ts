@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
@@ -79,6 +79,18 @@ export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] = Object.va
   ],
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly dialogService = inject(DialogService);
+  private readonly servicePointService = inject(ServicePointService);
+  private readonly servicePointInternalService = inject(ServicePointInternalService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly mapService = inject(MapService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly validityService = inject(ValidityService);
+  private readonly terminationService = inject(TerminationService);
+  protected readonly activatedRoute = inject(ActivatedRoute);
+
   readonly servicePointStatus = Status;
 
   private onDestroy$ = new Subject<boolean>();
@@ -123,19 +135,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
-  constructor(
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly dialogService: DialogService,
-    private readonly servicePointService: ServicePointService,
-    private readonly servicePointInternalService: ServicePointInternalService,
-    private readonly notificationService: NotificationService,
-    private readonly mapService: MapService,
-    private readonly permissionService: PermissionService,
-    private readonly validityService: ValidityService,
-    private readonly terminationService: TerminationService,
-    protected readonly activatedRoute: ActivatedRoute
-  ) {
+  constructor() {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initServicePoint();

@@ -9,7 +9,10 @@ import { SloidContainerComponent } from '../../../../core/sloid-container/sloid-
   imports: [DateRangeTextComponent, SloidContainerComponent],
 })
 export class PrmDetailPanelComponent {
+
   @Input() isNew = false;
+
   @Input() selectedVersion!: { sloid?: string };
+
   @Input() maxValidity!: DateRange;
 }

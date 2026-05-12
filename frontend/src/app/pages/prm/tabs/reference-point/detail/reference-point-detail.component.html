@@ -7,13 +7,13 @@
   @if (!isNew) {
     <div class="font-xl mb-2">
       <span data-cy="total-range">
-        <atlas-date-range-text [dateRange]="maxValidity"></atlas-date-range-text>
+        <atlas-date-range-text [dateRange]="maxValidity" />
       </span>
     </div>
   }
   @if (!isNew) {
     <div class="d-flex flex-row mb-3">
-      <atlas-sloid-container [sloid]="selectedVersion.sloid!"></atlas-sloid-container>
+      <atlas-sloid-container [sloid]="selectedVersion.sloid!" />
     </div>
   }
 
@@ -25,7 +25,7 @@
     }
     @if (isNew) {
       <div class="new-sloid d-flex flex-column">
-        <atlas-sloid [formGroup]="form" [givenPrefix]="servicePoint.sloid + ':'" [numberColons]="0"></atlas-sloid>
+        <atlas-sloid [formGroup]="form" [givenPrefix]="servicePoint.sloid + ':'" [numberColons]="0" />
       </div>
     }
     @if (showVersionSwitch) {
@@ -36,7 +36,7 @@
             [currentRecord]="selectedVersion"
             [records]="versions"
             [showStatus]="false"
-          ></atlas-switch-version>
+          />
         </div>
       </div>
     }
@@ -49,11 +49,11 @@
       </h2>
     }
 
-    <atlas-reference-point-complete-form [form]="form"></atlas-reference-point-complete-form>
+    <atlas-reference-point-complete-form [form]="form" />
     @if (!isNew) {
       <div>
-        <mat-divider class="mt-4 mb-4"></mat-divider>
-        <atlas-user-detail-info [applicationType]="'PRM'" [record]="selectedVersion"></atlas-user-detail-info>
+        <mat-divider class="mt-4 mb-4" />
+        <atlas-user-detail-info [applicationType]="'PRM'" [record]="selectedVersion" />
       </div>
     }
   </atlas-detail-page-content>
@@ -65,7 +65,7 @@
       buttonDataCy="back"
       buttonText="COMMON.BACK"
       buttonType="whiteFooterNonEdit"
-    ></atlas-button>
+    />
     @if (form.disabled) {
       <atlas-button
         (buttonClicked)="toggleEdit()"
@@ -75,7 +75,7 @@
         buttonText="COMMON.EDIT"
         buttonType="edit-service-point-dependent"
         wrapperStyleClass="ms-3"
-      ></atlas-button>
+      />
     }
     <atlas-button
       (buttonClicked)="toggleEdit()"
@@ -83,7 +83,7 @@
       buttonDataCy="cancel"
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
-    ></atlas-button>
+    />
     <atlas-button
       (buttonClicked)="save()"
       [footerEdit]="form.enabled"
@@ -92,6 +92,6 @@
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
   </atlas-detail-footer>
 </atlas-detail-page-container>

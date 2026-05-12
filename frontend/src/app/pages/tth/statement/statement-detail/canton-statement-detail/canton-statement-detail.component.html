@@ -9,7 +9,7 @@
 
           @if (form.value.documents && form.value.documents.length > 0) {
             <div class="mb-3 mt-4">
-              <atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS"></atlas-label-field>
+              <atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS" />
               @for (document of form.controls.documents.controls; track document) {
                 <atlas-file
                   (downloadFile)="downloadFile($event.name)"
@@ -20,8 +20,7 @@
                     name: document.getRawValue().fileName!,
                     size: document.getRawValue().fileSize!,
                   }"
-                >
-                </atlas-file>
+                />
               }
             </div>
           }
@@ -38,20 +37,17 @@
                 [maxFileSize]="20 * 1024 * 1024"
                 acceptedFileExtension=".pdf"
                 [acceptedFileType]="['application/pdf']"
-              ></atlas-file-upload>
+              />
             </ng-container>
           }
 
-          <atlas-statement-personal-information
-            [form]="form"
-            [statement]="statement!"
-          ></atlas-statement-personal-information>
+          <atlas-statement-personal-information [form]="form" [statement]="statement!" />
 
           <div class="mt-5">
             <span class="font-bold-xl">
               {{ 'TTH.STATEMENT.STATEMENT_TRANSFER_CANTON' | translate }}
             </span>
-            <atlas-spacer [divider]="true" height="10px"></atlas-spacer>
+            <atlas-spacer [divider]="true" height="10px" />
             <span class="font-regular-base">
               {{ 'TTH.STATEMENT.STATEMENT_TRANSFER_CANTON_INFO' | translate }}
             </span>
@@ -113,7 +109,7 @@
               <span class="font-regular-lg">
                 {{ 'TTH.STATEMENT.CLARIFICATION_POSTFIX' | translate }}
               </span>
-              <atlas-spacer [divider]="true" height="10px"></atlas-spacer>
+              <atlas-spacer [divider]="true" height="10px" />
             </div>
             <div class="mb-3 font-regular-base">
               {{ 'TTH.STATEMENT.CLARIFICATION_INFO' | translate }}
@@ -132,7 +128,7 @@
 
           <h1 class="font-bold-xl pt-5">
             {{ 'TTH.STATEMENT.STATUS_JUSTIFICATION' | translate }}
-            <atlas-spacer [divider]="true" height="20px"></atlas-spacer>
+            <atlas-spacer [divider]="true" height="20px" />
           </h1>
 
           <div class="d-flex flex-row col-12 mb-5">
@@ -146,8 +142,7 @@
                 dataCy="statementStatus"
                 label="TTH.STATEMENT.STATUS"
                 optionTranslateLabelPrefix="TTH.STATEMENT_STATUS."
-              >
-              </atlas-select>
+              />
             </div>
             <div class="d-flex flex-column col-6 ps-3">
               <atlas-select
@@ -158,8 +153,7 @@
                 controlName="timetableYear"
                 dataCy="detailSelectTthYear"
                 label="TTH.SELECT_YEAR"
-              >
-              </atlas-select>
+              />
             </div>
           </div>
 
@@ -170,8 +164,7 @@
                 controlName="internalComment"
                 label="TTH.STATEMENT.INTERNAL_COMMENT"
                 maxChars="5000"
-              >
-              </atlas-form-comment>
+              />
             </div>
           </div>
           <div class="d-flex flex-row col-12 mb-4">
@@ -181,18 +174,13 @@
                 controlName="publicComment"
                 label="TTH.STATEMENT.PUBLIC_COMMENT"
                 maxChars="5000"
-              >
-              </atlas-form-comment>
+              />
             </div>
           </div>
         </ng-container>
 
         @if (statement) {
-          <atlas-user-detail-info
-            [record]="statement!"
-            [short]="true"
-            [applicationType]="'TIMETABLE_HEARING'"
-          ></atlas-user-detail-info>
+          <atlas-user-detail-info [record]="statement!" [short]="true" [applicationType]="'TIMETABLE_HEARING'" />
         }
       </div>
     </atlas-detail-page-content>
@@ -216,8 +204,7 @@
         buttonText="COMMON.BACK_TO_OVERVIEW"
         buttonType="whiteFooterNonEdit"
         wrapperStyleClass="me-3"
-      >
-      </atlas-button>
+      />
       @if (!isHearingStatusArchived && !form.enabled && (isStatementEditable | async) === true) {
         @if (!statement?.dossierId) {
           <atlas-button
@@ -229,8 +216,7 @@
             buttonText="COMMON.EDIT"
             buttonType="cantonWritePermission"
             wrapperStyleClass="me-3"
-          >
-          </atlas-button>
+          />
         }
         <atlas-button
           (buttonClicked)="openDataProtectionCheck()"
@@ -241,8 +227,7 @@
           buttonText="TTH.STATEMENT.DATA_PROTECTION_CHECK"
           buttonType="cantonWritePermission"
           wrapperStyleClass="me-3"
-        >
-        </atlas-button>
+        />
       }
       <atlas-button
         (buttonClicked)="next()"
@@ -261,8 +246,7 @@
         buttonText="COMMON.CANCEL"
         buttonType="whiteFooterEdit"
         wrapperStyleClass="me-3"
-      >
-      </atlas-button>
+      />
       <atlas-button
         (buttonClicked)="save()"
         [disabled]="!(form.dirty || uploadedFiles.length > 0)"
@@ -271,8 +255,7 @@
         buttonDataCy="save-item"
         buttonText="COMMON.SAVE"
         buttonType="whiteFooterEdit"
-      >
-      </atlas-button>
+      />
     </atlas-detail-footer>
   </atlas-detail-page-container>
 </div>

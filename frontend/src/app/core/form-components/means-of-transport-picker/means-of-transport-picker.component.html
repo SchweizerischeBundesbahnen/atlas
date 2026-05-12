@@ -1,16 +1,15 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="formGroup()">
   <div class="picker">
     <atlas-label-field
       [required]="true"
       fieldLabel="SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT"
-      infoIconTitle="{{ showInfo ? 'PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL' : '' }}"
-    >
-    </atlas-label-field>
+      infoIconTitle="{{ showInfo() ? 'PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL' : '' }}"
+    />
     <div class="means-of-transport-wrapper mt-2">
       @for (mean of means; track mean) {
-        <button class="border-0 p-0" [disabled]="disabled" (click)="onSelection(mean)">
+        <button class="border-0 p-0" [disabled]="disabled()" (click)="onSelection(mean)">
           <img
-            [ngClass]="{ 'icon-image': !disabled }"
+            [ngClass]="{ 'icon-image': !disabled() }"
             [title]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
             ngSrc="../../../../assets/images/means-of-transport/{{ mean | getIcon: (selectedMeans$ | async)! }}.svg"
             width="35"
@@ -21,8 +20,8 @@
         </button>
       }
     </div>
-    <atlas-field-error [control]="formGroup.get(controlName)"></atlas-field-error>
-    @if (showSectorWarning && sectorWarning) {
+    <atlas-field-error [control]="formGroup().get(controlName())" />
+    @if (showSectorWarning() && sectorWarning) {
       <div class="sector-warning font-regular-sm mt-1">
         {{ 'SEPODI.SECTORS.MOT_CHANGE_WARNING' | translate }}
       </div>

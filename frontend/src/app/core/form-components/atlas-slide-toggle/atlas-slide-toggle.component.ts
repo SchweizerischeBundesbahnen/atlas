@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, input, OnChanges, OnInit, output, signal, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -7,41 +7,48 @@ import { AbstractControl, FormGroup } from '@angular/forms';
   styleUrls: ['./atlas-slide-toggle.component.scss'],
 })
 export class AtlasSlideToggleComponent implements OnInit, OnChanges {
-  @Input() toggle = false;
-  @Input() disabled = false;
-  @Input() slideTrackNeutral = false;
+  readonly toggle = input(false);
+  readonly disabled = input(false);
+  readonly slideTrackNeutral = input(false);
 
-  @Input() formGroup?: FormGroup;
-  @Input() controlName?: string;
+  readonly formGroup = input<FormGroup>();
+  readonly controlName = input<string>();
 
-  @Output() toggleChange = new EventEmitter<boolean>();
+  readonly toggleChange = output<boolean>();
+
+  protected readonly currentToggle = signal(false);
 
   ngOnInit() {
+    this.currentToggle.set(this.toggle());
     if (this.formControl) {
-      this.toggle = this.formControl.value;
-      this.formControl.valueChanges.subscribe((newValue) => (this.toggle = newValue));
+      this.currentToggle.set(this.formControl.value);
+      this.formControl.valueChanges.subscribe((newValue) => this.currentToggle.set(newValue));
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.formGroup) {
+    if (changes.toggle) {
+      this.currentToggle.set(this.toggle());
+    }
+    if (changes.formGroup || changes.controlName) {
       this.ngOnInit();
     }
   }
 
   handleToggleClick(): void {
-    this.toggle = !this.toggle;
-    this.toggleChange.emit(this.toggle);
+    this.currentToggle.set(!this.currentToggle());
+    this.toggleChange.emit(this.currentToggle());
 
     if (this.formControl) {
-      this.formControl?.setValue(this.toggle);
+      this.formControl?.setValue(this.currentToggle());
       this.formControl?.markAsDirty();
     }
   }
 
   get formControl(): AbstractControl | null | undefined {
-    if (this.controlName) {
-      return this.formGroup?.get(this.controlName);
+    const controlName = this.controlName();
+    if (controlName) {
+      return this.formGroup()?.get(controlName);
     } else {
       return undefined;
     }

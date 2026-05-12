@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -19,7 +19,12 @@ import { CompanyService } from '../../../api/service/bodi/company.service';
   imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class CompaniesComponent implements OnInit, OnDestroy {
-  tableColumns: TableColumn<Company>[] = [
+  private readonly companyInternalService = inject(CompanyService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly tableService = inject(TableService);
+
+  protected readonly tableColumns: TableColumn<Company>[] = [
     { headerTitle: 'BODI.COMPANIES.UIC_CODE', value: 'uicCode' },
     {
       headerTitle: 'BODI.COMPANIES.SHORT_NAME',
@@ -33,23 +38,14 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     { headerTitle: 'BODI.COMPANIES.URL', value: 'url' },
   ];
 
-  private tableFilterConfigIntern = {
+  protected tableFilterConfig!: TableFilter<unknown>[][];
+  protected companies: Company[] = [];
+  protected totalCount = 0;
+
+  private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
   };
-
-  tableFilterConfig!: TableFilter<unknown>[][];
-
-  companies: Company[] = [];
-  totalCount = 0;
-
   private companiesSubscription?: Subscription;
-
-  constructor(
-    private readonly companyInternalService: CompanyService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly tableService: TableService
-  ) {}
 
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.COMPANIES);

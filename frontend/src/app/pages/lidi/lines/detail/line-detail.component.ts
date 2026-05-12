@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   AffectedSublinesModel,
   ApplicationRole,
@@ -82,19 +82,16 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
   private isValidFromShortened!: boolean;
   private isValidToShortened!: boolean;
 
-  constructor(
-    private readonly router: Router,
-    private readonly lineService: LineService,
-    private readonly lineInternalService: LineInternalService,
-    private readonly notificationService: NotificationService,
-    private readonly dialogService: DialogService,
-    private readonly permissionService: PermissionService,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly validityService: ValidityService,
-    private readonly detailHelperService: DetailDialogHelperService,
-    private readonly dialog: MatDialog
-  ) {}
-
+  private readonly router = inject(Router);
+  private readonly lineService = inject(LineService);
+  private readonly lineInternalService = inject(LineInternalService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly dialogService = inject(DialogService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly validityService = inject(ValidityService);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
+  private readonly dialog = inject(MatDialog);
   private _lineType!: LineType;
 
   get lineType(): LineType {

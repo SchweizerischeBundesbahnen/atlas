@@ -12,7 +12,7 @@
           </span>
           <span data-cy="total-range">
             -
-            <atlas-date-range-text [dateRange]="maxValidity!"></atlas-date-range-text>
+            <atlas-date-range-text [dateRange]="maxValidity!" />
           </span>
         </div>
       } @else {
@@ -27,7 +27,7 @@
             [currentRecord]="selectedVersion!"
             [records]="versions"
             [switchDisabled]="form.enabled"
-          ></atlas-switch-version>
+          />
         </div>
       }
 
@@ -67,8 +67,7 @@
           class="d-block w-50"
           controlName="number"
           fieldLabel="TTFN.NUMBER"
-        >
-        </atlas-text-field>
+        />
 
         <div class="col-12 d-flex gap-4">
           <atlas-text-field
@@ -89,8 +88,7 @@
             class="flex-grow-1"
             controlName="descriptionOutwardLine1"
             fieldLabel="TTFN.DESCRIPTION_OUTWARD"
-          >
-          </atlas-text-field>
+          />
           <atlas-text-field
             [fieldExamples]="[
               { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -109,20 +107,17 @@
             class="flex-grow-1"
             controlName="descriptionReturnLine1"
             fieldLabel="TTFN.DESCRIPTION_RETURN"
-          >
-          </atlas-text-field>
+          />
         </div>
         <div class="col-12 d-flex gap-4">
           <div class="flex-50">
             @if (displayOutwardLine2$ | async) {
-              <atlas-text-field [fieldExamples]="[]" [formGroup]="form" controlName="descriptionOutwardLine2">
-              </atlas-text-field>
+              <atlas-text-field [fieldExamples]="[]" [formGroup]="form" controlName="descriptionOutwardLine2" />
             }
           </div>
           <div class="flex-50">
             @if (displayReturnLine2$ | async) {
-              <atlas-text-field [fieldExamples]="[]" [formGroup]="form" controlName="descriptionReturnLine2">
-              </atlas-text-field>
+              <atlas-text-field [fieldExamples]="[]" [formGroup]="form" controlName="descriptionReturnLine2" />
             }
           </div>
         </div>
@@ -134,8 +129,7 @@
                 [fieldExamples]="[]"
                 [formGroup]="form"
                 controlName="descriptionOutwardLine3"
-              >
-              </atlas-text-field>
+              />
             }
           </div>
           <div class="flex-50">
@@ -145,8 +139,7 @@
                 [fieldExamples]="[]"
                 [formGroup]="form"
                 controlName="descriptionReturnLine3"
-              >
-              </atlas-text-field>
+              />
             }
           </div>
         </div>
@@ -157,11 +150,11 @@
           [meansOfTransportToShow]="allowableMeansOfTransport"
           [multiSelectMode]="false"
           controlName="meanOfTransport"
-        ></atlas-means-of-transport-picker>
+        />
 
         <span class="font-bold-2xl d-block mt-4">{{ 'FORM.KEY_DATA' | translate }}</span>
         <div class="w-50">
-          <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
+          <atlas-form-date-range [formGroup]="form" />
         </div>
 
         <div class="col-12 d-flex pb-3">
@@ -171,14 +164,14 @@
               [sboidsRestrictions]="boSboidRestriction"
               controlName="businessOrganisation"
               data-cy="businessOrganisation"
-            ></atlas-bo-select>
+            />
           </div>
         </div>
       </form>
 
       @if (selectedVersion) {
         <div class="mt-5">
-          <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'TTFN'"></atlas-user-detail-info>
+          <atlas-user-detail-info [record]="selectedVersion" [applicationType]="'TTFN'" />
         </div>
       }
     </div>
@@ -191,8 +184,7 @@
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
       buttonType="whiteFooterNonEdit"
-    >
-    </atlas-button>
+    />
     <atlas-button
       (buttonClicked)="toggleEdit()"
       [footerEdit]="form.enabled"
@@ -200,8 +192,7 @@
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="me-3"
-    >
-    </atlas-button>
+    />
     <atlas-button
       (buttonClicked)="save()"
       [disabled]="!form.dirty"
@@ -210,8 +201,7 @@
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
-    >
-    </atlas-button>
+    />
     @if (selectedVersion) {
       <ng-container>
         @if (selectedVersion.status !== 'IN_REVIEW' || isAtLeastSupervisor) {
@@ -224,10 +214,10 @@
             buttonText="COMMON.EDIT"
             buttonType="edit"
             wrapperStyleClass="ms-3"
-          ></atlas-button>
+          />
         }
         @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
-          <atlas-revoke-button (revokeClicked)="revoke()" applicationType="TTFN"></atlas-revoke-button>
+          <atlas-revoke-button (revokeClicked)="revoke()" applicationType="TTFN" />
         }
         <atlas-button
           (buttonClicked)="delete()"
@@ -236,8 +226,7 @@
           buttonText="COMMON.DELETE"
           buttonType="delete"
           wrapperStyleClass="ms-3"
-        >
-        </atlas-button>
+        />
       </ng-container>
     }
   </atlas-detail-footer>

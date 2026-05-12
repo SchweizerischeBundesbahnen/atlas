@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { TextFieldComponent } from './text-field.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { inputBinding } from '@angular/core';
 
 describe('TextFieldComponent', () => {
   let component: TextFieldComponent;
@@ -13,14 +14,21 @@ describe('TextFieldComponent', () => {
       providers: [translateServiceProvider],
     });
 
-    fixture = TestBed.createComponent(TextFieldComponent);
-    component = fixture.componentInstance;
-
-    component.formGroup = new FormGroup({
-      number: new FormControl('ch:slnid:12345'),
+    const formGroupInputName: keyof TextFieldComponent = 'formGroup';
+    const controlNameInputName: keyof TextFieldComponent = 'controlName';
+    fixture = TestBed.createComponent(TextFieldComponent, {
+      bindings: [
+        inputBinding(
+          formGroupInputName,
+          () =>
+            new FormGroup({
+              number: new FormControl('ch:slnid:12345'),
+            })
+        ),
+        inputBinding(controlNameInputName, () => 'number'),
+      ],
     });
-    component.controlName = 'number';
-
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 

@@ -9,10 +9,8 @@ import { UserAdministrationService } from '../../../../api/service/user-administ
   providedIn: 'root',
 })
 export class UserAdministrationUserDetailResolver {
-  constructor(
-    private readonly userAdministrationService: UserAdministrationService,
-    private readonly router: Router
-  ) {}
+  private readonly userAdministrationService = inject(UserAdministrationService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<User | undefined> {
     const sbbUserIdParam = route.paramMap.get('sbbUserId');

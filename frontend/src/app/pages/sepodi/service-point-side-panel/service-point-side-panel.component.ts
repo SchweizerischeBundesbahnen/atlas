@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -68,11 +68,9 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
 
   private servicePointSubscription?: Subscription;
 
-  constructor(
-    private route: ActivatedRoute,
-    private mapService: MapService,
-    private trafficPointMapService: TrafficPointMapService
-  ) {}
+  private readonly route = inject(ActivatedRoute);
+  private readonly mapService = inject(MapService);
+  private readonly trafficPointMapService = inject(TrafficPointMapService);
 
   ngOnInit() {
     this.servicePointSubscription = this.route.data.subscribe((next) => {

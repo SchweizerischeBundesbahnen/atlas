@@ -8,6 +8,7 @@ import { LineWorkflowService } from '../../../api/service/workflow/line-workflow
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import { Workflow } from '../../../api';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { inputBinding } from '@angular/core';
 
 describe('LineWorkflowCheckFormComponent', () => {
   let component: LineWorkflowCheckFormComponent;
@@ -43,7 +44,10 @@ describe('LineWorkflowCheckFormComponent', () => {
     });
 
     // Arrangement
-    fixture = TestBed.createComponent(LineWorkflowCheckFormComponent);
+    const workflowIdInputName: keyof LineWorkflowCheckFormComponent = 'workflowId';
+    fixture = TestBed.createComponent(LineWorkflowCheckFormComponent, {
+      bindings: [inputBinding(workflowIdInputName, () => 100)],
+    });
     component = fixture.componentInstance;
   });
 

@@ -7,8 +7,7 @@
     <atlas-link
       label="{{ 'TTH.STATEMENT.DOSSIER_LINK' | translate: { dossierId: statement().dossierId } }}"
       (linkClicked)="goToDossier(statement().dossierId!)"
-    >
-    </atlas-link>
+    />
   }
   @if (statement().dataProtectionChecked) {
     <div class="data-protection-checked">
@@ -25,7 +24,7 @@
   <div class="label-input-row">
     <atlas-label-field fieldLabel="TTH.STATEMENT.TOPIC" />
     <div class="col-8">
-      <atlas-text-field [formGroup]="form()" controlName="topic"> </atlas-text-field>
+      <atlas-text-field [formGroup]="form()" controlName="topic" />
     </div>
   </div>
 </div>
@@ -35,7 +34,7 @@
       [formGroup]="form()"
       controlName="responsibleTransportCompanies"
       data-cy="responsibleTransportCompanies"
-    ></atlas-tu-select>
+    />
   </div>
 </div>
 <div class="d-flex flex-row col-12 mb-3 mt-4">
@@ -47,7 +46,7 @@
       data-cy="ttfnid"
       (ttfnSelectionChanged)="ttfnSelectionChanged($event)"
       [required]="false"
-    ></atlas-ttfn-select>
+    />
   </div>
 </div>
 <div class="d-flex flex-row col-12">
@@ -67,7 +66,6 @@
       controlName="stopPlace"
       fieldLabel="TTH.STATEMENT.STOP_POINT"
       infoIconTitle="TTH.STATEMENT.STOP_POINT_INFO"
-    >
-    </atlas-text-field>
+    />
   </div>
 </div>

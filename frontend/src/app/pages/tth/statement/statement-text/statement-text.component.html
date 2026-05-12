@@ -1,7 +1,7 @@
 <ng-container [formGroup]="form()">
   <h1 class="font-bold-xl pt-2">
     {{ 'TTH.STATEMENT.CITIZEN_CONCERN' | translate }}
-    <atlas-spacer [divider]="true" height="10px"></atlas-spacer>
+    <atlas-spacer [divider]="true" height="10px" />
   </h1>
 
   <div class="flex-row mb-4">
@@ -15,8 +15,7 @@
           [displayLabel]="true"
           label=""
           controlName="anonymousStatement"
-        >
-        </atlas-form-comment>
+        />
       </div>
     }
     @if (!isNew() && hasAnonymousText) {
@@ -41,8 +40,7 @@
           [displayLabel]="true"
           label=""
           controlName="statement"
-        >
-        </atlas-form-comment>
+        />
       </div>
     }
   </div>

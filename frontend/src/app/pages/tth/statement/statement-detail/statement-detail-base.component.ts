@@ -16,9 +16,9 @@ import { Pages } from '../../../pages';
 import { FileDownloadService } from '../../../../core/components/file-upload/file/file-download.service';
 
 export abstract class StatementDetailBaseComponent {
-  protected router = inject(Router);
-  protected route = inject(ActivatedRoute);
-  protected timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
+  protected readonly router = inject(Router);
+  protected readonly route = inject(ActivatedRoute);
+  protected readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
 
   protected ttfnValidOn: Date | undefined = undefined;
   statement: TimetableHearingStatementV2 | undefined;

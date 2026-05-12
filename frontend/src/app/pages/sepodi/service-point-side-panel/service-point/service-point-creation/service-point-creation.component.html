@@ -16,8 +16,7 @@
         [required]="true"
         [formGroup]="form"
         [controlName]="'country'"
-      >
-      </atlas-select>
+      />
 
       <atlas-text-field
         class="col-6"
@@ -34,8 +33,7 @@
         controlName="number"
         fieldLabel="SEPODI.SERVICE_POINTS.SERVICE_POINT_ID"
         [placeholder]="form.controls.number.disabled ? 'COMMON.AUTOMATICALLY_ASSIGNED' : ''"
-      >
-      </atlas-text-field>
+      />
     </div>
 
     <atlas-service-point-form
@@ -58,8 +56,7 @@
           [required]="false"
           controlName="abbreviation"
           fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
-        >
-        </atlas-text-field>
+        />
       </div>
 
       <atlas-sepodi-geography
@@ -67,7 +64,7 @@
         [form]="form.controls.servicePointGeolocation"
         [editMode]="form.enabled"
         (geographyChanged)="$event ? onGeographyEnabled() : onGeographyDisabled()"
-      ></atlas-sepodi-geography>
+      />
     </atlas-service-point-form>
   </atlas-detail-page-content>
 
@@ -79,7 +76,7 @@
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    ></atlas-button>
+    />
     <atlas-button
       (buttonClicked)="onSave()"
       [footerEdit]="true"
@@ -89,7 +86,6 @@
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
+    />
   </atlas-detail-footer>
 </atlas-detail-page-container>

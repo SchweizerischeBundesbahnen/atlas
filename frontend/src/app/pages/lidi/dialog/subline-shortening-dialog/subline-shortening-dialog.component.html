@@ -21,7 +21,7 @@
 
       @for (slnid of allowedSublines; track slnid) {
         <div>
-          <atlas-link label="{{ slnid }}" (linkClicked)="openNewTabOfSubline(slnid)"></atlas-link>
+          <atlas-link label="{{ slnid }}" (linkClicked)="openNewTabOfSubline(slnid)" />
         </div>
       }
     </div>
@@ -29,7 +29,7 @@
       <p class="font-bold-lg">{{ 'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.SHORT_MANUAL' | translate }}</p>
       @for (slnid of notAllowedSublines; track slnid) {
         <div>
-          <atlas-link label="{{ slnid }}" (linkClicked)="openNewTabOfSubline(slnid)"></atlas-link>
+          <atlas-link label="{{ slnid }}" (linkClicked)="openNewTabOfSubline(slnid)" />
         </div>
       }
     </div>
@@ -48,7 +48,7 @@
       <p class="font-lg">{{ 'LIDI.SUBLINE_SHORTENING.MESSAGE' | translate }}</p>
       <p class="font-bold-lg">{{ 'LIDI.SUBLINE_SHORTENING.NOT_ALLOWED.SHORT_MANUAL_NOTICE' | translate }}</p>
       @for (slnid of notAllowedSublines; track slnid) {
-        <div> <atlas-link label="{{ slnid }}" (linkClicked)="openNewTabOfSubline(slnid)"></atlas-link> </div>
+        <div> <atlas-link label="{{ slnid }}" (linkClicked)="openNewTabOfSubline(slnid)" /> </div>
       }
     </div>
   }

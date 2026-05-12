@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   MeanOfTransport,
   PlatformVersion,
@@ -7,31 +7,34 @@ import {
   ReadStopPointVersion,
   ReadTrafficPointElementVersion,
 } from '../../../../../../api';
-import {FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {PrmMeanOfTransportHelper} from '../../../../util/prm-mean-of-transport-helper';
-import {VersionsHandlingService} from '../../../../../../core/versioning/versions-handling.service';
-import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup,} from '../form/platform-form-group';
-import {DateRange} from '../../../../../../core/versioning/date-range';
-import {ValidityService} from '../../../../../sepodi/validity/validity.service';
-import {PermissionService} from '../../../../../../core/auth/permission/permission.service';
-import {EMPTY, Observable, switchMap} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {PrmTabDetailBaseComponent} from '../../../../shared/prm-tab-detail-base.component';
-import {DetailPageContentComponent} from '../../../../../../core/components/detail-page-content/detail-page-content.component';
-
-import {SwitchVersionComponent} from '../../../../../../core/components/switch-version/switch-version.component';
-import {NavigationSepodiPrmComponent} from '../../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
-import {DateRangeComponent} from '../../../../../../core/form-components/date-range/date-range.component';
-import {PlatformReducedFormComponent} from '../form/platform-reduced-form/platform-reduced-form.component';
-import {PlatformCompleteFormComponent} from '../form/platform-complete-form/platform-complete-form.component';
-import {MatDivider} from '@angular/material/divider';
-import {UserDetailInfoComponent} from '../../../../../../core/components/user-edit-info/user-detail-info.component';
-import {DetailFooterComponent} from '../../../../../../core/components/detail-footer/detail-footer.component';
-import {AtlasButtonComponent} from '../../../../../../core/components/button/atlas-button.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {PlatformService} from '../../../../../../api/service/prm/platform/platform.service';
-import {Data} from '@angular/router';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { PrmMeanOfTransportHelper } from '../../../../util/prm-mean-of-transport-helper';
+import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
+import {
+  CompletePlatformFormGroup,
+  PlatformFormGroupBuilder,
+  ReducedPlatformFormGroup,
+} from '../form/platform-form-group';
+import { DateRange } from '../../../../../../core/versioning/date-range';
+import { ValidityService } from '../../../../../sepodi/validity/validity.service';
+import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
+import { EMPTY, Observable, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
+import { DetailPageContentComponent } from '../../../../../../core/components/detail-page-content/detail-page-content.component';
+import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
+import { NavigationSepodiPrmComponent } from '../../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { DateRangeComponent } from '../../../../../../core/form-components/date-range/date-range.component';
+import { PlatformReducedFormComponent } from '../form/platform-reduced-form/platform-reduced-form.component';
+import { PlatformCompleteFormComponent } from '../form/platform-complete-form/platform-complete-form.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../../../../core/components/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
+import { Data } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'atlas-platforms',
@@ -53,6 +56,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   ],
 })
 export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatformVersion> implements OnInit {
+  private readonly platformService = inject(PlatformService);
+  private readonly permissionService = inject(PermissionService);
   private readonly destroyRef = inject(DestroyRef);
 
   servicePoint!: ReadServicePointVersion;
@@ -61,7 +66,6 @@ export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatf
   maxValidity!: DateRange;
   stopPoint!: ReadStopPointVersion[];
   businessOrganisations: string[] = [];
-
   reduced = false;
   showVersionSwitch = false;
   mayCreate = true;
@@ -72,13 +76,6 @@ export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatf
 
   get completeForm(): FormGroup<CompletePlatformFormGroup> {
     return this.form as FormGroup<CompletePlatformFormGroup>;
-  }
-
-  constructor(
-    private readonly platformService: PlatformService,
-    private readonly permissionService: PermissionService
-  ) {
-    super();
   }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CreateTrafficPointElementVersion,
@@ -72,6 +72,17 @@ const NUMBER_COLONS_AREA = 0;
   ],
 })
 export class TrafficPointElementsDetailComponent implements OnInit, DetailFormComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly trafficPointMapService = inject(TrafficPointMapService);
+  private readonly servicePointService = inject(ServicePointService);
+  private readonly trafficPointElementService = inject(TrafficPointElementService);
+  private readonly trafficPointElementInternalService = inject(TrafficPointElementInternalService);
+  private readonly dialogService = inject(DialogService);
+  private readonly validityConfirmationService = inject(ValidityConfirmationService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly validityService = inject(ValidityService);
+
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
   showVersionSwitch = false;
@@ -86,24 +97,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, DetailFormCo
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
   numberColons!: number;
-  private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly trafficPointMapService: TrafficPointMapService,
-    private readonly servicePointService: ServicePointService,
-    private readonly trafficPointElementService: TrafficPointElementService,
-    private readonly trafficPointElementInternalService: TrafficPointElementInternalService,
-    private readonly dialogService: DialogService,
-    private readonly validityConfirmationService: ValidityConfirmationService,
-    private readonly notificationService: NotificationService,
-    private readonly validityService: ValidityService
-  ) {}
 
   readonly extractSloid = (option: AreaOption) => option.sloid;
-
   readonly displayExtractor = (option: AreaOption) => option.displayText;
+
+  private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   ngOnInit() {
     this.numberColons = this.isTrafficPointArea ? NUMBER_COLONS_AREA : NUMBER_COLONS_PLATFORM;

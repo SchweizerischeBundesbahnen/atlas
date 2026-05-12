@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
-
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { StatementSelectComponent } from './statement-select.component';
 import { ActivatedRoute } from '@angular/router';
-import { AppTestingModule } from '../../../../app.testing.module';
 import { of } from 'rxjs';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { FormatPipe } from '../../../../core/components/table/pipe/format.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { mock } from 'vitest-mock-extended';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 const statement: TimetableHearingStatementV2 = {
   id: 456,
@@ -35,9 +36,8 @@ describe('StatementSelectComponent', () => {
     },
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [StatementSelectComponent, AppTestingModule],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       providers: [
         {
           provide: ActivatedRoute,
@@ -48,10 +48,13 @@ describe('StatementSelectComponent', () => {
           useValue: timetableHearingStatementInternalService,
         },
         {
-          provide: FormatPipe,
+          provide: TranslatePipe,
+          useValue: mock<TranslatePipe>(),
         },
+        translateServiceProvider,
+        FormatPipe,
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StatementSelectComponent);
     fixture.componentRef.setInput('selectedStatements', [1000]);

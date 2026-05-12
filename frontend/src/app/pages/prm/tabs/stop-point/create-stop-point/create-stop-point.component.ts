@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, inject, Input, ViewChild, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatStep, MatStepLabel, MatStepper, MatStepperIcon } from '@angular/material/stepper';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
@@ -7,7 +7,6 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { StopPointDetailFormGroup, StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';
 import { prmMeansOfTransport } from '../prm-variant-info.service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-
 import { MeansOfTransportPickerComponent } from '../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { StopPointReducedFormComponent } from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
@@ -33,9 +32,12 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class CreateStopPointComponent implements DetailFormComponent {
+  private readonly dialogService = inject(DialogService);
+
   @ViewChild('stepper') stepper!: MatStepper;
+
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
-  @Input() isAuthorizedToCreateStopPoint!: boolean;
+  readonly isAuthorizedToCreateStopPoint = input.required<boolean>();
 
   selectedMeansOfTransport!: MeanOfTransport[];
   isReduced = false;
@@ -44,8 +46,6 @@ export class CreateStopPointComponent implements DetailFormComponent {
   isMeanOfTransportSelected?: boolean;
   formMeanOfTransport = StopPointFormGroupBuilder.buildMeansOfTransportForm();
   meansOfTransportToShow = prmMeansOfTransport;
-
-  constructor(private dialogService: DialogService) {}
 
   backSelection() {
     this.isPreviousSelectionReduced = PrmMeanOfTransportHelper.isReduced(this.selectedMeansOfTransport);

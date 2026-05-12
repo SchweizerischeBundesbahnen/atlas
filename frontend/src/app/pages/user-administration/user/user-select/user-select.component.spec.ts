@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { UserSelectComponent } from './user-select.component';
 import { firstValueFrom, of } from 'rxjs';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ApplicationType, Permission } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
@@ -14,11 +14,11 @@ import { UserAdministrationService } from '../../../../api/service/user-administ
   template: '<p>form-search-select</p>',
 })
 class MockFormSearchSelectComponent {
-  @Input() items$ = of([]);
-  @Input() formGroup = undefined;
-  @Input() controlName = '';
-  @Input() bindValueInp = '';
-  @Input() getSelectOption = undefined;
+  readonly items$ = input(of([]));
+  readonly formGroup = input(undefined);
+  readonly controlName = input('');
+  readonly bindValueInp = input('');
+  readonly getSelectOption = input(undefined);
 }
 
 describe('UserSelectComponent', () => {

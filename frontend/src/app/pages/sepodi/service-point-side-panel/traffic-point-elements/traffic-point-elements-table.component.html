@@ -14,14 +14,14 @@
         [businessOrganisations]="servicePointBusinessOrganisations"
         buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
         wrapperStyleClass="mb-3"
-      ></atlas-button>
+      />
     }
     @if (!isTrafficPointArea) {
       <atlas-navigation-sepodi-prm
         targetPage="platform-table"
         [number]="servicePointVersion.number!.number"
         [sloid]="servicePointVersion.sloid!"
-      ></atlas-navigation-sepodi-prm>
+      />
     }
   </div>
 
@@ -41,7 +41,7 @@
     (editElementEvent)="editVersion($event)"
     (tableChanged)="getOverview($event)"
     (tableInitialized)="getOverview($event)"
-  ></atlas-table>
+  />
 </div>
 
 <atlas-detail-footer>
@@ -50,6 +50,5 @@
     buttonText="SEPODI.BACK_TO_MAP"
     buttonType="whiteFooterNonEdit"
     (buttonClicked)="closeSidePanel()"
-  >
-  </atlas-button>
+  />
 </atlas-detail-footer>

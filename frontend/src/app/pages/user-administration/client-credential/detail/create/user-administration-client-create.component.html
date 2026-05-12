@@ -14,8 +14,7 @@
             [formGroup]="form"
             controlName="clientCredentialId"
             fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.CLIENT_ID"
-          >
-          </atlas-text-field>
+          />
         </div>
         <div class="d-flex flex-column col-6 pe-3">
           <atlas-text-field
@@ -23,14 +22,16 @@
             controlName="alias"
             fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.ALIAS"
             infoIconTitle="USER_ADMIN.CLIENT_CREDENTIAL.ALIAS_INFO"
-          >
-          </atlas-text-field>
+          />
         </div>
       </div>
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-12 pe-3">
-          <atlas-text-field [formGroup]="form" controlName="comment" fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.COMMENT">
-          </atlas-text-field>
+          <atlas-text-field
+            [formGroup]="form"
+            controlName="comment"
+            fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.COMMENT"
+          />
         </div>
       </div>
     </atlas-detail-page-content>

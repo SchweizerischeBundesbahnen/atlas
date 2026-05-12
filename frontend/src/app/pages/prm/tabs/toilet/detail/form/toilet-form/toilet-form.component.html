@@ -12,8 +12,7 @@
       [formGroup]="form"
       controlName="designation"
       fieldLabel="PRM.TOILETS.DESIGNATION"
-    >
-    </atlas-text-field>
+    />
   </div>
 </div>
 
@@ -21,7 +20,7 @@
   <h2 class="font-bold-2xl color-gray-900">
     {{ 'FORM.KEY_DATA' | translate }}
   </h2>
-  <atlas-form-date-range [formGroup]="form"></atlas-form-date-range>
+  <atlas-form-date-range [formGroup]="form" />
 </div>
 
 <h2 class="font-bold-2xl color-gray-900 mt-3">
@@ -38,8 +37,7 @@
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="standardAttributeTypes"
       [additionalLabelspace]="0"
-    >
-    </atlas-select>
+    />
   </div>
 </div>
 
@@ -50,6 +48,6 @@
       label="PRM.TOILETS.ADDITIONAL_INFORMATION"
       controlName="additionalInformation"
       maxChars="2000"
-    ></atlas-form-comment>
+    />
   </div>
 </div>

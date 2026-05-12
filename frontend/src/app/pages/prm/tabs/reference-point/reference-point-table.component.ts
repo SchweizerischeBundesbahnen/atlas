@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
@@ -10,7 +10,6 @@ import { TableFilter } from '../../../../core/components/table-filter/config/tab
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
-
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
@@ -22,6 +21,10 @@ import { ReferencePointInternalService } from '../../../../api/service/prm/refer
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
 export class ReferencePointTableComponent extends BasePrmTabComponentService implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly referencePointInternalService = inject(ReferencePointInternalService);
+  private readonly tableService = inject(TableService);
+
   tableColumns: TableColumn<ReadReferencePointVersion>[] = [
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
@@ -40,13 +43,8 @@ export class ReferencePointTableComponent extends BasePrmTabComponentService imp
   totalCount = 0;
   referencePoints: ReadReferencePointVersion[] = [];
 
-  constructor(
-    protected readonly router: Router,
-    private route: ActivatedRoute,
-    private readonly referencePointInternalService: ReferencePointInternalService,
-    private tableService: TableService
-  ) {
-    super(router);
+  constructor() {
+    super(inject(Router));
   }
 
   ngOnInit(): void {

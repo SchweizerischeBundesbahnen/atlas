@@ -13,8 +13,8 @@ import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-fo
   imports: [UserAdministrationClientEditComponent, UserAdministrationClientCreateComponent],
 })
 export class UserAdministrationClientDetailComponent implements OnInit, DetailFormComponent {
-  activatedRoute = inject(ActivatedRoute);
-  userPermissionGivenClientService = inject(UserPermissionGivenClientService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly userPermissionGivenClientService = inject(UserPermissionGivenClientService);
 
   clientCredential: ClientCredential = {};
 

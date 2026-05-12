@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { NewTimetableHearingYearDialogData } from './model/new-timetable-hearing-year-dialog.data';
 import { HearingStatus, TimetableHearingYear } from '../../../api';
@@ -60,13 +60,11 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   protected readonly EXAMPLE_DATE_FROM = '01.01.2023';
   protected readonly EXAMPLE_DATE_UNTIL = '31.12.2023';
 
-  constructor(
-    private readonly dialogRef: MatDialogRef<NewTimetableHearingYearDialogComponent, boolean>,
-    @Inject(MAT_DIALOG_DATA) public data: NewTimetableHearingYearDialogData,
-    private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
-    protected notificationService: NotificationService,
-    private readonly dialogService: DialogService
-  ) {}
+  public readonly data: NewTimetableHearingYearDialogData = inject(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<NewTimetableHearingYearDialogComponent, boolean>);
+  private readonly timetableHearingYearsService = inject(TimetableHearingYearInternalService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly dialogService = inject(DialogService);
 
   ngOnInit(): void {
     this.initOverviewOfferedYears();

@@ -9,7 +9,7 @@ import { ApplicationType, Permission } from '../../api';
 import { UserPermissionProviderService } from '../../core/components/permissions/application-permission/user-permission-provider-service';
 
 export class UserPermissionCurrentUserService extends UserPermissionProviderService {
-  userService = inject(UserService);
+  private readonly userService = inject(UserService);
   applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
 
   getCurrentForm(): FormGroup<ApplicationPermission> | undefined {

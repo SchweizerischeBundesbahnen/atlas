@@ -2,21 +2,32 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { FileComponent } from './file.component';
 import { By } from '@angular/platform-browser';
+import { inputBinding } from '@angular/core';
 
 describe('FileComponent', () => {
   let component: FileComponent;
   let fixture: ComponentFixture<FileComponent>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileComponent);
+    const fileInputName: keyof FileComponent = 'file';
+    const downloadEnabledInputName: keyof FileComponent = 'downloadEnabled';
+    const deleteEnabledInputName: keyof FileComponent = 'deleteEnabled';
+    fixture = TestBed.createComponent(FileComponent, {
+      bindings: [
+        inputBinding(
+          fileInputName,
+          () =>
+            ({
+              name: 'filename.pdf',
+              size: 10,
+              type: 'application/pdf',
+            }) as File
+        ),
+        inputBinding(downloadEnabledInputName, () => true),
+        inputBinding(deleteEnabledInputName, () => true),
+      ],
+    });
     component = fixture.componentInstance;
-    component.file = {
-      name: 'filename.pdf',
-      size: 10,
-      type: 'application/pdf',
-    } as File;
-    component.downloadEnabled = true;
-    component.deleteEnabled = true;
     fixture.detectChanges();
   });
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ReadReferencePointVersion,
@@ -19,7 +19,6 @@ import { map, tap } from 'rxjs/operators';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { RelationFormGroup, RelationFormGroupBuilder } from './relation-form-group';
-import { MatSelectChange } from '@angular/material/select';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { SelectComponent } from '../../../../../core/form-components/select/select.component';
@@ -55,6 +54,14 @@ import { ReferencePointInternalService } from '../../../../../api/service/prm/re
   ],
 })
 export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly referencePointInternalService = inject(ReferencePointInternalService);
+  private readonly relationService = inject(RelationService);
+  private readonly dialogService = inject(DialogService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly validityService = inject(ValidityService);
+
   referencePoints: ReadReferencePointVersion[] = [];
   selectedReferencePointSloid?: string;
   elementSloid?: string;
@@ -79,16 +86,6 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   readonly extractSloid = (option: ReadReferencePointVersion) => option.sloid;
   readonly displayExtractor = (option: ReadReferencePointVersion) => `${option.designation} - ${option.sloid}`;
 
-  constructor(
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly referencePointInternalService: ReferencePointInternalService,
-    private readonly relationservice: RelationService,
-    private readonly dialogService: DialogService,
-    private readonly notificationService: NotificationService,
-    private readonly validityService: ValidityService
-  ) {}
-
   ngOnInit(): void {
     this.checkIfRelationsAvailable();
     this.elementSloid = this.route.parent!.snapshot.params.sloid!;
@@ -111,8 +108,8 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       });
   }
 
-  referencePointChanged(change: MatSelectChange) {
-    this.selectedReferencePointSloid = change.value;
+  referencePointChanged(selectedRefPoint: ReadReferencePointVersion) {
+    this.selectedReferencePointSloid = selectedRefPoint.sloid;
     this.loadRelations(this.selectedReferencePointSloid!);
   }
 
@@ -172,7 +169,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private update(relationVersion: RelationVersion) {
-    return this.relationservice.updateRelation(this.currentRelationId, relationVersion);
+    return this.relationService.updateRelation(this.currentRelationId, relationVersion);
   }
 
   toggleEdit() {
@@ -186,7 +183,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private loadRelations(referencePointSloid: string) {
-    this.relations$ = this.relationservice.getRelationsBySloid(this.elementSloid!).pipe(
+    this.relations$ = this.relationService.getRelationsBySloid(this.elementSloid!).pipe(
       map((relationVersions) => {
         const relationsOfSelectedRP = relationVersions.filter(
           (relationVersion) => relationVersion.referencePointSloid === referencePointSloid

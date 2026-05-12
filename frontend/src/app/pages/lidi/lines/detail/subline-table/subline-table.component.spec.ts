@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SublineTableComponent } from './subline-table.component';
 import { Line } from '../../../../../api';
 import { of, Subject } from 'rxjs';
-import { MockTableComponent } from '../../../../../app.testing.mocks';
-import { AppTestingModule } from '../../../../../app.testing.module';
 import { LineInternalService } from '../../../../../api/service/lidi/line-internal.service';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { FormatPipe } from '../../../../../core/components/table/pipe/format.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { mock } from 'vitest-mock-extended';
+import { translateServiceProvider } from '../../../../../app.testing.mocks';
+import { inputBinding } from '@angular/core';
 
 const subline: Line = {
   swissLineNumber: 'IC6',
@@ -26,18 +28,28 @@ describe('SublineTableComponent', () => {
   let eventSubject: Subject<boolean>;
   let lineInternalService: Mocked<Pick<LineInternalService, 'getLines'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     lineInternalService = {
       getLines: vi.fn(),
     };
     lineInternalService.getLines.mockReturnValue(of({ objects: [subline] }));
 
-    await TestBed.configureTestingModule({
-      imports: [AppTestingModule, SublineTableComponent, MockTableComponent],
-      providers: [{ provide: LineInternalService, useValue: lineInternalService }, FormatPipe],
-    }).compileComponents();
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: LineInternalService, useValue: lineInternalService },
+        {
+          provide: TranslatePipe,
+          useValue: mock<TranslatePipe>(),
+        },
+        translateServiceProvider,
+        FormatPipe,
+      ],
+    });
 
-    fixture = TestBed.createComponent(SublineTableComponent);
+    const mainLineSlnidInputName: keyof SublineTableComponent = 'mainLineSlnid';
+    fixture = TestBed.createComponent(SublineTableComponent, {
+      bindings: [inputBinding(mainLineSlnidInputName, () => 'ch:1:slnid:1')],
+    });
     component = fixture.componentInstance;
     eventSubject = new Subject<boolean>();
     component.eventSubject = eventSubject;

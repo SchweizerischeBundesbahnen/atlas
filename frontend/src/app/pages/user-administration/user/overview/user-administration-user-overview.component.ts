@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -8,7 +8,6 @@ import { SearchType, SearchTypes } from './search-type';
 import { Cantons } from '../../../../core/cantons/Cantons';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
-import { MatSelectChange } from '@angular/material/select';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { MatLabel } from '@angular/material/form-field';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
@@ -68,12 +67,10 @@ export class UserAdministrationUserOverviewComponent {
 
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
 
-  constructor(
-    private readonly userAdministrationService: UserAdministrationService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly tableService: TableService
-  ) {}
+  private readonly userAdministrationService = inject(UserAdministrationService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly tableService = inject(TableService);
 
   reloadTableWithCurrentSettings(): void {
     if (this.selectedSearch === 'USER') {
@@ -159,11 +156,11 @@ export class UserAdministrationUserOverviewComponent {
 
   readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
 
-  applicationChanged($event: MatSelectChange) {
-    this.selectedApplicationOptions = $event.value;
+  applicationChanged(applicationTypes: ApplicationType[]) {
+    this.selectedApplicationOptions = applicationTypes;
   }
 
-  cantonChanged($event: MatSelectChange) {
-    this.selectedCantonOptions = $event.value;
+  cantonChanged(cantons: SwissCanton[]) {
+    this.selectedCantonOptions = cantons;
   }
 }

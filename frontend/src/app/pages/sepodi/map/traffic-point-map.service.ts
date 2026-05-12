@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import { GeoJSONSource, MapGeoJSONFeature } from 'maplibre-gl';
 import { MAP_TRAFFIC_POINT_LAYER_NAME } from './map-style';
 import { Feature } from 'geojson';
@@ -21,12 +21,10 @@ export interface DisplayableTrafficPoint {
   providedIn: 'root',
 })
 export class TrafficPointMapService implements OnDestroy {
-  private onDestroy$ = new Subject<boolean>();
+  private readonly mapService = inject(MapService);
+  private readonly trafficPointElementInternalService = inject(TrafficPointElementInternalService);
 
-  constructor(
-    private readonly mapService: MapService,
-    private readonly trafficPointElementInternalService: TrafficPointElementInternalService
-  ) {}
+  private readonly onDestroy$ = new Subject<boolean>();
 
   static buildTrafficPointPopupInformation(features: MapGeoJSONFeature[]) {
     let popupHtml = '';

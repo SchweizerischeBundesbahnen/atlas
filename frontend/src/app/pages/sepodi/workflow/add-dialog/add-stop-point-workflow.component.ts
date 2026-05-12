@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StopPointAddWorkflow, StopPointPerson } from '../../../../api';
 import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
@@ -33,15 +33,13 @@ import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-
   ],
 })
 export class AddStopPointWorkflowComponent implements OnInit {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) readonly data: AddStopPointWorkflowDialogData,
-    private readonly dialogRef: MatDialogRef<AddStopPointWorkflowComponent>,
-    private readonly detailHelperService: DetailDialogHelperService,
-    private readonly stopPointWorkflowService: StopPointWorkflowService,
-    private readonly notificationService: NotificationService,
-    private readonly userService: UserService,
-    private readonly router: Router
-  ) {}
+  public readonly data: AddStopPointWorkflowDialogData = inject(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<AddStopPointWorkflowComponent>);
+  private readonly detailHelperService = inject(DetailDialogHelperService);
+  private readonly stopPointWorkflowService = inject(StopPointWorkflowService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly userService = inject(UserService);
+  private readonly router = inject(Router);
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
 

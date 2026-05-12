@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Pages } from '../../pages';
 import { ActivatedRoute, Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
@@ -31,10 +31,8 @@ export class LidiOverviewComponent {
     },
   ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   newLine() {
     this.router

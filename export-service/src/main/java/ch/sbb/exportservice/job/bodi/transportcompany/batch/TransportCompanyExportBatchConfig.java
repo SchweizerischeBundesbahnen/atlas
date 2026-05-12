@@ -28,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
-
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -61,7 +60,8 @@ public class TransportCompanyExportBatchConfig {
   public JdbcCursorItemReader<TransportCompany> transportCompanyReader(
       @Autowired @Qualifier("businessOrganisationDirectoryDataSource") DataSource dataSource
   ) {
-    JdbcCursorItemReader<TransportCompany> itemReader = new JdbcCursorItemReader<>(dataSource,        TransportCompanySqlQueryUtil.getSqlQuery(), new TransportCompanyRowMapper());
+    JdbcCursorItemReader<TransportCompany> itemReader = new JdbcCursorItemReader<>(dataSource,
+        TransportCompanySqlQueryUtil.getSqlQuery(), new TransportCompanyRowMapper());
     itemReader.setFetchSize(StepUtil.FETCH_SIZE);
     return itemReader;
   }
@@ -69,10 +69,10 @@ public class TransportCompanyExportBatchConfig {
   // --- CSV ---
   @Bean
   @Qualifier(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME)
-  public Job exportTransportCompanyCsvJob(ItemReader<TransportCompany> itemReader) {
+  public Job exportTransportCompanyCsvJob(Step exportTransportCompanyCsvStep) {
     return new JobBuilder(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
-        .flow(exportTransportCompanyCsvStep(itemReader))
+        .flow(exportTransportCompanyCsvStep)
         .next(uploadTransportCompanyCsvFileStep())
         .next(deleteTransportCompanyCsvFileStep())
         .end()
@@ -147,10 +147,10 @@ public class TransportCompanyExportBatchConfig {
   // --- JSON ---
   @Bean
   @Qualifier(EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME)
-  public Job exportTransportCompanyJsonJob(ItemReader<TransportCompany> itemReader) {
+  public Job exportTransportCompanyJsonJob(Step exportTransportCompanyJsonStep) {
     return new JobBuilder(EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
-        .flow(exportTransportCompanyJsonStep(itemReader))
+        .flow(exportTransportCompanyJsonStep)
         .next(uploadTransportCompanyJsonFileStep())
         .next(deleteTransportCompanyJsonFileStep())
         .end()
