@@ -8,7 +8,9 @@ import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatformTestData;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelationTestData;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnShuttleWhenShuttleIsYes() {
-    AccessibilityPlatform platform = AccessibilityPlatform.builder()
+    AccessibilityPlatform platform = AccessibilityPlatformTestData.builder()
         .shuttle(BooleanOptionalAttributeType.YES)
         .build();
 
@@ -146,8 +148,8 @@ class PlatformCompleteAccessibilityCalculatorTest {
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }
 
-  private static AccessibilityPlatform.AccessibilityPlatformBuilder platformBuilder() {
-    return AccessibilityPlatform.builder()
+  private static AccessibilityPlatformTestData.AccessibilityPlatformTestDataBuilder platformBuilder() {
+    return AccessibilityPlatformTestData.builder()
         .shuttle(BooleanOptionalAttributeType.NO);
   }
 
@@ -156,6 +158,6 @@ class PlatformCompleteAccessibilityCalculatorTest {
   }
 
   private static AccessibilityRelation relationWith(StepFreeAccessAttributeType stepFreeAccess) {
-    return AccessibilityRelation.builder().stepFreeAccess(stepFreeAccess).build();
+    return AccessibilityRelationTestData.builder().stepFreeAccess(stepFreeAccess).build();
   }
 }

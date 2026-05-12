@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.module.platform.entity.converter.InfoOpportunityTypeConverter;
 import ch.sbb.prm.directory.service.PrmVersionable;
@@ -48,7 +49,7 @@ import lombok.experimental.SuperBuilder;
 @Entity(name = "platform_version")
 @AtlasVersionable
 public class PlatformVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable,
-    VariantsReducedCompleteRecordable {
+    VariantsReducedCompleteRecordable, AccessibilityPlatform {
 
   private static final String VERSION_SEQ = "platform_version_seq";
 

@@ -9,9 +9,7 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import java.util.List;
 import java.util.Set;
-import org.springframework.stereotype.Component;
 
-@Component
 public class PlatformCompleteAccessibilityCalculator {
 
   private static final Set<StepFreeAccessAttributeType> STEP_FREE_ACCESS_VALID_VALUES = Set.of(
@@ -23,7 +21,7 @@ public class PlatformCompleteAccessibilityCalculator {
   private static final double SUPERELEVATION_LEGAL_LIMIT_MM = 40.0D;
 
   public WheelchairAccessibilityState calculatePlatform(AccessibilityPlatform platformVersion,
-      List<AccessibilityRelation> relations) {
+      List<? extends AccessibilityRelation> relations) {
 
     if (platformVersion.getShuttle() == BooleanOptionalAttributeType.YES) {
       return WheelchairAccessibilityState.SHUTTLE;
@@ -54,7 +52,7 @@ public class PlatformCompleteAccessibilityCalculator {
     return WheelchairAccessibilityState.NO_INFO;
   }
 
-  private boolean hasAtLeastOneStepFreeAccess(List<AccessibilityRelation> relations) {
+  private boolean hasAtLeastOneStepFreeAccess(List<? extends AccessibilityRelation> relations) {
     return relations.stream()
         .map(AccessibilityRelation::getStepFreeAccess)
         .anyMatch(STEP_FREE_ACCESS_VALID_VALUES::contains);

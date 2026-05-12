@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.module.wheelchairaccessibility.helper;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.repository.RelationRepository;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
@@ -21,7 +22,7 @@ public class WheelchairAccessibilityDataLoader {
         .stream()
         .filter(v -> ValidityHelper.isValidToday(v.getValidFrom(), v.getValidTo()))
         .findFirst()
-        .orElseThrow(() -> new IllegalStateException("No StopPoint version valid today for sloid: " + sloid));
+        .orElseThrow(() -> new SloidNotFoundException(sloid));
   }
 
   public List<RelationVersion> loadRelationsValidToday(String platformSloid) {

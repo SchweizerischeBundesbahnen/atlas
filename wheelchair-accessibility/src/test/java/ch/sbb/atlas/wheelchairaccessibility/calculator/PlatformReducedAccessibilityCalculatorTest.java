@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatformTestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -16,7 +17,7 @@ class PlatformReducedAccessibilityCalculatorTest {
 
   @Test
   void shouldReturnShuttleWhenShuttleIsYes() {
-    AccessibilityPlatform platform = AccessibilityPlatform.builder()
+    AccessibilityPlatform platform = AccessibilityPlatformTestData.builder()
         .shuttle(BooleanOptionalAttributeType.YES)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE)
         .build();
@@ -36,7 +37,7 @@ class PlatformReducedAccessibilityCalculatorTest {
   })
   void shouldMapVehicleAccessToStateWhenShuttleIsNo(VehicleAccessAttributeType vehicleAccess,
       WheelchairAccessibilityState expected) {
-    AccessibilityPlatform platform = AccessibilityPlatform.builder()
+    AccessibilityPlatform platform = AccessibilityPlatformTestData.builder()
         .shuttle(BooleanOptionalAttributeType.NO)
         .vehicleAccess(vehicleAccess)
         .build();
@@ -48,7 +49,7 @@ class PlatformReducedAccessibilityCalculatorTest {
 
   @Test
   void shouldMapVehicleAccessWhenShuttleIsToBeCompleted() {
-    AccessibilityPlatform platform = AccessibilityPlatform.builder()
+    AccessibilityPlatform platform = AccessibilityPlatformTestData.builder()
         .shuttle(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITHOUT_ASSISTANCE)
         .build();

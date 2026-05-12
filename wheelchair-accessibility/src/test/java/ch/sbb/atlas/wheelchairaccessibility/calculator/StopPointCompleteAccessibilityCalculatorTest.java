@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPointTestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -18,7 +19,7 @@ class StopPointCompleteAccessibilityCalculatorTest {
   @ParameterizedTest
   @EnumSource(value = StandardAttributeType.class, names = {"YES", "PARTIALLY"})
   void shouldReturnShuttleWhenAlternativeTransportIsYesOrPartially(StandardAttributeType alternativeTransport) {
-    AccessibilityStopPoint stopPoint = AccessibilityStopPoint.builder()
+    AccessibilityStopPoint stopPoint = AccessibilityStopPointTestData.builder()
         .alternativeTransport(alternativeTransport)
         .build();
 
@@ -117,8 +118,8 @@ class StopPointCompleteAccessibilityCalculatorTest {
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }
 
-  private static AccessibilityStopPoint.AccessibilityStopPointBuilder stopPointBuilder() {
-    return AccessibilityStopPoint.builder()
+  private static AccessibilityStopPointTestData.AccessibilityStopPointTestDataBuilder stopPointBuilder() {
+    return AccessibilityStopPointTestData.builder()
         .alternativeTransport(StandardAttributeType.NO);
   }
 
