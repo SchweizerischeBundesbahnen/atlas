@@ -6,7 +6,6 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import ch.sbb.atlas.wheelchairaccessibility.model.PlatformWithRelations;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public final class WheelchairAccessibilityCalculator {
   }
 
   public static WheelchairAccessibilityState calculateForStopPoint(AccessibilityStopPoint stopPoint,
-      Collection<PlatformWithRelations> platforms) {
+      List<PlatformWithRelations> platforms) {
     if (platforms.isEmpty()) {
       return WheelchairAccessibilityState.NO_INFO;
     }

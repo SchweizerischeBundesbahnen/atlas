@@ -8,7 +8,6 @@ import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.service.RelationService;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
-import java.util.Collection;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class WheelchairAccessibilityService {
   }
 
   public WheelchairAccessibilityState calculateForStopPointToday(StopPointVersion stopPoint,
-      Collection<PlatformVersion> platforms) {
+      List<PlatformVersion> platforms) {
     List<PlatformWithRelations> platformsWithRelations = platforms.stream()
         .map(platform -> new PlatformWithRelations(platform, relationService.findValidTodayByPlatform(platform.getSloid())))
         .toList();
