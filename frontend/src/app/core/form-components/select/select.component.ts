@@ -179,6 +179,6 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   }
 
   protected onMatSelectionChange(event: MatSelectChange) {
-    this.selectChanged.emit({ value: [event.value] });
+    this.selectChanged.emit({ value: Array.isArray(event.value) ? event.value : [event.value] });
   }
 }

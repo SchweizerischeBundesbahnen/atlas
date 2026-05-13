@@ -77,7 +77,7 @@ public class FileServiceImpl implements FileService {
       return true;
     }
     Set<Boolean> deletionResults = Arrays.stream(filesInDir.get()).map(File::delete).collect(Collectors.toSet());
-    return deletionResults.size() == 1 && deletionResults.contains(true);
+    return !deletionResults.contains(false);
   }
 
   @Override

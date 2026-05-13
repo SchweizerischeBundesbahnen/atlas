@@ -142,7 +142,5 @@ class FileServiceImplTest {
       //then
       assertThat(new String(bytes, StandardCharsets.UTF_8)).isNotNull();
     }
-
   }
-
 }
