@@ -10,7 +10,7 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import java.util.List;
 import java.util.Set;
 
-final class PlatformCompleteAccessibilityCalculator {
+public final class PlatformCompleteAccessibilityCalculator {
 
   private static final Set<StepFreeAccessAttributeType> STEP_FREE_ACCESS_VALID_VALUES = Set.of(
       StepFreeAccessAttributeType.YES,
@@ -23,7 +23,7 @@ final class PlatformCompleteAccessibilityCalculator {
   private PlatformCompleteAccessibilityCalculator() {
   }
 
-  static WheelchairAccessibilityState calculate(AccessibilityPlatform platform,
+  public static WheelchairAccessibilityState calculate(AccessibilityPlatform platform,
       List<? extends AccessibilityRelation> relations) {
 
     if (platform.getShuttle() == BooleanOptionalAttributeType.YES) {

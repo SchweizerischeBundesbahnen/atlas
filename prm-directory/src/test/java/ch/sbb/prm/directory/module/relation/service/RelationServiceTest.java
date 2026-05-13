@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.module.relation.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
@@ -10,18 +11,18 @@ import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.BasePrmServiceTest;
-import ch.sbb.prm.directory.module.relation.RelationTestData;
-import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.module.relation.RelationTestData;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.repository.RelationRepository;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.repository.StopPointRepository;
 import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,7 +54,7 @@ class RelationServiceTest extends BasePrmServiceTest {
     RelationVersion relationVersion = RelationTestData.builderVersion1().parentServicePointSloid(parentServicePointSloid).build();
 
     //when
-    ReducedVariantException result = Assertions.assertThrows(
+    ReducedVariantException result = assertThrows(
         ReducedVariantException.class,
         () -> relationService.save(relationVersion));
 
@@ -91,7 +92,7 @@ class RelationServiceTest extends BasePrmServiceTest {
     editedVersion.setVersion(version1.getVersion());
 
     //when
-    ReducedVariantException result = Assertions.assertThrows(
+    ReducedVariantException result = assertThrows(
         ReducedVariantException.class,
         () -> relationService.updateVersion(version1, editedVersion));
 
@@ -154,6 +155,25 @@ class RelationServiceTest extends BasePrmServiceTest {
 
     //then
     assertThat(relationsByParentServicePointSloid).isNotEmpty();
+  }
+
+  @Test
+  void shouldFindRelationVersionValidTodayByPlatform() {
+    //given
+    String platformSloid = "ch:1:sloid:7000:1";
+    RelationVersion relationVersion = RelationTestData.builderVersion1().build();
+    relationVersion.setValidFrom(LocalDate.now());
+    relationVersion.setValidTo(LocalDate.now().plusYears(1));
+    relationVersion.setSloid(platformSloid);
+    relationVersion.setReferencePointElementType(ReferencePointElementType.PLATFORM);
+    relationRepository.saveAndFlush(relationVersion);
+
+    //when
+    List<RelationVersion> result = relationService.findRelationVersionValidTodayByPlatform(platformSloid);
+
+    //then
+    assertThat(result).isNotEmpty();
+    assertThat(result.getFirst().getSloid()).isEqualTo(platformSloid);
   }
 
 }

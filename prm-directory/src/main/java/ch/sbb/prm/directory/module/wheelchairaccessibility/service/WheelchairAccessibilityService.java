@@ -20,15 +20,16 @@ public class WheelchairAccessibilityService {
   private final RelationService relationService;
 
   public WheelchairAccessibilityState calculateForPlatformToday(PlatformVersion platform) {
-    StopPointVersion stopPoint = stopPointService.findValidToday(platform.getParentServicePointSloid());
-    List<RelationVersion> relations = relationService.findValidTodayByPlatform(platform.getSloid());
+    StopPointVersion stopPoint = stopPointService.findStopPointVersionValidToday(platform.getParentServicePointSloid());
+    List<RelationVersion> relations = relationService.findRelationVersionValidTodayByPlatform(platform.getSloid());
     return WheelchairAccessibilityCalculator.calculateForPlatform(platform, stopPoint, relations);
   }
 
   public WheelchairAccessibilityState calculateForStopPointToday(StopPointVersion stopPoint,
       List<PlatformVersion> platforms) {
     List<PlatformWithRelations> platformsWithRelations = platforms.stream()
-        .map(platform -> new PlatformWithRelations(platform, relationService.findValidTodayByPlatform(platform.getSloid())))
+        .map(platform -> new PlatformWithRelations(platform,
+            relationService.findRelationVersionValidTodayByPlatform(platform.getSloid())))
         .toList();
     return WheelchairAccessibilityCalculator.calculateForStopPoint(stopPoint, platformsWithRelations);
   }

@@ -6,9 +6,9 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.exception.NotFoundValidVersionForToday;
 import ch.sbb.atlas.helper.TerminationHelper;
 import ch.sbb.atlas.model.DateRange;
-import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -91,11 +91,11 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
-  public PlatformVersion findVersionValidToday(String sloid) {
+  public PlatformVersion findPlatformVersionValidToday(String sloid) {
     return getAllVersions(sloid).stream()
         .filter(version -> DateRange.fromVersionable(version).containsToday())
         .findFirst()
-        .orElseThrow(() -> new SloidNotFoundException(sloid));
+        .orElseThrow(NotFoundValidVersionForToday::new);
   }
 
   @Override

@@ -9,7 +9,6 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
-import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.service.RelationService;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
@@ -41,8 +40,8 @@ class WheelchairAccessibilityServiceTest {
         .build();
     StopPointVersion stopPoint = StopPointVersion.builder().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
 
-    when(stopPointService.findValidToday("sp-1")).thenReturn(stopPoint);
-    when(relationService.findValidTodayByPlatform("plat-1")).thenReturn(List.of());
+    when(stopPointService.findStopPointVersionValidToday("sp-1")).thenReturn(stopPoint);
+    when(relationService.findRelationVersionValidTodayByPlatform("plat-1")).thenReturn(List.of());
 
     assertThat(service.calculateForPlatformToday(platform)).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }
@@ -60,8 +59,8 @@ class WheelchairAccessibilityServiceTest {
         .shuttle(BooleanOptionalAttributeType.YES)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE)
         .build();
-    when(relationService.findValidTodayByPlatform("plat-1")).thenReturn(List.of());
-    when(relationService.findValidTodayByPlatform("plat-2")).thenReturn(List.of());
+    when(relationService.findRelationVersionValidTodayByPlatform("plat-1")).thenReturn(List.of());
+    when(relationService.findRelationVersionValidTodayByPlatform("plat-2")).thenReturn(List.of());
 
     WheelchairAccessibilityState result = service.calculateForStopPointToday(stopPoint, List.of(autonomous, shuttle));
 

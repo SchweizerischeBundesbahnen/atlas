@@ -89,6 +89,8 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   @AfterEach
   void cleanUp() {
     sharedServicePointRepository.deleteAll();
+    platformRepository.deleteAll();
+    stopPointRepository.deleteAll();
   }
 
   @Test

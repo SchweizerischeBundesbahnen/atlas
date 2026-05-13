@@ -5,12 +5,12 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
 
-final class PlatformReducedAccessibilityCalculator {
+public final class PlatformReducedAccessibilityCalculator {
 
   private PlatformReducedAccessibilityCalculator() {
   }
 
-  static WheelchairAccessibilityState calculate(AccessibilityPlatform platform) {
+  public static WheelchairAccessibilityState calculate(AccessibilityPlatform platform) {
     if (platform.getShuttle() == BooleanOptionalAttributeType.YES) {
       return WheelchairAccessibilityState.SHUTTLE;
     }

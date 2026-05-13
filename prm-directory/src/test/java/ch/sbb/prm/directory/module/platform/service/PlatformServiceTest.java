@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.exception.NotFoundValidVersionForToday;
 import ch.sbb.atlas.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -428,5 +429,42 @@ class PlatformServiceTest extends BasePrmServiceTest {
     //then
     assertThatExceptionOfType(TerminationNotAllowedValidToNotWithinLastVersionRangeException.class).isThrownBy(
         () -> platformService.terminate(platformVersion, terminationValidTo));
+  }
+
+  @Test
+  void shouldFindPlatformVersionValidToday() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
+    platformVersion.setValidFrom(LocalDate.now());
+    platformVersion.setValidTo(LocalDate.now().plusYears(1));
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    platformService.createPlatformVersion(platformVersion);
+
+    //when
+    PlatformVersion result = platformService.findPlatformVersionValidToday(PLATFORM_SLOID);
+
+    //then
+    assertThat(result).isEqualTo(platformVersion);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenNoPlatformVersionValidTodayFound() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    platformService.createPlatformVersion(platformVersion);
+
+    //when & then
+    assertThrows(NotFoundValidVersionForToday.class, () -> platformService.findPlatformVersionValidToday(PLATFORM_SLOID));
   }
 }

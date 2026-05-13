@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface WheelchairAccessibilityApiInternal {
 
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
-  @GetMapping("platforms")
+  @GetMapping("platform")
   ReadWheelchairAccessibilityModel getPlatformAccessibilityToday(@PathVariable String sloid);
 
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
-  @GetMapping("stop-points")
+  @GetMapping("stop-point")
   ReadWheelchairAccessibilityModel getStopPointAccessibilityToday(@PathVariable String sloid);
 
 }

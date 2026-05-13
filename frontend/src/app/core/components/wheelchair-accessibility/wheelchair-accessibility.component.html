@@ -1,0 +1,19 @@
+@if (wheelchairAccessibility() && isSelectedVersionValidToday()) {
+  <div class="d-flex flex-row align-items-start">
+    <img
+      class="ms-5"
+      ngSrc="assets/images/prm/wheelchair-accessibility/{{ wheelchairAccessibility().toLowerCase() }}.svg"
+      height="50"
+      width="50"
+      [alt]="wheelchairAccessibility().toLowerCase()"
+    />
+
+    <atlas-form-info-icon
+      [infoTitle]="
+        ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.TODAY_ACCESSIBILITY' | translate) +
+        ': ' +
+        ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.' + wheelchairAccessibility() | translate)
+      "
+    ></atlas-form-info-icon>
+  </div>
+}

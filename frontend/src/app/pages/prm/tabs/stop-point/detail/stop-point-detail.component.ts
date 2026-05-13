@@ -15,7 +15,7 @@ import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { ReferencePointCreationHintService } from './reference-point-creation-hint/reference-point-creation-hint.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 import { filter, map } from 'rxjs/operators';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { CreateStopPointComponent } from '../create-stop-point/create-stop-point.component';
 import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
 import { NavigationSepodiPrmComponent } from '../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
@@ -28,10 +28,14 @@ import { AtlasButtonComponent } from '../../../../../core/components/button/atla
 import { TranslatePipe } from '@ngx-translate/core';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { StopPointService } from '../../../../../api/service/prm/stop-point/stop-point.service';
-import { WheelchairAccessibilityInternalService } from '../../../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
+import {
+  WheelchairAccessibilityInternalService
+} from '../../../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
 import { ReadWheelchairAccessibility } from '../../../../../api/model/readWheelchairAccessibility';
-import { InfoIconComponent } from '@atlas/form';
 import moment from 'moment';
+import {
+  WheelchairAccessibilityComponent
+} from '../../../../../core/components/wheelchair-accessibility/wheelchair-accessibility.component';
 
 @Component({
   selector: 'atlas-stop-point-detail',
@@ -49,8 +53,7 @@ import moment from 'moment';
     AtlasButtonComponent,
     AsyncPipe,
     TranslatePipe,
-    InfoIconComponent,
-    NgOptimizedImage,
+    WheelchairAccessibilityComponent,
   ],
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {

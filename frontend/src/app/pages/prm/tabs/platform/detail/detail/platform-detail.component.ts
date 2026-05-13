@@ -10,11 +10,7 @@ import {
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PrmMeanOfTransportHelper } from '../../../../util/prm-mean-of-transport-helper';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
-import {
-  CompletePlatformFormGroup,
-  PlatformFormGroupBuilder,
-  ReducedPlatformFormGroup,
-} from '../form/platform-form-group';
+import { CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup, } from '../form/platform-form-group';
 import { DateRange } from '../../../../../../core/versioning/date-range';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
@@ -32,14 +28,17 @@ import { UserDetailInfoComponent } from '../../../../../../core/components/user-
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { WheelchairAccessibilityInternalService } from '../../../../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
+import {
+  WheelchairAccessibilityInternalService
+} from '../../../../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
 import { ReadWheelchairAccessibility } from '../../../../../../api';
 import { Data } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgOptimizedImage } from '@angular/common';
-import { InfoIconComponent } from '@atlas/form';
 import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
 import moment from 'moment';
+import {
+  WheelchairAccessibilityComponent
+} from '../../../../../../core/components/wheelchair-accessibility/wheelchair-accessibility.component';
 
 @Component({
   selector: 'atlas-platforms',
@@ -58,8 +57,7 @@ import moment from 'moment';
     DetailFooterComponent,
     AtlasButtonComponent,
     TranslatePipe,
-    NgOptimizedImage,
-    InfoIconComponent,
+    WheelchairAccessibilityComponent,
   ],
 })
 export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatformVersion> implements OnInit {

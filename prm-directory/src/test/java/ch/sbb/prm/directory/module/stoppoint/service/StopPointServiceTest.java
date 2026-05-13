@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.exception.NotFoundValidVersionForToday;
 import ch.sbb.atlas.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -19,6 +20,7 @@ import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointServic
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -46,6 +48,11 @@ class StopPointServiceTest {
     MockitoAnnotations.openMocks(this);
     this.stopPointService = new StopPointService(stopPointRepository, versionableService,
         stopPointValidationService, sharedServicePointService);
+  }
+
+  @AfterEach
+  void tearDown() {
+    stopPointRepository.deleteAll();
   }
 
   @Test
@@ -177,6 +184,37 @@ class StopPointServiceTest {
     //then
     assertThatExceptionOfType(TerminationNotAllowedValidToNotWithinLastVersionRangeException.class).isThrownBy(
         () -> stopPointService.terminate(version2, terminationValidTo));
+  }
+
+  @Test
+  void shouldFindStopPointVersionValidToday() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setValidFrom(LocalDate.now());
+    stopPointVersion.setValidTo(LocalDate.now().plusYears(1));
+    stopPointVersion.setSloid("sloid-1111");
+    stopPointRepository.save(stopPointVersion);
+
+    //when
+    when(stopPointRepository.findAllBySloidOrderByValidFrom("sloid-1111")).thenReturn(List.of(stopPointVersion));
+    StopPointVersion result = stopPointService.findStopPointVersionValidToday("sloid-1111");
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getSloid()).isEqualTo("sloid-1111");
+  }
+
+  @Test
+  void shouldThrowExceptionWhenNoStopPointVersionValidTodayFound() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid("sloid-1111");
+    stopPointRepository.save(stopPointVersion);
+
+    when(stopPointRepository.findAllBySloidOrderByValidFrom("sloid-1111")).thenReturn(List.of(stopPointVersion));
+
+    //when & then
+    assertThrows(NotFoundValidVersionForToday.class, () -> stopPointService.findStopPointVersionValidToday("sloid-1111"));
   }
 
 }

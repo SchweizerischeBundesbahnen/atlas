@@ -22,7 +22,7 @@ public class WheelchairAccessibilityApiInternalController implements WheelchairA
 
   @Override
   public ReadWheelchairAccessibilityModel getPlatformAccessibilityToday(String sloid) {
-    PlatformVersion platform = platformService.findVersionValidToday(sloid);
+    PlatformVersion platform = platformService.findPlatformVersionValidToday(sloid);
     return ReadWheelchairAccessibilityModel.builder()
         .state(wheelchairAccessibilityService.calculateForPlatformToday(platform))
         .build();
@@ -30,7 +30,7 @@ public class WheelchairAccessibilityApiInternalController implements WheelchairA
 
   @Override
   public ReadWheelchairAccessibilityModel getStopPointAccessibilityToday(String sloid) {
-    StopPointVersion stopPoint = stopPointService.findValidToday(sloid);
+    StopPointVersion stopPoint = stopPointService.findStopPointVersionValidToday(sloid);
     List<PlatformVersion> platformsToday = platformService.getPlatformsByStopPoint(sloid).stream()
         .filter(platform -> DateRange.fromVersionable(platform).containsToday())
         .toList();

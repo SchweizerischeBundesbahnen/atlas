@@ -103,10 +103,14 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
 
     //Create Platforms
     PlatformVersion platformVersion1 = PlatformTestData.getCompletePlatformVersion();
+    platformVersion1.setSloid("ch:1:sloid:12345:1");
+    platformVersion1.setValidFrom(LocalDate.of(2000, 1, 1));
+    platformVersion1.setValidTo(LocalDate.of(2000, 12, 31));
     platformVersion1.setParentServicePointSloid(parentServicePointSloid);
     platformRepository.saveAndFlush(platformVersion1);
 
     PlatformVersion platformVersion2 = PlatformTestData.getCompletePlatformVersion();
+    platformVersion2.setSloid("ch:1:sloid:12345:1");
     platformVersion2.setValidFrom(LocalDate.of(2001, 1, 1));
     platformVersion2.setValidTo(LocalDate.of(2001, 12, 31));
     platformVersion2.setInclination(777.77);
@@ -114,6 +118,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     platformRepository.saveAndFlush(platformVersion2);
 
     PlatformVersion platformVersion3 = PlatformTestData.getCompletePlatformVersion();
+    platformVersion3.setSloid("ch:1:sloid:12345:1");
     platformVersion3.setValidFrom(LocalDate.of(2002, 1, 1));
     platformVersion3.setValidTo(LocalDate.of(2002, 12, 31));
     platformVersion3.setInclination(666.77);

@@ -8,8 +8,8 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.repository.RelationRepository;
 import ch.sbb.prm.directory.module.relation.search.RelationSearchRestrictions;
-import ch.sbb.prm.directory.service.PrmVersionableService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import ch.sbb.prm.directory.service.PrmVersionableService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -39,9 +39,9 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     return relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
   }
 
-  public List<RelationVersion> findValidTodayByPlatform(String platformSloid) {
+  public List<RelationVersion> findRelationVersionValidTodayByPlatform(String platformSloid) {
     return relationRepository.findAllBySloidAndReferencePointElementType(platformSloid, ReferencePointElementType.PLATFORM).stream()
-        .filter(relation -> new DateRange(relation.getValidFrom(), relation.getValidTo()).containsToday())
+        .filter(relation -> DateRange.fromVersionable(relation).containsToday())
         .toList();
   }
 
