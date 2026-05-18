@@ -49,7 +49,6 @@ export class TthDossierOverviewComponent {
   tableColumns: TableColumn<TthDossier>[] = [];
   tableFilterConfig!: TableFilter<unknown>[][];
 
-  sorting = 'topic,asc';
   userType!: TthApplicationUserType;
 
   constructor() {
@@ -90,7 +89,7 @@ export class TthDossierOverviewComponent {
         this.tableService.filter.multiSelectDossierStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'id,DESC')
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'id,ASC')
       )
       .pipe(catchError(this.handleError()))
       .subscribe((container) => {
@@ -137,8 +136,8 @@ export class TthDossierOverviewComponent {
         value: 'topic',
       },
       {
-        headerTitle: 'COMMON.EDIT_ON',
-        value: 'editionDate',
+        headerTitle: 'TTH.DOSSIER.DEADLINE',
+        value: 'boDeadlineToAnswer',
         formatAsDate: true,
       },
       {

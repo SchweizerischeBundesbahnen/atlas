@@ -1128,6 +1128,7 @@
       "BO_CONTACT_MAIL": "E-Mail",
       "BO_CONTACT_MAIL_INFO": "Inserire l’indirizzo e-mail della persona di riferimento dell’impresa di trasporto.",
       "BO_DEADLINE_TO_ANSWER": "Termine per la risposta da parte dell’IT",
+      "DEADLINE": "Scadenza",
       "BO_QUESTION": "Domanda all’impresa di trasporto",
       "BO_QUESTION_INFO": "Nel suo testo si accerti che la persona di riferimento abbia tutti i dati necessari.",
       "INTERNAL_COMMENT": "Motivazione interna ai fini della documentazione",

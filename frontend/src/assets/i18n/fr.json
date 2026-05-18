@@ -1128,6 +1128,7 @@
       "BO_CONTACT_MAIL": "E-mail",
       "BO_CONTACT_MAIL_INFO": "Saisissez l’adresse e-mail de la personne de contact dans l’entreprise de transport.",
       "BO_DEADLINE_TO_ANSWER": "Délai de réponse par TU",
+      "DEADLINE": "Délai",
       "BO_QUESTION": "Question à l’entreprise de transport",
       "BO_QUESTION_INFO": "Dans votre texte, assurez-vous que la personne de contact dispose de toutes les informations dont elle a besoin.",
       "INTERNAL_COMMENT": "Justification interne aux fins de la documentation",

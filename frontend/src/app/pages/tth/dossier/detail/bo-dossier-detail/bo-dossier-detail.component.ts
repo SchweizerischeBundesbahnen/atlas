@@ -3,9 +3,7 @@ import { AtlasButtonComponent } from '../../../../../core/components/button/atla
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import {
-  DetailPageContainerComponent
-} from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { StatementSelectComponent } from '../../statement-select/statement-select.component';
@@ -14,7 +12,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
-import { BoAnswerFormGroupBuilder, DossierDetailFormGroup, DossierFormGroupBuilder, } from '../dossier-detail-form-group';
+import {
+  BoAnswerFormGroupBuilder,
+  DossierDetailFormGroup,
+  DossierFormGroupBuilder,
+} from '../dossier-detail-form-group';
 import { TthDossier } from '../../../../../api/model/tthDossier';
 import { DateComponent } from '../../../../../core/form-components/date/date.component';
 import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';

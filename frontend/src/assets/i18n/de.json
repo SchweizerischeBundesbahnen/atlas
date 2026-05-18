@@ -1128,6 +1128,7 @@
       "BO_CONTACT_MAIL": "E-Mail",
       "BO_CONTACT_MAIL_INFO": "Geben Sie die E-Mail-Adresse der Kontaktperson im Transportunternehmen ein.",
       "BO_DEADLINE_TO_ANSWER": "Frist zur Beantwortung durch TU",
+      "DEADLINE": "Frist",
       "BO_QUESTION": "Frage an das Transportunternehmen",
       "BO_QUESTION_INFO": "Stellen Sie in Ihrem Text sicher, dass die Kontaktperson alle Angaben hat, die sie braucht.",
       "INTERNAL_COMMENT": "Interne Begründung zum Zweck der Dokumentation",
