@@ -63,17 +63,15 @@ export class StatementSelectComponent extends StatementTableHandler {
   }
 
   goToStatement(statement: TimetableHearingStatementV2) {
-    const url = this.router.serializeUrl(
-      this.router.createUrlTree([
+    this.router
+      .navigate([
         Pages.TTH.path,
         Cantons.fromSwissCanton(statement.swissCanton)?.path,
         Pages.TTH_ACTIVE.path,
         Pages.TTH_STATEMENTS.path,
         statement.id,
       ])
-    );
-
-    window.open(url, '_blank');
+      .then();
   }
 
   loadStatementsToTable() {

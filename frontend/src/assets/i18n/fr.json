@@ -1093,6 +1093,7 @@
       "STATEMENT_TRANSFER_CANTON_INFO": "Sélectionnez le canton auquel vous soumettez la déclaration.",
       "STATEMENT_PDF_ANONYMOUS_CHECKBOX": "La pièce jointe peut être transmise (par exemple à une entreprise de transport).",
       "DOSSIER_LINK": "Cette prise de position fait partie du dossier {{dossierId}}.",
+      "GO_TO_DOSSIER": "Retour au dossier",
       "DATA_PROTECTION_CHECKED": "Vérification de la protection des données terminée",
       "DATA_PROTECTION_NOT_CHECKED": "Vérification de la protection des données en attente",
       "CITIZEN_CONCERN": "Prise de position du/de la citoyen·ne",

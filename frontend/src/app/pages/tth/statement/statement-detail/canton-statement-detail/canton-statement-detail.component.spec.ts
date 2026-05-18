@@ -25,6 +25,7 @@ import { TimetableYearChangeInternalService } from '../../../../../api/service/l
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { mock, mockClear } from 'vitest-mock-extended';
+import { Pages } from '../../../../pages';
 
 const existingStatement: TimetableHearingStatementV2 = {
   id: 1,
@@ -234,6 +235,25 @@ describe('StatementDetailComponent for existing statement', () => {
     //then
     expect(dialogService.openCustomDataWithConfirmationResult).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
+  });
+
+  it('should go to dossier', () => {
+    //given
+    component.statement = {
+      id: 1,
+      swissCanton: SwissCanton.Bern,
+      statement: 'Öper isch am YB-Match gsi',
+      statementSender: {
+        emails: new Set('fan@yb.ch'),
+      },
+      dossierId: 123,
+    };
+
+    vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    //when
+    component.goToDossier();
+    //then
+    expect(router.navigate).toHaveBeenCalledWith(['../..', Pages.TTH_DOSSIERS.path, 123], expect.any(Object));
   });
 });
 
