@@ -16,9 +16,9 @@ import { OverviewToTabShareDataService } from '../../overview-tab/service/overvi
 import { TthDossierOverviewMenuComponent } from '../tth-dossier-overview-menu/tth-dossier-overview-menu.component';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DossierStatus } from '../../../../api/model/dossierStatus';
 import { PermissionService, TthApplicationUserType } from '../../../../core/auth/permission/permission.service';
 import { UserService } from '../../../../core/auth/user/user.service';
+import { DossierStatus } from '../../../../api/model/dossierStatus';
 
 @Component({
   selector: 'atlas-tth-dossier-overview',
@@ -63,44 +63,31 @@ export class TthDossierOverviewComponent {
   }
 
   loadData() {
-    if (this.isHearingYearActive()) {
-      this.tableColumns = this.getTableColumns();
-      const filterSettings =
-        this.userType === 'BO_TTH'
-          ? TthTableFilterSettingsService.createDossierSettingsForBo()
-          : TthTableFilterSettingsService.createDossierSettings();
-
-      this.tableFilterConfig = this.tableService.initializeFilterConfig(filterSettings, Pages.TTH_DOSSIERS);
-
-      this.initOverviewTable();
+    this.tableColumns = this.getTableColumns();
+    const filterSettings = TthTableFilterSettingsService.createDossierSettings();
+    if (this.userType === 'BO_TTH') {
+      filterSettings.multiSelectDossierStatus.activeSearch = [
+        DossierStatus.DossierBoCheck,
+        DossierStatus.DossierCantonCheck,
+        DossierStatus.Accepted,
+        DossierStatus.Rejected,
+        DossierStatus.Moved,
+      ];
     }
 
-    if (this.isHearingYearArchived()) {
-      this.tableColumns = this.getTableColumns();
-      this.tableFilterConfig = this.tableService.initializeFilterConfig(
-        TthTableFilterSettingsService.createDossierSettings(),
-        Pages.TTH_DOSSIERS
-      );
-      this.initOverviewTable();
-    }
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(filterSettings, Pages.TTH_DOSSIERS);
+
+    this.initOverviewTable();
   }
 
   getOverview(pagination: TablePagination) {
-    if (this.userType === 'BO_TTH') {
-      this.fetchOverview(this.userService.currentUser!.sbbuid, [DossierStatus.DossierBoCheck], pagination);
-    } else {
-      this.fetchOverview(undefined, this.tableService.filter.multiSelectDossierStatus.getActiveSearch(), pagination);
-    }
-  }
-
-  private fetchOverview(sbbuid: string | undefined, dossierStatus: DossierStatus[], pagination: TablePagination) {
     this.dossierInternalService
       .getOverview(
         this.timetableYear().timetableYear,
         Cantons.getSwissCantonFromShort(this.cantonShort()),
-        sbbuid,
+        this.userType === 'BO_TTH' ? this.userService.currentUser!.sbbuid : undefined,
         this.tableService.filter.chipSearch.getActiveSearch(),
-        dossierStatus,
+        this.tableService.filter.multiSelectDossierStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'id,DESC')

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { TthDossierOverviewComponent } from './tth-dossier-overview.component';
 import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
 import { TableService } from '../../../../core/components/table/table.service';
@@ -9,7 +9,6 @@ import { HearingStatus, SwissCanton } from '../../../../api';
 import { of, throwError } from 'rxjs';
 import { Cantons } from '../../../../core/cantons/Cantons';
 import { TthDossier } from '../../../../api/model/tthDossier';
-import { DossierStatus } from '../../../../api/model/dossierStatus';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { UserService } from '../../../../core/auth/user/user.service';
 
@@ -197,7 +196,7 @@ describe('TthDossierOverviewComponent', () => {
         expect.any(String),
         'u123456',
         expect.anything(),
-        [DossierStatus.DossierBoCheck],
+        expect.any(Array),
         0,
         10,
         expect.any(Array)
