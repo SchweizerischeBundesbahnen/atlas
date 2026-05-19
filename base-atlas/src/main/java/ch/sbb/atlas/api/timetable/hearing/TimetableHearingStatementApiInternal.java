@@ -76,7 +76,7 @@ public interface TimetableHearingStatementApiInternal {
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   Container<TimetableHearingStatementModelV2> getStatements(
-      @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModelV2.Fields.timetableYear,
+      @Parameter(hidden = true) @PageableDefault(sort = {
           TimetableHearingStatementDataProtectionModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
@@ -97,7 +97,7 @@ public interface TimetableHearingStatementApiInternal {
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingStatementAlternatingModel getPreviousStatement(
       @PathVariable Long id,
-      @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModelV2.Fields.timetableYear,
+      @Parameter(hidden = true) @PageableDefault(sort = {
           TimetableHearingStatementDataProtectionModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
@@ -107,7 +107,7 @@ public interface TimetableHearingStatementApiInternal {
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingStatementAlternatingModel getNextStatement(
       @PathVariable Long id,
-      @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModelV2.Fields.timetableYear,
+      @Parameter(hidden = true) @PageableDefault(sort = {
           TimetableHearingStatementDataProtectionModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 

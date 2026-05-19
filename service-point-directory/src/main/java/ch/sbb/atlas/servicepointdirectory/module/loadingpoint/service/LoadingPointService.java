@@ -4,12 +4,12 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.loadingpoint.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.loadingpoint.exception.LoadingPointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.module.loadingpoint.mapper.LoadingPointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.module.loadingpoint.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.loadingpoint.search.LoadingPointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -91,9 +91,12 @@ public class LoadingPointService {
   }
 
   public Container<ReadLoadingPointVersionModel> getOverview(Integer servicePointNumber, Pageable pageable) {
+    LoadingPointRequestParams loadingPointRequestParams = LoadingPointRequestParams.builder()
+        .servicePointNumbers(List.of(servicePointNumber))
+        .build();
     LoadingPointSearchRestrictions loadingPointSearchRestrictions = LoadingPointSearchRestrictions.builder()
-        .loadingPointRequestParams(LoadingPointRequestParams.builder()
-            .servicePointNumbers(List.of(servicePointNumber)).build()).build();
+        .loadingPointRequestParams(loadingPointRequestParams)
+        .build();
 
     List<ReadLoadingPointVersionModel> loadingPointVersions = loadingPointVersionRepository.findAll(
             loadingPointSearchRestrictions.getSpecification(), pageable.getSort()).stream().map(LoadingPointVersionMapper::fromEntity)

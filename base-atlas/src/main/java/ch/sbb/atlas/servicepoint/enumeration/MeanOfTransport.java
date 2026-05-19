@@ -21,7 +21,8 @@ public enum MeanOfTransport {
   RACK_RAILWAY(7, "H", "Zahnradbahn", "Zahnradbahn", "Chemin de fer à crémaillère", "Rack Railway", "Ferrovia a cremagliera"),
   METRO(8, "M", "Metro", "Metro", "Métro", "Metro", "Metro"),
   ELEVATOR(9, "A", "Aufzug", "Aufzug", "Ascenseur", "Elevator", "Ascensore"),
-  ON_DEMAND(11, "O", "On Demand", "On Demand", "On Demand", "On Demand", "On Demand"),
+  ON_DEMAND(11, "O", OnDemandConstants.ON_DEMAND_DESIGNATION, OnDemandConstants.ON_DEMAND_DESIGNATION,
+      OnDemandConstants.ON_DEMAND_DESIGNATION, OnDemandConstants.ON_DEMAND_DESIGNATION, OnDemandConstants.ON_DEMAND_DESIGNATION),
   UNKNOWN(10, "U", "Unbekannt", "Unbekannt", "Inconnu", "Unknown", "Sconosciute");
 
   private final Integer rank;

@@ -121,11 +121,12 @@ public class TrafficPointElementService extends RevokeService<TrafficPointElemen
   public Container<ReadTrafficPointElementVersionModel> getTrafficPointElementsByServicePointNumber(
       Integer servicePointNumber, Pageable pageable, TrafficPointElementType trafficPointElementType) {
 
+    TrafficPointElementRequestParams trafficPointElementRequestParams = TrafficPointElementRequestParams.builder()
+        .trafficPointElementType(trafficPointElementType)
+        .servicePointNumbers(List.of(String.valueOf(servicePointNumber)))
+        .build();
     TrafficPointElementSearchRestrictions trafficPointElementSearchRestrictions = TrafficPointElementSearchRestrictions.builder()
-        .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-            .trafficPointElementType(trafficPointElementType)
-            .servicePointNumbers(List.of(String.valueOf(servicePointNumber)))
-            .build())
+        .trafficPointElementRequestParams(trafficPointElementRequestParams)
         .build();
 
     List<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementVersionRepository.findAll(

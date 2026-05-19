@@ -22,7 +22,7 @@ public class SpanTracingAspect {
   public Object executeSpanTracing(ProceedingJoinPoint joinPoint) throws Throwable {
     log.info("Start observation...");
     Observation observation = Observation.start("schedulerObservation", observationRegistry).start();
-    try (Scope ignored = observation.openScope()) {
+    try (Scope _ = observation.openScope()) {
       Object proceed = joinPoint.proceed();
       Observation currentObservation = observationRegistry.getCurrentObservation();
       if (currentObservation != null) {
