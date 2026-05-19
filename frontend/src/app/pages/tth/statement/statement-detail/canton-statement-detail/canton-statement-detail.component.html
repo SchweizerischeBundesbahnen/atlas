@@ -197,14 +197,16 @@
           <b class="bi bi-chevron-left"></b>
         </ng-template>
       </atlas-button>
-      <atlas-button
-        (buttonClicked)="goToDossier()"
-        [footerEdit]="form.enabled"
-        buttonDataCy="back-to-overview"
-        buttonText="TTH.STATEMENT.GO_TO_DOSSIER"
-        buttonType="whiteFooterNonEdit"
-        wrapperStyleClass="me-3"
-      />
+      @if (statement?.dossierId) {
+        <atlas-button
+          (buttonClicked)="goToDossier()"
+          [footerEdit]="form.enabled"
+          buttonDataCy="back-to-overview"
+          buttonText="TTH.STATEMENT.GO_TO_DOSSIER"
+          buttonType="whiteFooterNonEdit"
+          wrapperStyleClass="me-3"
+        />
+      }
       <atlas-button
         (buttonClicked)="backToOverview()"
         [footerEdit]="form.enabled"
