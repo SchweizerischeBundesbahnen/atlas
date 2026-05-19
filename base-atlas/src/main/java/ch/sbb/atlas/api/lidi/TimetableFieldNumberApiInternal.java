@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Timetable Field Numbers")
 @RequestMapping("internal/field-numbers")
@@ -45,9 +44,5 @@ public interface TimetableFieldNumberApiInternal {
   @AdminOnly
   @DeleteMapping("/{ttfnid}")
   void deleteVersions(@PathVariable String ttfnid);
-
-  @AdminOnly
-  @PostMapping("/import-quovadis")
-  void importQuoVadisData(MultipartFile file);
 
 }
