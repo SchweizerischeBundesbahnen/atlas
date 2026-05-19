@@ -50,6 +50,7 @@ import { TimetableHearingYearInternalService } from '../../../../../api/service/
 import { DialogData } from '../../../../../core/components/dialog/dialog.data';
 import { StatementDialogComponent } from '../../statement-dialog/statement.dialog.component';
 import { StatementDataProtectionCheckDialogComponent } from './data-protection-check/statement-data-protection-check.dialog.component';
+import { Pages } from '../../../../pages';
 
 @Component({
   selector: 'atlas-statement-detail',
@@ -428,5 +429,13 @@ export class CantonStatementDetailComponent
           this.router.navigate(['..', this.statement!.id], { relativeTo: this.route }).then(() => this.ngOnInit());
         }
       });
+  }
+
+  goToDossier() {
+    this.router
+      .navigate(['../..', Pages.TTH_DOSSIERS.path, this.statement!.dossierId], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 }

@@ -8,9 +8,6 @@ import { FormGroup } from '@angular/forms';
 import { StatementDetailFormGroup } from '../statement-detail/statement-detail-form-group';
 import { TimetableFieldNumber, TimetableHearingStatementV2, TransportCompany } from '../../../../api';
 import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
-import { LinkComponent } from '../../../../core/form-components/link/link.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Pages } from '../../../pages';
 
 @Component({
   selector: 'atlas-statement-data',
@@ -20,7 +17,6 @@ import { Pages } from '../../../pages';
     TimetableFieldNumberSelectComponent,
     TranslatePipe,
     TransportCompanySelectComponent,
-    LinkComponent,
   ],
   templateUrl: './statement-data.component.html',
   styleUrls: ['./statement-data.component.scss'],
@@ -32,8 +28,6 @@ export class StatementDataComponent {
   readonly isNew = input<boolean>();
 
   private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
 
   ttfnSelectionChanged(newTtfn?: TimetableFieldNumber) {
     if (newTtfn) {
@@ -43,13 +37,5 @@ export class StatementDataComponent {
           this.form().controls.responsibleTransportCompanies.setValue(result);
         });
     }
-  }
-
-  goToDossier(dossierId: number) {
-    this.router
-      .navigate(['../..', Pages.TTH_DOSSIERS.path, dossierId], {
-        relativeTo: this.route,
-      })
-      .then();
   }
 }

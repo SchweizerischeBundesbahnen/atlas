@@ -10,13 +10,13 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { statement, statementFormGroup } from '../statement-test-util';
 import { TransportCompanySelectComponent } from '../../../../core/form-components/tu-select/transport-company-select.component';
-import { TimetableFieldNumberSelectComponent } from '../../../../core/form-components/ttfn-select/timetable-field-number-select.component';
 import {
-  TimetableFieldNumber,
-  TimetableHearingStatementResponsibleTransportCompany,
-  TransportCompany,
-} from '../../../../api';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+  TimetableFieldNumberSelectComponent
+} from '../../../../core/form-components/ttfn-select/timetable-field-number-select.component';
+import { TimetableFieldNumber, TimetableHearingStatementResponsibleTransportCompany, TransportCompany, } from '../../../../api';
+import {
+  TimetableHearingStatementInternalService
+} from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -101,13 +101,5 @@ describe('StatementData', () => {
       expect(transportCompanies.length).toBe(1);
       expect(transportCompanies[0]).toBe(transportCompany);
     }
-  });
-
-  it('should go to dossier with id', () => {
-    component.goToDossier(5);
-
-    expect(router.navigate).toHaveBeenCalledWith(['../..', 'dossiers', 5], {
-      relativeTo: {},
-    });
   });
 });

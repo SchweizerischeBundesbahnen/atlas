@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { StatementSelectComponent } from './statement-select.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
@@ -23,6 +23,7 @@ const timetableHearingStatementInternalService: Mocked<Pick<TimetableHearingStat
   {
     getStatement: vi.fn().mockReturnValue(of(statement)),
   };
+const router = mock<Router>();
 
 describe('StatementSelectComponent', () => {
   let component: StatementSelectComponent;
@@ -37,11 +38,16 @@ describe('StatementSelectComponent', () => {
   };
 
   beforeEach(() => {
+    router.navigate.mockResolvedValue(true);
     TestBed.configureTestingModule({
       providers: [
         {
           provide: ActivatedRoute,
           useValue: activatedRoute,
+        },
+        {
+          provide: Router,
+          useValue: router,
         },
         {
           provide: TimetableHearingStatementInternalService,
@@ -75,11 +81,8 @@ describe('StatementSelectComponent', () => {
   });
 
   it('should go to statement', () => {
-    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
-
     component.goToStatement(statement);
 
-    const expectedUrl = '/timetable-hearing/be/active/statements/456';
-    expect(windowOpenSpy).toHaveBeenCalledWith(expectedUrl, '_blank');
+    expect(router.navigate).toHaveBeenCalledWith(['timetable-hearing', 'be', 'active', 'statements', 456]);
   });
 });

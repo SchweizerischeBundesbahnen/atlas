@@ -128,6 +128,7 @@ export class BoDossierDetailComponent implements DetailFormComponent, OnInit {
       this.dossierInternalService.answerQuestion(questionId!, boAnswer).subscribe(() => {
         this.notificationService.success('TTH.DOSSIER.NOTIFICATION.SENT_TO_CANTON');
         this.form.disable();
+        this.form.markAsPristine();
         this.isDossierStatusBoCheck = false;
       });
     }

@@ -4,10 +4,9 @@
 
 @if (!isNew()) {
   @if (statement().dossierId) {
-    <atlas-link
-      label="{{ 'TTH.STATEMENT.DOSSIER_LINK' | translate: { dossierId: statement().dossierId } }}"
-      (linkClicked)="goToDossier(statement().dossierId!)"
-    />
+    <div class="mb-3">
+      {{ 'TTH.STATEMENT.DOSSIER_LINK' | translate: { dossierId: statement().dossierId } }}
+    </div>
   }
   @if (statement().dataProtectionChecked) {
     <div class="data-protection-checked">
