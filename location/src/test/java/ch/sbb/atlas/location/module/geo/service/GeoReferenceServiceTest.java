@@ -2,6 +2,7 @@ package ch.sbb.atlas.location.module.geo.service;
 
 import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.verify;
@@ -22,8 +23,12 @@ import ch.sbb.atlas.location.module.geo.client.geoadmin.Layers;
 import ch.sbb.atlas.location.module.geo.client.journepoy.JourneyPoiClientBase;
 import ch.sbb.atlas.location.module.geo.client.journepoy.JourneyPoiConfig;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
+import feign.FeignException.FeignClientException;
+import feign.Request;
+import feign.Request.HttpMethod;
 import java.math.BigDecimal;
 import java.time.Year;
 import java.time.ZoneId;
@@ -72,6 +77,25 @@ class GeoReferenceServiceTest {
         .build();
     assertThat(geoReference).isEqualTo(expectedGeoReference);
     verifyNoInteractions(journeyPoiClient);
+  }
+
+  @Test
+  void shouldHandleGeoReferenceErrorsGracefully() {
+    // given
+    FeignClientException feignClientException = new FeignClientException(200, "",
+        Request.create(HttpMethod.GET, "", Collections.emptyMap(), null, null, null), null, null);
+    when(geoAdminChClient.getGeoReference(any(GeoAdminParams.class))).thenThrow(feignClientException);
+
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2568989.30320000000)
+        .north(1141633.69605000000)
+        .build();
+
+    // when
+    assertThatExceptionOfType(AtlasException.class)
+        .isThrownBy(() -> geoReferenceService.getGeoReference(coordinate))
+        .withMessage("GeoReference Service not available");
   }
 
   @Test

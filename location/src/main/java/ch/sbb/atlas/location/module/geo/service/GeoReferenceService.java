@@ -10,6 +10,7 @@ import ch.sbb.atlas.location.module.geo.client.geoadmin.GeoAdminResponse;
 import ch.sbb.atlas.location.module.geo.client.geoadmin.Layers;
 import ch.sbb.atlas.location.module.geo.client.journepoy.JourneyPoiClientBase;
 import ch.sbb.atlas.location.module.geo.exception.HeightNotCalculatableException;
+import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
@@ -39,13 +40,26 @@ public class GeoReferenceService {
   }
 
   public GeoReference getGeoReference(CoordinatePair coordinatePair) {
-    GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
+    GeoAdminResponse geoAdminResponse = getGeoReference(new GeoAdminParams(coordinatePair));
     GeoReference geoReference = toGeoReference(geoAdminResponse);
 
     if (geoReference.getCountry() == null) {
       return getRokasOsmInformation(coordinatePair);
     }
     return geoReference;
+  }
+
+  private GeoAdminResponse getGeoReference(GeoAdminParams geoAdminParams) {
+    try {
+      return geoAdminChClient.getGeoReference(geoAdminParams);
+    } catch (FeignClientException e) {
+      log.warn("GeoAdmin geoReference request failed for params: {}", geoAdminParams, e);
+      throw SimpleAtlasException.builder()
+          .status(HttpStatus.SERVICE_UNAVAILABLE)
+          .messageAndError("GeoReference Service not available")
+          .displayCode("SEPODI.SERVICE_POINTS.GEOREFERENCE_SERVICE_UNAVAILABLE")
+          .build();
+    }
   }
 
   public GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) {
