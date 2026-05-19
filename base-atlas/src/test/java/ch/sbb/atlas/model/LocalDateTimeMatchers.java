@@ -14,6 +14,7 @@ public class LocalDateTimeMatchers {
     return new TypeSafeMatcher<>() {
       @Override
       public void describeTo(Description description) {
+        // not needed
       }
 
       @Override

@@ -3,7 +3,6 @@ package ch.sbb.atlas.location;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.SloidNotValidException;
 import org.junit.jupiter.api.Test;

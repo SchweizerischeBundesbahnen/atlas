@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-public class AtlasExceptionHandlerTest {
+class AtlasExceptionHandlerTest {
 
   private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
 

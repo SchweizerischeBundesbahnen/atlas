@@ -10,11 +10,12 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import java.io.IOException;
 import java.time.LocalDate;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class LocalDateDeserializerTest {
 
   @Mock
@@ -23,11 +24,6 @@ class LocalDateDeserializerTest {
   private DeserializationContext ctx;
 
   private final LocalDateDeserializer localDateDeserializer = new LocalDateDeserializer();
-
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.initMocks(this);
-  }
 
   @Test
   void shouldParseInternationalDateFormatCorrectly() throws IOException {

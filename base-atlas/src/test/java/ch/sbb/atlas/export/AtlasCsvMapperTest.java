@@ -48,8 +48,8 @@ class AtlasCsvMapperTest {
   @Test
   void shouldMapToCsvWithLocalizationCorrectly() throws JsonProcessingException {
     // Given
-    AtlasCsvMapper csvMapper = new AtlasCsvMapper(DummyCsvModel.class, new LocalizedPropertyNamingStrategy(messageSource,
-        new Locale("de")));
+    AtlasCsvMapper csvMapper = new AtlasCsvMapper(DummyCsvModel.class,
+        new LocalizedPropertyNamingStrategy(messageSource, Locale.of("de")));
 
     String expectedCsv = """
         dateValuede;valuede

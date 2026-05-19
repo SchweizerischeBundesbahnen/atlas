@@ -48,7 +48,7 @@ class AtlasApiAuthGatewayApplicationTest {
   }
 
   @BeforeEach
-  public void setup() {
+  void setup() {
     String baseUri = "http://localhost:" + port;
     webClient = WebTestClient.bindToServer().responseTimeout(Duration.ofSeconds(10)).baseUrl(baseUri).build();
 

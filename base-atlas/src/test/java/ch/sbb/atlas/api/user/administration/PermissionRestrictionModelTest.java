@@ -6,7 +6,6 @@ import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersion
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -25,7 +24,7 @@ class PermissionRestrictionModelTest {
   private ObjectMapper objectMapper;
 
   @Test
-  void shouldDeserializeSboidPermissionRestriction() throws JsonProcessingException {
+  void shouldDeserializeSboidPermissionRestriction() {
     String jsonValue = """
         {"valueAsString":"ch:1:sboid:1100000","type":"BUSINESS_ORGANISATION"}
         """;
@@ -37,7 +36,7 @@ class PermissionRestrictionModelTest {
   }
 
   @Test
-  void shouldDeserializeCantonPermissionRestriction() throws JsonProcessingException {
+  void shouldDeserializeCantonPermissionRestriction() {
     String jsonValue = """
         {"valueAsString":"BERN","type":"CANTON"}
         """;
@@ -49,7 +48,7 @@ class PermissionRestrictionModelTest {
   }
 
   @Test
-  void shouldDeserializeCountryPermissionRestriction() throws JsonProcessingException {
+  void shouldDeserializeCountryPermissionRestriction() {
     String jsonValue = """
         {"valueAsString":"MACEDONIA","type":"COUNTRY"}
         """;
@@ -61,7 +60,7 @@ class PermissionRestrictionModelTest {
   }
 
   @Test
-  void shouldDeserializeBulkImportPermissionRestriction() throws JsonProcessingException {
+  void shouldDeserializeBulkImportPermissionRestriction() {
     String jsonValue = """
         {"valueAsString":"true","type":"BULK_IMPORT"}
         """;

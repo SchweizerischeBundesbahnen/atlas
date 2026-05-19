@@ -12,11 +12,13 @@ import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ExactMatchStringSpecificationTest {
 
   @Mock
@@ -37,13 +39,12 @@ class ExactMatchStringSpecificationTest {
   private MockedStatic<StringPredicates> stringPredicatesMock;
 
   @BeforeEach
-  public void setUp() {
-    MockitoAnnotations.openMocks(this);
+  void setUp() {
     stringPredicatesMock = Mockito.mockStatic(StringPredicates.class);
   }
 
   @AfterEach
-  public void tearDown() {
+  void tearDown() {
     stringPredicatesMock.close();
   }
 

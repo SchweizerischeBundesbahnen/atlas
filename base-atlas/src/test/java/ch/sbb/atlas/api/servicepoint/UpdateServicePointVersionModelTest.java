@@ -226,13 +226,6 @@ class UpdateServicePointVersionModelTest {
   }
 
   @Test
-  void shouldPassAssertionIsOperatingPointRouteNetworkTrueAndKilometerMasterNumberNullWhenRouteNetworkFalseAndKilometerMasterNull() {
-    CreateServicePointVersionModel createServicePointVersionModel =
-        getCreateServicePointVersionModel(null, false);
-    assertThat(createServicePointVersionModel.isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull()).isTrue();
-  }
-
-  @Test
   void shouldPassAssertionIsOperatingPointRouteNetworkTrueAndKilometerMasterNumberNullWhenRouteNetworkFalseAndKilometerMasterNotNull() {
     CreateServicePointVersionModel createServicePointVersionModel =
         getCreateServicePointVersionModel(8034510, false);

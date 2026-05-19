@@ -9,10 +9,12 @@ import static org.mockito.Mockito.when;
 import java.util.Locale;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
 
+@ExtendWith(MockitoExtension.class)
 class LocalizedPropertyNamingStrategyTest {
 
   @Mock
@@ -22,11 +24,10 @@ class LocalizedPropertyNamingStrategyTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
     when(messageSource.getMessage(anyString(), eq(null), anyString(), any(Locale.class)))
         .thenAnswer(i -> i.getArgument(0, String.class) + i.getArgument(3, Locale.class).getLanguage());
 
-    localizedPropertyNamingStrategy = new LocalizedPropertyNamingStrategy(messageSource, new Locale("de"));
+    localizedPropertyNamingStrategy = new LocalizedPropertyNamingStrategy(messageSource, Locale.of("de"));
   }
 
   @Test
