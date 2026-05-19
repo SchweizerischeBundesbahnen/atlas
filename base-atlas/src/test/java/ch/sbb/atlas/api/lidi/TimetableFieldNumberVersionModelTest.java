@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -61,7 +60,7 @@ class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
     assertThat(constraintViolations).hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
+        .toList();
     assertThat(violationMessages).contains(
         "validTo must not be before validFrom",
         "ValidFrom must be between 1.1.1700 and 31.12.9999");
@@ -81,7 +80,7 @@ class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
     assertThat(constraintViolations).hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
+        .toList();
     assertThat(violationMessages).contains(
         "validTo must not be before validFrom",
         "ValidTo must be between 1.1.1700 and 31.12.9999");
@@ -101,7 +100,7 @@ class TimetableFieldNumberVersionModelTest extends BaseValidatorTest {
     assertThat(constraintViolations).hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
+        .toList();
     assertThat(violationMessages).contains("ValidTo must be between 1.1.1700 and 31.12.9999");
   }
 

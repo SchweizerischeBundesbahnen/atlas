@@ -95,7 +95,7 @@ class FileServiceImplTest {
 
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     response.writeTo(outputStream);
-    assertThat(outputStream.toString()).isEqualTo("Test Data");
+    assertThat(outputStream).hasToString("Test Data");
 
     // teardown
     if (testFile.exists()) {

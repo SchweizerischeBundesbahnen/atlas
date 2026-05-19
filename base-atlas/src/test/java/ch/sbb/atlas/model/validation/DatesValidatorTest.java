@@ -2,22 +2,18 @@ package ch.sbb.atlas.model.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.BaseValidatorTest;
 import ch.sbb.atlas.validation.DatesValidator;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
-class DatesValidatorTest {
-
-  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+class DatesValidatorTest extends BaseValidatorTest {
 
   @Test
   void shouldMakeSureFromIsBeforeTo() {
@@ -34,7 +30,7 @@ class DatesValidatorTest {
     assertThat(constraintViolations).hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
+        .toList();
     assertThat(violationMessages).contains("validTo must not be before validFrom");
   }
 
@@ -74,7 +70,7 @@ class DatesValidatorTest {
     assertThat(constraintViolations).isNotEmpty().hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
+        .toList();
     assertThat(violationMessages).contains("validTo must not be before validFrom",
         "ValidFrom must be between 1.1.1700 and 31.12.9999");
   }
@@ -96,7 +92,7 @@ class DatesValidatorTest {
     assertThat(constraintViolations).isNotEmpty().hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
+        .toList();
     assertThat(violationMessages).contains("validTo must not be before validFrom",
         "ValidTo must be between 1.1.1700 and 31.12.9999");
   }
@@ -117,7 +113,7 @@ class DatesValidatorTest {
     assertThat(constraintViolations).isNotEmpty().hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
+        .toList();
     assertThat(violationMessages).contains("ValidTo must be between 1.1.1700 and 31.12.9999");
   }
 

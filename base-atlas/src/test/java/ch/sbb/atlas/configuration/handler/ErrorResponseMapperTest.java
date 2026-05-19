@@ -8,7 +8,6 @@ import ch.sbb.atlas.model.BaseValidatorTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ class ErrorResponseMapperTest extends BaseValidatorTest {
   }
 
   @Test
-  void shouldBeAbleToConvertJsonIntoErrorResponse() throws JsonProcessingException {
+  void shouldBeAbleToConvertJsonIntoErrorResponse() {
     ObjectMapper mapper = new ObjectMapper();
     String responseBody = """
             {

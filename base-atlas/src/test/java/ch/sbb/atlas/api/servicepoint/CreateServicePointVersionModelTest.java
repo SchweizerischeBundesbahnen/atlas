@@ -83,7 +83,7 @@ class CreateServicePointVersionModelTest extends BaseValidatorTest {
     Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).hasSize(1);
     ConstraintViolation<CreateServicePointVersionModel> constraintViolation = constraintViolations.iterator().next();
-    assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("country");
+    assertThat(constraintViolation.getPropertyPath()).hasToString("country");
     assertThat(constraintViolation.getMessageTemplate()).isEqualTo("{jakarta.validation.constraints.NotNull.message}");
   }
 

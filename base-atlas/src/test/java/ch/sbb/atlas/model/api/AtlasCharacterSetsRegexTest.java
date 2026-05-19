@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
-public class AtlasCharacterSetsRegexTest {
+class AtlasCharacterSetsRegexTest {
 
   @Test
   void shouldValidateISO88591Correctly() {

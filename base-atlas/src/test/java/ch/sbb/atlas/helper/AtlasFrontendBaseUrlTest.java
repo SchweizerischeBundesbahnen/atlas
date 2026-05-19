@@ -13,8 +13,7 @@ class AtlasFrontendBaseUrlTest {
     String result = AtlasFrontendBaseUrl.getUrl("local");
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(AtlasFrontendBaseUrl.LOCAL.getUrl());
+    assertThat(result).isNotNull().isEqualTo(AtlasFrontendBaseUrl.LOCAL.getUrl());
   }
 
   @Test
@@ -23,8 +22,7 @@ class AtlasFrontendBaseUrlTest {
     String result = AtlasFrontendBaseUrl.getUrl(null);
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(AtlasFrontendBaseUrl.LOCAL.getUrl());
+    assertThat(result).isNotNull().isEqualTo(AtlasFrontendBaseUrl.LOCAL.getUrl());
   }
 
   @Test
@@ -33,8 +31,7 @@ class AtlasFrontendBaseUrlTest {
     String result = AtlasFrontendBaseUrl.getUrl("dev");
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(AtlasFrontendBaseUrl.DEV.getUrl());
+    assertThat(result).isNotNull().isEqualTo(AtlasFrontendBaseUrl.DEV.getUrl());
   }
 
   @Test
@@ -43,8 +40,7 @@ class AtlasFrontendBaseUrlTest {
     String result = AtlasFrontendBaseUrl.getUrl("test");
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(AtlasFrontendBaseUrl.TEST.getUrl());
+    assertThat(result).isNotNull().isEqualTo(AtlasFrontendBaseUrl.TEST.getUrl());
   }
 
   @Test
@@ -53,8 +49,7 @@ class AtlasFrontendBaseUrlTest {
     String result = AtlasFrontendBaseUrl.getUrl("int");
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(AtlasFrontendBaseUrl.INT.getUrl());
+    assertThat(result).isNotNull().isEqualTo(AtlasFrontendBaseUrl.INT.getUrl());
   }
 
   @Test
@@ -63,8 +58,7 @@ class AtlasFrontendBaseUrlTest {
     String result = AtlasFrontendBaseUrl.getUrl("prod");
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(AtlasFrontendBaseUrl.PROD.getUrl());
+    assertThat(result).isNotNull().isEqualTo(AtlasFrontendBaseUrl.PROD.getUrl());
   }
 
   @Test

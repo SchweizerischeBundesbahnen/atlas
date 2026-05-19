@@ -19,7 +19,7 @@ public class EnumByConversionSpecification<T, U, E> implements Specification<T> 
   private final transient List<U> parameterRestrictions;
   private final transient Function<U, E> parameterToEnumFunction;
   private final transient SingularAttribute<T, E> enumAttribute;
-  private final Boolean notIn;
+  private final boolean notIn;
 
   public EnumByConversionSpecification(List<U> parameterRestrictions, Function<U, E> parameterToEnumFunction,
       SingularAttribute<T, E> enumAttribute) {
@@ -27,7 +27,7 @@ public class EnumByConversionSpecification<T, U, E> implements Specification<T> 
   }
 
   public EnumByConversionSpecification(List<U> parameterRestrictions, Function<U, E> parameterToEnumFunction,
-      SingularAttribute<T, E> enumAttribute, Boolean notIn) {
+      SingularAttribute<T, E> enumAttribute, boolean notIn) {
     this.parameterRestrictions = Objects.requireNonNull(parameterRestrictions);
     this.enumAttribute = enumAttribute;
     this.notIn = notIn;

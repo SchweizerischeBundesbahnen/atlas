@@ -52,7 +52,7 @@ public class VersioningData {
 
   public ToVersioning getSingleFoundObjectToVersioning() {
     if (VersioningHelper.isJustOneObjectToVersioningFound(this)) {
-      return this.objectToVersioningFound.get(0);
+      return this.objectToVersioningFound.getFirst();
     }
     throw new VersioningException("Found more or less than one object to versioning.");
   }
@@ -92,13 +92,13 @@ public class VersioningData {
 
   private void validateValidTo(LocalDate validTo) {
     if (validTo.isAfter(MAX_DATE)) {
-      throw new DateValidationException("ValidTo cannot be after: ", LocalDate.of(9999,12,31), ValidationType.MAX);
+      throw new DateValidationException("ValidTo cannot be after: ", MAX_DATE, ValidationType.MAX);
     }
   }
 
   private void validateValidFrom(LocalDate validFrom) {
     if (validFrom.isBefore(MIN_DATE)) {
-      throw new DateValidationException("ValidFrom cannot be before: ", LocalDate.of(1700,1, 1), ValidationType.MIN);
+      throw new DateValidationException("ValidFrom cannot be before: ", MIN_DATE, ValidationType.MIN);
     }
   }
 

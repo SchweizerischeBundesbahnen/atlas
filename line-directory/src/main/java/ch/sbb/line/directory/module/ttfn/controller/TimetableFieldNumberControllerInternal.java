@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.module.ttfn.controller;
 
-import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberApiInternal;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
@@ -12,7 +11,6 @@ import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.mapper.TimetableFieldNumberMapper;
 import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
-import ch.sbb.line.directory.module.ttfn.service.quovadis.QuoVadisDataImportService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class TimetableFieldNumberControllerInternal implements TimetableFieldNumberApiInternal {
 
   private final TimetableFieldNumberService timetableFieldNumberService;
-  private final QuoVadisDataImportService quoVadisDataImportService;
-  private final FileService fileService;
 
   @Override
   public Container<TimetableFieldNumberModel> getOverview(Pageable pageable,
@@ -75,11 +70,6 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
       throw new TtfnidNotFoundException(ttfnid);
     }
     timetableFieldNumberService.deleteAll(allVersionsVersioned);
-  }
-
-  @Override
-  public void importQuoVadisData(MultipartFile file) {
-    quoVadisDataImportService.importDataFromQuoVadis(fileService.getFileFromMultipart(file));
   }
 
 }

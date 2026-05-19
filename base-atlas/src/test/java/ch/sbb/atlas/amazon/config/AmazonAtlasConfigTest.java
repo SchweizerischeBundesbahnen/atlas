@@ -7,12 +7,12 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ExpirationStatus;
 import software.amazon.awssdk.services.s3.model.GetBucketLifecycleConfigurationRequest;
@@ -20,18 +20,14 @@ import software.amazon.awssdk.services.s3.model.GetBucketLifecycleConfigurationR
 import software.amazon.awssdk.services.s3.model.LifecycleRule;
 import software.amazon.awssdk.services.s3.model.PutBucketLifecycleConfigurationRequest;
 
+@ExtendWith(MockitoExtension.class)
 class AmazonAtlasConfigTest {
 
   @Mock
   private S3Client s3Client;
 
   @Captor
-  ArgumentCaptor<PutBucketLifecycleConfigurationRequest> putBucketLifecycleConfigurationRequestCaptor;
-
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.initMocks(this);
-  }
+  private ArgumentCaptor<PutBucketLifecycleConfigurationRequest> putBucketLifecycleConfigurationRequestCaptor;
 
   @Test
   void shouldSetBucketLifecycleConfiguration() {

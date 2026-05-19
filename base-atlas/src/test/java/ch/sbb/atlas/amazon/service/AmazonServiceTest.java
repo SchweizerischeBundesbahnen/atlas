@@ -210,8 +210,7 @@ class AmazonServiceTest {
     //when
     String result = amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, filePrefix, filePath);
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo("path/file/file2.json");
+    assertThat(result).isNotNull().isEqualTo("path/file/file2.json");
   }
 
   @Test
