@@ -1,4 +1,4 @@
-import { defineConfig } from 'cypress';
+import {defineConfig} from 'cypress';
 import cypress_failed_log from 'cypress-failed-log/src/failed';
 import cypress_high_resolution from 'cypress-high-resolution';
 
@@ -35,6 +35,10 @@ export default defineConfig({
     async setupNodeEvents(on, config) {
       on('task', {
         failed: cypress_failed_log(),
+        log: (message: string) => {
+          console.log(message);
+          return null;
+        },
       });
       cypress_high_resolution(on, config);
       require('cypress-mochawesome-reporter/plugin')(on);
