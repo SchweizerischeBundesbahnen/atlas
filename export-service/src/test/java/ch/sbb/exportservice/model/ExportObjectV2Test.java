@@ -107,7 +107,7 @@ class ExportObjectV2Test {
     assertThat(ExportObjectV2.getExportTypeForBatchServiceName("loading-point-batch")).isEqualTo(ExportObjectV2.LOADING_POINT);
     assertThat(ExportObjectV2.getExportTypeForBatchServiceName("sector-batch")).isEqualTo(ExportObjectV2.SECTOR);
     assertThat(ExportObjectV2.getExportTypeForBatchServiceName("sector-group-batch")).isEqualTo(ExportObjectV2.SECTOR_GROUP);
-    assertThat(ExportObjectV2.getExportTypeForBatchServiceName("sectors-and-sectorgroups-batch")).isEqualTo(
-        ExportObjectV2.SECTORS_AND_SECTORGROUPS);
+    assertThat(ExportObjectV2.getExportTypeForBatchServiceName("sectors-and-sector-groups-batch")).isEqualTo(
+        ExportObjectV2.SECTORS_AND_SECTOR_GROUPS);
   }
 }

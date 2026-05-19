@@ -28,6 +28,6 @@ public class ExportSectorsAndSectorGroupsJobService extends BaseExportJobService
 
   @Override
   public ExportObjectV2 getExportObject() {
-    return ExportObjectV2.SECTORS_AND_SECTORGROUPS;
+    return ExportObjectV2.SECTORS_AND_SECTOR_GROUPS;
   }
 }
