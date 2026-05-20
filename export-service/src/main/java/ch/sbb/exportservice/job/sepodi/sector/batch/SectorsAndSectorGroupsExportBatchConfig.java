@@ -6,8 +6,8 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.sepodi.sector.entity.SectorAndSectorGroup;
 import ch.sbb.exportservice.job.sepodi.sector.model.SectorAndSectorGroupCsvModel;
 import ch.sbb.exportservice.job.sepodi.sector.processor.SectorsAndSectorGroupsCsvProcessor;
-import ch.sbb.exportservice.job.sepodi.sector.sql.SectorsAndSectorGroupsSqlQueryUtil;
 import ch.sbb.exportservice.job.sepodi.sector.sql.SectorsAndSectorGroupsRowMapper;
+import ch.sbb.exportservice.job.sepodi.sector.sql.SectorsAndSectorGroupsSqlQueryUtil;
 import ch.sbb.exportservice.job.sepodi.sector.writer.CsvSectorsAndSectorGroupsVersionWriter;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
@@ -20,12 +20,11 @@ import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.job.Job;
-import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
-
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemReader;
 import org.springframework.batch.infrastructure.item.database.JdbcCursorItemReader;
@@ -97,7 +96,7 @@ public class SectorsAndSectorGroupsExportBatchConfig {
   @StepScope
   public FlatFileItemWriter<SectorAndSectorGroupCsvModel> csvSectorsAndSectorGroupsWriter(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    return csvSectorsAndSectorGroupsVersionWriter.csvWriter(ExportObjectV2.SECTORS_AND_SECTORGROUPS, exportTypeV2);
+    return csvSectorsAndSectorGroupsVersionWriter.csvWriter(ExportObjectV2.SECTORS_AND_SECTOR_GROUPS, exportTypeV2);
   }
 
   @Bean
@@ -112,7 +111,7 @@ public class SectorsAndSectorGroupsExportBatchConfig {
   @StepScope
   public UploadCsvFileTaskletV2 uploadSectorsAndSectorGroupsCsvFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.SECTORS_AND_SECTORGROUPS, exportTypeV2)
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.SECTORS_AND_SECTOR_GROUPS, exportTypeV2)
         .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
