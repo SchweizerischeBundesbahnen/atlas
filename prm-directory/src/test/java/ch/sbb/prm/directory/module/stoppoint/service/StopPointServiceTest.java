@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.exception.NotFoundValidVersionForToday;
 import ch.sbb.atlas.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -19,6 +18,7 @@ import ch.sbb.prm.directory.module.stoppoint.repository.StopPointRepository;
 import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -197,15 +197,15 @@ class StopPointServiceTest {
 
     //when
     when(stopPointRepository.findAllBySloidOrderByValidFrom("sloid-1111")).thenReturn(List.of(stopPointVersion));
-    StopPointVersion result = stopPointService.findStopPointVersionValidToday("sloid-1111");
+    Optional<StopPointVersion> result = stopPointService.findStopPointVersionValidToday("sloid-1111");
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result.getSloid()).isEqualTo("sloid-1111");
+    assertThat(result).isPresent();
+    assertThat(result.get().getSloid()).isEqualTo("sloid-1111");
   }
 
   @Test
-  void shouldThrowExceptionWhenNoStopPointVersionValidTodayFound() {
+  void shouldReturnEmptyWhenNoStopPointVersionValidTodayFound() {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid("sloid-1111");
@@ -213,8 +213,11 @@ class StopPointServiceTest {
 
     when(stopPointRepository.findAllBySloidOrderByValidFrom("sloid-1111")).thenReturn(List.of(stopPointVersion));
 
-    //when & then
-    assertThrows(NotFoundValidVersionForToday.class, () -> stopPointService.findStopPointVersionValidToday("sloid-1111"));
+    //when
+    Optional<StopPointVersion> result = stopPointService.findStopPointVersionValidToday("sloid-1111");
+
+    //then
+    assertThat(result).isEmpty();
   }
 
 }

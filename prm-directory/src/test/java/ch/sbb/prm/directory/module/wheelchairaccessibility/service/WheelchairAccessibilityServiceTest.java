@@ -13,6 +13,7 @@ import ch.sbb.prm.directory.module.relation.service.RelationService;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class WheelchairAccessibilityServiceTest {
         .build();
     StopPointVersion stopPoint = StopPointVersion.builder().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
 
-    when(stopPointService.findStopPointVersionValidToday("sp-1")).thenReturn(stopPoint);
+    when(stopPointService.findStopPointVersionValidToday("sp-1")).thenReturn(Optional.of(stopPoint));
     when(relationService.findRelationVersionValidTodayByPlatform("plat-1")).thenReturn(List.of());
 
     assertThat(service.calculateForPlatformToday(platform)).isEqualTo(WheelchairAccessibilityState.SHUTTLE);

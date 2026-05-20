@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.module.stoppoint.service;
 
-import ch.sbb.atlas.exception.NotFoundValidVersionForToday;
 import ch.sbb.atlas.helper.TerminationHelper;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -100,11 +99,10 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return stopPointRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
-  public StopPointVersion findStopPointVersionValidToday(String sloid) {
+  public Optional<StopPointVersion> findStopPointVersionValidToday(String sloid) {
     return stopPointRepository.findAllBySloidOrderByValidFrom(sloid).stream()
         .filter(version -> DateRange.fromVersionable(version).containsToday())
-        .findFirst()
-        .orElseThrow(NotFoundValidVersionForToday::new);
+        .findFirst();
   }
 
   public Optional<StopPointVersion> getStopPointById(Long id) {

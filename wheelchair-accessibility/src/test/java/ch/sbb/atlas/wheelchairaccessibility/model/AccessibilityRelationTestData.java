@@ -1,6 +1,7 @@
 package ch.sbb.atlas.wheelchairaccessibility.model;
 
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,5 +12,6 @@ import lombok.Getter;
 public class AccessibilityRelationTestData implements AccessibilityRelation {
 
   private final StepFreeAccessAttributeType stepFreeAccess;
-
+  private final LocalDate validFrom;
+  private final LocalDate validTo;
 }

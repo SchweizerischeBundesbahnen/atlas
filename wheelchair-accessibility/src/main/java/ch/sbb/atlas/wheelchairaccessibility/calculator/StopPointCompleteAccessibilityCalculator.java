@@ -31,10 +31,9 @@ public final class StopPointCompleteAccessibilityCalculator {
       }
     }
 
-    if (stopPoint.getAssistanceRequestFulfilled() == BooleanOptionalAttributeType.YES) {
-      if (stopPoint.getAssistanceService() == StandardAttributeType.NOT_APPLICABLE) {
+    if (stopPoint.getAssistanceRequestFulfilled() == BooleanOptionalAttributeType.YES
+        && stopPoint.getAssistanceService() == StandardAttributeType.NOT_APPLICABLE) {
         return WheelchairAccessibilityState.PRE_REGISTRATION;
-      }
     }
 
     if (stopPoint.getAssistanceRequestFulfilled() == BooleanOptionalAttributeType.NO

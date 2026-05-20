@@ -37,6 +37,7 @@ import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRep
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -74,6 +75,17 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     this.relationRepository = relationRepository;
     this.contactPointRepository = contactPointRepository;
     this.prmChangeRecordingVariantService = prmChangeRecordingVariantService;
+  }
+
+  @BeforeEach
+  void beforeEach() {
+    platformRepository.deleteAll();
+    stopPointRepository.deleteAll();
+    referencePointRepository.deleteAll();
+    toiletRepository.deleteAll();
+    parkingLotRepository.deleteAll();
+    relationRepository.deleteAll();
+    contactPointRepository.deleteAll();
   }
 
   @Test

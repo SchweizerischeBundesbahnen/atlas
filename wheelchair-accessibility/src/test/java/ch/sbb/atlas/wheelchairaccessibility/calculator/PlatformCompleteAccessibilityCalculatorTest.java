@@ -22,7 +22,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .shuttle(BooleanOptionalAttributeType.YES)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,List.of());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, List.of());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }
@@ -32,7 +32,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
     AccessibilityPlatform platform = platformBuilder().build();
     List<AccessibilityRelation> relations = List.of(relationWith(StepFreeAccessAttributeType.NO));
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,relations);
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, relations);
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_ACCESS);
   }
@@ -41,7 +41,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
   void shouldReturnNoAccessWhenRelationsListIsEmpty() {
     AccessibilityPlatform platform = platformBuilder().build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,List.of());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, List.of());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_ACCESS);
   }
@@ -52,7 +52,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES_WITH_STAFF_ASSISTANCE)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,validRelations());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, validRelations());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.RAMP_USE);
   }
@@ -64,7 +64,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,validRelations());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, validRelations());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.AUTONOMY);
   }
@@ -77,7 +77,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,validRelations());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, validRelations());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.PRE_REGISTRATION);
   }
@@ -89,7 +89,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .boardingDevice(BoardingDeviceAttributeType.RAMPS)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,validRelations());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, validRelations());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.PRE_REGISTRATION);
   }
@@ -102,7 +102,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .boardingDevice(BoardingDeviceAttributeType.NO)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,validRelations());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, validRelations());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_ACCESS);
   }
@@ -115,7 +115,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .boardingDevice(BoardingDeviceAttributeType.NO)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,validRelations());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, validRelations());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_ACCESS);
   }
@@ -128,7 +128,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,validRelations());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, validRelations());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }
@@ -141,7 +141,7 @@ class PlatformCompleteAccessibilityCalculatorTest {
         .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
         .build();
 
-    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform,validRelations());
+    WheelchairAccessibilityState result = PlatformCompleteAccessibilityCalculator.calculate(platform, validRelations());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }

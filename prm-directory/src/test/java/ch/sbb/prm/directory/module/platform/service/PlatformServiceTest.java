@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
-import ch.sbb.atlas.exception.NotFoundValidVersionForToday;
 import ch.sbb.atlas.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -35,6 +34,7 @@ import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRep
 import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointConsumer;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -446,14 +446,14 @@ class PlatformServiceTest extends BasePrmServiceTest {
     platformService.createPlatformVersion(platformVersion);
 
     //when
-    PlatformVersion result = platformService.findPlatformVersionValidToday(PLATFORM_SLOID);
+    Optional<PlatformVersion> result = platformService.findPlatformVersionValidToday(PLATFORM_SLOID);
 
     //then
-    assertThat(result).isEqualTo(platformVersion);
+    assertThat(result).contains(platformVersion);
   }
 
   @Test
-  void shouldThrowExceptionWhenNoPlatformVersionValidTodayFound() {
+  void shouldReturnEmptyWhenNoStopPointVersionValidTodayFound() {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
@@ -464,7 +464,10 @@ class PlatformServiceTest extends BasePrmServiceTest {
     platformVersion.setSloid(PLATFORM_SLOID);
     platformService.createPlatformVersion(platformVersion);
 
-    //when & then
-    assertThrows(NotFoundValidVersionForToday.class, () -> platformService.findPlatformVersionValidToday(PLATFORM_SLOID));
+    //when
+    Optional<PlatformVersion> result = platformService.findPlatformVersionValidToday(PLATFORM_SLOID);
+
+    //then
+    assertThat(result).isEmpty();
   }
 }

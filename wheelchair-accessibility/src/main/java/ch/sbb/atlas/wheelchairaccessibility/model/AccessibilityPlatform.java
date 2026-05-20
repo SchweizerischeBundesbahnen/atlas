@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import java.time.LocalDate;
 
 public interface AccessibilityPlatform {
 
@@ -17,4 +18,7 @@ public interface AccessibilityPlatform {
 
   Double getSuperelevation();
 
+  LocalDate getValidFrom();
+
+  LocalDate getValidTo();
 }
