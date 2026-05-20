@@ -9,6 +9,8 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.prm.directory.module.platform.PlatformTestData;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.repository.PlatformRepository;
@@ -46,6 +48,7 @@ class WheelchairAccessibilityApiInternalControllerTest extends BaseControllerApi
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
   void shouldGetWheelchairAccessibilityValidTodayPlatform() throws Exception {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
@@ -69,6 +72,7 @@ class WheelchairAccessibilityApiInternalControllerTest extends BaseControllerApi
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
   void shouldGetWheelchairAccessibilityValidTodayStopPoint() throws Exception {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
