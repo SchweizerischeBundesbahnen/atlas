@@ -26,14 +26,17 @@ public class WheelchairAccessibilityService {
       return WheelchairAccessibilityState.NO_INFO;
     }
     List<RelationVersion> relations = relationService.findRelationVersionValidTodayByPlatform(platform.getSloid());
-    return WheelchairAccessibilityCalculator.calculateForPlatform(platform, stopPoint.get(), relations);
+    return WheelchairAccessibilityCalculator.calculateForPlatform(stopPoint.get(),
+        PlatformWithRelations.builder().platform(platform).relations(relations).build());
   }
 
   public WheelchairAccessibilityState calculateForStopPointToday(StopPointVersion stopPoint,
-      List<PlatformVersion> platforms) {
-    List<PlatformWithRelations> platformsWithRelations = platforms.stream()
-        .map(platform -> new PlatformWithRelations(platform,
-            relationService.findRelationVersionValidTodayByPlatform(platform.getSloid())))
+      List<PlatformVersion> platformsValidToday) {
+    List<PlatformWithRelations> platformsWithRelations = platformsValidToday.stream()
+        .map(platformValidToday -> PlatformWithRelations.builder()
+            .platform(platformValidToday)
+            .relations(relationService.findRelationVersionValidTodayByPlatform(platformValidToday.getSloid()))
+            .build())
         .toList();
     return WheelchairAccessibilityCalculator.calculateForStopPoint(stopPoint, platformsWithRelations);
   }

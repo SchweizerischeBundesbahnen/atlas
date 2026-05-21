@@ -1,26 +1,23 @@
 package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.atlas.wheelchairaccessibility.combiner.WheelchairAccessibilityCombiner;
-import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
-import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import ch.sbb.atlas.wheelchairaccessibility.model.PlatformWithRelations;
 import java.util.Comparator;
 import java.util.List;
+import lombok.experimental.UtilityClass;
 
-public final class WheelchairAccessibilityCalculator {
+@UtilityClass
+public class WheelchairAccessibilityCalculator {
 
-  private WheelchairAccessibilityCalculator() {
-  }
-
-  public static WheelchairAccessibilityState calculateForPlatform(AccessibilityPlatform platform,
-      AccessibilityStopPoint stopPoint,
-      List<? extends AccessibilityRelation> relations) {
+  public static WheelchairAccessibilityState calculateForPlatform(AccessibilityStopPoint stopPoint,
+      PlatformWithRelations platformWithRelations) {
     if (stopPoint.isReduced()) {
-      return PlatformReducedAccessibilityCalculator.calculate(platform);
+      return PlatformReducedAccessibilityCalculator.calculate(platformWithRelations.getPlatform());
     }
-    WheelchairAccessibilityState platformState = PlatformCompleteAccessibilityCalculator.calculate(platform, relations);
+    WheelchairAccessibilityState platformState =
+        PlatformCompleteAccessibilityCalculator.calculate(platformWithRelations.getPlatform(),
+            platformWithRelations.getRelations());
     WheelchairAccessibilityState stopPointState = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
     return WheelchairAccessibilityCombiner.combine(stopPointState, platformState);
   }
@@ -31,7 +28,7 @@ public final class WheelchairAccessibilityCalculator {
       return WheelchairAccessibilityState.NO_INFO;
     }
     return platforms.stream()
-        .map(platform -> calculateForPlatform(platform.getPlatform(), stopPoint, platform.getRelations()))
+        .map(platformWithRelations -> calculateForPlatform(stopPoint, platformWithRelations))
         .max(Comparator.comparingInt(WheelchairAccessibilityState::getRank))
         .orElse(WheelchairAccessibilityState.NO_INFO);
   }

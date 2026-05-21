@@ -25,7 +25,8 @@ class WheelchairAccessibilityCalculatorTest {
         .build();
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
 
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(platform, stopPoint, List.of());
+    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(stopPoint,
+        PlatformWithRelations.builder().platform(platform).build());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }
@@ -46,7 +47,8 @@ class WheelchairAccessibilityCalculatorTest {
     List<AccessibilityRelationTestData> relations = List.of(
         AccessibilityRelationTestData.builder().stepFreeAccess(StepFreeAccessAttributeType.YES).build());
 
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(platform, stopPoint, relations);
+    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(stopPoint,
+        PlatformWithRelations.builder().platform(platform).relations(relations).build());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.AUTONOMY);
   }
@@ -73,8 +75,8 @@ class WheelchairAccessibilityCalculatorTest {
         .build();
 
     WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForStopPoint(stopPoint, List.of(
-        new PlatformWithRelations(autonomous, List.of()),
-        new PlatformWithRelations(shuttle, List.of())));
+        PlatformWithRelations.builder().platform(autonomous).build(),
+        PlatformWithRelations.builder().platform(shuttle).build()));
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }

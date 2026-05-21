@@ -1,14 +1,17 @@
 package ch.sbb.atlas.wheelchairaccessibility.model;
 
+import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+@Data
+@Builder
 public class PlatformWithRelations {
 
   private final AccessibilityPlatform platform;
-  private final List<? extends AccessibilityRelation> relations;
+
+  @Builder.Default
+  private final List<? extends AccessibilityRelation> relations = new ArrayList<>();
 
 }

@@ -9,21 +9,22 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import java.util.List;
 import java.util.Set;
+import lombok.experimental.UtilityClass;
 
-public final class PlatformCompleteAccessibilityCalculator {
+@UtilityClass
+class PlatformCompleteAccessibilityCalculator {
 
   private static final Set<StepFreeAccessAttributeType> STEP_FREE_ACCESS_VALID_VALUES = Set.of(
       StepFreeAccessAttributeType.YES,
       StepFreeAccessAttributeType.YES_WITH_LIFT,
       StepFreeAccessAttributeType.YES_WITH_RAMP
   );
+  private static final Set<BoardingDeviceAttributeType> LIFTS_AND_RAMPS = Set.of(BoardingDeviceAttributeType.LIFTS,
+      BoardingDeviceAttributeType.RAMPS);
 
-  private static final double SUPERELEVATION_LEGAL_LIMIT_MM = 40.0D;
+  private static final double SUPERELEVATION_LEGAL_LIMIT_MM = 40.0;
 
-  private PlatformCompleteAccessibilityCalculator() {
-  }
-
-  public static WheelchairAccessibilityState calculate(AccessibilityPlatform platform,
+  static WheelchairAccessibilityState calculate(AccessibilityPlatform platform,
       List<? extends AccessibilityRelation> relations) {
 
     if (platform.getShuttle() == BooleanOptionalAttributeType.YES) {
@@ -66,7 +67,6 @@ public final class PlatformCompleteAccessibilityCalculator {
   }
 
   private static boolean isBoardingDeviceLiftOrRamp(BoardingDeviceAttributeType boardingDevice) {
-    return boardingDevice == BoardingDeviceAttributeType.LIFTS
-        || boardingDevice == BoardingDeviceAttributeType.RAMPS;
+    return LIFTS_AND_RAMPS.contains(boardingDevice);
   }
 }
