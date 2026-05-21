@@ -52,7 +52,7 @@ public class GeoReferenceService {
   private GeoAdminResponse getGeoReference(GeoAdminParams geoAdminParams) {
     try {
       return geoAdminChClient.getGeoReference(geoAdminParams);
-    } catch (FeignClientException e) {
+    } catch (Exception e) {
       log.warn("GeoAdmin geoReference request failed for params: {}", geoAdminParams, e);
       throw SimpleAtlasException.builder()
           .status(HttpStatus.SERVICE_UNAVAILABLE)
