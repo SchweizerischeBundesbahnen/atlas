@@ -1644,6 +1644,15 @@
         "YES_WITH_STAFF_ASSISTANCE": "Ja, mit Hilfe Fahrpersonal",
         "NO": "Nein",
         "NOT_APPLICABLE": "Nicht anwendbar"
+      },
+      "WHEELCHAIR_ACCESSIBILITY": {
+        "TODAY_ACCESSIBILITY": "Heutige Zugänglichkeit",
+        "AUTONOMY": "Autonomie",
+        "NO_ACCESS": "Kein Zugang",
+        "NO_INFO": "Keine Info",
+        "PRE_REGISTRATION": "Voranmeldung",
+        "RAMP_USE": "Rampeneinsatz",
+        "SHUTTLE": "Ersatztransport"
       }
     },
     "INFO_BOX": {

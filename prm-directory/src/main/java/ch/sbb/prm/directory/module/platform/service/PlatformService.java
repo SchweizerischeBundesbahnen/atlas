@@ -90,6 +90,12 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
+  public Optional<PlatformVersion> findPlatformVersionValidToday(String sloid) {
+    return getAllVersions(sloid).stream()
+        .filter(version -> DateRange.fromVersionable(version).containsToday())
+        .findFirst();
+  }
+
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
     versionableService.applyVersioning(PlatformVersion.class, versionedObjects, this::save,

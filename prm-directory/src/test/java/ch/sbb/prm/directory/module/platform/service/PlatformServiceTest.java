@@ -34,6 +34,7 @@ import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRep
 import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointConsumer;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -428,5 +429,45 @@ class PlatformServiceTest extends BasePrmServiceTest {
     //then
     assertThatExceptionOfType(TerminationNotAllowedValidToNotWithinLastVersionRangeException.class).isThrownBy(
         () -> platformService.terminate(platformVersion, terminationValidTo));
+  }
+
+  @Test
+  void shouldFindPlatformVersionValidToday() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
+    platformVersion.setValidFrom(LocalDate.now());
+    platformVersion.setValidTo(LocalDate.now().plusYears(1));
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    platformService.createPlatformVersion(platformVersion);
+
+    //when
+    Optional<PlatformVersion> result = platformService.findPlatformVersionValidToday(PLATFORM_SLOID);
+
+    //then
+    assertThat(result).contains(platformVersion);
+  }
+
+  @Test
+  void shouldReturnEmptyWhenNoStopPointVersionValidTodayFound() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    platformService.createPlatformVersion(platformVersion);
+
+    //when
+    Optional<PlatformVersion> result = platformService.findPlatformVersionValidToday(PLATFORM_SLOID);
+
+    //then
+    assertThat(result).isEmpty();
   }
 }

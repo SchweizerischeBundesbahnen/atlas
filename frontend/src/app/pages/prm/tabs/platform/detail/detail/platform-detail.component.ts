@@ -10,11 +10,7 @@ import {
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PrmMeanOfTransportHelper } from '../../../../util/prm-mean-of-transport-helper';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
-import {
-  CompletePlatformFormGroup,
-  PlatformFormGroupBuilder,
-  ReducedPlatformFormGroup,
-} from '../form/platform-form-group';
+import { CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup, } from '../form/platform-form-group';
 import { DateRange } from '../../../../../../core/versioning/date-range';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
@@ -32,9 +28,17 @@ import { UserDetailInfoComponent } from '../../../../../../core/components/user-
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
+import {
+  WheelchairAccessibilityInternalService
+} from '../../../../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
+import { ReadWheelchairAccessibility } from '../../../../../../api';
 import { Data } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
+import moment from 'moment';
+import {
+  WheelchairAccessibilityComponent
+} from '../../../../../../core/components/wheelchair-accessibility/wheelchair-accessibility.component';
 
 @Component({
   selector: 'atlas-platforms',
@@ -53,11 +57,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     DetailFooterComponent,
     AtlasButtonComponent,
     TranslatePipe,
+    WheelchairAccessibilityComponent,
   ],
 })
 export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatformVersion> implements OnInit {
   private readonly platformService = inject(PlatformService);
   private readonly permissionService = inject(PermissionService);
+  private readonly wheelchairAccessibilityService = inject(WheelchairAccessibilityInternalService);
   private readonly destroyRef = inject(DestroyRef);
 
   servicePoint!: ReadServicePointVersion;
@@ -69,6 +75,7 @@ export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatf
   reduced = false;
   showVersionSwitch = false;
   mayCreate = true;
+  wheelchairAccessibilityToday?: ReadWheelchairAccessibility.StateEnum;
 
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
     return this.form as FormGroup<ReducedPlatformFormGroup>;
@@ -99,8 +106,26 @@ export class PlatformDetailComponent extends PrmTabDetailBaseComponent<ReadPlatf
         this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
         this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
         this.initForm();
+        this.loadWheelchairAccessibilityToday();
       }
     });
+  }
+
+  private loadWheelchairAccessibilityToday() {
+    this.wheelchairAccessibilityService
+      .getPlatformAccessibilityToday(this.trafficPoint.sloid!)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => (this.wheelchairAccessibilityToday = response.state),
+      });
+  }
+
+  isSelectedVersionValidToday(): boolean {
+    if (!this.selectedVersion) {
+      return false;
+    }
+    const today = moment();
+    return today.isBetween(moment(this.selectedVersion.validFrom), moment(this.selectedVersion.validTo), 'day', '[]');
   }
 
   protected initForm() {

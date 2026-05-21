@@ -99,6 +99,12 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return stopPointRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
+  public Optional<StopPointVersion> findStopPointVersionValidToday(String sloid) {
+    return stopPointRepository.findAllBySloidOrderByValidFrom(sloid).stream()
+        .filter(version -> DateRange.fromVersionable(version).containsToday())
+        .findFirst();
+  }
+
   public Optional<StopPointVersion> getStopPointById(Long id) {
     return stopPointRepository.findById(id);
   }

@@ -1,13 +1,15 @@
 package ch.sbb.prm.directory.module.relation.service;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.repository.RelationRepository;
 import ch.sbb.prm.directory.module.relation.search.RelationSearchRestrictions;
-import ch.sbb.prm.directory.service.PrmVersionableService;
 import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import ch.sbb.prm.directory.service.PrmVersionableService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -35,6 +37,12 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   public List<RelationVersion> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
     return relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+  }
+
+  public List<RelationVersion> findRelationVersionValidTodayByPlatform(String platformSloid) {
+    return relationRepository.findAllBySloidAndReferencePointElementType(platformSloid, ReferencePointElementType.PLATFORM).stream()
+        .filter(relation -> DateRange.fromVersionable(relation).containsToday())
+        .toList();
   }
 
   @Override

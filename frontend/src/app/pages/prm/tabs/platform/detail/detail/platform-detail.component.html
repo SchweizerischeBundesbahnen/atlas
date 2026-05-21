@@ -27,11 +27,19 @@
       </div>
     }
     @if (!isNew) {
-      <h2 class="font-bold-2xl color-gray-900">
-        {{ 'PRM.PLATFORMS.DETAIL_INFORMATION' | translate }} -
-        {{ 'COMMON.VERSION' | translate }}
-        {{ selectedVersionIndex + 1 }}
-      </h2>
+      <div class="d-flex flex-row align-items-center">
+        <h2 class="font-bold-2xl color-gray-900 mb-0">
+          {{ 'PRM.PLATFORMS.DETAIL_INFORMATION' | translate }} -
+          {{ 'COMMON.VERSION' | translate }}
+          {{ selectedVersionIndex + 1 }}
+        </h2>
+        <atlas-wheelchair-accessibility
+          [wheelchairAccessibility]="wheelchairAccessibilityToday!"
+          [isSelectedVersionValidToday]="isSelectedVersionValidToday()"
+        >
+        </atlas-wheelchair-accessibility>
+      </div>
+
     }
     <div class="col-6 pb-3 mt-3">
       <h2 class="font-bold-2xl color-gray-900">

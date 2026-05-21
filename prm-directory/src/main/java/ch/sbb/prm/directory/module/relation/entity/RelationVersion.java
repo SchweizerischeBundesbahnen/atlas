@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
@@ -37,7 +38,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "relation_version")
 @AtlasVersionable
-public class RelationVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable {
+public class RelationVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable, AccessibilityRelation {
 
   private static final String VERSION_SEQ = "relation_version_seq";
 

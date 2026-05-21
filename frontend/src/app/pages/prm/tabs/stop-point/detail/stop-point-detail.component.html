@@ -28,6 +28,11 @@
             {{ selectedVersionIndex + 1 }}
           </h2>
         </div>
+        <atlas-wheelchair-accessibility
+          [wheelchairAccessibility]="wheelchairAccessibilityToday!"
+          [isSelectedVersionValidToday]="isSelectedVersionValidToday()"
+        >
+        </atlas-wheelchair-accessibility>
       }
     </div>
     @if (isReduced) {

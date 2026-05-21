@@ -58,7 +58,9 @@ public class PlatformApiV1Controller implements PlatformApiV1 {
 
   @Override
   public List<ReadPlatformVersionModel> getPlatformVersions(String sloid) {
-    return platformService.getAllVersions(sloid).stream().map(PlatformVersionMapper::toModel).toList();
+    return platformService.getAllVersions(sloid).stream()
+        .map(PlatformVersionMapper::toModel)
+        .toList();
   }
 
   @Override
