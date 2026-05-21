@@ -1,12 +1,12 @@
-import { Component, ContentChild, inject, input, output, TemplateRef } from '@angular/core';
-import { ApplicationType } from '../../../api';
-import { AtlasButtonType } from './atlas-button.type';
-import { NON_PROD_STAGES } from '../../constants/stages';
-import { environment } from '../../../../environments/environment';
-import { Countries } from '../../country/Countries';
-import { PermissionService } from '../../auth/permission/permission.service';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { TranslatePipe } from '@ngx-translate/core';
+import {Component, ContentChild, inject, input, output, TemplateRef} from '@angular/core';
+import {ApplicationType} from '../../../api';
+import {AtlasButtonType} from './atlas-button.type';
+import {NON_PROD_STAGES} from '../../constants/stages';
+import {environment} from '../../../../environments/environment';
+import {Countries} from '../../country/Countries';
+import {PermissionService} from '../../auth/permission/permission.service';
+import {NgClass, NgTemplateOutlet} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'atlas-button[buttonType]',
@@ -28,7 +28,7 @@ export class AtlasButtonComponent {
   readonly footerEdit = input(false);
   readonly submitButton = input(false);
   readonly buttonText = input<string>();
-  readonly title = input<string>();
+  readonly title = input<string>('');
   readonly buttonStyleClass = input<string>();
 
   readonly buttonClicked = output<void>();
