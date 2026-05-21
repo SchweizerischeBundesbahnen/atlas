@@ -28,7 +28,7 @@ export class AtlasButtonComponent {
   readonly footerEdit = input(false);
   readonly submitButton = input(false);
   readonly buttonText = input<string>();
-  readonly title = input<string>();
+  readonly title = input<string>('');
   readonly buttonStyleClass = input<string>();
 
   readonly buttonClicked = output<void>();
