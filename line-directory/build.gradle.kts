@@ -32,7 +32,6 @@ dependencies {
     // Libraries
     implementation(libs.aws.s3)
     implementation(libs.tika.core)
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
 
     // Project dependencies
     implementation(project(":base-atlas"))
