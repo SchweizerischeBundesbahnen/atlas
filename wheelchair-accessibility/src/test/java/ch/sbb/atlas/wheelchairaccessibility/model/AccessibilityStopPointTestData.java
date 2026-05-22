@@ -17,6 +17,7 @@ public class AccessibilityStopPointTestData implements AccessibilityStopPoint {
   private final StandardAttributeType assistanceAvailability;
   private final BooleanOptionalAttributeType assistanceRequestFulfilled;
   private final boolean reduced;
+  private final String sloid;
   private final LocalDate validFrom;
   private final LocalDate validTo;
 }

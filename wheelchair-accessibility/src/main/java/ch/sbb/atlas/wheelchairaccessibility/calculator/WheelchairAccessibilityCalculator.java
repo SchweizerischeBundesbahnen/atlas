@@ -3,9 +3,11 @@ package ch.sbb.atlas.wheelchairaccessibility.calculator;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.versioning.model.VersioningData;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityFilter;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
-import ch.sbb.atlas.wheelchairaccessibility.model.PlatformAccessibilityRequest;
-import ch.sbb.atlas.wheelchairaccessibility.model.PlatformWithRelations;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -16,44 +18,71 @@ import lombok.experimental.UtilityClass;
 public class WheelchairAccessibilityCalculator {
 
   public static Map<DateRange, WheelchairAccessibilityState> calculateForPlatform(
-      PlatformAccessibilityRequest platformAccessibilityRequest) {
+      AccessibilityRequest accessibilityRequest, AccessibilityFilter accessibilityFilter) {
 
-    List<DateRange> allDateRanges = platformAccessibilityRequest.getAllDateRanges();
+    List<DateRange> allDateRanges = accessibilityRequest.getAllDateRanges();
     if (allDateRanges.isEmpty()) {
       return Map.of(new DateRange(VersioningData.MIN_DATE, VersioningData.MAX_DATE), WheelchairAccessibilityState.NO_INFO);
     }
 
     List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(allDateRanges);
+
+    AccessibilityRangesFilter accessibilityRangesFilter = new AccessibilityRangesFilter(accessibilityFilter);
+    List<DateRange> filteredRanges = accessibilityRangesFilter.applyTo(accessibilityRanges);
+
     Map<DateRange, WheelchairAccessibilityState> result = new HashMap<>();
-    for (DateRange dateRange : accessibilityRanges) {
-      // TODO: calculate info on dateRange.From, modify calculation/interface to get it for a day
-      result.put(dateRange, WheelchairAccessibilityState.NO_INFO);
+    for (DateRange dateRange : filteredRanges) {
+      AccessibilityRequest accessibilityRequestOnDate = accessibilityRequest.getRequestOnDate(
+          dateRange.getFrom());
+
+      result.put(dateRange, calculateForPlatform(accessibilityRequestOnDate));
     }
 
     return result;
   }
 
-  public static WheelchairAccessibilityState calculateForPlatform(AccessibilityStopPoint stopPoint,
-      PlatformWithRelations platformWithRelations) {
-    if (stopPoint.isReduced()) {
-      return PlatformReducedAccessibilityCalculator.calculate(platformWithRelations.getPlatform());
+  public static WheelchairAccessibilityState calculateForPlatform(AccessibilityRequest accessibilityRequest) {
+    if (accessibilityRequest.getStopPoint().size() != 1 || accessibilityRequest.getPlatform().size() != 1) {
+      return WheelchairAccessibilityState.NO_INFO;
     }
-    WheelchairAccessibilityState platformState =
-        PlatformCompleteAccessibilityCalculator.calculate(platformWithRelations.getPlatform(),
-            platformWithRelations.getRelations());
-    WheelchairAccessibilityState stopPointState = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
+
+    AccessibilityStopPoint accessibilityStopPoint = accessibilityRequest.getStopPoint().getFirst();
+    AccessibilityPlatform platform = accessibilityRequest.getPlatform().getFirst();
+
+    if (accessibilityStopPoint.isReduced()) {
+      return PlatformReducedAccessibilityCalculator.calculate(platform);
+    }
+
+    WheelchairAccessibilityState platformState = PlatformCompleteAccessibilityCalculator.calculate(platform,
+        accessibilityRequest.getRelations());
+    WheelchairAccessibilityState stopPointState = StopPointCompleteAccessibilityCalculator.calculate(accessibilityStopPoint);
     return WheelchairAccessibilityCombiner.combine(stopPointState, platformState);
   }
 
-  public static WheelchairAccessibilityState calculateForStopPoint(AccessibilityStopPoint stopPoint,
-      List<PlatformWithRelations> platforms) {
-    if (platforms.isEmpty()) {
+  public static WheelchairAccessibilityState calculateForStopPoint(AccessibilityRequest accessibilityRequest) {
+    if (accessibilityRequest.getStopPoint().size() != 1 || accessibilityRequest.getPlatform().isEmpty()) {
       return WheelchairAccessibilityState.NO_INFO;
     }
-    return platforms.stream()
-        .map(platformWithRelations -> calculateForPlatform(stopPoint, platformWithRelations))
+
+    AccessibilityStopPoint accessibilityStopPoint = accessibilityRequest.getStopPoint().getFirst();
+
+    return accessibilityRequest.getPlatform().stream()
+        .map(platform -> calculatePlatformAccessibility(accessibilityRequest, platform, accessibilityStopPoint))
         .max(Comparator.comparingInt(WheelchairAccessibilityState::getRank))
         .orElse(WheelchairAccessibilityState.NO_INFO);
+  }
+
+  private static WheelchairAccessibilityState calculatePlatformAccessibility(AccessibilityRequest accessibilityRequest,
+      AccessibilityPlatform platform, AccessibilityStopPoint accessibilityStopPoint) {
+    List<? extends AccessibilityRelation> relationsOfPlatform = accessibilityRequest.getRelations().stream()
+        .filter(i -> i.getSloid().equals(platform.getSloid())).toList();
+    AccessibilityRequest plattformAccessibilityRequest = AccessibilityRequest.builder()
+        .stopPoint(List.of(accessibilityStopPoint))
+        .platform(List.of(platform))
+        .relations(relationsOfPlatform)
+        .build();
+
+    return calculateForPlatform(plattformAccessibilityRequest);
   }
 
 }

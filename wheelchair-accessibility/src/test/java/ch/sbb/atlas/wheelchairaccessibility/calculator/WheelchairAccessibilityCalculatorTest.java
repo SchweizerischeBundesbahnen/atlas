@@ -10,8 +10,8 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatformTestData;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelationTestData;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPointTestData;
-import ch.sbb.atlas.wheelchairaccessibility.model.PlatformWithRelations;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +25,11 @@ class WheelchairAccessibilityCalculatorTest {
         .build();
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
 
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(stopPoint,
-        PlatformWithRelations.builder().platform(platform).build());
+    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(
+        AccessibilityRequest.builder()
+            .stopPoint(List.of(stopPoint))
+            .platform(List.of(platform))
+            .build());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }
@@ -47,8 +50,11 @@ class WheelchairAccessibilityCalculatorTest {
     List<AccessibilityRelationTestData> relations = List.of(
         AccessibilityRelationTestData.builder().stepFreeAccess(StepFreeAccessAttributeType.YES).build());
 
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(stopPoint,
-        PlatformWithRelations.builder().platform(platform).relations(relations).build());
+    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(AccessibilityRequest.builder()
+        .stopPoint(List.of(stopPoint))
+        .platform(List.of(platform))
+        .relations(relations)
+        .build());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.AUTONOMY);
   }
@@ -57,7 +63,9 @@ class WheelchairAccessibilityCalculatorTest {
   void shouldReturnNoInfoWhenStopPointHasNoPlatforms() {
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
 
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForStopPoint(stopPoint, List.of());
+    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForStopPoint(AccessibilityRequest.builder()
+        .stopPoint(List.of(stopPoint))
+        .build());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
   }
@@ -74,9 +82,11 @@ class WheelchairAccessibilityCalculatorTest {
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE)
         .build();
 
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForStopPoint(stopPoint, List.of(
-        PlatformWithRelations.builder().platform(autonomous).build(),
-        PlatformWithRelations.builder().platform(shuttle).build()));
+    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForStopPoint(
+        AccessibilityRequest.builder()
+            .stopPoint(List.of(stopPoint))
+            .platform(List.of(autonomous, shuttle))
+            .build());
 
     assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
   }

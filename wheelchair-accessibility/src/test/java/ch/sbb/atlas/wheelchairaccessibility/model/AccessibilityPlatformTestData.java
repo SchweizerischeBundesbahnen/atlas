@@ -19,6 +19,7 @@ public class AccessibilityPlatformTestData implements AccessibilityPlatform {
   private final LevelAccessWheelchairAttributeType levelAccessWheelchair;
   private final BoardingDeviceAttributeType boardingDevice;
   private final Double superelevation;
+  private final String sloid;
   private final LocalDate validFrom;
   private final LocalDate validTo;
 }

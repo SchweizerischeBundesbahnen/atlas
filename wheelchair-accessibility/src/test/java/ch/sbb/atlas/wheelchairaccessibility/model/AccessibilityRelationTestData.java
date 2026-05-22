@@ -12,6 +12,7 @@ import lombok.Getter;
 public class AccessibilityRelationTestData implements AccessibilityRelation {
 
   private final StepFreeAccessAttributeType stepFreeAccess;
+  private final String sloid;
   private final LocalDate validFrom;
   private final LocalDate validTo;
 }

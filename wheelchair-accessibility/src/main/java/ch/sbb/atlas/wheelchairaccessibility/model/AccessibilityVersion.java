@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 public interface AccessibilityVersion {
 
+  String getSloid();
+
   LocalDate getValidFrom();
 
   LocalDate getValidTo();
