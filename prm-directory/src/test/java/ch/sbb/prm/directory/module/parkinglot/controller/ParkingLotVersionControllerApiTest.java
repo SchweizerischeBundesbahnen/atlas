@@ -85,6 +85,9 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
   @AfterEach
   void cleanUp() {
+    parkingLotRepository.deleteAll();
+    referencePointRepository.deleteAll();
+    stopPointRepository.deleteAll();
     sharedServicePointRepository.deleteAll();
   }
 

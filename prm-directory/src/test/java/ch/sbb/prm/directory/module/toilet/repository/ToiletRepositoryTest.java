@@ -6,6 +6,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.module.toilet.ToiletTestData;
 import ch.sbb.prm.directory.module.toilet.entity.ToiletVersion;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,14 @@ class ToiletRepositoryTest {
     this.toiletRepository = toiletRepository;
   }
 
-  @BeforeEach()
+  @BeforeEach
   void initDB() {
     toiletRepository.save(ToiletTestData.getToiletVersion());
+  }
+
+  @AfterEach
+  void tearDown() {
+    toiletRepository.deleteAll();
   }
 
   @Test

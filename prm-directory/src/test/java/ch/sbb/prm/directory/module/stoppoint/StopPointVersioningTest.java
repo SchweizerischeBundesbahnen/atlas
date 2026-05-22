@@ -50,6 +50,7 @@ class StopPointVersioningTest {
 
   @AfterEach
   void cleanUp() {
+    stopPointRepository.deleteAll();
     sharedServicePointRepository.deleteAll();
   }
 
