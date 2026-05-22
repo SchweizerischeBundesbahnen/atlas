@@ -92,7 +92,7 @@
     "@cypress/schematic": "^5.0.0",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^10.0.0",
-    "@openapitools/openapi-generator-cli": "~2.32.0",
+    "@openapitools/openapi-generator-cli": "~2.33.0",
     "@playwright/test": "^1.48.1",
     "@types/node": "^24.0.0",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
