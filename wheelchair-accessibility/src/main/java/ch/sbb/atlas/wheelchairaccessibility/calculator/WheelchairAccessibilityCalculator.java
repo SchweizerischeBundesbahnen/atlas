@@ -23,7 +23,7 @@ public class WheelchairAccessibilityCalculator {
       return Map.of(new DateRange(VersioningData.MIN_DATE, VersioningData.MAX_DATE), WheelchairAccessibilityState.NO_INFO);
     }
 
-    List<DateRange> accessibilityRanges = AccessibilityRanges.getAccessibilityRanges(allDateRanges);
+    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(allDateRanges);
     Map<DateRange, WheelchairAccessibilityState> result = new HashMap<>();
     for (DateRange dateRange : accessibilityRanges) {
       // TODO: calculate info on dateRange.From, modify calculation/interface to get it for a day

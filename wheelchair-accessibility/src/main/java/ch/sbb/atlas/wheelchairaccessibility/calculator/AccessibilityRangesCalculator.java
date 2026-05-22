@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-class AccessibilityRanges {
+class AccessibilityRangesCalculator {
 
   static List<DateRange> getAccessibilityRanges(List<DateRange> versionRanges) {
     List<DateRange> accessibilityRanges = new ArrayList<>();
@@ -35,7 +35,7 @@ class AccessibilityRanges {
 
     LocalDate nextValidTo = dateRanges.stream()
         .map(DateRange::getTo)
-        .filter(i -> i.isAfter(current))
+        .filter(i -> !i.isBefore(current))
         .min(LocalDate::compareTo)
         .map(i -> i.plusDays(1))
         .orElse(VersioningData.MAX_DATE);
