@@ -29,7 +29,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
         .build();
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
 
-    WheelchairAccessibilityState result = PlatformWheelchairAccessibilityCalculator.calculateOnDate(
+    WheelchairAccessibilityState result = WheelchairAccessibility.calculatePlatformOnDate(
         AccessibilityRequest.builder()
             .stopPoint(List.of(stopPoint))
             .platform(List.of(platform))
@@ -54,7 +54,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
     List<AccessibilityRelationTestData> relations = List.of(
         AccessibilityRelationTestData.builder().stepFreeAccess(StepFreeAccessAttributeType.YES).build());
 
-    WheelchairAccessibilityState result = PlatformWheelchairAccessibilityCalculator.calculateOnDate(
+    WheelchairAccessibilityState result = WheelchairAccessibility.calculatePlatformOnDate(
         AccessibilityRequest.builder()
             .stopPoint(List.of(stopPoint))
             .platform(List.of(platform))
@@ -89,7 +89,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
             .build());
 
     AccessibilityFilter accessibilityFilter = new AccessibilityFilter(LocalDate.of(2020, 1, 10));
-    Accessibility result = PlatformWheelchairAccessibilityCalculator.calculate(
+    Accessibility result = WheelchairAccessibility.calculatePlatform(
         AccessibilityRequest.builder()
             .stopPoint(List.of(stopPoint))
             .platform(List.of(platform))
@@ -132,7 +132,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
             .build());
 
     AccessibilityFilter accessibilityFilter = new AccessibilityFilter(LocalDate.of(2020, 1, 10));
-    Accessibility result = PlatformWheelchairAccessibilityCalculator.calculate(
+    Accessibility result = WheelchairAccessibility.calculatePlatform(
         AccessibilityRequest.builder()
             .stopPoint(List.of(stopPoint))
             .platform(List.of(platform))

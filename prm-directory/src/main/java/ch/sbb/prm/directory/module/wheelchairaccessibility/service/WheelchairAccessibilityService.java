@@ -2,8 +2,7 @@ package ch.sbb.prm.directory.module.wheelchairaccessibility.service;
 
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.model.DateRange;
-import ch.sbb.atlas.wheelchairaccessibility.calculator.PlatformWheelchairAccessibilityCalculator;
-import ch.sbb.atlas.wheelchairaccessibility.calculator.StopPointWheelchairAccessibilityCalculator;
+import ch.sbb.atlas.wheelchairaccessibility.calculator.WheelchairAccessibility;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.service.PlatformService;
@@ -34,7 +33,7 @@ public class WheelchairAccessibilityService {
     platform.ifPresent(
         platformVersion -> relations.addAll(relationService.findRelationVersionValidTodayByPlatform(platformVersion.getSloid())));
 
-    return PlatformWheelchairAccessibilityCalculator.calculateOnDate(
+    return WheelchairAccessibility.calculatePlatformOnDate(
         AccessibilityRequest.builder()
             .stopPoint(stopPoint.stream().toList())
             .platform(platform.stream().toList())
@@ -52,7 +51,7 @@ public class WheelchairAccessibilityService {
         .filter(platform -> DateRange.fromVersionable(platform).containsToday())
         .toList();
 
-    return StopPointWheelchairAccessibilityCalculator.calculateOnDate(AccessibilityRequest.builder()
+    return WheelchairAccessibility.calculateStopPointOnDate(AccessibilityRequest.builder()
         .stopPoint(stopPoint.stream().toList())
         .platform(platformsValidToday)
         .relations(relationsValidToday)

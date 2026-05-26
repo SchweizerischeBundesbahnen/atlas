@@ -17,7 +17,7 @@ class StopPointWheelchairAccessibilityCalculatorTest {
   void shouldReturnNoInfoWhenStopPointHasNoPlatforms() {
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
 
-    WheelchairAccessibilityState result = StopPointWheelchairAccessibilityCalculator.calculateOnDate(
+    WheelchairAccessibilityState result = WheelchairAccessibility.calculateStopPointOnDate(
         AccessibilityRequest.builder()
             .stopPoint(List.of(stopPoint))
             .build());
@@ -37,7 +37,7 @@ class StopPointWheelchairAccessibilityCalculatorTest {
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE)
         .build();
 
-    WheelchairAccessibilityState result = StopPointWheelchairAccessibilityCalculator.calculateOnDate(
+    WheelchairAccessibilityState result = WheelchairAccessibility.calculateStopPointOnDate(
         AccessibilityRequest.builder()
             .stopPoint(List.of(stopPoint))
             .platform(List.of(autonomous, shuttle))

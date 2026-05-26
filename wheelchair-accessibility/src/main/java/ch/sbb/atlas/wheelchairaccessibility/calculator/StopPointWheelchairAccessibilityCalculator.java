@@ -7,14 +7,11 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import java.util.Comparator;
 import java.util.List;
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@UtilityClass
-public class StopPointWheelchairAccessibilityCalculator {
+class StopPointWheelchairAccessibilityCalculator extends WheelchairAccessibilityCalculator {
 
-  public static WheelchairAccessibilityState calculateOnDate(AccessibilityRequest accessibilityRequest) {
+  @Override
+  WheelchairAccessibilityState calculateOnDate(AccessibilityRequest accessibilityRequest) {
     if (accessibilityRequest.getStopPoint().size() != 1 || accessibilityRequest.getPlatform().isEmpty()) {
       return WheelchairAccessibilityState.NO_INFO;
     }
@@ -27,7 +24,7 @@ public class StopPointWheelchairAccessibilityCalculator {
         .orElse(WheelchairAccessibilityState.NO_INFO);
   }
 
-  private static WheelchairAccessibilityState calculatePlatformAccessibility(AccessibilityRequest accessibilityRequest,
+  private WheelchairAccessibilityState calculatePlatformAccessibility(AccessibilityRequest accessibilityRequest,
       AccessibilityPlatform platform, AccessibilityStopPoint accessibilityStopPoint) {
     List<? extends AccessibilityRelation> relationsOfPlatform = accessibilityRequest.getRelations().stream()
         .filter(i -> i.getSloid().equals(platform.getSloid())).toList();
@@ -38,7 +35,7 @@ public class StopPointWheelchairAccessibilityCalculator {
         .relations(relationsOfPlatform)
         .build();
 
-    return PlatformWheelchairAccessibilityCalculator.calculateOnDate(plattformAccessibilityRequest);
+    return WheelchairAccessibility.calculatePlatformOnDate(plattformAccessibilityRequest);
   }
 
 }
