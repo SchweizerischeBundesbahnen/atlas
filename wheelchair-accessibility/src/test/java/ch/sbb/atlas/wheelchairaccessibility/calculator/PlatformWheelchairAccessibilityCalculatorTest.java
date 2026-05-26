@@ -15,7 +15,7 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPointTestData
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class WheelchairAccessibilityCalculatorTest {
+class PlatformWheelchairAccessibilityCalculatorTest {
 
   @Test
   void shouldUseReducedCalculatorWhenStopPointIsReduced() {
@@ -25,7 +25,7 @@ class WheelchairAccessibilityCalculatorTest {
         .build();
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
 
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(
+    WheelchairAccessibilityState result = PlatformWheelchairAccessibilityCalculator.calculateOnDate(
         AccessibilityRequest.builder()
             .stopPoint(List.of(stopPoint))
             .platform(List.of(platform))
@@ -50,45 +50,14 @@ class WheelchairAccessibilityCalculatorTest {
     List<AccessibilityRelationTestData> relations = List.of(
         AccessibilityRelationTestData.builder().stepFreeAccess(StepFreeAccessAttributeType.YES).build());
 
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForPlatform(AccessibilityRequest.builder()
-        .stopPoint(List.of(stopPoint))
-        .platform(List.of(platform))
-        .relations(relations)
-        .build());
-
-    assertThat(result).isEqualTo(WheelchairAccessibilityState.AUTONOMY);
-  }
-
-  @Test
-  void shouldReturnNoInfoWhenStopPointHasNoPlatforms() {
-    AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
-
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForStopPoint(AccessibilityRequest.builder()
-        .stopPoint(List.of(stopPoint))
-        .build());
-
-    assertThat(result).isEqualTo(WheelchairAccessibilityState.NO_INFO);
-  }
-
-  @Test
-  void shouldReturnWorstCaseAcrossPlatformsForReducedStopPoint() {
-    AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
-    AccessibilityPlatformTestData autonomous = AccessibilityPlatformTestData.builder()
-        .shuttle(BooleanOptionalAttributeType.NO)
-        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITHOUT_ASSISTANCE)
-        .build();
-    AccessibilityPlatformTestData shuttle = AccessibilityPlatformTestData.builder()
-        .shuttle(BooleanOptionalAttributeType.YES)
-        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE)
-        .build();
-
-    WheelchairAccessibilityState result = WheelchairAccessibilityCalculator.calculateForStopPoint(
+    WheelchairAccessibilityState result = PlatformWheelchairAccessibilityCalculator.calculateOnDate(
         AccessibilityRequest.builder()
             .stopPoint(List.of(stopPoint))
-            .platform(List.of(autonomous, shuttle))
+            .platform(List.of(platform))
+            .relations(relations)
             .build());
 
-    assertThat(result).isEqualTo(WheelchairAccessibilityState.SHUTTLE);
+    assertThat(result).isEqualTo(WheelchairAccessibilityState.AUTONOMY);
   }
 
 }

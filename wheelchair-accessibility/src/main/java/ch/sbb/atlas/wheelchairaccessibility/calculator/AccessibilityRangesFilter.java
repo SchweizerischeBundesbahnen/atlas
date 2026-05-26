@@ -2,6 +2,7 @@ package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityFilter;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRanges;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,10 @@ import lombok.RequiredArgsConstructor;
 class AccessibilityRangesFilter {
 
   private final AccessibilityFilter accessibilityFilter;
+
+  AccessibilityRanges applyTo(AccessibilityRanges accessibilityRanges) {
+    return new AccessibilityRanges(applyTo(accessibilityRanges.getDateRanges()));
+  }
 
   List<DateRange> applyTo(List<DateRange> accessibilityRanges) {
     LocalDate filterEnd = accessibilityFilter.getFrom().plusDays(accessibilityFilter.getDays());

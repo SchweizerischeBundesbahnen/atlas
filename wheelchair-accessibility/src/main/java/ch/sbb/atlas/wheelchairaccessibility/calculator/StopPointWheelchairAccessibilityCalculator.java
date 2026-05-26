@@ -1,0 +1,44 @@
+package ch.sbb.atlas.wheelchairaccessibility.calculator;
+
+import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
+import java.util.Comparator;
+import java.util.List;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@UtilityClass
+public class StopPointWheelchairAccessibilityCalculator {
+
+  public static WheelchairAccessibilityState calculateOnDate(AccessibilityRequest accessibilityRequest) {
+    if (accessibilityRequest.getStopPoint().size() != 1 || accessibilityRequest.getPlatform().isEmpty()) {
+      return WheelchairAccessibilityState.NO_INFO;
+    }
+
+    AccessibilityStopPoint accessibilityStopPoint = accessibilityRequest.getStopPoint().getFirst();
+
+    return accessibilityRequest.getPlatform().stream()
+        .map(platform -> calculatePlatformAccessibility(accessibilityRequest, platform, accessibilityStopPoint))
+        .max(Comparator.comparingInt(WheelchairAccessibilityState::getRank))
+        .orElse(WheelchairAccessibilityState.NO_INFO);
+  }
+
+  private static WheelchairAccessibilityState calculatePlatformAccessibility(AccessibilityRequest accessibilityRequest,
+      AccessibilityPlatform platform, AccessibilityStopPoint accessibilityStopPoint) {
+    List<? extends AccessibilityRelation> relationsOfPlatform = accessibilityRequest.getRelations().stream()
+        .filter(i -> i.getSloid().equals(platform.getSloid())).toList();
+
+    AccessibilityRequest plattformAccessibilityRequest = AccessibilityRequest.builder()
+        .stopPoint(List.of(accessibilityStopPoint))
+        .platform(List.of(platform))
+        .relations(relationsOfPlatform)
+        .build();
+
+    return PlatformWheelchairAccessibilityCalculator.calculateOnDate(plattformAccessibilityRequest);
+  }
+
+}

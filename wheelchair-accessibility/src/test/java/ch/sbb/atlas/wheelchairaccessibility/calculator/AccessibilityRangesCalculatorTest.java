@@ -14,7 +14,8 @@ class AccessibilityRangesCalculatorTest {
   void shouldGetAccessibilityRangesForOneVersion() {
     DateRange dateRange = new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31));
 
-    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(dateRange));
+    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(dateRange))
+        .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
         new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
@@ -29,7 +30,8 @@ class AccessibilityRangesCalculatorTest {
   void shouldGetAccessibilityRangesForOneVersionUntilMaxDate() {
     DateRange dateRange = new DateRange(LocalDate.of(2020, 1, 1), VersioningData.MAX_DATE);
 
-    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(dateRange));
+    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(dateRange))
+        .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
         new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
@@ -44,7 +46,8 @@ class AccessibilityRangesCalculatorTest {
     DateRange version1 = new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31));
     DateRange version2 = new DateRange(LocalDate.of(2022, 1, 1), LocalDate.of(2022, 12, 31));
 
-    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(version1, version2));
+    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(version1, version2))
+        .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
         new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
@@ -62,7 +65,8 @@ class AccessibilityRangesCalculatorTest {
     DateRange version1 = new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31));
     DateRange version2 = new DateRange(LocalDate.of(2020, 10, 1), LocalDate.of(2025, 12, 31));
 
-    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(version1, version2));
+    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(version1, version2))
+        .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
         new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
@@ -80,7 +84,8 @@ class AccessibilityRangesCalculatorTest {
     DateRange version1 = new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31));
     DateRange version2 = new DateRange(LocalDate.of(2020, 10, 1), LocalDate.of(2020, 10, 1));
 
-    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(version1, version2));
+    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(version1, version2))
+        .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
         new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),

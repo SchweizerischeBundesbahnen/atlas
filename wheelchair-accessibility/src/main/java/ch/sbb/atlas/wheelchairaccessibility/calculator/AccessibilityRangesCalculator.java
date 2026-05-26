@@ -2,6 +2,7 @@ package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.versioning.model.VersioningData;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRanges;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,11 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 class AccessibilityRangesCalculator {
 
-  static List<DateRange> getAccessibilityRanges(List<DateRange> versionRanges) {
+  static AccessibilityRanges getAccessibilityRanges(List<DateRange> versionRanges) {
+    if (versionRanges.isEmpty()) {
+      return new AccessibilityRanges(List.of(new DateRange(VersioningData.MIN_DATE, VersioningData.MAX_DATE)));
+    }
+
     List<DateRange> accessibilityRanges = new ArrayList<>();
 
     LocalDate current = VersioningData.MIN_DATE;
@@ -23,7 +28,7 @@ class AccessibilityRangesCalculator {
       current = next;
     } while (current.isBefore(VersioningData.MAX_DATE));
 
-    return accessibilityRanges;
+    return new AccessibilityRanges(accessibilityRanges);
   }
 
   private static LocalDate getNext(List<DateRange> dateRanges, LocalDate current) {
