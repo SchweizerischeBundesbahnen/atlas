@@ -20,19 +20,19 @@ public class PlatformWheelchairAccessibilityCalculator {
     List<DateRange> allDateRanges = accessibilityRequest.getAllDateRanges();
 
     AccessibilityRanges accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(allDateRanges);
-    log.info("All AccessibilityRanges: \n{}", accessibilityRanges);
+    log.info("All AccessibilityRanges: {}", accessibilityRanges);
 
     AccessibilityRangesFilter accessibilityRangesFilter = new AccessibilityRangesFilter(accessibilityFilter);
     AccessibilityRanges filteredRanges = accessibilityRangesFilter.applyTo(accessibilityRanges);
-    log.info("Filtered by {} AccessibilityRanges: \n{}", accessibilityRangesFilter, filteredRanges);
+    log.info("Filtered by {} AccessibilityRanges: {}", accessibilityRangesFilter, filteredRanges);
 
     Accessibility accessibility = new Accessibility();
     for (DateRange dateRange : filteredRanges) {
       AccessibilityRequest accessibilityRequestOnDate = accessibilityRequest.getRequestOnDate(dateRange.getFrom());
-      accessibility.add(dateRange, calculateOnDate(accessibilityRequestOnDate));
+      accessibility.with(dateRange, calculateOnDate(accessibilityRequestOnDate));
     }
 
-    log.info("Calculated accessibility: \n{}", accessibility);
+    log.info("Calculated accessibility: {}", accessibility);
     return accessibility;
   }
 

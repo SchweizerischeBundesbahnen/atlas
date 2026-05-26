@@ -6,7 +6,9 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRanges;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @RequiredArgsConstructor
 class AccessibilityRangesFilter {
 

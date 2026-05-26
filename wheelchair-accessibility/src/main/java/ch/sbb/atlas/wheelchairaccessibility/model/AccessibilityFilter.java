@@ -2,8 +2,12 @@ package ch.sbb.atlas.wheelchairaccessibility.model;
 
 import java.time.LocalDate;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
+@ToString
+@EqualsAndHashCode
 public class AccessibilityFilter {
 
   private static final int ACCESSIBILITY_DAYS_TO_CALCULATE = 30;

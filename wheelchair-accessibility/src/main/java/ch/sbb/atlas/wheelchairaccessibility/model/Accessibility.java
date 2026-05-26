@@ -5,43 +5,32 @@ import ch.sbb.atlas.model.DateRange;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Accessibility {
 
   private final List<AccessibilityInfo> accessibilityInfos = new ArrayList<>();
 
-  public void add(DateRange dateRange, WheelchairAccessibilityState wheelchairAccessibilityState) {
+  public Accessibility with(DateRange dateRange, WheelchairAccessibilityState wheelchairAccessibilityState) {
     accessibilityInfos.add(new AccessibilityInfo(dateRange, wheelchairAccessibilityState));
+    return this;
   }
 
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    for (AccessibilityInfo accessibilityInfo : accessibilityInfos) {
-      builder.append(accessibilityInfo.toString());
-      builder.append(System.lineSeparator());
-    }
-    return builder.toString();
-  }
-
+  @ToString
+  @EqualsAndHashCode
   @RequiredArgsConstructor
   static class AccessibilityInfo {
 
     private final DateRange dateRange;
     private final WheelchairAccessibilityState accessibilityState;
 
-    @Override
-    public String toString() {
-      return AccessibilityRanges.DATE_TIME_FORMATTER.format(dateRange.getFrom())
-          + "-"
-          + AccessibilityRanges.DATE_TIME_FORMATTER.format(dateRange.getTo())
-          + ": "
-          + accessibilityState.name();
-    }
   }
 
 }
