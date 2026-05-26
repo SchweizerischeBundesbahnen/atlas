@@ -1,0 +1,19 @@
+# Ignore all files in .github
+*
+
+# Allow navigating into subdirectories (required for nested exceptions)
+!*/
+
+# Allow project specific files
+!ISSUE_TEMPLATE/*
+!pull_request_template.md
+
+**/node_modules/**
+
+# Allow current-feature directory and its contents
+# !current-feature/**
+
+# allow this file
+!.gitignore
+
+.env

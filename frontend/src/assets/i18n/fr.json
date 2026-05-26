@@ -854,7 +854,7 @@
       "CONFIRM": "Commencer"
     },
     "TAB": {
-      "STATEMENTS": "Avis",
+      "STATEMENTS": "Prises de position",
       "DOSSIERS": "Dossiers"
     },
     "BUTTON": {
@@ -866,7 +866,7 @@
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
       "CANCEL_COLLECTING_ACTION": "Terminer la collecte",
       "CLOSE_TIMETABLE_HEARING": "Clôture de l'année horaire",
-      "CREATE_DOSSIER": "Établir le dossier",
+      "CREATE_DOSSIER": "Créer un dossier",
       "ADD_TO_DOSSIER": "Ajouter à un dossier"
     },
     "DROPDOWN": {
@@ -923,7 +923,7 @@
       "OVERVIEW_PLANNED_NOT_FOUND": "Actuellement, aucune audition prévue n'est enregistrée.",
       "OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND": "Actuellement, aucune audition n'est active.",
       "OVERVIEW_ARCHIVED_NOT_FOUND": "Aucune audition archivée n'est actuellement disponible.",
-      "STATEMENT_IN_DOSSIER_SLIDE": "Afficher les déclarations dans le dossier"
+      "STATEMENT_IN_DOSSIER_SLIDE": "Afficher les prises de position dans le dossier"
     },
     "STATEMENT_STATUS": {
       "RECEIVED": "réceptionnée",
@@ -1136,10 +1136,10 @@
       "PUBLIC_COMMENT": "Motivation publique des personnes appelées à prendre position",
       "COMPLETION": "Clôture",
       "NO_STATEMENTS": "Aucune prise de position n’est contenue dans le dossier.",
-      "STATEMENTS": "prises de position sur le dossier",
+      "STATEMENTS": "Prises de position sur le dossier",
       "ADD_STATEMENTS": "Ajouter d’autres prises de position au dossier",
       "SEND_TO_BO": "Envoyer la question",
-      "BO_ANSWER": "Commentaires de la société de transport",
+      "BO_ANSWER": "Commentaires de l'entreprise de transport",
       "STATEMENT_SELECT": {
         "CURRENT_STATEMENTS": "Prises de position actuellement sélectionnées",
         "ADDITIONAL_STATEMENTS": "Autres prises de position"
@@ -1158,16 +1158,16 @@
       "DOSSIER_STATUS": {
         "ADDED": "saisie",
         "CANCELED": "annulé",
-        "DOSSIER_BO_CHECK": "En cours de clarification auprès de TU",
-        "DOSSIER_CANTON_CHECK": "Réponse TU reçue",
-        "ACCEPTED": "supposé",
+        "DOSSIER_BO_CHECK": "En cours de clarification auprès de l’ET",
+        "DOSSIER_CANTON_CHECK": "Réponse de l’ET reçue",
+        "ACCEPTED": "acceptée",
         "REJECTED": "refusée",
         "MOVED": "reporté",
         "DISSOLVED": "dissous"
       },
       "INQUIRY_FROM_THE_CANTON": "Demande de renseignements du canton",
-      "CANCEL_DOSSIER": "Supprimer le dossier",
-      "DISSOLVE_DOSSIER": "Fermer le dossier",
+      "CANCEL_DOSSIER": "Annuler le dossier",
+      "DISSOLVE_DOSSIER": "Résoudre le dossier",
       "TOPIC": "Thème",
       "ADD_TO_DOSSIER_INFO": "Après l’ajout, il n’est plus possible d’éditer individuellement. Les modifications concernent toujours toutes les prises de position d’un dossier.",
       "ID_AND_TOPIC": "Dossier-ID et thème",
