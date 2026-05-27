@@ -2,6 +2,7 @@ package ch.sbb.atlas.wheelchairaccessibility.model;
 
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.model.DateRange;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +29,20 @@ public class Accessibility {
   public Accessibility with(DateRange dateRange, WheelchairAccessibilityState wheelchairAccessibilityState) {
     accessibilityInfos.add(new AccessibilityInfo(dateRange, wheelchairAccessibilityState));
     return this;
+  }
+
+  public String prettyPrint() {
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    StringBuilder builder = new StringBuilder();
+    for (AccessibilityInfo accessibilityInfo : accessibilityInfos) {
+      builder.append(dateTimeFormatter.format(accessibilityInfo.dateRange.getFrom()));
+      builder.append("-");
+      builder.append(dateTimeFormatter.format(accessibilityInfo.dateRange.getTo()));
+      builder.append(": ");
+      builder.append(accessibilityInfo.accessibilityState.name());
+      builder.append(System.lineSeparator());
+    }
+    return builder.toString();
   }
 
   @ToString

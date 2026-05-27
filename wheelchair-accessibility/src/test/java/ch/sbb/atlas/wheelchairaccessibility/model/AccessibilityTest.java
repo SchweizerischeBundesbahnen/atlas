@@ -22,6 +22,6 @@ class AccessibilityTest {
         .with(new DateRange(LocalDate.of(2020, 3, 1), LocalDate.of(2020, 4, 30)), WheelchairAccessibilityState.NO_ACCESS);
 
     Accessibility result = accessibility.minify();
-    assertThat(result).isEqualTo(expectedMinifiedAccessibility);
+    assertThat(result).withRepresentation(AccessibilityRepresentation.INSTANCE).isEqualTo(expectedMinifiedAccessibility);
   }
 }

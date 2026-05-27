@@ -10,7 +10,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class AccessibilityFilter {
 
-  private static final int ACCESSIBILITY_DAYS_TO_CALCULATE = 30;
+  public static final int ACCESSIBILITY_DAYS_TO_CALCULATE = 30;
 
   private final LocalDate from;
 

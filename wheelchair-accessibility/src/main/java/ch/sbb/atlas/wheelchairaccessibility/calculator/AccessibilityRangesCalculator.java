@@ -6,6 +6,7 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRanges;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -18,33 +19,45 @@ class AccessibilityRangesCalculator {
 
     List<DateRange> accessibilityRanges = new ArrayList<>();
 
-    LocalDate current = VersioningData.MIN_DATE;
-    do {
-      LocalDate next = getNext(versionRanges, current);
-      LocalDate nextRangeEnd = next.equals(VersioningData.MAX_DATE) ? VersioningData.MAX_DATE : next.minusDays(1);
+    Optional<LocalDate> current = getNext(versionRanges, VersioningData.MIN_DATE);
 
-      accessibilityRanges.add(new DateRange(current, nextRangeEnd));
+    while (current.isPresent()) {
+      Optional<LocalDate> next = getNext(versionRanges, current.get());
+      if (next.isEmpty()) {
+        break;
+      }
+
+      LocalDate nextRangeEnd = next.get().equals(VersioningData.MAX_DATE)
+          ? VersioningData.MAX_DATE
+          : next.get().minusDays(1);
+
+      accessibilityRanges.add(new DateRange(current.get(), nextRangeEnd));
 
       current = next;
-    } while (current.isBefore(VersioningData.MAX_DATE));
+    }
 
     return new AccessibilityRanges(accessibilityRanges);
   }
 
-  private static LocalDate getNext(List<DateRange> dateRanges, LocalDate current) {
-    LocalDate nextValidFrom = dateRanges.stream()
+  private static Optional<LocalDate> getNext(List<DateRange> dateRanges, LocalDate current) {
+    Optional<LocalDate> nextValidFrom = dateRanges.stream()
         .map(DateRange::getFrom)
         .filter(i -> i.isAfter(current))
-        .min(LocalDate::compareTo)
-        .orElse(VersioningData.MAX_DATE);
+        .min(LocalDate::compareTo);
 
-    LocalDate nextValidTo = dateRanges.stream()
+    Optional<LocalDate> nextValidTo = dateRanges.stream()
         .map(DateRange::getTo)
         .filter(i -> !i.isBefore(current))
         .min(LocalDate::compareTo)
-        .map(i -> i.plusDays(1))
-        .orElse(VersioningData.MAX_DATE);
-    return nextValidFrom.isBefore(nextValidTo) ? nextValidFrom : nextValidTo;
+        .map(i -> i.plusDays(1));
+
+    if (nextValidTo.isPresent()) {
+      if (nextValidFrom.isPresent()) {
+        return nextValidFrom.get().isBefore(nextValidTo.get()) ? nextValidFrom : nextValidTo;
+      }
+      return nextValidTo;
+    }
+    return Optional.empty();
   }
 
 }

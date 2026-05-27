@@ -18,9 +18,7 @@ class AccessibilityRangesCalculatorTest {
         .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
-        new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
-        dateRange,
-        new DateRange(LocalDate.of(2021, 1, 1), VersioningData.MAX_DATE)
+        dateRange
     );
 
     assertThat(accessibilityRanges).isEqualTo(expectedAccessibilityRanges);
@@ -34,7 +32,6 @@ class AccessibilityRangesCalculatorTest {
         .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
-        new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
         new DateRange(LocalDate.of(2020, 1, 1), VersioningData.MAX_DATE)
     );
 
@@ -50,11 +47,9 @@ class AccessibilityRangesCalculatorTest {
         .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
-        new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
         version1,
         new DateRange(LocalDate.of(2021, 1, 1), LocalDate.of(2021, 12, 31)),
-        version2,
-        new DateRange(LocalDate.of(2023, 1, 1), VersioningData.MAX_DATE)
+        version2
     );
 
     assertThat(accessibilityRanges).isEqualTo(expectedAccessibilityRanges);
@@ -69,11 +64,9 @@ class AccessibilityRangesCalculatorTest {
         .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
-        new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
         new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 9, 30)),
         new DateRange(LocalDate.of(2020, 10, 1), LocalDate.of(2020, 12, 31)),
-        new DateRange(LocalDate.of(2021, 1, 1), LocalDate.of(2025, 12, 31)),
-        new DateRange(LocalDate.of(2026, 1, 1), VersioningData.MAX_DATE)
+        new DateRange(LocalDate.of(2021, 1, 1), LocalDate.of(2025, 12, 31))
     );
 
     assertThat(accessibilityRanges).isEqualTo(expectedAccessibilityRanges);
@@ -88,11 +81,9 @@ class AccessibilityRangesCalculatorTest {
         .getDateRanges();
 
     List<DateRange> expectedAccessibilityRanges = List.of(
-        new DateRange(VersioningData.MIN_DATE, LocalDate.of(2019, 12, 31)),
         new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 9, 30)),
         new DateRange(LocalDate.of(2020, 10, 1), LocalDate.of(2020, 10, 1)),
-        new DateRange(LocalDate.of(2020, 10, 2), LocalDate.of(2020, 12, 31)),
-        new DateRange(LocalDate.of(2021, 1, 1), VersioningData.MAX_DATE)
+        new DateRange(LocalDate.of(2020, 10, 2), LocalDate.of(2020, 12, 31))
     );
 
     assertThat(accessibilityRanges).isEqualTo(expectedAccessibilityRanges);
