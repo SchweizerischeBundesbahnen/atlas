@@ -21,13 +21,20 @@ import org.junit.jupiter.api.Test;
 
 class PlatformWheelchairAccessibilityCalculatorTest {
 
+  private static final String PLATFORM_SLOID = "ch:1:sloid:7000::1";
+  private static final String STOP_POINT_SLOID = "ch:1:sloid:7000";
+
   @Test
   void shouldUseReducedCalculatorWhenStopPointIsReduced() {
     AccessibilityPlatformTestData platform = AccessibilityPlatformTestData.builder()
+        .sloid(PLATFORM_SLOID)
         .shuttle(BooleanOptionalAttributeType.YES)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE)
         .build();
-    AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder().reduced(true).build();
+    AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder()
+        .sloid(STOP_POINT_SLOID)
+        .reduced(true)
+        .build();
 
     WheelchairAccessibilityState result = WheelchairAccessibility.calculatePlatformOnDate(
         AccessibilityRequest.builder()
@@ -44,15 +51,19 @@ class PlatformWheelchairAccessibilityCalculatorTest {
         .shuttle(BooleanOptionalAttributeType.NO)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
         .superelevation(20.0D)
+        .sloid(PLATFORM_SLOID)
         .build();
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder()
+        .sloid(STOP_POINT_SLOID)
         .reduced(false)
         .alternativeTransport(StandardAttributeType.NO)
         .assistanceService(StandardAttributeType.NOT_APPLICABLE)
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .build();
-    List<AccessibilityRelationTestData> relations = List.of(
-        AccessibilityRelationTestData.builder().stepFreeAccess(StepFreeAccessAttributeType.YES).build());
+    List<AccessibilityRelationTestData> relations = List.of(AccessibilityRelationTestData.builder()
+        .sloid(PLATFORM_SLOID)
+        .stepFreeAccess(StepFreeAccessAttributeType.YES)
+        .build());
 
     WheelchairAccessibilityState result = WheelchairAccessibility.calculatePlatformOnDate(
         AccessibilityRequest.builder()
@@ -67,6 +78,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
   @Test
   void shouldCalculatePlatformAccessibilityWithVersionOnSameRange() {
     AccessibilityPlatformTestData platform = AccessibilityPlatformTestData.builder()
+        .sloid(PLATFORM_SLOID)
         .shuttle(BooleanOptionalAttributeType.NO)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
         .superelevation(20.0D)
@@ -74,6 +86,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder()
+        .sloid(STOP_POINT_SLOID)
         .reduced(false)
         .alternativeTransport(StandardAttributeType.NO)
         .assistanceService(StandardAttributeType.NOT_APPLICABLE)
@@ -83,6 +96,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
         .build();
     List<AccessibilityRelationTestData> relations = List.of(
         AccessibilityRelationTestData.builder()
+            .sloid(PLATFORM_SLOID)
             .stepFreeAccess(StepFreeAccessAttributeType.YES)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2020, 12, 31))
@@ -105,6 +119,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
   @Test
   void shouldCalculatePlatformAccessibilityWithRelationVersionChanges() {
     AccessibilityPlatformTestData platform = AccessibilityPlatformTestData.builder()
+        .sloid(PLATFORM_SLOID)
         .shuttle(BooleanOptionalAttributeType.NO)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
         .superelevation(20.0D)
@@ -112,6 +127,7 @@ class PlatformWheelchairAccessibilityCalculatorTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
     AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.builder()
+        .sloid(STOP_POINT_SLOID)
         .reduced(false)
         .alternativeTransport(StandardAttributeType.NO)
         .assistanceService(StandardAttributeType.NOT_APPLICABLE)
@@ -121,11 +137,13 @@ class PlatformWheelchairAccessibilityCalculatorTest {
         .build();
     List<AccessibilityRelationTestData> relations = List.of(
         AccessibilityRelationTestData.builder()
+            .sloid(PLATFORM_SLOID)
             .stepFreeAccess(StepFreeAccessAttributeType.YES)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2020, 1, 31))
             .build(),
         AccessibilityRelationTestData.builder()
+            .sloid(PLATFORM_SLOID)
             .stepFreeAccess(StepFreeAccessAttributeType.NO)
             .validFrom(LocalDate.of(2020, 2, 1))
             .validTo(LocalDate.of(2020, 12, 31))

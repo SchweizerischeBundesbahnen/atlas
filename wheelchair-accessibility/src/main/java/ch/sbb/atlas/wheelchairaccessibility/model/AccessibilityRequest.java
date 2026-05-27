@@ -35,4 +35,7 @@ public class AccessibilityRequest {
         .build();
   }
 
+  public List<? extends AccessibilityRelation> getRelationsOfPlatform(String platformSloid) {
+    return getRelations().stream().filter(i -> i.getSloid().equals(platformSloid)).toList();
+  }
 }

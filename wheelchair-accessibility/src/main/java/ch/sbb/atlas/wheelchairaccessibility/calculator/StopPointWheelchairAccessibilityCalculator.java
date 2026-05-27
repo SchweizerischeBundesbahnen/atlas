@@ -2,7 +2,6 @@ package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
-import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import java.util.Comparator;
@@ -26,13 +25,11 @@ class StopPointWheelchairAccessibilityCalculator extends WheelchairAccessibility
 
   private WheelchairAccessibilityState calculatePlatformAccessibility(AccessibilityRequest accessibilityRequest,
       AccessibilityPlatform platform, AccessibilityStopPoint accessibilityStopPoint) {
-    List<? extends AccessibilityRelation> relationsOfPlatform = accessibilityRequest.getRelations().stream()
-        .filter(i -> i.getSloid().equals(platform.getSloid())).toList();
 
     AccessibilityRequest plattformAccessibilityRequest = AccessibilityRequest.builder()
         .stopPoint(List.of(accessibilityStopPoint))
         .platform(List.of(platform))
-        .relations(relationsOfPlatform)
+        .relations(accessibilityRequest.getRelationsOfPlatform(platform.getSloid()))
         .build();
 
     return WheelchairAccessibility.calculatePlatformOnDate(plattformAccessibilityRequest);

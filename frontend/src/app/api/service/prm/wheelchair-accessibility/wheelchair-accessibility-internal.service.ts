@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AtlasApiService } from '../../atlas-api.service';
-import { ReadWheelchairAccessibility } from '../../../model/readWheelchairAccessibility';
+import {inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {AtlasApiService} from '../../atlas-api.service';
+import {ReadWheelchairAccessibility} from '../../../model/readWheelchairAccessibility';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,12 @@ export class WheelchairAccessibilityInternalService {
 
   public getPlatformAccessibilityToday(sloid: string): Observable<ReadWheelchairAccessibility> {
     this.atlasApiService.validateParams({sloid});
-    return this.atlasApiService.get(`${this.BASE}/${sloid}/platform`);
+    return this.atlasApiService.get(`${this.BASE}/platform/${sloid}/today`);
   }
 
   public getStopPointAccessibilityToday(sloid: string): Observable<ReadWheelchairAccessibility> {
     this.atlasApiService.validateParams({sloid});
-    return this.atlasApiService.get(`${this.BASE}/${sloid}/stop-point`);
+    return this.atlasApiService.get(`${this.BASE}/stop-point/${sloid}/today`);
   }
 
 }

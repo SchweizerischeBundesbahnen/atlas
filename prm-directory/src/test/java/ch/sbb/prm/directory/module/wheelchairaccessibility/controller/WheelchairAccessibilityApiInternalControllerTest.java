@@ -66,7 +66,7 @@ class WheelchairAccessibilityApiInternalControllerTest extends BaseControllerApi
         ReferencePointElementType.PLATFORM));
 
     //when & then
-    mvc.perform(get("/internal/wheelchair-accessibility/" + platformVersion.getSloid() + "/platform"))
+    mvc.perform(get("/internal/wheelchair-accessibility/platform/" + platformVersion.getSloid() + "/today"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.state").value(WheelchairAccessibilityState.NO_ACCESS.name()));
   }
@@ -94,7 +94,7 @@ class WheelchairAccessibilityApiInternalControllerTest extends BaseControllerApi
     relationRepository.save(relationVersion);
 
     //when & then
-    mvc.perform(get("/internal/wheelchair-accessibility/" + stopPointVersion.getSloid() + "/stop-point"))
+    mvc.perform(get("/internal/wheelchair-accessibility/stop-point/" + stopPointVersion.getSloid() + "/today"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.state").value(WheelchairAccessibilityState.SHUTTLE.name()));
   }

@@ -21,7 +21,7 @@ class PlatformWheelchairAccessibilityCalculator extends WheelchairAccessibilityC
     }
 
     WheelchairAccessibilityState platformState = PlatformCompleteAccessibilityCalculator.calculate(platform,
-        accessibilityRequest.getRelations());
+        accessibilityRequest.getRelationsOfPlatform(platform.getSloid()));
     WheelchairAccessibilityState stopPointState = StopPointCompleteAccessibilityCalculator.calculate(accessibilityStopPoint);
     return WheelchairAccessibilityCombiner.combine(stopPointState, platformState);
   }
