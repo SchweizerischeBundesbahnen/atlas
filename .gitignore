@@ -143,3 +143,6 @@ frontend/jsonZipDirectory/
 
 .cache_ggshield
 /frontend/components/coverage/
+
+# may be allowed for SDD in the future
+_docs
