@@ -28,8 +28,9 @@ abstract class WheelchairAccessibilityCalculator {
       accessibility.with(dateRange, calculateOnDate(accessibilityRequestOnDate));
     }
 
-    log.debug("Calculated accessibility: {}", accessibility);
-    return accessibility;
+    Accessibility minifiedAccessibility = accessibility.minify();
+    log.debug("Calculated accessibility: {}", minifiedAccessibility);
+    return minifiedAccessibility;
   }
 
   abstract WheelchairAccessibilityState calculateOnDate(AccessibilityRequest accessibilityRequest);
