@@ -21,6 +21,11 @@ public class CsvExportWriter {
 
   public static final char UTF_8_BYTE_ORDER_MARK = '\uFEFF';
 
+  public <T> File writeCsv(CsvWriteConfig<T> config) {
+    AtlasCsvMapper mapper = new AtlasCsvMapper(config.elementClass(), config.namingStrategy());
+    return CsvExportWriter.writeToFile(config.filePath().toString(), config.csvData(), mapper.getObjectWriter());
+  }
+
   public File writeToFile(String pathname, Iterable<?> csvData, ObjectWriter objectWriter) {
     String currentDateTime = LocalDateTime.now()
         .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FOR_FILE_FORMAT_PATTERN));
@@ -29,21 +34,15 @@ public class CsvExportWriter {
     return writeToFile(file, csvData, objectWriter);
   }
 
-  public File writeToFileWithoutOrderMark(File file, Iterable<?> csvData, ObjectWriter objectWriter) {
-    return doWriteToFile(file, csvData, objectWriter, false);
-  }
-
   public File writeToFile(File file, Iterable<?> csvData, ObjectWriter objectWriter) {
-    return doWriteToFile(file, csvData, objectWriter, true);
+    return doWriteToFile(file, csvData, objectWriter);
   }
 
-  private File doWriteToFile(File file, Iterable<?> csvData, ObjectWriter objectWriter, boolean isOrderMark) {
+  private File doWriteToFile(File file, Iterable<?> csvData, ObjectWriter objectWriter) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
         SequenceWriter sequenceWriter = objectWriter.writeValues(bufferedWriter)) {
-      if (isOrderMark) {
-        bufferedWriter.write(UTF_8_BYTE_ORDER_MARK);
-      }
+      bufferedWriter.write(UTF_8_BYTE_ORDER_MARK);
       sequenceWriter.writeAll(csvData);
       return file;
     } catch (IOException e) {

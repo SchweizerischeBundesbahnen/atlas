@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.module.tth.model;
+package ch.sbb.atlas.api.timetable.hearing.model;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({"timetabeHearingStatementId", "cantonAbbreviation", "status", "timetableFieldNumber",
+@JsonPropertyOrder({"timetableHearingStatementId", "cantonAbbreviation", "status", "timetableFieldNumber",
     "timetableFieldNumberDescription", "stopPlace", "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement",
     "statementAnonymous", "anonymousStatement", "documentsPresent", "firstName", "lastName", "organisation", "street",
     "zipAndCity", "emails", "timetableHearingYear", "publicComment", "internalComment", "topic"})
@@ -46,7 +46,7 @@ public class TimetableHearingStatementCsvModel extends BaseTimetableHearingState
         .timetableFieldNumber(statementModelV2.getTimetableFieldNumber())
         .timetableFieldNumberDescription(statementModelV2.getTimetableFieldDescription())
         .stopPlace(statementModelV2.getStopPlace())
-        .timetabeHearingStatementId(statementModelV2.getId())
+        .timetableHearingStatementId(statementModelV2.getId())
         .transportCompanyAbbreviations(
             statementModelV2.getResponsibleTransportCompanies().stream()
                 .map(TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation)

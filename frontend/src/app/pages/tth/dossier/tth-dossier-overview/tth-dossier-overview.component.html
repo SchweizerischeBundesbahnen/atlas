@@ -1,4 +1,18 @@
 @if (isTimetableHearingYearFound()) {
+  <atlas-button
+    (buttonClicked)="downloadCsv()"
+    [canton]="cantonShort()"
+    applicationType="TIMETABLE_HEARING"
+    buttonDataCy="download-csv"
+    buttonText="TTH.BUTTON.DOWNLOAD_CSV"
+    buttonType="icon"
+    buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
+    wrapperStyleClass="justify-self-end"
+  >
+    <ng-template #rightIcon>
+      <atlas-download-icon [readonly]="true" class="ps-2" />
+    </ng-template>
+  </atlas-button>
   <atlas-table
     (editElementEvent)="editDossier($event.id!)"
     (tableChanged)="getOverview($event)"

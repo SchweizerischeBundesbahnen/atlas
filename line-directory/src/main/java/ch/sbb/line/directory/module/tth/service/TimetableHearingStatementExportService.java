@@ -4,12 +4,12 @@ import static java.util.Comparator.comparing;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
-import ch.sbb.atlas.export.AtlasCsvMapper;
+import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingAnonymStatementCsvModel;
+import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingStatementCsvModel;
 import ch.sbb.atlas.export.CsvExportWriter;
-import ch.sbb.atlas.export.LocalizedPropertyNamingStrategy;
-import ch.sbb.line.directory.module.tth.model.TimetableHearingAnonymStatementCsvModel;
-import ch.sbb.line.directory.module.tth.model.TimetableHearingStatementCsvModel;
+import ch.sbb.atlas.export.CsvWriteConfig;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
@@ -33,21 +33,29 @@ public class TimetableHearingStatementExportService {
     if (anonymized) {
       List<TimetableHearingAnonymStatementCsvModel> csvData = statements.stream()
           .map(TimetableHearingAnonymStatementCsvModel::fromModelAnonymized)
-          .sorted(comparing(TimetableHearingAnonymStatementCsvModel::getTimetabeHearingStatementId)).toList();
-      return writeCsv(csvData, TimetableHearingAnonymStatementCsvModel.class, locale);
+          .sorted(comparing(TimetableHearingAnonymStatementCsvModel::getTimetableHearingStatementId)).toList();
+      return CsvExportWriter.writeCsv(
+          CsvWriteConfig.<TimetableHearingAnonymStatementCsvModel>builder()
+              .messageSource(timetableHearingStatementCsvTranslations)
+              .locale(locale)
+              .elementClass(TimetableHearingAnonymStatementCsvModel.class)
+              .csvData(csvData)
+              .filePath(Path.of(fileService.getDir(), OUTPUT_DIR))
+              .build()
+      );
     } else {
       List<TimetableHearingStatementCsvModel> csvData = statements.stream()
           .map(TimetableHearingStatementCsvModel::fromModel)
-          .sorted(comparing(TimetableHearingStatementCsvModel::getTimetabeHearingStatementId)).toList();
-      return writeCsv(csvData, TimetableHearingStatementCsvModel.class, locale);
+          .sorted(comparing(TimetableHearingStatementCsvModel::getTimetableHearingStatementId)).toList();
+      return CsvExportWriter.writeCsv(
+          CsvWriteConfig.<TimetableHearingStatementCsvModel>builder()
+              .messageSource(timetableHearingStatementCsvTranslations)
+              .locale(locale)
+              .elementClass(TimetableHearingStatementCsvModel.class)
+              .csvData(csvData)
+              .filePath(Path.of(fileService.getDir(), OUTPUT_DIR))
+              .build()
+      );
     }
-  }
-
-  private <T> File writeCsv(List<T> csvData, Class<T> elementClass, Locale locale) {
-    AtlasCsvMapper mapper = new AtlasCsvMapper(elementClass,
-        new LocalizedPropertyNamingStrategy(timetableHearingStatementCsvTranslations, locale));
-    String dir = fileService.getDir();
-    File outputDir = new File(dir, OUTPUT_DIR);
-    return CsvExportWriter.writeToFile(outputDir.getPath(), csvData, mapper.getObjectWriter());
   }
 }

@@ -6,6 +6,9 @@ import { DossierStatus } from '../../model/dossierStatus';
 import { SwissCanton } from '../../model/swissCanton';
 import { BoAnswer } from '../../model/boAnswer';
 import { ContainerTthDossier } from '../../model/containerTthDossier';
+import { StatementStatus } from '../../model/statementStatus';
+import { HearingStatus } from '../../model/hearingStatus';
+import { Language } from '../../model/language';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +19,13 @@ export class DossierInternalService {
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getOverview(timetableHearingYear?: number, canton?: SwissCanton, boContactSbbuid?: string, searchCriterias?: Array<string>, statusRestrictions?: Array<DossierStatus>, page?: number, size?: number, sort?: Array<string>): Observable<ContainerTthDossier> {
+  public getOverview(timetableYear?: number, hearingStatus?: HearingStatus,
+                     canton?: SwissCanton, boContactSbbuid?: string, searchCriterias?: Array<string>,
+                     statusRestrictions?: Array<DossierStatus>,
+                     page?: number, size?: number, sort?: Array<string>): Observable<ContainerTthDossier> {
     const httpParams = this.atlasApiService.paramsOf({
-      timetableHearingYear,
+      "timetableHearingYear.timetableYear": timetableYear,
+      "timetableHearingYear.hearingStatus": hearingStatus,
       canton,
       boContactSbbuid,
       searchCriterias,
@@ -55,6 +62,21 @@ export class DossierInternalService {
 
   public answerQuestion(dossierId: number, boAnswer: BoAnswer): Observable<void> {
     return this.atlasApiService.post(`${this.BASE_PATH}/answer/${dossierId}`, boAnswer);
+  }
+
+  public getDossiersAsCsv(lang: Language, timetableYear?: number, hearingStatus?: HearingStatus, canton?: SwissCanton,
+                          boContactSbbuid?: string, searchCriterias?: Array<string>,
+                          statusRestrictions?: Array<StatementStatus>){
+    const httpParams = this.atlasApiService.paramsOf({
+      "timetableHearingYear.timetableYear": timetableYear,
+      "timetableHearingYear.hearingStatus": hearingStatus,
+      canton,
+      boContactSbbuid,
+      searchCriterias,
+      statusRestrictions,
+      lang,
+    });
+    return this.atlasApiService.getBlob(`${this.BASE_PATH}/csv`, httpParams);
   }
 
 }

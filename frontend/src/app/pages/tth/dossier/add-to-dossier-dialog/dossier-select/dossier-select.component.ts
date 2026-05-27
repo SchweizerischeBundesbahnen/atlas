@@ -6,7 +6,7 @@ import { TthDossier } from '../../../../../api/model/tthDossier';
 import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
 import { map } from 'rxjs/operators';
 import { DossierSelectFormatPipe } from './dossier-select-format.pipe';
-import { SwissCanton } from '../../../../../api';
+import { HearingStatus, SwissCanton } from '../../../../../api';
 import { DossierStatus } from '../../../../../api/model/dossierStatus';
 
 @Component({
@@ -38,7 +38,7 @@ export class DossierSelectComponent implements OnInit {
       return;
     }
     this.searchResults$ = this.dossierInternalService
-      .getOverview(this.year(), this.canton(), undefined, [searchQuery], this.statusRestriction())
+      .getOverview(this.year(), HearingStatus.Active, this.canton(), undefined, [searchQuery], this.statusRestriction())
       .pipe(map((response) => response.objects ?? []));
   }
 }

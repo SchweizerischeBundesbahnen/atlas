@@ -15,14 +15,25 @@ import { TablePagination } from '../../../../core/components/table/table-paginat
 import { OverviewToTabShareDataService } from '../../overview-tab/service/overview-to-tab-share-data.service';
 import { TthDossierOverviewMenuComponent } from '../tth-dossier-overview-menu/tth-dossier-overview-menu.component';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PermissionService, TthApplicationUserType } from '../../../../core/auth/permission/permission.service';
 import { UserService } from '../../../../core/auth/user/user.service';
 import { DossierStatus } from '../../../../api/model/dossierStatus';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { DownloadIconComponent } from '../../../../core/form-components/download-icon/download-icon.component';
+import { FileDownloadService } from '../../../../core/components/file-upload/file/file-download.service';
+import { mapToLanguageModel } from '../../../../api/mapping/language';
+import { Language } from '../../../../api/model/language';
 
 @Component({
   selector: 'atlas-tth-dossier-overview',
-  imports: [TableComponent, TthDossierOverviewMenuComponent, TranslatePipe],
+  imports: [
+    TableComponent,
+    TthDossierOverviewMenuComponent,
+    TranslatePipe,
+    AtlasButtonComponent,
+    DownloadIconComponent,
+  ],
   templateUrl: './tth-dossier-overview.component.html',
   providers: [TableService],
 })
@@ -34,13 +45,13 @@ export class TthDossierOverviewComponent {
   private readonly overviewToTabService = inject(OverviewToTabShareDataService);
   private readonly permissionService = inject(PermissionService);
   private readonly userService = inject(UserService);
+  private readonly translateService = inject(TranslateService);
 
   readonly cantonShort = this.overviewToTabService.cantonShort;
   readonly timetableYear = this.overviewToTabService.timetableYear;
   readonly hearingStatus = this.overviewToTabService.hearingStatus;
   readonly isTimetableHearingYearFound = this.overviewToTabService.isTimetableHearingYearFound;
   readonly isHearingYearActive = this.overviewToTabService.isHearingYearActive;
-  readonly isHearingYearArchived = this.overviewToTabService.isHearingYearArchived;
   readonly isSwissCanton = this.overviewToTabService.isSwissCanton;
   readonly isYearLoading = this.overviewToTabService.isYearLoading;
 
@@ -83,6 +94,7 @@ export class TthDossierOverviewComponent {
     this.dossierInternalService
       .getOverview(
         this.timetableYear().timetableYear,
+        this.hearingStatus(),
         Cantons.getSwissCantonFromShort(this.cantonShort()),
         this.userType === 'BO_TTH' ? this.userService.currentUser!.sbbuid : undefined,
         this.tableService.filter.chipSearch.getActiveSearch(),
@@ -155,5 +167,19 @@ export class TthDossierOverviewComponent {
       size: this.tableService.pageSize,
       sort: this.tableService.sortString,
     });
+  }
+
+  downloadCsv() {
+    this.dossierInternalService
+      .getDossiersAsCsv(
+        mapToLanguageModel(this.translateService.getCurrentLang()) ?? Language.De,
+        this.timetableYear().timetableYear,
+        this.hearingStatus(),
+        Cantons.getSwissCantonFromShort(this.cantonShort()),
+        this.userType === 'BO_TTH' ? this.userService.currentUser!.sbbuid : undefined,
+        this.tableService.filter.chipSearch.getActiveSearch(),
+        this.tableService.filter.multiSelectDossierStatus.getActiveSearch()
+      )
+      .subscribe((response) => FileDownloadService.downloadFile('dossiers.csv', response));
   }
 }

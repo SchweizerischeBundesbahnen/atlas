@@ -1,5 +1,7 @@
 package ch.sbb.line.directory.module.tth.controller;
 
+import static java.util.Comparator.comparing;
+
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
@@ -10,6 +12,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
+import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingAnonymStatementCsvModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.model.exception.BadRequestException;
@@ -216,4 +219,17 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
   public void checkDataProtection(TimetableHearingStatementDataProtectionModel timetableHearingStatementDataProtectionModel) {
       timetableHearingStatementService.checkDataProtection(timetableHearingStatementDataProtectionModel);
   }
+
+  @Override
+  public List<TimetableHearingAnonymStatementCsvModel> getStatementsByIdAnonymized(List<Long> ids) {
+    return timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
+            timetableHearingStatementService.getTimetableHearingStatementsByIds(ids).stream()
+                .map(TimetableHearingStatementMapperV2::toModel)
+                .toList())
+        .stream()
+        .map(TimetableHearingAnonymStatementCsvModel::fromModelAnonymized)
+        .sorted(comparing(TimetableHearingAnonymStatementCsvModel::getTimetableHearingStatementId))
+        .toList();
+  }
+
 }

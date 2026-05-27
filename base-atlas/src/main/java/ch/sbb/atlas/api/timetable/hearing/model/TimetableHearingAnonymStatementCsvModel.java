@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.module.tth.model;
+package ch.sbb.atlas.api.timetable.hearing.model;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({"timetabeHearingStatementId", "cantonAbbreviation", "status", "timetableFieldNumber",
+@JsonPropertyOrder({"timetableHearingStatementId", "cantonAbbreviation", "status", "timetableFieldNumber",
     "timetableFieldNumberDescription", "stopPlace", "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement",
     "documentsPresent", "timetableHearingYear", "topic"})
 public class TimetableHearingAnonymStatementCsvModel extends BaseTimetableHearingStatementCsv {
@@ -34,7 +34,7 @@ public class TimetableHearingAnonymStatementCsvModel extends BaseTimetableHearin
         .timetableFieldNumber(model.getTimetableFieldNumber())
         .timetableFieldNumberDescription(model.getTimetableFieldDescription())
         .stopPlace(model.getStopPlace())
-        .timetabeHearingStatementId(model.getId())
+        .timetableHearingStatementId(model.getId())
         .transportCompanyAbbreviations(
             model.getResponsibleTransportCompanies().stream()
                 .map(TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation)

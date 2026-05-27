@@ -9,9 +9,14 @@
  */
 
 
-export interface SortObject { 
-    empty?: boolean;
-    unsorted?: boolean;
-    sorted?: boolean;
-}
+export type Language = 'DE' | 'FR' | 'IT';
+
+export const Language = {
+
+    De: 'DE' as Language,
+
+    Fr: 'FR' as Language,
+
+    It: 'IT' as Language
+};
 
