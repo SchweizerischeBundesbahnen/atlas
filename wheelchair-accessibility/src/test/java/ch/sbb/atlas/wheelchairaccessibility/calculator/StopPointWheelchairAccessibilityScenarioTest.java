@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.versioning.model.VersioningData;
 import ch.sbb.atlas.wheelchairaccessibility.model.Accessibility;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityFilter;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatformTestData;
@@ -200,6 +201,130 @@ class StopPointWheelchairAccessibilityScenarioTest {
         .with(new DateRange(validFrom.plusDays(12), validFrom.plusDays(18)), WheelchairAccessibilityState.PRE_REGISTRATION)
         .with(new DateRange(validFrom.plusDays(19), validFrom.plusDays(24)), WheelchairAccessibilityState.SHUTTLE)
         .with(new DateRange(validFrom.plusDays(25), validFrom.plusDays(30)), WheelchairAccessibilityState.NO_INFO);
+
+    assertThat(result).withRepresentation(AccessibilityRepresentation.INSTANCE).isEqualTo(expectedAccessibility);
+  }
+
+  @Test
+  @DisplayName("Testcase 3: Oensingen mit 6 verschiedenen Statuswerten")
+  void shouldCalculateStopPointAccessibilityForOensingenWithSixStates() {
+    // given
+    LocalDate validFrom = LocalDate.of(2020, 1, 1);
+    List<AccessibilityPlatformTestData> platforms = new ArrayList<>();
+    List<AccessibilityRelationTestData> relations = new ArrayList<>();
+
+    // StopPoint
+    AccessibilityStopPointTestData stopPoint = AccessibilityStopPointTestData.buildAutonomyStopPoint("ch:1:sloid:212")
+        .validFrom(validFrom)
+        .validTo(VersioningData.MAX_DATE)
+        .build();
+
+    // Platform 1
+    String platform1Sloid = "ch:1:sloid:212:1:1";
+    AccessibilityPlatformTestData platform1 = AccessibilityPlatformTestData.buildAutonomyPlatform(platform1Sloid)
+        .validFrom(validFrom)
+        .validTo(validFrom.plusDays(4))
+        .build();
+    platforms.add(platform1);
+    AccessibilityRelationTestData platform1Relation = AccessibilityRelationTestData.buildAutonomyRelation(platform1Sloid)
+        .validFrom(platform1.getValidFrom())
+        .validTo(platform1.getValidTo())
+        .build();
+    relations.add(platform1Relation);
+
+    // Platform 3
+    String platform3Sloid = "ch:1:sloid:212:3:3";
+    AccessibilityPlatformTestData platform3 = AccessibilityPlatformTestData.buildAutonomyPlatform(platform3Sloid)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES_WITH_STAFF_ASSISTANCE)
+        .validFrom(validFrom.plusDays(5))
+        .validTo(validFrom.plusDays(9))
+        .build();
+    platforms.add(platform3);
+
+    AccessibilityRelationTestData platform3Relation = AccessibilityRelationTestData.buildAutonomyRelation(platform3Sloid)
+        .validFrom(platform3.getValidFrom())
+        .validTo(platform3.getValidTo())
+        .build();
+    relations.add(platform3Relation);
+
+    // Platform 4
+    String platform4Sloid = "ch:1:sloid:212:3:4";
+    AccessibilityPlatformTestData platform4 = AccessibilityPlatformTestData.buildAutonomyPlatform(platform4Sloid)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.NO)
+        .boardingDevice(BoardingDeviceAttributeType.LIFTS)
+        .validFrom(validFrom.plusDays(10))
+        .validTo(validFrom.plusDays(14))
+        .build();
+    platforms.add(platform4);
+
+    AccessibilityRelationTestData platform4Relation = AccessibilityRelationTestData.buildAutonomyRelation(platform4Sloid)
+        .validFrom(platform4.getValidFrom())
+        .validTo(platform4.getValidTo())
+        .build();
+    relations.add(platform4Relation);
+
+    // Platform 5
+    String platform5Sloid = "ch:1:sloid:212:0:1960";
+    AccessibilityPlatformTestData platform5 = AccessibilityPlatformTestData.buildAutonomyPlatform(platform5Sloid)
+        .validFrom(validFrom.plusDays(15))
+        .validTo(validFrom.plusDays(19))
+        .build();
+    platforms.add(platform5);
+
+    AccessibilityRelationTestData platform5Relation = AccessibilityRelationTestData.buildAutonomyRelation(platform5Sloid)
+        .stepFreeAccess(StepFreeAccessAttributeType.NO)
+        .validFrom(platform5.getValidFrom())
+        .validTo(platform5.getValidTo())
+        .build();
+    relations.add(platform5Relation);
+
+    // Platform 45
+    String platform45Sloid = "ch:1:sloid:212:0:880532";
+    AccessibilityPlatformTestData platform45 = AccessibilityPlatformTestData.buildAutonomyPlatform(platform45Sloid)
+        .superelevation(100.0)
+        .validFrom(validFrom.plusDays(20))
+        .validTo(validFrom.plusDays(24))
+        .build();
+    platforms.add(platform45);
+
+    AccessibilityRelationTestData platform45Relation = AccessibilityRelationTestData.buildAutonomyRelation(platform45Sloid)
+        .validFrom(platform45.getValidFrom())
+        .validTo(platform45.getValidTo())
+        .build();
+    relations.add(platform45Relation);
+
+    // Platform 8
+    String platform8Sloid = "ch:1:sloid:212:0:880532";
+    AccessibilityPlatformTestData platform8 = AccessibilityPlatformTestData.buildAutonomyPlatform(platform8Sloid)
+        .shuttle(BooleanOptionalAttributeType.YES)
+        .validFrom(validFrom.plusDays(25))
+        .validTo(validFrom.plusDays(30))
+        .build();
+    platforms.add(platform8);
+
+    AccessibilityRelationTestData platform8Relation = AccessibilityRelationTestData.buildAutonomyRelation(platform8Sloid)
+        .validFrom(platform8.getValidFrom())
+        .validTo(platform8.getValidTo())
+        .build();
+    relations.add(platform8Relation);
+
+    // when
+    AccessibilityFilter accessibilityFilter = new AccessibilityFilter(validFrom);
+    Accessibility result = WheelchairAccessibility.calculateStopPoint(
+        AccessibilityRequest.builder()
+            .stopPoint(List.of(stopPoint))
+            .platform(platforms)
+            .relations(relations)
+            .build(), accessibilityFilter);
+
+    // then
+    Accessibility expectedAccessibility = new Accessibility()
+        .with(new DateRange(validFrom, validFrom.plusDays(4)), WheelchairAccessibilityState.AUTONOMY)
+        .with(new DateRange(validFrom.plusDays(5), validFrom.plusDays(9)), WheelchairAccessibilityState.RAMP_USE)
+        .with(new DateRange(validFrom.plusDays(10), validFrom.plusDays(14)), WheelchairAccessibilityState.PRE_REGISTRATION)
+        .with(new DateRange(validFrom.plusDays(15), validFrom.plusDays(19)), WheelchairAccessibilityState.NO_ACCESS)
+        .with(new DateRange(validFrom.plusDays(20), validFrom.plusDays(24)), WheelchairAccessibilityState.NO_INFO)
+        .with(new DateRange(validFrom.plusDays(25), validFrom.plusDays(30)), WheelchairAccessibilityState.SHUTTLE);
 
     assertThat(result).withRepresentation(AccessibilityRepresentation.INSTANCE).isEqualTo(expectedAccessibility);
   }

@@ -29,6 +29,7 @@ public class AccessibilityPlatformTestData implements AccessibilityPlatform {
         .sloid(sloid)
         .shuttle(BooleanOptionalAttributeType.NO)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
+        .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
         .superelevation(20.0D)
         .validFrom(VersioningData.MIN_DATE)
         .validTo(VersioningData.MAX_DATE);

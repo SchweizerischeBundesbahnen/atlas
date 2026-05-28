@@ -16,6 +16,7 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelationTestData;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPointTestData;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -110,9 +111,31 @@ class PlatformWheelchairAccessibilityCalculatorTest {
             .relations(relations)
             .build(), accessibilityFilter);
 
-    DateRange dateRange = new DateRange(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 2, 9));
     Accessibility expectedAccessibility = new Accessibility()
-        .with(dateRange, WheelchairAccessibilityState.AUTONOMY);
+        .with(new DateRange(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 2, 9)), WheelchairAccessibilityState.AUTONOMY);
+    assertThat(result).isEqualTo(expectedAccessibility);
+  }
+
+  @Test
+  void shouldCalculatePlatformAccessibilityWithNoStopPointVersion() {
+    AccessibilityPlatformTestData platform = AccessibilityPlatformTestData.builder()
+        .sloid(PLATFORM_SLOID)
+        .shuttle(BooleanOptionalAttributeType.NO)
+        .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
+        .superelevation(20.0D)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+
+    AccessibilityFilter accessibilityFilter = new AccessibilityFilter(LocalDate.of(2020, 1, 10));
+    Accessibility result = WheelchairAccessibility.calculatePlatform(
+        AccessibilityRequest.builder()
+            .stopPoint(Collections.emptyList())
+            .platform(List.of(platform))
+            .build(), accessibilityFilter);
+
+    Accessibility expectedAccessibility = new Accessibility()
+        .with(new DateRange(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 2, 9)), WheelchairAccessibilityState.NO_INFO);
     assertThat(result).isEqualTo(expectedAccessibility);
   }
 
@@ -157,11 +180,9 @@ class PlatformWheelchairAccessibilityCalculatorTest {
             .relations(relations)
             .build(), accessibilityFilter);
 
-    DateRange dateRange1 = new DateRange(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 1, 31));
-    DateRange dateRange2 = new DateRange(LocalDate.of(2020, 2, 1), LocalDate.of(2020, 2, 9));
     Accessibility expectedAccessibility = new Accessibility()
-        .with(dateRange1, WheelchairAccessibilityState.AUTONOMY)
-        .with(dateRange2, WheelchairAccessibilityState.NO_ACCESS);
+        .with(new DateRange(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 1, 31)), WheelchairAccessibilityState.AUTONOMY)
+        .with(new DateRange(LocalDate.of(2020, 2, 1), LocalDate.of(2020, 2, 9)), WheelchairAccessibilityState.NO_ACCESS);
     assertThat(result).isEqualTo(expectedAccessibility);
   }
 

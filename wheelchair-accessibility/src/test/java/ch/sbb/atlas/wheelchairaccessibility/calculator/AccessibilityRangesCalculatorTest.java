@@ -1,18 +1,40 @@
 package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class AccessibilityRangesCalculatorTest {
 
   @Test
+  void shouldGetAccessibilityRangesForNothing() {
+    assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
+        () -> AccessibilityRangesCalculator.getAccessibilityRanges(Collections.emptyList()));
+  }
+
+  @Test
   void shouldGetAccessibilityRangesForOneVersion() {
     DateRange dateRange = new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31));
+
+    List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(dateRange))
+        .getDateRanges();
+
+    List<DateRange> expectedAccessibilityRanges = List.of(
+        dateRange
+    );
+
+    assertThat(accessibilityRanges).isEqualTo(expectedAccessibilityRanges);
+  }
+
+  @Test
+  void shouldGetAccessibilityRangesForOneVersionValidOneDay() {
+    DateRange dateRange = new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 1));
 
     List<DateRange> accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(List.of(dateRange))
         .getDateRanges();

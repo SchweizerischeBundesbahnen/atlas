@@ -24,4 +24,20 @@ class AccessibilityTest {
     Accessibility result = accessibility.minify();
     assertThat(result).withRepresentation(AccessibilityRepresentation.INSTANCE).isEqualTo(expectedMinifiedAccessibility);
   }
+
+  @Test
+  void shouldMinifyEmptyAccessibility() {
+    Accessibility accessibility = new Accessibility();
+
+    Accessibility result = accessibility.minify();
+    assertThat(result).withRepresentation(AccessibilityRepresentation.INSTANCE).isEqualTo(accessibility);
+  }
+
+  @Test
+  void shouldPrettyPrintAccessibility() {
+    Accessibility accessibility = new Accessibility().with(new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 31)),
+        WheelchairAccessibilityState.AUTONOMY);
+
+    assertThat(accessibility.prettyPrint()).isEqualToIgnoringNewLines("01.01.2020-31.01.2020: AUTONOMY");
+  }
 }

@@ -14,26 +14,21 @@ class AccessibilityRangesCalculator {
 
   static AccessibilityRanges getAccessibilityRanges(List<DateRange> versionRanges) {
     if (versionRanges.isEmpty()) {
-      return new AccessibilityRanges(List.of(new DateRange(VersioningData.MIN_DATE, VersioningData.MAX_DATE)));
+      throw new IllegalArgumentException("At least one business object should be provided");
     }
 
     List<DateRange> accessibilityRanges = new ArrayList<>();
 
-    Optional<LocalDate> current = getNext(versionRanges, VersioningData.MIN_DATE);
+    LocalDate current = getNext(versionRanges, VersioningData.MIN_DATE).orElseThrow();
+    Optional<LocalDate> next = getNext(versionRanges, current);
 
-    while (current.isPresent()) {
-      Optional<LocalDate> next = getNext(versionRanges, current.get());
-      if (next.isEmpty()) {
-        break;
-      }
+    while (next.isPresent()) {
+      LocalDate nextRangeEnd = next.get().minusDays(1);
 
-      LocalDate nextRangeEnd = next.get().equals(VersioningData.MAX_DATE)
-          ? VersioningData.MAX_DATE
-          : next.get().minusDays(1);
+      accessibilityRanges.add(new DateRange(current, nextRangeEnd));
 
-      accessibilityRanges.add(new DateRange(current.get(), nextRangeEnd));
-
-      current = next;
+      current = next.get();
+      next = getNext(versionRanges, current);
     }
 
     return new AccessibilityRanges(accessibilityRanges);
