@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -45,10 +46,11 @@ public class Accessibility {
     return builder.toString();
   }
 
+  @Getter
   @ToString
   @EqualsAndHashCode
   @RequiredArgsConstructor
-  static class AccessibilityInfo {
+  public static class AccessibilityInfo {
 
     private final DateRange dateRange;
     private final WheelchairAccessibilityState accessibilityState;

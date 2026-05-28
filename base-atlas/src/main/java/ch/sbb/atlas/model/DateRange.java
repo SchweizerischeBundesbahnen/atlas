@@ -2,6 +2,7 @@ package ch.sbb.atlas.model;
 
 import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -56,6 +57,7 @@ public class DateRange implements Serializable {
         && (to.equals(givenDateRange.getTo()) || to.isBefore(givenDateRange.getTo()));
   }
 
+  @JsonIgnore
   public long getValidityInDays() {
     return ChronoUnit.DAYS.between(from, to) + 1;
   }

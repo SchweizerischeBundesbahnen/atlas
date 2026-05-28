@@ -1,8 +1,10 @@
 package ch.sbb.prm.directory.module.wheelchairaccessibility.controller;
 
+import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.ReadAccessibilityModel;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.ReadWheelchairAccessibilityModel;
 import ch.sbb.atlas.wheelchairaccessibility.model.Accessibility;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.api.WheelchairAccessibilityApiInternal;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.mapper.AccessibilityMapper;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.service.WheelchairAccessibilityService;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,9 @@ public class WheelchairAccessibilityApiInternalController implements WheelchairA
   }
 
   @Override
-  public Accessibility getPlatformAccessibility(String platformSloid, LocalDate startingFrom) {
-    return wheelchairAccessibilityService.calculateForPlatform(platformSloid, startingFrom);
+  public ReadAccessibilityModel getPlatformAccessibility(String platformSloid, LocalDate startingFrom) {
+    Accessibility accessibility = wheelchairAccessibilityService.calculateForPlatform(platformSloid, startingFrom);
+    return AccessibilityMapper.toModel(accessibility);
   }
 
   @Override
@@ -34,8 +37,9 @@ public class WheelchairAccessibilityApiInternalController implements WheelchairA
   }
 
   @Override
-  public Accessibility getStopPointAccessibility(String stopPointSloid, LocalDate startingFrom) {
-    return wheelchairAccessibilityService.calculateForStopPoint(stopPointSloid, startingFrom);
+  public ReadAccessibilityModel getStopPointAccessibility(String stopPointSloid, LocalDate startingFrom) {
+    Accessibility accessibility = wheelchairAccessibilityService.calculateForStopPoint(stopPointSloid, startingFrom);
+    return AccessibilityMapper.toModel(accessibility);
   }
 
 }

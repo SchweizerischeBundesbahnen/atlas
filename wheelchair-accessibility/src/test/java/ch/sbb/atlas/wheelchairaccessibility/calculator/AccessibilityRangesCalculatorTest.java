@@ -14,8 +14,9 @@ class AccessibilityRangesCalculatorTest {
 
   @Test
   void shouldGetAccessibilityRangesForNothing() {
+    List<DateRange> versionRanges = Collections.emptyList();
     assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
-        () -> AccessibilityRangesCalculator.getAccessibilityRanges(Collections.emptyList()));
+        () -> AccessibilityRangesCalculator.getAccessibilityRanges(versionRanges));
   }
 
   @Test

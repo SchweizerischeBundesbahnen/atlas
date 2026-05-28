@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.module.wheelchairaccessibility.controller;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,6 +75,35 @@ class WheelchairAccessibilityApiInternalControllerTest extends BaseControllerApi
 
   @Test
   @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetWheelchairAccessibilityForPlatform() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    LocalDate startingDate = LocalDate.of(2020, 1, 1);
+    stopPointVersion.setValidFrom(startingDate);
+    stopPointVersion.setValidTo(startingDate.plusYears(1));
+
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setValidFrom(startingDate);
+    platformVersion.setValidTo(startingDate.plusYears(1));
+
+    stopPointRepository.save(stopPointVersion);
+    platformRepository.save(platformVersion);
+    relationRepository.save(RelationTestData.getRelation(stopPointVersion.getSloid(),
+        platformVersion.getSloid(),
+        ReferencePointElementType.PLATFORM));
+
+    //when & then
+    mvc.perform(get("/internal/wheelchair-accessibility/platform/" + platformVersion.getSloid())
+            .param("startingFrom", "2020-01-01"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.rows", hasSize(1)))
+        .andExpect(jsonPath("$.rows[0].accessibilityState", is("NO_ACCESS")))
+        .andExpect(jsonPath("$.rows[0].dateRange.from", is("2020-01-01")))
+        .andExpect(jsonPath("$.rows[0].dateRange.to", is("2020-01-31")));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
   void shouldGetWheelchairAccessibilityValidTodayStopPoint() throws Exception {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
@@ -97,6 +128,39 @@ class WheelchairAccessibilityApiInternalControllerTest extends BaseControllerApi
     mvc.perform(get("/internal/wheelchair-accessibility/stop-point/" + stopPointVersion.getSloid() + "/today"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.state").value(WheelchairAccessibilityState.SHUTTLE.name()));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetWheelchairAccessibilityForStopPoint() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    LocalDate startingFrom = LocalDate.of(2020, 1, 1);
+    stopPointVersion.setValidFrom(startingFrom);
+    stopPointVersion.setValidTo(startingFrom.plusYears(1));
+
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setValidFrom(startingFrom);
+    platformVersion.setValidTo(startingFrom.plusYears(1));
+    platformVersion.setShuttle(BooleanOptionalAttributeType.YES);
+
+    RelationVersion relationVersion = RelationTestData.getRelation(stopPointVersion.getSloid(),
+        platformVersion.getSloid(),
+        ReferencePointElementType.PLATFORM);
+    relationVersion.setStepFreeAccess(StepFreeAccessAttributeType.YES);
+
+    stopPointRepository.save(stopPointVersion);
+    platformRepository.save(platformVersion);
+    relationRepository.save(relationVersion);
+
+    //when & then
+    mvc.perform(get("/internal/wheelchair-accessibility/stop-point/" + stopPointVersion.getSloid())
+            .param("startingFrom", "2020-01-01"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.rows", hasSize(1)))
+        .andExpect(jsonPath("$.rows[0].accessibilityState", is("SHUTTLE")))
+        .andExpect(jsonPath("$.rows[0].dateRange.from", is("2020-01-01")))
+        .andExpect(jsonPath("$.rows[0].dateRange.to", is("2020-01-31")));
   }
 
 }

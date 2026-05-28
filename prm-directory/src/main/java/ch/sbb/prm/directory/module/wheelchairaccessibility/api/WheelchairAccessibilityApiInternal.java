@@ -3,8 +3,8 @@ package ch.sbb.prm.directory.module.wheelchairaccessibility.api;
 import ch.sbb.atlas.annotation.UnauthorizedAllowed;
 import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.ReadAccessibilityModel;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.ReadWheelchairAccessibilityModel;
-import ch.sbb.atlas.wheelchairaccessibility.model.Accessibility;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,7 +23,7 @@ public interface WheelchairAccessibilityApiInternal {
 
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("platform/{platformSloid}")
-  Accessibility getPlatformAccessibility(@PathVariable String platformSloid,
+  ReadAccessibilityModel getPlatformAccessibility(@PathVariable String platformSloid,
       @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate startingFrom);
 
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
@@ -32,7 +32,7 @@ public interface WheelchairAccessibilityApiInternal {
 
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @GetMapping("stop-point/{stopPointSloid}")
-  Accessibility getStopPointAccessibility(@PathVariable String stopPointSloid,
+  ReadAccessibilityModel getStopPointAccessibility(@PathVariable String stopPointSloid,
       @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate startingFrom);
 
 }
