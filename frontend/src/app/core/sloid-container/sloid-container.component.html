@@ -3,7 +3,7 @@
     {{ label() | translate }}
   </div>
   <div class="d-flex">
-    {{ sloid() }}
+    <span data-cy="sloid-value">{{ sloid() }}</span>
     <atlas-clipboard [value]="sloid()" [showMe]="true" />
   </div>
 </div>
