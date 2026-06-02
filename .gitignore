@@ -146,3 +146,4 @@ frontend/jsonZipDirectory/
 
 # may be allowed for SDD in the future
 _docs
+.github/.copilot-setup.json

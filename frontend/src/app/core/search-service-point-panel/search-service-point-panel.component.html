@@ -14,7 +14,11 @@
           {{ 'SEPODI.SERVICE_POINTS.SEARCH_OR_NAVIGATION' | translate }}
         </span>
         <div class="ps-4 pt-lg-2">
-          <atlas-slide-toggle (toggleChange)="changeSearchType($event)" [slideTrackNeutral]="true" />
+          <atlas-slide-toggle
+            data-cy="search-navigation-toggle"
+            (toggleChange)="changeSearchType($event)"
+            [slideTrackNeutral]="true"
+          />
         </div>
       </div>
       <ng-content />
