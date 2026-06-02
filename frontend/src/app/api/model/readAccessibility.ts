@@ -11,6 +11,6 @@ import { AccessibilityRow } from './accessibilityRow';
 
 
 export interface ReadAccessibility { 
-    rows?: Array<AccessibilityRow>;
+    rows: Array<AccessibilityRow>;
 }
 

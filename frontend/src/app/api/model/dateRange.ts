@@ -10,7 +10,7 @@
 
 
 export interface DateRange { 
-    from?: Date;
-    to?: Date;
+    from: Date;
+    to: Date;
 }
 

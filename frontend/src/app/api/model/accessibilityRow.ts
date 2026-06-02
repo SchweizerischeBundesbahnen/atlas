@@ -11,8 +11,8 @@ import { DateRange } from './dateRange';
 
 
 export interface AccessibilityRow { 
-    dateRange?: DateRange;
-    accessibilityState?: AccessibilityRow.AccessibilityStateEnum;
+    dateRange: DateRange;
+    accessibilityState: AccessibilityRow.AccessibilityStateEnum;
 }
 export namespace AccessibilityRow {
     export type AccessibilityStateEnum = 'AUTONOMY' | 'RAMP_USE' | 'PRE_REGISTRATION' | 'NO_ACCESS' | 'NO_INFO' | 'SHUTTLE';
