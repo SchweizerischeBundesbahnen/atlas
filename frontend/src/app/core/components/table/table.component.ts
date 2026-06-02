@@ -32,7 +32,7 @@ import { ShowTitlePipe } from './pipe/show-title.pipe';
 import { FormatPipe } from './pipe/format.pipe';
 
 @Component({
-  selector: 'atlas-table [tableData][tableColumns][editElementEvent]',
+  selector: 'atlas-table [tableData][tableColumns]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   imports: [

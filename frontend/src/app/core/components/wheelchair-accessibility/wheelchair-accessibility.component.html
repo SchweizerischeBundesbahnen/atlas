@@ -1,19 +1,77 @@
-@if (wheelchairAccessibility() && isSelectedVersionValidToday()) {
-  <div class="d-flex flex-row align-items-start">
-    <img
-      class="ms-5"
-      ngSrc="assets/images/prm/wheelchair-accessibility/{{ wheelchairAccessibility().toLowerCase() }}.svg"
-      height="50"
-      width="50"
-      [alt]="wheelchairAccessibility().toLowerCase()"
-    />
+<div
+  class="d-flex flex-row align-items-start clickable-icon"
+  (click)="toggleOverlay()"
+  cdkOverlayOrigin
+  #origin="cdkOverlayOrigin"
+>
+  <img
+    class="ms-5"
+    ngSrc="assets/images/prm/wheelchair-accessibility/{{ wheelchairAccessibilityToday?.toLowerCase() }}.svg"
+    height="50"
+    width="50"
+    [alt]="wheelchairAccessibilityToday?.toLowerCase()"
+  />
 
-    <atlas-form-info-icon
-      [infoTitle]="
-        ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.TODAY_ACCESSIBILITY' | translate) +
-        ': ' +
-        ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.' + wheelchairAccessibility() | translate)
-      "
-    ></atlas-form-info-icon>
+  <atlas-form-info-icon
+    [infoTitle]="
+      ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.TODAY_ACCESSIBILITY' | translate) +
+      ': ' +
+      ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.' + wheelchairAccessibilityToday | translate)
+    "
+  ></atlas-form-info-icon>
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="isOverlayOpen"
+  [cdkConnectedOverlayPositions]="overlayPositionRight"
+  [cdkConnectedOverlayPush]="true"
+  (detach)="close()"
+>
+  <div class="overlay">
+    <div class="d-flex justify-content-between">
+      <div class="d-flex">
+        <atlas-form-info-icon
+          atlasInfoLink
+          infoLinkTranslationKey="PRM.ACCESSIBILITY_INFO_LINK"
+          infoTitle="{{ 'PRM.ACCESSIBILITY_INFO_ICON' | translate }}"
+        />
+      </div>
+      <div class="d-flex">
+        <atlas-dialog-close (clicked)="close()" />
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="col-6 pe-3">
+        <atlas-form-date
+          [formGroup]="dateInputForm"
+          controlName="startingFrom"
+          label="COMMON.DATE.DATE"
+          [readonly]="true"
+        />
+      </div>
+      @if (wheelchairAccessibility.length > 0) {
+        <div class="d-flex col-6 flex-column">
+          <atlas-spacer height="15px" />
+          <span class="font-bold-lg color-gray-900">{{ 'PRM.ACCESSIBILITY' | translate }} </span>
+          <span class="color-gray-900">{{
+            'PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.' + wheelchairAccessibility[0].accessibilityState | translate
+          }}</span>
+        </div>
+      }
+    </div>
+    @if (wheelchairAccessibility) {
+      <div class="font-bold-2xl color-gray-900 mt-5">{{ 'PRM.ACCESSIBILITY_NEXT_DAYS' | translate }} </div>
+      <div class="accessibility-table">
+        <atlas-table
+          [tableData]="wheelchairAccessibility"
+          [tableColumns]="accessibilityColumns"
+          [sortingDisabled]="true"
+          [showTableFilter]="false"
+          [showPaginator]="false"
+        />
+      </div>
+    }
   </div>
-}
+</ng-template>

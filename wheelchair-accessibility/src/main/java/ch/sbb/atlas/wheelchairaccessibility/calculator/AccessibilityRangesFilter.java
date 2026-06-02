@@ -26,6 +26,9 @@ class AccessibilityRangesFilter {
         .build();
 
     List<DateRange> filteredRanges = accessibilityRanges.stream().filter(i -> i.overlapsWith(filterRange)).toList();
+    if (filteredRanges.isEmpty()) {
+      return filteredRanges;
+    }
     filteredRanges.getFirst().setFrom(accessibilityFilter.getFrom());
     filteredRanges.getLast().setTo(filterEnd);
     return filteredRanges;

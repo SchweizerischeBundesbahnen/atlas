@@ -55,6 +55,7 @@
     "NO": "Non",
     "ACHTUNG": "Attention!",
     "DATE": {
+      "DATE": "Date",
       "SELECT_DATERANGE": "Date de... à...*"
     },
     "FROM": "de",
@@ -1530,6 +1531,10 @@
       "PARKING_LOT": "Place de stationnement",
       "RELATION": "Relations"
     },
+    "ACCESSIBILITY": "Accessibilité",
+    "ACCESSIBILITY_NEXT_DAYS": "Accessibilité dans les 30 prochains jours",
+    "ACCESSIBILITY_INFO_ICON": "Informations complémentaires sur tp-info.ch",
+    "ACCESSIBILITY_INFO_LINK": "https://www.tp-info.ch/fr/gestion-des-donnees/accessibilite/accessibilite-dans-lhoraire",
     "STOP_POINTS": {
       "FORM": {
         "FREE_TEXT": "Remarques sur l’arrêt",

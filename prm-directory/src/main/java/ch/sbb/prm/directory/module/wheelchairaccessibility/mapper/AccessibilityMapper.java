@@ -11,7 +11,10 @@ public class AccessibilityMapper {
   public static ReadAccessibilityModel toModel(Accessibility accessibility) {
     return ReadAccessibilityModel.builder()
         .rows(accessibility.getAccessibilityInfos().stream()
-            .map(i -> AccessibilityRow.builder().dateRange(i.getDateRange()).accessibilityState(i.getAccessibilityState())
+            .map(accessibilityInfo -> AccessibilityRow.builder()
+                .from(accessibilityInfo.getDateRange().getFrom())
+                .to(accessibilityInfo.getDateRange().getTo())
+                .accessibilityState(accessibilityInfo.getAccessibilityState())
                 .build())
             .toList())
         .build();

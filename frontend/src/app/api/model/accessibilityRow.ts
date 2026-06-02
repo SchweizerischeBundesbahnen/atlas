@@ -7,11 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateRange } from './dateRange';
 
 
 export interface AccessibilityRow { 
-    dateRange: DateRange;
+    from: Date;
+    to: Date;
     accessibilityState: AccessibilityRow.AccessibilityStateEnum;
 }
 export namespace AccessibilityRow {

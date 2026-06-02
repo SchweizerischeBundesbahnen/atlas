@@ -33,13 +33,12 @@
           {{ 'COMMON.VERSION' | translate }}
           {{ selectedVersionIndex + 1 }}
         </h2>
-        <atlas-wheelchair-accessibility
-          [wheelchairAccessibility]="wheelchairAccessibilityToday!"
-          [isSelectedVersionValidToday]="isSelectedVersionValidToday()"
-        >
-        </atlas-wheelchair-accessibility>
+        @if (isSelectedVersionValidToday()) {
+          <atlas-wheelchair-accessibility
+            objectType="PLATFORM"
+            [sloid]="trafficPoint.sloid!"/>
+        }
       </div>
-
     }
     <div class="col-6 pb-3 mt-3">
       <h2 class="font-bold-2xl color-gray-900">
