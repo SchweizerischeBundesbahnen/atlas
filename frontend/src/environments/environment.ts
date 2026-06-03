@@ -6,6 +6,7 @@ import { Environment } from './environment.model';
 import packageJson from '../../package.json';
 import { atlasReleaseNotes, authority } from './environment.common';
 import { LogLevel, OpenIdConfiguration, PassedInitialConfig } from 'angular-auth-oidc-client';
+import 'angular-server-side-configuration/process';
 
 const app: OpenIdConfiguration = {
   configId: 'app',
@@ -42,5 +43,6 @@ export const environment: Environment = {
   atlasUnauthApiUrl: 'http://localhost:6969',
   authConfig,
   atlasReleaseNotes,
-  journeyMapsApiKey: '6e28a0f7559988d0acf14d450ca29cf9',
+  journeyMapsApiKey: process.env.JOURNEY_MAPS_API_KEY!,
+  arcgisMapToken: process.env.ARCGIS_MAP_TOKEN!,
 };

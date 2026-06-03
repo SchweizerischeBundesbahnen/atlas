@@ -26,20 +26,19 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
     osm: {
       type: 'raster',
       tiles: [
-        `https://journey-maps-tiles.api.sbb.ch/styles/osm_streets_v2/{z}/{x}/{y}.webp?api_key=${environment.journeyMapsApiKey}`,
+        `https://journey-maps-tiles.geocdn.sbb.ch/styles/journey_maps_bright_v1/{z}/{x}/{y}.webp?api_key=${environment.journeyMapsApiKey}`,
       ],
       tileSize: 256,
       attribution:
-        '&copy; SBB/CFF/FFS &copy; geOps Tiles &copy; imagico &copy; OpenMapTiles &copy; OpenStreetMap Contributors',
+        '<a href="https://www.sbb.ch/" target="_blank">&copy; SBB/CFF/FFS</a> <a href="https://www.geops.com/" target="_blank">&copy; geOps Tiles</a> <a href="https://www.openstreetmap.org/about/" target="_blank">&copy; OpenStreetMap</a>',
     },
     satellite: {
       type: 'raster',
       tiles: [
-        `https://journey-maps-tiles.api.sbb.ch/styles/aerial/{z}/{x}/{y}.webp?api_key=${environment.journeyMapsApiKey}`,
+        `https://ibasemaps-api.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}?token=${environment.arcgisMapToken}`,
       ],
       tileSize: 256,
-      attribution:
-        '&copy; SBB/CFF/FFS &copy; geOps Tiles &copy; imagico &copy; OpenMapTiles &copy; OpenStreetMap Contributors',
+      attribution: 'Esri, Maxar, Earthstar Geographics, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community',
     },
     satellite_swiss: {
       type: 'raster',

@@ -54,4 +54,5 @@ export const environment: Environment = {
   authConfig,
   atlasReleaseNotes,
   journeyMapsApiKey: process.env.JOURNEY_MAPS_API_KEY!,
+  arcgisMapToken: process.env.ARCGIS_MAP_TOKEN!,
 };
