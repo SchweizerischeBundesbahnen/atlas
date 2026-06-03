@@ -27,7 +27,7 @@
   [cdkConnectedOverlayOpen]="isOverlayOpen"
   [cdkConnectedOverlayPositions]="overlayPositionRight"
   [cdkConnectedOverlayPush]="true"
-  (detach)="close()"
+  (detach)="closeOverlay()"
 >
   <div class="overlay">
     <div class="d-flex justify-content-between">
@@ -39,7 +39,7 @@
         />
       </div>
       <div class="d-flex">
-        <atlas-dialog-close (clicked)="close()" />
+        <atlas-dialog-close (clicked)="closeOverlay()" />
       </div>
     </div>
     <div class="d-flex flex-row">

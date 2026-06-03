@@ -33,18 +33,6 @@ export type AccessibilityType = 'STOP_POINT' | 'PLATFORM';
   styleUrls: ['./wheelchair-accessibility.component.scss'],
 })
 export class WheelchairAccessibilityComponent implements OnInit {
-  sloid = input.required<string>();
-  objectType = input.required<AccessibilityType>();
-  editMode = input.required<boolean>();
-
-  constructor() {
-    effect(() => {
-      if (this.editMode()) {
-        this.close();
-      }
-    });
-  }
-
   private readonly wheelchairAccessibilityService = inject(WheelchairAccessibilityInternalService);
 
   readonly dateInputForm = new FormGroup({
@@ -80,6 +68,19 @@ export class WheelchairAccessibilityComponent implements OnInit {
       offsetX: 8,
     },
   ];
+
+  sloid = input.required<string>();
+  objectType = input.required<AccessibilityType>();
+  editMode = input.required<boolean>();
+
+  constructor() {
+    effect(() => {
+      if (this.editMode()) {
+        this.closeOverlay();
+      }
+    });
+  }
+
   isOverlayOpen = false;
   wheelchairAccessibilityToday?: ReadWheelchairAccessibility.StateEnum;
   wheelchairAccessibility: AccessibilityRow[] = [];
@@ -98,7 +99,7 @@ export class WheelchairAccessibilityComponent implements OnInit {
     }
   }
 
-  close() {
+  closeOverlay() {
     this.isOverlayOpen = false;
   }
 

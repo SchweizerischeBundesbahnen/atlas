@@ -16,11 +16,11 @@ abstract class WheelchairAccessibilityCalculator {
     List<DateRange> allDateRanges = accessibilityRequest.getAllDateRanges();
 
     AccessibilityRanges accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(allDateRanges);
-    log.info("All AccessibilityRanges: {}", accessibilityRanges);
+    log.debug("All AccessibilityRanges: {}", accessibilityRanges);
 
     AccessibilityRangesFilter accessibilityRangesFilter = new AccessibilityRangesFilter(accessibilityFilter);
     AccessibilityRanges filteredRanges = accessibilityRangesFilter.applyTo(accessibilityRanges);
-    log.info("Filtered by {} AccessibilityRanges: {}", accessibilityRangesFilter, filteredRanges);
+    log.debug("Filtered by {} AccessibilityRanges: {}", accessibilityRangesFilter, filteredRanges);
 
     Accessibility accessibility = new Accessibility();
     for (DateRange dateRange : filteredRanges) {
@@ -29,7 +29,7 @@ abstract class WheelchairAccessibilityCalculator {
     }
 
     Accessibility minifiedAccessibility = accessibility.minify();
-    log.info("Calculated accessibility: {}", minifiedAccessibility);
+    log.debug("Calculated accessibility: {}", minifiedAccessibility);
     return minifiedAccessibility;
   }
 
