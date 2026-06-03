@@ -1,15 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BoStatementDetailComponent } from './bo-statement-detail.component';
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 import { statement } from '../../statement-test-util';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { SwissCanton } from '../../../../../api';
+import { Pages } from '../../../../pages';
 
 describe('BoStatementDetail', () => {
   let component: BoStatementDetailComponent;
   let fixture: ComponentFixture<BoStatementDetailComponent>;
+  let router: Router;
 
   beforeEach(async () => {
     const activatedRoute = {
@@ -35,6 +38,7 @@ describe('BoStatementDetail', () => {
       ],
     }).compileComponents();
 
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(BoStatementDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -66,5 +70,24 @@ describe('BoStatementDetail', () => {
     component.form.controls.statementAnonymous.setValue(false);
     //then
     expect(component.getStatementControlName()).toBe('anonymousStatement');
+  });
+
+  it('should go to dossier', () => {
+    //given
+    component.statement = {
+      id: 1,
+      swissCanton: SwissCanton.Bern,
+      statement: 'Öper isch am YB-Match gsi',
+      statementSender: {
+        emails: new Set('fan@yb.ch'),
+      },
+      dossierId: 123,
+    };
+
+    vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    //when
+    component.goToDossier();
+    //then
+    expect(router.navigate).toHaveBeenCalledWith(['../..', Pages.TTH_DOSSIERS.path, 123], expect.any(Object));
   });
 });
