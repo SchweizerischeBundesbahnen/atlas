@@ -75,4 +75,17 @@ class AccessibilityRangesFilterTest {
     );
     assertThat(filteredResult).isEqualTo(expectedResult);
   }
+
+  @Test
+  void shouldFilterWithNoVersion() {
+    List<DateRange> allRanges = List.of(
+        new DateRange(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31))
+    );
+
+    AccessibilityFilter accessibilityFilter = new AccessibilityFilter(LocalDate.of(2000, 2, 1), 30);
+    List<DateRange> filteredResult = new AccessibilityRangesFilter(accessibilityFilter).applyTo(allRanges);
+
+    List<DateRange> expectedResult = List.of();
+    assertThat(filteredResult).isEqualTo(expectedResult);
+  }
 }

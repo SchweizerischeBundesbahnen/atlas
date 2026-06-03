@@ -7,21 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { WheelchairAccessibilityState } from './wheelchairAccessibilityState';
 
 
 export interface ReadWheelchairAccessibility { 
-    state?: ReadWheelchairAccessibility.StateEnum;
+    state?: WheelchairAccessibilityState;
 }
 export namespace ReadWheelchairAccessibility {
-    export type StateEnum = 'AUTONOMY' | 'RAMP_USE' | 'PRE_REGISTRATION' | 'NO_ACCESS' | 'NO_INFO' | 'SHUTTLE';
-    export const StateEnum = {
-        Autonomy: 'AUTONOMY' as StateEnum,
-        RampUse: 'RAMP_USE' as StateEnum,
-        PreRegistration: 'PRE_REGISTRATION' as StateEnum,
-        NoAccess: 'NO_ACCESS' as StateEnum,
-        NoInfo: 'NO_INFO' as StateEnum,
-        Shuttle: 'SHUTTLE' as StateEnum
-    };
 }
 
 

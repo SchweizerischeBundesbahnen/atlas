@@ -9,22 +9,22 @@ import {
 } from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
 import {of} from 'rxjs';
 import {mock} from 'vitest-mock-extended';
-import {ReadWheelchairAccessibility} from '../../../api';
+import {WheelchairAccessibilityState} from '../../../api/model/wheelchairAccessibilityState';
 
 const wheelchairAccessibilityInternalService = mock<WheelchairAccessibilityInternalService>();
 wheelchairAccessibilityInternalService.getPlatformAccessibilityToday.mockReturnValue(of({}));
 wheelchairAccessibilityInternalService.getPlatformAccessibility.mockReturnValue(
   of({
-    rows: [{ accessibilityState: ReadWheelchairAccessibility.StateEnum.Autonomy, from: new Date(), to: new Date() }],
+    rows: [{ accessibilityState: WheelchairAccessibilityState.Autonomy, from: new Date(), to: new Date() }],
   })
 );
 
 wheelchairAccessibilityInternalService.getStopPointAccessibilityToday.mockReturnValue(
-  of({ state: ReadWheelchairAccessibility.StateEnum.Autonomy })
+  of({ state: WheelchairAccessibilityState.Autonomy })
 );
 wheelchairAccessibilityInternalService.getStopPointAccessibility.mockReturnValue(
   of({
-    rows: [{ accessibilityState: ReadWheelchairAccessibility.StateEnum.Autonomy, from: new Date(), to: new Date() }],
+    rows: [{ accessibilityState: WheelchairAccessibilityState.Autonomy, from: new Date(), to: new Date() }],
   })
 );
 
@@ -61,7 +61,7 @@ describe('WheelchairAccessibilityComponent', () => {
       expect(component).toBeTruthy();
       expect(component.isOverlayOpen).toBe(false);
 
-      expect(component.wheelchairAccessibilityToday).toBe(ReadWheelchairAccessibility.StateEnum.Autonomy);
+      expect(component.wheelchairAccessibilityToday).toBe(WheelchairAccessibilityState.Autonomy);
       expect(component.wheelchairAccessibility.length).toBe(0);
     });
 

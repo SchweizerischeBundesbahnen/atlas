@@ -2,7 +2,6 @@ import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { InfoIconComponent, InfoLinkDirective } from '@atlas/form';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ReadWheelchairAccessibility } from '../../../api';
 import { ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
 import { WheelchairAccessibilityInternalService } from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
 import { DateComponent } from '../../form-components/date/date.component';
@@ -13,6 +12,7 @@ import { AtlasSpacerComponent } from '../spacer/atlas-spacer.component';
 import { TableComponent } from '../table/table.component';
 import { AccessibilityRow } from '../../../api/model/accessibilityRow';
 import { TableColumn } from '../table/table-column';
+import { WheelchairAccessibilityState } from '../../../api/model/wheelchairAccessibilityState';
 
 export type AccessibilityType = 'STOP_POINT' | 'PLATFORM';
 
@@ -82,7 +82,7 @@ export class WheelchairAccessibilityComponent implements OnInit {
   }
 
   isOverlayOpen = false;
-  wheelchairAccessibilityToday?: ReadWheelchairAccessibility.StateEnum;
+  wheelchairAccessibilityToday?: WheelchairAccessibilityState;
   wheelchairAccessibility: AccessibilityRow[] = [];
 
   ngOnInit(): void {
