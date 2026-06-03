@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { InfoIconComponent, InfoLinkDirective } from '@atlas/form';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -35,6 +35,15 @@ export type AccessibilityType = 'STOP_POINT' | 'PLATFORM';
 export class WheelchairAccessibilityComponent implements OnInit {
   sloid = input.required<string>();
   objectType = input.required<AccessibilityType>();
+  editMode = input.required<boolean>();
+
+  constructor() {
+    effect(() => {
+      if (this.editMode()) {
+        this.close();
+      }
+    });
+  }
 
   private readonly wheelchairAccessibilityService = inject(WheelchairAccessibilityInternalService);
 
@@ -77,7 +86,6 @@ export class WheelchairAccessibilityComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadWheelchairAccessibilityToday();
-    // beim edit modus schliessen
     this.dateInputForm.controls.startingFrom.valueChanges.subscribe(() =>
       this.loadWheelchairAccessibilityOnSpecifiedDate()
     );

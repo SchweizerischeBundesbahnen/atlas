@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it } from 'vitest';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {beforeEach, describe, expect, it} from 'vitest';
 
-import { WheelchairAccessibilityComponent } from './wheelchair-accessibility.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { translateServiceProvider } from '../../../app.testing.mocks';
+import {WheelchairAccessibilityComponent} from './wheelchair-accessibility.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {translateServiceProvider} from '../../../app.testing.mocks';
 
-describe.only('WheelchairAccessibilityComponent', () => {
+describe('WheelchairAccessibilityComponent', () => {
   let component: WheelchairAccessibilityComponent;
   let fixture: ComponentFixture<WheelchairAccessibilityComponent>;
 
@@ -18,6 +18,7 @@ describe.only('WheelchairAccessibilityComponent', () => {
     fixture = TestBed.createComponent(WheelchairAccessibilityComponent);
     fixture.componentRef.setInput('objectType', 'STOP_POINT');
     fixture.componentRef.setInput('sloid', 'ch:1:sloid:90064');
+    fixture.componentRef.setInput('editMode', false);
 
     component = fixture.componentInstance;
     await fixture.whenStable();

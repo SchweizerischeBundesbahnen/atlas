@@ -98,8 +98,8 @@ class WheelchairAccessibilityApiInternalControllerTest extends BaseControllerApi
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.rows", hasSize(1)))
         .andExpect(jsonPath("$.rows[0].accessibilityState", is("NO_ACCESS")))
-        .andExpect(jsonPath("$.rows[0].dateRange.from", is("2020-01-01")))
-        .andExpect(jsonPath("$.rows[0].dateRange.to", is("2020-01-31")));
+        .andExpect(jsonPath("$.rows[0].from", is("2020-01-01")))
+        .andExpect(jsonPath("$.rows[0].to", is("2020-01-31")));
   }
 
   @Test
@@ -159,8 +159,8 @@ class WheelchairAccessibilityApiInternalControllerTest extends BaseControllerApi
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.rows", hasSize(1)))
         .andExpect(jsonPath("$.rows[0].accessibilityState", is("SHUTTLE")))
-        .andExpect(jsonPath("$.rows[0].dateRange.from", is("2020-01-01")))
-        .andExpect(jsonPath("$.rows[0].dateRange.to", is("2020-01-31")));
+        .andExpect(jsonPath("$.rows[0].from", is("2020-01-01")))
+        .andExpect(jsonPath("$.rows[0].to", is("2020-01-31")));
   }
 
 }

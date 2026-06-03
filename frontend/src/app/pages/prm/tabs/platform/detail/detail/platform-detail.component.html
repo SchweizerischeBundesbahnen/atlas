@@ -36,7 +36,9 @@
         @if (isSelectedVersionValidToday()) {
           <atlas-wheelchair-accessibility
             objectType="PLATFORM"
-            [sloid]="trafficPoint.sloid!"/>
+            [sloid]="trafficPoint.sloid!"
+            [editMode]="form.enabled"
+          />
         }
       </div>
     }

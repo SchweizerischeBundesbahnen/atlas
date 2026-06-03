@@ -77,7 +77,7 @@ public class WheelchairAccessibilityService {
     List<PlatformVersion> platform = platformService.getPlatformsByStopPoint(stopPointSloid);
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(stopPointSloid);
 
-    return WheelchairAccessibility.calculatePlatform(
+    return WheelchairAccessibility.calculateStopPoint(
         AccessibilityRequest.builder().stopPoint(stopPoint).platform(platform).relations(relations).build(),
         new AccessibilityFilter(startingFrom));
   }

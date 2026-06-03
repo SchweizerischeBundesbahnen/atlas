@@ -43,4 +43,36 @@ class AccessibilityRangesFilterTest {
     );
     assertThat(filteredResult).isEqualTo(expectedResult);
   }
+
+  @Test
+  void shouldFilterWithFirstVersionStartingInFilter() {
+    List<DateRange> allRanges = List.of(
+        new DateRange(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31))
+    );
+
+    AccessibilityFilter accessibilityFilter = new AccessibilityFilter(LocalDate.of(2018, 12, 15), 30);
+    List<DateRange> filteredResult = new AccessibilityRangesFilter(accessibilityFilter).applyTo(allRanges);
+
+    List<DateRange> expectedResult = List.of(
+        new DateRange(LocalDate.of(2018, 12, 15), LocalDate.of(2018, 12, 31)),
+        new DateRange(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 1, 14))
+    );
+    assertThat(filteredResult).isEqualTo(expectedResult);
+  }
+
+  @Test
+  void shouldFilterWithLastVersionEndingInFilter() {
+    List<DateRange> allRanges = List.of(
+        new DateRange(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31))
+    );
+
+    AccessibilityFilter accessibilityFilter = new AccessibilityFilter(LocalDate.of(2019, 12, 15), 30);
+    List<DateRange> filteredResult = new AccessibilityRangesFilter(accessibilityFilter).applyTo(allRanges);
+
+    List<DateRange> expectedResult = List.of(
+        new DateRange(LocalDate.of(2019, 12, 15), LocalDate.of(2019, 12, 31)),
+        new DateRange(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 14))
+    );
+    assertThat(filteredResult).isEqualTo(expectedResult);
+  }
 }
