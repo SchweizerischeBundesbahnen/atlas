@@ -28,6 +28,16 @@
     </div>
   </atlas-detail-page-content>
   <atlas-detail-footer>
+    @if (statement?.dossierId) {
+      <atlas-button
+        (buttonClicked)="goToDossier()"
+        [footerEdit]="form.enabled"
+        buttonDataCy="back-to-dossier"
+        buttonText="TTH.STATEMENT.GO_TO_DOSSIER"
+        buttonType="whiteFooterNonEdit"
+        wrapperStyleClass="me-3"
+      />
+    }
     <atlas-button
       (buttonClicked)="backToOverview()"
       buttonDataCy="back-to-overview"

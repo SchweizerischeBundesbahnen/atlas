@@ -11,6 +11,7 @@ import { AtlasLabelFieldComponent } from '@atlas/form';
 import { FileComponent } from '../../../../../core/components/file-upload/file/file.component';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { StatementDetailBaseComponent } from '../statement-detail-base.component';
+import { Pages } from '../../../../pages';
 
 @Component({
   selector: 'atlas-bo-statement-detail',
@@ -59,5 +60,13 @@ export class BoStatementDetailComponent extends StatementDetailBaseComponent imp
       return 'statement';
     }
     return 'anonymousStatement';
+  }
+
+  goToDossier() {
+    this.router
+      .navigate(['../..', Pages.TTH_DOSSIERS.path, this.statement!.dossierId], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 }
