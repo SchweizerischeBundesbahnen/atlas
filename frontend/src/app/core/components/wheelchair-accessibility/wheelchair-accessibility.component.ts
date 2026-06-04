@@ -13,6 +13,7 @@ import { TableComponent } from '../table/table.component';
 import { AccessibilityRow } from '../../../api/model/accessibilityRow';
 import { TableColumn } from '../table/table-column';
 import { WheelchairAccessibilityState } from '../../../api/model/wheelchairAccessibilityState';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export type AccessibilityType = 'STOP_POINT' | 'PLATFORM';
 
@@ -35,7 +36,7 @@ export type AccessibilityType = 'STOP_POINT' | 'PLATFORM';
 export class WheelchairAccessibilityComponent implements OnInit {
   private readonly wheelchairAccessibilityService = inject(WheelchairAccessibilityInternalService);
 
-  readonly dateInputForm = new FormGroup({
+  protected readonly dateInputForm = new FormGroup({
     startingFrom: new FormControl(moment(), [Validators.required]),
   });
 
@@ -69,11 +70,15 @@ export class WheelchairAccessibilityComponent implements OnInit {
     },
   ];
 
-  sloid = input.required<string>();
-  objectType = input.required<AccessibilityType>();
-  editMode = input.required<boolean>();
+  readonly sloid = input.required<string>();
+  readonly objectType = input.required<AccessibilityType>();
+  readonly editMode = input.required<boolean>();
 
   constructor() {
+    this.dateInputForm.controls.startingFrom.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.loadWheelchairAccessibilityOnSpecifiedDate());
+
     effect(() => {
       if (this.editMode()) {
         this.closeOverlay();
@@ -87,9 +92,6 @@ export class WheelchairAccessibilityComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadWheelchairAccessibilityToday();
-    this.dateInputForm.controls.startingFrom.valueChanges.subscribe(() =>
-      this.loadWheelchairAccessibilityOnSpecifiedDate()
-    );
   }
 
   toggleOverlay() {

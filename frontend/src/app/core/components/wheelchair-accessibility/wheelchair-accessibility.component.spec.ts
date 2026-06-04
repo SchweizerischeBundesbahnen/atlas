@@ -1,15 +1,13 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {beforeEach, describe, expect, it} from 'vitest';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import {WheelchairAccessibilityComponent} from './wheelchair-accessibility.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {translateServiceProvider} from '../../../app.testing.mocks';
-import {
-  WheelchairAccessibilityInternalService
-} from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
-import {of} from 'rxjs';
-import {mock} from 'vitest-mock-extended';
-import {WheelchairAccessibilityState} from '../../../api/model/wheelchairAccessibilityState';
+import { WheelchairAccessibilityComponent } from './wheelchair-accessibility.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { translateServiceProvider } from '../../../app.testing.mocks';
+import { WheelchairAccessibilityInternalService } from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
+import { of } from 'rxjs';
+import { mock, mockClear } from 'vitest-mock-extended';
+import { WheelchairAccessibilityState } from '../../../api/model/wheelchairAccessibilityState';
 
 const wheelchairAccessibilityInternalService = mock<WheelchairAccessibilityInternalService>();
 wheelchairAccessibilityInternalService.getPlatformAccessibilityToday.mockReturnValue(of({}));
@@ -53,6 +51,7 @@ describe('WheelchairAccessibilityComponent', () => {
       fixture.componentRef.setInput('sloid', 'ch:1:sloid:90064');
       fixture.componentRef.setInput('editMode', false);
 
+      mockClear(wheelchairAccessibilityInternalService);
       component = fixture.componentInstance;
       await fixture.whenStable();
     });
@@ -97,6 +96,7 @@ describe('WheelchairAccessibilityComponent', () => {
       fixture.componentRef.setInput('sloid', 'ch:1:sloid:90064:0:1');
       fixture.componentRef.setInput('editMode', false);
 
+      mockClear(wheelchairAccessibilityInternalService);
       component = fixture.componentInstance;
       await fixture.whenStable();
     });
