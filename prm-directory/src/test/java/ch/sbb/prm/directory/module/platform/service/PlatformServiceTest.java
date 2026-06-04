@@ -83,6 +83,8 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
   @AfterEach
   void tearDown() {
+    referencePointRepository.deleteAll();
+    relationRepository.deleteAll();
     platformRepository.deleteAll();
     stopPointRepository.deleteAll();
   }

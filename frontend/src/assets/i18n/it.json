@@ -55,6 +55,7 @@
     "NO": "No",
     "ACHTUNG": "Attenzione!",
     "DATE": {
+      "DATE": "Data",
       "SELECT_DATERANGE": "Intervallo data*"
     },
     "FROM": "dal",
@@ -1530,6 +1531,10 @@
       "PARKING_LOT": "Parcheggio",
       "RELATION": "Collegamenti"
     },
+    "ACCESSIBILITY": "Accessibilità",
+    "ACCESSIBILITY_NEXT_DAYS": "Accessibilità nei prossimi 30 giorni",
+    "ACCESSIBILITY_INFO_ICON": "Maggiori informazioni su tp-info.ch",
+    "ACCESSIBILITY_INFO_LINK": "https://www.oev-info.ch/de/datenmanagement/barrierefreier-zugang/barrierefreiheit-der-fahrplanauskunft",
     "STOP_POINTS": {
       "FORM": {
         "FREE_TEXT": "Osservazioni sulla fermata",

@@ -13,7 +13,6 @@ import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { PrmVariantInfoService } from '../prm-variant-info.service';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { StopPointService } from '../../../../../api/service/prm/stop-point/stop-point.service';
-import { WheelchairAccessibilityInternalService } from '../../../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
 import { mock, type MockProxy } from 'vitest-mock-extended';
 import { DateModule } from '../../../../../core/module/date.module';
 
@@ -59,10 +58,6 @@ describe('StopPointDetailComponent', () => {
         { provide: NotificationService, useValue: notificationServiceMock },
         { provide: Router, useValue: routerMock },
         { provide: DialogService, useValue: dialogServiceMock },
-        {
-          provide: WheelchairAccessibilityInternalService,
-          useValue: { getStopPointAccessibilityToday: () => of({}) },
-        },
         translateServiceProvider,
       ],
     });

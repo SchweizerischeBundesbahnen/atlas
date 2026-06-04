@@ -5,18 +5,17 @@ import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import java.util.Set;
+import lombok.experimental.UtilityClass;
 
-public final class StopPointCompleteAccessibilityCalculator {
+@UtilityClass
+class StopPointCompleteAccessibilityCalculator {
 
   private static final Set<StandardAttributeType> YES_OR_PARTIALLY = Set.of(
       StandardAttributeType.YES,
       StandardAttributeType.PARTIALLY
   );
 
-  private StopPointCompleteAccessibilityCalculator() {
-  }
-
-  public static WheelchairAccessibilityState calculate(AccessibilityStopPoint stopPoint) {
+  static WheelchairAccessibilityState calculate(AccessibilityStopPoint stopPoint) {
 
     if (YES_OR_PARTIALLY.contains(stopPoint.getAlternativeTransport())) {
       return WheelchairAccessibilityState.SHUTTLE;

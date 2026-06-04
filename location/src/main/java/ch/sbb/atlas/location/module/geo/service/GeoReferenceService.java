@@ -68,10 +68,8 @@ public class GeoReferenceService {
     }
     try {
       return geoAdminChClient.getHeight(coordinatePair.getEast(), coordinatePair.getNorth());
-    } catch (FeignClientException e) {
-      return handleFeignClientException(e);
     } catch (Exception e) {
-      log.error("GeoAdmin height request failed for coordinates: {} (east), {} (north)", coordinatePair.getEast(),
+      log.warn("GeoAdmin height request failed for coordinates: {} (east), {} (north)", coordinatePair.getEast(),
           coordinatePair.getNorth(), e);
       throw new HeightNotCalculatableException();
     }

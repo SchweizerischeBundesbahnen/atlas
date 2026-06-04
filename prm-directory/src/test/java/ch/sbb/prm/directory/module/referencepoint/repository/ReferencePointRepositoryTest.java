@@ -10,6 +10,7 @@ import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
 import ch.sbb.prm.directory.module.referencepoint.entity.ReferencePointVersion;
 import java.time.LocalDate;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,14 @@ class ReferencePointRepositoryTest {
     this.referencePointRepository = referencePointRepository;
   }
 
-  @BeforeEach()
+  @BeforeEach
   void initDB() {
     referencePointRepository.save(ReferencePointTestData.getReferencePointVersion());
+  }
+
+  @AfterEach
+  void tearDown() {
+    referencePointRepository.deleteAll();
   }
 
   @Test

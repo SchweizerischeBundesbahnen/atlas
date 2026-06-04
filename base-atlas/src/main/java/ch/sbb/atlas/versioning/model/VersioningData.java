@@ -21,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 public class VersioningData {
 
-  private static final LocalDate MAX_DATE = LocalDate.of(9999, 12, 31);
-  private static final LocalDate MIN_DATE = LocalDate.of(1700, 1, 1);
+  public static final LocalDate MAX_DATE = LocalDate.of(9999, 12, 31);
+  public static final LocalDate MIN_DATE = LocalDate.of(1700, 1, 1);
 
   private final Versionable editedVersion;
   private final Versionable currentVersion;

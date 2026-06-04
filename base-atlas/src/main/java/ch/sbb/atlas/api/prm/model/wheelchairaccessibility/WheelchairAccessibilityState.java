@@ -1,9 +1,11 @@
 package ch.sbb.atlas.api.prm.model.wheelchairaccessibility;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Schema(enumAsRef = true, example = "AUTONOMY")
 @Getter
 @RequiredArgsConstructor
 public enum WheelchairAccessibilityState {

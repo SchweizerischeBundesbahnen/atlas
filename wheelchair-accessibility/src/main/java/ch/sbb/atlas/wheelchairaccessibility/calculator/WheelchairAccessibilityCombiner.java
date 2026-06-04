@@ -1,13 +1,12 @@
-package ch.sbb.atlas.wheelchairaccessibility.combiner;
+package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
+import lombok.experimental.UtilityClass;
 
-public final class WheelchairAccessibilityCombiner {
+@UtilityClass
+class WheelchairAccessibilityCombiner {
 
-  private WheelchairAccessibilityCombiner() {
-  }
-
-  public static WheelchairAccessibilityState combine(WheelchairAccessibilityState stopPointState,
+  static WheelchairAccessibilityState combine(WheelchairAccessibilityState stopPointState,
       WheelchairAccessibilityState platformState) {
     return switch (stopPointState) {
       case AUTONOMY, NO_INFO -> platformState;

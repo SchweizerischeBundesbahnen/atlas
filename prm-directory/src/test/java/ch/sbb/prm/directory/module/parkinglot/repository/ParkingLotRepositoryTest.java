@@ -6,6 +6,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.module.parkinglot.ParkingLotTestData;
 import ch.sbb.prm.directory.module.parkinglot.entity.ParkingLotVersion;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,14 @@ class ParkingLotRepositoryTest {
     this.parkingLotRepository = parkingLotRepository;
   }
 
-  @BeforeEach()
+  @BeforeEach
   void initDB() {
     parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+  }
+
+  @AfterEach
+  void tearDown() {
+    parkingLotRepository.deleteAll();
   }
 
   @Test

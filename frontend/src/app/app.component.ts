@@ -8,6 +8,7 @@ import { SideNavComponent } from './core/components/side-nav/side-nav.component'
 import { RouterOutlet } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { AuthService } from './core/auth/auth.service';
+import { CdkScrollable } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'atlas-root',
@@ -23,6 +24,7 @@ import { AuthService } from './core/auth/auth.service';
     MatSidenavContent,
     RouterOutlet,
     AsyncPipe,
+    CdkScrollable,
   ],
 })
 export class AppComponent {

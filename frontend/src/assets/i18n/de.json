@@ -55,6 +55,7 @@
     "NO": "Nein",
     "ACHTUNG": "Achtung!",
     "DATE": {
+      "DATE": "Datum",
       "SELECT_DATERANGE": "Datumsbereich*"
     },
     "FROM": "von",
@@ -1530,6 +1531,10 @@
       "PARKING_LOT": "Parkplatz",
       "RELATION": "Verbindungen"
     },
+    "ACCESSIBILITY": "Zugänglichkeit",
+    "ACCESSIBILITY_NEXT_DAYS": "Zugänglichkeit in den nächsten 30 Tagen",
+    "ACCESSIBILITY_INFO_ICON": "Weiterführende Informationen auf öv-info.ch",
+    "ACCESSIBILITY_INFO_LINK": "https://www.oev-info.ch/de/datenmanagement/barrierefreier-zugang/barrierefreiheit-der-fahrplanauskunft",
     "STOP_POINTS": {
       "FORM": {
         "FREE_TEXT": "Hinweise zur Haltestelle",

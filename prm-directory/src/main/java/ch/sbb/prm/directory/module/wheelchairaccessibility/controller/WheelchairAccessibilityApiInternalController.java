@@ -1,16 +1,12 @@
 package ch.sbb.prm.directory.module.wheelchairaccessibility.controller;
 
+import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.ReadAccessibilityModel;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.ReadWheelchairAccessibilityModel;
-import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.atlas.model.DateRange;
-import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
-import ch.sbb.prm.directory.module.platform.service.PlatformService;
-import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
-import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import ch.sbb.atlas.wheelchairaccessibility.model.Accessibility;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.api.WheelchairAccessibilityApiInternal;
+import ch.sbb.prm.directory.module.wheelchairaccessibility.mapper.AccessibilityMapper;
 import ch.sbb.prm.directory.module.wheelchairaccessibility.service.WheelchairAccessibilityService;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,38 +15,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class WheelchairAccessibilityApiInternalController implements WheelchairAccessibilityApiInternal {
 
   private final WheelchairAccessibilityService wheelchairAccessibilityService;
-  private final PlatformService platformService;
-  private final StopPointService stopPointService;
 
   @Override
-  public ReadWheelchairAccessibilityModel getPlatformAccessibilityToday(String sloid) {
-    Optional<PlatformVersion> platform = platformService.findPlatformVersionValidToday(sloid);
-    if (platform.isEmpty()) {
-      return buildNoInfoWheelchairAccessibilityModel();
-    }
+  public ReadWheelchairAccessibilityModel getPlatformAccessibilityToday(String platformSloid) {
     return ReadWheelchairAccessibilityModel.builder()
-        .state(wheelchairAccessibilityService.calculateForPlatformToday(platform.get()))
+        .state(wheelchairAccessibilityService.calculateForPlatformToday(platformSloid))
         .build();
   }
 
   @Override
-  public ReadWheelchairAccessibilityModel getStopPointAccessibilityToday(String sloid) {
-    Optional<StopPointVersion> stopPoint = stopPointService.findStopPointVersionValidToday(sloid);
-    if (stopPoint.isEmpty()) {
-      return buildNoInfoWheelchairAccessibilityModel();
-    }
-    List<PlatformVersion> platformsToday = platformService.getPlatformsByStopPoint(sloid).stream()
-        .filter(platform -> DateRange.fromVersionable(platform).containsToday())
-        .toList();
+  public ReadAccessibilityModel getPlatformAccessibility(String platformSloid, LocalDate startingFrom) {
+    Accessibility accessibility = wheelchairAccessibilityService.calculateForPlatform(platformSloid, startingFrom);
+    return AccessibilityMapper.toModel(accessibility);
+  }
+
+  @Override
+  public ReadWheelchairAccessibilityModel getStopPointAccessibilityToday(String stopPointSloid) {
     return ReadWheelchairAccessibilityModel.builder()
-        .state(wheelchairAccessibilityService.calculateForStopPointToday(stopPoint.get(), platformsToday))
+        .state(wheelchairAccessibilityService.calculateForStopPointToday(stopPointSloid))
         .build();
   }
 
-  private ReadWheelchairAccessibilityModel buildNoInfoWheelchairAccessibilityModel() {
-    return ReadWheelchairAccessibilityModel.builder()
-        .state(WheelchairAccessibilityState.NO_INFO)
-        .build();
+  @Override
+  public ReadAccessibilityModel getStopPointAccessibility(String stopPointSloid, LocalDate startingFrom) {
+    Accessibility accessibility = wheelchairAccessibilityService.calculateForStopPoint(stopPointSloid, startingFrom);
+    return AccessibilityMapper.toModel(accessibility);
   }
 
 }

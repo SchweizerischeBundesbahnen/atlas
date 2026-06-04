@@ -28,14 +28,8 @@ import { AtlasButtonComponent } from '../../../../../core/components/button/atla
 import { TranslatePipe } from '@ngx-translate/core';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { StopPointService } from '../../../../../api/service/prm/stop-point/stop-point.service';
-import {
-  WheelchairAccessibilityInternalService
-} from '../../../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
-import { ReadWheelchairAccessibility } from '../../../../../api/model/readWheelchairAccessibility';
 import moment from 'moment';
-import {
-  WheelchairAccessibilityComponent
-} from '../../../../../core/components/wheelchair-accessibility/wheelchair-accessibility.component';
+import { WheelchairAccessibilityComponent } from '../../../../../core/components/wheelchair-accessibility/wheelchair-accessibility.component';
 
 @Component({
   selector: 'atlas-stop-point-detail',
@@ -66,7 +60,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   private readonly prmTabsService = inject(PrmTabsService);
   private readonly referencePointCreationHintService = inject(ReferencePointCreationHintService);
   private readonly validityService = inject(ValidityService);
-  private readonly wheelchairAccessibilityService = inject(WheelchairAccessibilityInternalService);
 
   isNew = false;
   isAuthorizedToCreateStopPoint = true;
@@ -82,7 +75,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   isFormEnabled$ = new BehaviorSubject<boolean>(false);
   isReduced!: boolean | undefined;
   saving = false;
-  wheelchairAccessibilityToday?: ReadWheelchairAccessibility.StateEnum;
 
   ngOnInit(): void {
     this.route.parent?.data.subscribe((data) => {
@@ -217,13 +209,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     this.selectedVersionIndex = this.stopPointVersions.indexOf(this.selectedVersion);
     this.initSelectedVersion();
     this.disableForm();
-    this.loadWheelchairAccessibilityToday();
-  }
-
-  private loadWheelchairAccessibilityToday() {
-    this.wheelchairAccessibilityService.getStopPointAccessibilityToday(this.selectedVersion.sloid!).subscribe({
-      next: (response) => (this.wheelchairAccessibilityToday = response.state),
-    });
   }
 
   isSelectedVersionValidToday(): boolean {

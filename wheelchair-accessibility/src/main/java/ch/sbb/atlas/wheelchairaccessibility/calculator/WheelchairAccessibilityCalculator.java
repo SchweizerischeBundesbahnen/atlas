@@ -1,39 +1,37 @@
 package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
-import ch.sbb.atlas.wheelchairaccessibility.combiner.WheelchairAccessibilityCombiner;
-import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
-import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
-import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
-import ch.sbb.atlas.wheelchairaccessibility.model.PlatformWithRelations;
-import java.util.Comparator;
+import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.wheelchairaccessibility.model.Accessibility;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityFilter;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRanges;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
-public final class WheelchairAccessibilityCalculator {
+@Slf4j
+abstract class WheelchairAccessibilityCalculator {
 
-  private WheelchairAccessibilityCalculator() {
-  }
+  Accessibility calculate(AccessibilityRequest accessibilityRequest, AccessibilityFilter accessibilityFilter) {
+    List<DateRange> allDateRanges = accessibilityRequest.getAllDateRanges();
 
-  public static WheelchairAccessibilityState calculateForPlatform(AccessibilityPlatform platform,
-      AccessibilityStopPoint stopPoint,
-      List<? extends AccessibilityRelation> relations) {
-    if (stopPoint.isReduced()) {
-      return PlatformReducedAccessibilityCalculator.calculate(platform);
+    AccessibilityRanges accessibilityRanges = AccessibilityRangesCalculator.getAccessibilityRanges(allDateRanges);
+    log.debug("All AccessibilityRanges: {}", accessibilityRanges);
+
+    AccessibilityRangesFilter accessibilityRangesFilter = new AccessibilityRangesFilter(accessibilityFilter);
+    AccessibilityRanges filteredRanges = accessibilityRangesFilter.applyTo(accessibilityRanges);
+    log.debug("Filtered by {} AccessibilityRanges: {}", accessibilityRangesFilter, filteredRanges);
+
+    Accessibility accessibility = new Accessibility();
+    for (DateRange dateRange : filteredRanges) {
+      AccessibilityRequest accessibilityRequestOnDate = accessibilityRequest.getRequestOnDate(dateRange.getFrom());
+      accessibility.with(dateRange, calculateOnDate(accessibilityRequestOnDate));
     }
-    WheelchairAccessibilityState platformState = PlatformCompleteAccessibilityCalculator.calculate(platform, relations);
-    WheelchairAccessibilityState stopPointState = StopPointCompleteAccessibilityCalculator.calculate(stopPoint);
-    return WheelchairAccessibilityCombiner.combine(stopPointState, platformState);
+
+    Accessibility minifiedAccessibility = accessibility.minify();
+    log.debug("Calculated accessibility: {}", minifiedAccessibility);
+    return minifiedAccessibility;
   }
 
-  public static WheelchairAccessibilityState calculateForStopPoint(AccessibilityStopPoint stopPoint,
-      List<PlatformWithRelations> platforms) {
-    if (platforms.isEmpty()) {
-      return WheelchairAccessibilityState.NO_INFO;
-    }
-    return platforms.stream()
-        .map(platform -> calculateForPlatform(platform.getPlatform(), stopPoint, platform.getRelations()))
-        .max(Comparator.comparingInt(WheelchairAccessibilityState::getRank))
-        .orElse(WheelchairAccessibilityState.NO_INFO);
-  }
-
+  abstract WheelchairAccessibilityState calculateOnDate(AccessibilityRequest accessibilityRequest);
 }

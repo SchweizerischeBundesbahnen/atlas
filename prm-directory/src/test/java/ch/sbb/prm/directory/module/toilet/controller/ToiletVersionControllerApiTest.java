@@ -89,6 +89,9 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
 
   @AfterEach
   void cleanUp() {
+    toiletRepository.deleteAll();
+    referencePointRepository.deleteAll();
+    stopPointRepository.deleteAll();
     sharedServicePointRepository.deleteAll();
   }
 

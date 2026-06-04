@@ -22,29 +22,29 @@ import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.module.contactpoint.ContactPointTestData;
-import ch.sbb.prm.directory.module.parkinglot.ParkingLotTestData;
-import ch.sbb.prm.directory.module.platform.PlatformTestData;
-import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
-import ch.sbb.prm.directory.shared.servicepoint.SharedServicePointTestData;
-import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
-import ch.sbb.prm.directory.module.toilet.ToiletTestData;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.module.contactpoint.ContactPointTestData;
 import ch.sbb.prm.directory.module.contactpoint.entity.ContactPointVersion;
 import ch.sbb.prm.directory.module.contactpoint.repository.ContactPointRepository;
+import ch.sbb.prm.directory.module.parkinglot.ParkingLotTestData;
 import ch.sbb.prm.directory.module.parkinglot.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.module.parkinglot.repository.ParkingLotRepository;
+import ch.sbb.prm.directory.module.platform.PlatformTestData;
 import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
 import ch.sbb.prm.directory.module.platform.repository.PlatformRepository;
+import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
 import ch.sbb.prm.directory.module.referencepoint.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.module.referencepoint.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
 import ch.sbb.prm.directory.module.relation.service.RelationService;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import ch.sbb.prm.directory.module.stoppoint.repository.StopPointRepository;
+import ch.sbb.prm.directory.module.toilet.ToiletTestData;
 import ch.sbb.prm.directory.module.toilet.entity.ToiletVersion;
 import ch.sbb.prm.directory.module.toilet.repository.ToiletRepository;
+import ch.sbb.prm.directory.shared.servicepoint.SharedServicePointTestData;
 import ch.sbb.prm.directory.shared.servicepoint.entity.SharedServicePoint;
 import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
 import java.time.LocalDate;
@@ -106,6 +106,12 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
 
   @AfterEach
   void cleanUp() {
+    referencePointRepository.deleteAll();
+    contactPointRepository.deleteAll();
+    parkingLotRepository.deleteAll();
+    toiletRepository.deleteAll();
+    platformRepository.deleteAll();
+    stopPointRepository.deleteAll();
     sharedServicePointRepository.deleteAll();
   }
 

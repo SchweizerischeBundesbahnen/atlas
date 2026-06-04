@@ -28,11 +28,13 @@
             {{ selectedVersionIndex + 1 }}
           </h2>
         </div>
-        <atlas-wheelchair-accessibility
-          [wheelchairAccessibility]="wheelchairAccessibilityToday!"
-          [isSelectedVersionValidToday]="isSelectedVersionValidToday()"
-        >
-        </atlas-wheelchair-accessibility>
+        @if (isSelectedVersionValidToday()) {
+          <atlas-wheelchair-accessibility
+            objectType="STOP_POINT"
+            [sloid]="selectedVersion.sloid!"
+            [editMode]="form.enabled"
+          />
+        }
       }
     </div>
     @if (isReduced) {

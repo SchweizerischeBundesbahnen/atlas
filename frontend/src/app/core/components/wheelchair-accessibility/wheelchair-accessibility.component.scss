@@ -1,0 +1,10 @@
+@use 'src/styles/variables' as variables;
+
+.overlay {
+  background-color: white;
+  padding: 15px;
+
+  border-radius: variables.$border-radius;
+
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.1);
+}

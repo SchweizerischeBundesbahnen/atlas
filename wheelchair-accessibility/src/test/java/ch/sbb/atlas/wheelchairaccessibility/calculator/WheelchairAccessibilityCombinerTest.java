@@ -1,4 +1,4 @@
-package ch.sbb.atlas.wheelchairaccessibility.combiner;
+package ch.sbb.atlas.wheelchairaccessibility.calculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
