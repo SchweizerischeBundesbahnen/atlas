@@ -77,7 +77,7 @@ public class TimetableFieldNumberVersionModel extends BaseVersionModel implement
   private TtfnMeanOfTransport meanOfTransport;
 
   @Schema(description = "Number", example = "100; 80.099; 2700")
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_7)
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.TTFN_NUMBER)
   private String number;

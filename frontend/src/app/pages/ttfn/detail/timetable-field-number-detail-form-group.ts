@@ -45,7 +45,7 @@ export class TimetableFieldNumberDetailFormGroupBuilder {
         }),
         number: new FormControl(version?.number, {
           nonNullable: true,
-          validators: [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.ttfnNumber],
+          validators: [Validators.required, AtlasFieldLengthValidator.length_7, AtlasCharsetsValidator.ttfnNumber],
         }),
         status: new FormControl(version?.status),
         descriptionOutwardLine1: new FormControl(version?.descriptionOutwardLine1, {
