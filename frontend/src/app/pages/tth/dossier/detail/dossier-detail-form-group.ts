@@ -33,28 +33,16 @@ export class DossierFormGroupBuilder {
         AtlasFieldLengthValidator.length_255,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
-      internalComment: new FormControl(dossier?.internalComment, [
-        Validators.maxLength(5000),
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
-      publicComment: new FormControl(dossier?.publicComment, [
-        Validators.maxLength(5000),
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
+      internalComment: new FormControl(dossier?.internalComment, [Validators.maxLength(5000)]),
+      publicComment: new FormControl(dossier?.publicComment, [Validators.maxLength(5000)]),
       boContactMail: new FormControl(dossier?.boContactMail, [
         AtlasFieldLengthValidator.length_255,
         AtlasCharsetsValidator.email,
       ]),
       boDeadlineToAnswer: new FormControl(dossier?.boDeadlineToAnswer ? moment(dossier.boDeadlineToAnswer) : null),
       questionId: new FormControl(dossier?.questions.at(0)?.id),
-      question: new FormControl(dossier?.questions.at(0)?.question, [
-        Validators.maxLength(5000),
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
-      answerToCanton: new FormControl(dossier?.questions.at(0)?.answerToCanton, [
-        Validators.maxLength(5000),
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
+      question: new FormControl(dossier?.questions.at(0)?.question, [Validators.maxLength(5000)]),
+      answerToCanton: new FormControl(dossier?.questions.at(0)?.answerToCanton, [Validators.maxLength(5000)]),
       dossierStatus: new FormControl(dossier?.dossierStatus),
     });
   }
