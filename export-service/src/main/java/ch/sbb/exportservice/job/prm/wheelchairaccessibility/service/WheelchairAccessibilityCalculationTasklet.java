@@ -59,17 +59,45 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
       List<PlatformVersion> platformsOfStopPoint = getPlatformsOfStopPoint(stopPoint);
       List<RelationVersion> relationsOfStopPoint = getRelationsOfStopPoint(stopPoint);
 
-      List<WheelchairAccessibilityCsvModel> accessibilityCsvModels = calculateAndMapToCsv(
+      List<WheelchairAccessibilityCsvModel> stopPointAccessibility = calculateStopPointAccessibilityAndMapToCsv(
           stopPoint, platformsOfStopPoint, relationsOfStopPoint);
+      accessibilityFileWriter.write(stopPointAccessibility);
 
-      accessibilityFileWriter.write(accessibilityCsvModels);
+      Map<String, List<PlatformVersion>> groupedPlatformVersions = platformsOfStopPoint.stream()
+          .collect(Collectors.groupingBy(PlatformVersion::getSloid));
+      for (Entry<String, List<PlatformVersion>> platform : groupedPlatformVersions.entrySet()) {
+        List<WheelchairAccessibilityCsvModel> platformAccessibility = calculatePlatformAccessibilityAndMapToCsv(
+            stopPoint, platform, relationsOfStopPoint);
+        accessibilityFileWriter.write(platformAccessibility);
+      }
+
     }
 
     accessibilityFileWriter.close();
     return RepeatStatus.FINISHED;
   }
 
-  private static List<WheelchairAccessibilityCsvModel> calculateAndMapToCsv(
+  private static List<WheelchairAccessibilityCsvModel> calculatePlatformAccessibilityAndMapToCsv(
+      Entry<String, List<StopPointVersion>> stopPoint, Entry<String, List<PlatformVersion>> platform,
+      List<RelationVersion> relationsOfStopPoint) {
+    List<RelationVersion> relationsOfPlatform =
+        relationsOfStopPoint.stream().filter(i -> platform.getKey().equals(i.getSloid())).collect(Collectors.toList());
+    AccessibilityRequest accessibilityRequest = AccessibilityRequest.builder()
+        .stopPoint(stopPoint.getValue())
+        .platform(platform.getValue())
+        .relations(relationsOfPlatform)
+        .build();
+
+    Accessibility accessibility = WheelchairAccessibility.calculatePlatform(accessibilityRequest,
+        new AccessibilityFilter(LocalDate.now())).minify();
+
+    return ToCsvMapper.builder()
+        .sloid(platform.getKey())
+        .number(String.valueOf(stopPoint.getValue().getFirst().getNumber().getNumber()))
+        .type("PLATFORM").build().toModel(accessibility);
+  }
+
+  private static List<WheelchairAccessibilityCsvModel> calculateStopPointAccessibilityAndMapToCsv(
       Entry<String, List<StopPointVersion>> stopPoint, List<PlatformVersion> platformsOfStopPoint,
       List<RelationVersion> relationsOfStopPoint) {
     AccessibilityRequest accessibilityRequest = AccessibilityRequest.builder()
