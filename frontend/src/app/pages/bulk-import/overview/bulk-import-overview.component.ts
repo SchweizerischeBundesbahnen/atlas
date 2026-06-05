@@ -41,6 +41,8 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = 
   [ApplicationType.Sepodi, BusinessObjectType.Sector, ImportType.Create],
   [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Update],
   [ApplicationType.Prm, BusinessObjectType.PlatformComplete, ImportType.Update],
+  [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Terminate],
+  [ApplicationType.Prm, BusinessObjectType.PlatformComplete, ImportType.Terminate],
   [ApplicationType.Lidi, BusinessObjectType.Line, ImportType.Update],
   [ApplicationType.Lidi, BusinessObjectType.Subline, ImportType.Update],
 ];

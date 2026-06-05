@@ -25,10 +25,22 @@ export class BulkImportFormGroupBuilder {
   static buildBulkImport(formGroup: FormGroup<BulkImportFormGroup>) {
     return {
       applicationType: formGroup.controls.applicationType.value!,
-      objectType: formGroup.controls.objectType.value!,
+      objectType: BulkImportFormGroupBuilder.normalizeObjectType(
+        formGroup.controls.objectType.value!,
+        formGroup.controls.importType.value!
+      ),
       importType: formGroup.controls.importType.value!,
       inNameOf: formGroup.controls.userSearchForm.controls.userSearch.value?.userId,
       emails: formGroup.controls.emails.value!,
     };
+  }
+
+  private static normalizeObjectType(objectType: BusinessObjectType, importType: ImportType): BusinessObjectType {
+    const isPlatform =
+      objectType === BusinessObjectType.PlatformReduced || objectType === BusinessObjectType.PlatformComplete;
+    if (importType === ImportType.Terminate && isPlatform) {
+      return BusinessObjectType.Platform;
+    }
+    return objectType;
   }
 }

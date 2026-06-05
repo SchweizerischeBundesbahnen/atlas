@@ -106,6 +106,15 @@ public class BulkImportTemplateGenerator {
 
     templateLookup.put(
         BulkImportConfig.builder()
+            .application(ApplicationType.PRM)
+            .objectType(BusinessObjectType.PLATFORM)
+            .importType(ImportType.TERMINATE)
+            .build(),
+        PlatformTemplateGenerator::getPlatformTerminateCsvModelExample
+    );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
             .application(ApplicationType.LIDI)
             .objectType(BusinessObjectType.LINE)
             .importType(ImportType.UPDATE)

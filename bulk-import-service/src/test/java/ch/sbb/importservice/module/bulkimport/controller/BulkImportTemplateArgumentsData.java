@@ -27,6 +27,7 @@ public class BulkImportTemplateArgumentsData {
       // PRM
       Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM_REDUCED, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM_COMPLETE, ImportType.UPDATE)),
+      Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM, ImportType.TERMINATE)),
 
       // LIDI
       Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.UPDATE)),

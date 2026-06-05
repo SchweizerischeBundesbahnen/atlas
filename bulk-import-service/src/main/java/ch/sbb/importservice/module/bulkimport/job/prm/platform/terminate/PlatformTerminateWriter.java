@@ -1,9 +1,9 @@
-package ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.terminate;
+package ch.sbb.importservice.module.bulkimport.job.prm.platform.terminate;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
-import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
+import ch.sbb.importservice.module.bulkimport.client.PlatformBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.writer.BulkImportItemWriter;
 import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
 import java.util.List;
@@ -14,18 +14,19 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TrafficPointTerminateWriter extends TrafficPointTerminate implements BulkImportItemWriter {
+public class PlatformTerminateWriter extends PlatformTerminate implements BulkImportItemWriter {
 
-  private final TrafficPointBulkImportClient trafficPointBulkImportClient;
+  private final PlatformBulkImportClient platformBulkImportClient;
 
   @Override
   public void accept(List<BulkImportUpdateContainer<?>> items) {
     List<BulkImportUpdateContainer<SloidTerminateCsvModel>> updateContainers =
         WriterUtil.getContainers(items);
 
-    log.info("Writing {} containers to service-point-directory", updateContainers.size());
+    log.info("Writing {} containers to prm", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = trafficPointBulkImportClient.bulkImportTerminate(updateContainers);
+    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformTerminate(
+        updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }

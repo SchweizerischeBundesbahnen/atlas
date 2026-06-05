@@ -10,9 +10,11 @@ import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.bulkimport.controller.PlatformBulkImportController;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -142,6 +144,46 @@ class PlatformBulkImportControllerTest {
     verify(platformBulkImportService).updatePlatformComplete(updateContainer);
     assertThat(bulkImportItemExecutionResults).hasSize(1).first()
         .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(false);
+  }
+
+  @Test
+  void shouldBulkImportTerminate() {
+    BulkImportUpdateContainer<SloidTerminateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+            .object(SloidTerminateCsvModel.builder()
+                .sloid("ch:1:sloid:89008:123:123")
+                .validTo(LocalDate.of(2099, 12, 31))
+                .build())
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        platformBulkImportController.bulkImportPlatformTerminate(List.of(updateContainer));
+
+    verify(platformBulkImportService, never()).terminatePlatformByUsername("username", updateContainer);
+    verify(platformBulkImportService).terminatePlatform(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first()
+        .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(true);
+  }
+
+  @Test
+  void shouldBulkImportTerminateWithUsername() {
+    String username = "e123456";
+    BulkImportUpdateContainer<SloidTerminateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+            .object(SloidTerminateCsvModel.builder()
+                .sloid("ch:1:sloid:89008:123:123")
+                .validTo(LocalDate.of(2099, 12, 31))
+                .build())
+            .inNameOf(username)
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        platformBulkImportController.bulkImportPlatformTerminate(List.of(updateContainer));
+
+    verify(platformBulkImportService).terminatePlatformByUsername(username, updateContainer);
+    verify(platformBulkImportService, never()).terminatePlatform(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first()
+        .extracting(BulkImportItemExecutionResult::isSuccess).isEqualTo(true);
   }
 
 }

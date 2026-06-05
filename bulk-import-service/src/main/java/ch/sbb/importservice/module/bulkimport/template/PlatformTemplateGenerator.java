@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -50,6 +51,13 @@ public class PlatformTemplateGenerator {
         .inclinationWidth(12.00)
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED)
         .superelevation(23.00)
+        .build();
+  }
+
+  public static SloidTerminateCsvModel getPlatformTerminateCsvModelExample() {
+    return SloidTerminateCsvModel.builder()
+        .sloid("ch:1:sloid:1:0:1")
+        .validTo(LocalDate.of(2022, 12, 31))
         .build();
   }
 

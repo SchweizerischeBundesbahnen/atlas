@@ -1,4 +1,4 @@
-package ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.terminate;
+package ch.sbb.importservice.module.bulkimport.job.prm.platform.terminate;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
@@ -14,15 +14,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TrafficPointTerminateReader extends TrafficPointTerminate implements BulkImportItemReader {
+public class PlatformTerminateReader extends PlatformTerminate implements BulkImportItemReader {
 
   @Override
   public List<BulkImportUpdateContainer<?>> apply(File file) {
-    List<BulkImportUpdateContainer<SloidTerminateCsvModel>> trafficPointTerminateCsvModels = ReaderUtil.readAndValidate(file,
-        SloidTerminateCsvModel.class);
+    List<BulkImportUpdateContainer<SloidTerminateCsvModel>> platformTerminateCsvModels =
+        ReaderUtil.readAndValidate(file,
+            SloidTerminateCsvModel.class);
 
-    log.info("Read {} lines to import", trafficPointTerminateCsvModels.size());
-    return new ArrayList<>(trafficPointTerminateCsvModels);
+    log.info("Read {} lines to import", platformTerminateCsvModels.size());
+    return new ArrayList<>(platformTerminateCsvModels);
   }
 
   @Override

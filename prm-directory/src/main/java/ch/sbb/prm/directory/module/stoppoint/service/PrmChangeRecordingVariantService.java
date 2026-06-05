@@ -96,7 +96,7 @@ public class PrmChangeRecordingVariantService {
 
   void platformChangeRecordingVariant(String sloid, Set<MeanOfTransport> newMeansOfTransport) {
     List<PlatformVersion> platformVersionsByParentSloid
-        = platformRepository.findAllByParentServicePointSloid(sloid);
+        = platformRepository.findAllByParentServicePointSloidOrderByValidFrom(sloid);
     Map<String, List<PlatformVersion>> platforms = platformVersionsByParentSloid.stream()
         .collect(Collectors.groupingBy(PlatformVersion::getSloid));
 

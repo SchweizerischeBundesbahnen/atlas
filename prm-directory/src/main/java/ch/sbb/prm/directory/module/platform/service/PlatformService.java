@@ -175,7 +175,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   public void updateAttentionFieldByParentSloid(String parentServicePointSloid, Set<MeanOfTransport> newMeansOfTransport) {
     boolean attentionFieldAllowed = PrmMeansOfTransportHelper.isAttentionFieldAllowed(newMeansOfTransport);
 
-    List<PlatformVersion> platformVersions = platformRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+    List<PlatformVersion> platformVersions = platformRepository.findAllByParentServicePointSloidOrderByValidFrom(
+        parentServicePointSloid);
     for (PlatformVersion platformVersion : platformVersions) {
       if (attentionFieldAllowed && platformVersion.getAttentionField() == null) {
         platformVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
