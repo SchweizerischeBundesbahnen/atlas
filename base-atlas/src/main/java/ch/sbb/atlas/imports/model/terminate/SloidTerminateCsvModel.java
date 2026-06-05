@@ -5,7 +5,7 @@ import ch.sbb.atlas.imports.annotation.DefaultMapping;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.Validatable;
-import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel.Fields;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @EqualsAndHashCode
 @JsonPropertyOrder({Fields.sloid, Fields.validTo})
-public class TrafficPointTerminateCsvModel implements Validatable<TrafficPointTerminateCsvModel> {
+public class SloidTerminateCsvModel implements Validatable<SloidTerminateCsvModel> {
 
   private String sloid;
 
@@ -48,7 +48,8 @@ public class TrafficPointTerminateCsvModel implements Validatable<TrafficPointTe
   }
 
   @Override
-  public List<UniqueField<TrafficPointTerminateCsvModel>> uniqueFields() {
-    return List.of(new UniqueField<>(TrafficPointTerminateCsvModel.Fields.sloid, TrafficPointTerminateCsvModel::getSloid));
+  public List<UniqueField<SloidTerminateCsvModel>> uniqueFields() {
+    return List.of(new UniqueField<>(SloidTerminateCsvModel.Fields.sloid, SloidTerminateCsvModel::getSloid));
   }
+
 }

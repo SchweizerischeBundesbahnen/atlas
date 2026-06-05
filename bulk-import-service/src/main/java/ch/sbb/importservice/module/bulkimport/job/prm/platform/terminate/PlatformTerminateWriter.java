@@ -2,7 +2,7 @@ package ch.sbb.importservice.module.bulkimport.job.prm.platform.terminate;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.importservice.module.bulkimport.client.PlatformBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.writer.BulkImportItemWriter;
 import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
@@ -20,12 +20,12 @@ public class PlatformTerminateWriter extends PlatformTerminate implements BulkIm
 
   @Override
   public void accept(List<BulkImportUpdateContainer<?>> items) {
-    List<BulkImportUpdateContainer<PlatformTerminateCsvModel>> updateContainers =
+    List<BulkImportUpdateContainer<SloidTerminateCsvModel>> updateContainers =
         WriterUtil.getContainers(items);
 
     log.info("Writing {} containers to prm", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportTerminate(
+    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformTerminate(
         updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);

@@ -9,9 +9,8 @@
  */
 
 
-export interface SortObject { 
-    sorted?: boolean;
-    unsorted?: boolean;
-    empty?: boolean;
+export interface PlatformTerminateCsvModel { 
+    sloid?: string;
+    validTo?: Date;
 }
 

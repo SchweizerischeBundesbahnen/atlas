@@ -2,7 +2,7 @@ package ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.terminate
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.writer.BulkImportItemWriter;
 import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
@@ -20,7 +20,7 @@ public class TrafficPointTerminateWriter extends TrafficPointTerminate implement
 
   @Override
   public void accept(List<BulkImportUpdateContainer<?>> items) {
-    List<BulkImportUpdateContainer<TrafficPointTerminateCsvModel>> updateContainers =
+    List<BulkImportUpdateContainer<SloidTerminateCsvModel>> updateContainers =
         WriterUtil.getContainers(items);
 
     log.info("Writing {} containers to service-point-directory", updateContainers.size());

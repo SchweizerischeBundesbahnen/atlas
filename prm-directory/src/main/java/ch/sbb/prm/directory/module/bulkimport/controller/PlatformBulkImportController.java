@@ -6,7 +6,7 @@ import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +35,8 @@ public class PlatformBulkImportController extends BaseBulkImportControllerIntern
   }
 
   @Override
-  public List<BulkImportItemExecutionResult> bulkImportTerminate(
-      List<BulkImportUpdateContainer<PlatformTerminateCsvModel>> bulkImportUpdateContainers) {
+  public List<BulkImportItemExecutionResult> bulkImportPlatformTerminate(
+      List<BulkImportUpdateContainer<SloidTerminateCsvModel>> bulkImportUpdateContainers) {
     return executeBulkImport(bulkImportUpdateContainers,
         platformBulkImportService::terminatePlatformByUsername,
         platformBulkImportService::terminatePlatform);

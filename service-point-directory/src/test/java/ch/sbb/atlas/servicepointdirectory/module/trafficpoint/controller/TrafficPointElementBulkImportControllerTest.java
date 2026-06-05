@@ -10,7 +10,7 @@ import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.trafficpoint.controller.TrafficPointElementBulkImportController;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.trafficpoint.service.TrafficPointElementBulkImportService;
@@ -131,9 +131,9 @@ class TrafficPointElementBulkImportControllerTest {
 
   @Test
   void shouldBulkImportTerminate() {
-    BulkImportUpdateContainer<TrafficPointTerminateCsvModel> updateContainer =
-        BulkImportUpdateContainer.<TrafficPointTerminateCsvModel>builder()
-            .object(TrafficPointTerminateCsvModel.builder()
+    BulkImportUpdateContainer<SloidTerminateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+            .object(SloidTerminateCsvModel.builder()
                 .sloid("ch:1:sloid:89008:123:123")
                 .validTo(LocalDate.of(2099,12,31))
                 .build())
@@ -151,9 +151,9 @@ class TrafficPointElementBulkImportControllerTest {
   @Test
   void shouldBulkImportTerminateWithUsername() {
     String username = "e123456";
-    BulkImportUpdateContainer<TrafficPointTerminateCsvModel> updateContainer =
-        BulkImportUpdateContainer.<TrafficPointTerminateCsvModel>builder()
-            .object(TrafficPointTerminateCsvModel.builder()
+    BulkImportUpdateContainer<SloidTerminateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+            .object(SloidTerminateCsvModel.builder()
                 .sloid("ch:1:sloid:89008:123:123")
                 .validTo(LocalDate.of(2099,12,31))
                 .build())

@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
@@ -74,12 +74,12 @@ public class TrafficPointElementBulkImportService {
 
   @RunAsUser
   public void terminateTrafficPointByUserName(@RunAsUserParameter String userName,
-      BulkImportUpdateContainer<TrafficPointTerminateCsvModel> bulkImportContainer) {
+      BulkImportUpdateContainer<SloidTerminateCsvModel> bulkImportContainer) {
     log.info("Terminating versions in name of the user: {}", userName);
     terminateTrafficPoint(bulkImportContainer);
   }
 
-  public void terminateTrafficPoint(BulkImportUpdateContainer<TrafficPointTerminateCsvModel> bulkImportContainer) {
+  public void terminateTrafficPoint(BulkImportUpdateContainer<SloidTerminateCsvModel> bulkImportContainer) {
     trafficPointElementApiClient.terminateTrafficPoint(bulkImportContainer.getObject().getSloid(),
         bulkImportContainer.getObject().getValidTo());
   }

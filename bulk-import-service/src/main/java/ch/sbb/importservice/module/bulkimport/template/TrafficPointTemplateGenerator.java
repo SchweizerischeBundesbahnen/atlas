@@ -3,7 +3,7 @@ package ch.sbb.importservice.module.bulkimport.template;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
@@ -63,8 +63,8 @@ public class TrafficPointTemplateGenerator {
 
   }
 
-  public static TrafficPointTerminateCsvModel getTrafficPointTerminateCsvModelExample() {
-    return TrafficPointTerminateCsvModel.builder()
+  public static SloidTerminateCsvModel getTrafficPointTerminateCsvModelExample() {
+    return SloidTerminateCsvModel.builder()
         .sloid(DEFAULT_SLOID)
         .validTo(DEFAULT_VALID_TO)
         .build();

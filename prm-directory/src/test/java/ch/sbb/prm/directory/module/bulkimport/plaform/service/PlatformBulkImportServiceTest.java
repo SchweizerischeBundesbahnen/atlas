@@ -8,7 +8,7 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.exception.BulkPlatformUpdateValidationException;
@@ -341,8 +341,8 @@ class PlatformBulkImportServiceTest {
     String sloid = platformVersionComplete.getSloid();
     LocalDate validTo = platformVersionComplete.getValidTo().minusDays(10);
 
-    platformBulkImportService.terminatePlatform(BulkImportUpdateContainer.<PlatformTerminateCsvModel>builder()
-        .object(PlatformTerminateCsvModel.builder()
+    platformBulkImportService.terminatePlatform(BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+        .object(SloidTerminateCsvModel.builder()
             .sloid(sloid)
             .validTo(validTo)
             .build())
@@ -359,8 +359,8 @@ class PlatformBulkImportServiceTest {
     LocalDate validTo = platformVersionComplete.getValidTo().minusDays(10);
 
     platformBulkImportService.terminatePlatformByUsername("e123456",
-        BulkImportUpdateContainer.<PlatformTerminateCsvModel>builder()
-            .object(PlatformTerminateCsvModel.builder()
+        BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+            .object(SloidTerminateCsvModel.builder()
                 .sloid(sloid)
                 .validTo(validTo)
                 .build())

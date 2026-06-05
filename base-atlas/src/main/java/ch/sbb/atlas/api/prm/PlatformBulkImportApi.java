@@ -5,7 +5,7 @@ import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +31,10 @@ public interface PlatformBulkImportApi {
   List<BulkImportItemExecutionResult> bulkImportPlatformCompleteUpdate(
       @RequestBody List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> bulkImportUpdateContainers);
 
-  @PostMapping(value = BASEPATH + "/terminate")
-  List<BulkImportItemExecutionResult> bulkImportTerminate(
-      @RequestBody List<BulkImportUpdateContainer<PlatformTerminateCsvModel>> bulkImportUpdateContainers);
+  @PostMapping(value = BASEPATH + "/terminate-platform")
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).TERMINATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  List<BulkImportItemExecutionResult> bulkImportPlatformTerminate(
+      @RequestBody List<BulkImportUpdateContainer<SloidTerminateCsvModel>> bulkImportUpdateContainers);
 }

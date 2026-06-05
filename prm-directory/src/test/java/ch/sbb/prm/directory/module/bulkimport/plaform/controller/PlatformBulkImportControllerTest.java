@@ -10,7 +10,7 @@ import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.module.bulkimport.controller.PlatformBulkImportController;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
@@ -148,16 +148,16 @@ class PlatformBulkImportControllerTest {
 
   @Test
   void shouldBulkImportTerminate() {
-    BulkImportUpdateContainer<PlatformTerminateCsvModel> updateContainer =
-        BulkImportUpdateContainer.<PlatformTerminateCsvModel>builder()
-            .object(PlatformTerminateCsvModel.builder()
+    BulkImportUpdateContainer<SloidTerminateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+            .object(SloidTerminateCsvModel.builder()
                 .sloid("ch:1:sloid:89008:123:123")
                 .validTo(LocalDate.of(2099, 12, 31))
                 .build())
             .build();
 
     List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
-        platformBulkImportController.bulkImportTerminate(List.of(updateContainer));
+        platformBulkImportController.bulkImportPlatformTerminate(List.of(updateContainer));
 
     verify(platformBulkImportService, never()).terminatePlatformByUsername("username", updateContainer);
     verify(platformBulkImportService).terminatePlatform(updateContainer);
@@ -168,9 +168,9 @@ class PlatformBulkImportControllerTest {
   @Test
   void shouldBulkImportTerminateWithUsername() {
     String username = "e123456";
-    BulkImportUpdateContainer<PlatformTerminateCsvModel> updateContainer =
-        BulkImportUpdateContainer.<PlatformTerminateCsvModel>builder()
-            .object(PlatformTerminateCsvModel.builder()
+    BulkImportUpdateContainer<SloidTerminateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+            .object(SloidTerminateCsvModel.builder()
                 .sloid("ch:1:sloid:89008:123:123")
                 .validTo(LocalDate.of(2099, 12, 31))
                 .build())
@@ -178,7 +178,7 @@ class PlatformBulkImportControllerTest {
             .build();
 
     List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
-        platformBulkImportController.bulkImportTerminate(List.of(updateContainer));
+        platformBulkImportController.bulkImportPlatformTerminate(List.of(updateContainer));
 
     verify(platformBulkImportService).terminatePlatformByUsername(username, updateContainer);
     verify(platformBulkImportService, never()).terminatePlatform(updateContainer);

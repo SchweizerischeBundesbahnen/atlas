@@ -1,7 +1,7 @@
 package ch.sbb.importservice.module.bulkimport.job.prm.platform.terminate;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.importservice.module.bulkimport.reader.BulkImportItemReader;
 import ch.sbb.importservice.module.bulkimport.reader.ReaderUtil;
 import java.io.File;
@@ -18,9 +18,9 @@ public class PlatformTerminateReader extends PlatformTerminate implements BulkIm
 
   @Override
   public List<BulkImportUpdateContainer<?>> apply(File file) {
-    List<BulkImportUpdateContainer<PlatformTerminateCsvModel>> platformTerminateCsvModels =
+    List<BulkImportUpdateContainer<SloidTerminateCsvModel>> platformTerminateCsvModels =
         ReaderUtil.readAndValidate(file,
-            PlatformTerminateCsvModel.class);
+            SloidTerminateCsvModel.class);
 
     log.info("Read {} lines to import", platformTerminateCsvModels.size());
     return new ArrayList<>(platformTerminateCsvModels);
@@ -28,7 +28,7 @@ public class PlatformTerminateReader extends PlatformTerminate implements BulkIm
 
   @Override
   public Class<?> getCsvModelClass() {
-    return PlatformTerminateCsvModel.class;
+    return SloidTerminateCsvModel.class;
   }
 
 }

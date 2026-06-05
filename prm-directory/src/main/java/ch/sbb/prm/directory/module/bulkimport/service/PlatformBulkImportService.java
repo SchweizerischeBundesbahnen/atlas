@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -83,12 +83,12 @@ public class PlatformBulkImportService {
 
   @RunAsUser
   public void terminatePlatformByUsername(@RunAsUserParameter String userName,
-      BulkImportUpdateContainer<PlatformTerminateCsvModel> bulkImportContainer) {
+      BulkImportUpdateContainer<SloidTerminateCsvModel> bulkImportContainer) {
     log.info("Terminating versions in name of the user: {}", userName);
     terminatePlatform(bulkImportContainer);
   }
 
-  public void terminatePlatform(BulkImportUpdateContainer<PlatformTerminateCsvModel> bulkImportContainer) {
+  public void terminatePlatform(BulkImportUpdateContainer<SloidTerminateCsvModel> bulkImportContainer) {
     platformApiClient.terminatePlatform(bulkImportContainer.getObject().getSloid(),
         bulkImportContainer.getObject().getValidTo());
   }

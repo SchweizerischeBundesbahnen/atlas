@@ -17,7 +17,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
-import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -343,8 +343,8 @@ class TrafficPointElementBulkImportServiceTest {
     String sloid = bernWylereggPlatform.getSloid();
     LocalDate validTo = bernWylereggPlatform.getValidTo().minusDays(10);
 
-    trafficPointElementBulkImportService.terminateTrafficPoint(BulkImportUpdateContainer.<TrafficPointTerminateCsvModel>builder()
-        .object(TrafficPointTerminateCsvModel.builder()
+    trafficPointElementBulkImportService.terminateTrafficPoint(BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+        .object(SloidTerminateCsvModel.builder()
             .sloid(sloid)
             .validTo(validTo)
             .build())
@@ -361,8 +361,8 @@ class TrafficPointElementBulkImportServiceTest {
     LocalDate validTo = bernWylereggPlatform.getValidTo().minusDays(10);
 
     trafficPointElementBulkImportService.terminateTrafficPointByUserName("e123456",
-        BulkImportUpdateContainer.<TrafficPointTerminateCsvModel>builder()
-            .object(TrafficPointTerminateCsvModel.builder()
+        BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+            .object(SloidTerminateCsvModel.builder()
                 .sloid(sloid)
                 .validTo(validTo)
                 .build())

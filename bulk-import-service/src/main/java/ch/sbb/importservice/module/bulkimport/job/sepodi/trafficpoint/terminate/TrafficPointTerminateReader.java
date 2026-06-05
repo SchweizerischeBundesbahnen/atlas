@@ -1,7 +1,7 @@
 package ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.terminate;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.terminate.TrafficPointTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.importservice.module.bulkimport.reader.BulkImportItemReader;
 import ch.sbb.importservice.module.bulkimport.reader.ReaderUtil;
 import java.io.File;
@@ -18,8 +18,8 @@ public class TrafficPointTerminateReader extends TrafficPointTerminate implement
 
   @Override
   public List<BulkImportUpdateContainer<?>> apply(File file) {
-    List<BulkImportUpdateContainer<TrafficPointTerminateCsvModel>> trafficPointTerminateCsvModels = ReaderUtil.readAndValidate(file,
-        TrafficPointTerminateCsvModel.class);
+    List<BulkImportUpdateContainer<SloidTerminateCsvModel>> trafficPointTerminateCsvModels = ReaderUtil.readAndValidate(file,
+        SloidTerminateCsvModel.class);
 
     log.info("Read {} lines to import", trafficPointTerminateCsvModels.size());
     return new ArrayList<>(trafficPointTerminateCsvModels);
@@ -27,7 +27,7 @@ public class TrafficPointTerminateReader extends TrafficPointTerminate implement
 
   @Override
   public Class<?> getCsvModelClass() {
-    return TrafficPointTerminateCsvModel.class;
+    return SloidTerminateCsvModel.class;
   }
 
 }

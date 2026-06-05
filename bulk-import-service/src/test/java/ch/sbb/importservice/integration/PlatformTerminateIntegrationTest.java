@@ -19,7 +19,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportRequest;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
-import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.config.mail.MailProducerService;
@@ -94,8 +94,8 @@ class PlatformTerminateIntegrationTest {
   @Test
   void shouldImportPlatformsAndTerminateViaApi() throws IOException {
     // Given
-    when(platformBulkImportClient.bulkImportTerminate(any())).thenAnswer(i -> {
-      List<BulkImportUpdateContainer<PlatformTerminateCsvModel>> argument = i.getArgument(0, List.class);
+    when(platformBulkImportClient.bulkImportPlatformTerminate(any())).thenAnswer(i -> {
+      List<BulkImportUpdateContainer<SloidTerminateCsvModel>> argument = i.getArgument(0, List.class);
       return argument.stream().map(j -> BulkImportItemExecutionResult.builder().lineNumber(j.getLineNumber()).build()).toList();
     });
     File file = ImportFiles.getFileByPath("import-files/valid/platform-terminate.csv");
@@ -112,7 +112,7 @@ class PlatformTerminateIntegrationTest {
     bulkImportController.startBulkImport(importRequest, multipartFile);
 
     // Then
-    verify(platformBulkImportClient, times(1)).bulkImportTerminate(any());
+    verify(platformBulkImportClient, times(1)).bulkImportPlatformTerminate(any());
 
     verify(bulkImportLogService).writeLogToFile(logFileCaptor.capture(), any(BulkImport.class));
     LogFile writtenLogFile = logFileCaptor.getValue();
