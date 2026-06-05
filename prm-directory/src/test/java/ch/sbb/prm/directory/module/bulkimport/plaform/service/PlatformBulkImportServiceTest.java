@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.exception.BulkPlatformUpdateValidationException;
@@ -333,5 +334,40 @@ class PlatformBulkImportServiceTest {
                 .build())
             .build());
     assertThatExceptionOfType(IllegalStateException.class).isThrownBy(update);
+  }
+
+  @Test
+  void shouldTerminatePlatform() {
+    String sloid = platformVersionComplete.getSloid();
+    LocalDate validTo = platformVersionComplete.getValidTo().minusDays(10);
+
+    platformBulkImportService.terminatePlatform(BulkImportUpdateContainer.<PlatformTerminateCsvModel>builder()
+        .object(PlatformTerminateCsvModel.builder()
+            .sloid(sloid)
+            .validTo(validTo)
+            .build())
+        .build());
+
+    PlatformVersion platformVersion = platformRepository.findAllBySloidOrderByValidFrom(
+        sloid).getFirst();
+    assertThat(platformVersion.getValidTo()).isNotNull().isEqualTo(validTo);
+  }
+
+  @Test
+  void shouldTerminatePlatformElementByUsername() {
+    String sloid = platformVersionComplete.getSloid();
+    LocalDate validTo = platformVersionComplete.getValidTo().minusDays(10);
+
+    platformBulkImportService.terminatePlatformByUsername("e123456",
+        BulkImportUpdateContainer.<PlatformTerminateCsvModel>builder()
+            .object(PlatformTerminateCsvModel.builder()
+                .sloid(sloid)
+                .validTo(validTo)
+                .build())
+            .build());
+
+    PlatformVersion trafficPointElementVersion = platformRepository.findAllBySloidOrderByValidFrom(
+        sloid).getFirst();
+    assertThat(trafficPointElementVersion.getValidTo()).isNotNull().isEqualTo(validTo);
   }
 }

@@ -5,6 +5,7 @@ import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.PlatformTerminateCsvModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,4 +31,7 @@ public interface PlatformBulkImportApi {
   List<BulkImportItemExecutionResult> bulkImportPlatformCompleteUpdate(
       @RequestBody List<BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel>> bulkImportUpdateContainers);
 
+  @PostMapping(value = BASEPATH + "/terminate")
+  List<BulkImportItemExecutionResult> bulkImportTerminate(
+      @RequestBody List<BulkImportUpdateContainer<PlatformTerminateCsvModel>> bulkImportUpdateContainers);
 }

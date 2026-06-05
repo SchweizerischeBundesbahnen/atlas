@@ -21,7 +21,7 @@ public class BulkImportWriters {
 
   public BulkImportItemWriter getWriter(BulkImportConfig bulkImportConfig) {
     if (!WRITERS.containsKey(bulkImportConfig)) {
-      throw new UnsupportedOperationException("BulkImportConfig not supported yet" + bulkImportConfig);
+      throw new UnsupportedOperationException("BulkImportConfig not supported yet " + bulkImportConfig);
     }
     return WRITERS.get(bulkImportConfig);
   }
