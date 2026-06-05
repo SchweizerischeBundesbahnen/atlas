@@ -14,9 +14,7 @@ import ch.sbb.exportservice.job.prm.stoppoint.entity.StopPointVersion;
 import ch.sbb.exportservice.job.prm.stoppoint.sql.StopPointVersionRowMapper;
 import ch.sbb.exportservice.job.prm.stoppoint.sql.StopPointVersionSqlQueryUtil;
 import ch.sbb.exportservice.job.prm.wheelchairaccessibility.model.WheelchairAccessibilityCsvModel;
-import ch.sbb.exportservice.job.prm.wheelchairaccessibility.writer.CsvWheelchairAccessibilityWriter;
-import ch.sbb.exportservice.model.ExportObjectV2;
-import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.job.prm.wheelchairaccessibility.writer.AccessibilityFileWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -30,8 +28,6 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.infrastructure.item.Chunk;
-import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
 import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -41,20 +37,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
 
-  private final CsvWheelchairAccessibilityWriter csvWheelchairAccessibilityWriter;
+  private final AccessibilityFileWriter accessibilityFileWriter;
   private final NamedParameterJdbcTemplate prmJdbcTemplate;
 
-  public WheelchairAccessibilityCalculationTasklet(CsvWheelchairAccessibilityWriter csvWheelchairAccessibilityWriter,
+  public WheelchairAccessibilityCalculationTasklet(AccessibilityFileWriter accessibilityFileWriter,
       @Qualifier("prmJdbcTemplate") NamedParameterJdbcTemplate prmJdbcTemplate) {
-    this.csvWheelchairAccessibilityWriter = csvWheelchairAccessibilityWriter;
+    this.accessibilityFileWriter = accessibilityFileWriter;
     this.prmJdbcTemplate = prmJdbcTemplate;
   }
 
   @Override
   public RepeatStatus execute(@NonNull StepContribution contribution, @NonNull ChunkContext chunkContext) {
-    FlatFileItemWriter<WheelchairAccessibilityCsvModel> itemWriter = csvWheelchairAccessibilityWriter.csvWriter(
-        ExportObjectV2.WHEELCHAIR_ACCESSIBILITY, ExportTypeV2.ACTUAL);
-    itemWriter.open(chunkContext.getStepContext().getStepExecution().getExecutionContext());
+    accessibilityFileWriter.open(chunkContext.getStepContext().getStepExecution().getExecutionContext());
 
     Map<String, List<StopPointVersion>> groupedStopPointVersions = prmJdbcTemplate.query(
             StopPointVersionSqlQueryUtil.SELECT_STATEMENT + StopPointVersionSqlQueryUtil.GROUP_BY_STATEMENT,
@@ -65,30 +59,32 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
       List<PlatformVersion> platformsOfStopPoint = getPlatformsOfStopPoint(stopPoint);
       List<RelationVersion> relationsOfStopPoint = getRelationsOfStopPoint(stopPoint);
 
-      AccessibilityRequest accessibilityRequest = AccessibilityRequest.builder()
-          .stopPoint(stopPoint.getValue())
-          .platform(platformsOfStopPoint)
-          .relations(relationsOfStopPoint)
-          .build();
+      List<WheelchairAccessibilityCsvModel> accessibilityCsvModels = calculateAndMapToCsv(
+          stopPoint, platformsOfStopPoint, relationsOfStopPoint);
 
-      Accessibility accessibility = WheelchairAccessibility.calculateStopPoint(accessibilityRequest,
-          new AccessibilityFilter(LocalDate.now())).minify();
-
-      List<WheelchairAccessibilityCsvModel> accessibilityCsvModels =
-          ToCsvMapper.builder()
-              .sloid(stopPoint.getKey())
-              .number(String.valueOf(stopPoint.getValue().getFirst().getNumber().getNumber()))
-              .type("STOP_POINT").build().toModel(accessibility);
-
-      try {
-        itemWriter.write(new Chunk<>(accessibilityCsvModels));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+      accessibilityFileWriter.write(accessibilityCsvModels);
     }
 
-    itemWriter.close();
+    accessibilityFileWriter.close();
     return RepeatStatus.FINISHED;
+  }
+
+  private static List<WheelchairAccessibilityCsvModel> calculateAndMapToCsv(
+      Entry<String, List<StopPointVersion>> stopPoint, List<PlatformVersion> platformsOfStopPoint,
+      List<RelationVersion> relationsOfStopPoint) {
+    AccessibilityRequest accessibilityRequest = AccessibilityRequest.builder()
+        .stopPoint(stopPoint.getValue())
+        .platform(platformsOfStopPoint)
+        .relations(relationsOfStopPoint)
+        .build();
+
+    Accessibility accessibility = WheelchairAccessibility.calculateStopPoint(accessibilityRequest,
+        new AccessibilityFilter(LocalDate.now())).minify();
+
+    return ToCsvMapper.builder()
+        .sloid(stopPoint.getKey())
+        .number(String.valueOf(stopPoint.getValue().getFirst().getNumber().getNumber()))
+        .type("STOP_POINT").build().toModel(accessibility);
   }
 
   private List<PlatformVersion> getPlatformsOfStopPoint(Entry<String, List<StopPointVersion>> stopPoint) {
