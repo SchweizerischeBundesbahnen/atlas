@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 public class RelationVersionSqlQueryUtil extends SqlQueryUtil {
 
-  private static final String SELECT_STATEMENT = """
+  public static final String SELECT_STATEMENT = """
       SELECT rv.*
       FROM relation_version rv
       """;
-  private static final String GROUP_BY_STATEMENT = "GROUP BY rv.id";
+  public static final String GROUP_BY_STATEMENT = "GROUP BY rv.id";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     String sqlQuery = buildSqlQuery(SELECT_STATEMENT, GROUP_BY_STATEMENT, exportTypeV2);

@@ -7,6 +7,7 @@ import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
 import ch.sbb.exportservice.job.prm.BasePrmEntity;
 import java.time.LocalDate;
 import java.util.Set;
@@ -25,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class PlatformVersion extends BasePrmEntity {
+public class PlatformVersion extends BasePrmEntity implements AccessibilityPlatform {
 
     private Long id;
 
@@ -65,7 +66,7 @@ public class PlatformVersion extends BasePrmEntity {
 
     private Boolean partialElevation;
 
-    private Double superElevation;
+    private Double superelevation;
 
     private BooleanOptionalAttributeType tactileSystems;
 

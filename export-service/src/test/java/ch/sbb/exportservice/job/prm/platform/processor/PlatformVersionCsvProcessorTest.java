@@ -45,7 +45,7 @@ class PlatformVersionCsvProcessorTest {
         .infoOpportunitiesPipeList("infoOpportunitiesPipeList")
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.YES)
         .partialElevation(false)
-        .superElevation(0.000)
+        .superelevation(0.000)
         .tactileSystems(BooleanOptionalAttributeType.YES)
         .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED)
         .wheelchairAreaLength(0.000)

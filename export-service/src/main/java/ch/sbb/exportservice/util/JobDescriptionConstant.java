@@ -58,4 +58,5 @@ public class JobDescriptionConstant {
   public static final String EXPORT_SECTOR_GROUP_JSON_JOB_NAME = "exportSectorGroupJsonJob";
   public static final String EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME = "exportSectorsAndSectorGroupsCsvJob";
 
+  public static final String EXPORT_WHEELCHAIR_ACCESSIBILITY_CSV_JOB_NAME = "exportWheelchairAccessibilityCsvJob";
 }

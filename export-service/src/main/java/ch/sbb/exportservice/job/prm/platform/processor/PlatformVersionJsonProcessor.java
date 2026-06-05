@@ -30,7 +30,7 @@ public class PlatformVersionJsonProcessor implements ItemProcessor<PlatformVersi
             version.getInfoOpportunities() != null ? version.getInfoOpportunities().stream().toList() : null)
         .levelAccessWheelchair(version.getLevelAccessWheelchair())
         .partialElevation(version.getPartialElevation())
-        .superelevation(version.getSuperElevation())
+        .superelevation(version.getSuperelevation())
         .tactileSystem(version.getTactileSystems())
         .attentionField(version.getAttentionField())
         .vehicleAccess(version.getVehicleAccess())

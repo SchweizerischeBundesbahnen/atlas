@@ -28,6 +28,7 @@ public enum ExportObjectV2 {
   SECTOR(ExportTypes.DEFAULT, "sector", "sector-batch"),
   SECTOR_GROUP(ExportTypes.DEFAULT, "sector-group", "sector-group-batch"),
   SECTORS_AND_SECTOR_GROUPS(ExportTypes.DEFAULT, "sectors-and-sector-groups", "sectors-and-sector-groups-batch"),
+  WHEELCHAIR_ACCESSIBILITY(List.of(ExportTypeV2.ACTUAL), "wheelchair-accessibility", "wheelchair-accessibility-batch"),
   ;
 
   private final List<ExportTypeV2> supportedExportTypes;
