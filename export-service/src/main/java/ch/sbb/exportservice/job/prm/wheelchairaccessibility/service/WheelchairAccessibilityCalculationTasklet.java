@@ -85,7 +85,7 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
       Entry<String, List<StopPointVersion>> stopPoint, Entry<String, List<PlatformVersion>> platform,
       List<RelationVersion> relationsOfStopPoint) {
     List<RelationVersion> relationsOfPlatform =
-        relationsOfStopPoint.stream().filter(i -> platform.getKey().equals(i.getSloid())).collect(Collectors.toList());
+        relationsOfStopPoint.stream().filter(i -> platform.getKey().equals(i.getSloid())).toList();
     AccessibilityRequest accessibilityRequest = AccessibilityRequest.builder()
         .stopPoint(stopPoint.getValue())
         .platform(platform.getValue())
