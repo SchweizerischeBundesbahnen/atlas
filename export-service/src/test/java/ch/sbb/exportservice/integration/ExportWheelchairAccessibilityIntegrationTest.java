@@ -30,7 +30,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.jdbc.SqlGroup;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -43,12 +42,12 @@ class ExportWheelchairAccessibilityIntegrationTest extends BaseExportCsvDataInte
   @MockitoBean @Qualifier("deleteWheelchairAccessibilityCsvFileTasklet") private FileDeletingTaskletV2 deleteWheelchairAccessibilityCsvFileTasklet;
 
   @Test
-  @SqlGroup({@Sql(scripts = {"/prm-schema.sql",
+  @Sql(scripts = {"/prm-schema.sql",
       "/prm-basel-sbb-data.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
-      "prmDataSource", transactionManager = "prmTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
-      @Sql(scripts = {
-          "/prm-drop.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(dataSource = "prmDataSource"
-          , transactionManager = "prmTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED))})
+      "prmDataSource", transactionManager = "prmTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED))
+  @Sql(scripts = {
+      "/prm-drop.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(dataSource = "prmDataSource"
+      , transactionManager = "prmTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED))
   void shouldExecuteWheelchairAccessibilityCsvJob() throws Exception {
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(
         URI.create("https://sbb.ch").toURL());
