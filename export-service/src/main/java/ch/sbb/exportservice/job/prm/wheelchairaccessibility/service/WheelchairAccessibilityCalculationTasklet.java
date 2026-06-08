@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.StepContribution;
@@ -34,6 +35,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
 
@@ -54,6 +56,8 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
             StopPointVersionSqlQueryUtil.SELECT_STATEMENT + StopPointVersionSqlQueryUtil.GROUP_BY_STATEMENT,
             new StopPointVersionRowMapper())
         .stream().collect(Collectors.groupingBy(StopPointVersion::getSloid));
+    log.info("Read {} stop points", groupedStopPointVersions.size());
+    int count = 0;
 
     for (Map.Entry<String, List<StopPointVersion>> stopPoint : groupedStopPointVersions.entrySet()) {
       List<PlatformVersion> platformsOfStopPoint = getPlatformsOfStopPoint(stopPoint);
@@ -70,7 +74,7 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
             stopPoint, platform, relationsOfStopPoint);
         accessibilityFileWriter.write(platformAccessibility);
       }
-
+      log.info("Accessibility caluclations completed {}", ++count);
     }
 
     accessibilityFileWriter.close();
