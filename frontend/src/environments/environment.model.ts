@@ -9,4 +9,5 @@ export interface Environment {
   authConfig: PassedInitialConfig;
   atlasReleaseNotes: string;
   journeyMapsApiKey: string;
+  arcgisMapToken: string;
 }
