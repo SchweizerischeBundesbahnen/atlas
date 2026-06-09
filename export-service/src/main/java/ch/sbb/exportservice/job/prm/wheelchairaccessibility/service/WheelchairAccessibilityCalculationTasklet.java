@@ -15,6 +15,7 @@ import ch.sbb.exportservice.job.prm.stoppoint.sql.StopPointVersionRowMapper;
 import ch.sbb.exportservice.job.prm.stoppoint.sql.StopPointVersionSqlQueryUtil;
 import ch.sbb.exportservice.job.prm.wheelchairaccessibility.model.WheelchairAccessibilityCsvModel;
 import ch.sbb.exportservice.job.prm.wheelchairaccessibility.writer.AccessibilityFileWriter;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -41,11 +42,13 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
 
   private final AccessibilityFileWriter accessibilityFileWriter;
   private final NamedParameterJdbcTemplate prmJdbcTemplate;
+  private final Clock clock;
 
   public WheelchairAccessibilityCalculationTasklet(AccessibilityFileWriter accessibilityFileWriter,
-      @Qualifier("prmJdbcTemplate") NamedParameterJdbcTemplate prmJdbcTemplate) {
+      @Qualifier("prmJdbcTemplate") NamedParameterJdbcTemplate prmJdbcTemplate, Clock clock) {
     this.accessibilityFileWriter = accessibilityFileWriter;
     this.prmJdbcTemplate = prmJdbcTemplate;
+    this.clock = clock;
   }
 
   @Override
@@ -81,7 +84,7 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
     return RepeatStatus.FINISHED;
   }
 
-  private static List<WheelchairAccessibilityCsvModel> calculatePlatformAccessibilityAndMapToCsv(
+  private List<WheelchairAccessibilityCsvModel> calculatePlatformAccessibilityAndMapToCsv(
       Entry<String, List<StopPointVersion>> stopPoint, Entry<String, List<PlatformVersion>> platform,
       List<RelationVersion> relationsOfStopPoint) {
     List<RelationVersion> relationsOfPlatform =
@@ -93,7 +96,7 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
         .build();
 
     Accessibility accessibility = WheelchairAccessibility.calculatePlatform(accessibilityRequest,
-        new AccessibilityFilter(LocalDate.now())).minify();
+        getAccessibilityFilter()).minify();
 
     return ToCsvMapper.builder()
         .sloid(platform.getKey())
@@ -101,7 +104,7 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
         .type("PLATFORM").build().toModel(accessibility);
   }
 
-  private static List<WheelchairAccessibilityCsvModel> calculateStopPointAccessibilityAndMapToCsv(
+  private List<WheelchairAccessibilityCsvModel> calculateStopPointAccessibilityAndMapToCsv(
       Entry<String, List<StopPointVersion>> stopPoint, List<PlatformVersion> platformsOfStopPoint,
       List<RelationVersion> relationsOfStopPoint) {
     AccessibilityRequest accessibilityRequest = AccessibilityRequest.builder()
@@ -111,7 +114,7 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
         .build();
 
     Accessibility accessibility = WheelchairAccessibility.calculateStopPoint(accessibilityRequest,
-        new AccessibilityFilter(LocalDate.now())).minify();
+        getAccessibilityFilter()).minify();
 
     return ToCsvMapper.builder()
         .sloid(stopPoint.getKey())
@@ -139,6 +142,10 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
         "select * from relation_version where parent_service_point_sloid=:stopPointSloid order by valid_from",
         mapSqlParameterSource,
         new RelationVersionRowMapper());
+  }
+
+  private AccessibilityFilter getAccessibilityFilter() {
+    return new AccessibilityFilter(LocalDate.now(clock));
   }
 
   @Data

@@ -14,7 +14,11 @@ import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.job.Job;
@@ -33,13 +37,26 @@ import org.springframework.test.context.jdbc.SqlConfig;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-@Slf4j
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class ExportWheelchairAccessibilityIntegrationTest extends BaseExportCsvDataIntegrationTest {
 
-  @Autowired @Qualifier(EXPORT_WHEELCHAIR_ACCESSIBILITY_CSV_JOB_NAME) private Job exportWheelchairAccessibilityCsvJob;
+  private static final LocalDate FIXED_TEST_DATE = LocalDate.of(2026, 6, 8);
 
-  @MockitoBean @Qualifier("deleteWheelchairAccessibilityCsvFileTasklet") private FileDeletingTaskletV2 deleteWheelchairAccessibilityCsvFileTasklet;
+  @Autowired @Qualifier(EXPORT_WHEELCHAIR_ACCESSIBILITY_CSV_JOB_NAME)
+  private Job exportWheelchairAccessibilityCsvJob;
+
+  @MockitoBean @Qualifier("deleteWheelchairAccessibilityCsvFileTasklet")
+  private FileDeletingTaskletV2 deleteWheelchairAccessibilityCsvFileTasklet;
+
+  @MockitoBean
+  private Clock clock;
+
+  @BeforeEach
+  void setUp() {
+    ZoneId zoneId = ZoneId.systemDefault();
+    when(clock.instant()).thenReturn(Instant.from(FIXED_TEST_DATE.atStartOfDay(zoneId).toInstant()));
+    when(clock.getZone()).thenReturn(zoneId);
+  }
 
   @Test
   @Sql(scripts = {"/prm-schema.sql",
