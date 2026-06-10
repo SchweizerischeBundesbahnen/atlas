@@ -122,6 +122,8 @@ scheduler:
       chron: "0 22 0 * * ?" #At 00:22:00am every day
     relation-trigger-batch:
       chron: "0 25 0 * * ?" #At 00:25:00am every day
+    wheelchair-accessibility-trigger-batch:
+      chron: "0 30 0 * * ?" #At 00:30:00am every day
     recording-obligation-trigger-batch:
       chron: "0 25 0 * * ?" #At 00:25:00am every day
     transport-company-trigger-batch:

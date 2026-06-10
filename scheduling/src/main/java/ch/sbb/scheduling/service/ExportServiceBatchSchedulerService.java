@@ -240,4 +240,14 @@ public class ExportServiceBatchSchedulerService extends BaseSchedulerService {
         "Trigger Export Sectors and Sector Groups Batch");
   }
 
+  @SpanTracing
+  @Retryable(label = "triggerExportWheelchairAccessibilityBatch", retryFor = SchedulingExecutionException.class, maxAttempts =
+      MAX_ATTEMPTS, backoff = @Backoff(delay = BACKOFF_DELAY))
+  @Scheduled(cron = "${scheduler.export-service.wheelchair-accessibility-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerExportWheelchairAccessibilityBatch", lockAtMostFor = LOCK_FOR, lockAtLeastFor = LOCK_FOR)
+  public Response postTriggerExportWheelchairAccessibilityBatch() {
+    return executeRequest(exportServiceBatchClient::exportWheelchairAccessibilityBatch,
+        "Trigger Export Wheelchair Accessibility Batch");
+  }
+
 }
