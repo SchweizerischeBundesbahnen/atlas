@@ -34,7 +34,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": "components/eslint.config.js",
+            "eslintConfig": "components/eslint.config.ts",
             "lintFilePatterns": [
               "components/src/**/*.ts",
               "components/src/**/*.html"
