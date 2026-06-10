@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AddExaminants, StopPointPerson } from 'src/app/api';
+import { AddExaminants, StopPointPerson } from '../../../../../api';
 import { DetailDialogHelperService } from '../../../../../core/detail/detail-dialog-helper.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { Router } from '@angular/router';

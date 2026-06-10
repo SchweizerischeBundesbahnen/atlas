@@ -1,7 +1,7 @@
 import { Component, Input, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DecisionFormGroup } from './decision-form-group';
-import { JudgementType } from 'src/app/api';
+import { JudgementType } from '../../../../../../api';
 import { MatChip, MatChipListbox } from '@angular/material/chips';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';

@@ -1,6 +1,6 @@
-import { Component, Input, output, input } from '@angular/core';
+import { Component, Input, input, output } from '@angular/core';
 import { ControlContainer, FormArray, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { WorkflowStatus } from 'src/app/api';
+import { WorkflowStatus } from '../../../../../api';
 import {
   ExaminantFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,

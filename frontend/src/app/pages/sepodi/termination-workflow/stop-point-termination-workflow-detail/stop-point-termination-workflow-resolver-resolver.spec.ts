@@ -6,7 +6,7 @@ import {
   StopPointTerminationWorkflowResolver,
 } from './stop-point-termination-workflow-resolver';
 import { firstValueFrom, Observable, of } from 'rxjs';
-import { BERN_WYLEREGG } from 'src/test/data/service-point';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';

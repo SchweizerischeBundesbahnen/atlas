@@ -6,17 +6,6 @@ import {
   StopPointWorkflowDetailFormGroupBuilder,
 } from './stop-point-workflow-detail-form-group';
 import { Router } from '@angular/router';
-import {
-  Country,
-  ReadServicePointVersion,
-  ReadStopPointWorkflow,
-  Status,
-  StopPointPerson,
-  WorkflowStatus,
-} from 'src/app/api';
-import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
-import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
-import { Pages } from 'src/app/pages/pages';
 import { SloidHelper } from '../../../../../core/util/sloidHelper';
 import { LinkComponent } from '../../../../../core/form-components/link/link.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
@@ -34,6 +23,17 @@ import {
   DecisionDetailDialogData,
 } from '../decision/decision-detail/decision-detail-dialog.component';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
+import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {
+  Country,
+  ReadServicePointVersion,
+  ReadStopPointWorkflow,
+  Status,
+  StopPointPerson,
+  WorkflowStatus,
+} from '../../../../../api';
+import { Pages } from '../../../../pages';
 
 @Component({
   selector: 'atlas-stop-point-workflow-detail-form',

@@ -38,7 +38,9 @@ import { DownloadIconComponent } from '../../../core/form-components/download-ic
 import { TableComponent } from '../../../core/components/table/table.component';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { DialogData } from '../../../core/components/dialog/dialog.data';
-import { TthExportAnonymizationChoiceDialogComponent } from './tth-export-anonymization-choice-dialog/tth-export-anonymization-choice-dialog.component';
+import {
+  TthExportAnonymizationChoiceDialogComponent
+} from './tth-export-anonymization-choice-dialog/tth-export-anonymization-choice-dialog.component';
 import { StatementOverviewMenuComponent } from './statement-overview-menu/statement-overview-menu.component';
 import { TableFilterBoolean } from '../../../core/components/table-filter/config/table-filter-boolean';
 import { TthYearInternalService } from '../../../api/service/workflow/tth-year-internal.service';
@@ -46,7 +48,9 @@ import { ChangeCantonData } from './tth-change-canton-dialog/model/change-canton
 import { TthChangeCantonDialogComponent } from './tth-change-canton-dialog/tth-change-canton-dialog.component';
 import { StatusChangeData } from './tth-change-status-dialog/model/status-change-data';
 import { TthChangeStatusDialogComponent } from './tth-change-status-dialog/tth-change-status-dialog.component';
-import { NewTimetableHearingYearDialogComponent } from '../new-timetable-hearing-year-dialog/new-timetable-hearing-year-dialog.component';
+import {
+  NewTimetableHearingYearDialogComponent
+} from '../new-timetable-hearing-year-dialog/new-timetable-hearing-year-dialog.component';
 import { StatementTableHandler } from '../util/statement-table-handler';
 
 @Component({
@@ -227,7 +231,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
   downloadCsv(anonymizedExport: boolean) {
     this.timetableHearingStatementsService
       .getStatementsAsCsv(
-        this.translateService.currentLang,
+        this.translateService.currentLang()!,
         this.timetableYear().timetableYear,
         this.getSelectedCantonToBeSearchFromNavigation(),
         this.tableService.filter.chipSearch.getActiveSearch(),

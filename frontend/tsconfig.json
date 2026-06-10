@@ -18,10 +18,10 @@
     "useDefineForClassFields": false,
     "paths": {
       "@atlas/form": [
-        "components/src/public-api.ts"
+        "./components/src/public-api.ts"
       ],
       "@atlas/form/*": [
-        "components/src/*"
+        "./components/src/*"
       ]
     }
   },

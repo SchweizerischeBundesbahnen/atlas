@@ -1,7 +1,7 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DecisionType, JudgementType, ReadStopPointWorkflow, StopPointPerson } from 'src/app/api';
-import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
-import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
+import { DecisionType, JudgementType, ReadStopPointWorkflow, StopPointPerson } from '../../../../../api';
+import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
+import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
 import { UniqueEmailsValidator } from '../../../../../core/validation/unique-emails-validator/unique-emails-validator';
 

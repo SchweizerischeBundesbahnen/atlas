@@ -12,7 +12,7 @@ import { StopPointTerminationDialogData } from './stop-point-termination-dialog-
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { UserService } from '../../../../../../core/auth/user/user.service';
-import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
+import { AtlasFieldLengthValidator } from '../../../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 import { StartTerminationStopPointAddWorkflow } from '../../../../../../api/model/startTerminationStopPointAddWorkflow';
 

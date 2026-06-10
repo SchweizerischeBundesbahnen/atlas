@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { StopPointTerminationDialogComponent } from './stop-point-termination-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DialogCloseComponent } from 'src/app/core/components/dialog/close/dialog-close.component';
+import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';

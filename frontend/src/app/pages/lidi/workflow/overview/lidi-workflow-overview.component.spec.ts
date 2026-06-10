@@ -1,4 +1,4 @@
-import { ContainerLineVersionSnapshot } from 'src/app/api/model/containerLineVersionSnapshot';
+import { ContainerLineVersionSnapshot } from '../../../../api/model/containerLineVersionSnapshot';
 import { LineType, WorkflowStatus } from '../../../../api';
 import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';

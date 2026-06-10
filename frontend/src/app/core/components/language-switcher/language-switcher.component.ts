@@ -28,7 +28,7 @@ export class LanguageSwitcherComponent {
   }
 
   get currentLanguage(): string {
-    return this.translateService.getCurrentLang();
+    return this.translateService.getCurrentLang()!;
   }
 
   setLanguage(language: string): Observable<InterpolatableTranslationObject> {

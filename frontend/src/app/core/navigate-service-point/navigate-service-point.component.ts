@@ -1,7 +1,7 @@
 import { Component, inject, input, viewChild } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LocationService } from 'src/app/api/service/location/location.service';
+import { LocationService } from '../../api/service/location/location.service';
 import { SloidLocationModel } from '../../api/model/sloidLocationModel';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { SearchNavigationType } from '../search-service-point-panel/search-service-point-panel.component';
