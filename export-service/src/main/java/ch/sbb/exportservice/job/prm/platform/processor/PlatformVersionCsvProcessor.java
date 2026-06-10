@@ -35,7 +35,7 @@ public class PlatformVersionCsvProcessor implements ItemProcessor<PlatformVersio
         .infoOpportunities(version.getInfoOpportunitiesPipeList())
         .levelAccessWheelchair(mapLevelAccessWheelchairAttributeType(version.getLevelAccessWheelchair()))
         .partialElevation(version.getPartialElevation())
-        .superElevation(version.getSuperElevation())
+        .superElevation(version.getSuperelevation())
         .tactileSystems(mapBooleanOptionalAttributeType(version.getTactileSystems()))
         .attentionField(mapBooleanOptionalAttributeType(version.getAttentionField()))
         .vehicleAccess(mapVehicleAccessAttributeType(version.getVehicleAccess()))

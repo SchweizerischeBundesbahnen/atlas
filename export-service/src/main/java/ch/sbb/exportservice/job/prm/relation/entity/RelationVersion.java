@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRelation;
 import ch.sbb.exportservice.job.prm.BasePrmEntity;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class RelationVersion extends BasePrmEntity {
+public class RelationVersion extends BasePrmEntity implements AccessibilityRelation {
 
   private Long id;
 

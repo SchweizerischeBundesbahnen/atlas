@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.JdbcTransactionManager;
 
 @Configuration
@@ -29,6 +30,11 @@ public class PrmDataSourceConfiguration {
   @Bean(name = "prmTransactionManager")
   public JdbcTransactionManager prmTransactionManager() {
     return new JdbcTransactionManager(prmDataSource());
+  }
+
+  @Bean
+  public NamedParameterJdbcTemplate prmJdbcTemplate() {
+    return new NamedParameterJdbcTemplate(prmDataSource());
   }
 
 }

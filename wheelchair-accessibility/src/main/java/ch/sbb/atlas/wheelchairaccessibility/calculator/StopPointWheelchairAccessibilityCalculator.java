@@ -6,6 +6,7 @@ import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
 import java.util.Comparator;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 class StopPointWheelchairAccessibilityCalculator extends WheelchairAccessibilityCalculator {
 
@@ -17,10 +18,10 @@ class StopPointWheelchairAccessibilityCalculator extends WheelchairAccessibility
 
     AccessibilityStopPoint accessibilityStopPoint = accessibilityRequest.getStopPoint().getFirst();
 
-    return accessibilityRequest.getPlatform().stream()
+    List<WheelchairAccessibilityState> platformAccessibilities = accessibilityRequest.getPlatform().stream()
         .map(platform -> calculatePlatformAccessibility(accessibilityRequest, platform, accessibilityStopPoint))
-        .max(Comparator.comparingInt(WheelchairAccessibilityState::getRank))
-        .orElse(WheelchairAccessibilityState.NO_INFO);
+        .toList();
+    return new WorstAccessibilityCalculator(platformAccessibilities).calculate();
   }
 
   private WheelchairAccessibilityState calculatePlatformAccessibility(AccessibilityRequest accessibilityRequest,
@@ -33,6 +34,18 @@ class StopPointWheelchairAccessibilityCalculator extends WheelchairAccessibility
         .build();
 
     return WheelchairAccessibility.calculatePlatformOnDate(plattformAccessibilityRequest);
+  }
+
+  @RequiredArgsConstructor
+  static class WorstAccessibilityCalculator {
+
+    private final List<WheelchairAccessibilityState> states;
+
+    public WheelchairAccessibilityState calculate() {
+      return states.stream()
+          .max(Comparator.comparingInt(WheelchairAccessibilityState::getRank))
+          .orElse(WheelchairAccessibilityState.NO_INFO);
+    }
   }
 
 }

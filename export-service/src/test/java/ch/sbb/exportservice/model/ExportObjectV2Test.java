@@ -58,6 +58,7 @@ class ExportObjectV2Test {
       "SERVICE_POINT",
       "TRANSPORT_COMPANY",
       "RECORDING_OBLIGATION",
+      "WHEELCHAIR_ACCESSIBILITY",
   }, mode = Mode.EXCLUDE)
   void shouldSupportExactlyDefaultTypesForDefaultObjects(ExportObjectV2 exportObject) {
     Set<ExportTypeV2> expectedDefault = Set.of(

@@ -4,7 +4,9 @@ import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilit
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityPlatform;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityRequest;
 import ch.sbb.atlas.wheelchairaccessibility.model.AccessibilityStopPoint;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class PlatformWheelchairAccessibilityCalculator extends WheelchairAccessibilityCalculator {
 
   @Override
@@ -23,6 +25,8 @@ class PlatformWheelchairAccessibilityCalculator extends WheelchairAccessibilityC
     WheelchairAccessibilityState platformState = PlatformCompleteAccessibilityCalculator.calculate(platform,
         accessibilityRequest.getRelationsOfPlatform(platform.getSloid()));
     WheelchairAccessibilityState stopPointState = StopPointCompleteAccessibilityCalculator.calculate(accessibilityStopPoint);
+
+    log.debug("Calculated platformState={}, stopPointState={}", platformState, stopPointState);
     return WheelchairAccessibilityCombiner.combine(stopPointState, platformState);
   }
 

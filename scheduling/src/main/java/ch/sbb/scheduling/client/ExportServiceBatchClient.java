@@ -49,6 +49,9 @@ public interface ExportServiceBatchClient {
   @PostMapping(value = "prm/relation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response exportRelationBatch();
 
+  @PostMapping(value = "prm/wheelchair-accessibility-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportWheelchairAccessibilityBatch();
+
   @PostMapping(value = "bodi/business-organisation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response exportBusinessOrganisationBatch();
 
