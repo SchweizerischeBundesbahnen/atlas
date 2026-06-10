@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.job.prm.wheelchairaccessibility.service;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.wheelchairaccessibility.calculator.WheelchairAccessibility;
 import ch.sbb.atlas.wheelchairaccessibility.model.Accessibility;
 import ch.sbb.atlas.wheelchairaccessibility.model.Accessibility.AccessibilityInfo;
@@ -157,7 +158,7 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
     private String number;
     private String type;
 
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH);
 
     List<WheelchairAccessibilityCsvModel> toModel(Accessibility accessibility) {
       return accessibility.getAccessibilityInfos().stream().map(this::toModel).toList();

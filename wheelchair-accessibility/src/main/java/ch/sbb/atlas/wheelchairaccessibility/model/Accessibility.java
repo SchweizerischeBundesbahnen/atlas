@@ -1,5 +1,6 @@
 package ch.sbb.atlas.wheelchairaccessibility.model;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.wheelchairaccessibility.WheelchairAccessibilityState;
 import ch.sbb.atlas.model.DateRange;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +34,7 @@ public class Accessibility {
   }
 
   public String prettyPrint() {
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH);
     StringBuilder builder = new StringBuilder();
     for (AccessibilityInfo accessibilityInfo : accessibilityInfos) {
       builder.append(dateTimeFormatter.format(accessibilityInfo.dateRange.getFrom()));
