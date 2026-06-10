@@ -8,7 +8,6 @@ import { StopPointTerminationWorkflowService } from '../../../../api/service/wor
 import { of, Subject } from 'rxjs';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableComponent } from '../../../../core/components/table/table.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -44,7 +43,7 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [StopPointTerminationWorkflowOverviewComponent, TranslateModule.forRoot()],
+      imports: [StopPointTerminationWorkflowOverviewComponent],
       providers: [
         {
           provide: StopPointTerminationWorkflowService,

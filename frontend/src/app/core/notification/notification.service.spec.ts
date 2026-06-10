@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { NotificationService } from './notification.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -59,7 +59,7 @@ describe('NotificationService', () => {
 
     // Config
     TestBed.configureTestingModule({
-      imports: [MatSnackBarModule, TranslateModule.forRoot(), RouterModule.forRoot([])],
+      imports: [MatSnackBarModule, RouterModule.forRoot([])],
       providers: [
         { provide: TranslateService, useValue: translateServiceStub },
         { provide: MatSnackBar, useValue: matSnackBarStub },

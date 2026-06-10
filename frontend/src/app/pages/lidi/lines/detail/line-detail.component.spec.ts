@@ -14,7 +14,6 @@ import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
 import { FormModule } from '../../../../core/module/form.module';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import moment from 'moment';
@@ -108,7 +107,7 @@ function setupTestBed(
   Element.prototype.scrollIntoView = vi.fn();
 
   TestBed.configureTestingModule({
-    imports: [LineDetailComponent, TranslateModule.forRoot()],
+    imports: [LineDetailComponent],
     providers: [
       provideHttpClient(),
       provideHttpClientTesting(),
@@ -119,7 +118,6 @@ function setupTestBed(
       { provide: DialogService, useValue: dialogService },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
-      { provide: TranslatePipe },
     ],
   })
     .overrideComponent(LineDetailComponent, {

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { BusinessOrganisationComponent } from './business-organisation.component';
 import { ContainerBusinessOrganisation } from '../../../api';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
@@ -43,7 +43,7 @@ describe('BusinessOrganisationComponent', () => {
     businessOrganisationService.getAllBusinessOrganisations.mockReturnValue(of(businessOrganisation));
 
     TestBed.configureTestingModule({
-      imports: [BusinessOrganisationComponent, TranslateModule.forRoot()],
+      imports: [BusinessOrganisationComponent],
       providers: [
         TranslatePipe,
         RouterOutlet,

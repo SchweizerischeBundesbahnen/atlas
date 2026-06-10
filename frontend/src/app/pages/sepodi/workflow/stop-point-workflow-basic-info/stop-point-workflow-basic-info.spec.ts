@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { StopPointWorkflowBasicInfo } from './stop-point-workflow-basic-info';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -14,7 +14,7 @@ describe('StopPointWorkflowBasicInfo', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), StopPointWorkflowBasicInfo],
+      imports: [StopPointWorkflowBasicInfo],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

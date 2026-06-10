@@ -17,7 +17,6 @@ import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
@@ -63,7 +62,7 @@ describe('TrafficPointElementsTableComponent', () => {
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
-      imports: [TrafficPointElementsTableComponent, TranslateModule.forRoot()],
+      imports: [TrafficPointElementsTableComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

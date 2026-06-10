@@ -4,7 +4,7 @@ import { UserAdministrationClientDetailComponent } from './user-administration-c
 import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { UserPermissionGivenClientService } from './edit/user-permission-given-client.service';
 
@@ -14,7 +14,7 @@ describe('UserAdministrationClientDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserAdministrationClientDetailComponent, TranslateModule.forRoot({})],
+      imports: [UserAdministrationClientDetailComponent],
       providers: [
         {
           provide: ActivatedRoute,

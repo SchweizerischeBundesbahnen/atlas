@@ -4,7 +4,7 @@ import { StopPointTerminationWorkflowDetail } from './stop-point-termination-wor
 import { ActivatedRoute, Router } from '@angular/router';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { StopPointTerminationWorkflowDetailData } from './stop-point-termination-workflow-resolver';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
@@ -53,7 +53,7 @@ describe('StopPointTerminationWorkflowDetail', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [StopPointTerminationWorkflowDetail, TranslateModule.forRoot()],
+      imports: [StopPointTerminationWorkflowDetail],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

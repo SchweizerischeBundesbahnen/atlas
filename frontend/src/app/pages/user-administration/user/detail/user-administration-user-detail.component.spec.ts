@@ -7,7 +7,6 @@ import { UserAdministrationUserCreateComponent } from './create/user-administrat
 import { UserAdministrationUserEditComponent } from './edit/user-administration-user-edit.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 @Component({
@@ -28,7 +27,7 @@ describe('UserAdministrationUserDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserAdministrationUserDetailComponent, TranslateModule.forRoot()],
+      imports: [UserAdministrationUserDetailComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { UserAdministrationClientEditComponent } from './user-administration-client-edit.component';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ApplicationRole, ApplicationType, ClientCredential, PermissionRestrictionType } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
@@ -33,9 +33,9 @@ describe('UserAdministrationClientEditComponent', () => {
     dialogService = {
       confirmLeave: vi.fn().mockReturnValue(of(true)),
     };
-    await TestBed.configureTestingModule({
-      imports: [UserAdministrationClientEditComponent, TranslateModule.forRoot()],
-      providers: [
+     await TestBed.configureTestingModule({
+       imports: [UserAdministrationClientEditComponent],
+       providers: [
         TranslatePipe,
         {
           provide: UserPermissionGivenClientService,

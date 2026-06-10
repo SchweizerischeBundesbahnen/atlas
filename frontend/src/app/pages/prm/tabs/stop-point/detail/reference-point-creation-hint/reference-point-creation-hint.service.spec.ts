@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import { TranslateModule } from '@ngx-translate/core';
-
 import { ReferencePointCreationHintService } from './reference-point-creation-hint.service';
 import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
 import { of } from 'rxjs';
@@ -18,7 +16,6 @@ describe('ReferencePointCreationHintService', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       providers: [{ provide: DialogService, useValue: dialogService }],
     });
 

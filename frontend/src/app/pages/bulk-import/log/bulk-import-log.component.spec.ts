@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { BulkImportResult } from '../../../api';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { Pipe, PipeTransform } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockMatPaginatorComponent } from '../../../app.testing.mocks';
 import { By } from '@angular/platform-browser';
 import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
@@ -34,7 +33,7 @@ describe('BulkImportLogComponent', () => {
     bulkImportService.getBulkImportResults.mockReturnValue(of(importResult));
 
     TestBed.configureTestingModule({
-      imports: [BulkImportLogComponent, TranslateModule.forRoot()],
+      imports: [BulkImportLogComponent],
       providers: [
         { provide: BulkImportService, useValue: bulkImportService },
         { provide: ActivatedRoute, useValue: { params: of({ id: 10 }) } },

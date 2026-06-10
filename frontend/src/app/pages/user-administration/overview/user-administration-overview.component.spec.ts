@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { UserAdministrationOverviewComponent } from './user-administration-overview.component';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -12,7 +12,7 @@ describe('UserAdministrationOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserAdministrationOverviewComponent, TranslateModule.forRoot()],
+      imports: [UserAdministrationOverviewComponent],
       providers: [
         TranslatePipe,
         {

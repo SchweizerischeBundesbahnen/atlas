@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 
 import { StopPointTerminationInfoComponent } from './stop-point-termination-info.component';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { TerminationInfo } from '../../../../../../api/model/terminationInfo';
 import { of } from 'rxjs';
@@ -33,7 +33,7 @@ describe('StopPointTerminationInfoComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [StopPointTerminationInfoComponent, TranslateModule.forRoot()],
+      imports: [StopPointTerminationInfoComponent],
       providers: [
         { provide: TranslatePipe },
         {

@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { Component } from '@angular/core';
 import { RemoveCharsDirective } from './remove-chars.directive';
 import { TextFieldComponent } from './text-field.component';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 
 @Component({
@@ -30,7 +30,7 @@ describe('RemoveCharsDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      imports: [TestComponent, TranslateModule.forRoot()],
+      imports: [TestComponent],
       providers: [TranslatePipe],
     }).createComponent(TestComponent);
 

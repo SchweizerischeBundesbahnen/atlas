@@ -10,7 +10,6 @@ import { of } from 'rxjs';
 import { BooleanOptionalAttributeType, ParkingLotOverview } from '../../../../api';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { ParkingLotInternalService } from '../../../../api/service/prm/parking-lot/parking-lot-internal.service';
 
 const parkingLotOverview: ParkingLotOverview[] = [
@@ -55,7 +54,7 @@ describe('ParkingLotTableComponent', () => {
     parkingLotInternalService.getParkingLotsOverview.mockReturnValue(of(parkingLotOverview));
 
     TestBed.configureTestingModule({
-      imports: [ParkingLotTableComponent, TranslateModule.forRoot()],
+      imports: [ParkingLotTableComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         {

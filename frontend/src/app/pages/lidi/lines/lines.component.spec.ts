@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { LinesComponent } from './lines.component';
 import { ContainerLine, ElementType, LidiElementType, Line, Status } from '../../../api';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
@@ -50,9 +50,9 @@ describe('LinesComponent', () => {
     };
     lineInternalService.getLines.mockReturnValue(of(versionContainer));
 
-    TestBed.configureTestingModule({
-      imports: [LinesComponent, TranslateModule.forRoot()],
-      providers: [
+     TestBed.configureTestingModule({
+       imports: [LinesComponent],
+       providers: [
         TranslatePipe,
         { provide: LineInternalService, useValue: lineInternalService },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },

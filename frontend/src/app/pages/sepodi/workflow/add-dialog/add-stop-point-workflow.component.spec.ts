@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { AddStopPointWorkflowComponent } from './add-stop-point-workflow.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { adminUserServiceMock } from '../../../../app.testing.mocks';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
@@ -59,7 +59,7 @@ describe('AddStopPointWorkflowComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AddStopPointWorkflowComponent, TranslateModule.forRoot()],
+      imports: [AddStopPointWorkflowComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

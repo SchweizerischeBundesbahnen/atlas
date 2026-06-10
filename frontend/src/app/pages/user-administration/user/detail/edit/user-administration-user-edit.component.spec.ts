@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { UserAdministrationUserEditComponent } from './user-administration-user-edit.component';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ApplicationRole, ApplicationType, Permission, User, UserDisplayName } from '../../../../../api';
@@ -37,9 +37,9 @@ describe('UserAdministrationUserEditComponent', () => {
     dialogService = {
       confirmLeave: vi.fn(),
     };
-    await TestBed.configureTestingModule({
-      imports: [UserAdministrationUserEditComponent, TranslateModule.forRoot()],
-      providers: [
+     await TestBed.configureTestingModule({
+       imports: [UserAdministrationUserEditComponent],
+       providers: [
         TranslatePipe,
         {
           provide: UserAdministrationService,

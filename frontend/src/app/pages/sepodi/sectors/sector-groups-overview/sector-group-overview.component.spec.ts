@@ -6,7 +6,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
@@ -62,7 +61,7 @@ describe('SectorGroupOverviewComponent', () => {
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
-      imports: [SectorGroupOverviewComponent, TranslateModule.forRoot()],
+      imports: [SectorGroupOverviewComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

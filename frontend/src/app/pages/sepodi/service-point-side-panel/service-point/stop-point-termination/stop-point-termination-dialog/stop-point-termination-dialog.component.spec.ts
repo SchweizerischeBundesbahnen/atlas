@@ -4,7 +4,6 @@ import { StopPointTerminationDialogComponent } from './stop-point-termination-di
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';
@@ -52,17 +51,15 @@ describe('StopPointTerminationDialogComponent', () => {
     userAdministrationServiceSpy = { getCurrentUser: vi.fn() };
     userAdministrationServiceSpy.getCurrentUser.mockReturnValue(of(user));
 
-    await TestBed.configureTestingModule({
-      imports: [
-        StopPointTerminationDialogComponent,
-        TranslateModule.forRoot(),
-        DialogCloseComponent,
-        DialogContentComponent,
-        DialogFooterComponent,
-        TranslatePipe,
-        CommentComponent,
-      ],
-      providers: [
+     await TestBed.configureTestingModule({
+       imports: [
+         StopPointTerminationDialogComponent,
+         DialogCloseComponent,
+         DialogContentComponent,
+         DialogFooterComponent,
+         CommentComponent,
+       ],
+       providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
         {
           provide: MAT_DIALOG_DATA,
@@ -73,13 +70,12 @@ describe('StopPointTerminationDialogComponent', () => {
           useValue: workflowServiceSpy,
         },
         { provide: NotificationService, useValue: notificationServiceSpy },
-        {
-          provide: UserAdministrationService,
-          useValue: userAdministrationServiceSpy,
-        },
-        { provide: TranslatePipe },
-        provideHttpClient(),
-        provideHttpClientTesting(),
+         {
+           provide: UserAdministrationService,
+           useValue: userAdministrationServiceSpy,
+         },
+         provideHttpClient(),
+         provideHttpClientTesting(),
       ],
     }).compileComponents();
 

@@ -4,7 +4,7 @@ import { ServicePointDetailComponent } from './service-point-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Record } from '../../../../core/model/record';
 import {
   adminPermissionServiceMock,
@@ -102,7 +102,7 @@ describe('ServicePointDetailComponent', () => {
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
-      imports: [ServicePointDetailComponent, TranslateModule.forRoot()],
+      imports: [ServicePointDetailComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

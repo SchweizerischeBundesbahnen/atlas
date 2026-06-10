@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { TransportCompaniesComponent } from './transport-companies.component';
 import { ContainerTransportCompany, TransportCompanyStatus } from '../../../api';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
@@ -30,9 +30,9 @@ describe('TransportCompaniesComponent', () => {
     };
     transportCompanyService.getTransportCompanies.mockReturnValue(of(transportCompany));
 
-    TestBed.configureTestingModule({
-      imports: [TransportCompaniesComponent, TranslateModule.forRoot()],
-      providers: [
+     TestBed.configureTestingModule({
+       imports: [TransportCompaniesComponent],
+       providers: [
         TranslatePipe,
         RouterOutlet,
         { provide: TransportCompanyService, useValue: transportCompanyService },

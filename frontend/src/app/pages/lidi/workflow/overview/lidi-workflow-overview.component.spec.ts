@@ -3,7 +3,7 @@ import { LineType, WorkflowStatus } from '../../../../api';
 import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../../app.testing.mocks';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 import { ActivatedRoute } from '@angular/router';
@@ -42,9 +42,9 @@ describe('LidiWorkflowOverviewComponent', () => {
     };
     lineInternalService.getLineVersionSnapshot.mockReturnValue(of(versionContainer));
 
-    TestBed.configureTestingModule({
-      imports: [LidiWorkflowOverviewComponent, TranslateModule.forRoot()],
-      providers: [
+     TestBed.configureTestingModule({
+       imports: [LidiWorkflowOverviewComponent],
+       providers: [
         TranslatePipe,
         { provide: LineInternalService, useValue: lineInternalService },
         {

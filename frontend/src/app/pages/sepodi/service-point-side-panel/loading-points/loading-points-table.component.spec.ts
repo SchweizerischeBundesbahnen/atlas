@@ -8,7 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LOADING_POINT } from '../../../../../test/data/loading-point';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { LoadingPointInternalService } from '../../../../api/service/sepodi/loading-point-internal.service';
 
 describe('LoadingPointsTableComponent', () => {
@@ -29,7 +28,7 @@ describe('LoadingPointsTableComponent', () => {
     loadingPointInternalServiceSpy.getLoadingPointOverview.mockReturnValue(of({ objects: LOADING_POINT }));
 
     await TestBed.configureTestingModule({
-      imports: [LoadingPointsTableComponent, TranslateModule.forRoot()],
+      imports: [LoadingPointsTableComponent],
       providers: [
         { provide: ActivatedRoute, useValue: route },
         {

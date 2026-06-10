@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { SectorOverviewComponent } from './sector-overview.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 import { SpatialReference } from '../../../../api';
@@ -51,7 +50,7 @@ describe('SectorOverviewComponent', () => {
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
-      imports: [SectorOverviewComponent, TranslateModule.forRoot()],
+      imports: [SectorOverviewComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
