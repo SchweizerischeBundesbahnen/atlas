@@ -78,9 +78,10 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
             stopPoint, platform, relationsOfStopPoint);
         accessibilityFileWriter.write(platformAccessibility);
       }
-      log.info("Accessibility caluclations completed {}", ++count);
+      count++;
     }
 
+    log.info("Accessibility calculations completed {}", count);
     accessibilityFileWriter.close();
     return RepeatStatus.FINISHED;
   }
