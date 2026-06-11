@@ -17,8 +17,8 @@ describe('DossierSelectComponent', () => {
     getOverview: vi.fn(),
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [DossierSelectComponent],
       providers: [
         translateServiceProvider,
@@ -27,7 +27,7 @@ describe('DossierSelectComponent', () => {
           useValue: dossierInternalService,
         },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(DossierSelectComponent);
     component = fixture.componentInstance;

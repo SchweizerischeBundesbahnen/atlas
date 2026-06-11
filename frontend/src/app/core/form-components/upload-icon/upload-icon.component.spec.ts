@@ -7,10 +7,10 @@ describe('UploadIconComponent', () => {
   let component: UploadIconComponent;
   let fixture: ComponentFixture<UploadIconComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [UploadIconComponent],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(UploadIconComponent);
     component = fixture.componentInstance;

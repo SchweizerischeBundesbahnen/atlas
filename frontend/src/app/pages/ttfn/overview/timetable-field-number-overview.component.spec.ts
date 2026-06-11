@@ -5,7 +5,12 @@ import { of, Subject } from 'rxjs';
 import { ContainerTimetableFieldNumber } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
-import { adminPermissionServiceMock, MockAtlasButtonComponent, MockTableComponent } from '../../../app.testing.mocks';
+import {
+  adminPermissionServiceMock,
+  MockAtlasButtonComponent,
+  MockTableComponent,
+  translateServiceProvider,
+} from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
@@ -32,15 +37,16 @@ describe('TimetableFieldNumberOverviewComponent', () => {
   let fixture: ComponentFixture<TimetableFieldNumberOverviewComponent>;
   let timetableFieldNumberServiceSpy: Mocked<Pick<TimetableFieldNumberInternalService, 'getOverview'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     timetableFieldNumberServiceSpy = {
       getOverview: vi.fn(),
     };
     timetableFieldNumberServiceSpy.getOverview.mockReturnValue(of(timetableFieldNumberContainer));
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [TimetableFieldNumberOverviewComponent],
       providers: [
+        translateServiceProvider,
         {
           provide: TimetableFieldNumberInternalService,
           useValue: timetableFieldNumberServiceSpy,
@@ -52,12 +58,10 @@ describe('TimetableFieldNumberOverviewComponent', () => {
         },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    })
-      .overrideComponent(TimetableFieldNumberOverviewComponent, {
-        remove: { imports: [AtlasButtonComponent, TableComponent] },
-        add: { imports: [MockAtlasButtonComponent, MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(TimetableFieldNumberOverviewComponent, {
+      remove: { imports: [AtlasButtonComponent, TableComponent] },
+      add: { imports: [MockAtlasButtonComponent, MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(TimetableFieldNumberOverviewComponent);
     component = fixture.componentInstance;

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { SectorGroupOverviewComponent } from './sector-group-overview.component';
 import { provideHttpClient } from '@angular/common/http';
@@ -9,7 +9,7 @@ import { SectorGroupInternalService } from '../../../../api/service/sepodi/secto
 import { BehaviorSubject, of } from 'rxjs';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 
@@ -44,7 +44,7 @@ describe('SectorGroupOverviewComponent', () => {
     objects: [],
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     sectorGroupInternalServiceSpy = {
       getSectorGroups: vi.fn(),
     };
@@ -60,9 +60,10 @@ describe('SectorGroupOverviewComponent', () => {
     };
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [SectorGroupOverviewComponent],
       providers: [
+        translateServiceProvider,
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -77,7 +78,7 @@ describe('SectorGroupOverviewComponent', () => {
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(SectorGroupOverviewComponent);
     component = fixture.componentInstance;

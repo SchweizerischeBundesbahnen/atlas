@@ -12,7 +12,7 @@ import {
 } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
-import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { FormModule } from '../../../../core/module/form.module';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
@@ -109,6 +109,7 @@ function setupTestBed(
   TestBed.configureTestingModule({
     imports: [LineDetailComponent],
     providers: [
+      translateServiceProvider,
       provideHttpClient(),
       provideHttpClientTesting(),
       provideMomentDateAdapter(),
@@ -183,7 +184,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     component.toggleEdit();
     component.form.controls.description.setValue('UpdatedDescription');
     component.save();
-    await fixture.whenStable();
+    fixture.whenStable();
     fixture.detectChanges();
 
     const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
@@ -211,7 +212,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
     component.delete();
     fixture.detectChanges();
-    await fixture.whenStable();
+    fixture.whenStable();
     fixture.detectChanges();
 
     const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
@@ -327,7 +328,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       });
 
       component.save();
-      await fixture.whenStable();
+      fixture.whenStable();
       fixture.detectChanges();
 
       const snackBarContainer = document.body.querySelector('mat-snack-bar-container');

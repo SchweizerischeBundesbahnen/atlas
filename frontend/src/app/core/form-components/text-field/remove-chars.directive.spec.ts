@@ -1,11 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it } from 'vitest';
-import { Component } from '@angular/core';
-import { RemoveCharsDirective } from './remove-chars.directive';
-import { TextFieldComponent } from './text-field.component';
-import { FormControl, FormGroup } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { By } from '@angular/platform-browser';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {beforeEach, describe, expect, it} from 'vitest';
+import {Component} from '@angular/core';
+import {RemoveCharsDirective} from './remove-chars.directive';
+import {TextFieldComponent} from './text-field.component';
+import {FormControl, FormGroup} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+import {By} from '@angular/platform-browser';
+import {translateServiceProvider} from '../../../app.testing.mocks';
 
 @Component({
   template: ` <atlas-text-field
@@ -31,7 +32,7 @@ describe('RemoveCharsDirective', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       imports: [TestComponent],
-      providers: [TranslatePipe],
+      providers: [TranslatePipe, translateServiceProvider],
     }).createComponent(TestComponent);
 
     component = fixture.componentInstance;

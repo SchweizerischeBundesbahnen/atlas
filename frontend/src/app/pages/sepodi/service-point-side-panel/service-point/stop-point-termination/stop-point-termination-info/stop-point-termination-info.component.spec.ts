@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { StopPointTerminationInfoComponent } from './stop-point-termination-info.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -8,6 +8,7 @@ import { TerminationInfo } from '../../../../../../api/model/terminationInfo';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Pages } from '../../../../../pages';
+import { translateServiceProvider } from '../../../../../../app.testing.mocks';
 
 const terminationInfo: TerminationInfo = {
   workflowId: 123,
@@ -21,7 +22,7 @@ describe('StopPointTerminationInfoComponent', () => {
 
   let workflowServiceSpy: Mocked<Pick<StopPointTerminationWorkflowService, 'getTerminationInfoBySloid'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     workflowServiceSpy = {
       getTerminationInfoBySloid: vi.fn(),
     };
@@ -32,9 +33,10 @@ describe('StopPointTerminationInfoComponent', () => {
       serializeUrl: vi.fn(),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [StopPointTerminationInfoComponent],
       providers: [
+        translateServiceProvider,
         { provide: TranslatePipe },
         {
           provide: StopPointTerminationWorkflowService,
@@ -42,7 +44,7 @@ describe('StopPointTerminationInfoComponent', () => {
         },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(StopPointTerminationInfoComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('sloid', 'ch:1:sloid:7000');

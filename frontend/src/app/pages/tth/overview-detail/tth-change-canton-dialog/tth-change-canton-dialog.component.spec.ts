@@ -41,8 +41,8 @@ describe('TthChangeCantonDialogComponent', () => {
     of(undefined) as ReturnType<TimetableHearingStatementInternalService['updateHearingCanton']>
   );
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AppTestingModule, FormModule, TthChangeCantonDialogComponent, BaseChangeDialogComponent],
       providers: [
         {
@@ -67,7 +67,7 @@ describe('TthChangeCantonDialogComponent', () => {
         },
         { provide: TranslatePipe },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TthChangeCantonDialogComponent);
     component = fixture.componentInstance;

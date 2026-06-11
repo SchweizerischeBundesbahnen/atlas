@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { AppTestingModule } from '../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
@@ -58,9 +58,9 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     return new Date().getUTCFullYear();
   }
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of(getTimetableHearingYears()));
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         NewTimetableHearingYearDialogComponent,
@@ -82,7 +82,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
         },
         TranslatePipe,
       ],
-    }).compileComponents();
+    });
   });
 
   beforeEach(() => {

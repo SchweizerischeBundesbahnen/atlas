@@ -12,13 +12,13 @@ describe('TimetableHearingOverviewComponent', () => {
   let fixture: ComponentFixture<TimetableHearingOverviewComponent>;
   let service: Mocked<Pick<OverviewToTabShareDataService, 'setCantonShort'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     service = { setCantonShort: vi.fn() };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [AppTestingModule, TimetableHearingOverviewComponent, CantonCardComponent],
       providers: [{ provide: OverviewToTabShareDataService, useValue: service }],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TimetableHearingOverviewComponent);
     component = fixture.componentInstance;

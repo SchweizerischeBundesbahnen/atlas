@@ -115,7 +115,7 @@ describe('TrafficPointElementsDetailComponent', () => {
   });
 
   describe('for existing Version', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       routerSpy = {
         navigate: vi.fn().mockReturnValue(Promise.resolve(true)),
         events: of(null),
@@ -134,7 +134,7 @@ describe('TrafficPointElementsDetailComponent', () => {
           }),
         },
       };
-      await setupTestBed(activatedRouteMock);
+      setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -196,7 +196,7 @@ describe('TrafficPointElementsDetailComponent', () => {
   });
 
   describe('for new Version', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       routerSpy = {
         navigate: vi.fn().mockReturnValue(Promise.resolve(true)),
         events: of(null),
@@ -212,7 +212,7 @@ describe('TrafficPointElementsDetailComponent', () => {
           data: of({ trafficPoint: [], isTrafficPointArea: false }),
         },
       };
-      await setupTestBed(activatedRouteMock);
+      setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -293,6 +293,6 @@ describe('TrafficPointElementsDetailComponent', () => {
         provideHttpClientTesting(),
         translateServiceProvider,
       ],
-    }).compileComponents();
+    });
   }
 });

@@ -15,7 +15,7 @@ describe('BoDiOverviewComponent', () => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule, BodiOverviewComponent, BusinessOrganisationComponent, AtlasButtonComponent],
       providers: [{ provide: PermissionService, useValue: adminPermissionServiceMock }],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(BodiOverviewComponent);
     component = fixture.componentInstance;

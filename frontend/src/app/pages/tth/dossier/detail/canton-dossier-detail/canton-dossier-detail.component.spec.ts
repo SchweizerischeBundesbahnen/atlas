@@ -4,7 +4,9 @@ import { CantonDossierDetailComponent } from './canton-dossier-detail.component'
 import { ActivatedRoute, Router } from '@angular/router';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
 import { of } from 'rxjs';
-import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import {
+  TimetableHearingStatementInternalService
+} from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TthDossier } from '../../../../../api/model/tthDossier';
 import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
@@ -66,7 +68,7 @@ describe('DossierDetailComponent', () => {
   let fixture: ComponentFixture<CantonDossierDetailComponent>;
 
   describe('on create', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       const activatedRoute = {
         snapshot: {
           data: {
@@ -74,7 +76,7 @@ describe('DossierDetailComponent', () => {
           },
         },
       };
-      await setupTestBed(activatedRoute);
+      setupTestBed(activatedRoute);
     });
 
     it('should create', () => {
@@ -107,7 +109,7 @@ describe('DossierDetailComponent', () => {
   });
 
   describe('on edit', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       const activatedRoute = {
         snapshot: {
           data: {
@@ -115,7 +117,7 @@ describe('DossierDetailComponent', () => {
           },
         },
       };
-      await setupTestBed(activatedRoute);
+      setupTestBed(activatedRoute);
 
       mockClear(dialogService);
     });
@@ -185,7 +187,7 @@ describe('DossierDetailComponent', () => {
     });
   });
 
-  async function setupTestBed(activatedRoute: ActivatedRouteMockType) {
+  function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     router = {
       navigate: vi.fn().mockResolvedValue(true),
     };

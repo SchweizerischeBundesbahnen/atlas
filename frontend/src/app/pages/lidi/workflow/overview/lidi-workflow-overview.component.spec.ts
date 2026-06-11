@@ -4,7 +4,7 @@ import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.componen
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../../app.testing.mocks';
+import { MockTableComponent, translateServiceProvider } from '../../../../app.testing.mocks';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 import { ActivatedRoute } from '@angular/router';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -42,9 +42,10 @@ describe('LidiWorkflowOverviewComponent', () => {
     };
     lineInternalService.getLineVersionSnapshot.mockReturnValue(of(versionContainer));
 
-     TestBed.configureTestingModule({
-       imports: [LidiWorkflowOverviewComponent],
-       providers: [
+    TestBed.configureTestingModule({
+      imports: [LidiWorkflowOverviewComponent],
+      providers: [
+        translateServiceProvider,
         TranslatePipe,
         { provide: LineInternalService, useValue: lineInternalService },
         {
@@ -52,12 +53,10 @@ describe('LidiWorkflowOverviewComponent', () => {
           useValue: { snapshot: { queryParams: {} } },
         },
       ],
-    })
-      .overrideComponent(LidiWorkflowOverviewComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(LidiWorkflowOverviewComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(LidiWorkflowOverviewComponent);
     component = fixture.componentInstance;

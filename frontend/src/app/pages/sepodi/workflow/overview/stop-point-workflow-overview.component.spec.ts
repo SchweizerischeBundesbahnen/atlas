@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { StopPointWorkflowOverviewComponent } from './stop-point-workflow-overview.component';
-import { MockTableComponent } from '../../../../app.testing.mocks';
+import { MockTableComponent, translateServiceProvider } from '../../../../app.testing.mocks';
 import { ContainerReadStopPointWorkflow, ReadStopPointWorkflow } from '../../../../api';
 import { of, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,7 +32,7 @@ describe('StopPointWorkflowOverviewComponent', () => {
 
   let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'getStopPointWorkflows'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     stopPointWorkflowService = {
       getStopPointWorkflows: vi.fn().mockReturnValue(of(container)),
     };
@@ -46,14 +46,12 @@ describe('StopPointWorkflowOverviewComponent', () => {
           provide: StopPointWorkflowService,
           useValue: stopPointWorkflowService,
         },
+        translateServiceProvider,
       ],
-    })
-      .overrideComponent(StopPointWorkflowOverviewComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents()
-      .then();
+    }).overrideComponent(StopPointWorkflowOverviewComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
     fixture = TestBed.createComponent(StopPointWorkflowOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

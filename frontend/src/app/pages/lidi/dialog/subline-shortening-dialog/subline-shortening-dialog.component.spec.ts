@@ -34,7 +34,7 @@ describe('SublineShorteningDialogComponent', () => {
         { provide: TranslatePipe },
         { provide: Router, useValue: router },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(SublineShorteningDialogComponent);
     component = fixture.componentInstance;

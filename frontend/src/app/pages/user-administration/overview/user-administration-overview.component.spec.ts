@@ -5,15 +5,17 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 describe('UserAdministrationOverviewComponent', () => {
   let component: UserAdministrationOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationOverviewComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [UserAdministrationOverviewComponent],
       providers: [
+        translateServiceProvider,
         TranslatePipe,
         {
           provide: ActivatedRoute,
@@ -22,7 +24,7 @@ describe('UserAdministrationOverviewComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(UserAdministrationOverviewComponent);
     component = fixture.componentInstance;

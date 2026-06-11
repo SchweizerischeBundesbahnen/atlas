@@ -16,13 +16,13 @@ describe('KilometerMasterSearchComponent', () => {
   let fixture: ComponentFixture<KilometerMasterSearchComponent>;
   let servicePointsServiceSpy: Mocked<Pick<ServicePointInternalService, 'searchServicePointsWithRouteNetworkTrue'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     servicePointsServiceSpy = {
       searchServicePointsWithRouteNetworkTrue: vi.fn(),
     };
     servicePointsServiceSpy.searchServicePointsWithRouteNetworkTrue.mockReturnValue(of());
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       providers: [
         {
           provide: ServicePointInternalService,
@@ -33,7 +33,7 @@ describe('KilometerMasterSearchComponent', () => {
         provideHttpClientTesting(),
       ],
       imports: [NgSelectModule, KilometerMasterSearchComponent, SearchSelectComponent, AtlasFieldErrorComponent],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(KilometerMasterSearchComponent);
     component = fixture.componentInstance;

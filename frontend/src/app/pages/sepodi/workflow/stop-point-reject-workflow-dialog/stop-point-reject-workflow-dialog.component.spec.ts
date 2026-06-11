@@ -60,7 +60,7 @@ describe('StopPointRejectWorkflowDialogComponent', () => {
     formGroup.controls.motivationComment.setValue('juva merda');
   }
 
-  beforeEach(async () => {
+  beforeEach(() => {
     notificationServiceSpy = { success: vi.fn() };
     stopPointWorkflowService = {
       rejectStopPointWorkflow: vi.fn().mockReturnValue(of(workflow)),
@@ -78,7 +78,7 @@ describe('StopPointRejectWorkflowDialogComponent', () => {
     };
     dialogRefSpy = { close: vi.fn() };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         FormModule,
@@ -106,7 +106,7 @@ describe('StopPointRejectWorkflowDialogComponent', () => {
         { provide: Router, useValue: router },
         { provide: TranslatePipe },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StopPointRejectWorkflowDialogComponent);
     component = fixture.componentInstance;

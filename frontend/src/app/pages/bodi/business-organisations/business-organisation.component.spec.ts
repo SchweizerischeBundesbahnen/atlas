@@ -3,7 +3,7 @@ import { of, Subject } from 'rxjs';
 import { BusinessOrganisationComponent } from './business-organisation.component';
 import { ContainerBusinessOrganisation } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import { MockTableComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { TableComponent } from '../../../core/components/table/table.component';
@@ -45,6 +45,7 @@ describe('BusinessOrganisationComponent', () => {
     TestBed.configureTestingModule({
       imports: [BusinessOrganisationComponent],
       providers: [
+        translateServiceProvider,
         TranslatePipe,
         RouterOutlet,
         {
@@ -53,12 +54,10 @@ describe('BusinessOrganisationComponent', () => {
         },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    })
-      .overrideComponent(BusinessOrganisationComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(BusinessOrganisationComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(BusinessOrganisationComponent);
     component = fixture.componentInstance;

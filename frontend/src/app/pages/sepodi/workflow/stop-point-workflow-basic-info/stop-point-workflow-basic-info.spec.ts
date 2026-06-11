@@ -7,21 +7,23 @@ import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-sele
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 describe('StopPointWorkflowBasicInfo', () => {
   let component: StopPointWorkflowBasicInfo;
   let fixture: ComponentFixture<StopPointWorkflowBasicInfo>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [StopPointWorkflowBasicInfo],
       providers: [
+        translateServiceProvider,
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: TranslatePipe },
         { provide: BoSelectionDisplayPipe },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StopPointWorkflowBasicInfo);
     component = fixture.componentInstance;

@@ -9,6 +9,7 @@ import { of, Subject } from 'rxjs';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { ActivatedRoute } from '@angular/router';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 @Component({
   selector: 'atlas-table',
@@ -28,7 +29,7 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
 
   let wfServiceMock: Mocked<Pick<StopPointTerminationWorkflowService, 'getTerminationStopPointWorkflows'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     wfServiceMock = {
       getTerminationStopPointWorkflows: vi.fn().mockReturnValue(
         of({
@@ -42,21 +43,20 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
       ),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [StopPointTerminationWorkflowOverviewComponent],
       providers: [
+        translateServiceProvider,
         {
           provide: StopPointTerminationWorkflowService,
           useValue: wfServiceMock,
         },
         { provide: ActivatedRoute, useValue: { queryParam: new Subject() } },
       ],
-    })
-      .overrideComponent(StopPointTerminationWorkflowOverviewComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(StopPointTerminationWorkflowOverviewComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(StopPointTerminationWorkflowOverviewComponent);
     fixture.detectChanges();

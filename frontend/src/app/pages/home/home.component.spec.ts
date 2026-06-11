@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { By } from '@angular/platform-browser';
@@ -14,9 +12,9 @@ describe('HomeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterModule.forRoot([]), HomeComponent],
+      imports: [RouterModule.forRoot([]), HomeComponent],
       providers: [translateServiceProvider, { provide: PageService, useValue: pageServiceMock }],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;

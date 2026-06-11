@@ -16,14 +16,14 @@ describe('UserAdministrationClientOverviewComponent', () => {
     Pick<ClientCredentialAdministrationService, 'getClientCredentials'>
   >;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     clientCredentialAdministrationService = {
       getClientCredentials: vi.fn().mockReturnValue(of()),
     };
 
-     await TestBed.configureTestingModule({
-       imports: [UserAdministrationClientOverviewComponent],
-       providers: [
+    TestBed.configureTestingModule({
+      imports: [UserAdministrationClientOverviewComponent],
+      providers: [
         {
           provide: ClientCredentialAdministrationService,
           useValue: clientCredentialAdministrationService,
@@ -36,7 +36,7 @@ describe('UserAdministrationClientOverviewComponent', () => {
         remove: { imports: [TableComponent] },
         add: { imports: [MockTableComponent] },
       })
-      .compileComponents();
+      ;
 
     fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
     component = fixture.componentInstance;

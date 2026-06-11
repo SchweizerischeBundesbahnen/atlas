@@ -5,6 +5,7 @@ import { NotificationService } from '../notification/notification.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { translateServiceProvider } from '../../app.testing.mocks';
 
 describe('Server Error Interceptor', () => {
   let interceptor: ServerErrorInterceptor;
@@ -12,7 +13,7 @@ describe('Server Error Interceptor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule, RouterModule.forRoot([])],
-      providers: [NotificationService, ServerErrorInterceptor],
+      providers: [NotificationService, ServerErrorInterceptor, translateServiceProvider],
     });
 
     interceptor = TestBed.inject(ServerErrorInterceptor);

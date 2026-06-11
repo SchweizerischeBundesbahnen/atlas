@@ -3,7 +3,7 @@ import { of, Subject } from 'rxjs';
 import { TransportCompaniesComponent } from './transport-companies.component';
 import { ContainerTransportCompany, TransportCompanyStatus } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import { MockTableComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
@@ -30,20 +30,19 @@ describe('TransportCompaniesComponent', () => {
     };
     transportCompanyService.getTransportCompanies.mockReturnValue(of(transportCompany));
 
-     TestBed.configureTestingModule({
-       imports: [TransportCompaniesComponent],
-       providers: [
+    TestBed.configureTestingModule({
+      imports: [TransportCompaniesComponent],
+      providers: [
+        translateServiceProvider,
         TranslatePipe,
         RouterOutlet,
         { provide: TransportCompanyService, useValue: transportCompanyService },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    })
-      .overrideComponent(TransportCompaniesComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(TransportCompaniesComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(TransportCompaniesComponent);
     component = fixture.componentInstance;

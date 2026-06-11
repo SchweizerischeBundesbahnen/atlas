@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 
 import { LoadingPointsTableComponent } from './loading-points-table.component';
-import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockTableComponent, translateServiceProvider } from '../../../../app.testing.mocks';
 import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LOADING_POINT } from '../../../../../test/data/loading-point';
@@ -21,27 +21,26 @@ describe('LoadingPointsTableComponent', () => {
   };
   let router: Router;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     loadingPointInternalServiceSpy = {
       getLoadingPointOverview: vi.fn(),
     };
     loadingPointInternalServiceSpy.getLoadingPointOverview.mockReturnValue(of({ objects: LOADING_POINT }));
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [LoadingPointsTableComponent],
       providers: [
+        translateServiceProvider,
         { provide: ActivatedRoute, useValue: route },
         {
           provide: LoadingPointInternalService,
           useValue: loadingPointInternalServiceSpy,
         },
       ],
-    })
-      .overrideComponent(LoadingPointsTableComponent, {
-        remove: { imports: [AtlasButtonComponent, TableComponent] },
-        add: { imports: [MockAtlasButtonComponent, MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(LoadingPointsTableComponent, {
+      remove: { imports: [AtlasButtonComponent, TableComponent] },
+      add: { imports: [MockAtlasButtonComponent, MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(LoadingPointsTableComponent);
     component = fixture.componentInstance;

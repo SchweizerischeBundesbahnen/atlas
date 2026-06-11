@@ -4,7 +4,9 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { WheelchairAccessibilityComponent } from './wheelchair-accessibility.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../app.testing.mocks';
-import { WheelchairAccessibilityInternalService } from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
+import {
+  WheelchairAccessibilityInternalService
+} from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
 import { of } from 'rxjs';
 import { mock, mockClear } from 'vitest-mock-extended';
 import { WheelchairAccessibilityState } from '../../../api/model/wheelchairAccessibilityState';
@@ -30,8 +32,8 @@ describe('WheelchairAccessibilityComponent', () => {
   let component: WheelchairAccessibilityComponent;
   let fixture: ComponentFixture<WheelchairAccessibilityComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [WheelchairAccessibilityComponent],
       providers: [
         { provide: TranslatePipe },
@@ -46,14 +48,15 @@ describe('WheelchairAccessibilityComponent', () => {
   });
 
   describe('for stopPoint', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       fixture.componentRef.setInput('objectType', 'STOP_POINT');
       fixture.componentRef.setInput('sloid', 'ch:1:sloid:90064');
       fixture.componentRef.setInput('editMode', false);
 
       mockClear(wheelchairAccessibilityInternalService);
       component = fixture.componentInstance;
-      await fixture.whenStable();
+
+      fixture.detectChanges();
     });
 
     it('should show icon for today with overlay closed', () => {
@@ -64,14 +67,14 @@ describe('WheelchairAccessibilityComponent', () => {
       expect(component.wheelchairAccessibility.length).toBe(0);
     });
 
-    it('should open overlay and display accessibility', async () => {
+    it('should open overlay and display accessibility', () => {
       component.toggleOverlay();
 
       expect(wheelchairAccessibilityInternalService.getStopPointAccessibility).toHaveBeenCalled();
       expect(component.wheelchairAccessibility.length).toBe(1);
 
       fixture.componentRef.setInput('editMode', true);
-      await fixture.whenStable();
+      fixture.detectChanges();
       expect(component.isOverlayOpen).toBe(false);
     });
 
@@ -91,14 +94,14 @@ describe('WheelchairAccessibilityComponent', () => {
   });
 
   describe('for platform', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       fixture.componentRef.setInput('objectType', 'PLATFORM');
       fixture.componentRef.setInput('sloid', 'ch:1:sloid:90064:0:1');
       fixture.componentRef.setInput('editMode', false);
 
       mockClear(wheelchairAccessibilityInternalService);
       component = fixture.componentInstance;
-      await fixture.whenStable();
+      fixture.detectChanges();
     });
 
     it('should open overlay and display accessibility', () => {

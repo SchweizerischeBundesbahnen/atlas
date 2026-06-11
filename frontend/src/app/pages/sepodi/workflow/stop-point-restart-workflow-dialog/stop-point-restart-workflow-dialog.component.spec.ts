@@ -62,7 +62,7 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
     formGroup.controls.designationOfficial.setValue('NEW DESIGNATION');
   }
 
-  beforeEach(async () => {
+  beforeEach(() => {
     notificationServiceSpy = { success: vi.fn() };
     stopPointWorkflowService = {
       restartStopPointWorkflow: vi.fn().mockReturnValue(of(workflow)),
@@ -79,7 +79,7 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
     };
     dialogRefSpy = { close: vi.fn() };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         FormModule,
@@ -107,7 +107,7 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
         { provide: Router, useValue: router },
         { provide: TranslatePipe },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StopPointRestartWorkflowDialogComponent);
     component = fixture.componentInstance;

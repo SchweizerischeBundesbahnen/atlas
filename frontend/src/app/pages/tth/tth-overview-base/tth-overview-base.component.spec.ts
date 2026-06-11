@@ -36,7 +36,7 @@ describe('TthOverviewBaseComponent', () => {
   let overviewToTabService: OverviewToTabShareDataService;
   let routerEventsSubject: Subject<Event>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     routerEventsSubject = new Subject();
 
     const routerSpy = {
@@ -49,7 +49,7 @@ describe('TthOverviewBaseComponent', () => {
       resetTableSettings: vi.fn(),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [TthOverviewBaseComponent],
       providers: [
         {
@@ -72,7 +72,7 @@ describe('TthOverviewBaseComponent', () => {
         { provide: TranslatePipe },
         translateServiceProvider,
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TthOverviewBaseComponent);
     component = fixture.componentInstance;

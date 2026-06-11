@@ -44,7 +44,7 @@ describe('SepodiMapviewComponent', () => {
     }
   >;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mapServiceSpy = {
       initMap: vi.fn(),
       removeMap: vi.fn(),
@@ -55,7 +55,7 @@ describe('SepodiMapviewComponent', () => {
     };
     mapServiceSpy.initMap.mockReturnValue({} as ReturnType<MapService['initMap']>);
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         SepodiMapviewComponent,
         MockAtlasMapComponent,
@@ -71,7 +71,7 @@ describe('SepodiMapviewComponent', () => {
         provideHttpClientTesting(),
         { provide: TranslatePipe },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(SepodiMapviewComponent);
     component = fixture.componentInstance;

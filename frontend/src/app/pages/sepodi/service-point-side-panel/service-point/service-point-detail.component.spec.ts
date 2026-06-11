@@ -1,35 +1,36 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import { ServicePointDetailComponent } from './service-point-detail.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of } from 'rxjs';
-import { FormGroup } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Record } from '../../../../core/model/record';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {beforeEach, describe, expect, it, type Mocked, vi} from 'vitest';
+import {ServicePointDetailComponent} from './service-point-detail.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BehaviorSubject, of} from 'rxjs';
+import {FormGroup} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+import {Record} from '../../../../core/model/record';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
   MockNavigationSepodiPrmComponent,
+  translateServiceProvider,
 } from '../../../../app.testing.mocks';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { Country, ReadServicePointVersion, Status, StopPointType } from '../../../../api';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { MapService } from '../../map/map.service';
-import { Component, input, output } from '@angular/core';
-import { BERN } from '../../../../../test/data/service-point';
-import { ValidityService } from '../../validity/validity.service';
-import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
-import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
-import { GeographyComponent } from '../../geography/geography.component';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
-import { TerminationService } from './stop-point-termination/termination.service';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {Country, ReadServicePointVersion, Status, StopPointType} from '../../../../api';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {MapService} from '../../map/map.service';
+import {Component, input, output} from '@angular/core';
+import {BERN} from '../../../../../test/data/service-point';
+import {ValidityService} from '../../validity/validity.service';
+import {PermissionService} from '../../../../core/auth/permission/permission.service';
+import {AtlasButtonComponent} from '../../../../core/components/button/atlas-button.component';
+import {NavigationSepodiPrmComponent} from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import {GeographyComponent} from '../../geography/geography.component';
+import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
+import {ServicePointFormComponent} from './service-point-form/service-point-form.component';
+import {TerminationService} from './stop-point-termination/termination.service';
 import moment from 'moment';
-import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
-import { ServicePointInternalService } from '../../../../api/service/sepodi/service-point-internal.service';
+import {ServicePointService} from '../../../../api/service/sepodi/service-point.service';
+import {ServicePointInternalService} from '../../../../api/service/sepodi/service-point-internal.service';
 
 @Component({
   selector: 'atlas-service-point-form',
@@ -78,7 +79,7 @@ describe('ServicePointDetailComponent', () => {
   let validityService: ValidityService;
   let terminationService: TerminationService;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     Element.prototype.scrollIntoView = vi.fn();
 
     dialogServiceSpy = {
@@ -101,9 +102,10 @@ describe('ServicePointDetailComponent', () => {
     routerSpy = { navigate: vi.fn() };
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [ServicePointDetailComponent],
       providers: [
+        translateServiceProvider,
         provideHttpClient(),
         provideHttpClientTesting(),
         provideMomentDateAdapter(),
@@ -122,21 +124,19 @@ describe('ServicePointDetailComponent', () => {
         { provide: MapService, useValue: mapServiceSpy },
         { provide: Router, useValue: routerSpy },
       ],
-    })
-      .overrideComponent(ServicePointDetailComponent, {
-        remove: {
-          imports: [AtlasButtonComponent, NavigationSepodiPrmComponent, GeographyComponent, ServicePointFormComponent],
-        },
-        add: {
-          imports: [
-            MockAtlasButtonComponent,
-            MockNavigationSepodiPrmComponent,
-            ServicePointGeographyMockComponent,
-            ServicePointFormMockComponent,
-          ],
-        },
-      })
-      .compileComponents();
+    }).overrideComponent(ServicePointDetailComponent, {
+      remove: {
+        imports: [AtlasButtonComponent, NavigationSepodiPrmComponent, GeographyComponent, ServicePointFormComponent],
+      },
+      add: {
+        imports: [
+          MockAtlasButtonComponent,
+          MockNavigationSepodiPrmComponent,
+          ServicePointGeographyMockComponent,
+          ServicePointFormMockComponent,
+        ],
+      },
+    });
 
     fixture = TestBed.createComponent(ServicePointDetailComponent);
     component = fixture.componentInstance;

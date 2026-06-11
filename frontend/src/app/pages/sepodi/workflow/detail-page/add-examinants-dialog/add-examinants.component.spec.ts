@@ -36,7 +36,7 @@ describe('AddExaminantsComponent', () => {
     workflowId: 5,
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     dialogRefSpy = { close: vi.fn() };
     notificationServiceSpy = { success: vi.fn() };
     router = {

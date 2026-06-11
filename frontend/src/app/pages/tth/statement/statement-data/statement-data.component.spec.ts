@@ -38,8 +38,8 @@ describe('StatementData', () => {
   let component: StatementDataComponent;
   let fixture: ComponentFixture<StatementDataComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [StatementDataComponent, MockTuSelectComponent],
       providers: [
         translateServiceProvider,
@@ -58,16 +58,14 @@ describe('StatementData', () => {
           useValue: {},
         },
       ],
-    })
-      .overrideComponent(StatementDataComponent, {
-        remove: {
-          imports: [TransportCompanySelectComponent, TimetableFieldNumberSelectComponent],
-        },
-        add: {
-          imports: [MockTuSelectComponent, MockTimetableFieldNumberSelectComponent],
-        },
-      })
-      .compileComponents();
+    }).overrideComponent(StatementDataComponent, {
+      remove: {
+        imports: [TransportCompanySelectComponent, TimetableFieldNumberSelectComponent],
+      },
+      add: {
+        imports: [MockTuSelectComponent, MockTimetableFieldNumberSelectComponent],
+      },
+    });
 
     fixture = TestBed.createComponent(StatementDataComponent);
     component = fixture.componentInstance;

@@ -58,7 +58,7 @@ describe('StatementDataProtectionCheckDialogComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StatementDataProtectionCheckDialogComponent);
     component = fixture.componentInstance;

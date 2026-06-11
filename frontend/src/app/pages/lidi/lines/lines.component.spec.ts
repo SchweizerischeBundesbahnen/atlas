@@ -3,7 +3,7 @@ import { of, Subject } from 'rxjs';
 import { LinesComponent } from './lines.component';
 import { ContainerLine, ElementType, LidiElementType, Line, Status } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import { MockTableComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
 import { TableComponent } from '../../../core/components/table/table.component';
@@ -50,19 +50,18 @@ describe('LinesComponent', () => {
     };
     lineInternalService.getLines.mockReturnValue(of(versionContainer));
 
-     TestBed.configureTestingModule({
-       imports: [LinesComponent],
-       providers: [
+    TestBed.configureTestingModule({
+      imports: [LinesComponent],
+      providers: [
+        translateServiceProvider,
         TranslatePipe,
         { provide: LineInternalService, useValue: lineInternalService },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    })
-      .overrideComponent(LinesComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(LinesComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(LinesComponent);
     component = fixture.componentInstance;

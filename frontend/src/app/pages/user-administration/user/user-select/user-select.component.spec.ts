@@ -26,12 +26,12 @@ describe('UserSelectComponent', () => {
   let fixture: ComponentFixture<UserSelectComponent>;
   let userAdministrationService: Mocked<Pick<UserAdministrationService, 'searchUsers' | 'searchUsersInAtlas'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     userAdministrationService = {
       searchUsers: vi.fn(),
       searchUsersInAtlas: vi.fn(),
     };
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [UserSelectComponent],
       providers: [
         TranslatePipe,
@@ -45,7 +45,7 @@ describe('UserSelectComponent', () => {
         remove: { imports: [SearchSelectComponent] },
         add: { imports: [MockFormSearchSelectComponent] },
       })
-      .compileComponents();
+      ;
 
     fixture = TestBed.createComponent(UserSelectComponent);
     component = fixture.componentInstance;

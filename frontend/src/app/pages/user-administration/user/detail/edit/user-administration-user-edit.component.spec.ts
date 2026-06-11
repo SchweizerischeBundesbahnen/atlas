@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { UserAdministrationUserEditComponent } from './user-administration-user-edit.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
@@ -12,6 +12,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 import { UserPermissionGivenUserService } from './user-permission-given-user.service';
 import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
+import { translateServiceProvider } from '../../../../../app.testing.mocks';
 
 describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
@@ -21,7 +22,7 @@ describe('UserAdministrationUserEditComponent', () => {
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
   let dialogService: Mocked<Pick<DialogService, 'confirmLeave'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     userAdministrationService = {
       updateUserPermission: vi.fn(),
       getUserDisplayName: vi.fn(),
@@ -37,9 +38,10 @@ describe('UserAdministrationUserEditComponent', () => {
     dialogService = {
       confirmLeave: vi.fn(),
     };
-     await TestBed.configureTestingModule({
-       imports: [UserAdministrationUserEditComponent],
-       providers: [
+    TestBed.configureTestingModule({
+      imports: [UserAdministrationUserEditComponent],
+      providers: [
+        translateServiceProvider,
         TranslatePipe,
         {
           provide: UserAdministrationService,
@@ -67,7 +69,7 @@ describe('UserAdministrationUserEditComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(UserAdministrationUserEditComponent);
     component = fixture.componentInstance;

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { AddStopPointWorkflowComponent } from './add-stop-point-workflow.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
-import { adminUserServiceMock } from '../../../../app.testing.mocks';
+import { adminUserServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
@@ -44,7 +44,7 @@ describe('AddStopPointWorkflowComponent', () => {
   let detailHelperService: Mocked<Pick<DetailDialogHelperService, 'confirmLeaveDirtyForm'>>;
   let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'addStopPointWorkflow' | 'getExaminants'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     dialogRefSpy = { close: vi.fn() };
     notificationServiceSpy = { success: vi.fn() };
     router = {
@@ -58,7 +58,7 @@ describe('AddStopPointWorkflowComponent', () => {
       getExaminants: vi.fn().mockReturnValue(of([])),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [AddStopPointWorkflowComponent],
       providers: [
         provideHttpClient(),
@@ -78,8 +78,9 @@ describe('AddStopPointWorkflowComponent', () => {
         { provide: Router, useValue: router },
         { provide: TranslatePipe },
         { provide: BoSelectionDisplayPipe },
+        translateServiceProvider,
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(AddStopPointWorkflowComponent);
     component = fixture.componentInstance;

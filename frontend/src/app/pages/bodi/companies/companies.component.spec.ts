@@ -3,7 +3,7 @@ import { of, Subject } from 'rxjs';
 import { CompaniesComponent } from './companies.component';
 import { ContainerCompany } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import { MockTableComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { CompanyService } from '../../../api/service/bodi/company.service';
@@ -33,17 +33,16 @@ describe('CompaniesComponent', () => {
      TestBed.configureTestingModule({
        imports: [CompaniesComponent],
        providers: [
-        TranslatePipe,
-        RouterOutlet,
-        { provide: CompanyService, useValue: companyService },
-        { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
-      ],
-    })
-      .overrideComponent(CompaniesComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+         translateServiceProvider,
+         TranslatePipe,
+         RouterOutlet,
+         { provide: CompanyService, useValue: companyService },
+         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
+       ],
+     }).overrideComponent(CompaniesComponent, {
+       remove: { imports: [TableComponent] },
+       add: { imports: [MockTableComponent] },
+     });
 
     fixture = TestBed.createComponent(CompaniesComponent);
     component = fixture.componentInstance;

@@ -12,8 +12,8 @@ describe('DecisionFormComponent', () => {
   let component: DecisionFormComponent;
   let fixture: ComponentFixture<DecisionFormComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         DecisionFormComponent,
@@ -22,7 +22,7 @@ describe('DecisionFormComponent', () => {
         TextFieldComponent,
         AtlasLabelFieldComponent,
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(DecisionFormComponent);
     component = fixture.componentInstance;

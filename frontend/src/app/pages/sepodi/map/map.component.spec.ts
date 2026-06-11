@@ -30,14 +30,14 @@ describe('MapComponent', () => {
     lng: 0,
   });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AppTestingModule, MapComponent],
       providers: [
         { provide: MapService, useValue: mapServiceSpy },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;

@@ -24,12 +24,12 @@ describe('DateRangeComponent', () => {
   let timetableYearChangeServiceMock: Mocked<Pick<TimetableYearChangeInternalService, 'getNextTimetablesYearChange'>>;
   let formGroupInput: ReturnType<typeof signal<FormGroup>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     timetableYearChangeServiceMock = {
       getNextTimetablesYearChange: vi.fn().mockReturnValue(of([nextTimetableYearChange])),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         MatDatepicker,
@@ -48,7 +48,7 @@ describe('DateRangeComponent', () => {
           useValue: timetableYearChangeServiceMock,
         },
       ],
-    }).compileComponents();
+    });
   });
 
   beforeEach(() => {

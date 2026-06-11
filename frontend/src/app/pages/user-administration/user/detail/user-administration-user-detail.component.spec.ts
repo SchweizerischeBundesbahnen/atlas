@@ -8,6 +8,7 @@ import { UserAdministrationUserEditComponent } from './edit/user-administration-
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 @Component({
   selector: 'atlas-user-administration-create',
@@ -25,10 +26,11 @@ describe('UserAdministrationUserDetailComponent', () => {
   let component: UserAdministrationUserDetailComponent;
   let fixture: ComponentFixture<UserAdministrationUserDetailComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [UserAdministrationUserDetailComponent],
       providers: [
+        translateServiceProvider,
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -36,16 +38,14 @@ describe('UserAdministrationUserDetailComponent', () => {
           useValue: { data: of({ user: undefined }) },
         },
       ],
-    })
-      .overrideComponent(UserAdministrationUserDetailComponent, {
-        remove: {
-          providers: [UserAdministrationUserCreateComponent, UserAdministrationUserEditComponent],
-        },
-        add: {
-          providers: [MockAppUserAdministrationCreateComponent, MockUserAdministrationUserEditComponent],
-        },
-      })
-      .compileComponents();
+    }).overrideComponent(UserAdministrationUserDetailComponent, {
+      remove: {
+        providers: [UserAdministrationUserCreateComponent, UserAdministrationUserEditComponent],
+      },
+      add: {
+        providers: [MockAppUserAdministrationCreateComponent, MockUserAdministrationUserEditComponent],
+      },
+    });
 
     fixture = TestBed.createComponent(UserAdministrationUserDetailComponent);
     component = fixture.componentInstance;

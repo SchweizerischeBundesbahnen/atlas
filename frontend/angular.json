@@ -75,7 +75,8 @@
             },
             "index": "src/index.html",
             "polyfills": [
-              "src/polyfills.ts"
+              "src/polyfills.ts",
+              "zone.js/testing"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",

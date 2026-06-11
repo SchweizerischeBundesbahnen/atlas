@@ -11,7 +11,7 @@ import { ContainerReadSectorVersion } from '../../../../api/model/containerReadS
 import { SpatialReference } from '../../../../api';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 
 describe('SectorOverviewComponent', () => {
   let component: SectorOverviewComponent;
@@ -38,7 +38,7 @@ describe('SectorOverviewComponent', () => {
     totalCount: 0,
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     sectorInternalServiceSpy = {
       getSectors: vi.fn(),
     };
@@ -49,9 +49,10 @@ describe('SectorOverviewComponent', () => {
     };
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [SectorOverviewComponent],
       providers: [
+        translateServiceProvider,
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -62,7 +63,7 @@ describe('SectorOverviewComponent', () => {
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(SectorOverviewComponent);
     component = fixture.componentInstance;
