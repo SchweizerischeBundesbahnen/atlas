@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
+import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingAnonymStatementCsvModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -153,4 +155,9 @@ public interface TimetableHearingStatementApiInternal {
   @AuthorizedOnly
   @PostMapping(path = BASE_PATH + "/check-data-protection")
   void checkDataProtection(@Valid @RequestBody TimetableHearingStatementDataProtectionModel timetableHearingStatementDataProtectionModel);
+
+  @AuthorizedOnly
+  @GetMapping(value = BASE_PATH + "/anonymized")
+  List<TimetableHearingAnonymStatementCsvModel> getStatementsByIdAnonymized(@Valid @RequestParam @Size(max = 100) List<Long> ids);
+
 }

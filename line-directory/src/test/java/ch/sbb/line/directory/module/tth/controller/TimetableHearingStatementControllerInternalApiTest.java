@@ -1505,4 +1505,80 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
       assertThat(updatedStatement.getDocuments().getFirst().getAnonymous()).isTrue();
     }
   }
+
+  @Nested
+  @DisplayName("GET internal/timetable-hearing/statements/anonymized")
+  class GetStatementsByIdsAnonymized {
+
+    @Test
+    void shouldGetStatementsByIdsAnonymized() throws Exception {
+      TimetableHearingStatement statement1 = timetableHearingStatementRepository.save(
+          TimetableHearingStatement.builder()
+              .timetableYear(YEAR)
+              .swissCanton(SwissCanton.BERN)
+              .statementStatus(StatementStatus.RECEIVED)
+              .statementSender(StatementSender.builder()
+                  .firstName("Max")
+                  .lastName("Muster")
+                  .emails(List.of("max.muster@example.com"))
+                  .build())
+              .statement("Erste Stellungnahme")
+              .statementAnonymous(true)
+              .dossierContactSbbuid("e456789")
+              .build());
+
+      TimetableHearingStatement statement2 = timetableHearingStatementRepository.save(
+          TimetableHearingStatement.builder()
+              .timetableYear(YEAR)
+              .swissCanton(SwissCanton.ZURICH)
+              .statementStatus(StatementStatus.ACCEPTED)
+              .statementSender(StatementSender.builder()
+                  .firstName("Susi")
+                  .lastName("Sommer")
+                  .emails(List.of("susi.sommer@example.com"))
+                  .build())
+              .statement("Zweite Stellungnahme")
+              .dossierContactSbbuid("e789012")
+              .build());
+
+      String idsParam = "?ids=" + statement1.getId() + "&ids=" + statement2.getId();
+      MvcResult result = mvc.perform(
+              get("/internal/timetable-hearing/statements/anonymized" + idsParam))
+          .andExpect(status().isOk())
+          .andReturn();
+
+      String response = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+      assertThat(response)
+          .contains("Erste Stellungnahme")
+          .doesNotContain("Zweite Stellungnahme")
+          .doesNotContain("Max")
+          .doesNotContain("Muster")
+          .doesNotContain("max.muster@example.com")
+          .doesNotContain("e456789");
+    }
+
+    @Test
+    void shouldReturnEmptyDataForMissingIds() throws Exception {
+      mvc.perform(
+              get("/internal/timetable-hearing/statements/anonymized?ids="))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    void shouldReturnBadRequestForMoreThan100Ids() throws Exception {
+      String idsParam = "?ids=" + String.join("&ids=", Collections.nCopies(101, "1"));
+      mvc.perform(
+              get("/internal/timetable-hearing/statements/anonymized" + idsParam))
+          .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotGetStatementsByIdsAsUnauthorized() throws Exception {
+      mvc.perform(get("/internal/timetable-hearing/statements/anonymized?ids=2"))
+          .andExpect(status().isForbidden());
+    }
+  }
+
 }

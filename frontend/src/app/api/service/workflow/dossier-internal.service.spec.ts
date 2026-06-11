@@ -8,6 +8,9 @@ import {TthDossier} from '../../model/tthDossier';
 import {SwissCanton} from '../../model/swissCanton';
 import {DossierStatus} from '../../model/dossierStatus';
 import {BoAnswer} from '../../model/boAnswer';
+import {Language} from '../../model/language';
+import {HearingStatus} from '../../model/hearingStatus';
+import {StatementStatus} from '../../model/statementStatus';
 import {EMPTY} from 'rxjs';
 
 describe('DossierInternalService', () => {
@@ -38,6 +41,7 @@ describe('DossierInternalService', () => {
     vi.spyOn(apiService, 'get').mockImplementation(() => EMPTY);
     vi.spyOn(apiService, 'post').mockImplementation(() => EMPTY);
     vi.spyOn(apiService, 'put').mockImplementation(() => EMPTY);
+    vi.spyOn(apiService, 'getBlob').mockImplementation(() => EMPTY);
     vi.spyOn(apiService, 'validateParams');
     vi.spyOn(apiService, 'paramsOf');
   });
@@ -52,7 +56,7 @@ describe('DossierInternalService', () => {
 
   it('should get dossier overview', () => {
     // when
-    service.getOverview(2026, SwissCanton.Bern, undefined, ['Busse']);
+    service.getOverview(2026, HearingStatus.Active, SwissCanton.Bern, undefined, ['Busse']);
 
     // then
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/workflow/internal/tth/dossier', expect.any(HttpParams));
@@ -97,6 +101,37 @@ describe('DossierInternalService', () => {
 
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/workflow/internal/tth/dossier/answer/5', baAnswer);
+  });
+
+  it('should get dossiers as csv with all optional parameters', () => {
+    // given
+    const statusRestrictions: StatementStatus[] = [StatementStatus.Accepted, StatementStatus.Rejected];
+
+    // when
+    service.getDossiersAsCsv(
+      Language.Fr,
+      2026,
+      HearingStatus.Active,
+      SwissCanton.Bern,
+      'U000001',
+      ['Fahrplan', 'Bahn'],
+      statusRestrictions,
+    );
+
+    // then
+    expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith({
+      'timetableHearingYear.timetableYear': 2026,
+      'timetableHearingYear.hearingStatus': HearingStatus.Active,
+      canton: SwissCanton.Bern,
+      boContactSbbuid: 'U000001',
+      searchCriterias: ['Fahrplan', 'Bahn'],
+      statusRestrictions,
+      lang: Language.Fr,
+    });
+    expect(apiService.getBlob).toHaveBeenCalledExactlyOnceWith(
+      '/workflow/internal/tth/dossier/csv',
+      expect.any(HttpParams),
+    );
   });
 
 });

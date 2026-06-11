@@ -65,8 +65,7 @@ public class TthDossierService {
       + ".ApplicationType).TIMETABLE_HEARING) || @boUserMailCheckService.isCurrentUserSbbUidAssignedTo(#searchRestrictions"
       + ".getRequestParams().getBoContactSbbuid())")
   public Page<TthDossier> getDossiers(TthDossierSearchRestrictions searchRestrictions) {
-    return dossierRepository.findAll(searchRestrictions.getSpecification(),
-        searchRestrictions.getPageable());
+    return dossierRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
   @Transactional

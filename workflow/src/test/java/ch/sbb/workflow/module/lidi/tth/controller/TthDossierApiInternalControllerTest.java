@@ -2,6 +2,8 @@ package ch.sbb.workflow.module.lidi.tth.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -32,6 +34,10 @@ import ch.sbb.workflow.module.lidi.tth.mapper.TthDossierMapper;
 import ch.sbb.workflow.module.lidi.tth.repository.TthDossierRepository;
 import ch.sbb.workflow.module.lidi.tth.repository.TthDossierYearRepository;
 import ch.sbb.workflow.module.lidi.tth.service.BoContactPermissionService;
+import ch.sbb.workflow.module.lidi.tth.service.TthDossierCsvExportService;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -59,6 +65,9 @@ class TthDossierApiInternalControllerTest extends BaseControllerApiTest {
 
   @MockitoBean
   private TimetableHearingStatementClient TimetableHearingStatementClient;
+
+  @MockitoBean
+  private TthDossierCsvExportService tthDossierCsvExportService;
 
   @MockitoBean
   private TthDossierNotificationService notificationService;
@@ -109,6 +118,33 @@ class TthDossierApiInternalControllerTest extends BaseControllerApiTest {
     @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
     void shouldNotGetTthDossierOverviewAsUnauthorized() throws Exception {
       mvc.perform(get("/internal/tth/dossier")).andExpect(status().isForbidden());
+    }
+  }
+
+  @Nested
+  @DisplayName("GET /internal/tth/dossier/csv")
+  class GetDossiersCsv {
+
+    @Test
+    void shouldGetDossiersCsv() throws Exception {
+      File csvFile = File.createTempFile("tth-dossiers", ".csv");
+      csvFile.deleteOnExit();
+      Files.writeString(csvFile.toPath(), "id;topic\n1;TOPIC\n", StandardCharsets.UTF_8);
+
+      when(tthDossierCsvExportService.getTthDossierTuCsvModels(any())).thenReturn(List.of());
+      when(tthDossierCsvExportService.writeCsv(any(), any(), any())).thenReturn(csvFile);
+
+      mvc.perform(get("/internal/tth/dossier/csv")
+              .queryParam("lang", "DE"))
+          .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotGetDossiersCsvAsUnauthorized() throws Exception {
+      mvc.perform(get("/internal/tth/dossier/csv")
+              .queryParam("lang", "DE"))
+          .andExpect(status().isForbidden());
     }
   }
 

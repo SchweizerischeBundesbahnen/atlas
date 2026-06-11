@@ -11,6 +11,9 @@ import { Cantons } from '../../../../core/cantons/Cantons';
 import { TthDossier } from '../../../../api/model/tthDossier';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { UserService } from '../../../../core/auth/user/user.service';
+import { TranslateService } from '@ngx-translate/core';
+import { FileDownloadService } from '../../../../core/components/file-upload/file/file-download.service';
+import { Language } from '../../../../api/model/language';
 
 describe('TthDossierOverviewComponent', () => {
   const activatedRouteStub = {
@@ -24,7 +27,7 @@ describe('TthDossierOverviewComponent', () => {
   };
 
   let component: TthDossierOverviewComponent;
-  let dossierService: Mocked<Pick<DossierInternalService, 'getOverview'>>;
+  let dossierService: Mocked<Pick<DossierInternalService, 'getOverview' | 'getDossiersAsCsv'>>;
   let tableService: Mocked<
     Pick<TableService, 'initializeFilterConfig'> & {
       pageIndex: number;
@@ -37,6 +40,7 @@ describe('TthDossierOverviewComponent', () => {
   let overviewToTabService: OverviewToTabShareDataService;
   let activatedRoute: ActivatedRoute;
   let permissionServiceSpy: Mocked<Pick<PermissionService, 'getTthApplicationUserType'>>;
+  let translateService: Mocked<Pick<TranslateService, 'getCurrentLang'>>;
   let userService: Mocked<
     Pick<UserService, 'setCurrentUserAndLoadPermissions'> & {
       currentUser: { email: string; sbbuid: string };
@@ -51,6 +55,7 @@ describe('TthDossierOverviewComponent', () => {
         { provide: DossierInternalService, useValue: dossierService },
         { provide: PermissionService, useValue: permissionServiceSpy },
         { provide: UserService, useValue: userService },
+        { provide: TranslateService, useValue: translateService },
         { provide: TableService, useValue: tableService },
         { provide: Router, useValue: router },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
@@ -72,10 +77,15 @@ describe('TthDossierOverviewComponent', () => {
   beforeEach(() => {
     dossierService = {
       getOverview: vi.fn(),
+      getDossiersAsCsv: vi.fn(),
     };
 
     permissionServiceSpy = {
       getTthApplicationUserType: vi.fn(),
+    };
+
+    translateService = {
+      getCurrentLang: vi.fn().mockReturnValue('fr'),
     };
 
     userService = {
@@ -89,7 +99,7 @@ describe('TthDossierOverviewComponent', () => {
       pageSize: 10,
       sortString: 'topic,asc',
       filter: {
-        chipSearch: { getActiveSearch: () => '' },
+        chipSearch: { getActiveSearch: () => [] },
         multiSelectDossierStatus: { getActiveSearch: () => [] },
       },
     };
@@ -171,6 +181,7 @@ describe('TthDossierOverviewComponent', () => {
 
       expect(dossierService.getOverview).toHaveBeenCalledWith(
         2024,
+        HearingStatus.Active,
         expect.any(String),
         undefined,
         expect.anything(),
@@ -193,6 +204,7 @@ describe('TthDossierOverviewComponent', () => {
 
       expect(dossierService.getOverview).toHaveBeenCalledWith(
         2024,
+        HearingStatus.Active,
         expect.any(String),
         'u123456',
         expect.anything(),
@@ -273,6 +285,27 @@ describe('TthDossierOverviewComponent', () => {
         size: 10,
         sort: 'topic,asc',
       });
+    });
+  });
+
+  describe('downloadCsv', () => {
+    it('should call getDossiersAsCsv with current filter context and trigger file download', () => {
+      const blob = new Blob(['id,topic\n1,Mehr Busse'], { type: 'text/csv' });
+      dossierService.getDossiersAsCsv.mockReturnValue(of(blob));
+      const fileDownloadSpy = vi.spyOn(FileDownloadService, 'downloadFile').mockImplementation(() => {});
+
+      component.downloadCsv();
+
+      expect(dossierService.getDossiersAsCsv).toHaveBeenCalledExactlyOnceWith(
+        Language.Fr,
+        2024,
+        HearingStatus.Active,
+        SwissCanton.Zurich,
+        undefined,
+        [],
+        []
+      );
+      expect(fileDownloadSpy).toHaveBeenCalledExactlyOnceWith('dossiers.csv', blob);
     });
   });
 });
