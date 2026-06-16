@@ -54,7 +54,7 @@ public class PlatformTemplateGenerator {
         .build();
   }
 
-  public static SloidTerminateCsvModel getPlatformTerminateCsvModelExample() {
+  public static SloidTerminateCsvModel getSloidTerminateCsvModelExample() {
     return SloidTerminateCsvModel.builder()
         .sloid("ch:1:sloid:1:0:1")
         .validTo(LocalDate.of(2022, 12, 31))

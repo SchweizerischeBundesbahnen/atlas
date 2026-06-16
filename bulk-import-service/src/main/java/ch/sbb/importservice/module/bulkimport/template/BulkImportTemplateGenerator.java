@@ -110,7 +110,16 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.PLATFORM)
             .importType(ImportType.TERMINATE)
             .build(),
-        PlatformTemplateGenerator::getPlatformTerminateCsvModelExample
+        PlatformTemplateGenerator::getSloidTerminateCsvModelExample
+    );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
+            .application(ApplicationType.PRM)
+            .objectType(BusinessObjectType.STOP_POINT)
+            .importType(ImportType.TERMINATE)
+            .build(),
+        StopPointTemplateGenerator::getSloidTerminateCsvModelExample
     );
 
     templateLookup.put(
