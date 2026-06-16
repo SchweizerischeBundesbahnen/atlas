@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.1357.0"
+version = "2.1358.0"
 
 dependencies {
     implementation(project(":base-atlas"))
