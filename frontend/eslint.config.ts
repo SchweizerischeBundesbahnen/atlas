@@ -44,8 +44,7 @@ export default defineConfig([
 
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@angular-eslint/prefer-standalone': ['warn'],
-      '@angular-eslint/prefer-inject': 'off',
+      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
     },
   },
   {

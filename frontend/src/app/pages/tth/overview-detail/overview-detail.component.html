@@ -90,8 +90,8 @@
     [checkBoxModeEnabled]="isCheckBoxModeActive"
     [checkBoxSelection]="selectedCheckBox"
     [tableColumns]="tableColumns"
-    [tableData]="timeTableHearingStatements"
-    [totalCount]="totalCount"
+    [tableData]="timeTableHearingStatements()"
+    [totalCount]="totalCount()"
     [tableFilterConfig]="tableFilterConfig"
     data-cy="tthTable"
   >
@@ -151,7 +151,7 @@
               <atlas-select
                 (selectChanged)="collectingActions($event.value[0])"
                 [additionalLabelspace]="0"
-                [disabled]="totalCount === 0 || !this.timetableYear().statementEditable!"
+                [disabled]="totalCount() === 0 || !this.timetableYear().statementEditable!"
                 [options]="COLLECTING_ACTION_DROPDOWN_OPTIONS"
                 dataCy="collect-action-type"
                 optionTranslateLabelPrefix="TTH.DROPDOWN.COLLECTING_ACTION.OPTION."

@@ -1,14 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Pages } from '../../pages';
-import { ActivatedRoute, Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
-import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AtlasButtonComponent,
     MatTabNav,

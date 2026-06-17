@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, contentChild, inject, input, OnInit, output, signal, TemplateRef } from '@angular/core';
+import { Component, contentChild, inject, input, OnInit, output, signal, TemplateRef } from '@angular/core';
 import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
@@ -30,12 +30,10 @@ import { AtlasButtonComponent } from '../button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ShowTitlePipe } from './pipe/show-title.pipe';
 import { FormatPipe } from './pipe/format.pipe';
-import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'atlas-table',
   templateUrl: './table.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./table.component.scss'],
   imports: [
     LoadingSpinnerComponent,
@@ -85,14 +83,14 @@ export class TableComponent<DATATYPE> implements OnInit {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   readonly buttonClickEvent = output<any>();
   readonly checkedBoxEvent = output<SelectionModel<DATATYPE>>();
-  isLoading = signal<boolean>(true);
+  isLoading = signal<boolean>(false);
 
   customCell = contentChild(TemplateRef);
 
   private readonly tableService = inject(TableService);
 
   constructor() {
-    toObservable(this.tableData).subscribe(() => this.isLoading.set(false));
+    // toObservable(this.tableData).subscribe(() => this.isLoading.set(false));
   }
 
   get pageSize(): number {
@@ -191,7 +189,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   private emitTableChangedEvent(): void {
-    this.isLoading.set(true);
+    // this.isLoading.set(true);
     this.tableChanged.emit({
       page: this.pageIndex,
       size: this.pageSize,

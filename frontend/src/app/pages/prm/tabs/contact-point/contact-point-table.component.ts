@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
@@ -50,10 +50,6 @@ export class ContactPointTableComponent extends BasePrmTabComponentService imple
 
   totalCount = 0;
   contactPoints: ContactPointOverview[] = [];
-
-  constructor() {
-    super(inject(Router));
-  }
 
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);

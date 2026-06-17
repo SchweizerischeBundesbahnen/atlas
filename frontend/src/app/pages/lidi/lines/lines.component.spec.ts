@@ -115,8 +115,8 @@ describe('LinesComponent', () => {
       ['slnid,asc']
     );
 
-    expect(component.lineVersions.length).toEqual(1);
-    expect(component.lineVersions[0].slnid).toEqual('slnid');
-    expect(component.totalCount$).toEqual(1);
+    expect(component.lineVersions().length).toEqual(1);
+    expect(component.lineVersions()[0].slnid).toEqual('slnid');
+    expect(component.totalCount()).toEqual(1);
   });
 });

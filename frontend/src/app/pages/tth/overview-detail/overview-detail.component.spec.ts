@@ -322,8 +322,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       overviewToTabService.setCantonShort('ch');
       fixture.detectChanges();
       //then
-      expect(component.timeTableHearingStatements).toEqual([timetableHearingStatement, timetableHearingStatement]);
-      expect(component.totalCount).toEqual(2);
+      expect(component.timeTableHearingStatements()).toEqual([timetableHearingStatement, timetableHearingStatement]);
+      expect(component.totalCount()).toEqual(2);
       expect(component.isTimetableHearingYearFound()).toBeFalsy();
     });
 
