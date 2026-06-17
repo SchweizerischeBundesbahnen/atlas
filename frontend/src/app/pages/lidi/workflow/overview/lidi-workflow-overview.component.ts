@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { LineVersionSnapshot, WorkflowStatus } from '../../../../api';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subscription } from 'rxjs';
@@ -18,6 +18,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-lidi-workflow-overview',
   templateUrl: './lidi-workflow-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class LidiWorkflowOverviewComponent implements OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { DateService } from '../../../../../../core/date/date.service';
@@ -11,6 +11,7 @@ import { Pages } from '../../../../../pages';
   providers: [TranslatePipe],
   styleUrls: ['./stop-point-termination-info.component.scss'],
   templateUrl: './stop-point-termination-info.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StopPointTerminationInfoComponent implements OnInit {
   private readonly stopPointTerminationWorkflowService = inject(StopPointTerminationWorkflowService);

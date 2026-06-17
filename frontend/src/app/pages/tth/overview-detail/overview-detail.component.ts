@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationType,
@@ -56,6 +56,7 @@ import { StatementTableHandler } from '../util/statement-table-handler';
 @Component({
   selector: 'atlas-timetable-hearing-overview-detail',
   templateUrl: './overview-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./overview-detail.component.scss'],
   imports: [
     SelectComponent,

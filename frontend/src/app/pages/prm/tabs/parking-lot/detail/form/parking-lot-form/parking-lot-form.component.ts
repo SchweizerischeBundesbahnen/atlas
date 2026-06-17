@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ParkingLotFormGroup } from '../parking-lot-form-group';
 import { BooleanOptionalAttributeType } from '../../../../../../../api';
@@ -11,6 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-parking-lot-form',
   templateUrl: './parking-lot-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [
     TextFieldComponent,

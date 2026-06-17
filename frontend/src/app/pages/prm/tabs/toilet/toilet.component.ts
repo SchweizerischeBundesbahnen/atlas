@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
@@ -18,6 +18,7 @@ import { ToiletInternalService } from '../../../../api/service/prm/toilet/toilet
 @Component({
   selector: 'atlas-toilet',
   templateUrl: './toilet.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
 export class ToiletComponent extends BasePrmTabComponentService implements OnInit {

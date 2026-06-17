@@ -1,4 +1,4 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { ValidationService } from '../../validation/validation.service';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,6 +10,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'atlas-field-error',
   templateUrl: './atlas-field-error.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./atlas-field-error.component.scss'],
   imports: [TranslatePipe, AsyncPipe],
 })

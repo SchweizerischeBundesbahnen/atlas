@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, Signal } from '@angular/core';
 import { BusinessOrganisationVersion, BusinessType } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -69,6 +69,7 @@ type TransportCompanyRelationTableEntry = {
     AtlasLabelFieldComponent,
     TableComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class BusinessOrganisationDetailComponent
   implements Revokable, OnInit, DetailFormComponent, DetailWithCancelEdit

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ReadServicePointVersion, ReadToiletVersion } from '../../../../../api';
 import { DateRange } from '../../../../../core/versioning/date-range';
 import { ActivatedRoute } from '@angular/router';
@@ -12,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-toilet-detail-panel',
   templateUrl: './toilet-detail-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DetailPageContainerComponent, PrmDetailPanelComponent, DetailWithRelationTabComponent, TranslatePipe],
 })
 export class ToiletDetailPanelComponent implements OnInit {

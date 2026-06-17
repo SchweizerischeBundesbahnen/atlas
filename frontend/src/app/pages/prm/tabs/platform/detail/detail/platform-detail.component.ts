@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   MeanOfTransport,
   PlatformVersion,
@@ -41,6 +41,7 @@ import { WheelchairAccessibilityComponent } from '../../../../../../core/compone
 @Component({
   selector: 'atlas-platforms',
   templateUrl: './platform-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,

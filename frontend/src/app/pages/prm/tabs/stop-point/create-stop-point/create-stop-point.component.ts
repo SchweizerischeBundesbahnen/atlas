@@ -1,4 +1,4 @@
-import { Component, inject, Input, ViewChild, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, ViewChild, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatStep, MatStepLabel, MatStepper, MatStepperIcon } from '@angular/material/stepper';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
@@ -16,6 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-create-stop-point',
   templateUrl: './create-stop-point.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-stop-point.component.scss'],
   imports: [
     MatStepper,

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'atlas-tth-export-anonymization-choice-dialog',
   templateUrl: './tth-export-anonymization-choice-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DialogCloseComponent,
     TranslatePipe,

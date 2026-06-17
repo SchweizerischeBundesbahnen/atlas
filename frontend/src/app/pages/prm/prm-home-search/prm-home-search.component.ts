@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ServicePointSearch } from '../../../core/search-service-point/service-point-search';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { SearchServicePointPanelComponent } from '../../../core/search-service-point-panel/search-service-point-panel.component';
@@ -8,6 +8,7 @@ import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
 @Component({
   selector: 'atlas-prm-home-search',
   templateUrl: './prm-home-search.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./prm-home-search.component.scss'],
   imports: [SearchServicePointPanelComponent, PrmInfoBoxComponent, NgClass, RouterOutlet],
 })

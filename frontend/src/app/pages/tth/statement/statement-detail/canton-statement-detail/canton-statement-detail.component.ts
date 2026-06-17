@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -55,6 +55,7 @@ import { Pages } from '../../../../pages';
 @Component({
   selector: 'atlas-statement-detail',
   templateUrl: './canton-statement-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./canton-statement-detail.component.scss'],
   imports: [
     ScrollToTopDirective,

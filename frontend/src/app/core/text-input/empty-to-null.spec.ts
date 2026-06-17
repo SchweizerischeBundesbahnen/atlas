@@ -1,12 +1,13 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { EmptyToNullDirective } from './empty-to-null';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 @Component({
   template: `<input [formControl]="form" atlasEmptyToNull />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [EmptyToNullDirective, ReactiveFormsModule],
 })
 class TestComponent {

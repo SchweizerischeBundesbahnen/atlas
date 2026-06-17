@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { TerminationAbortFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
@@ -21,6 +21,7 @@ export interface TerminationAbortDetailDialogData extends DialogData {
   selector: 'atlas-termination-abort-detail-dialog',
   imports: [DialogCloseComponent, DialogContentComponent, CommentComponent, DialogFooterComponent, TranslatePipe],
   templateUrl: './termination-abort-detail-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TerminationAbortDetailDialogComponent implements OnInit {
   private readonly dialogRef: MatDialogRef<TerminationAbortDetailDialogComponent, boolean> = inject(MatDialogRef);

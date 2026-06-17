@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { SearchSelectComponent } from '../../../../../core/form-components/search-select/search-select.component';
@@ -12,6 +12,7 @@ import { DossierStatus } from '../../../../../api/model/dossierStatus';
 @Component({
   selector: 'atlas-dossier-select',
   templateUrl: './dossier-select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [SearchSelectComponent, ReactiveFormsModule, DossierSelectFormatPipe],
 })
 export class DossierSelectComponent implements OnInit {

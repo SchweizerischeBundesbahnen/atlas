@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { BulkImportService } from '../../../api/service/bulk/bulk-import.service
   selector: 'atlas-bulk-import-log',
   templateUrl: './bulk-import-log.component.html',
   styleUrl: 'bulk-import-log.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     NgTemplateOutlet,
     NgClass,

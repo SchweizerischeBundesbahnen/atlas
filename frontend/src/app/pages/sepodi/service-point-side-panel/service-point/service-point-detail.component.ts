@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
@@ -59,6 +59,7 @@ export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] = Object.va
 @Component({
   selector: 'atlas-service-point',
   templateUrl: './service-point-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService, TranslatePipe, TranslationSortingService],
   imports: [
     DetailPageContainerComponent,

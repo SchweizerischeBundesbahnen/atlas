@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StatusChangeData } from './model/status-change-data';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { ValidationService } from '../../../../core/validation/validation.servic
 @Component({
   selector: 'atlas-tth-change-status-dialog',
   templateUrl: './tth-change-status-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BaseChangeDialogComponent, ReactiveFormsModule],
 })
 export class TthChangeStatusDialogComponent {

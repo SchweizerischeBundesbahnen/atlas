@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
 import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -35,6 +35,7 @@ import { Language } from '../../../../api/model/language';
     DownloadIconComponent,
   ],
   templateUrl: './tth-dossier-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [TableService],
 })
 export class TthDossierOverviewComponent {

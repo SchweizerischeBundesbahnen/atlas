@@ -1,4 +1,4 @@
-import { Component, inject, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input } from '@angular/core';
 import { HearingStatus, TimetableHearingYear } from '../../../../api';
 import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -8,6 +8,7 @@ import { OverviewToTabShareDataService } from '../service/overview-to-tab-share-
 @Component({
   selector: 'atlas-timetable-hearing-overview-tab-heading',
   templateUrl: './overview-tab-heading.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./overview-tab-heading.component.scss'],
   imports: [DisplayDatePipe, TranslatePipe, NgOptimizedImage],
 })

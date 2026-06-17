@@ -7,8 +7,8 @@
   (tableChanged)="getOverview($event)"
   (tableInitialized)="getOverview($event)"
   [tableColumns]="tableColumns"
-  [tableData]="transportCompanies"
-  [totalCount]="totalCount"
+  [tableData]="transportCompanies()"
+  [totalCount]="totalCount()"
   [tableFilterConfig]="tableFilterConfig"
   data-cy="bodi-transport-companies"
 />

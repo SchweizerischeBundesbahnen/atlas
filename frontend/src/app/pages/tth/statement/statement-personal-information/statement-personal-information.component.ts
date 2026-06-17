@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
@@ -14,6 +14,7 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
   selector: 'atlas-statement-personal-information',
   imports: [TextFieldComponent, TranslatePipe, AtlasClipboardComponent, StringListComponent, AtlasSpacerComponent],
   templateUrl: './statement-personal-information.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StatementPersonalInformationComponent {
   readonly form = input.required<FormGroup<StatementDetailFormGroup>>();

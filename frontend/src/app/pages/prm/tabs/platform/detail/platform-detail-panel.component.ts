@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../../../core/versioning/date-range';
@@ -18,6 +18,7 @@ import { DetailWithRelationTabComponent } from '../../relation/tab/detail-with-r
 @Component({
   selector: 'atlas-platform-detail-panel',
   templateUrl: './platform-detail-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DetailPageContainerComponent,
     DateRangeTextComponent,

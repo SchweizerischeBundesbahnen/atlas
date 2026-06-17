@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, output, input } from '@angular/core';
 import { ServicePointSearchResult } from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { ServicePointInternalService } from '../../../../../api/service/sepodi/s
 @Component({
   selector: 'atlas-kilometer-master-search',
   templateUrl: './kilometer-master-search.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [SearchSelectComponent, ReactiveFormsModule, MatLabel, SplitServicePointNumberPipe, TranslatePipe],
   providers: [TranslatePipe],
 })

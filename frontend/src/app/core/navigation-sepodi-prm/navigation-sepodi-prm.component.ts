@@ -1,4 +1,4 @@
-import { Component, inject, OnChanges, OnInit, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Country } from '../../api';
 import { Countries } from '../country/Countries';
@@ -18,6 +18,7 @@ export type TargetPageType =
 @Component({
   selector: 'atlas-navigation-sepodi-prm',
   templateUrl: './navigation-sepodi-prm.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TranslatePipe],
 })
 export class NavigationSepodiPrmComponent implements OnInit, OnChanges {

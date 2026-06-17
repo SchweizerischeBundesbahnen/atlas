@@ -1,4 +1,4 @@
-import { Component, ContentChild, inject, Input, input, OnDestroy, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, inject, Input, input, OnDestroy, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ServicePointDetailFormGroup } from './form-group/service-point-detail-form-group';
 import { ServicePointType } from '../service-point-type';
@@ -39,6 +39,7 @@ import { StationGroup } from './form-group/station-form-group';
 @Component({
   selector: 'atlas-service-point-form',
   templateUrl: './service-point-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./service-point-form.component.scss'],
   imports: [
     TextFieldComponent,

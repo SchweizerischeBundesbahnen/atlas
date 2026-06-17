@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
@@ -44,6 +44,7 @@ import { OpenBoDossierInMailService } from './open-bo-dossier-in-mail.service';
   ],
   providers: [OpenBoDossierInMailService, TranslatePipe],
   templateUrl: './bo-dossier-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./bo-dossier-detail.component.scss'],
 })
 export class BoDossierDetailComponent implements DetailFormComponent, OnInit {

@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MeanOfTransport, ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -16,6 +16,7 @@ import { SloidContainerComponent } from '../../../core/sloid-container/sloid-con
 @Component({
   selector: 'atlas-traffic-point-elements-side-panel',
   templateUrl: './traffic-point-elements-side-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./traffic-point-elements-side-panel.component.scss'],
   imports: [
     DetailPageContainerComponent,

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { User } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
 @Component({
   selector: 'atlas-user-administration-create',
   templateUrl: './user-administration-user-create.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,

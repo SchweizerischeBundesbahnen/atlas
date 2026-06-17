@@ -84,8 +84,8 @@ describe('BusinessOrganisationComponent', () => {
       ['descriptionDe,asc']
     );
 
-    expect(component.totalCount$).toEqual(1);
-    expect(component.businessOrganisations.length).toEqual(1);
-    expect(component.businessOrganisations[0].sboid).toEqual('sboid');
+    expect(component.totalCount()).toEqual(1);
+    expect(component.businessOrganisations().length).toEqual(1);
+    expect(component.businessOrganisations()[0].sboid).toEqual('sboid');
   });
 });

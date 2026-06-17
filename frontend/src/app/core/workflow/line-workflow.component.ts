@@ -1,4 +1,4 @@
-import { Component, inject, OnChanges, OnInit, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, output, input } from '@angular/core';
 import { LineRecord } from './model/line-record';
 import { LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
 import { LineInternalService } from '../../api/service/lidi/line-internal.service';
@@ -11,6 +11,7 @@ import { LineWorkflowDialogComponent } from './dialog/line-workflow-dialog.compo
   selector: 'atlas-workflow [lineRecord]',
   templateUrl: './line-workflow.component.html',
   styleUrls: ['./line-workflow.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AtlasButtonComponent],
 })
 export class LineWorkflowComponent implements OnInit, OnChanges {

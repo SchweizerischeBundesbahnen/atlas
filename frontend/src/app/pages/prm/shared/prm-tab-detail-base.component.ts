@@ -1,5 +1,5 @@
 import { NotificationService } from '../../../core/notification/notification.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../core/detail/detail-dialog-helper.service';
 import { FormGroup } from '@angular/forms';
@@ -10,6 +10,7 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 
 @Component({
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export abstract class PrmTabDetailBaseComponent<T> implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   protected readonly notificationService: NotificationService = inject(NotificationService);

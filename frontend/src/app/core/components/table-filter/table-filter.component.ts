@@ -1,4 +1,4 @@
-import { Component, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, input } from '@angular/core';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { Moment } from 'moment/moment';
 import { TableFilterChip } from './config/table-filter-chip';
@@ -27,6 +27,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-table-filter',
   templateUrl: './table-filter.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./table-filter.component.scss'],
   imports: [
     AtlasLabelFieldComponent,

@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CompleteReferencePointFormGroup } from '../reference-point-form-group';
 import { ReferencePointAttributeType } from '../../../../../../../api';
@@ -14,6 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-reference-point-complete-form',
   templateUrl: './reference-point-complete-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [
     TextFieldComponent,

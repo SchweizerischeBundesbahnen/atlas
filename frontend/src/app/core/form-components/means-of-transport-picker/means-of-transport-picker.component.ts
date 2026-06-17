@@ -1,4 +1,4 @@
-import { Component, input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
@@ -12,6 +12,7 @@ import { distinctUntilChanged, of, startWith } from 'rxjs';
 @Component({
   selector: 'atlas-means-of-transport-picker',
   templateUrl: './means-of-transport-picker.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./means-of-transport-picker.component.scss'],
   imports: [
     ReactiveFormsModule,

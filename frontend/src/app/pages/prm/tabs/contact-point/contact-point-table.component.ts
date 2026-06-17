@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
@@ -18,6 +18,7 @@ import { ContactPointInternalService } from '../../../../api/service/prm/contact
 @Component({
   selector: 'atlas-contact-point-table',
   templateUrl: './contact-point-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
 export class ContactPointTableComponent extends BasePrmTabComponentService implements OnInit {

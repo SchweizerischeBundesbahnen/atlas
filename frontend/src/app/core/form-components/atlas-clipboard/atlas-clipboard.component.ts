@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject, Input, input } from '@angular/core';
 import { NotificationService } from '../../notification/notification.service';
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -6,6 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-clipboard',
   templateUrl: './atlas-clipboard.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './atlas-clipboard.component.scss',
   imports: [CdkCopyToClipboard, TranslatePipe],
   providers: [TranslatePipe],

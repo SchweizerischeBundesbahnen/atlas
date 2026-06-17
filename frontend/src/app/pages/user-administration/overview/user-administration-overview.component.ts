@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Pages } from '../../pages';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
@@ -8,6 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AtlasButtonComponent,
     MatTabNav,

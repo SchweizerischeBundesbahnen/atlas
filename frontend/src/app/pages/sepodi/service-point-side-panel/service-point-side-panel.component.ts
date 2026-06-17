@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -43,6 +43,7 @@ export const FOREIGN_TABS = TABS.filter((i) => ['service-point', 'loading-points
 @Component({
   selector: 'atlas-service-point-side-panel',
   templateUrl: './service-point-side-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./service-point-side-panel.component.scss'],
   imports: [
     DetailPageContainerComponent,

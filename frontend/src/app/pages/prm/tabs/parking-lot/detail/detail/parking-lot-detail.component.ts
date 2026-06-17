@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ParkingLotVersion, ReadParkingLotVersion, ReadServicePointVersion } from '../../../../../../api';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ParkingLotFormGroupBuilder } from '../form/parking-lot-form-group';
@@ -22,6 +22,7 @@ import { ParkingLotService } from '../../../../../../api/service/prm/parking-lot
 @Component({
   selector: 'atlas-parking-lot-detail',
   templateUrl: './parking-lot-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,

@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { MatInput } from '@angular/material/input';
@@ -8,6 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-form-comment',
   templateUrl: './comment.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./comment.component.scss'],
   imports: [ReactiveFormsModule, AtlasLabelFieldComponent, MatInput, AtlasFieldErrorComponent],
   providers: [TranslatePipe],

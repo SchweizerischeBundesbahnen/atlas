@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { StandardAttributeType } from '../../../../../../../api';
 import { ToiletFormGroup } from '../toilet-form-group';
@@ -11,6 +11,7 @@ import { DateRangeComponent } from '../../../../../../../core/form-components/da
 @Component({
   selector: 'atlas-toilet-form',
   templateUrl: './toilet-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TextFieldComponent,
     ReactiveFormsModule,

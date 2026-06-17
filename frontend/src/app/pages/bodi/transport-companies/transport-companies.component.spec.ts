@@ -68,8 +68,8 @@ describe('TransportCompaniesComponent', () => {
       ['number,asc']
     );
 
-    expect(component.transportCompanies.length).toEqual(1);
-    expect(component.transportCompanies[0].id).toEqual(1);
-    expect(component.totalCount).toEqual(1);
+    expect(component.transportCompanies().length).toEqual(1);
+    expect(component.transportCompanies()[0].id).toEqual(1);
+    expect(component.totalCount()).toEqual(1);
   });
 });

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
 import { MatStep, MatStepper, MatStepperIcon } from '@angular/material/stepper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { catchError, EMPTY, Observable, of, shareReplay, take } from 'rxjs';
@@ -21,6 +21,7 @@ import { StopPointWorkflowService } from '../../../../../../api/service/workflow
 @Component({
   selector: 'atlas-sepodi-wf-decision-stepper',
   templateUrl: './decision-stepper.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DialogCloseComponent,
     DialogContentComponent,

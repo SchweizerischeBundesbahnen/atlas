@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Page } from '../../model/page';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { Cantons } from '../../cantons/Cantons';
 @Component({
   selector: 'atlas-side-nav',
   templateUrl: './side-nav.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./side-nav.component.scss'],
   imports: [MatListItem, RouterLink, NgClass, AsyncPipe, TranslatePipe],
   providers: [TranslatePipe],

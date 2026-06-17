@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Company } from '../../../../api';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CompanyFormGroup } from './company-form-group';
@@ -15,6 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './company-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./company-detail.component.scss'],
   imports: [
     ScrollToTopDirective,

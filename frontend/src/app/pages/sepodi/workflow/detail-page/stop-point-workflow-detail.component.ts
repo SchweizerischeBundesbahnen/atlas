@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import {
   ApplicationType,
   EditStopPointWorkflow,
@@ -41,6 +41,7 @@ import { StopPointRejectWorkflowDialogComponent } from '../stop-point-reject-wor
 @Component({
   selector: 'atlas-stop-point-workflow-detail',
   templateUrl: './stop-point-workflow-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DetailPageContainerComponent,
     DetailPageContentComponent,

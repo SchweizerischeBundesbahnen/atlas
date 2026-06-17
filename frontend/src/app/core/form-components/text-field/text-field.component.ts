@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input, input, TemplateRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FieldExample } from './field-example';
 import { AtlasLabelFieldComponent } from '@atlas/form';
@@ -10,6 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-text-field',
   templateUrl: './text-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./text-field.component.scss'],
   imports: [
     AtlasLabelFieldComponent,

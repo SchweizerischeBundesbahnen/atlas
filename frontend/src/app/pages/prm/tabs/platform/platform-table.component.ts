@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
@@ -24,6 +24,7 @@ import { PlatformInternalService } from '../../../../api/service/prm/platform/pl
 @Component({
   selector: 'atlas-platform',
   templateUrl: './platform-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, AtlasButtonComponent],
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {

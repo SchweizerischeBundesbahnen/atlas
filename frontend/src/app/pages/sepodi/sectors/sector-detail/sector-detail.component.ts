@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { ValidityService } from '../../validity/validity.service';
 import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
@@ -39,6 +39,7 @@ import { AtlasClipboardComponent } from '../../../../core/form-components/atlas-
 @Component({
   selector: 'atlas-sector-detail',
   templateUrl: './sector-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sector-detail.component.scss'],
   providers: [ValidityService],
   imports: [

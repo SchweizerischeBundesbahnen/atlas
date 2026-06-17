@@ -30,19 +30,19 @@ describe('CompaniesComponent', () => {
     };
     companyService.getCompanies.mockReturnValue(of(company));
 
-     TestBed.configureTestingModule({
-       imports: [CompaniesComponent],
-       providers: [
-         translateServiceProvider,
-         TranslatePipe,
-         RouterOutlet,
-         { provide: CompanyService, useValue: companyService },
-         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
-       ],
-     }).overrideComponent(CompaniesComponent, {
-       remove: { imports: [TableComponent] },
-       add: { imports: [MockTableComponent] },
-     });
+    TestBed.configureTestingModule({
+      imports: [CompaniesComponent],
+      providers: [
+        translateServiceProvider,
+        TranslatePipe,
+        RouterOutlet,
+        { provide: CompanyService, useValue: companyService },
+        { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
+      ],
+    }).overrideComponent(CompaniesComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(CompaniesComponent);
     component = fixture.componentInstance;
@@ -60,8 +60,8 @@ describe('CompaniesComponent', () => {
     });
 
     expect(companyService.getCompanies).toHaveBeenCalledExactlyOnceWith([], 0, 10, ['uicCode,asc']);
-    expect(component['companies'].length).toEqual(1);
-    expect(component['companies'][0].uicCode).toEqual('1');
-    expect(component['totalCount']).toEqual(1);
+    expect(component['companies']().length).toEqual(1);
+    expect(component['companies']()[0].uicCode).toEqual('1');
+    expect(component['totalCount']()).toEqual(1);
   });
 });

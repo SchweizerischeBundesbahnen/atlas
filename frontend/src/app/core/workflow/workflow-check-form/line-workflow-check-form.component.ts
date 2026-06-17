@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
@@ -18,6 +18,7 @@ import { LineWorkflowService } from '../../../api/service/workflow/line-workflow
 @Component({
   selector: 'atlas-workflow-check-form',
   templateUrl: './line-workflow-check-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [LineWorkflowFormComponent, ReactiveFormsModule, AtlasButtonComponent, TranslatePipe],
   providers: [TranslatePipe],
 })

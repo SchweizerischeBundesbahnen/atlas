@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ContactPointVersion, ReadContactPointVersion, ReadServicePointVersion } from '../../../../../../api';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ContactPointFormGroupBuilder } from '../form/contact-point-form-group';
@@ -22,6 +22,7 @@ import { ContactPointService } from '../../../../../../api/service/prm/contact-p
 @Component({
   selector: 'atlas-contact-point-detail',
   templateUrl: './contact-point-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,

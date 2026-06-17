@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, inject, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder } from './decision-override-form-group';
@@ -19,6 +19,7 @@ import { StopPointWorkflowService } from '../../../../../../../api/service/workf
 @Component({
   selector: 'atlas-decision-override',
   templateUrl: './decision-override.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     TextFieldComponent,

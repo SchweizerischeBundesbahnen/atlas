@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -17,6 +17,7 @@ import { TransportCompanyService } from '../../../api/service/bodi/transport-com
 @Component({
   selector: 'atlas-bodi-transport-companies',
   templateUrl: './transport-companies.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class TransportCompaniesComponent implements OnInit, OnDestroy {
@@ -66,8 +67,8 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
 
   tableFilterConfig!: TableFilter<unknown>[][];
 
-  transportCompanies: TransportCompany[] = [];
-  totalCount = 0;
+  transportCompanies = signal<TransportCompany[]>([]);
+  totalCount = signal(0);
 
   private transportCompaniesSubscription?: Subscription;
 
@@ -93,8 +94,8 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
         addElementsToArrayWhenNotUndefined(pagination.sort, 'number,asc')
       )
       .subscribe((container) => {
-        this.transportCompanies = container.objects!;
-        this.totalCount = container.totalCount!;
+        this.transportCompanies.set(container.objects!);
+        this.totalCount.set(container.totalCount!);
       });
   }
 

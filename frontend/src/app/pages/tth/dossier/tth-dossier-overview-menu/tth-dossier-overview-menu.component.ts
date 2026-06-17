@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
@@ -25,6 +25,7 @@ import { NotificationService } from '../../../../core/notification/notification.
     NgTemplateOutlet,
   ],
   templateUrl: './tth-dossier-overview-menu.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TthDossierOverviewMenuComponent {
   private readonly route = inject(ActivatedRoute);

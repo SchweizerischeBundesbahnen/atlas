@@ -1,4 +1,4 @@
-import { Component, inject, Input, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, OnInit } from '@angular/core';
 import { StopPointDetailFormGroup, StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
 import { BooleanOptionalAttributeType, MeanOfTransport, StandardAttributeType } from '../../../../../../api';
 import { TranslationSortingService } from '../../../../../../core/translation/translation-sorting.service';
@@ -16,6 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-stop-point-complete-form',
   templateUrl: './stop-point-complete-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [
     MeansOfTransportPickerComponent,

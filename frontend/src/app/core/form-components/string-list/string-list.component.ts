@@ -1,4 +1,4 @@
-import { Component, Input, input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input, OnChanges, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { FieldExample } from '../text-field/field-example';
 import { concat, Observable, of } from 'rxjs';
@@ -12,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-text-list',
   templateUrl: './string-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TextFieldComponent,
     ReactiveFormsModule,

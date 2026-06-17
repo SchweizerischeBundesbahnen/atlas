@@ -1,4 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnInit } from '@angular/core';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
@@ -18,6 +18,7 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
     AtlasSpacerComponent,
   ],
   templateUrl: './statement-text.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [TranslatePipe],
 })
 export class StatementTextComponent implements OnInit {

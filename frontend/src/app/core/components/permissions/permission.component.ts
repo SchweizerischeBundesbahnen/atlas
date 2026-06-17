@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, output, ViewChild } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApplicationPermissionComponent } from './application-permission/application-permission.component';
@@ -9,6 +9,7 @@ import { DialogService } from '../dialog/dialog.service';
 @Component({
   selector: 'atlas-permission',
   templateUrl: './permission.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./permission.component.scss'],
   imports: [ApplicationPermissionComponent, TranslatePipe, MatTabGroup, MatTab, MatTabLabel, MatTabContent],
 })

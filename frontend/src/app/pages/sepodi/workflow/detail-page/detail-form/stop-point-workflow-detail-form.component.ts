@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import {
   SPECIAL_DECISION_TYPES,
@@ -38,6 +38,7 @@ import { Pages } from '../../../../pages';
 @Component({
   selector: 'atlas-stop-point-workflow-detail-form',
   templateUrl: './stop-point-workflow-detail-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [
     LinkComponent,

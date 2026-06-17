@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -21,6 +21,7 @@ import { UserAdministrationService } from '../../../../api/service/user-administ
   selector: 'atlas-user-administration-overview',
   templateUrl: './user-administration-user-overview.component.html',
   styleUrls: ['./user-administration-user-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TableComponent,
     MatLabel,

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import {
   StopPointRejectWorkflowFormGroup,
   StopPointRejectWorkflowFormGroupBuilder,
@@ -30,6 +30,7 @@ const titleTranslationKeys: Record<DialogAction, string> = {
 @Component({
   selector: 'atlas-stop-point-reject-workflow-dialog',
   templateUrl: './stop-point-reject-workflow-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stop-point-reject-workflow-dialog.component.scss',
   imports: [
     DialogCloseComponent,

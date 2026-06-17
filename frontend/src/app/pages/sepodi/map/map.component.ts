@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild, input } from '@angular/core';
+import { ChangeDetectionStrategy, AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild, input } from '@angular/core';
 import { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options';
@@ -16,6 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-map',
   templateUrl: './map.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./map.component.scss'],
   imports: [MatIconButton, NgClass, TranslatePipe],
 })

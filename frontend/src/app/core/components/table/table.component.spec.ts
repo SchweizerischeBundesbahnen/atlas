@@ -16,6 +16,7 @@ describe('TableComponent', () => {
   let fixture: ComponentFixture<TableComponent<any>>;
   let tableColumnsInput: ReturnType<typeof signal<any[]>>;
   let totalCountInput: ReturnType<typeof signal<number>>;
+  let tableDataInput: ReturnType<typeof signal<any[]>>;
   /*eslint-enable */
 
   beforeEach(() => {
@@ -32,12 +33,15 @@ describe('TableComponent', () => {
 
     const tableColumnsInputName: keyof TableComponent<unknown> = 'tableColumns';
     const totalCountInputName: keyof TableComponent<unknown> = 'totalCount';
+    const tableDataInputName: keyof TableComponent<unknown> = 'tableData';
     tableColumnsInput = signal([]);
     totalCountInput = signal(10);
+    tableDataInput = signal([]);
     fixture = TestBed.createComponent(TableComponent, {
       bindings: [
         inputBinding(tableColumnsInputName, tableColumnsInput),
         inputBinding(totalCountInputName, totalCountInput),
+        inputBinding(tableDataInputName, tableDataInput),
       ],
     });
     component = fixture.componentInstance;
@@ -87,7 +91,7 @@ describe('TableComponent', () => {
         },
       },
     ]);
-    component.tableData = [
+    tableDataInput.set([
       {
         validFrom: new Date('2021-12-31'),
         validTo: new Date('2099-12-31'),
@@ -106,8 +110,8 @@ describe('TableComponent', () => {
         name: 'Basel',
         relations: [],
       },
-    ];
-    component.isLoading = false;
+    ]);
+    component.isLoading.set(false);
   });
 
   it('should get relations comma separated', () => {

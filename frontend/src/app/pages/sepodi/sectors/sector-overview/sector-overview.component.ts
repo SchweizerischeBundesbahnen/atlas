@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
@@ -18,6 +18,7 @@ import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
   selector: 'atlas-sector-overview',
   imports: [TranslatePipe, DetailPageContentComponent, TableComponent, AtlasButtonComponent, DetailFooterComponent],
   templateUrl: './sector-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sector-overview.component.scss'],
 })
 export class SectorOverviewComponent implements OnInit {

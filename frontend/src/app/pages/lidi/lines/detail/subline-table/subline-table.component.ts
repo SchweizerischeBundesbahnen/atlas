@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
@@ -13,6 +13,7 @@ import { LineInternalService } from '../../../../../api/service/lidi/line-intern
 @Component({
   selector: 'atlas-subline-table',
   templateUrl: './subline-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, TranslatePipe],
 })
 export class SublineTableComponent implements OnInit, OnDestroy {

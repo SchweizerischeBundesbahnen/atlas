@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationRole, ApplicationType, TimetableFieldNumberVersion } from '../../../api';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -39,6 +39,7 @@ import { RevokeButton } from '../../../core/form-components/revoke-button/revoke
 @Component({
   selector: 'atlas-timetable-field-number-detail',
   templateUrl: './timetable-field-number-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService],
   imports: [
     ReactiveFormsModule,

@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -21,6 +21,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-lidi-lines',
   templateUrl: './lines.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class LinesComponent implements OnInit, OnDestroy {

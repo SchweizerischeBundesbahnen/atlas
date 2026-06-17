@@ -1,5 +1,5 @@
 <div class="overview-table pb-xl-5">
-  <atlas-loading-spinner [isLoading]="isLoading" />
+  <atlas-loading-spinner [isLoading]="isLoading()" />
 
   @if (showTableFilter()) {
     <atlas-table-filter (searchEvent)="searchData()" [filterConfigurations]="tableFilterConfig()" />
@@ -9,7 +9,7 @@
 
   <table
     (matSortChange)="sortData($event)"
-    [dataSource]="tableData"
+    [dataSource]="tableData()"
     [matSortActive]="sortActive"
     [matSortDirection]="sortDirection"
     [matSortDisabled]="sortingDisabled()"

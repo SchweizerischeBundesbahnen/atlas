@@ -1,9 +1,10 @@
-import { Component, input, OnChanges, OnInit, output, signal, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnChanges, OnInit, output, signal, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'atlas-slide-toggle',
   templateUrl: './atlas-slide-toggle.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./atlas-slide-toggle.component.scss'],
 })
 export class AtlasSlideToggleComponent implements OnInit, OnChanges {

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { Subject } from 'rxjs';
@@ -18,6 +18,7 @@ import { ValidationService } from '../../../../core/validation/validation.servic
 @Component({
   selector: 'atlas-tth-change-canton-dialog',
   templateUrl: './tth-change-canton-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BaseChangeDialogComponent, ReactiveFormsModule, SelectComponent, NgOptimizedImage],
 })
 export class TthChangeCantonDialogComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
@@ -26,6 +26,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'atlas-stop-point-termination-workflow-overview',
   templateUrl: './stop-point-termination-workflow-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, TranslatePipe, AsyncPipe],
 })
 export class StopPointTerminationWorkflowOverviewComponent {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, output, ViewChild, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, output, ViewChild, input } from '@angular/core';
 import { FileUploadError } from './file-upload-error';
 import { FileDropDirective } from './file-drop/file-drop.directive';
 import { NgStyle } from '@angular/common';
@@ -12,6 +12,7 @@ import { FileSizePipe } from './file-size/file-size.pipe';
 @Component({
   selector: 'atlas-file-upload',
   templateUrl: './file-upload.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./file-upload.component.scss'],
   imports: [
     FileDropDirective,

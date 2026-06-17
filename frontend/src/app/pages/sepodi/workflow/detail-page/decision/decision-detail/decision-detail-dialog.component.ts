@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DecisionOverrideComponent } from './override/decision-override.component';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
@@ -23,6 +23,7 @@ export interface DecisionDetailDialogData extends DialogData {
 @Component({
   selector: 'atlas-decision-detail-dialog',
   templateUrl: './decision-detail-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DialogCloseComponent,
     DialogContentComponent,

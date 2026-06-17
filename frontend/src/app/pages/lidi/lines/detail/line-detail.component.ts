@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   AffectedSublinesModel,
   ApplicationRole,
@@ -46,6 +46,7 @@ import { DialogData } from '../../../../core/components/dialog/dialog.data';
 
 @Component({
   templateUrl: './line-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./line-detail.component.scss'],
   providers: [ValidityService, TranslatePipe],
   imports: [

@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DecisionFormGroup } from './decision-form-group';
 import { JudgementType } from '../../../../../../api';
@@ -12,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-decision-form',
   templateUrl: './decision-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['decision-form.component.scss'],
   imports: [
     ReactiveFormsModule,

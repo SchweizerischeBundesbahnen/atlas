@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DetailDialogHelperService } from '../../../../../../core/detail/detail-dialog-helper.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ import { StartTerminationStopPointAddWorkflow } from '../../../../../../api/mode
 @Component({
   selector: 'atlas-stop-point-termination-dialog',
   templateUrl: './stop-point-termination-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DialogCloseComponent, DialogContentComponent, DialogFooterComponent, TranslatePipe, CommentComponent],
 })
 export class StopPointTerminationDialogComponent implements OnInit {

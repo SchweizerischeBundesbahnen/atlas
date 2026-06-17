@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { InfoIconComponent, InfoLinkDirective } from '@atlas/form';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -31,6 +31,7 @@ export type AccessibilityType = 'STOP_POINT' | 'PLATFORM';
     InfoLinkDirective,
   ],
   templateUrl: './wheelchair-accessibility.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./wheelchair-accessibility.component.scss'],
 })
 export class WheelchairAccessibilityComponent implements OnInit {

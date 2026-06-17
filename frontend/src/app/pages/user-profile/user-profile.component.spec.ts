@@ -5,13 +5,14 @@ import { UserProfileComponent } from './user-profile.component';
 import { adminUserServiceMock, translateServiceProvider } from '../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 import { UserService } from '../../core/auth/user/user.service';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PermissionComponent } from '../../core/components/permissions/permission.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 @Component({
   selector: 'atlas-permission',
   template: '<h1>PermissionsComponentMock</h1>',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PermissionsComponentMock {}
 

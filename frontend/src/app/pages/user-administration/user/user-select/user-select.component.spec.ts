@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { UserSelectComponent } from './user-select.component';
 import { firstValueFrom, of } from 'rxjs';
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ApplicationType, Permission } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
@@ -12,6 +12,7 @@ import { UserAdministrationService } from '../../../../api/service/user-administ
 @Component({
   selector: 'atlas-form-search-select',
   template: '<p>form-search-select</p>',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class MockFormSearchSelectComponent {
   readonly items$ = input(of([]));

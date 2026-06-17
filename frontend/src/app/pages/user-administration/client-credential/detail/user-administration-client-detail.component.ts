@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ClientCredential } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 import { UserAdministrationClientEditComponent } from './edit/user-administration-client-edit.component';
@@ -10,6 +10,7 @@ import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-fo
 @Component({
   selector: 'atlas-client-credential-administration',
   templateUrl: './user-administration-client-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [UserAdministrationClientEditComponent, UserAdministrationClientCreateComponent],
 })
 export class UserAdministrationClientDetailComponent implements OnInit, DetailFormComponent {

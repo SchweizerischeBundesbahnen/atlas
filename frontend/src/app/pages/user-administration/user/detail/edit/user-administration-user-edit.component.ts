@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/user-edit-info/creation-edition-record';
@@ -19,6 +19,7 @@ import { UserDetailInfoComponent } from '../../../../../core/components/user-edi
 @Component({
   selector: 'atlas-user-administration-user-edit',
   templateUrl: './user-administration-user-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./user-administration-user-edit.component.scss'],
   imports: [
     ScrollToTopDirective,

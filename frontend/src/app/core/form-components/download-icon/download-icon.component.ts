@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'atlas-download-icon',
   templateUrl: './download-icon.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DownloadIconComponent {
   readonly readonly = input(false);

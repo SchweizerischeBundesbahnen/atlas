@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TimetableHearingStatementV2 } from '../../../../api';
@@ -15,6 +15,7 @@ import { ValidationService } from '../../../../core/validation/validation.servic
 @Component({
   selector: 'atlas-dialog',
   templateUrl: './statement.dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommentComponent, ReactiveFormsModule, MatDialogActions, AtlasButtonComponent, TranslatePipe],
   providers: [TranslatePipe],
 })

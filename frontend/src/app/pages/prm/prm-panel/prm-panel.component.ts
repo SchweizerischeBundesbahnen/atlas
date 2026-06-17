@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BusinessOrganisationVersion, ReadServicePointVersion, ReadStopPointVersion } from '../../../api';
 import { DateRange } from '../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -19,6 +19,7 @@ import { SloidContainerComponent } from '../../../core/sloid-container/sloid-con
 @Component({
   selector: 'atlas-prm-panel',
   templateUrl: './prm-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./prm-panel.component.scss'],
   imports: [
     DateRangeTextComponent,

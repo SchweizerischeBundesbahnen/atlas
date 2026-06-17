@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { ClientCredential } from '../../../../api';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { ClientCredentialAdministrationService } from '../../../../api/service/u
 @Component({
   selector: 'atlas-client-credential-administration-overview',
   templateUrl: './user-administration-client-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, RouterOutlet],
 })
 export class UserAdministrationClientOverviewComponent implements OnDestroy {

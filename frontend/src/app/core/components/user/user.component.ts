@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { ApplicationRole, ApplicationType, Permission } from '../../../api';
 import { UserService } from '../../auth/user/user.service';
@@ -12,6 +12,7 @@ import { Pages } from '../../../pages/pages';
 @Component({
   selector: 'atlas-user',
   templateUrl: './user.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./user.component.scss'],
   imports: [MatButton, MatMenuTrigger, MatMenu, TranslatePipe],
   providers: [TranslatePipe],

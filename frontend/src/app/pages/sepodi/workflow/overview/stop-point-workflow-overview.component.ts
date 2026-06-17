@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TableFilterChip } from '../../../../core/components/table-filter/config/table-filter-chip';
 import { TableFilterSearchSelect } from '../../../../core/components/table-filter/config/table-filter-search-select';
 import { ApplicationType, BusinessOrganisation, ReadStopPointWorkflow, WorkflowStatus } from '../../../../api';
@@ -23,6 +23,7 @@ import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-
 @Component({
   selector: 'atlas-stop-point-workflow-overview',
   templateUrl: './stop-point-workflow-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, TranslatePipe],
 })
 export class StopPointWorkflowOverviewComponent implements OnInit {

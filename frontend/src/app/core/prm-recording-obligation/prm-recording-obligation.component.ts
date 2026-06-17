@@ -1,4 +1,4 @@
-import { Component, inject, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
 import { StopPointInternalService } from '../../api/service/prm/stop-point/stop-point-internal.service';
@@ -9,6 +9,7 @@ import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle
 @Component({
   selector: 'atlas-prm-recording-obligation',
   templateUrl: './prm-recording-obligation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TranslatePipe, AtlasSlideToggleComponent],
   providers: [TranslatePipe],
 })

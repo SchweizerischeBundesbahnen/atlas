@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, input } from '@angular/core';
 import { StopPointDetailFormGroup } from '../stop-point-detail-form-group';
 import { MeanOfTransport } from '../../../../../../api';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-stop-point-reduced-form',
   templateUrl: './stop-point-reduced-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [MeansOfTransportPickerComponent, ReactiveFormsModule, CommentComponent, DateRangeComponent, TranslatePipe],
   providers: [TranslatePipe],

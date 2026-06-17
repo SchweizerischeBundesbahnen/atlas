@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { BehaviorSubject, catchError, EMPTY, finalize, from, Observable, of, switchMap, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
@@ -34,6 +34,7 @@ import { WheelchairAccessibilityComponent } from '../../../../../core/components
 @Component({
   selector: 'atlas-stop-point-detail',
   templateUrl: './stop-point-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService, TranslatePipe, TranslationSortingService],
   imports: [
     CreateStopPointComponent,

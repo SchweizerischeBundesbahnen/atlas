@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
@@ -16,6 +16,7 @@ import { TrafficPointElementInternalService } from '../../../../api/service/sepo
 @Component({
   selector: 'atlas-service-point-traffic-point-elements-table',
   templateUrl: './traffic-point-elements-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./traffic-point-elements-table.component.scss'],
   imports: [AtlasButtonComponent, NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, TranslatePipe],
 })

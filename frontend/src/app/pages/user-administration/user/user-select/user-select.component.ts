@@ -1,4 +1,4 @@
-import { Component, inject, input, Input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { ApplicationType, User } from '../../../../api';
@@ -12,6 +12,7 @@ export type SearchMode = 'default' | 'inAtlas' | 'boDossierAnsweringUsers';
 @Component({
   selector: 'atlas-user-select',
   templateUrl: './user-select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [SearchSelectComponent, ReactiveFormsModule, UserSelectFormatPipe],
 })
 export class UserSelectComponent implements OnInit {
