@@ -27,7 +27,7 @@ class PlatformBulkImportControllerApiTest extends BaseControllerApiTest {
   private PlatformBulkImportService platformBulkImportService;
 
   @Test
-  void shouldPlatformStopPointViaApi() throws Exception {
+  void shouldTerminatePlatformViaApi() throws Exception {
     //given
     BulkImportUpdateContainer<SloidTerminateCsvModel> container = BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
         .lineNumber(1)
