@@ -1141,7 +1141,7 @@
       "STATEMENTS": "Pareri del fascicolo",
       "ADD_STATEMENTS": "Aggiungere ulteriori prese di posizione sul dossier",
       "SEND_TO_BO": "Invia domanda",
-      "BO_ANSWER": "Feedback dalla compagnia di trasporto",
+      "BO_ANSWER": "Feedback dell’impresa di trasporto",
       "STATEMENT_SELECT": {
         "CURRENT_STATEMENTS": "Pareri attualmente selezionati",
         "ADDITIONAL_STATEMENTS": "Altre prese di posizione"
