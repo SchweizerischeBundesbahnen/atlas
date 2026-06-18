@@ -145,7 +145,7 @@ public class BulkImportBatchJobConfig {
             .build()));
 
         contribution.incrementWriteSkipCount(items.getItems().size());
-        contribution.setExitStatus(ExitStatus.FAILED.setExitException(e));
+        contribution.setExitStatus(ExitStatus.FAILED.withExitException(e));
       }
       items.getItems().forEach(writeItem ->
           bulkImportLogService.saveDataExecutionLog(stepExecution.getJobExecutionId(), writeItem));

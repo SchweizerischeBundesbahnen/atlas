@@ -58,7 +58,7 @@ public class ServicePointUpdateGeoLocationApiWriter implements ChunkProcessor<Se
       log.error("Error while updating GeoLocation for ServicePoint [sloid={},id={}]", servicePoint.getSloid(),
           versionInfo.getId(), e);
       contribution.incrementWriteSkipCount(1);
-      contribution.setExitStatus(ExitStatus.FAILED.setExitException(e));
+      contribution.setExitStatus(ExitStatus.FAILED.withExitException(e));
     }
   }
 

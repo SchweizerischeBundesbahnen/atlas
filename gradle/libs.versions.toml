@@ -2,8 +2,8 @@
 okhttpVersion = "5.4.0"
 proj4jVersion = "1.4.3"
 shedlockVersion = "7.7.0"
-protobufVersion = "4.35.0"
-springCloudDependenciesVersion = "2025.1.1"
+protobufVersion = "4.35.1"
+springCloudDependenciesVersion = "2025.1.2"
 
 [libraries]
 # Java Convention Dependencies
@@ -28,21 +28,21 @@ protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protob
 protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobufVersion" }
 
 # Other
-swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.50" }
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.46.7" }
+swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.51" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.46.13" }
 jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.7" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.5.1" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
 tika-core = { group = "org.apache.tika", name = "tika-core", version = "3.3.1" }
-greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version = "2.1.8" }
+greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version = "2.1.9" }
 microsoft-graph = { group = "com.microsoft.graph", name = "microsoft-graph", version = "6.65.0" }
-azure-identity = { group = "com.azure", name = "azure-identity", version = "1.18.3" }
+azure-identity = { group = "com.azure", name = "azure-identity", version = "1.18.4" }
 
 # Gradle Plugin Dependencies
 asciidoctor-gradle-plugin = { group = "org.asciidoctor.jvm.convert", name = "org.asciidoctor.jvm.convert.gradle.plugin", version = "4.0.5" }
 spring-dependency-management-gradle-plugin = { group = "io.spring.dependency-management", name = "io.spring.dependency-management.gradle.plugin", version = "1.1.7" }
-spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "4.0.6" }
+spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "4.1.0" }
 
 
 [bundles]
