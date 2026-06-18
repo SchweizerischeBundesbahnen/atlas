@@ -1,12 +1,12 @@
 package ch.sbb.importservice.module.bulkimport.service;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
 import java.io.File;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class BulkImportS3BucketService {
   String createImportFilePath(BulkImport bulkImport) {
     return String.format("%s/%s/%s/%s/%s",
         bulkImport.getCreator(),
-        DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now()),
+        DATE_FORMATTER_BASE.format(LocalDate.now()),
         bulkImport.getApplication(),
         bulkImport.getObjectType(),
         bulkImport.getImportType()

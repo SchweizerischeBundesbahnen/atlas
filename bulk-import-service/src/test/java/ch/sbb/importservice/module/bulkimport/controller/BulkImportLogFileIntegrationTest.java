@@ -1,5 +1,6 @@
 package ch.sbb.importservice.module.bulkimport.controller;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
 import static ch.sbb.importservice.module.bulkimport.service.BulkImportFileValidationService.CSV_CONTENT_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,7 +11,6 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -92,7 +90,7 @@ class BulkImportLogFileIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/SEPODI/SERVICE_POINT/UPDATE";
     when(amazonService.putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), anyString()))
         .thenAnswer(i -> URI.create("https://atlas-bulk-import-dev-dev.s3.eu-central-1.amazonaws.com/" +

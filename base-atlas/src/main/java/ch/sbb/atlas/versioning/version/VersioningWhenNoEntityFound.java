@@ -1,11 +1,11 @@
 package ch.sbb.atlas.versioning.version;
 
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isThereGapBetweenVersions;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isVersionOverTheLeftBorder;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isVersionOverTheRightBorder;
 import static ch.sbb.atlas.versioning.model.Entity.replaceEditedPropertiesWithCurrentProperties;
 import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObjectToCreate;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isThereGapBetweenVersions;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isVersionOverTheLeftBorder;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isVersionOverTheRightBorder;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;

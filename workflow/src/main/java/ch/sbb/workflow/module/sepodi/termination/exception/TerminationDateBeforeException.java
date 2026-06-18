@@ -1,11 +1,11 @@
 package ch.sbb.workflow.module.sepodi.termination.exception;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.exception.AtlasException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
@@ -26,7 +26,7 @@ public class TerminationDateBeforeException extends AtlasException {
 
   private String getFormattedMsg() {
     return MessageFormat.format("The given termination date {0} cannot be before the current termination date {1}!",
-        givenTerminationDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)),
-        currentTerminationDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)));
+        givenTerminationDate.format(DATE_FORMATTER_BASE),
+        currentTerminationDate.format(DATE_FORMATTER_BASE));
   }
 }

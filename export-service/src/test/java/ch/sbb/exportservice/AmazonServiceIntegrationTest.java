@@ -1,10 +1,10 @@
 package ch.sbb.exportservice;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
@@ -104,7 +103,7 @@ class AmazonServiceIntegrationTest {
     String latestJsonKey = amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT,
         "v2/service-point/full", "full-swiss-service-point-");
 
-    String date = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now());
+    String date = DATE_FORMATTER_BASE.format(LocalDate.now());
     assertThat(latestJsonKey).isEqualTo("v2/service-point/full/full-swiss-service-point-" + date + ".json.gz");
   }
 

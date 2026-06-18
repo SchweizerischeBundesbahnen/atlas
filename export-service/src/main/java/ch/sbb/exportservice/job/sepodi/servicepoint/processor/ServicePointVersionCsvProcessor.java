@@ -1,12 +1,14 @@
 package ch.sbb.exportservice.job.sepodi.servicepoint.processor;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
+
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.exportservice.job.sepodi.BaseSepodiProcessor;
 import ch.sbb.exportservice.job.sepodi.servicepoint.entity.ServicePointVersion;
 import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel.ServicePointVersionCsvModelBuilder;
-import ch.sbb.exportservice.util.MapperUtil;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
@@ -23,8 +25,8 @@ public class ServicePointVersionCsvProcessor extends BaseSepodiProcessor impleme
         .sloid(version.getSloid())
         .number(version.getNumber().getNumber())
         .checkDigit(version.getNumber().getCheckDigit())
-        .validFrom(MapperUtil.DATE_FORMATTER.format(version.getValidFrom()))
-        .validTo(MapperUtil.DATE_FORMATTER.format(version.getValidTo()))
+        .validFrom(DATE_FORMATTER_BASE.format(version.getValidFrom()))
+        .validTo(DATE_FORMATTER_BASE.format(version.getValidTo()))
         .designationOfficial(version.getDesignationOfficial())
         .designationLong(version.getDesignationLong())
         .abbreviation(version.getAbbreviation())
@@ -61,8 +63,8 @@ public class ServicePointVersionCsvProcessor extends BaseSepodiProcessor impleme
         .businessOrganisationDescriptionIt(version.getSharedBusinessOrganisation().getBusinessOrganisationDescriptionIt())
         .businessOrganisationDescriptionEn(version.getSharedBusinessOrganisation().getBusinessOrganisationDescriptionEn())
         .fotComment(version.getComment())
-        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
-        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
+        .creationDate(LOCAL_DATE_TIME_FORMATTER.format(version.getCreationDate()))
+        .editionDate(LOCAL_DATE_TIME_FORMATTER.format(version.getEditionDate()))
         .status(version.getStatus());
     return builder.build();
   }

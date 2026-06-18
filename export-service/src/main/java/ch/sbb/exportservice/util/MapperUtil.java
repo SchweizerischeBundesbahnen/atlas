@@ -12,8 +12,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class MapperUtil {
 
-  public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN);
-  public static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern(
+  public static final DateTimeFormatter LOCAL_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(
       AtlasApiConstants.DATE_TIME_FORMAT_PATTERN);
 
   public static String mapStandardAttributeType(StandardAttributeType attributeType) {

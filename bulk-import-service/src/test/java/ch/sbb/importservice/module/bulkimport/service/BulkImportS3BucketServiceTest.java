@@ -1,12 +1,12 @@
 package ch.sbb.importservice.module.bulkimport.service;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,7 +27,7 @@ class BulkImportS3BucketServiceTest {
 
   private BulkImportS3BucketService bulkImportS3BucketService;
 
-  private final String todaysDir = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now());
+  private final String todaysDir = DATE_FORMATTER_BASE.format(LocalDate.now());
 
   @BeforeEach
   void setUp() {

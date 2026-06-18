@@ -1,5 +1,8 @@
 package ch.sbb.exportservice.job.sepodi.trafficpoint.processor;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
+
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.exportservice.job.sepodi.BaseSepodiProcessor;
 import ch.sbb.exportservice.job.sepodi.SharedBusinessOrganisation;
@@ -7,7 +10,6 @@ import ch.sbb.exportservice.job.sepodi.trafficpoint.entity.TrafficPointElementGe
 import ch.sbb.exportservice.job.sepodi.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.model.TrafficPointVersionCsvModel;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.model.TrafficPointVersionCsvModel.TrafficPointVersionCsvModelBuilder;
-import ch.sbb.exportservice.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 
@@ -24,8 +26,8 @@ public class TrafficPointElementVersionCsvProcessor extends BaseSepodiProcessor 
         .number(version.getServicePointNumber().getNumber())
         .checkDigit(version.getServicePointNumber().getCheckDigit())
         .uicCountryCode(version.getServicePointNumber().getUicCountryCode())
-        .validFrom(MapperUtil.DATE_FORMATTER.format(version.getValidFrom()))
-        .validTo(MapperUtil.DATE_FORMATTER.format(version.getValidTo()))
+        .validFrom(DATE_FORMATTER_BASE.format(version.getValidFrom()))
+        .validTo(DATE_FORMATTER_BASE.format(version.getValidTo()))
         .designation(version.getDesignation())
         .designationOperational(version.getDesignationOperational())
         .length(version.getLength())
@@ -34,8 +36,8 @@ public class TrafficPointElementVersionCsvProcessor extends BaseSepodiProcessor 
         .parentSloid(version.getParentSloid())
         .trafficPointElementType(version.getTrafficPointElementType().name())
         .designationOfficial(version.getServicePointDesignationOfficial())
-        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
-        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
+        .creationDate(LOCAL_DATE_TIME_FORMATTER.format(version.getCreationDate()))
+        .editionDate(LOCAL_DATE_TIME_FORMATTER.format(version.getEditionDate()))
         .parentSloidServicePoint(version.getParentSloidServicePoint())
         .servicePointBusinessOrganisation(servicePointSharedBusinessOrganisation.getBusinessOrganisation())
         .servicePointBusinessOrganisationNumber(servicePointSharedBusinessOrganisation.getBusinessOrganisationNumber())

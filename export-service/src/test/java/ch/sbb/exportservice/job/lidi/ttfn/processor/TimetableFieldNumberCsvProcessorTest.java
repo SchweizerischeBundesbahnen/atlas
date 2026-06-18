@@ -52,8 +52,8 @@ class TimetableFieldNumberCsvProcessorTest {
         .validTo("2020-12-31")
         .businessOrganisation("ch:1:sboid:100000")
         .lineRelations("")
-        .creationTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
-        .editionTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .creationTime(MapperUtil.LOCAL_DATE_TIME_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .editionTime(MapperUtil.LOCAL_DATE_TIME_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
         .build();
 
     TimetableFieldNumberCsvModel result = new TimetableFieldNumberCsvProcessor().process(timetableFieldNumber);

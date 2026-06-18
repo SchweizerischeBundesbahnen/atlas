@@ -2,7 +2,8 @@ package ch.sbb.atlas.versioning.engine;
 
 import ch.sbb.atlas.versioning.convert.ConverterHelper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
-import ch.sbb.atlas.versioning.merge.MergeHelper;
+import ch.sbb.atlas.versioning.helper.MergeHelper;
+import ch.sbb.atlas.versioning.helper.VersioningHelper;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.ToVersioning;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -10,7 +11,6 @@ import ch.sbb.atlas.versioning.model.VersionableProperty;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import ch.sbb.atlas.versioning.version.Versioning;
-import ch.sbb.atlas.versioning.version.VersioningHelper;
 import ch.sbb.atlas.versioning.version.VersioningWhenValidFromAndValidToAreNotEdited;
 import ch.sbb.atlas.versioning.version.VersioningWhenValidToAndOrValidFromAreEdited;
 import java.util.ArrayList;

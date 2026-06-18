@@ -6,9 +6,9 @@ import static ch.sbb.exportservice.model.ExportTypeV2.FUTURE_TIMETABLE;
 import static ch.sbb.exportservice.model.ExportTypeV2.WORLD_FULL;
 import static ch.sbb.exportservice.model.ExportTypeV2.WORLD_FUTURE_TIMETABLE;
 
+import ch.sbb.atlas.helper.DateHelper;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.ExportYearsTimetableUtil;
 import java.time.LocalDate;

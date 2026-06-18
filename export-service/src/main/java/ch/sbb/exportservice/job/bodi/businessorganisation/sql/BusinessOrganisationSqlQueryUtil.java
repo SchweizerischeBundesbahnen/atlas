@@ -2,8 +2,8 @@ package ch.sbb.exportservice.job.bodi.businessorganisation.sql;
 
 import static ch.sbb.exportservice.model.ExportTypeV2.FUTURE_TIMETABLE;
 
+import ch.sbb.atlas.helper.DateHelper;
 import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.exportservice.job.SqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import java.time.LocalDate;

@@ -1,5 +1,7 @@
 package ch.sbb.atlas.deserializer;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -14,7 +16,7 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
   @Override
   public LocalDate deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
     try {
-      return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+      return LocalDate.parse(jsonParser.getText(), DATE_FORMATTER_BASE);
     } catch (DateTimeParseException e) {
       try {
         return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH));

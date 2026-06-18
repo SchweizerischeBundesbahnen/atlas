@@ -1,4 +1,4 @@
-package ch.sbb.atlas.versioning.date;
+package ch.sbb.atlas.versioning.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -62,26 +62,4 @@ class DateHelperTest {
         .hasMessageContaining("Next date is null");
 
   }
-
-  @Test
-  void shouldReturnMinimumOfTwoEqualsDates() {
-    LocalDate date1 = LocalDate.of(2020, 1, 1);
-    LocalDate date2 = LocalDate.of(2020, 1, 1);
-
-    LocalDate result = DateHelper.min(date1, date2);
-    assertThat(result).isEqualTo(date1);
-  }
-
-  @Test
-  void shouldReturnMinimumOfTwoDates() {
-    LocalDate date1 = LocalDate.of(2020, 1, 2);
-    LocalDate date2 = LocalDate.of(2020, 1, 1);
-
-    LocalDate result = DateHelper.min(date1, date2);
-    assertThat(result).isEqualTo(date2);
-
-    result = DateHelper.min(date2, date1);
-    assertThat(result).isEqualTo(date2);
-  }
-
 }

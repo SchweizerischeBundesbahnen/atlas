@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.lidi.line.processor;
 
-import static ch.sbb.exportservice.util.MapperUtil.DATE_FORMATTER;
-import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
 
 import ch.sbb.exportservice.job.lidi.line.entity.Line;
 import ch.sbb.exportservice.job.lidi.line.model.LineCsvModel;
@@ -16,8 +16,8 @@ public class LineCsvProcessor implements ItemProcessor<Line, LineCsvModel> {
     return LineCsvModel.builder()
         .slnid(line.getSlnid())
         .linienId(line.getLinienId())
-        .validFrom(DATE_FORMATTER.format(line.getValidFrom()))
-        .validTo(DATE_FORMATTER.format(line.getValidTo()))
+        .validFrom(DATE_FORMATTER_BASE.format(line.getValidFrom()))
+        .validTo(DATE_FORMATTER_BASE.format(line.getValidTo()))
         .status(line.getStatus())
         .lineType(line.getLineType())
         .concessionType(line.getConcessionType())
@@ -29,8 +29,8 @@ public class LineCsvProcessor implements ItemProcessor<Line, LineCsvModel> {
         .offerCategory(line.getOfferCategory())
         .businessOrganisation(line.getBusinessOrganisation())
         .comment(line.getComment())
-        .creationTime(LOCAL_DATE_FORMATTER.format(line.getCreationDate()))
-        .editionTime(LOCAL_DATE_FORMATTER.format(line.getEditionDate()))
+        .creationTime(LOCAL_DATE_TIME_FORMATTER.format(line.getCreationDate()))
+        .editionTime(LOCAL_DATE_TIME_FORMATTER.format(line.getEditionDate()))
         .build();
   }
 
