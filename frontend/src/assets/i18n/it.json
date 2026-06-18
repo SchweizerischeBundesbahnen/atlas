@@ -1053,6 +1053,7 @@
       "CLARIFICATION": "Inoltro interno",
       "CLARIFICATION_POSTFIX": "(ai suoi dipendenti)",
       "CLARIFICATION_INFO": "Inviare il contenuto del dossier a uno specialista con una domanda.",
+      "CLARIFICATION_INFO_STATEMENT": "Inviare il contenuto del parere a uno specialista.",
       "CLARIFICATION_MAIL": "Aprire un'e-mail ",
       "REQUEST": "Richiesta parere",
       "TTFN": "Numero del quadro d’orario",

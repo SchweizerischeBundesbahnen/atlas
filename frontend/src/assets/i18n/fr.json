@@ -1053,6 +1053,7 @@
       "CLARIFICATION": "Transfert interne",
       "CLARIFICATION_POSTFIX": "(à vos employés)",
       "CLARIFICATION_INFO": "Transmettez le contenu du dossier au spécialiste qui a une question.",
+      "CLARIFICATION_INFO_STATEMENT": "Transmettez le contenu du prise de position au spécialiste.",
       "CLARIFICATION_MAIL": "Ouvrir un e-mail",
       "REQUEST": "Demande de prise de position",
       "TTFN": "Champ de l'horaire",

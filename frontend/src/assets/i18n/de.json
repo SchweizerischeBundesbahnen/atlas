@@ -1053,6 +1053,7 @@
       "CLARIFICATION": "Interne Weiterleitung",
       "CLARIFICATION_POSTFIX": "(an Ihre Mitarbeiter*innen)",
       "CLARIFICATION_INFO": "Geben Sie die Inhalte des Dossiers an eine Fachperson für eine Frage weiter.",
+      "CLARIFICATION_INFO_STATEMENT": "Geben Sie die Inhalte der Stellungnahme an eine Fachperson weiter.",
       "CLARIFICATION_MAIL": "E-Mail öffnen",
       "REQUEST": "Anfrage Stellungnahme",
       "TTFN": "Fahrplanfeld",
