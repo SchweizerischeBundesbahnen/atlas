@@ -15,9 +15,12 @@ import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.prm.directory.module.bulkimport.service.PlatformBulkImportService;
 import java.time.LocalDate;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.ResultActions;
 
 class PlatformBulkImportControllerApiTest extends BaseControllerApiTest {
 
@@ -26,32 +29,33 @@ class PlatformBulkImportControllerApiTest extends BaseControllerApiTest {
   @MockitoBean
   private PlatformBulkImportService platformBulkImportService;
 
-  @Test
-  void shouldTerminatePlatformViaApi() throws Exception {
-    //given
-    BulkImportUpdateContainer<SloidTerminateCsvModel> container = BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
-        .lineNumber(1)
-        .object(SloidTerminateCsvModel.builder().sloid("sloid").validTo(LocalDate.of(2025, 1, 1)).build())
-        .build();
+  @Nested
+  @DisplayName("TERMINATE PLATFORM - POST /internal/platform/bulk-import/terminate-platform")
+  class TerminatePlatform {
 
-    //when & then
-    mvc.perform(post(TERMINATE_PLATFORM_PATH)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(List.of(container))))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].lineNumber", is(1)));
+    private ResultActions terminatePlatform() throws Exception {
+      BulkImportUpdateContainer<SloidTerminateCsvModel> container = BulkImportUpdateContainer.<SloidTerminateCsvModel>builder()
+          .lineNumber(1)
+          .object(SloidTerminateCsvModel.builder().sloid("sloid").validTo(LocalDate.of(2025, 1, 1)).build())
+          .build();
 
-    verify(platformBulkImportService).terminatePlatform(ArgumentMatchers.any());
+      return mvc.perform(post(TERMINATE_PLATFORM_PATH)
+          .contentType(contentType)
+          .content(mapper.writeValueAsString(List.of(container))));
+    }
+
+    @Test
+    void shouldTerminatePlatformViaApi() throws Exception {
+      terminatePlatform().andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)))
+          .andExpect(jsonPath("$[0].lineNumber", is(1)));
+
+      verify(platformBulkImportService).terminatePlatform(ArgumentMatchers.any());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotTerminatePlatformViaApiUnauthorized() throws Exception {
+      terminatePlatform().andExpect(status().isForbidden());
+    }
   }
-
-  @Test
-  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
-  void shouldNotTerminatePlatformViaApiUnauthorized() throws Exception {
-    mvc.perform(post(TERMINATE_PLATFORM_PATH)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(List.of())))
-        .andExpect(status().isForbidden());
-  }
-
 }
