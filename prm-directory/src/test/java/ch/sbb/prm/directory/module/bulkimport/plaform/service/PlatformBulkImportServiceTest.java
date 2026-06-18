@@ -366,8 +366,8 @@ class PlatformBulkImportServiceTest {
                 .build())
             .build());
 
-    PlatformVersion trafficPointElementVersion = platformRepository.findAllBySloidOrderByValidFrom(
+    PlatformVersion platformVersion = platformRepository.findAllBySloidOrderByValidFrom(
         sloid).getFirst();
-    assertThat(trafficPointElementVersion.getValidTo()).isNotNull().isEqualTo(validTo);
+    assertThat(platformVersion.getValidTo()).isNotNull().isEqualTo(validTo);
   }
 }
