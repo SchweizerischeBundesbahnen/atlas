@@ -1,6 +1,7 @@
 package ch.sbb.atlas.service;
 
 import ch.sbb.atlas.configuration.Role;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,7 +24,8 @@ public final class UserService {
   }
 
   public static List<String> getRoles() {
-    return getAccessToken().getClaim(Role.ROLES_JWT_KEY);
+    List<String> roles = getAccessToken().getClaimAsStringList(Role.ROLES_JWT_KEY);
+    return roles == null ? Collections.emptyList() : Collections.unmodifiableList(roles);
   }
 
   public static String getPreferredUsername() {

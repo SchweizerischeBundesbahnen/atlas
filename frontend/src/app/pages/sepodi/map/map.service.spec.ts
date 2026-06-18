@@ -80,9 +80,9 @@ describe('MapService', () => {
   it('should switch to different map style', () => {
     service.map = mapMock;
 
-    service.switchToStyle(MAP_STYLES[3]);
+    service.switchToStyle(MAP_STYLES[2]);
 
-    expect(mapMock.setLayoutProperty).toHaveBeenCalledWith('osm', 'visibility', 'visible');
+    expect(mapMock.setLayoutProperty).toHaveBeenCalledWith('satellite_swiss', 'visibility', 'visible');
   });
 
   it('should remove map', () => {

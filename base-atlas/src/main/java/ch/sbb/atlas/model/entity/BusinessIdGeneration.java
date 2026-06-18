@@ -4,7 +4,6 @@ import ch.sbb.atlas.model.entity.BusinessIdGeneration.BusinessIdValueGeneration;
 import java.io.Serial;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.Member;
 import java.util.EnumSet;
 import org.hibernate.annotations.ValueGenerationType;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -27,7 +26,7 @@ public @interface BusinessIdGeneration {
     protected BeforeExecutionGenerator valueGenerator;
 
     @Override
-    public void initialize(BusinessIdGeneration annotation, Member member, GeneratorCreationContext context) {
+    public void initialize(BusinessIdGeneration annotation, GeneratorCreationContext context) {
       try {
         valueGenerator = annotation.valueGenerator().getDeclaredConstructor().newInstance();
       } catch (Exception e) {

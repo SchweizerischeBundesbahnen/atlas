@@ -67,7 +67,7 @@ class UserServiceTest {
     //given
     Authentication authentication = Mockito.mock(Authentication.class);
     Jwt jwt = Mockito.mock(Jwt.class);
-    when(jwt.getClaim(Role.ROLES_JWT_KEY)).thenReturn(List.of("role1", "role2", "role3"));
+    when(jwt.getClaimAsStringList(Role.ROLES_JWT_KEY)).thenReturn(List.of("role1", "role2", "role3"));
     when(authentication.getPrincipal()).thenReturn(jwt);
 
     SecurityContext securityContext = Mockito.mock(SecurityContext.class);
@@ -104,7 +104,7 @@ class UserServiceTest {
     //given
     Authentication authentication = Mockito.mock(Authentication.class);
     Jwt jwt = Mockito.mock(Jwt.class);
-    when(jwt.getClaim(Role.ROLES_JWT_KEY)).thenReturn(List.of("Unauthorized", "role2", "role3"));
+    when(jwt.getClaimAsStringList(Role.ROLES_JWT_KEY)).thenReturn(List.of("Unauthorized", "role2", "role3"));
     when(authentication.getPrincipal()).thenReturn(jwt);
 
     SecurityContext securityContext = Mockito.mock(SecurityContext.class);
@@ -122,7 +122,7 @@ class UserServiceTest {
     //given
     Authentication authentication = Mockito.mock(Authentication.class);
     Jwt jwt = Mockito.mock(Jwt.class);
-    when(jwt.getClaim(Role.ROLES_JWT_KEY)).thenReturn(List.of("role1", "role2", "role3"));
+    when(jwt.getClaimAsStringList(Role.ROLES_JWT_KEY)).thenReturn(List.of("role1", "role2", "role3"));
     when(authentication.getPrincipal()).thenReturn(jwt);
 
     SecurityContext securityContext = Mockito.mock(SecurityContext.class);
