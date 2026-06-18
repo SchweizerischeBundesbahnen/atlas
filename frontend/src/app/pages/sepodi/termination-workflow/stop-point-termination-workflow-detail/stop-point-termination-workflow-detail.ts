@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StopPointTerminationWorkflowDetailData } from './stop-point-termination-workflow-resolver';
 import { ReadServicePointVersion } from '../../../../api';
@@ -53,6 +53,7 @@ import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPe
     CommentComponent,
     LinkComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [TranslatePipe],
   templateUrl: './stop-point-termination-workflow-detail.html',
 })
