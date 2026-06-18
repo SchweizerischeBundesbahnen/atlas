@@ -9,7 +9,8 @@ export const MAP_STYLES: MapStyle[] = [
   { id: 'swisstopofarbe', label: 'SEPODI.MAP_STYLES.SWISSTOPO' },
   { id: 'swisstopograu', label: 'SEPODI.MAP_STYLES.SWISSTOPO_GRAY' },
   { id: 'satellite_swiss', label: 'SEPODI.MAP_STYLES.SATELLITE_SWISS' },
-  { id: 'osm', label: 'SEPODI.MAP_STYLES.OPEN_STREET_MAP' },
+  // { id: 'osm', label: 'SEPODI.MAP_STYLES.OPEN_STREET_MAP' },
+  // todo: will be enabled again after clarification about https://flow.sbb.ch/browse/ATLAS-3454
   { id: 'satellite', label: 'SEPODI.MAP_STYLES.SATELLITE' },
 ];
 
