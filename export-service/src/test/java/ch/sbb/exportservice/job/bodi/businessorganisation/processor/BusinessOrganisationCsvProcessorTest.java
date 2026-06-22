@@ -65,8 +65,8 @@ class BusinessOrganisationCsvProcessorTest {
         .transportCompanyNumber("tunumber")
         .transportCompanyAbbreviation("abbreviation")
         .transportCompanyBusinessRegisterName("businessRegisterName")
-        .creationTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
-        .editionTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .creationTime(MapperUtil.LOCAL_DATE_TIME_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .editionTime(MapperUtil.LOCAL_DATE_TIME_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
         .build();
 
     BusinessOrganisationCsvModel result = new BusinessOrganisationCsvProcessor().process(businessOrganisation);

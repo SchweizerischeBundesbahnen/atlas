@@ -1,22 +1,22 @@
 package ch.sbb.atlas.versioning.version;
 
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.arePropertiesEdited;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isCurrentVersionFirstVersion;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isEditedValidFromOverTheLeftBorderAndEndsWithin;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isEditedValidToAfterTheRightBorderAndValidFromNotEdited;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isOnBeginningOfVersionAndEndingWithin;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isOnTheRightBorderAndValidToIsOnOrOverTheBorder;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isOnlyValidFromEditedAndPropertiesAreNotEdited;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isOnlyValidToEditedAndPropertiesAreEdited;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isOnlyValidToEditedAndPropertiesAreNotEdited;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isSingularVersionAndPropertiesAreNotEdited;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isVersionOverTheLeftAndTheRightBorder;
 import static ch.sbb.atlas.versioning.model.Entity.replaceEditedPropertiesWithCurrentProperties;
 import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObjectToCreate;
 import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObjectToUpdate;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.arePropertiesEdited;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isCurrentVersionFirstVersion;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedValidFromOverTheLeftBorderAndEndsWithin;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorderAndValidFromNotEdited;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnBeginningOfVersionAndEndingWithin;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheRightBorderAndValidToIsOnOrOverTheBorder;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidFromEditedAndPropertiesAreNotEdited;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreEdited;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreNotEdited;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isSingularVersionAndPropertiesAreNotEdited;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isVersionOverTheLeftAndTheRightBorder;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;

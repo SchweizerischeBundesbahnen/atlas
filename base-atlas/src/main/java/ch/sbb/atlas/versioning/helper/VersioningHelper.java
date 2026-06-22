@@ -1,6 +1,5 @@
-package ch.sbb.atlas.versioning.version;
+package ch.sbb.atlas.versioning.helper;
 
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.ToVersioning;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -31,8 +30,8 @@ public final class VersioningHelper {
    */
   public static boolean isEditedVersionExactMatchingMultipleEntities(LocalDate editedValidFrom,
       LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
-    return toVersioningList.get(0).getValidFrom().equals(editedValidFrom) &&
-        toVersioningList.get(toVersioningList.size() - 1)
+    return toVersioningList.getFirst().getValidFrom().equals(editedValidFrom) &&
+        toVersioningList.getLast()
             .getValidTo()
             .equals(editedValidTo);
   }
@@ -55,9 +54,9 @@ public final class VersioningHelper {
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
     return toVersioningList.size() > 1
         &&
-        editedValidFrom.isAfter(toVersioningList.get(0).getValidFrom())
+        editedValidFrom.isAfter(toVersioningList.getFirst().getValidFrom())
         &&
-        editedValidTo.isBefore(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+        editedValidTo.isBefore(toVersioningList.getLast().getValidTo());
   }
 
   /**
@@ -68,9 +67,9 @@ public final class VersioningHelper {
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
     return toVersioningList.size() > 1
         &&
-        editedValidFrom.equals(toVersioningList.get(0).getValidFrom())
+        editedValidFrom.equals(toVersioningList.getFirst().getValidFrom())
         &&
-        editedValidTo.isBefore(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+        editedValidTo.isBefore(toVersioningList.getLast().getValidTo());
   }
 
   /**
@@ -81,9 +80,9 @@ public final class VersioningHelper {
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
     return toVersioningList.size() > 1
         &&
-        editedValidFrom.isAfter(toVersioningList.get(0).getValidFrom())
+        editedValidFrom.isAfter(toVersioningList.getFirst().getValidFrom())
         &&
-        editedValidTo.equals(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+        editedValidTo.equals(toVersioningList.getLast().getValidTo());
   }
 
   /**
@@ -95,7 +94,7 @@ public final class VersioningHelper {
     if (toVersioningList.size() <= 1) {
       throw new VersioningException("toVersioningList size must be bigger than 1.");
     }
-    return editedValidFrom.isBefore(toVersioningList.get(0).getValidFrom());
+    return editedValidFrom.isBefore(toVersioningList.getFirst().getValidFrom());
   }
 
   /**
@@ -108,9 +107,9 @@ public final class VersioningHelper {
       throw new VersioningException("toVersioningList size must be 1.");
     }
     return versioningData.getEditedValidFrom()
-        .isBefore(versioningData.getObjectsToVersioning().get(0).getValidFrom())
+        .isBefore(versioningData.getObjectsToVersioning().getFirst().getValidFrom())
         && versioningData.getEditedValidTo()
-        .isBefore(versioningData.getObjectsToVersioning().get(0).getValidTo());
+        .isBefore(versioningData.getObjectsToVersioning().getFirst().getValidTo());
   }
 
   /**
@@ -123,7 +122,7 @@ public final class VersioningHelper {
       throw new VersioningException("toVersioningList size must be bigger than 1.");
     }
     return editedValidTo.isAfter(
-        toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+        toVersioningList.getLast().getValidTo());
   }
 
   /**
@@ -323,7 +322,7 @@ public final class VersioningHelper {
   public static boolean isCurrentVersionFirstVersion(VersioningData versioningData) {
     return versioningData.getCurrentVersion()
         .getValidFrom()
-        .equals(versioningData.getObjectsToVersioning().get(0).getValidFrom());
+        .equals(versioningData.getObjectsToVersioning().getFirst().getValidFrom());
   }
 
   public static boolean checkChangesAfterVersioning(VersioningData vd,

@@ -1,4 +1,4 @@
-package ch.sbb.atlas.versioning.version;
+package ch.sbb.atlas.versioning.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

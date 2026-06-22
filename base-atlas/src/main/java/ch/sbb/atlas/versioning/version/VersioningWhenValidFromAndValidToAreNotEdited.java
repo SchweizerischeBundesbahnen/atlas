@@ -1,7 +1,7 @@
 package ch.sbb.atlas.versioning.version;
 
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.findObjectToVersioning;
 import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObjectToUpdate;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.findObjectToVersioning;
 
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.ToVersioning;

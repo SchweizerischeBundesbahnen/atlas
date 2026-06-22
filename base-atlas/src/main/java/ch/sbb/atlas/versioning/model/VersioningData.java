@@ -6,7 +6,7 @@ import ch.sbb.atlas.versioning.exception.DateOrderException;
 import ch.sbb.atlas.versioning.exception.DateValidationException;
 import ch.sbb.atlas.versioning.exception.DateValidationException.ValidationType;
 import ch.sbb.atlas.versioning.exception.VersioningException;
-import ch.sbb.atlas.versioning.version.VersioningHelper;
+import ch.sbb.atlas.versioning.helper.VersioningHelper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

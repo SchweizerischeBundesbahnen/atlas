@@ -1,5 +1,6 @@
 package ch.sbb.importservice.module.bulkimport.controller;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
 import static ch.sbb.importservice.module.bulkimport.service.BulkImportFileValidationService.CSV_CONTENT_TYPE;
 import static ch.sbb.importservice.module.bulkimport.service.BulkImportFileValidationService.XLSX_CONTENT_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportRequest;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -95,7 +94,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/SEPODI/SERVICE_POINT/UPDATE";
     when(servicePointBulkImportClient.bulkImportUpdate(any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
@@ -136,7 +135,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldAcceptTrafficPointUpdateBulkImportWithFile() throws Exception {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/SEPODI/TRAFFIC_POINT/UPDATE";
     when(trafficPointBulkImportClient.bulkImportUpdate(any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
@@ -206,7 +205,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldImportServicePointCreate() throws IOException {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/SEPODI/SERVICE_POINT/CREATE";
     File file = ImportFiles.getFileByPath("import-files/valid/create-service-point-2.xlsx");
 
@@ -238,7 +237,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldImportServicePointTerminate() throws IOException {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/SEPODI/SERVICE_POINT/TERMINATE";
     File file = ImportFiles.getFileByPath("import-files/valid/terminate_service_point.csv");
 
@@ -270,7 +269,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldImportLineUpdate() throws IOException {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/LIDI/LINE/UPDATE";
     File file = ImportFiles.getFileByPath("import-files/valid/line-update.csv");
 
@@ -302,7 +301,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldImportSublineUpdate() throws IOException {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/LIDI/SUBLINE/UPDATE";
     File file = ImportFiles.getFileByPath("import-files/valid/update_subline.csv");
 
@@ -334,7 +333,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldImportPlatformReduced() throws IOException {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/PRM/PLATFORM_REDUCED/UPDATE";
     File file = ImportFiles.getFileByPath("import-files/valid/platform-reduced-update.csv");
 
@@ -366,7 +365,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldImportPlatformComplete() throws IOException {
-    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
         + "/PRM/PLATFORM_COMPLETE/UPDATE";
     File file = ImportFiles.getFileByPath("import-files/valid/update_platform_complete.csv");
 

@@ -1,8 +1,9 @@
 package ch.sbb.atlas.versioning.version;
 
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isBetweenMultipleVersionsAndEndsOnABorder;
+import static ch.sbb.atlas.versioning.helper.VersioningHelper.isBetweenMultipleVersionsAndEndsOnABorder;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
+import ch.sbb.atlas.versioning.helper.VersioningHelper;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.ToVersioning;
 import ch.sbb.atlas.versioning.model.VersionedObject;

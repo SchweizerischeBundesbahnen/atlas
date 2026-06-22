@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.integration.sql;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.DbSchemaCreation;
@@ -8,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,7 +62,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
   }
 
   protected String formatDate(LocalDate localDate) {
-    return localDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+    return localDate.format(DATE_FORMATTER_BASE);
   }
 
   protected boolean isDateInRange(LocalDate matchDate, LocalDate validFrom, LocalDate validTo) {

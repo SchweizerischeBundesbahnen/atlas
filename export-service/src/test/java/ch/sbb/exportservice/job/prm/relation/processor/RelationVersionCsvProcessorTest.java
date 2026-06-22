@@ -1,5 +1,7 @@
 package ch.sbb.exportservice.job.prm.relation.processor;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
@@ -9,7 +11,6 @@ import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion;
 import ch.sbb.exportservice.job.prm.relation.model.RelationVersionCsvModel;
-import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -47,10 +48,10 @@ class RelationVersionCsvProcessorTest {
         .stepFreeAccess(StepFreeAccessAttributeType.TO_BE_COMPLETED)
         .referencePointElementType(ReferencePointElementType.TOILET)
         .referencePointSloid("ch:1:sloid:112:wc")
-        .validFrom(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
-        .validTo(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
-        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(creationDate))
-        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(editionDate))
+        .validFrom(DATE_FORMATTER_BASE.format(LocalDate.of(2020, 1, 1)))
+        .validTo(DATE_FORMATTER_BASE.format(LocalDate.of(2020, 12, 31)))
+        .creationDate(LOCAL_DATE_TIME_FORMATTER.format(creationDate))
+        .editionDate(LOCAL_DATE_TIME_FORMATTER.format(editionDate))
         .build();
 
     RelationVersionCsvModel result = processor.process(entity);

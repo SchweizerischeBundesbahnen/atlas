@@ -80,6 +80,34 @@ class TthDossierCsvExportServiceTest {
   }
 
   @Test
+  void shouldSortCsvModelsByDossierIdAndStatementIdAscending() {
+    // given
+    TthDossier dossier22 = dossier(22L, "Dossier 22", List.of(202L, 201L));
+    TthDossier dossier11 = dossier(11L, "Dossier 11", List.of(102L, 101L));
+
+    when(timetableHearingStatementClient.getStatementsByIdAnonymized(any())).thenAnswer(invocation -> {
+      @SuppressWarnings("unchecked")
+      List<Long> ids = invocation.getArgument(0, List.class);
+      return ids.stream().map(this::statementModel).toList();
+    });
+
+    // when
+    List<TthDossierTuCsvModel> csvModels = new TthDossierCsvExportService(fileService, tthDossierCsvTranslations,
+        timetableHearingStatementClient)
+        .getTthDossierTuCsvModels(new PageImpl<>(List.of(dossier22, dossier11)));
+
+    // then
+    assertThat(csvModels)
+        .extracting(TthDossierTuCsvModel::getDossierId, TthDossierTuCsvModel::getTimetableHearingStatementId)
+        .containsExactly(
+            tuple(11L, 101L),
+            tuple(11L, 102L),
+            tuple(22L, 201L),
+            tuple(22L, 202L)
+        );
+  }
+
+  @Test
   void shouldCallStatementClientInChunksOfMaximum100Ids() {
     // given
     List<Long> statementIds = LongStream.rangeClosed(1, 205).boxed().toList();

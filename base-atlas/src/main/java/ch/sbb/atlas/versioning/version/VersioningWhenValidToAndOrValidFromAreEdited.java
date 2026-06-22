@@ -1,5 +1,6 @@
 package ch.sbb.atlas.versioning.version;
 
+import ch.sbb.atlas.versioning.helper.VersioningHelper;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import java.util.List;

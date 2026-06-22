@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.lidi.subline.processor;
 
-import static ch.sbb.exportservice.util.MapperUtil.DATE_FORMATTER;
-import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
 
 import ch.sbb.exportservice.job.lidi.subline.entity.Subline;
 import ch.sbb.exportservice.job.lidi.subline.model.SublineCsvModel;
@@ -18,8 +18,8 @@ public class SublineCsvProcessor implements ItemProcessor<Subline, SublineCsvMod
         .slnid(subline.getSlnid())
         .linienId(subline.getLinienId())
         .mainlineSlnid(subline.getMainlineSlnid())
-        .validFrom(DATE_FORMATTER.format(subline.getValidFrom()))
-        .validTo(DATE_FORMATTER.format(subline.getValidTo()))
+        .validFrom(DATE_FORMATTER_BASE.format(subline.getValidFrom()))
+        .validTo(DATE_FORMATTER_BASE.format(subline.getValidTo()))
         .status(subline.getStatus())
         .sublineType(subline.getSublineType())
         .concessionType(subline.getConcessionType())
@@ -27,8 +27,8 @@ public class SublineCsvProcessor implements ItemProcessor<Subline, SublineCsvMod
         .description(subline.getDescription())
         .longName(subline.getLongName())
         .businessOrganisation(subline.getBusinessOrganisation())
-        .creationTime(LOCAL_DATE_FORMATTER.format(subline.getCreationDate()))
-        .editionTime(LOCAL_DATE_FORMATTER.format(subline.getEditionDate()))
+        .creationTime(LOCAL_DATE_TIME_FORMATTER.format(subline.getCreationDate()))
+        .editionTime(LOCAL_DATE_TIME_FORMATTER.format(subline.getEditionDate()))
         // From Line
         .number(Objects.requireNonNull(subline.getNumber(), "Line must have a number!"))
         .swissLineNumber(subline.getSwissLineNumber())

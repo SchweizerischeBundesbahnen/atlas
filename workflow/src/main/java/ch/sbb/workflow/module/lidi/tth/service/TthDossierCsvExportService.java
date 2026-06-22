@@ -11,6 +11,7 @@ import ch.sbb.workflow.module.lidi.tth.model.TthDossierTuCsvModel;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,9 +44,12 @@ public class TthDossierCsvExportService {
     Map<Long, TimetableHearingAnonymStatementCsvModel> statementModels = getStatementModels(chunks);
 
     return dossiers.stream()
+        .sorted(Comparator.comparing(TthDossier::getId))
         .flatMap(dossier -> dossier.getStatementIds().stream()
+            .sorted()
             .map(statementId -> TthDossierTuCsvModel.fromDossierAndStatement(dossier, statementModels.get(statementId)))
-        ).toList();
+        )
+        .toList();
   }
 
   private Map<Long, TimetableHearingAnonymStatementCsvModel> getStatementModels(Collection<List<Long>> chunks) {

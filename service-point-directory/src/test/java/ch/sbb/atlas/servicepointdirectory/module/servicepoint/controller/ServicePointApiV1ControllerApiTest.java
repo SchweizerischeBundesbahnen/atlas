@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.module.servicepoint.controller;
 
 import static ch.sbb.atlas.api.servicepoint.SpatialReference.LV95;
 import static ch.sbb.atlas.api.servicepoint.SpatialReference.WGS84;
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
@@ -180,9 +181,9 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldFindServicePointVersionByFromAndToDate() throws Exception {
     String fromDate = servicePointVersion.getValidFrom().minusDays(1)
-        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+        .format(DATE_FORMATTER_BASE);
     String toDate = servicePointVersion.getValidTo().plusDays(1)
-        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+        .format(DATE_FORMATTER_BASE);
     mvc.perform(get("/v1/service-points?fromDate=" + fromDate + "&toDate=" + toDate))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)));
@@ -196,7 +197,7 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
     servicePoint.setDesignationOfficial("Bern, Wyleregg1");
     repository.save(servicePoint);
     String validToFromDate = servicePointVersion.getValidTo().plusDays(1)
-        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+        .format(DATE_FORMATTER_BASE);
     mvc.perform(get("/v1/service-points?validToFromDate=" + validToFromDate))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)));

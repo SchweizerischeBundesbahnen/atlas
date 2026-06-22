@@ -1,6 +1,7 @@
 package ch.sbb.atlas.versioning.version;
 
-import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.atlas.helper.DateHelper;
+import ch.sbb.atlas.versioning.helper.VersioningHelper;
 import ch.sbb.atlas.versioning.model.ToVersioning;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import java.time.LocalDate;

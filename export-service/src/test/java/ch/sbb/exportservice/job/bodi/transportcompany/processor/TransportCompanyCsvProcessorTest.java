@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.bodi.transportcompany.processor;
 
-import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
@@ -45,8 +45,8 @@ class TransportCompanyCsvProcessorTest {
         .ricsCode("ricsCode")
         .businessOrganisationNumbers("businessOrganisationNumbers")
         .comment("comment")
-        .creationDate(LOCAL_DATE_FORMATTER.format(creationDate))
-        .editionDate(LOCAL_DATE_FORMATTER.format(editionDate))
+        .creationDate(LOCAL_DATE_TIME_FORMATTER.format(creationDate))
+        .editionDate(LOCAL_DATE_TIME_FORMATTER.format(editionDate))
         .build();
 
     TransportCompanyCsvModel result = processor.process(entity);

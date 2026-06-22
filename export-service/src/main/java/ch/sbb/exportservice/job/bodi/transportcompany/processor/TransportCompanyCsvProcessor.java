@@ -23,8 +23,8 @@ public class TransportCompanyCsvProcessor implements ItemProcessor<TransportComp
         .ricsCode(transportCompany.getRicsCode())
         .businessOrganisationNumbers(transportCompany.getBusinessOrganisationNumbers())
         .comment(transportCompany.getComment())
-        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(transportCompany.getCreationDate()))
-        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(transportCompany.getEditionDate()))
+        .creationDate(MapperUtil.LOCAL_DATE_TIME_FORMATTER.format(transportCompany.getCreationDate()))
+        .editionDate(MapperUtil.LOCAL_DATE_TIME_FORMATTER.format(transportCompany.getEditionDate()))
         .build();
   }
 

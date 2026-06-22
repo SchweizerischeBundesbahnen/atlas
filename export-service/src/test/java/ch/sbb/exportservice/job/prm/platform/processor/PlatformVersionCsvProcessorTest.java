@@ -1,5 +1,7 @@
 package ch.sbb.exportservice.job.prm.platform.processor;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
@@ -12,7 +14,6 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.platform.entity.PlatformVersion;
 import ch.sbb.exportservice.job.prm.platform.model.PlatformVersionCsvModel;
-import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -81,10 +82,10 @@ class PlatformVersionCsvProcessorTest {
         .wheelChairAreaLength(0.000)
         .wheelChairAreaWidth(0.000)
         .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED.toString())
-        .validFrom(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
-        .validTo(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
-        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(creationDate))
-        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(editionDate))
+        .validFrom(DATE_FORMATTER_BASE.format(LocalDate.of(2020, 1, 1)))
+        .validTo(DATE_FORMATTER_BASE.format(LocalDate.of(2020, 12, 31)))
+        .creationDate(LOCAL_DATE_TIME_FORMATTER.format(creationDate))
+        .editionDate(LOCAL_DATE_TIME_FORMATTER.format(editionDate))
         .status(Status.VALIDATED)
         .build();
 

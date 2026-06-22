@@ -1,6 +1,5 @@
-package ch.sbb.atlas.versioning.merge;
+package ch.sbb.atlas.versioning.helper;
 
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.VersionedObject;

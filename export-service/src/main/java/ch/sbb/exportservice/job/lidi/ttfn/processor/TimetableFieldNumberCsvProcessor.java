@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.lidi.ttfn.processor;
 
-import static ch.sbb.exportservice.util.MapperUtil.DATE_FORMATTER;
-import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
 
 import ch.sbb.exportservice.job.lidi.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.exportservice.job.lidi.ttfn.model.TimetableFieldNumberCsvModel;
@@ -16,8 +16,8 @@ public class TimetableFieldNumberCsvProcessor implements ItemProcessor<Timetable
   public TimetableFieldNumberCsvModel process(TimetableFieldNumber timetableFieldNumber) {
     return TimetableFieldNumberCsvModel.builder()
         .ttfnid(timetableFieldNumber.getTtfnid())
-        .validFrom(DATE_FORMATTER.format(timetableFieldNumber.getValidFrom()))
-        .validTo(DATE_FORMATTER.format(timetableFieldNumber.getValidTo()))
+        .validFrom(DATE_FORMATTER_BASE.format(timetableFieldNumber.getValidFrom()))
+        .validTo(DATE_FORMATTER_BASE.format(timetableFieldNumber.getValidTo()))
         .status(timetableFieldNumber.getStatus())
         .number(timetableFieldNumber.getNumber())
         .businessOrganisation(timetableFieldNumber.getBusinessOrganisation())
@@ -29,8 +29,8 @@ public class TimetableFieldNumberCsvProcessor implements ItemProcessor<Timetable
         .descriptionReturnLine3(timetableFieldNumber.getDescriptionReturnLine3())
         .meanOfTransport(timetableFieldNumber.getMeanOfTransport())
         .lineRelations(RowMapperUtil.stringsToPipedString(timetableFieldNumber.getLineRelations()))
-        .creationTime(LOCAL_DATE_FORMATTER.format(timetableFieldNumber.getCreationDate()))
-        .editionTime(LOCAL_DATE_FORMATTER.format(timetableFieldNumber.getEditionDate()))
+        .creationTime(LOCAL_DATE_TIME_FORMATTER.format(timetableFieldNumber.getCreationDate()))
+        .editionTime(LOCAL_DATE_TIME_FORMATTER.format(timetableFieldNumber.getEditionDate()))
         .build();
   }
 }

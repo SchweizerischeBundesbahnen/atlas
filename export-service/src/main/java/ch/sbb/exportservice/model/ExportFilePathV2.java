@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.model;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -48,7 +48,7 @@ public final class ExportFilePathV2 implements Serializable {
   }
 
   private String actualDateString() {
-    return actualDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+    return actualDate.format(DATE_FORMATTER_BASE);
   }
 
   public static ExportFilePathV2 buildV2(ExportObjectV2 type, ExportTypeV2 subtype) {

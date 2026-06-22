@@ -1,9 +1,11 @@
 package ch.sbb.exportservice.job.sepodi.loadingpoint.processor;
 
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
+
 import ch.sbb.exportservice.job.sepodi.SharedBusinessOrganisation;
 import ch.sbb.exportservice.job.sepodi.loadingpoint.entity.LoadingPointVersion;
 import ch.sbb.exportservice.job.sepodi.loadingpoint.model.LoadingPointVersionCsvModel;
-import ch.sbb.exportservice.util.MapperUtil;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 
 public class LoadingPointVersionCsvProcessor implements ItemProcessor<LoadingPointVersion,
@@ -18,13 +20,13 @@ public class LoadingPointVersionCsvProcessor implements ItemProcessor<LoadingPoi
         .designation(version.getDesignation())
         .designationLong(version.getDesignationLong())
         .connectionPoint(version.isConnectionPoint())
-        .validFrom(MapperUtil.DATE_FORMATTER.format(version.getValidFrom()))
-        .validTo(MapperUtil.DATE_FORMATTER.format(version.getValidTo()))
+        .validFrom(DATE_FORMATTER_BASE.format(version.getValidFrom()))
+        .validTo(DATE_FORMATTER_BASE.format(version.getValidTo()))
         .servicePointNumber(version.getServicePointNumber().getNumber())
         .checkDigit(version.getServicePointNumber().getCheckDigit())
         .parentSloidServicePoint(version.getParentSloidServicePoint())
-        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
-        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
+        .creationDate(LOCAL_DATE_TIME_FORMATTER.format(version.getCreationDate()))
+        .editionDate(LOCAL_DATE_TIME_FORMATTER.format(version.getEditionDate()))
         .servicePointBusinessOrganisation(servicePointSharedBusinessOrganisation.getBusinessOrganisation())
         .servicePointBusinessOrganisationNumber(servicePointSharedBusinessOrganisation.getBusinessOrganisationNumber())
         .servicePointBusinessOrganisationAbbreviationDe(

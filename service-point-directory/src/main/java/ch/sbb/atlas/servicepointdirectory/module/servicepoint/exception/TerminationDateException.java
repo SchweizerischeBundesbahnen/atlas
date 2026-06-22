@@ -1,11 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
+import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.exception.AtlasException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
@@ -26,8 +26,8 @@ public class TerminationDateException extends AtlasException {
 
   private String getFormattedMsg() {
     return MessageFormat.format("The termination date {0} must be before service point version validTo {1}",
-        terminationDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)),
-        validTo.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)));
+        terminationDate.format(DATE_FORMATTER_BASE),
+        validTo.format(DATE_FORMATTER_BASE));
   }
 
 }
