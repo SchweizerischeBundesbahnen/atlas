@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,6 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
 @Component({
   selector: 'atlas-bodi-business-organisations',
   templateUrl: './business-organisation.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, TranslatePipe],
   providers: [TranslatePipe],
 })

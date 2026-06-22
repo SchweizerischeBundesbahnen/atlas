@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BulkImportFormGroup, BulkImportFormGroupBuilder } from '../detail/bulk-import-form-group';
 import { ApplicationType, BusinessObjectType, ImportType } from '../../../api';
@@ -50,7 +50,6 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = 
 
 @Component({
   templateUrl: './bulk-import-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     SelectComponent,

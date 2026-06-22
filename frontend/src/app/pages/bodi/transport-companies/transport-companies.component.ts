@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,6 @@ import { TransportCompanyService } from '../../../api/service/bodi/transport-com
 @Component({
   selector: 'atlas-bodi-transport-companies',
   templateUrl: './transport-companies.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class TransportCompaniesComponent implements OnInit, OnDestroy {
