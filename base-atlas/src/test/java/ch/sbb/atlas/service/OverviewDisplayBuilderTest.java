@@ -116,6 +116,36 @@ class OverviewDisplayBuilderTest {
     assertThat(mergedVersions.getFirst().getSloid()).isEqualTo("ch:1:sloid:7001");
   }
 
+  @Test
+  void shouldOrderMergedVersionsByDisplayedVersionPosition() {
+    DummyVersionable pastVersionOf7000 = DummyVersionable.builder()
+        .id(1L)
+        .sloid("ch:1:sloid:7000")
+        .validFrom(LocalDate.now().minusDays(10))
+        .validTo(LocalDate.now().minusDays(6))
+        .build();
+    DummyVersionable todayVersionOf7001 = DummyVersionable.builder()
+        .id(2L)
+        .sloid("ch:1:sloid:7001")
+        .validFrom(LocalDate.now().minusDays(1))
+        .validTo(LocalDate.now().plusDays(1))
+        .build();
+    DummyVersionable todayVersionOf7000 = DummyVersionable.builder()
+        .id(3L)
+        .sloid("ch:1:sloid:7000")
+        .validFrom(LocalDate.now().minusDays(1))
+        .validTo(LocalDate.now().plusDays(5))
+        .build();
+
+    List<DummyVersionable> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(
+        List.of(pastVersionOf7000, todayVersionOf7001, todayVersionOf7000),
+        DummyVersionable::getSloid);
+
+    assertThat(mergedVersions).hasSize(2);
+    assertThat(mergedVersions).extracting(DummyVersionable::getSloid)
+        .containsExactly("ch:1:sloid:7001", "ch:1:sloid:7000");
+  }
+
   @Builder
   @Getter
   @Setter
