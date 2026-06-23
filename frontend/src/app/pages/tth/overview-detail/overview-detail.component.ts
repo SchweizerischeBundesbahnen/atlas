@@ -350,15 +350,15 @@ export class OverviewDetailComponent extends StatementTableHandler {
     }
   }
 
-  changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
+  changeSelectedStatus(changedStatus: ColumnDropDownEvent<TimetableHearingStatementV2>) {
     const dialogData: StatusChangeData = {
       title: 'TTH.DIALOG.STATUS_CHANGE',
       message: 'TTH.DIALOG.STATUS_CHANGE_MESSAGE',
       cancelText: 'TTH.DIALOG.BACK',
       confirmText: 'TTH.DIALOG.STATUS_CHANGE',
       tths: [changedStatus.value],
-      statementStatus: changedStatus.$event.value[0],
-      publicComment: changedStatus.value.justification,
+      statementStatus: changedStatus.$event.value[0] as StatementStatus,
+      publicComment: changedStatus.value.publicComment,
       type: 'SINGLE',
     };
 

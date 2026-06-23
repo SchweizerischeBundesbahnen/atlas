@@ -78,7 +78,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   readonly editElementEvent = output<DATATYPE>();
   readonly tableChanged = output<TablePagination>();
   readonly tableInitialized = output<TablePagination>();
-  readonly changeDropdownEvent = output<ColumnDropDownEvent>();
+  readonly changeDropdownEvent = output<ColumnDropDownEvent<DATATYPE>>();
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   readonly buttonClickEvent = output<any>();
   readonly checkedBoxEvent = output<SelectionModel<DATATYPE>>();

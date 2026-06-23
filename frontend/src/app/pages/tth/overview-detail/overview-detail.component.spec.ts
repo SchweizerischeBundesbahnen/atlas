@@ -35,6 +35,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { TthYearInternalService } from '../../../api/service/workflow/tth-year-internal.service';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { TthChangeStatusDialogComponent } from './tth-change-status-dialog/tth-change-status-dialog.component';
 
 @Component({
   selector: 'atlas-timetable-hearing-overview-tab-heading',
@@ -197,13 +198,17 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(dialogServiceSpy.openCustomDataWithConfirmationResult).toHaveBeenCalledTimes(1);
     });
 
-    it('should open dialog on changeSelectedStatus()', () => {
+    it('should open dialog on changeSelectedStatus with the single selected status, not the array', () => {
       component.changeSelectedStatus({
-        value: {},
+        value: timetableHearingStatement,
         $event: { value: [StatementStatus.Received] },
       });
 
       expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
+      expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledWith(
+        expect.objectContaining({ statementStatus: StatementStatus.Received }),
+        TthChangeStatusDialogComponent
+      );
     });
 
     it('should open dialog on collectingStatusChangeAction()', () => {
