@@ -510,7 +510,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
         value: 'swissCanton',
         callback: this.mapToShortCanton,
       },
-      ...this.defaultStatementColumns,
+      ...this.defaultStatementColumns.map((column) => ({ ...column })),
       {
         headerTitle: '',
         value: 'etagVersion',

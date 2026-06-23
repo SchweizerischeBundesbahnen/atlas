@@ -200,7 +200,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     it('should open dialog on changeSelectedStatus()', () => {
       component.changeSelectedStatus({
         value: {},
-        $event: {},
+        $event: { value: [StatementStatus.Received] },
       });
 
       expect(dialogServiceSpy.openDialogDataWithConfirmationResult).toHaveBeenCalledTimes(1);
