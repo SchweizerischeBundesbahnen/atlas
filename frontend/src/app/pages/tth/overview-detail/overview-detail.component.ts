@@ -357,7 +357,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
       cancelText: 'TTH.DIALOG.BACK',
       confirmText: 'TTH.DIALOG.STATUS_CHANGE',
       tths: [changedStatus.value],
-      statementStatus: changedStatus.$event.value,
+      statementStatus: changedStatus.$event.value[0],
       publicComment: changedStatus.value.justification,
       type: 'SINGLE',
     };
