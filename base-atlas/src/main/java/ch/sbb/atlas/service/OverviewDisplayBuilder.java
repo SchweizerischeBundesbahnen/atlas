@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -34,14 +33,15 @@ public class OverviewDisplayBuilder {
     if (versionsToMerge.isEmpty()) {
       return Collections.emptyList();
     }
-    List<T> result = new ArrayList<>();
 
     Map<String, List<T>> groupedVersions = versionsToMerge.stream().collect(Collectors.groupingBy(
         swissIdExtractor,
         LinkedHashMap::new, Collectors.toList()));
-    groupedVersions.values().forEach(versions -> result.add(getDisplayModel(versions)));
 
-    return result;
+    return groupedVersions.values().stream()
+        .map(OverviewDisplayBuilder::getDisplayModel)
+        .sorted(Comparator.comparingInt(versionsToMerge::indexOf))
+        .toList();
   }
 
   public static <T extends Versionable> T getDisplayModel(List<T> versions) {
