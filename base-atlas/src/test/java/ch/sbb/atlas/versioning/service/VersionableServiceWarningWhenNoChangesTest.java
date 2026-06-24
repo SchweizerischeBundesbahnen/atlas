@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class VersionableServiceWarningWhenNoChangesTest extends VersionableServiceBaseTest {
@@ -26,9 +27,9 @@ public class VersionableServiceWarningWhenNoChangesTest extends VersionableServi
     editedVersion.setValidTo(versionableObject2.getValidTo());
 
     //when
+    List<VersionableObject> versionableObjects = Arrays.asList(versionableObject1, versionableObject2);
     assertThatExceptionOfType(VersioningNoChangesException.class).isThrownBy(
-        () -> versionableService.versioningObjects(versionableObject2, editedVersion,
-            Arrays.asList(versionableObject1, versionableObject2)));
+        () -> versionableService.versioningObjects(versionableObject2, editedVersion, versionableObjects));
   }
 
 }

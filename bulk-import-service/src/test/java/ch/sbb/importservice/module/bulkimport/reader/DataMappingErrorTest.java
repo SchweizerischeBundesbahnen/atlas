@@ -3,7 +3,6 @@ package ch.sbb.importservice.module.bulkimport.reader;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.importservice.module.bulkimport.reader.DataMappingError;
 import ch.sbb.importservice.module.bulkimport.reader.DataMappingError.ExpectedType;
 import org.junit.jupiter.api.Test;
 

@@ -587,10 +587,9 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
                                                        .build();
 
     //when
-    assertThrows(VersioningException.class, () -> versionableService.versioningObjects(
-        versionableObject3,
-        editedVersion,
-        List.of(versionableObject1, versionableObject2, versionableObject3)));
+   List<VersionableObject> versionableObjects = List.of(versionableObject1, versionableObject2, versionableObject3);
+   assertThrows(VersioningException.class,
+       () -> versionableService.versioningObjects(versionableObject3, editedVersion, versionableObjects));
   }
 
 
@@ -615,10 +614,9 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
        .build();
 
    //when
-   assertThrows(VersioningException.class, () -> versionableService.versioningObjects(
-       versionableObject1,
-       editedVersion,
-       List.of(versionableObject1, versionableObject2, versionableObject3)));
+   List<VersionableObject> versionableObjects = List.of(versionableObject1, versionableObject2, versionableObject3);
+   assertThrows(VersioningException.class,
+       () -> versionableService.versioningObjects(versionableObject1, editedVersion, versionableObjects));
   }
 
   /**

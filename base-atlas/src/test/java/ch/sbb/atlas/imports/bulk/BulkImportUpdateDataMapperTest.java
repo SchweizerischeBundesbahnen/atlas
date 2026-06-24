@@ -104,8 +104,9 @@ class BulkImportUpdateDataMapperTest {
     MockEntity currentEntity = MockEntity.builder().build();
 
     UpdateServicePointVersionModel updateServicePointVersionModel = new UpdateServicePointVersionModel();
+    MockMapper mockMapper = new MockMapper();
     assertThatExceptionOfType(AttributeNullingNotSupportedException.class).isThrownBy(
-        () -> new MockMapper().applyUpdate(container, currentEntity, updateServicePointVersionModel));
+        () -> mockMapper.applyUpdate(container, currentEntity, updateServicePointVersionModel));
   }
 
   @Test

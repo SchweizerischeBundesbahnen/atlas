@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
-import ch.sbb.importservice.module.bulkimport.exception.ExcelToCsvConversionException;
 import java.util.SortedSet;
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.jupiter.api.BeforeEach;

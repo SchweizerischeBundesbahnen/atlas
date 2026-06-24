@@ -16,16 +16,15 @@ class ExportExceptionTest {
     //given
     File file = Files.createTempFile("file", ".csv").toFile();
     //when
+    Exception cause = new Exception();
     ExportException exception = Assertions.assertThrows(ExportException.class, () -> {
-      throw new ExportException(file, new Exception());
+      throw new ExportException(file, cause);
     });
 
     //then
     assertThat(exception.getErrorResponse().getError()).isEqualTo("Export error");
     assertThat(exception.getErrorResponse().getStatus()).isEqualTo(500);
-    assertThat(exception.getErrorResponse().getMessage()).contains(
-        "Error exporting file[");
-
+    assertThat(exception.getErrorResponse().getMessage()).contains("Error exporting file[");
   }
 
 }

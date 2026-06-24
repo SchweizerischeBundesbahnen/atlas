@@ -343,13 +343,10 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
         .build();
 
     //when
-    assertThatThrownBy(() -> {
-      versionableService.versioningObjects(
-          versionableObject1,
-          editedVersion,
-          Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
-      //then
-    }).isInstanceOf(DateOrderException.class)
+   List<VersionableObject> versionableObjects = Arrays.asList(versionableObject1, versionableObject2, versionableObject3);
+   assertThatThrownBy(
+       () -> versionableService.versioningObjects(versionableObject1, editedVersion, versionableObjects)).isInstanceOf(
+           DateOrderException.class)
             .hasMessageContaining(
                     "Edited ValidFrom is bigger than edited ValidTo")
             .extracting("validFrom", "validTo")

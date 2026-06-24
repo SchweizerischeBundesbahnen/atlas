@@ -117,9 +117,9 @@ class LineServiceVersioningTest {
 
     assertThat(result).hasSize(5);
     result.sort(Comparator.comparing(LineVersion::getValidFrom));
-    assertThat(result.get(0)).isNotNull();
+    assertThat(result.getFirst()).isNotNull();
 
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getDescription()).isEqualTo(DESCRIPTION);
@@ -192,8 +192,8 @@ class LineServiceVersioningTest {
     result.sort(Comparator.comparing(LineVersion::getValidFrom));
 
     // first version no changes
-    assertThat(result.get(0)).isNotNull();
-    LineVersion firstTemporalVersion = result.get(0);
+    assertThat(result.getFirst()).isNotNull();
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(version1.getValidFrom());
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(version1.getValidTo());
     assertThat(firstTemporalVersion.getSwissLineNumber()).isEqualTo("1");
@@ -204,7 +204,7 @@ class LineServiceVersioningTest {
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(version2.getValidFrom());
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(version3.getValidTo());
     assertThat(secondTemporalVersion.getSwissLineNumber()).isEqualTo("2");
-    assertThat(firstTemporalVersion.getComment()).isNull();
+    assertThat(secondTemporalVersion.getComment()).isNull();
   }
 
   /**
@@ -237,10 +237,10 @@ class LineServiceVersioningTest {
     //then
     assertThat(result).hasSize(5);
     result.sort(Comparator.comparing(LineVersion::getValidFrom));
-    assertThat(result.get(0)).isNotNull();
+    assertThat(result.getFirst()).isNotNull();
 
     // first current index updated
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
     assertThat(firstTemporalVersion.getDescription()).isEqualTo("description");
@@ -318,7 +318,8 @@ class LineServiceVersioningTest {
     editedVersion.setVersion(version1.getVersion());
 
     //when and then
-    assertThrows(RevokedException.class, () -> lineService.update(version1, editedVersion, Collections.emptyList()));
+    List<LineVersion> currentVersions = Collections.emptyList();
+    assertThrows(RevokedException.class, () -> lineService.update(version1, editedVersion, currentVersions));
   }
 
   @ParameterizedTest
@@ -333,6 +334,7 @@ class LineServiceVersioningTest {
     editedVersion.setVersion(version1.getVersion());
 
     //when and then
-    assertThatNoException().isThrownBy(() -> lineService.update(version1, editedVersion, Collections.emptyList()));
+    List<LineVersion> currentVersions = Collections.emptyList();
+    assertThatNoException().isThrownBy(() -> lineService.update(version1, editedVersion, currentVersions));
   }
 }

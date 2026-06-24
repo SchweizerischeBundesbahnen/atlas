@@ -299,8 +299,10 @@ class LineServiceTest {
             lineVersion);
 
     // When
+    Optional<LineVersion> versionToSave = Optional.empty();
+    List<LineVersion> currentLineVersions = Collections.emptyList();
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
-        () -> lineService.save(lineVersion, Optional.empty(), Collections.emptyList()));
+        () -> lineService.save(lineVersion, versionToSave, currentLineVersions));
 
     verify(lineVersionRepository, never()).save(lineVersion);
 
@@ -315,8 +317,10 @@ class LineServiceTest {
             lineVersion);
 
     // When
+    Optional<LineVersion> versionToSave = Optional.empty();
+    List<LineVersion> currentLineVersions = Collections.emptyList();
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineService.save(lineVersion, Optional.empty(), Collections.emptyList()));
+        () -> lineService.save(lineVersion, versionToSave, currentLineVersions));
 
     verify(lineVersionRepository, never()).save(lineVersion);
 

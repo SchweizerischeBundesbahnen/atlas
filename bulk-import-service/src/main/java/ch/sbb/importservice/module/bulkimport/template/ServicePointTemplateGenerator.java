@@ -15,77 +15,59 @@ import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class ServicePointTemplateGenerator {
+class ServicePointTemplateGenerator {
 
   private static final String DEFAULT_SLOID = "ch:1:sloid:7000";
   private static final Integer DEFAULT_NUMBER = 8512345;
-  private static final Integer DEFAULT_NUMBERSHORT = 7000;
-  private static final Integer DEFAULT_UIC_COUNTRYCODE = 85;
-  private static final LocalDate DEFAULT_VALID_FROM = LocalDate.of(2021, 4, 1);
   private static final LocalDate DEFAULT_VALID_TO = LocalDate.of(2099, 12, 31);
-  private static final String DEFAULT_DESIGNATION_OFFICIAL = "Bern";
-  private static final String DEFAULT_BUSINESS_ORGANISATION = "ch:1:sboid:1";
-  private static final String DEFAULT_DESIGNATION_LONG = "Bern";
-  private static final Double DEFAULT_EAST = 2600037.945;
-  private static final Double DEFAULT_NORTH = 1199749.812;
-  private static final Double DEFAULT_HEIGHT = 540.2;
-  private static final String DEFAULT_CODE_OF_DESTINATION_STATION = "1857";
 
-  public static ServicePointUpdateCsvModel getServicePointUpdateCsvModelExample() {
-    return ServicePointUpdateCsvModel.builder()
-        .sloid(DEFAULT_SLOID)
-        .validFrom(DEFAULT_VALID_FROM)
-        .validTo(DEFAULT_VALID_TO)
-        .designationOfficial(DEFAULT_DESIGNATION_OFFICIAL)
-        .freightServicePoint(false)
-        .stopPointType(StopPointType.ORDERLY)
-        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
-        .businessOrganisation(DEFAULT_BUSINESS_ORGANISATION)
-        .categories(Set.of(Category.HOSTNAME, Category.GALLERY, Category.POINT_OF_SALE))
-        .designationLong(DEFAULT_DESIGNATION_LONG)
-        .east(DEFAULT_EAST)
-        .north(DEFAULT_NORTH)
-        .height(DEFAULT_HEIGHT)
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN))
-        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
-        .operatingPointType(OperatingPointType.RAILNET_POINT)
-        .sortCodeOfDestinationStation(DEFAULT_CODE_OF_DESTINATION_STATION)
-        .spatialReference(SpatialReference.LV95)
-        .build();
-  }
+  static final ServicePointUpdateCsvModel SERVICE_POINT_UPDATE_CSV_MODEL = ServicePointUpdateCsvModel.builder()
+      .sloid(DEFAULT_SLOID)
+      .validFrom(LocalDate.of(2021, 4, 1))
+      .validTo(DEFAULT_VALID_TO)
+      .designationOfficial("Bern")
+      .freightServicePoint(false)
+      .stopPointType(StopPointType.ORDERLY)
+      .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
+      .businessOrganisation("ch:1:sboid:1")
+      .categories(Set.of(Category.HOSTNAME, Category.GALLERY, Category.POINT_OF_SALE))
+      .designationLong("Bern")
+      .east(2600037.945)
+      .north(1199749.812)
+      .height(540.2)
+      .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN))
+      .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
+      .operatingPointType(OperatingPointType.RAILNET_POINT)
+      .sortCodeOfDestinationStation("1857")
+      .spatialReference(SpatialReference.LV95)
+      .build();
 
-  public static ServicePointCreateCsvModel getServicePointCreateCsvModelExample() {
-    return ServicePointCreateCsvModel.builder()
-        .numberShort(DEFAULT_NUMBERSHORT)
-        .uicCountryCode(DEFAULT_UIC_COUNTRYCODE)
-        .validFrom(DEFAULT_VALID_FROM)
-        .validTo(DEFAULT_VALID_TO)
-        .designationOfficial(DEFAULT_DESIGNATION_OFFICIAL)
-        .designationLong(DEFAULT_DESIGNATION_LONG)
-        .stopPointType(StopPointType.ORDERLY)
-        .freightServicePoint(false)
-        .operatingPointType(OperatingPointType.RAILNET_POINT)
-        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN))
-        .categories(Set.of(Category.HOSTNAME, Category.GALLERY, Category.POINT_OF_SALE))
-        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
-        .sortCodeOfDestinationStation(DEFAULT_CODE_OF_DESTINATION_STATION)
-        .businessOrganisation(DEFAULT_BUSINESS_ORGANISATION)
-        .east(DEFAULT_EAST)
-        .north(DEFAULT_NORTH)
-        .height(DEFAULT_HEIGHT)
-        .spatialReference(SpatialReference.LV95)
-        .build();
+  static final ServicePointCreateCsvModel SERVICE_POINT_CREATE_CSV_MODEL = ServicePointCreateCsvModel.builder()
+      .numberShort(7000)
+      .uicCountryCode(85)
+      .validFrom(LocalDate.of(2021, 4, 1))
+      .validTo(DEFAULT_VALID_TO)
+      .designationOfficial("Bern")
+      .designationLong("Bern")
+      .stopPointType(StopPointType.ORDERLY)
+      .freightServicePoint(false)
+      .operatingPointType(OperatingPointType.RAILNET_POINT)
+      .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
+      .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN))
+      .categories(Set.of(Category.HOSTNAME, Category.GALLERY, Category.POINT_OF_SALE))
+      .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
+      .sortCodeOfDestinationStation("1857")
+      .businessOrganisation("ch:1:sboid:1")
+      .east(2600037.945)
+      .north(1199749.812)
+      .height(540.2)
+      .spatialReference(SpatialReference.LV95)
+      .build();
 
-  }
-
-  public static ServicePointTerminateCsvModel getServicePointTerminateCsvModelExample() {
-    return ServicePointTerminateCsvModel.builder()
-        .sloid(DEFAULT_SLOID)
-        .number(DEFAULT_NUMBER)
-        .validTo(DEFAULT_VALID_TO)
-        .build();
-
-  }
+  static final ServicePointTerminateCsvModel SERVICE_POINT_TERMINATE_CSV_MODEL = ServicePointTerminateCsvModel.builder()
+      .sloid(DEFAULT_SLOID)
+      .number(DEFAULT_NUMBER)
+      .validTo(DEFAULT_VALID_TO)
+      .build();
 
 }

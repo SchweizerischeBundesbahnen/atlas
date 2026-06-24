@@ -29,7 +29,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.SERVICE_POINT)
             .importType(ImportType.UPDATE)
             .build(),
-        ServicePointTemplateGenerator::getServicePointUpdateCsvModelExample
+        () -> ServicePointTemplateGenerator.SERVICE_POINT_UPDATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -38,7 +38,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.SERVICE_POINT)
             .importType(ImportType.CREATE)
             .build(),
-        ServicePointTemplateGenerator::getServicePointCreateCsvModelExample
+        () -> ServicePointTemplateGenerator.SERVICE_POINT_CREATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -47,7 +47,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.SERVICE_POINT)
             .importType(ImportType.TERMINATE)
             .build(),
-        ServicePointTemplateGenerator::getServicePointTerminateCsvModelExample
+        () -> ServicePointTemplateGenerator.SERVICE_POINT_TERMINATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -56,7 +56,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.TRAFFIC_POINT)
             .importType(ImportType.UPDATE)
             .build(),
-        TrafficPointTemplateGenerator::getTrafficPointUpdateCsvModelExample
+        () -> TrafficPointTemplateGenerator.TRAFFIC_POINT_UPDATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -65,7 +65,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.TRAFFIC_POINT)
             .importType(ImportType.CREATE)
             .build(),
-        TrafficPointTemplateGenerator::getTrafficPointCreateCsvModelExample
+        () -> TrafficPointTemplateGenerator.TRAFFIC_POINT_CREATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -74,7 +74,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.TRAFFIC_POINT)
             .importType(ImportType.TERMINATE)
             .build(),
-        TrafficPointTemplateGenerator::getTrafficPointTerminateCsvModelExample
+        () -> TrafficPointTemplateGenerator.SLOID_TERMINATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -92,7 +92,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.PLATFORM_REDUCED)
             .importType(ImportType.UPDATE)
             .build(),
-        PlatformTemplateGenerator::getPlatformReducedUpdateCsvModelExample
+        () -> PlatformTemplateGenerator.PLATFORM_REDUCED_UPDATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -101,7 +101,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.PLATFORM_COMPLETE)
             .importType(ImportType.UPDATE)
             .build(),
-        PlatformTemplateGenerator::getPlatformCompleteUpdateCsvModelExample
+        () -> PlatformTemplateGenerator.PLATFORM_COMPLETE_UPDATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -110,7 +110,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.PLATFORM)
             .importType(ImportType.TERMINATE)
             .build(),
-        PlatformTemplateGenerator::getSloidTerminateCsvModelExample
+        () -> PlatformTemplateGenerator.SLOID_TERMINATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -119,7 +119,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.STOP_POINT)
             .importType(ImportType.TERMINATE)
             .build(),
-        StopPointTemplateGenerator::getSloidTerminateCsvModelExample
+        () -> StopPointTemplateGenerator.SLOID_TERMINATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -128,7 +128,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.LINE)
             .importType(ImportType.UPDATE)
             .build(),
-        LineTemplateGenerator::getUpdateExample
+        () -> LineTemplateGenerator.LINE_UPDATE_CSV_MODEL
     );
 
     templateLookup.put(
@@ -137,7 +137,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.SUBLINE)
             .importType(ImportType.UPDATE)
             .build(),
-        SublineTemplateGenerator::getUpdateExample
+        () -> SublineTemplateGenerator.SUBLINE_UPDATE_CSV_MODEL
     );
   }
 

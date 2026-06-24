@@ -233,7 +233,7 @@ class LineServiceUpdateWithInReviewVersionsTest {
     LineVersion editedVersion = version1Builder().build();
     editedVersion.setDescription("Description <changed>");
     editedVersion.setComment("Scenario 1");
-    editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
+    editedVersion.setValidFrom(LocalDate.of(2021, 1, 2));
     editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
 
     //when

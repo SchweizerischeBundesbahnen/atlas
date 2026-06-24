@@ -270,9 +270,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
 
   private VersionedObject shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(VersioningData vd,
       ToVersioning toVersioning) {
-    Entity entity = replaceEditedPropertiesWithCurrentProperties(vd.getEditedEntity(),
-        toVersioning.getEntity());
-    return buildVersionedObjectToUpdate(vd.getEditedValidFrom(), vd.getEditedValidTo(), entity);
+    return stretchVersion(vd, toVersioning);
   }
 
 }

@@ -5,13 +5,11 @@ import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class StopPointTemplateGenerator {
+class StopPointTemplateGenerator {
 
-  public static SloidTerminateCsvModel getSloidTerminateCsvModelExample() {
-    return SloidTerminateCsvModel.builder()
+  static final SloidTerminateCsvModel SLOID_TERMINATE_CSV_MODEL = SloidTerminateCsvModel.builder()
         .sloid("ch:1:sloid:1")
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-  }
 
 }

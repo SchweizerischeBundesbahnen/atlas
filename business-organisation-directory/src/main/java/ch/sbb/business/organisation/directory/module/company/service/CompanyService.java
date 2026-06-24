@@ -1,14 +1,13 @@
 package ch.sbb.business.organisation.directory.module.company.service;
 
 import ch.sbb.atlas.model.exception.CountryCodeNotFoundException;
+import ch.sbb.business.organisation.directory.module.company.crd.CrdClient;
 import ch.sbb.business.organisation.directory.module.company.entity.Company;
 import ch.sbb.business.organisation.directory.module.company.model.CompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.module.company.repository.CompanyRepository;
-import ch.sbb.business.organisation.directory.module.company.crd.CrdClient;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.xml.datatype.XMLGregorianCalendar;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +40,7 @@ public class CompanyService {
   }
 
   List<Company> getCompaniesFromCrd() {
-    return crdClient.getAllCompanies().stream().map(this::toEntity).collect(Collectors.toList());
+    return crdClient.getAllCompanies().stream().map(this::toEntity).toList();
   }
 
   Company toEntity(ch.sbb.business.organisation.directory.service.crd.Company csvCompany) {

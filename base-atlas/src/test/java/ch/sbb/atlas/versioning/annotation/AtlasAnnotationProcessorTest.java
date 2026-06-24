@@ -83,17 +83,17 @@ class AtlasAnnotationProcessorTest {
 
       @Override
       public void setValidFrom(LocalDate validFrom) {
-
+        throw new UnsupportedOperationException();
       }
 
       @Override
       public void setValidTo(LocalDate validTo) {
-
+        throw new UnsupportedOperationException();
       }
 
       @Override
       public void setId(Long id) {
-
+        throw new UnsupportedOperationException();
       }
     }
 
@@ -139,17 +139,17 @@ class AtlasAnnotationProcessorTest {
 
       @Override
       public void setValidFrom(LocalDate validFrom) {
-
+        throw new UnsupportedOperationException();
       }
 
       @Override
       public void setValidTo(LocalDate validTo) {
-
+        throw new UnsupportedOperationException();
       }
 
       @Override
       public void setId(Long id) {
-
+        throw new UnsupportedOperationException();
       }
     }
 
@@ -197,17 +197,17 @@ class AtlasAnnotationProcessorTest {
 
       @Override
       public void setValidFrom(LocalDate validFrom) {
-
+        throw new UnsupportedOperationException();
       }
 
       @Override
       public void setValidTo(LocalDate validTo) {
-
+        throw new UnsupportedOperationException();
       }
 
       @Override
       public void setId(Long id) {
-
+        throw new UnsupportedOperationException();
       }
     }
 
@@ -219,7 +219,7 @@ class AtlasAnnotationProcessorTest {
         nonVersionable);
     //then
     assertThat(versionableProperties).hasSize(1);
-    VersionableProperty versionableProperty = versionableProperties.get(0);
+    VersionableProperty versionableProperty = versionableProperties.getFirst();
     assertThat(versionableProperty).isNotNull();
     assertThat(versionableProperty.getFieldName()).isEqualTo("property");
     assertThat(versionableProperty.getRelationType()).isEqualTo(RelationType.NONE);

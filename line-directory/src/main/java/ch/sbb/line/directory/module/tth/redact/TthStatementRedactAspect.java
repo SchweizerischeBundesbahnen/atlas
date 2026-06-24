@@ -43,23 +43,21 @@ public class TthStatementRedactAspect {
 
   void redactStatementForBoUser(Object resultObject, Object redactObject) {
 
-    if (resultObject instanceof TimetableHearingStatement timetableHearingStatement) {
+    if (resultObject instanceof TimetableHearingStatement timetableHearingStatement
+        && timetableHearingStatement.getDossierContactMail() != null
+        && boUserMailCheckService.isCurrentUserAssignedTo(timetableHearingStatement)) {
+      String statement = timetableHearingStatement.getStatement();
 
-      if (timetableHearingStatement.getDossierContactMail() != null
-          && boUserMailCheckService.isCurrentUserAssignedTo(timetableHearingStatement)) {
-        String statement = timetableHearingStatement.getStatement();
-
-        if (redactObject instanceof TimetableHearingStatement redactedStatement) {
-          if (Boolean.TRUE.equals(timetableHearingStatement.getStatementAnonymous())) {
-            redactedStatement.setStatement(statement);
-          }
-          Set<StatementDocument> anonymousDocuments = timetableHearingStatement.getDocuments().stream()
-              .filter(document -> Boolean.TRUE.equals(document.getAnonymous()))
-              .collect(Collectors.toSet());
-          redactedStatement.setDocuments(anonymousDocuments);
-        } else {
-          throw new IllegalStateException(redactObject + " is not a TimetableHearingStatement");
+      if (redactObject instanceof TimetableHearingStatement redactedStatement) {
+        if (Boolean.TRUE.equals(timetableHearingStatement.getStatementAnonymous())) {
+          redactedStatement.setStatement(statement);
         }
+        Set<StatementDocument> anonymousDocuments = timetableHearingStatement.getDocuments().stream()
+            .filter(document -> Boolean.TRUE.equals(document.getAnonymous()))
+            .collect(Collectors.toSet());
+        redactedStatement.setDocuments(anonymousDocuments);
+      } else {
+        throw new IllegalStateException(redactObject + " is not a TimetableHearingStatement");
       }
     }
   }
