@@ -73,7 +73,8 @@ class MailNotificationServiceTest {
     //given
     when(tracer.currentSpan()).thenReturn(null);
     //when
-    assertThrows(IllegalStateException.class, () -> notificationService.buildMailNotification("export", new Throwable("Error")));
+    Throwable error = new Throwable("Error");
+    assertThrows(IllegalStateException.class, () -> notificationService.buildMailNotification("export", error));
 
   }
 
