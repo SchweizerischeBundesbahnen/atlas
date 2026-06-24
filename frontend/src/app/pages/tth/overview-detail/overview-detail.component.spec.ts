@@ -114,7 +114,7 @@ const mockTthYearWfServiceSpy: Mocked<Pick<TthYearInternalService, 'startTimetab
   startTimetableHearingYear: vi.fn(),
 };
 
-async function baseTestConfiguration() {
+function baseTestConfiguration() {
   mockTimetableHearingStatementsService.getStatements.mockReturnValue(of(containerTimetableHearingStatement));
 
   mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of([hearingYear2000, hearingYear2001]));
@@ -124,7 +124,7 @@ async function baseTestConfiguration() {
     openCustomDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
   };
 
-  await TestBed.configureTestingModule({
+  TestBed.configureTestingModule({
     imports: [
       AppTestingModule,
       OverviewDetailComponent,
@@ -156,12 +156,10 @@ async function baseTestConfiguration() {
       { provide: MatDialog, useValue: dialogSpy },
       { provide: DialogService, useValue: dialogServiceSpy },
     ],
-  })
-    .overrideComponent(OverviewDetailComponent, {
-      remove: { imports: [TableComponent] },
-      add: { imports: [MockTableComponent] },
-    })
-    .compileComponents();
+  }).overrideComponent(OverviewDetailComponent, {
+    remove: { imports: [TableComponent] },
+    add: { imports: [MockTableComponent] },
+  });
 
   return TestBed.createComponent(OverviewDetailComponent);
 }
@@ -172,9 +170,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
   let fixture: ComponentFixture<OverviewDetailComponent>;
   let overviewToTabService: OverviewToTabShareDataService;
 
-  describe('HearingOverviewTab Active', async () => {
-    beforeEach(async () => {
-      fixture = await baseTestConfiguration();
+  describe('HearingOverviewTab Active', () => {
+    beforeEach(() => {
+      fixture = baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
       overviewToTabService = TestBed.inject(OverviewToTabShareDataService);
 
@@ -324,8 +322,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       overviewToTabService.setCantonShort('ch');
       fixture.detectChanges();
       //then
-      expect(component.timeTableHearingStatements).toEqual([timetableHearingStatement, timetableHearingStatement]);
-      expect(component.totalCount).toEqual(2);
+      expect(component.timeTableHearingStatements()).toEqual([timetableHearingStatement, timetableHearingStatement]);
+      expect(component.totalCount()).toEqual(2);
       expect(component.isTimetableHearingYearFound()).toBeFalsy();
     });
 
@@ -445,8 +443,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
   });
 
   describe('HearingOverviewTab Active with checkbox', async () => {
-    beforeEach(async () => {
-      fixture = await baseTestConfiguration();
+    beforeEach(() => {
+      fixture = baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
       route.snapshot.data = { hearingStatus: HearingStatus.Active };
       component = fixture.componentInstance;
@@ -484,8 +482,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
     mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of(hearingYears));
 
-    beforeEach(async () => {
-      fixture = await baseTestConfiguration();
+    beforeEach(() => {
+      fixture = baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
       overviewToTabService = TestBed.inject(OverviewToTabShareDataService);
 
@@ -581,8 +579,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
     mockTimetableHearingYearsService.getHearingYears.mockReturnValue(of(hearingYears));
 
-    beforeEach(async () => {
-      fixture = await baseTestConfiguration();
+    beforeEach(() => {
+      fixture = baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
       overviewToTabService = TestBed.inject(OverviewToTabShareDataService);
 

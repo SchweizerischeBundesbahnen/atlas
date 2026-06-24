@@ -21,7 +21,7 @@ describe('DecisionOverrideComponent', () => {
   let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'overrideVoteWorkflow'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     stopPointWorkflowService = {
       overrideVoteWorkflow: vi.fn().mockReturnValue(of({})),
     };
@@ -29,7 +29,7 @@ describe('DecisionOverrideComponent', () => {
       success: vi.fn(),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         DecisionOverrideComponent,
@@ -46,7 +46,7 @@ describe('DecisionOverrideComponent', () => {
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: NotificationService, useValue: notificationService },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(DecisionOverrideComponent);
     component = fixture.componentInstance;

@@ -32,11 +32,10 @@ import { DetailFooterComponent } from '../../../../../../core/components/detail-
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
-import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
-import { ToiletService } from 'src/app/api/service/prm/toilet/toilet.service';
+import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.service';
 
 const toilet: ReadToiletVersion[] = [
   {
@@ -133,15 +132,14 @@ describe('ToiletDetailComponent', () => {
       ],
       providers: [
         { provide: PermissionService, useValue: adminPermissionServiceMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: NotificationService, useValue: notificationService },
-        {
-          provide: ToiletService,
-          useValue: toiletService,
-        },
-        { provide: DialogService, useValue: dialogService },
-        TranslatePipe,
-        SplitServicePointNumberPipe,
+         { provide: ActivatedRoute, useValue: activatedRouteMock },
+         { provide: NotificationService, useValue: notificationService },
+         {
+           provide: ToiletService,
+           useValue: toiletService,
+         },
+         { provide: DialogService, useValue: dialogService },
+         SplitServicePointNumberPipe,
       ],
     });
   });

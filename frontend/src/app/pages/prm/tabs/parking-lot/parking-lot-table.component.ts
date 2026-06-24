@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
@@ -18,6 +18,7 @@ import { ParkingLotInternalService } from '../../../../api/service/prm/parking-l
 @Component({
   selector: 'atlas-parking-lot-table',
   templateUrl: './parking-lot-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
 export class ParkingLotTableComponent extends BasePrmTabComponentService implements OnInit {
@@ -46,10 +47,6 @@ export class ParkingLotTableComponent extends BasePrmTabComponentService impleme
   tableFilterConfig!: TableFilter<unknown>[][];
   totalCount = 0;
   parkingLots: ParkingLotOverview[] = [];
-
-  constructor() {
-    super(inject(Router));
-  }
 
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);

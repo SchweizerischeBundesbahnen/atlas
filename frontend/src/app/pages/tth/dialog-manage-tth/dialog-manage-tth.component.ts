@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { TimetableHearingYear } from '../../../api';
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
@@ -13,6 +13,7 @@ import { TthYearInternalService } from '../../../api/service/workflow/tth-year-i
 @Component({
   selector: 'atlas-dialog-manage-tth',
   templateUrl: './dialog-manage-tth.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./dialog-manage-tth.component.scss'],
   imports: [MatDialogClose, NgTemplateOutlet, AtlasSlideToggleComponent, AtlasButtonComponent, TranslatePipe],
 })

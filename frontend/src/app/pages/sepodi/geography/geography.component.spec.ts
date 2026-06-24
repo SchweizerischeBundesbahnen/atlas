@@ -25,7 +25,7 @@ describe('GeographyComponent', () => {
   };
   let coordinateTransformationServiceSpy: Mocked<Pick<CoordinateTransformationService, 'transform'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mapServiceSpy = {
       placeMarkerAndFlyTo: vi.fn(),
       enterCoordinateSelectionMode: vi.fn(),
@@ -43,7 +43,7 @@ describe('GeographyComponent', () => {
       spatialReference: SpatialReference.Wgs84,
     });
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         FormModule,
@@ -60,7 +60,7 @@ describe('GeographyComponent', () => {
           useValue: coordinateTransformationServiceSpy,
         },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(GeographyComponent);
     component = fixture.componentInstance;

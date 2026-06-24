@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { DialogService } from '../../components/dialog/dialog.service';
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
 import { ApplicationType } from '../../../api';
@@ -12,6 +12,7 @@ export interface Revokable {
   selector: 'atlas-revoke-button',
   imports: [AtlasButtonComponent],
   templateUrl: './revoke-button.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class RevokeButton {
   readonly revokeClicked = output<void>();

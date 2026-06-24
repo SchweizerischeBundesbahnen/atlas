@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Pages } from '../../../pages';
 import { ReadLoadingPointVersion } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { LoadingPointInternalService } from '../../../../api/service/sepodi/load
 @Component({
   selector: 'atlas-service-point-loading-points',
   templateUrl: './loading-points-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./loading-points-table.component.scss'],
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent, TranslatePipe],
 })

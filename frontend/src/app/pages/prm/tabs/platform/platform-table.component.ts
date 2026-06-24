@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
@@ -24,6 +24,7 @@ import { PlatformInternalService } from '../../../../api/service/prm/platform/pl
 @Component({
   selector: 'atlas-platform',
   templateUrl: './platform-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, AtlasButtonComponent],
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
@@ -59,10 +60,6 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
   ];
   tableFilterConfig!: TableFilter<unknown>[][];
   servicePointVersion!: ReadServicePointVersion;
-
-  constructor() {
-    super(inject(Router));
-  }
 
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);

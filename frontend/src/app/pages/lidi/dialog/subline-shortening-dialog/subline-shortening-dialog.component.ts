@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { AffectedSublinesModel } from '../../../../api';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { LinkComponent } from '../../../../core/form-components/link/link.compon
 @Component({
   selector: 'atlas-subline-shortening-dialog',
   templateUrl: './subline-shortening-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [DatePipe],
   imports: [MatDialogClose, LinkComponent, MatDialogActions, TranslatePipe],
 })

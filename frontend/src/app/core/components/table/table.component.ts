@@ -1,16 +1,16 @@
-import { Component, contentChild, inject, Input, input, OnInit, output, TemplateRef } from '@angular/core';
-import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { TableColumn } from './table-column';
-import { TableService } from './table.service';
-import { TablePagination } from './table-pagination';
-import { ColumnDropDownEvent } from './column-drop-down-event';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
-import { TableFilter } from '../table-filter/config/table-filter';
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { TableFilterComponent } from '../table-filter/table-filter.component';
+import {Component, contentChild, inject, input, OnInit, output, signal, TemplateRef} from '@angular/core';
+import {MatSort, MatSortHeader, Sort, SortDirection} from '@angular/material/sort';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {TableColumn} from './table-column';
+import {TableService} from './table.service';
+import {TablePagination} from './table-pagination';
+import {ColumnDropDownEvent} from './column-drop-down-event';
+import {SelectionModel} from '@angular/cdk/collections';
+import {MatCheckbox, MatCheckboxChange} from '@angular/material/checkbox';
+import {TableFilter} from '../table-filter/config/table-filter';
+import {LoadingSpinnerComponent} from '../loading-spinner/loading-spinner.component';
+import {NgClass, NgTemplateOutlet} from '@angular/common';
+import {TableFilterComponent} from '../table-filter/table-filter.component';
 import {
   MatCell,
   MatCellDef,
@@ -24,15 +24,15 @@ import {
   MatRowDef,
   MatTable,
 } from '@angular/material/table';
-import { MouseOverTitleDirective } from './directive/mouse-over-title.directive';
-import { SelectComponent } from '../../form-components/select/select.component';
-import { AtlasButtonComponent } from '../button/atlas-button.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { ShowTitlePipe } from './pipe/show-title.pipe';
-import { FormatPipe } from './pipe/format.pipe';
+import {MouseOverTitleDirective} from './directive/mouse-over-title.directive';
+import {SelectComponent} from '../../form-components/select/select.component';
+import {AtlasButtonComponent} from '../button/atlas-button.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {ShowTitlePipe} from './pipe/show-title.pipe';
+import {FormatPipe} from './pipe/format.pipe';
 
 @Component({
-  selector: 'atlas-table [tableData][tableColumns]',
+  selector: 'atlas-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   imports: [
@@ -74,6 +74,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   readonly showPaginator = input(true);
   readonly checkBoxModeEnabled = input(false);
   readonly additionalTableStyleClass = input('');
+  readonly tableData = input.required<DATATYPE[]>();
 
   readonly editElementEvent = output<DATATYPE>();
   readonly tableChanged = output<TablePagination>();
@@ -82,23 +83,11 @@ export class TableComponent<DATATYPE> implements OnInit {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   readonly buttonClickEvent = output<any>();
   readonly checkedBoxEvent = output<SelectionModel<DATATYPE>>();
-  isLoading = true;
+  isLoading = signal<boolean>(false);
 
   customCell = contentChild(TemplateRef);
 
   private readonly tableService = inject(TableService);
-
-  private _tableData: DATATYPE[] = [];
-
-  get tableData(): DATATYPE[] {
-    return this._tableData;
-  }
-
-  @Input()
-  set tableData(data: DATATYPE[]) {
-    this._tableData = data;
-    this.isLoading = false;
-  }
 
   get pageSize(): number {
     return this.tableService.pageSize;
@@ -176,7 +165,7 @@ export class TableComponent<DATATYPE> implements OnInit {
     if (this.isAllSelected()) {
       this.checkBoxSelection().clear();
     } else {
-      this.tableData.forEach((row) => this.checkBoxSelection().select(row));
+      this.tableData().forEach((row) => this.checkBoxSelection().select(row));
     }
     this.checkedBoxEvent.emit(this.checkBoxSelection());
   }
@@ -196,7 +185,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   private emitTableChangedEvent(): void {
-    this.isLoading = true;
+    // this.isLoading.set(true);
     this.tableChanged.emit({
       page: this.pageIndex,
       size: this.pageSize,

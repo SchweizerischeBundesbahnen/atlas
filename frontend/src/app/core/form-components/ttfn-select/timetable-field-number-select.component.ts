@@ -1,4 +1,4 @@
-import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TimetableFieldNumber } from '../../../api';
@@ -11,6 +11,7 @@ import { SearchSelectComponent } from '../search-select/search-select.component'
 @Component({
   selector: 'atlas-ttfn-select',
   templateUrl: './timetable-field-number-select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, AtlasLabelFieldComponent, TimetableFieldNumberSelectOptionPipe, SearchSelectComponent],
 })
 export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, OnChanges {

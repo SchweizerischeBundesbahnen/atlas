@@ -14,7 +14,7 @@ describe('OverviewTabComponent', () => {
   let routerEventsSubject: Subject<Event>;
   let permissionServiceSpy: Mocked<Pick<PermissionService, 'getTthApplicationUserType'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     routerEventsSubject = new Subject();
 
     permissionServiceSpy = {
@@ -28,7 +28,7 @@ describe('OverviewTabComponent', () => {
       events: routerEventsSubject,
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [OverviewTabComponent],
       providers: [
         { provide: Router, useValue: routerSpy },
@@ -48,7 +48,7 @@ describe('OverviewTabComponent', () => {
         },
         OverviewToTabShareDataService,
       ],
-    }).compileComponents();
+    });
   });
 
   it('should create', () => {

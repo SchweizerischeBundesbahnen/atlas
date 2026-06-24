@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Parameter } from 'src/app/api';
+import { Parameter } from '../../api';
 
 @Pipe({
   name: 'paramsForTranslation',

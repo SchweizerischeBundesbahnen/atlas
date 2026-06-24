@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Cantons } from '../../../core/cantons/Cantons';
 import { Canton } from '../../../core/cantons/Canton';
 import { CantonCardComponent } from './canton-card/canton-card.component';
@@ -8,6 +8,7 @@ import { OverviewToTabShareDataService } from '../overview-tab/service/overview-
 @Component({
   selector: 'atlas-timetable-hearing-overview',
   templateUrl: './timetable-hearing-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./timetable-hearing-overview.component.scss'],
   imports: [CantonCardComponent, RouterLink],
 })

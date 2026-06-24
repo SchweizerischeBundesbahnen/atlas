@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ClientCredential } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
@@ -19,6 +19,7 @@ import { ConvertUserPermissionToRecordHelper } from '../../../../../core/compone
 @Component({
   selector: 'atlas-client-credential-administration-edit',
   templateUrl: './user-administration-client-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./user-administration-client-edit.component.scss'],
   imports: [
     ScrollToTopDirective,

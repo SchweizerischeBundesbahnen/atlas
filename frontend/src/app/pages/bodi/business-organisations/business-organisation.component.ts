@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -32,8 +32,8 @@ export class BusinessOrganisationComponent implements OnDestroy {
 
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();
   tableFilterConfig!: TableFilter<unknown>[][];
-  businessOrganisations: BusinessOrganisation[] = [];
-  totalCount$ = 0;
+  businessOrganisations = signal<BusinessOrganisation[]>([]);
+  totalCount = signal(0);
 
   private tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
@@ -73,8 +73,8 @@ export class BusinessOrganisationComponent implements OnDestroy {
         addElementsToArrayWhenNotUndefined(pagination.sort, this.getDefaultSort())
       )
       .subscribe((container) => {
-        this.businessOrganisations = container.objects!;
-        this.totalCount$ = container.totalCount!;
+        this.businessOrganisations.set(container.objects!);
+        this.totalCount.set(container.totalCount!);
       });
   }
 

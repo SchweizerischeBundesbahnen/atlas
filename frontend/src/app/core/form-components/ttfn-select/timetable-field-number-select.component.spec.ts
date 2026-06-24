@@ -17,8 +17,8 @@ describe('TimetableFieldNumberSelectComponent', () => {
   let formGroupInput: ReturnType<typeof signal<FormGroup>>;
   let controlNameInput: ReturnType<typeof signal<string>>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         NgSelectModule,
         TimetableFieldNumberSelectComponent,
@@ -27,7 +27,7 @@ describe('TimetableFieldNumberSelectComponent', () => {
         AtlasFieldErrorComponent,
       ],
       providers: [TranslatePipe, translateServiceProvider, provideHttpClientTesting()],
-    }).compileComponents();
+    });
 
     const formGroupInputName: keyof TimetableFieldNumberSelectComponent = 'formGroup';
     const controlNameInputName: keyof TimetableFieldNumberSelectComponent = 'controlName';

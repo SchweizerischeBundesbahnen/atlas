@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialogContent } from '@angular/material/dialog';
 
 @Component({
   selector: 'atlas-dialog-content',
   templateUrl: './dialog-content.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['dialog-content.component.scss'],
   imports: [MatDialogContent],
 })

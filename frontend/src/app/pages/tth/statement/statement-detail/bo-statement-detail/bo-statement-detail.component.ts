@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { StatementDataComponent } from '../../statement-data/statement-data.component';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimetableHearingStatementDocumentGroup } from '../statement-detail-form-group';
@@ -28,6 +28,7 @@ import { Pages } from '../../../../pages';
     ReactiveFormsModule,
   ],
   templateUrl: './bo-statement-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./bo-statement-detail.component.scss'],
 })
 export class BoStatementDetailComponent extends StatementDetailBaseComponent implements OnInit, DetailFormComponent {

@@ -1,4 +1,4 @@
-import { Component, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, input } from '@angular/core';
 import { ServicePointSearchType } from '../search-service-point/service-point-search';
 import { NgClass } from '@angular/common';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
@@ -16,6 +16,7 @@ export const SearchNavigationType = {
 @Component({
   selector: 'atlas-search-service-point-panel',
   templateUrl: './search-service-point-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./search-service-point-panel.component.scss'],
   imports: [
     NgClass,

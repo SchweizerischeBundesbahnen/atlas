@@ -4,17 +4,18 @@ import { UserAdministrationClientDetailComponent } from './user-administration-c
 import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { UserPermissionGivenClientService } from './edit/user-permission-given-client.service';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 describe('UserAdministrationClientDetailComponent', () => {
   let component: UserAdministrationClientDetailComponent;
   let fixture: ComponentFixture<UserAdministrationClientDetailComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [UserAdministrationClientDetailComponent, TranslateModule.forRoot({})],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [UserAdministrationClientDetailComponent],
       providers: [
         {
           provide: ActivatedRoute,
@@ -26,8 +27,9 @@ describe('UserAdministrationClientDetailComponent', () => {
         TranslatePipe,
         provideHttpClient(),
         provideHttpClientTesting(),
+        translateServiceProvider,
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(UserAdministrationClientDetailComponent);
     component = fixture.componentInstance;

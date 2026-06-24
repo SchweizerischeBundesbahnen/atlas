@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ReadReferencePointVersion,
@@ -37,6 +37,7 @@ import { ReferencePointInternalService } from '../../../../../api/service/prm/re
 @Component({
   selector: 'atlas-relation-tab-detail',
   templateUrl: './relation-tab-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,

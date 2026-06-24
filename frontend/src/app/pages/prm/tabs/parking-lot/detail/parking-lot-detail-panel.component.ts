@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../../../core/versioning/date-range';
@@ -12,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-parking-lot-detail-panel',
   templateUrl: './parking-lot-detail-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DetailPageContainerComponent, PrmDetailPanelComponent, DetailWithRelationTabComponent, TranslatePipe],
 })
 export class ParkingLotDetailPanelComponent implements OnInit {

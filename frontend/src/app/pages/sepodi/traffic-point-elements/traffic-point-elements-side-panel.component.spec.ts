@@ -76,6 +76,6 @@ describe('TrafficPointElementsSidePanelComponent', () => {
         { provide: TrafficPointMapService, useValue: trafficPointMapService },
         TranslatePipe,
       ],
-    }).compileComponents();
+    });
   }
 });

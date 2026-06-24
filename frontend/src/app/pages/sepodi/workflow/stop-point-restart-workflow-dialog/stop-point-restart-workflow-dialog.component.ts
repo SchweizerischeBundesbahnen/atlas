@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   StopPointRestartWorkflowFormGroup,
@@ -24,6 +24,7 @@ import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-
 @Component({
   selector: 'atlas-stop-point-restart-workflow-dialog',
   templateUrl: './stop-point-restart-workflow-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./stop-point-restart-workflow-dialog.component.scss'],
   imports: [
     DialogCloseComponent,

@@ -61,8 +61,8 @@ describe('StatementSelectDialogComponent', () => {
   let component: StatementSelectDialogComponent;
   let fixture: ComponentFixture<StatementSelectDialogComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AppTestingModule, StatementSelectDialogComponent],
       providers: [
         { provide: DialogService, useValue: dialogServiceSpy },
@@ -83,7 +83,7 @@ describe('StatementSelectDialogComponent', () => {
         remove: { imports: [StatementSelectComponent] },
         add: { imports: [MockStatementSelectComponent] },
       })
-      .compileComponents();
+      ;
 
     fixture = TestBed.createComponent(StatementSelectDialogComponent);
     component = fixture.componentInstance;

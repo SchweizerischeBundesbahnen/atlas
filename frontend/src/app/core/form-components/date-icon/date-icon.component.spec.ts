@@ -6,10 +6,10 @@ describe('DateIconComponent', () => {
   let component: DateIconComponent;
   let fixture: ComponentFixture<DateIconComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [DateIconComponent],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(DateIconComponent);
     component = fixture.componentInstance;

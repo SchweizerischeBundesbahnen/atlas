@@ -134,7 +134,7 @@ describe('SectorGroupDetailComponent', () => {
           providers: [{ provide: ValidityService, useValue: validityServiceSpy }, TranslatePipe],
         },
       })
-      .compileComponents();
+      ;
   }
 
   describe('new mode', () => {

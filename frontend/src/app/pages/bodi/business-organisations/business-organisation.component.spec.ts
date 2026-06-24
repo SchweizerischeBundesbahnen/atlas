@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { BusinessOrganisationComponent } from './business-organisation.component';
 import { ContainerBusinessOrganisation } from '../../../api';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockTableComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { TableComponent } from '../../../core/components/table/table.component';
@@ -43,8 +43,9 @@ describe('BusinessOrganisationComponent', () => {
     businessOrganisationService.getAllBusinessOrganisations.mockReturnValue(of(businessOrganisation));
 
     TestBed.configureTestingModule({
-      imports: [BusinessOrganisationComponent, TranslateModule.forRoot()],
+      imports: [BusinessOrganisationComponent],
       providers: [
+        translateServiceProvider,
         TranslatePipe,
         RouterOutlet,
         {
@@ -53,12 +54,10 @@ describe('BusinessOrganisationComponent', () => {
         },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    })
-      .overrideComponent(BusinessOrganisationComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(BusinessOrganisationComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(BusinessOrganisationComponent);
     component = fixture.componentInstance;
@@ -85,8 +84,8 @@ describe('BusinessOrganisationComponent', () => {
       ['descriptionDe,asc']
     );
 
-    expect(component.totalCount$).toEqual(1);
-    expect(component.businessOrganisations.length).toEqual(1);
-    expect(component.businessOrganisations[0].sboid).toEqual('sboid');
+    expect(component.totalCount()).toEqual(1);
+    expect(component.businessOrganisations().length).toEqual(1);
+    expect(component.businessOrganisations()[0].sboid).toEqual('sboid');
   });
 });

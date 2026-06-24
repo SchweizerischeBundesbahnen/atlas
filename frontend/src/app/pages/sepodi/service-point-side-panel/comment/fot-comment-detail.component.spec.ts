@@ -23,7 +23,7 @@ describe('FotCommentDetailComponent', () => {
     parent: { snapshot: { params: { servicePointNumber: 8504414 } } },
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     servicePointServiceSpy = {
       getFotComment: vi.fn(),
       saveFotComment: vi.fn(),
@@ -31,7 +31,7 @@ describe('FotCommentDetailComponent', () => {
     servicePointServiceSpy.getFotComment.mockReturnValue(of({ fotComment: 'Manu Hooligans', etagVersion: 3 }));
     servicePointServiceSpy.saveFotComment.mockReturnValue(of({ fotComment: 'New comment', etagVersion: 3 }));
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         FotCommentDetailComponent,
@@ -46,7 +46,7 @@ describe('FotCommentDetailComponent', () => {
         { provide: ActivatedRoute, useValue: route },
         { provide: ServicePointService, useValue: servicePointServiceSpy },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(FotCommentDetailComponent);
     component = fixture.componentInstance;

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CreateTrafficPointElementVersion,
@@ -51,6 +51,7 @@ const NUMBER_COLONS_AREA = 0;
 @Component({
   selector: 'atlas-traffic-point-elements-detail',
   templateUrl: './traffic-point-elements-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./traffic-point-elements-detail.component.scss'],
   providers: [ValidityService],
   imports: [

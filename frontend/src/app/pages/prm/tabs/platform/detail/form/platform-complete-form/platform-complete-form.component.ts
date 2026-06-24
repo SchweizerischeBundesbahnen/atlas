@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CompletePlatformFormGroup } from '../platform-form-group';
 import {
@@ -15,6 +15,7 @@ import { LevelAccessWheelchairAttributeType } from '../../../../../../../api/mod
 @Component({
   selector: 'atlas-platform-complete-form',
   templateUrl: './platform-complete-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [CommentComponent, ReactiveFormsModule, TextFieldComponent, SelectComponent, TranslatePipe],
 })

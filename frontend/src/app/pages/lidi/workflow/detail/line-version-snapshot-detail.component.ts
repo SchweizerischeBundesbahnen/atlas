@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { LineVersionSnapshot, LineVersionV2, Workflow } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +24,7 @@ import { LineWorkflowService } from '../../../../api/service/workflow/line-workf
 
 @Component({
   templateUrl: './line-version-snapshot-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./line-version-snapshot-detail.component.scss'],
   imports: [
     ScrollToTopDirective,

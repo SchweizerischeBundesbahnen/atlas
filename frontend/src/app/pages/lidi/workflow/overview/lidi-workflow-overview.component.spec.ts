@@ -1,10 +1,10 @@
-import { ContainerLineVersionSnapshot } from 'src/app/api/model/containerLineVersionSnapshot';
+import { ContainerLineVersionSnapshot } from '../../../../api/model/containerLineVersionSnapshot';
 import { LineType, WorkflowStatus } from '../../../../api';
 import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../../app.testing.mocks';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockTableComponent, translateServiceProvider } from '../../../../app.testing.mocks';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 import { ActivatedRoute } from '@angular/router';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -43,8 +43,9 @@ describe('LidiWorkflowOverviewComponent', () => {
     lineInternalService.getLineVersionSnapshot.mockReturnValue(of(versionContainer));
 
     TestBed.configureTestingModule({
-      imports: [LidiWorkflowOverviewComponent, TranslateModule.forRoot()],
+      imports: [LidiWorkflowOverviewComponent],
       providers: [
+        translateServiceProvider,
         TranslatePipe,
         { provide: LineInternalService, useValue: lineInternalService },
         {
@@ -52,12 +53,10 @@ describe('LidiWorkflowOverviewComponent', () => {
           useValue: { snapshot: { queryParams: {} } },
         },
       ],
-    })
-      .overrideComponent(LidiWorkflowOverviewComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(LidiWorkflowOverviewComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(LidiWorkflowOverviewComponent);
     component = fixture.componentInstance;

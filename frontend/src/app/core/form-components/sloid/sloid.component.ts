@@ -1,4 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 import { AtlasSlideToggleComponent } from '../atlas-slide-toggle/atlas-slide-toggle.component';
@@ -8,6 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-sloid',
   templateUrl: './sloid.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sloid.component.scss'],
   imports: [AtlasSlideToggleComponent, TextFieldComponent, ReactiveFormsModule, TranslatePipe],
   providers: [TranslatePipe],

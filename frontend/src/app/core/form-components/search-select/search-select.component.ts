@@ -1,4 +1,4 @@
-import { Component, ContentChild, TemplateRef, ViewChild, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, TemplateRef, ViewChild, output, input } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
@@ -9,6 +9,7 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 @Component({
   selector: 'atlas-form-search-select',
   templateUrl: './search-select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     NgSelectComponent,

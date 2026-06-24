@@ -1,6 +1,6 @@
-import { Component, Input, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input, output } from '@angular/core';
 import { ControlContainer, FormArray, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { WorkflowStatus } from 'src/app/api';
+import { WorkflowStatus } from '../../../../../api';
 import {
   ExaminantFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
@@ -14,6 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-stop-point-workflow-examinants-table',
   templateUrl: './stop-point-workflow-examinants-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./stop-point-workflow-examinants-table.component.scss'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [ReactiveFormsModule, TextFieldComponent, AtlasButtonComponent, NgClass, TranslatePipe],

@@ -1,4 +1,4 @@
-import { Component, Input, inject, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject, output, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { StatusChangeData } from '../tth-change-status-dialog/model/status-change-data';
@@ -9,6 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-base-change-dialog',
   templateUrl: './base-change-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./base-change-dialog.component.scss'],
   imports: [MatDialogClose, CommentComponent, ReactiveFormsModule, MatDialogActions, TranslatePipe],
   providers: [TranslatePipe],

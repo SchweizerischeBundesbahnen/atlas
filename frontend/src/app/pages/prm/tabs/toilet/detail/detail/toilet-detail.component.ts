@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ToiletFormGroupBuilder } from '../form/toilet-form-group';
 import { ReadServicePointVersion, ReadToiletVersion, ToiletVersion } from '../../../../../../api';
@@ -22,6 +22,7 @@ import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.s
 @Component({
   selector: 'atlas-toilet-detail',
   templateUrl: './toilet-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,

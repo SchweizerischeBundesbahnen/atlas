@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, viewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -25,6 +25,7 @@ import { NotificationService } from '../../../../../../core/notification/notific
 @Component({
   selector: 'atlas-statement-data-protection-check-dialog',
   templateUrl: './statement-data-protection-check.dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['statement-data-protection-check.dialog.component.scss'],
   imports: [
     CommentComponent,

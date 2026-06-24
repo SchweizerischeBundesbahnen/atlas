@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineWorkflowDialogData } from './line-workflow-dialog-data';
 import { NotificationService } from '../../notification/notification.service';
@@ -25,6 +25,7 @@ import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
   selector: 'atlas-workflow-dialog',
   templateUrl: './line-workflow-dialog.component.html',
   styleUrls: ['./line-workflow-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DialogCloseComponent,
     DialogContentComponent,

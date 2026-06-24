@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Language } from '../../components/language-switcher/language';
 
@@ -27,7 +27,7 @@ export class BusinessOrganisationLanguageService {
   private getCurrentLanguageKey<resultType extends descriptionType | abbreviationType>(
     propertyName: translatableType
   ): resultType {
-    const selectedLanguage = this.translateService.currentLang ?? Language.DE;
+    const selectedLanguage = this.translateService.currentLang() ?? Language.DE;
     return `${propertyName}${selectedLanguage[0].toUpperCase()}${selectedLanguage[1]}` as resultType;
   }
 }

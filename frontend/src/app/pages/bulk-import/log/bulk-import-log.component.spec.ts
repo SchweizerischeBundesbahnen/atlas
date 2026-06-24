@@ -4,8 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BulkImportResult } from '../../../api';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { Pipe, PipeTransform } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockMatPaginatorComponent } from '../../../app.testing.mocks';
+import { MockMatPaginatorComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { By } from '@angular/platform-browser';
 import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
 import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
@@ -34,17 +33,16 @@ describe('BulkImportLogComponent', () => {
     bulkImportService.getBulkImportResults.mockReturnValue(of(importResult));
 
     TestBed.configureTestingModule({
-      imports: [BulkImportLogComponent, TranslateModule.forRoot()],
+      imports: [BulkImportLogComponent],
       providers: [
+        translateServiceProvider,
         { provide: BulkImportService, useValue: bulkImportService },
         { provide: ActivatedRoute, useValue: { params: of({ id: 10 }) } },
       ],
-    })
-      .overrideComponent(BulkImportLogComponent, {
-        remove: { imports: [UserDisplayNamePipe] },
-        add: { imports: [UserDisplayNamePipeMock] },
-      })
-      .compileComponents();
+    }).overrideComponent(BulkImportLogComponent, {
+      remove: { imports: [UserDisplayNamePipe] },
+      add: { imports: [UserDisplayNamePipeMock] },
+    });
 
     fixture = TestBed.createComponent(BulkImportLogComponent);
     component = fixture.componentInstance;

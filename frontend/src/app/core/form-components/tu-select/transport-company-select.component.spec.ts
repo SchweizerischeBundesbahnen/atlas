@@ -17,8 +17,8 @@ describe('TransportCompanySelectComponent', () => {
   let formGroupInput: ReturnType<typeof signal<FormGroup>>;
   let controlNameInput: ReturnType<typeof signal<string>>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         NgSelectModule,
         TransportCompanySelectComponent,
@@ -27,7 +27,7 @@ describe('TransportCompanySelectComponent', () => {
         AtlasFieldErrorComponent,
       ],
       providers: [TranslatePipe, translateServiceProvider, provideHttpClientTesting()],
-    }).compileComponents();
+    });
 
     const formGroupInputName: keyof TransportCompanySelectComponent = 'formGroup';
     const controlNameInputName: keyof TransportCompanySelectComponent = 'controlName';

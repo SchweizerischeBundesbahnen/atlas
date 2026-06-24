@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angular/core';
 import { ServicePointSearchResult } from '../../api';
 import { catchError, concat, debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,6 +18,7 @@ const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
 @Component({
   selector: 'atlas-search-service-point',
   templateUrl: './search-service-point.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./search-service-point.component.scss'],
   imports: [
     NgSelectComponent,

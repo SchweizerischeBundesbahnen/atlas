@@ -14,7 +14,7 @@ describe('BoStatementDetail', () => {
   let fixture: ComponentFixture<BoStatementDetailComponent>;
   let router: Router;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const activatedRoute = {
       snapshot: {
         data: {
@@ -25,7 +25,7 @@ describe('BoStatementDetail', () => {
         },
       },
     };
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [BoStatementDetailComponent],
       providers: [
         translateServiceProvider,
@@ -36,7 +36,7 @@ describe('BoStatementDetail', () => {
           useValue: activatedRoute,
         },
       ],
-    }).compileComponents();
+    });
 
     router = TestBed.inject(Router);
     fixture = TestBed.createComponent(BoStatementDetailComponent);

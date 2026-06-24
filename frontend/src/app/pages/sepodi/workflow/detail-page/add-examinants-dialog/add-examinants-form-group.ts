@@ -1,5 +1,5 @@
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { ReadStopPointWorkflow } from 'src/app/api';
+import { ReadStopPointWorkflow } from '../../../../../api';
 import { UniqueEmailsValidator } from '../../../../../core/validation/unique-emails-validator/unique-emails-validator';
 import { ExaminantFormGroup } from '../detail-form/stop-point-workflow-detail-form-group';
 

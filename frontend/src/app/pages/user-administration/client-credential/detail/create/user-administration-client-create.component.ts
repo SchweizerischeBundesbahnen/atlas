@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
@@ -20,6 +20,7 @@ import { ClientCredentialCreate } from '../../../../../api/model/clientCredentia
 @Component({
   selector: 'atlas-client-credential-administration-create',
   templateUrl: './user-administration-client-create.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,

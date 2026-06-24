@@ -1,19 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { UserAdministrationOverviewComponent } from './user-administration-overview.component';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 describe('UserAdministrationOverviewComponent', () => {
   let component: UserAdministrationOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationOverviewComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [UserAdministrationOverviewComponent, TranslateModule.forRoot()],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [UserAdministrationOverviewComponent],
       providers: [
+        translateServiceProvider,
         TranslatePipe,
         {
           provide: ActivatedRoute,
@@ -22,7 +24,7 @@ describe('UserAdministrationOverviewComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(UserAdministrationOverviewComponent);
     component = fixture.componentInstance;

@@ -10,10 +10,10 @@ describe('AtlasSlideToggleComponent', () => {
   let formGroupInput: ReturnType<typeof signal<FormGroup | undefined>>;
   let controlNameInput: ReturnType<typeof signal<string | undefined>>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AtlasSlideToggleComponent],
-    }).compileComponents();
+    });
 
     const formGroupInputName: keyof AtlasSlideToggleComponent = 'formGroup';
     const controlNameInputName: keyof AtlasSlideToggleComponent = 'controlName';

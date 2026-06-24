@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Data, Router } from '@angular/router';
 import { ReadServicePointVersion, ReadStopPointVersion } from '../../../api';
 import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
@@ -18,11 +18,7 @@ export abstract class BasePrmTabComponentService {
 
   _isStopPointExisting!: boolean;
 
-  protected router: Router;
-
-  protected constructor(router: Router) {
-    this.router = router;
-  }
+  protected router = inject(Router);
 
   protected closeSidePanel() {
     this.router.navigate([Pages.PRM.path]).then();

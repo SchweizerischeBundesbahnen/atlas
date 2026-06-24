@@ -1,4 +1,4 @@
-import { Component, ContentChild, inject, input, output, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, inject, input, output, TemplateRef } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
@@ -11,6 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-button[buttonType]',
   templateUrl: './atlas-button.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, NgTemplateOutlet, TranslatePipe],
   providers: [TranslatePipe],
 })

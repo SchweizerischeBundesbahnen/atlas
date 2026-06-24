@@ -1,7 +1,7 @@
-import { Component, inject, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, viewChild } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LocationService } from 'src/app/api/service/location/location.service';
+import { LocationService } from '../../api/service/location/location.service';
 import { SloidLocationModel } from '../../api/model/sloidLocationModel';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { SearchNavigationType } from '../search-service-point-panel/search-service-point-panel.component';
@@ -18,6 +18,7 @@ export const NAVIGATION_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.NAVIGATION_PLACEHOL
   imports: [TranslatePipe, ReactiveFormsModule, FormsModule, NgSelectComponent, InfoIconComponent],
   providers: [TranslatePipe],
   templateUrl: './navigate-service-point.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./navigate-service-point.component.scss'],
 })
 export class NavigateServicePointComponent {

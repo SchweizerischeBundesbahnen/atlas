@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { CompaniesComponent } from './companies.component';
 import { ContainerCompany } from '../../../api';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockTableComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { CompanyService } from '../../../api/service/bodi/company.service';
@@ -31,19 +31,18 @@ describe('CompaniesComponent', () => {
     companyService.getCompanies.mockReturnValue(of(company));
 
     TestBed.configureTestingModule({
-      imports: [CompaniesComponent, TranslateModule.forRoot()],
+      imports: [CompaniesComponent],
       providers: [
+        translateServiceProvider,
         TranslatePipe,
         RouterOutlet,
         { provide: CompanyService, useValue: companyService },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    })
-      .overrideComponent(CompaniesComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(CompaniesComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(CompaniesComponent);
     component = fixture.componentInstance;
@@ -61,8 +60,8 @@ describe('CompaniesComponent', () => {
     });
 
     expect(companyService.getCompanies).toHaveBeenCalledExactlyOnceWith([], 0, 10, ['uicCode,asc']);
-    expect(component['companies'].length).toEqual(1);
-    expect(component['companies'][0].uicCode).toEqual('1');
-    expect(component['totalCount']).toEqual(1);
+    expect(component['companies']().length).toEqual(1);
+    expect(component['companies']()[0].uicCode).toEqual('1');
+    expect(component['totalCount']()).toEqual(1);
   });
 });

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationClientOverviewComponent } from './user-administration-client-overview.component';
 import { of, Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -16,13 +16,13 @@ describe('UserAdministrationClientOverviewComponent', () => {
     Pick<ClientCredentialAdministrationService, 'getClientCredentials'>
   >;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     clientCredentialAdministrationService = {
       getClientCredentials: vi.fn().mockReturnValue(of()),
     };
 
-    await TestBed.configureTestingModule({
-      imports: [UserAdministrationClientOverviewComponent, TranslateModule.forRoot()],
+    TestBed.configureTestingModule({
+      imports: [UserAdministrationClientOverviewComponent],
       providers: [
         {
           provide: ClientCredentialAdministrationService,
@@ -36,7 +36,7 @@ describe('UserAdministrationClientOverviewComponent', () => {
         remove: { imports: [TableComponent] },
         add: { imports: [MockTableComponent] },
       })
-      .compileComponents();
+      ;
 
     fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
     component = fixture.componentInstance;

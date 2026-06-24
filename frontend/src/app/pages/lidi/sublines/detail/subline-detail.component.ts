@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -54,6 +54,7 @@ import { DialogData } from '../../../../core/components/dialog/dialog.data';
 
 @Component({
   templateUrl: './subline-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./subline-detail.component.scss'],
   providers: [ValidityService, TranslatePipe],
   imports: [

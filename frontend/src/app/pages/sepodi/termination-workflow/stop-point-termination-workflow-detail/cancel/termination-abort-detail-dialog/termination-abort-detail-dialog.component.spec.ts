@@ -21,7 +21,7 @@ describe('TerminationCancelDetailDialog', () => {
   let dialogRefMock: Mocked<Pick<MatDialogRef<TerminationAbortDetailDialogComponent>, 'close'>>;
   let terminationWorkflowServiceMock: Mocked<Pick<StopPointTerminationWorkflowService, 'abortTermination'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     dialogRefMock = {
       close: vi.fn(),
     };
@@ -39,7 +39,7 @@ describe('TerminationCancelDetailDialog', () => {
       }),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [TerminationAbortDetailDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefMock },
@@ -53,7 +53,7 @@ describe('TerminationCancelDetailDialog', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TerminationAbortDetailDialogComponent);
     component = fixture.componentInstance;

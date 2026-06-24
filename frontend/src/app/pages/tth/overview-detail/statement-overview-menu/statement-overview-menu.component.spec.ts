@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { SwissCanton, TimetableHearingStatementV2 } from 'src/app/api';
+import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { StatementOverviewMenuComponent } from './statement-overview-menu.component';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { StatementShareService } from '../statement-share-service';

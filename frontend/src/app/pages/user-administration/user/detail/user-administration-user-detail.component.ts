@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { User } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 import { UserAdministrationUserCreateComponent } from './create/user-administration-user-create.component';
@@ -11,6 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-user-administration',
   templateUrl: './user-administration-user-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [UserAdministrationUserEditComponent, UserAdministrationUserCreateComponent],
   providers: [TranslatePipe],
 })

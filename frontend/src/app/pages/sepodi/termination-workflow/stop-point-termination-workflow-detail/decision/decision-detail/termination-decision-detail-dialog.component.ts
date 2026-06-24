@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
@@ -36,6 +36,7 @@ export interface TerminationDecisionDetailDialogData extends DialogData {
 @Component({
   selector: 'atlas-termination-decision-detail-dialog',
   templateUrl: './termination-decision-detail-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['../../../../../../core/form-components/text-field/text-field.component.scss'],
   imports: [
     DialogCloseComponent,

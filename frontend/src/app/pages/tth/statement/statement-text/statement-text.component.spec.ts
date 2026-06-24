@@ -16,11 +16,11 @@ describe('StatementText', () => {
   let component: StatementTextComponent;
   let fixture: ComponentFixture<StatementTextComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [StatementTextComponent],
       providers: [translateServiceProvider, provideHttpClient(), provideHttpClientTesting()],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StatementTextComponent);
     component = fixture.componentInstance;

@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import { Tab } from '../../../../tab';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -10,6 +10,7 @@ export const PRM_RELATIONS_TAB_LINK = 'relations';
 @Component({
   selector: 'atlas-prm-detail-with-relation-tab',
   templateUrl: './detail-with-relation-tab.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./detail-with-relation-tab.component.scss'],
   imports: [MatTabNav, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, TranslatePipe],
 })

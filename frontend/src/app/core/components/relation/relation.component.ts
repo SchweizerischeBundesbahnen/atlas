@@ -1,4 +1,4 @@
-import { Component, Input, input, output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input, output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
@@ -21,6 +21,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-relation',
   templateUrl: './relation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./relation.component.scss'],
   imports: [
     MatTable,

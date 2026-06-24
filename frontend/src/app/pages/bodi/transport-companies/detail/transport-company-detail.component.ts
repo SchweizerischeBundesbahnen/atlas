@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ApplicationType, BusinessOrganisation, TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -32,6 +32,7 @@ import { DialogData } from '../../../../core/components/dialog/dialog.data';
 @Component({
   templateUrl: './transport-company-detail.component.html',
   styleUrls: ['./transport-company-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,

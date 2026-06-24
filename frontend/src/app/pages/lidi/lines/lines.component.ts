@@ -1,7 +1,6 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { Router, RouterOutlet } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { BusinessOrganisation, ElementType, LidiElementType, Line, Status } from '../../../api';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
@@ -21,9 +20,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-lidi-lines',
   templateUrl: './lines.component.html',
-  imports: [TableComponent, RouterOutlet, TranslatePipe],
+  imports: [TableComponent, TranslatePipe],
 })
-export class LinesComponent implements OnInit, OnDestroy {
+export class LinesComponent implements OnInit {
   private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
@@ -52,8 +51,6 @@ export class LinesComponent implements OnInit, OnDestroy {
     dateSelect: new TableFilterDateSelect(1, 'filter-width'),
   };
 
-  private lineVersionsSubscription?: Subscription;
-
   linesTableColumns: TableColumn<Line>[] = [
     { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
@@ -79,8 +76,8 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   tableFilterConfig!: TableFilter<unknown>[][];
 
-  lineVersions: Line[] = [];
-  totalCount$ = 0;
+  lineVersions = signal<Line[]>([]);
+  totalCount = signal(0);
 
   private readonly lineService = inject(LineInternalService);
   private readonly router = inject(Router);
@@ -91,7 +88,7 @@ export class LinesComponent implements OnInit, OnDestroy {
   }
 
   getOverview(pagination: TablePagination) {
-    this.lineVersionsSubscription = this.lineService
+    this.lineService
       .getLines(
         undefined,
         this.tableService.filter.chipSearch.getActiveSearch(),
@@ -108,8 +105,8 @@ export class LinesComponent implements OnInit, OnDestroy {
         addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')
       )
       .subscribe((lineContainer) => {
-        this.lineVersions = lineContainer.objects!;
-        this.totalCount$ = lineContainer.totalCount!;
+        this.lineVersions.set(lineContainer.objects!);
+        this.totalCount.set(lineContainer.totalCount!);
       });
   }
 
@@ -119,9 +116,5 @@ export class LinesComponent implements OnInit, OnDestroy {
       pathToNavigate = Pages.SUBLINES.path;
     }
     this.router.navigate([Pages.LIDI.path, pathToNavigate, $event.slnid]).then();
-  }
-
-  ngOnDestroy() {
-    this.lineVersionsSubscription?.unsubscribe();
   }
 }

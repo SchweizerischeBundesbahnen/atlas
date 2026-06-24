@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,6 +22,7 @@ import { StatementTableHandler } from '../../../util/statement-table-handler';
 @Component({
   selector: 'atlas-statement-select-dialog',
   templateUrl: './statement-select-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./statement-select-dialog.component.scss'],
   imports: [
     MatDialogClose,

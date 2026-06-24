@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { Subject } from 'rxjs';
@@ -7,17 +7,18 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { TthChangeCantonFormGroup } from './model/tth-change-canton-form-group';
 import { ChangeCantonData } from './model/change-canton-data';
 import { takeUntil } from 'rxjs/operators';
-import { ValidationService } from 'src/app/core/validation/validation.service';
 import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 import { Cantons } from '../../../../core/cantons/Cantons';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { NgOptimizedImage } from '@angular/common';
 import { Canton } from '../../../../core/cantons/Canton';
+import { ValidationService } from '../../../../core/validation/validation.service';
 
 @Component({
   selector: 'atlas-tth-change-canton-dialog',
   templateUrl: './tth-change-canton-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BaseChangeDialogComponent, ReactiveFormsModule, SelectComponent, NgOptimizedImage],
 })
 export class TthChangeCantonDialogComponent implements OnInit {

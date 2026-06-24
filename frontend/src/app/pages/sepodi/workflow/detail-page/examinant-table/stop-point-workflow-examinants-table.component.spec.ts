@@ -20,7 +20,7 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
   let component: StopPointWorkflowExaminantsTableComponent;
   let fixture: ComponentFixture<StopPointWorkflowExaminantsTableComponent>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         AppTestingModule,

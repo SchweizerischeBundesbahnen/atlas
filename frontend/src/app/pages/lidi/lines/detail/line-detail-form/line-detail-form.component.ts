@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LineConcessionType, LineType, MeanOfTransport, OfferCategory } from '../../../../../api';
 import { SelectComponent, SelectOptionGroup } from '../../../../../core/form-components/select/select.component';
@@ -21,6 +21,7 @@ interface OfferCategoryGroup {
 @Component({
   selector: 'atlas-line-detail-form',
   templateUrl: './line-detail-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./line-detail-form.component.scss'],
   imports: [
     ReactiveFormsModule,

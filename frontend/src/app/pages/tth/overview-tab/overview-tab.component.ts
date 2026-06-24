@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Pages } from '../../pages';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { OverviewToTabShareDataService } from './service/overview-to-tab-share-data.service';
@@ -10,6 +10,7 @@ import { PermissionService } from '../../../core/auth/permission/permission.serv
 
 @Component({
   templateUrl: './overview-tab.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTabNav, RouterLinkActive, MatTabLink, RouterLink, MatTabNavPanel, RouterOutlet, TranslatePipe, NgClass],
 })
 export class OverviewTabComponent {

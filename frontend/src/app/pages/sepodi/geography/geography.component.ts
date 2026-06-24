@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, Input, input, OnChanges, OnDestroy, output, SimpleChanges, } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input, OnChanges, OnDestroy, output, SimpleChanges, } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -22,6 +22,7 @@ export const WGS84_MAX_DIGITS = 11;
 @Component({
   selector: 'atlas-sepodi-geography',
   templateUrl: './geography.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     InfoIconComponent,
     AtlasSlideToggleComponent,

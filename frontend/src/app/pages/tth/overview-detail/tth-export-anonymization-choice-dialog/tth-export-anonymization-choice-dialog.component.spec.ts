@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { TthExportAnonymizationChoiceDialogComponent } from './tth-export-anonymization-choice-dialog.component';
 import { AppTestingModule } from '../../../../app.testing.module';
@@ -22,8 +22,8 @@ describe('TthExportAnonymizationChoiceDialogComponent', () => {
     confirmLeave: vi.fn().mockReturnValue(of({})),
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TthExportAnonymizationChoiceDialogComponent, AppTestingModule, BaseChangeDialogComponent, FormModule],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
@@ -31,7 +31,7 @@ describe('TthExportAnonymizationChoiceDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: TranslatePipe },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TthExportAnonymizationChoiceDialogComponent);
     component = fixture.componentInstance;

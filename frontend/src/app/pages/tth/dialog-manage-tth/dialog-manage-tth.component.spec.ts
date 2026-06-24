@@ -39,7 +39,7 @@ describe('DialogManageTthComponent', () => {
     statementCreatableExternal: true,
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     tthYearLidiServiceSpy = {
       getHearingYear: vi.fn().mockReturnValue(of(tthYear)),
       updateTimetableHearingSettings: vi.fn(),
@@ -55,7 +55,7 @@ describe('DialogManageTthComponent', () => {
       close: vi.fn(),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       providers: [
         translateServiceProvider,
         {
@@ -80,7 +80,7 @@ describe('DialogManageTthComponent', () => {
         },
       ],
       imports: [AppTestingModule, DialogManageTthComponent, MockAtlasButtonComponent, MockAtlasSlideToggleComponent],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(DialogManageTthComponent);
     component = fixture.componentInstance;

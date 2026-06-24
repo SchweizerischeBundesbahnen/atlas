@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
@@ -23,6 +23,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-timetable-field-number-overview',
   templateUrl: './timetable-field-number-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AtlasButtonComponent, TableComponent, RouterOutlet, TranslatePipe],
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {

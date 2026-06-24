@@ -34,7 +34,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": "components/eslint.config.js",
+            "eslintConfig": "components/eslint.config.ts",
             "lintFilePatterns": [
               "components/src/**/*.ts",
               "components/src/**/*.html"
@@ -75,7 +75,8 @@
             },
             "index": "src/index.html",
             "polyfills": [
-              "src/polyfills.ts"
+              "src/polyfills.ts",
+              "zone.js/testing"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",

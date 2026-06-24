@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -68,6 +68,7 @@ export const DOSSIER_EDITABLE_STATES = [
   ],
   providers: [OpenCantonDossierInMailService, TranslatePipe],
   templateUrl: './canton-dossier-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./canton-dossier-detail.component.scss'],
 })
 export class CantonDossierDetailComponent implements DetailFormComponent, DetailWithCancelEdit, OnInit {

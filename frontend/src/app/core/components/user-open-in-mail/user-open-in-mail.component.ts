@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import { ApplicationType, User } from '../../../api';
 import { PermissionService } from '../../auth/permission/permission.service';
@@ -7,6 +7,7 @@ import { PermissionService } from '../../auth/permission/permission.service';
   selector: 'atlas-user-open-in-mail',
   styleUrls: ['./user-open-in-mail.component.scss'],
   templateUrl: './user-open-in-mail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class UserOpenInMailComponent {
   readonly userId = input.required<string>();

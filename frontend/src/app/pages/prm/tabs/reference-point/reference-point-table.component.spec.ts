@@ -12,7 +12,6 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { ReferencePointInternalService } from '../../../../api/service/prm/reference-point/reference-point-internal.service';
 
 const referencePointOverview: ReadReferencePointVersion[] = [
@@ -65,7 +64,7 @@ describe('ReferencePointTableComponent', () => {
     referencePointInternalService.getReferencePointsOverview.mockReturnValue(of(referencePointOverview));
 
     TestBed.configureTestingModule({
-      imports: [ReferencePointTableComponent, TranslateModule.forRoot()],
+      imports: [ReferencePointTableComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

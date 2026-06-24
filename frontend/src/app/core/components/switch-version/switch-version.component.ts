@@ -1,5 +1,4 @@
-import {
-  AfterViewInit,
+import { ChangeDetectionStrategy, AfterViewInit,
   Component,
   ElementRef,
   inject,
@@ -8,8 +7,7 @@ import {
   OnInit,
   output,
   QueryList,
-  ViewChildren,
-} from '@angular/core';
+  ViewChildren, } from '@angular/core';
 import { Record } from '../../model/record';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
@@ -32,6 +30,7 @@ import { NgClass } from '@angular/common';
 @Component({
   selector: 'atlas-switch-version',
   templateUrl: './switch-version.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./switch-version.component.scss'],
   imports: [
     MatTable,

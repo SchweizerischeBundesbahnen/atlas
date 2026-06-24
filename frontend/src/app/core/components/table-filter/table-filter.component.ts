@@ -1,4 +1,4 @@
-import { Component, output, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { Moment } from 'moment/moment';
 import { TableFilterChip } from './config/table-filter-chip';

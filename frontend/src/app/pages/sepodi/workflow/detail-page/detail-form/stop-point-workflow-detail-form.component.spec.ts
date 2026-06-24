@@ -39,7 +39,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
 
   let stopPointWorkflowService: Mocked<Pick<StopPointWorkflowService, 'getExaminants'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     stopPointWorkflowService = {
       getExaminants: vi.fn().mockReturnValue(of(defaultExaminants)),
     };

@@ -1,4 +1,4 @@
-import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BusinessOrganisation } from '../../../api';
@@ -11,6 +11,7 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
 @Component({
   selector: 'atlas-bo-select',
   templateUrl: './business-organisation-select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [SearchSelectComponent, ReactiveFormsModule, AtlasLabelFieldComponent, BoSelectionDisplayPipe],
 })
 export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, OnChanges {

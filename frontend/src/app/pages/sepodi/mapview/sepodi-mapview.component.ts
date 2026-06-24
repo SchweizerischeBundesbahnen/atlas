@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GeoJsonProperties } from 'geojson';
 import { Router, RouterOutlet } from '@angular/router';
 import { Pages } from '../../pages';
@@ -13,6 +13,7 @@ import { MapComponent } from '../map/map.component';
 @Component({
   selector: 'atlas-sepodi-mapview',
   templateUrl: './sepodi-mapview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sepodi-mapview.component.scss'],
   imports: [AtlasButtonComponent, NgClass, RouterOutlet, MapComponent, SearchServicePointPanelComponent],
 })

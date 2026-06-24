@@ -21,7 +21,7 @@ describe('DecisionStepperComponent', () => {
   let dialogRefSpy: Mocked<Pick<MatDialogRef<DecisionStepperComponent>, 'close'>>;
   let spWfServiceSpy: Mocked<Pick<StopPointWorkflowService, 'obtainOtp' | 'verifyOtp' | 'voteWorkflow'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     dialogRefSpy = { close: vi.fn() };
     spWfServiceSpy = {
       obtainOtp: vi.fn(),
@@ -29,7 +29,7 @@ describe('DecisionStepperComponent', () => {
       voteWorkflow: vi.fn(),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
         DecisionStepperComponent,
@@ -53,7 +53,7 @@ describe('DecisionStepperComponent', () => {
           useValue: 1,
         },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(DecisionStepperComponent);
     component = fixture.componentInstance;

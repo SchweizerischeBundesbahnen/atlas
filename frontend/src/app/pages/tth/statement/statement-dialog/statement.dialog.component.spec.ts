@@ -43,9 +43,9 @@ describe('StatementDialogComponent', () => {
 
   mockTimetableHearingStatementsService.updateHearingStatement.mockReturnValue(of(statement));
 
-  beforeEach(async () => {
+  beforeEach(() => {
     dialogRefSpy = { close: vi.fn() };
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [AppTestingModule, FormModule, StatementDialogComponent, MockAtlasButtonComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: form },
@@ -57,7 +57,7 @@ describe('StatementDialogComponent', () => {
         },
         { provide: TranslatePipe },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(StatementDialogComponent);
     component = fixture.componentInstance;

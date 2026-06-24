@@ -1,4 +1,4 @@
-import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TransportCompany } from '../../../api';
@@ -11,6 +11,7 @@ import { TransportCompanyService } from '../../../api/service/bodi/transport-com
 @Component({
   selector: 'atlas-tu-select',
   templateUrl: './transport-company-select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [SearchSelectComponent, ReactiveFormsModule, AtlasLabelFieldComponent],
   providers: [TranslatePipe],
 })

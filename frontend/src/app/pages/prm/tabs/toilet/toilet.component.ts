@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
@@ -18,6 +18,7 @@ import { ToiletInternalService } from '../../../../api/service/prm/toilet/toilet
 @Component({
   selector: 'atlas-toilet',
   templateUrl: './toilet.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
 export class ToiletComponent extends BasePrmTabComponentService implements OnInit {
@@ -47,10 +48,6 @@ export class ToiletComponent extends BasePrmTabComponentService implements OnIni
 
   totalCount = 0;
   toilets: ToiletOverview[] = [];
-
-  constructor() {
-    super(inject(Router));
-  }
 
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);

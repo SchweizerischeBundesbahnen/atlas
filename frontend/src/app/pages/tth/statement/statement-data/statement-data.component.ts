@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { TimetableFieldNumberSelectComponent } from '../../../../core/form-components/ttfn-select/timetable-field-number-select.component';
@@ -19,6 +19,7 @@ import { TimetableHearingStatementInternalService } from '../../../../api/servic
     TransportCompanySelectComponent,
   ],
   templateUrl: './statement-data.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./statement-data.component.scss'],
 })
 export class StatementDataComponent {

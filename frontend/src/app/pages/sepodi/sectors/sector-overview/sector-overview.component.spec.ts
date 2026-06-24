@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { SectorOverviewComponent } from './sector-overview.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 import { SpatialReference } from '../../../../api';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 
 describe('SectorOverviewComponent', () => {
   let component: SectorOverviewComponent;
@@ -39,7 +38,7 @@ describe('SectorOverviewComponent', () => {
     totalCount: 0,
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     sectorInternalServiceSpy = {
       getSectors: vi.fn(),
     };
@@ -50,9 +49,10 @@ describe('SectorOverviewComponent', () => {
     };
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
-    await TestBed.configureTestingModule({
-      imports: [SectorOverviewComponent, TranslateModule.forRoot()],
+    TestBed.configureTestingModule({
+      imports: [SectorOverviewComponent],
       providers: [
+        translateServiceProvider,
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -63,7 +63,7 @@ describe('SectorOverviewComponent', () => {
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(SectorOverviewComponent);
     component = fixture.componentInstance;

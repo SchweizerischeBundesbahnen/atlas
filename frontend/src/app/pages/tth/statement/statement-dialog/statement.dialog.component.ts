@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TimetableHearingStatementV2 } from '../../../../api';
@@ -6,15 +6,16 @@ import { Subject } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StatementDetailFormGroup } from '../statement-detail/statement-detail-form-group';
 import { takeUntil } from 'rxjs/operators';
-import { ValidationService } from 'src/app/core/validation/validation.service';
 import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ValidationService } from '../../../../core/validation/validation.service';
 
 @Component({
   selector: 'atlas-dialog',
   templateUrl: './statement.dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommentComponent, ReactiveFormsModule, MatDialogActions, AtlasButtonComponent, TranslatePipe],
   providers: [TranslatePipe],
 })

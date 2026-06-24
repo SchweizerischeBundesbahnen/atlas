@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
@@ -65,6 +65,7 @@ import { AtlasClipboardComponent } from '../../../../core/form-components/atlas-
     AtlasClipboardComponent,
   ],
   templateUrl: './sector-group-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sector-group-detail.component.scss'],
   providers: [ValidityService],
 })

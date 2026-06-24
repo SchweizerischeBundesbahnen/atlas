@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { LinesComponent } from './lines.component';
 import { ContainerLine, ElementType, LidiElementType, Line, Status } from '../../../api';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockTableComponent, translateServiceProvider } from '../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
 import { TableComponent } from '../../../core/components/table/table.component';
@@ -51,18 +51,17 @@ describe('LinesComponent', () => {
     lineInternalService.getLines.mockReturnValue(of(versionContainer));
 
     TestBed.configureTestingModule({
-      imports: [LinesComponent, TranslateModule.forRoot()],
+      imports: [LinesComponent],
       providers: [
+        translateServiceProvider,
         TranslatePipe,
         { provide: LineInternalService, useValue: lineInternalService },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    })
-      .overrideComponent(LinesComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      .compileComponents();
+    }).overrideComponent(LinesComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(LinesComponent);
     component = fixture.componentInstance;
@@ -116,8 +115,8 @@ describe('LinesComponent', () => {
       ['slnid,asc']
     );
 
-    expect(component.lineVersions.length).toEqual(1);
-    expect(component.lineVersions[0].slnid).toEqual('slnid');
-    expect(component.totalCount$).toEqual(1);
+    expect(component.lineVersions().length).toEqual(1);
+    expect(component.lineVersions()[0].slnid).toEqual('slnid');
+    expect(component.totalCount()).toEqual(1);
   });
 });

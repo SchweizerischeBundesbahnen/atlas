@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { InterpolatableTranslationObject, TranslateService } from '@ngx-translate/core';
 import { DateAdapter } from '@angular/material/core';
 import { Language } from './language';
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'atlas-language-switcher',
   templateUrl: './language-switcher.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./language-switcher.component.scss'],
   imports: [RouterLink, NgClass, UpperCasePipe],
 })
@@ -28,7 +29,7 @@ export class LanguageSwitcherComponent {
   }
 
   get currentLanguage(): string {
-    return this.translateService.getCurrentLang();
+    return this.translateService.getCurrentLang()!;
   }
 
   setLanguage(language: string): Observable<InterpolatableTranslationObject> {

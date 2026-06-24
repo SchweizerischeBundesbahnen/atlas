@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { LoadingSpinnerComponent } from './core/components/loading-spinner/loading-spinner.component';
@@ -14,6 +14,7 @@ import { CdkScrollable } from '@angular/cdk/overlay';
   selector: 'atlas-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoadingSpinnerComponent,
     HeaderComponent,

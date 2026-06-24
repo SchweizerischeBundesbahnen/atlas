@@ -3,8 +3,8 @@
 </div>
 
 <atlas-table
-  [tableData]="businessOrganisations"
-  [totalCount]="totalCount$"
+  [tableData]="businessOrganisations()"
+  [totalCount]="totalCount()"
   [tableColumns]="tableColumns"
   [tableFilterConfig]="tableFilterConfig"
   (editElementEvent)="editVersion($event)"

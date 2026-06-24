@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasLabelFieldComponent } from '@atlas/form';
@@ -10,6 +10,7 @@ import { DateIconComponent } from '../date-icon/date-icon.component';
 @Component({
   selector: 'atlas-form-date',
   templateUrl: './date.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['../text-field/text-field.component.scss'],
   imports: [
     ReactiveFormsModule,

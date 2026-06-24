@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DetailDialogHelperService } from '../../../../../../core/detail/detail-dialog-helper.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -12,13 +12,14 @@ import { StopPointTerminationDialogData } from './stop-point-termination-dialog-
 import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { UserService } from '../../../../../../core/auth/user/user.service';
-import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
+import { AtlasFieldLengthValidator } from '../../../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 import { StartTerminationStopPointAddWorkflow } from '../../../../../../api/model/startTerminationStopPointAddWorkflow';
 
 @Component({
   selector: 'atlas-stop-point-termination-dialog',
   templateUrl: './stop-point-termination-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DialogCloseComponent, DialogContentComponent, DialogFooterComponent, TranslatePipe, CommentComponent],
 })
 export class StopPointTerminationDialogComponent implements OnInit {

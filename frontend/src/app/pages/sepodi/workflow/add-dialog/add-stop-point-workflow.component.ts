@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StopPointAddWorkflow, StopPointPerson } from '../../../../api';
 import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
@@ -23,6 +23,7 @@ import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-
 @Component({
   selector: 'atlas-workflow-dialog',
   templateUrl: './add-stop-point-workflow.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./add-stop-point-workflow.component.scss'],
   imports: [
     DialogCloseComponent,

@@ -41,8 +41,8 @@ describe('TthDossierOverviewMenuComponent', () => {
   let component: TthDossierOverviewMenuComponent;
   let fixture: ComponentFixture<TthDossierOverviewMenuComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TthDossierOverviewMenuComponent],
       providers: [
         { provide: DialogService, useValue: dialogService },
@@ -53,7 +53,7 @@ describe('TthDossierOverviewMenuComponent', () => {
         { provide: TranslatePipe },
         translateServiceProvider,
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TthDossierOverviewMenuComponent);
     component = fixture.componentInstance;

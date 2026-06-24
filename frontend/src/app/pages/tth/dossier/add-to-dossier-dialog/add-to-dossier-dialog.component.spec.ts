@@ -37,8 +37,8 @@ describe('AddToDossierDialogComponent', () => {
   let component: AddToDossierDialogComponent;
   let fixture: ComponentFixture<AddToDossierDialogComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AppTestingModule, AddToDossierDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
@@ -52,7 +52,7 @@ describe('AddToDossierDialogComponent', () => {
         },
         { provide: TranslatePipe },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(AddToDossierDialogComponent);
     component = fixture.componentInstance;

@@ -1,5 +1,4 @@
-import {
-  Component,
+import { ChangeDetectionStrategy, Component,
   ContentChild,
   Input,
   input,
@@ -8,8 +7,7 @@ import {
   output,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
-} from '@angular/core';
+  ViewChild, } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatOptgroup, MatOption } from '@angular/material/core';
 import { NgTemplateOutlet } from '@angular/common';
@@ -29,6 +27,7 @@ export interface SelectOptionGroup {
 @Component({
   selector: 'atlas-select',
   templateUrl: './select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./select.component.scss'],
   imports: [
     ReactiveFormsModule,

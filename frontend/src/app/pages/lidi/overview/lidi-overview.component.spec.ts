@@ -11,8 +11,8 @@ describe('LidiOverviewComponent', () => {
   let component: LidiOverviewComponent;
   let fixture: ComponentFixture<LidiOverviewComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AppTestingModule, LidiOverviewComponent, LinesComponent, AtlasButtonComponent],
       providers: [
         {
@@ -20,7 +20,7 @@ describe('LidiOverviewComponent', () => {
           useValue: adminPermissionServiceMock,
         },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(LidiOverviewComponent);
     component = fixture.componentInstance;

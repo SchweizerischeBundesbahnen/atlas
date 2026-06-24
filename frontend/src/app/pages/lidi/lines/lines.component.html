@@ -7,9 +7,8 @@
   (tableChanged)="getOverview($event)"
   (tableInitialized)="getOverview($event)"
   [tableColumns]="linesTableColumns"
-  [tableData]="lineVersions"
-  [totalCount]="totalCount$"
+  [tableData]="lineVersions()"
+  [totalCount]="totalCount()"
   [tableFilterConfig]="tableFilterConfig"
   data-cy="lidi-lines"
 />
-<router-outlet />

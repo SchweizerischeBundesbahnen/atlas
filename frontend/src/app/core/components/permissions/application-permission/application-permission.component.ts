@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -28,6 +28,7 @@ import { AtlasLabelFieldComponent } from '@atlas/form';
 @Component({
   selector: 'atlas-application-permission',
   templateUrl: './application-permission.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./application-permission.component.scss'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [

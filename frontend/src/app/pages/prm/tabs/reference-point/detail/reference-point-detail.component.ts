@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { ReferencePointFormGroupBuilder } from './form/reference-point-form-group';
 import { DateRange } from '../../../../../core/versioning/date-range';
@@ -26,6 +26,7 @@ import { SloidContainerComponent } from '../../../../../core/sloid-container/slo
 @Component({
   selector: 'atlas-reference-point',
   templateUrl: './reference-point-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService],
   imports: [
     DetailPageContainerComponent,

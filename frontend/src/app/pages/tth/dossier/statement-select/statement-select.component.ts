@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimetableHearingStatementV2 } from '../../../../api';
 import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
@@ -15,6 +15,7 @@ import { StatementTableHandler } from '../../util/statement-table-handler';
   selector: 'atlas-statement-select',
   imports: [FormsModule, ReactiveFormsModule, TableComponent, TranslatePipe],
   templateUrl: './statement-select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StatementSelectComponent extends StatementTableHandler {
   readonly selectedStatements = model.required<number[]>();

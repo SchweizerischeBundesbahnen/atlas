@@ -24,7 +24,7 @@ describe('UserOpenInMailComponent', () => {
     },
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     // Config
     TestBed.configureTestingModule({
       providers: [{ provide: UserAdministrationService, useValue: userAdminServiceMock }],
@@ -40,7 +40,7 @@ describe('UserOpenInMailComponent', () => {
       ],
     });
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

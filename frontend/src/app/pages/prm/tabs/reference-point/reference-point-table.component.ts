@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
@@ -18,6 +18,7 @@ import { ReferencePointInternalService } from '../../../../api/service/prm/refer
 @Component({
   selector: 'atlas-reference-point-table',
   templateUrl: './reference-point-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AtlasButtonComponent, TableComponent, DetailFooterComponent],
 })
 export class ReferencePointTableComponent extends BasePrmTabComponentService implements OnInit {
@@ -42,10 +43,6 @@ export class ReferencePointTableComponent extends BasePrmTabComponentService imp
 
   totalCount = 0;
   referencePoints: ReadReferencePointVersion[] = [];
-
-  constructor() {
-    super(inject(Router));
-  }
 
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);

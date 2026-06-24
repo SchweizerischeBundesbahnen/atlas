@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { TrafficPointElementsTableComponent } from './traffic-point-elements-table.component';
 import { AuthService } from '../../../../core/auth/auth.service';
 import {
   MockAtlasButtonComponent,
   MockNavigationSepodiPrmComponent,
   MockTableComponent,
+  translateServiceProvider,
 } from '../../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -17,7 +18,6 @@ import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
@@ -49,7 +49,7 @@ describe('TrafficPointElementsTableComponent', () => {
     }),
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     trafficPointElementInternalServiceSpy = {
       getPlatformsOfServicePoint: vi.fn(),
     };
@@ -62,9 +62,10 @@ describe('TrafficPointElementsTableComponent', () => {
     };
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
-    await TestBed.configureTestingModule({
-      imports: [TrafficPointElementsTableComponent, TranslateModule.forRoot()],
+    TestBed.configureTestingModule({
+      imports: [TrafficPointElementsTableComponent],
       providers: [
+        translateServiceProvider,
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: AuthService, useValue: authService },
@@ -75,16 +76,14 @@ describe('TrafficPointElementsTableComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: routerSpy },
       ],
-    })
-      .overrideComponent(TrafficPointElementsTableComponent, {
-        remove: {
-          imports: [AtlasButtonComponent, TableComponent, NavigationSepodiPrmComponent],
-        },
-        add: {
-          imports: [MockAtlasButtonComponent, MockTableComponent, MockNavigationSepodiPrmComponent],
-        },
-      })
-      .compileComponents();
+    }).overrideComponent(TrafficPointElementsTableComponent, {
+      remove: {
+        imports: [AtlasButtonComponent, TableComponent, NavigationSepodiPrmComponent],
+      },
+      add: {
+        imports: [MockAtlasButtonComponent, MockTableComponent, MockNavigationSepodiPrmComponent],
+      },
+    });
 
     fixture = TestBed.createComponent(TrafficPointElementsTableComponent);
     component = fixture.componentInstance;

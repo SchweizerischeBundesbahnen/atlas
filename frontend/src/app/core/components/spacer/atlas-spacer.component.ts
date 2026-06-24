@@ -1,8 +1,9 @@
-import { Component, OnInit, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, input } from '@angular/core';
 
 @Component({
   selector: 'atlas-spacer',
   templateUrl: './atlas-spacer.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['atlas-spacer.component.scss'],
 })
 export class AtlasSpacerComponent implements OnInit {

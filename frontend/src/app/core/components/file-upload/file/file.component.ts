@@ -1,4 +1,4 @@
-import { Component, ContentChild, input, output, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, input, output, TemplateRef } from '@angular/core';
 import { FileSizePipe } from '../file-size/file-size.pipe';
 import { NgTemplateOutlet } from '@angular/common';
 
@@ -12,6 +12,7 @@ type FileEvent =
 @Component({
   selector: 'atlas-file',
   templateUrl: './file.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./file.component.scss'],
   imports: [FileSizePipe, NgTemplateOutlet],
 })

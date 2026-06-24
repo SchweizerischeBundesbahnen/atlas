@@ -1,21 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, Mocked, vi } from 'vitest';
-import { StopPointTerminationWorkflowDetail } from './stop-point-termination-workflow-detail';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
-import { StopPointTerminationWorkflowDetailData } from './stop-point-termination-workflow-resolver';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
-import { of } from 'rxjs';
-import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
-import { TerminationDecision } from '../../../../api/model/terminationDecision';
-import { StopPointTerminationWorkflowDetailFormGroupBuilder } from './stop-point-termination-workflow-detail-form-group';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {beforeEach, describe, expect, it, Mocked, vi} from 'vitest';
+import {StopPointTerminationWorkflowDetail} from './stop-point-termination-workflow-detail';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BERN_WYLEREGG} from '../../../../../test/data/service-point';
+import {StopPointTerminationWorkflowDetailData} from './stop-point-termination-workflow-resolver';
+import {TranslatePipe} from '@ngx-translate/core';
+import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {BoSelectionDisplayPipe} from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
+import {of} from 'rxjs';
+import {TerminationWorkflowStatus} from '../../../../api/model/terminationWorkflowStatus';
+import {TerminationDecision} from '../../../../api/model/terminationDecision';
+import {StopPointTerminationWorkflowDetailFormGroupBuilder} from './stop-point-termination-workflow-detail-form-group';
 import moment from 'moment/moment';
-import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { TerminationDecisionDetailDialogComponent } from './decision/decision-detail/termination-decision-detail-dialog.component';
+import {TerminationStopPointWorkflowModel} from '../../../../api/model/terminationStopPointWorkflowModel';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {TerminationDecisionDetailDialogComponent} from './decision/decision-detail/termination-decision-detail-dialog.component';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 describe('StopPointTerminationWorkflowDetail', () => {
@@ -53,7 +54,7 @@ describe('StopPointTerminationWorkflowDetail', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [StopPointTerminationWorkflowDetail, TranslateModule.forRoot()],
+      imports: [StopPointTerminationWorkflowDetail],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -62,6 +63,7 @@ describe('StopPointTerminationWorkflowDetail', () => {
         { provide: BoSelectionDisplayPipe },
         { provide: Router },
         { provide: DialogService, useValue: dialogServiceSpy },
+        translateServiceProvider,
       ],
     });
 

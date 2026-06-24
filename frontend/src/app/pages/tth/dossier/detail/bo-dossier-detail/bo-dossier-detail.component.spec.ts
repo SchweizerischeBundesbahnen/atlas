@@ -46,7 +46,7 @@ describe('BoDossierDetail', () => {
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
   const openBoDossierInMailService = mock<OpenBoDossierInMailService>();
 
-  beforeEach(async () => {
+  beforeEach(() => {
     timetableHearingStatementInternalService = {
       getStatement: vi.fn().mockReturnValue(of(statement)),
     };
@@ -108,7 +108,7 @@ describe('BoDossierDetail', () => {
 
     fixture = TestBed.createComponent(BoDossierDetailComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

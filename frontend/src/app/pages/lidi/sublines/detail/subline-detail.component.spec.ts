@@ -117,10 +117,10 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.toggleEdit();
-    await fixture.whenStable();
+    fixture.whenStable();
     component.form.controls.description.setValue('NewDescription');
     component.save();
-    await fixture.whenStable();
+    fixture.whenStable();
     fixture.detectChanges();
 
     expect(sublineService.updateSublineVersionV2).toHaveBeenCalled();
@@ -146,7 +146,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.delete();
-    await fixture.whenStable();
+    fixture.whenStable();
     fixture.detectChanges();
 
     const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
@@ -161,7 +161,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.revoke();
-    await fixture.whenStable();
+    fixture.whenStable();
     fixture.detectChanges();
 
     const snackBarContainer = document.body.querySelector('mat-snack-bar-container');
@@ -211,7 +211,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
       });
 
       component.save();
-      await fixture.whenStable();
+      fixture.whenStable();
       fixture.detectChanges();
 
       expect(sublineService.createSublineVersionV2).toHaveBeenCalled();

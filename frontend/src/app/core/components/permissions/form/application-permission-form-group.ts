@@ -8,7 +8,7 @@ import {
   Permission,
   PermissionRestrictionType,
   SboidPermissionRestrictionModel,
-} from 'src/app/api';
+} from '../../../../api';
 import { InfoPlusTerminationVotePermissionRestrictionModel } from '../../../../api/model/infoPlusTerminationVotePermissionRestrictionModel';
 import { NovaTerminationVotePermissionRestrictionModel } from '../../../../api/model/novaTerminationVotePermissionRestrictionModel';
 import { ApplicationPermissionConfig, RoleConfig } from '../application-permission/application-permission.config';

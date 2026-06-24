@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
@@ -17,6 +17,7 @@ import { filter } from 'rxjs/operators';
   selector: 'atlas-tth-overview-base',
   imports: [OverviewTabHeadingComponent, SelectComponent, NgOptimizedImage, RouterOutlet],
   templateUrl: './tth-overview-base.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TthOverviewBaseComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);

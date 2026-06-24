@@ -4,7 +4,6 @@ import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
 import { TimetableHearingOverviewComponent } from './timetable-hearing-overview.component';
 import { By } from '@angular/platform-browser';
 import { CantonCardComponent } from './canton-card/canton-card.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { AppTestingModule } from '../../../app.testing.module';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 
@@ -13,13 +12,13 @@ describe('TimetableHearingOverviewComponent', () => {
   let fixture: ComponentFixture<TimetableHearingOverviewComponent>;
   let service: Mocked<Pick<OverviewToTabShareDataService, 'setCantonShort'>>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     service = { setCantonShort: vi.fn() };
 
-    await TestBed.configureTestingModule({
-      imports: [AppTestingModule, TranslateModule.forRoot(), TimetableHearingOverviewComponent, CantonCardComponent],
+    TestBed.configureTestingModule({
+      imports: [AppTestingModule, TimetableHearingOverviewComponent, CantonCardComponent],
       providers: [{ provide: OverviewToTabShareDataService, useValue: service }],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TimetableHearingOverviewComponent);
     component = fixture.componentInstance;
