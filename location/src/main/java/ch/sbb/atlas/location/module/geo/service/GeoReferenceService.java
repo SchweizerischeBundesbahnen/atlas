@@ -14,7 +14,6 @@ import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
-import feign.FeignException.FeignClientException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -114,11 +113,4 @@ public class GeoReferenceService {
     return result;
   }
 
-  private GeoAdminHeightResponse handleFeignClientException(FeignClientException e) {
-    if (e.status() == HttpStatus.BAD_REQUEST.value()) {
-      return new GeoAdminHeightResponse();
-    } else {
-      throw new HeightNotCalculatableException();
-    }
-  }
 }

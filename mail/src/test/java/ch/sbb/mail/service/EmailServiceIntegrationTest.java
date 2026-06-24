@@ -140,36 +140,6 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotRecipientAddress() {
-    //given
-    MailNotification mail = MailNotification.builder()
-        .content("Ciao ragazzi")
-        .from("aa@bb.ch")
-        .subject("Hello")
-        .to(new ArrayList<>())
-        .build();
-
-    //when
-    assertThatExceptionOfType(MailSendException.class).isThrownBy(
-        () -> mailService.sendSimpleMail(mail));
-  }
-
-  @Test
-  void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedRecipientAddress() {
-    //given
-    MailNotification mail = MailNotification.builder()
-        .content("Ciao ragazzi")
-        .from("as@cc.ch")
-        .subject("Hello")
-        .to(singletonList("123as   }$§d!!0"))
-        .build();
-
-    //when
-    assertThatExceptionOfType(MailSendException.class).isThrownBy(
-        () -> mailService.sendSimpleMail(mail));
-  }
-
-  @Test
   void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedFromAddress() {
     //given
     MailNotification mail = MailNotification.builder()

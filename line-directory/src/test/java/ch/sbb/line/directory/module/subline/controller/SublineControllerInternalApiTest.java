@@ -4,7 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
@@ -14,7 +13,6 @@ import ch.sbb.line.directory.module.line.controller.LineControllerV2;
 import ch.sbb.line.directory.module.line.repository.LineVersionRepository;
 import ch.sbb.line.directory.module.subline.SublineTestData;
 import ch.sbb.line.directory.module.subline.repository.SublineVersionRepository;
-import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

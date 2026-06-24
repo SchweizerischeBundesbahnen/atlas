@@ -267,17 +267,17 @@ class AtlasAnnotationProcessorTest {
 
       @Override
       public void setValidFrom(LocalDate validFrom) {
-
+        throw new UnsupportedOperationException();
       }
 
       @Override
       public void setValidTo(LocalDate validTo) {
-
+        throw new UnsupportedOperationException();
       }
 
       @Override
       public void setId(Long id) {
-
+        throw new UnsupportedOperationException();
       }
     }
 

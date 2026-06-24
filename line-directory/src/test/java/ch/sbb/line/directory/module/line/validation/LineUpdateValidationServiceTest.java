@@ -45,9 +45,9 @@ class LineUpdateValidationServiceTest {
     LineVersion currentLineVersion = LineTestData.lineVersionBuilder().status(Status.IN_REVIEW).build();
     LineVersion editedLineVersion = LineTestData.lineVersionBuilder().description("This is better").build();
 
+    List<LineVersion> currentVersions = List.of(currentLineVersion);
     assertThrows(ForbiddenDueToInReviewException.class,
-        () -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion, editedLineVersion,
-            List.of(currentLineVersion)));
+        () -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion, editedLineVersion, currentVersions));
   }
 
   @Test
@@ -70,9 +70,9 @@ class LineUpdateValidationServiceTest {
         .validTo(LocalDate.of(2021, 12, 31))
         .build();
 
+    List<LineVersion> currentVersions = List.of(currentLineVersion1, currentLineVersion2);
     assertThrows(ForbiddenDueToInReviewException.class,
-        () -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion1, editedLineVersion,
-            List.of(currentLineVersion1, currentLineVersion2)));
+        () -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion1, editedLineVersion, currentVersions));
   }
 
   @Test
@@ -95,8 +95,9 @@ class LineUpdateValidationServiceTest {
         .validTo(LocalDate.of(2020, 7, 31))
         .build();
 
-    assertDoesNotThrow(() -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion1, editedLineVersion,
-        List.of(currentLineVersion1, currentLineVersion2)));
+    List<LineVersion> currentVersions = List.of(currentLineVersion1, currentLineVersion2);
+    assertDoesNotThrow(
+        () -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion1, editedLineVersion, currentVersions));
   }
 
   @Test
@@ -106,8 +107,9 @@ class LineUpdateValidationServiceTest {
     LineVersion currentLineVersion = LineTestData.lineVersionBuilder().status(Status.IN_REVIEW).build();
     LineVersion editedLineVersion = LineTestData.lineVersionBuilder().description("This is better").build();
 
-    assertDoesNotThrow(() -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion, editedLineVersion,
-        List.of(currentLineVersion)));
+    List<LineVersion> currentVersions = List.of(currentLineVersion);
+    assertDoesNotThrow(
+        () -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion, editedLineVersion, currentVersions));
   }
 
   @Test
@@ -117,9 +119,9 @@ class LineUpdateValidationServiceTest {
     LineVersion currentLineVersion = LineTestData.lineVersionBuilder().status(Status.IN_REVIEW).build();
     LineVersion editedLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY).build();
 
+    List<LineVersion> currentVersions = List.of(currentLineVersion);
     assertThrows(LineInReviewValidationException.class,
-        () -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion, editedLineVersion,
-            List.of(currentLineVersion)));
+        () -> lineUpdateValidationService.validateLineForUpdate(currentLineVersion, editedLineVersion, currentVersions));
   }
 
   @ParameterizedTest

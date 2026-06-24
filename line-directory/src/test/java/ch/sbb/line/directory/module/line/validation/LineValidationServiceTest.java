@@ -68,8 +68,9 @@ class LineValidationServiceTest {
         .validTo(LocalDate.of(2021, 10, 31))
         .build();
     // When
+    List<LineVersion> savedLine = List.of(lineVersion);
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineValidationService.validateTemporaryLinesDuration(List.of(lineVersion)));
+        () -> lineValidationService.validateTemporaryLinesDuration(savedLine));
   }
 
   @Test
@@ -81,8 +82,9 @@ class LineValidationServiceTest {
         .validTo(LocalDate.of(2021, 1, 15))
         .build();
     // When
+    List<LineVersion> savedLine = List.of(lineVersion);
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineValidationService.validateTemporaryLinesDuration(List.of(lineVersion)));
+        () -> lineValidationService.validateTemporaryLinesDuration(savedLine));
   }
 
   @Test
@@ -94,8 +96,9 @@ class LineValidationServiceTest {
         .validTo(LocalDate.of(2021, 10, 14))
         .build();
     // When & Then
+    List<LineVersion> savedLine = List.of(lineVersion);
     assertThatNoException().isThrownBy(
-        () -> lineValidationService.validateTemporaryLinesDuration(List.of(lineVersion)));
+        () -> lineValidationService.validateTemporaryLinesDuration(savedLine));
   }
 
   @Test
@@ -249,8 +252,9 @@ class LineValidationServiceTest {
         .validTo(LocalDate.of(2021, 1, 14))
         .build();
     // When
+    List<LineVersion> savedLine = List.of(lineVersion);
     assertThatExceptionOfType(OrderlyLineValidityException.class).isThrownBy(
-        () -> lineValidationService.validateOrderlyLinesDuration(List.of(lineVersion)));
+        () -> lineValidationService.validateOrderlyLinesDuration(savedLine));
   }
 
   @Test
@@ -262,8 +266,9 @@ class LineValidationServiceTest {
         .validTo(LocalDate.of(2021, 10, 15))
         .build();
     // When & Then
+    List<LineVersion> savedLine = List.of(lineVersion);
     assertThatNoException().isThrownBy(
-        () -> lineValidationService.validateOrderlyLinesDuration(List.of(lineVersion)));
+        () -> lineValidationService.validateOrderlyLinesDuration(savedLine));
   }
 
 }

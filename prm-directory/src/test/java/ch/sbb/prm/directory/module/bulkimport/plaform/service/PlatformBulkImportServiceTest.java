@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.module.bulkimport.plaform.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
@@ -24,7 +25,6 @@ import java.time.LocalDate;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,15 +206,17 @@ class PlatformBulkImportServiceTest {
 
   @Test
   void shouldThrowWhenAttemptingToUpdateReduceObjectWithCompleteProperties() {
-    BulkPlatformUpdateValidationException exception = Assertions.assertThrows(BulkPlatformUpdateValidationException.class,
-        () -> platformBulkImportService.updatePlatformComplete(BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
+    BulkImportUpdateContainer<PlatformCompleteUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<PlatformCompleteUpdateCsvModel>builder()
             .object(PlatformCompleteUpdateCsvModel.builder()
                 .sloid(platformVersionReduced.getSloid())
                 .validFrom(platformVersionComplete.getValidFrom())
                 .validTo(platformVersionComplete.getValidTo())
                 .additionalInformation(ADDITIONAL_INFORMATION)
                 .build())
-            .build()));
+            .build();
+    BulkPlatformUpdateValidationException exception = assertThrows(BulkPlatformUpdateValidationException.class,
+        () -> platformBulkImportService.updatePlatformComplete(updateContainer));
 
     assertThat(exception.getErrorResponse().getStatus()).isEqualTo(400);
     assertThat(exception.getErrorResponse().getMessage()).contains(
@@ -223,15 +225,17 @@ class PlatformBulkImportServiceTest {
 
   @Test
   void shouldThrowWhenAttemptingToUpdateCompleteObjectWithReducedProperties() {
-    BulkPlatformUpdateValidationException exception = Assertions.assertThrows(BulkPlatformUpdateValidationException.class,
-        () -> platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
-            .object(PlatformReducedUpdateCsvModel.builder()
-                .sloid(platformVersionComplete.getSloid())
-                .validFrom(platformVersionReduced.getValidFrom())
-                .validTo(platformVersionReduced.getValidTo())
-                .additionalInformation(ADDITIONAL_INFORMATION)
-                .build())
-            .build()));
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+        .object(PlatformReducedUpdateCsvModel.builder()
+            .sloid(platformVersionComplete.getSloid())
+            .validFrom(platformVersionReduced.getValidFrom())
+            .validTo(platformVersionReduced.getValidTo())
+            .additionalInformation(ADDITIONAL_INFORMATION)
+            .build())
+        .build();
+    BulkPlatformUpdateValidationException exception = assertThrows(BulkPlatformUpdateValidationException.class,
+        () -> platformBulkImportService.updatePlatformReduced(updateContainer));
 
     assertThat(exception.getErrorResponse().getStatus()).isEqualTo(400);
     assertThat(exception.getErrorResponse().getMessage()).contains(

@@ -719,13 +719,13 @@ public class VersioningHelperTest {
   @Test
    void shouldReturnTrueWhenValidFromAndValidToAreNotEdited() {
     //given
-    VersionableObject edited = VersionableObject.builder().build();
-    VersionableObject current = VersionableObject.builder()
+    VersionableObject editedVersion = VersionableObject.builder().build();
+    VersionableObject currentVersion = VersionableObject.builder()
                                                  .validFrom(LocalDate.of(2000, 1, 1))
                                                  .validTo(LocalDate.of(2000, 12, 31))
                                                  .build();
     //when
-    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(edited, current);
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(editedVersion, currentVersion);
 
     //then
     assertThat(result).isTrue();
@@ -734,15 +734,15 @@ public class VersioningHelperTest {
   @Test
    void shouldReturnFalseWhenEditedValidFromIsEqualToCurrentValidFromAndValidToIsNotEdited() {
     //given
-    VersionableObject edited = VersionableObject.builder()
+    VersionableObject editedVersion = VersionableObject.builder()
                                                 .validFrom(LocalDate.of(2000, 1, 1))
                                                 .build();
-    VersionableObject current = VersionableObject.builder()
+    VersionableObject currentVersion = VersionableObject.builder()
                                                  .validFrom(LocalDate.of(2000, 1, 1))
                                                  .validTo(LocalDate.of(2000, 12, 31))
                                                  .build();
     //when
-    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(edited, current);
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(editedVersion, currentVersion);
 
     //then
     assertThat(result).isFalse();
@@ -751,15 +751,15 @@ public class VersioningHelperTest {
   @Test
    void shouldReturnFalseWhenValidFromIsNotEditedAndEditedValidToIsEqualToCurrentValidTo() {
     //given
-    VersionableObject edited = VersionableObject.builder()
+    VersionableObject editedVersion = VersionableObject.builder()
                                                 .validTo(LocalDate.of(2000, 12, 31))
                                                 .build();
-    VersionableObject current = VersionableObject.builder()
+    VersionableObject currentVersion = VersionableObject.builder()
                                                  .validFrom(LocalDate.of(2000, 1, 1))
                                                  .validTo(LocalDate.of(2000, 12, 31))
                                                  .build();
     //when
-    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(edited, current);
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(editedVersion, currentVersion);
 
     //then
     assertThat(result).isFalse();
@@ -768,16 +768,16 @@ public class VersioningHelperTest {
   @Test
    void shouldReturnTrueWhenCurrentAndEditedValidFrom_ValidToAreEquals() {
     //given
-    VersionableObject edited = VersionableObject.builder()
+    VersionableObject editedVersion = VersionableObject.builder()
                                                 .validFrom(LocalDate.of(2000, 1, 1))
                                                 .validTo(LocalDate.of(2000, 12, 31))
                                                 .build();
-    VersionableObject current = VersionableObject.builder()
+    VersionableObject currentVersion = VersionableObject.builder()
                                                  .validFrom(LocalDate.of(2000, 1, 1))
                                                  .validTo(LocalDate.of(2000, 12, 31))
                                                  .build();
     //when
-    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(edited, current);
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(editedVersion, currentVersion);
 
     //then
     assertThat(result).isTrue();
@@ -1493,12 +1493,12 @@ public class VersioningHelperTest {
   @Test
    void shouldReturnFalseWhenEditedValidFromIsBiggerThanCurrentValidFrom() {
     //given
-    VersionableObject current = VersionableObject
+    VersionableObject currentVersion = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2021, 1, 1))
         .build();
-    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
     LocalDate editedValidFrom = LocalDate.of(2021, 1, 2);
     //when
     boolean result = VersioningHelper.isEditedValidFromExactOnTheLeftBorder(editedValidFrom,
@@ -1511,12 +1511,12 @@ public class VersioningHelperTest {
   @Test
    void shouldReturnFalseWhenEditedValidFromIsSmallerThanCurrentValidFrom() {
     //given
-    VersionableObject current = VersionableObject
+    VersionableObject currentVersion = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2021, 1, 1))
         .build();
-    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
     LocalDate editedValidFrom = LocalDate.of(2020, 12, 31);
     //when
     boolean result = VersioningHelper.isEditedValidFromExactOnTheLeftBorder(editedValidFrom,
@@ -1529,13 +1529,13 @@ public class VersioningHelperTest {
   @Test
    void shouldReturnTrueWhenCurrentVersionIsBetweenEditedValidFromAndEditedValidTo() {
     //given
-    VersionableObject current = VersionableObject
+    VersionableObject currentVersion = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2021, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
     LocalDate editedValidFrom = LocalDate.of(2020, 12, 31);
     LocalDate editedValidTo = LocalDate.of(2023, 1, 1);
     //when
@@ -2132,7 +2132,7 @@ public class VersioningHelperTest {
                                              .versionable(versionableObject1)
                                              .entity(entity1)
                                              .build();
-    Entity entityEdited = Entity.builder().id(3L).properties(
+    Entity entity = Entity.builder().id(3L).properties(
                                     List.of(
                                         Property.builder()
                                                 .key("property")
@@ -2141,7 +2141,7 @@ public class VersioningHelperTest {
                                 .build();
     ToVersioning toVersioning2 = ToVersioning.builder()
                                              .versionable(versionableObject2)
-                                             .entity(entityEdited)
+        .entity(entity)
                                              .build();
 
     VersioningData versioningData = VersioningData.builder()
@@ -2207,7 +2207,7 @@ public class VersioningHelperTest {
         .versionable(versionableObject1)
         .entity(entity1)
         .build();
-    Entity entityEdited = Entity.builder().id(3L).properties(
+    Entity entity = Entity.builder().id(3L).properties(
             List.of(
                 Property.builder()
                     .key("property")
@@ -2217,7 +2217,7 @@ public class VersioningHelperTest {
         .build();
     ToVersioning toVersioning2 = ToVersioning.builder()
         .versionable(versionableObject2)
-        .entity(entityEdited)
+        .entity(entity)
         .build();
 
     VersioningData versioningData = VersioningData.builder()
@@ -2308,7 +2308,7 @@ public class VersioningHelperTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    VersionableObject edited = VersionableObject
+    VersionableObject editedVersion = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -2320,7 +2320,7 @@ public class VersioningHelperTest {
                                             .versionable(version)
                                             .entity(entity)
                                             .build();
-    VersioningData versioningData = new VersioningData(edited, version, entity,
+    VersioningData versioningData = new VersioningData(editedVersion, version, entity,
         new ArrayList<>(List.of(toVersioning)));
 
     //when
@@ -2340,7 +2340,7 @@ public class VersioningHelperTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    VersionableObject edited = VersionableObject
+    VersionableObject editedVersion = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -2356,7 +2356,7 @@ public class VersioningHelperTest {
         .versionable(version)
         .entity(entity)
         .build();
-    VersioningData versioningData = new VersioningData(edited, version, entity,
+    VersioningData versioningData = new VersioningData(editedVersion, version, entity,
         new ArrayList<>(List.of(toVersioning)));
 
     //when
@@ -2376,7 +2376,7 @@ public class VersioningHelperTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    VersionableObject edited = VersionableObject
+    VersionableObject editedVersion = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -2392,7 +2392,7 @@ public class VersioningHelperTest {
         .versionable(version)
         .entity(entity)
         .build();
-    VersioningData versioningData = new VersioningData(edited, version, entity,
+    VersioningData versioningData = new VersioningData(editedVersion, version, entity,
         new ArrayList<>(List.of(toVersioning)));
 
     //when

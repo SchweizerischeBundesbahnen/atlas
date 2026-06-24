@@ -124,16 +124,16 @@ public class VersioningDataTest {
     //given
     currentVersion.setValidFrom(LocalDate.of(2001, 1, 1));
     currentVersion.setValidTo(LocalDate.of(2001, 12, 31));
-    ToVersioning toVersioningCurrent = ToVersioning.builder()
+    ToVersioning currentToVersioning = ToVersioning.builder()
         .versionable(currentVersion)
         .build();
-    List<ToVersioning> toVersioningList = new ArrayList<>(List.of(toVersioningCurrent));
+    List<ToVersioning> versioningList = new ArrayList<>(List.of(currentToVersioning));
     editedVersion.setValidFrom(LocalDate.of(2001, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
 
     //when
     ToVersioning result = new VersioningData(editedVersion, currentVersion, editedEntity,
-        toVersioningList).getTargetVersion();
+        versioningList).getTargetVersion();
     //then
     assertThat(result).isNotNull();
   }
@@ -142,16 +142,16 @@ public class VersioningDataTest {
    void shouldNotGetTargetVersionFound() {
     currentVersion.setValidFrom(LocalDate.of(2001, 1, 1));
     currentVersion.setValidTo(LocalDate.of(2001, 12, 31));
-    ToVersioning toVersioningCurrent = ToVersioning.builder()
+    ToVersioning currentToVersioning = ToVersioning.builder()
         .versionable(currentVersion)
         .build();
-    List<ToVersioning> toVersioningList = new ArrayList<>(List.of(toVersioningCurrent));
+    List<ToVersioning> versioningList = new ArrayList<>(List.of(currentToVersioning));
     editedVersion.setValidFrom(LocalDate.of(2002, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 12, 31));
 
     //when
     ToVersioning result = new VersioningData(editedVersion, currentVersion, editedEntity,
-        toVersioningList).getTargetVersion();
+        versioningList).getTargetVersion();
     //then
     assertThat(result).isNotNull();
   }
