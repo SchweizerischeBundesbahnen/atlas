@@ -105,8 +105,8 @@ class TerminationStopPointWorkflowServiceTest {
         .build();
 
     //when and then
-    assertThrows(TerminationDateBeforeException.class, () -> service.addDecisionInfoPlus(decisionModel,
-        stopPointWorkflow.getId()));
+    Long id = stopPointWorkflow.getId();
+    assertThrows(TerminationDateBeforeException.class, () -> service.addDecisionInfoPlus(decisionModel, id));
   }
 
   @Test
@@ -130,8 +130,9 @@ class TerminationStopPointWorkflowServiceTest {
         .build();
 
     //when and then
-    assertThrows(TerminationStopPointWorkflowPreconditionStatusException.class, () -> service.addDecisionInfoPlus(decisionModel,
-        stopPointWorkflow.getId()));
+    Long id = stopPointWorkflow.getId();
+    assertThrows(TerminationStopPointWorkflowPreconditionStatusException.class,
+        () -> service.addDecisionInfoPlus(decisionModel, id));
   }
 
   @Test

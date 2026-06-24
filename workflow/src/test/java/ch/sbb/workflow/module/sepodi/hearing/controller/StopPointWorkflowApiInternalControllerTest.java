@@ -855,13 +855,13 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
     @Test
     void shouldOverrideVoteWithDecisionToWorkflow() throws Exception {
       //when
-      Person person = Person.builder()
+      Person marek = Person.builder()
           .firstName("Marek")
           .lastName("Hamsik")
           .function("Centrocampista")
           .mail(MAIL_ADDRESS).build();
 
-      Long versionId = 123456L;
+      Long stopPointVersionId = 123456L;
       StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
           .sloid("ch:1:sloid:1234")
           .sboid("ch:1:sboid:666")
@@ -870,16 +870,16 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
           .ccEmails(List.of(MAIL_ADDRESS))
           .workflowComment("WF comment")
           .status(WorkflowStatus.HEARING)
-          .examinants(Set.of(person))
+          .examinants(Set.of(marek))
           .startDate(LocalDate.of(2000, 1, 1))
           .endDate(LocalDate.of(2000, 12, 31))
-          .versionId(versionId)
+          .versionId(stopPointVersionId)
           .build();
       StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
-      person.setStopPointWorkflow(workflow);
+      marek.setStopPointWorkflow(workflow);
       workflowRepository.save(workflow);
 
-      Otp otp = Otp.builder().code("12345").person(person).creationTime(LocalDateTime.now()).build();
+      Otp otp = Otp.builder().code("12345").person(marek).creationTime(LocalDateTime.now()).build();
       otpRepository.save(otp);
       Decision decision = Decision.builder()
           .judgement(JudgementType.YES)
@@ -887,10 +887,10 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
           .motivationDate(LocalDateTime.now())
           .build();
       decisionRepository.save(decision);
-      decision.setExaminant(person);
+      decision.setExaminant(marek);
       decisionRepository.save(decision);
-      OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
-          .firstName("Firtsname")
+      OverrideDecisionModel fritz = OverrideDecisionModel.builder()
+          .firstName("Fritz")
           .lastName("Fix")
           .fotJudgement(JudgementType.NO)
           .fotMotivation("Ja save")
@@ -898,22 +898,22 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
       //given
       mvc.perform(
-              post(StopPointWorkflowApiInternal.BASE_PATH + "/override-vote/" + stopPointWorkflow.getId() + "/" + person.getId())
+              post(StopPointWorkflowApiInternal.BASE_PATH + "/override-vote/" + stopPointWorkflow.getId() + "/" + marek.getId())
                   .contentType(contentType)
-                  .content(mapper.writeValueAsString(overrideDecisionModel)))
+                  .content(mapper.writeValueAsString(fritz)))
           .andExpect(status().isOk());
 
       List<StopPointWorkflow> workflows =
-          workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+          workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(stopPointVersionId))
               .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
       assertThat(workflows).hasSize(1);
       assertThat(workflows.getFirst().getExaminants()).hasSize(1);
-      Decision decisionByExaminantId = decisionRepository.findDecisionByExaminantId(person.getId());
+      Decision decisionByExaminantId = decisionRepository.findDecisionByExaminantId(marek.getId());
       assertThat(decisionByExaminantId).isNotNull();
       assertThat(decisionByExaminantId.getMotivation()).isEqualTo(decision.getMotivation());
       assertThat(decisionByExaminantId.getJudgement()).isEqualTo(decision.getJudgement());
-      assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(overrideDecisionModel.getFotMotivation());
-      assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
+      assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(fritz.getFotMotivation());
+      assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(fritz.getFotJudgement());
     }
   }
 

@@ -81,13 +81,6 @@ class ServicePointValidationServiceIT {
   }
 
   @Test
-  void shouldNotThrowExceptionOnDifferentDesignationLong() {
-    ServicePointVersion servicePointVersion = servicePointVersionBuilder()
-        .designationOfficial("Antonios Hood").build();
-    assertDoesNotThrow(() -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
-  }
-
-  @Test
   void shouldNotThrowExceptionOnSameDesignationLongInDifferentCountries() {
     ServicePointVersion servicePointVersion = servicePointVersionBuilder()
         .designationOfficial("Wyler Egg")

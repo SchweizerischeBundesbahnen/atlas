@@ -55,9 +55,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2023, 1, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
   }
 
@@ -77,9 +78,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2026, 1, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern, bern2);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern, bern2), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(2);
   }
 
@@ -94,7 +96,9 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2024, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2026, 1, 1));
 
-    assertDoesNotThrow(() -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
+    assertDoesNotThrow(
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
   }
 
   @Test
@@ -108,9 +112,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2021, 8, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
   }
 
@@ -125,9 +130,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2018, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2020, 1, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
   }
 
@@ -142,9 +148,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2024, 1, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
   }
 
@@ -159,9 +166,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2020, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2021, 1, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
   }
 
@@ -176,9 +184,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2022, 1, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
   }
 
@@ -193,7 +202,9 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2022, 1, 1));
 
-    assertDoesNotThrow(() -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
+    assertDoesNotThrow(
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
   }
 
   @Test
@@ -207,9 +218,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2018, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2021, 1, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
   }
 
@@ -224,9 +236,10 @@ class ServicePointValidationServiceTest {
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2023, 1, 1));
 
+    List<ServicePointVersion> servicePointVersions = List.of(bern);
     UpdateAffectsInReviewVersionException exception = assertThrows(
         UpdateAffectsInReviewVersionException.class,
-        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(servicePointVersions, updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
   }
 

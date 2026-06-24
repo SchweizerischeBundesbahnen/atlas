@@ -1475,12 +1475,12 @@ public class VersioningHelperTest {
   @Test
    void shouldReturnTrueWhenEditedValidFromIsEqualToCurrentValidFrom() {
     //given
-    VersionableObject current = VersionableObject
+    VersionableObject currentVersion = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2021, 1, 1))
         .build();
-    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
     LocalDate editedValidFrom = LocalDate.of(2021, 1, 1);
     //when
     boolean result = VersioningHelper.isEditedValidFromExactOnTheLeftBorder(editedValidFrom,

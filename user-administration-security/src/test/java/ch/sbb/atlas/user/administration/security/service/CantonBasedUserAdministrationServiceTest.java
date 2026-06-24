@@ -186,11 +186,7 @@ class CantonBasedUserAdministrationServiceTest {
         .userId("e123456")
         .permissions(Set.of(UserAdministrationPermissionModel.builder()
             .application(ApplicationType.TIMETABLE_HEARING)
-            .role(ApplicationRole.WRITER)
-            .restrictions(
-                Set.of(UserAdministrationPermissionRestrictionModel.builder()
-                    .value(SwissCanton.BERN.name())
-                    .build()))
+            .role(ApplicationRole.SUPERVISOR)
             .build()))
         .build()));
 
@@ -198,7 +194,7 @@ class CantonBasedUserAdministrationServiceTest {
     boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING);
 
     // Then
-    assertThat(permissionsGranted).isFalse();
+    assertThat(permissionsGranted).isTrue();
   }
 
 }

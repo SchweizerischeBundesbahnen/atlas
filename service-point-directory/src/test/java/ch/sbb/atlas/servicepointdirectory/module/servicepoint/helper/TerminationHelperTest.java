@@ -85,8 +85,10 @@ class TerminationHelperTest {
 
     //given & when
     List<ServicePointVersion> servicePointVersions = List.of(bern, bern2);
+    String sloid = bern2.getSloid();
+    Long id = bern.getId();
     assertThrows(StopPointTerminationNotOnLastVersionException.class,
-        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern.getId(),
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
             servicePointVersions));
   }
 
@@ -116,9 +118,10 @@ class TerminationHelperTest {
 
     //given & when
     List<ServicePointVersion> servicePointVersions = List.of(bern, bern2);
+    String sloid = bern2.getSloid();
+    Long id = bern2.getId();
     assertThrows(TerminationNotAllowedWhenVersionInWrongStatusException.class,
-        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
-            servicePointVersions));
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id, servicePointVersions));
   }
 
   @Test
@@ -140,9 +143,10 @@ class TerminationHelperTest {
 
     //given & when
     List<ServicePointVersion> servicePointVersions = List.of(bern, bern2);
+    String sloid = bern2.getSloid();
+    Long id = bern2.getId();
     assertThrows(TerminationNotStopPointException.class,
-        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
-            servicePointVersions));
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id, servicePointVersions));
   }
 
   @Test
@@ -164,9 +168,10 @@ class TerminationHelperTest {
 
     //given & when
     List<ServicePointVersion> servicePointVersions = List.of(bern, bern2);
+    String sloid = bern2.getSloid();
+    Long id = bern2.getId();
     assertThrows(TerminationAlreadyInProgressException.class,
-        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
-            servicePointVersions));
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id, servicePointVersions));
   }
 
 }

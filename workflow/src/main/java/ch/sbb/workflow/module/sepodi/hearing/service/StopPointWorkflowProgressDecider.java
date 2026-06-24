@@ -1,9 +1,9 @@
 package ch.sbb.workflow.module.sepodi.hearing.service;
 
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.module.sepodi.hearing.enity.Decision;
 import ch.sbb.workflow.module.sepodi.hearing.enity.JudgementType;
-import ch.sbb.workflow.entity.Person;
 import java.util.Map;
 import java.util.Optional;
 import lombok.Data;
@@ -20,10 +20,9 @@ public class StopPointWorkflowProgressDecider {
   }
 
   public Optional<WorkflowStatus> calculateNewWorkflowStatus() {
-    if (areAllDecisionsMade()) {
-      if (decisions.values().stream().allMatch(i -> i.orElseThrow().getWeightedJudgement() == JudgementType.YES)) {
+    if (areAllDecisionsMade()
+        && decisions.values().stream().allMatch(i -> i.orElseThrow().getWeightedJudgement() == JudgementType.YES)) {
         return Optional.of(WorkflowStatus.APPROVED);
-      }
     }
     if (decisions.values().stream()
         .filter(Optional::isPresent).map(Optional::get)
