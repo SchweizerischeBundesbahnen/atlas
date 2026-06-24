@@ -285,11 +285,11 @@ public class TimetableHearingStatementService {
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   public void updateHearingStatementStatus(TimetableHearingStatement statement, StatementStatus statementStatus,
-      String justification) {
+      String internalComment) {
     checkThatStatementIsNotPartOfDossier(statement);
     statement.setStatementStatus(statementStatus);
-    if (justification != null) {
-      statement.setInternalComment(justification);
+    if (internalComment != null) {
+      statement.setInternalComment(internalComment);
     }
     timetableHearingStatementRepository.save(statement);
   }

@@ -1,5 +1,4 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-export interface ColumnDropDownEvent {
-  $event: any;
-  value: any;
+export interface ColumnDropDownEvent<ROW = unknown> {
+  $event: { value: unknown[] };
+  value: ROW;
 }

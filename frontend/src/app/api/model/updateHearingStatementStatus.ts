@@ -19,7 +19,7 @@ export interface UpdateHearingStatementStatus {
     /**
      * Statement of Federal office of transport
      */
-    justification?: string;
+    internalComment?: string;
 }
 export namespace UpdateHearingStatementStatus {
 }

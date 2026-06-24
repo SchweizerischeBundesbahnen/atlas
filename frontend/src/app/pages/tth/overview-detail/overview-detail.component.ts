@@ -350,15 +350,15 @@ export class OverviewDetailComponent extends StatementTableHandler {
     }
   }
 
-  changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
+  changeSelectedStatus(changedStatus: ColumnDropDownEvent<TimetableHearingStatementV2>) {
     const dialogData: StatusChangeData = {
       title: 'TTH.DIALOG.STATUS_CHANGE',
       message: 'TTH.DIALOG.STATUS_CHANGE_MESSAGE',
       cancelText: 'TTH.DIALOG.BACK',
       confirmText: 'TTH.DIALOG.STATUS_CHANGE',
       tths: [changedStatus.value],
-      statementStatus: changedStatus.$event.value,
-      publicComment: changedStatus.value.justification,
+      statementStatus: changedStatus.$event.value[0] as StatementStatus,
+      internalComment: changedStatus.value.internalComment,
       type: 'SINGLE',
     };
 
@@ -510,7 +510,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
         value: 'swissCanton',
         callback: this.mapToShortCanton,
       },
-      ...this.defaultStatementColumns,
+      ...this.defaultStatementColumns.map((column) => ({ ...column })),
       {
         headerTitle: '',
         value: 'etagVersion',
