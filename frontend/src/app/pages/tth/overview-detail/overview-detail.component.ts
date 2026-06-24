@@ -358,7 +358,7 @@ export class OverviewDetailComponent extends StatementTableHandler {
       confirmText: 'TTH.DIALOG.STATUS_CHANGE',
       tths: [changedStatus.value],
       statementStatus: changedStatus.$event.value[0] as StatementStatus,
-      publicComment: changedStatus.value.publicComment,
+      internalComment: changedStatus.value.internalComment,
       type: 'SINGLE',
     };
 

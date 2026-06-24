@@ -32,6 +32,6 @@ public class UpdateHearingStatementStatusModel extends BaseUpdateHearingModel {
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Schema(description = "Statement of Federal office of transport", example = "We can absolutely do that.")
-  private String justification;
+  private String internalComment;
 
 }

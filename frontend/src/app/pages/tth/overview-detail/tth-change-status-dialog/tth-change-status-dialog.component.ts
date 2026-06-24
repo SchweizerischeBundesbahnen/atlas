@@ -7,7 +7,9 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { Subject, takeUntil } from 'rxjs';
 import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
 import { ValidationService } from 'src/app/core/validation/validation.service';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import {
+  TimetableHearingStatementInternalService
+} from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 @Component({
@@ -22,21 +24,21 @@ export class TthChangeStatusDialogComponent {
   private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
 
   readonly formGroup = new FormGroup<TthChangeStatusFormGroup>({
-    publicComment: new FormControl(this.data.publicComment, [AtlasFieldLengthValidator.statement]),
+    internalComment: new FormControl(this.data.internalComment, [AtlasFieldLengthValidator.statement]),
   });
   private readonly ngUnsubscribe = new Subject<void>();
 
   onClick(): void {
-    let justification: string | undefined;
+    let internalComment: string | undefined;
     ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
-      if (this.formGroup.controls['publicComment'].value) {
-        justification = this.formGroup.controls['publicComment'].value;
+      if (this.formGroup.controls['internalComment'].value) {
+        internalComment = this.formGroup.controls['internalComment'].value;
       }
       this.timetableHearingStatementsService
         .updateHearingStatementStatus({
           ids: this.data.tths.map((value) => Number(value.id)),
-          justification: justification,
+          internalComment: internalComment,
           statementStatus: this.data.statementStatus,
         })
         .pipe(takeUntil(this.ngUnsubscribe))

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { TthChangeStatusDialogComponent } from './tth-change-status-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
@@ -15,7 +15,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 import { MaintenanceIconComponent } from '../../../../core/components/header/maintenance-icon/maintenance-icon.component';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import {
+  TimetableHearingStatementInternalService
+} from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 
 const mockTimetableHearingStatementsService: Mocked<
   Pick<TimetableHearingStatementInternalService, 'updateHearingStatementStatus'>
@@ -36,6 +38,7 @@ const statement: TimetableHearingStatementV2 = {
   swissCanton: SwissCanton.Bern,
   statement: 'Öper isch am YB-Match gsi',
   publicComment: 'Napoli ist besser als YB',
+  internalComment: 'YB ist besser',
   statementSender: {
     emails: new Set('fan@yb.ch'),
   },
@@ -67,7 +70,7 @@ describe('TthChangeStatusDialogComponent', () => {
             title: 'Title',
             message: 'message',
             tths: [statement],
-            justification: 'Forza Napoli',
+            internalComment: 'Forza Napoli',
             type: 'SINGLE',
             id: 1,
           },
@@ -107,7 +110,7 @@ describe('TthChangeStatusDialogComponent', () => {
 
     const baseDialog = fixture.debugElement.query(By.css('atlas-base-change-dialog'));
     expect(baseDialog).not.toBeNull();
-    expect(baseDialog.attributes['controlName']).toBe('publicComment');
+    expect(baseDialog.attributes['controlName']).toBe('internalComment');
     expect(baseDialog.attributes['maxChars']).toBe('5000');
   });
 });

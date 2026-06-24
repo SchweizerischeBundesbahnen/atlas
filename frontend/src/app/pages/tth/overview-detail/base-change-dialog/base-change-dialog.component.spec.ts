@@ -22,6 +22,7 @@ const statement: TimetableHearingStatementV2 = {
   swissCanton: SwissCanton.Bern,
   statement: 'Öper isch am YB-Match gsi',
   publicComment: 'Napoli ist besser als YB',
+  internalComment: 'YB ist besser',
   statementSender: {
     emails: new Set('fan@yb.ch'),
   },
@@ -65,10 +66,10 @@ describe('BaseChangeDialogComponent', () => {
       bindings: [inputBinding(maxCharsInputName, () => 'test max chars')],
     });
     component = fixture.componentInstance;
-    component.controlName = 'publicComment';
+    component.controlName = 'internalComment';
     component.dialogRef = dialogRefSpy;
     component.formGroup = new FormGroup<TthChangeStatusFormGroup>({
-      publicComment: new FormControl('', [
+      internalComment: new FormControl('', [
         AtlasFieldLengthValidator.statement,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
@@ -93,7 +94,7 @@ describe('BaseChangeDialogComponent', () => {
   });
 
   it('should render tth change status dialog', () => {
-    component.formGroup.controls['publicComment'].setValue('Forza Napoli');
+    component.formGroup.controls['internalComment'].setValue('Forza Napoli');
 
     const title = fixture.debugElement.query(By.css('div.dialog > div.mb-5 > span.font-bold-4xl'));
     expect(title.nativeElement.textContent).toBe('Title');

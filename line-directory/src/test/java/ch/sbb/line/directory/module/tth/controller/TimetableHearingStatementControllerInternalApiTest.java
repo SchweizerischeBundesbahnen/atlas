@@ -241,7 +241,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
       statement2 = timetableHearingStatementRepository.saveAndFlush(statement2);
       List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
       UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
-          UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+          UpdateHearingStatementStatusModel.builder().ids(ids).internalComment("Forza Napoli")
               .statementStatus(StatementStatus.ACCEPTED).build();
 
       //when
@@ -283,7 +283,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
           .build();
       statement = timetableHearingStatementRepository.saveAndFlush(statement);
       UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
-          UpdateHearingStatementStatusModel.builder().ids(List.of(statement.getId())).justification("Forza Napoli")
+          UpdateHearingStatementStatusModel.builder().ids(List.of(statement.getId())).internalComment("Forza Napoli")
               .statementStatus(StatementStatus.ACCEPTED).build();
 
       //when
@@ -333,7 +333,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
       timetableHearingStatementRepository.saveAndFlush(statement2);
       List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
       UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
-          UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+          UpdateHearingStatementStatusModel.builder().ids(ids).internalComment("Forza Napoli")
               .statementStatus(StatementStatus.ACCEPTED).build();
 
       //when
@@ -370,7 +370,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
       timetableHearingStatementRepository.saveAndFlush(statement2);
       List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
       UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
-          UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+          UpdateHearingStatementStatusModel.builder().ids(ids).internalComment("Forza Napoli")
               .statementStatus(StatementStatus.ACCEPTED).build();
       //when
       mvc.perform(put("/internal/timetable-hearing/statements/update-statement-status")
@@ -410,7 +410,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
       timetableHearingStatementRepository.saveAndFlush(statement2);
       List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
       UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
-          UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+          UpdateHearingStatementStatusModel.builder().ids(ids).internalComment("Forza Napoli")
               .statementStatus(StatementStatus.ACCEPTED).build();
       //when
       mvc.perform(put("/internal/timetable-hearing/statements/update-statement-status")

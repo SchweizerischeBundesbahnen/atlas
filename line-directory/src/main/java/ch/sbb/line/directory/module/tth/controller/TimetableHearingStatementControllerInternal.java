@@ -189,7 +189,7 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
         timetableHearingStatement -> timetableHearingStatementService.updateHearingStatementStatus(
             timetableHearingStatement,
             updateHearingStatementStatus.getStatementStatus(),
-            updateHearingStatementStatus.getJustification()));
+            updateHearingStatementStatus.getInternalComment()));
   }
 
   @Override
