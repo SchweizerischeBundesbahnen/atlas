@@ -14,11 +14,7 @@ describe('ToiletService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        AtlasApiService,
-        { provide: HttpClient, useValue: {} },
-        { provide: UserService, useValue: {} },
-      ],
+      providers: [AtlasApiService, { provide: HttpClient, useValue: {} }, { provide: UserService, useValue: {} }],
     });
     service = TestBed.inject(ToiletService);
     apiService = TestBed.inject(AtlasApiService);
@@ -32,17 +28,15 @@ describe('ToiletService', () => {
     service.getToiletVersions('ch:1:sloid:7000');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      sloid: 'ch:1:sloid:7000'
+      sloid: 'ch:1:sloid:7000',
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/prm-directory/v1/toilets/ch:1:sloid:7000',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/prm-directory/v1/toilets/ch:1:sloid:7000');
   });
 
   it('should createToiletVersion', () => {
     // given
     const toiletVersion: ReadToiletVersion = {
-      designation: "Designation",
+      designation: 'Designation',
       wheelchairToilet: StandardAttributeType.Yes,
       number: {
         number: 8507000,
@@ -50,9 +44,9 @@ describe('ToiletService', () => {
         uicCountryCode: 85,
         checkDigit: 3,
       },
-      parentServicePointSloid: "ch:1:sloid:7000",
+      parentServicePointSloid: 'ch:1:sloid:7000',
       validFrom: new Date('2014-12-14'),
-      validTo: new Date('2014-12-14')
+      validTo: new Date('2014-12-14'),
     };
 
     // when
@@ -62,11 +56,10 @@ describe('ToiletService', () => {
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/prm-directory/v1/toilets', toiletVersion);
   });
 
-
   it('should updatePlatform', () => {
     // given
     const toiletVersion: ReadToiletVersion = {
-      designation: "Designation",
+      designation: 'Designation',
       wheelchairToilet: StandardAttributeType.Yes,
       number: {
         number: 8507000,
@@ -74,9 +67,9 @@ describe('ToiletService', () => {
         uicCountryCode: 85,
         checkDigit: 3,
       },
-      parentServicePointSloid: "ch:1:sloid:7000",
+      parentServicePointSloid: 'ch:1:sloid:7000',
       validFrom: new Date('2014-12-14'),
-      validTo: new Date('2014-12-14')
+      validTo: new Date('2014-12-14'),
     };
 
     // when

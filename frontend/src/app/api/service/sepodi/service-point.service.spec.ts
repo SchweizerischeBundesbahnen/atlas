@@ -34,26 +34,18 @@ describe('ServicePointService', () => {
   it('should getServicePointVersions', () => {
     service.getServicePointVersions(123);
 
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/service-points/123',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/service-points/123');
   });
 
   it('should createServicePoint', () => {
     service.createServicePoint({} as CreateServicePointVersion);
 
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/service-points',
-      {},
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/service-points', {});
   });
 
   it('should updateServicePoint', () => {
     service.updateServicePoint(123, {} as UpdateServicePointVersion);
 
-    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/service-points/123',
-      {},
-    );
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/service-points/123', {});
   });
 });

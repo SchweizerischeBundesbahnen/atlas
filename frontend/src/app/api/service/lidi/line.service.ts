@@ -8,7 +8,6 @@ import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
   providedIn: 'root',
 })
 export class LineService {
-
   private readonly V2_LINES = '/line-directory/v2/lines';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -27,5 +26,4 @@ export class LineService {
     this.atlasApiService.validateParams({ id, updateLineVersionV2 });
     return this.atlasApiService.put(`${this.V2_LINES}/versions/${encodeURIComponent(String(id))}`, updateLineVersionV2);
   }
-
 }

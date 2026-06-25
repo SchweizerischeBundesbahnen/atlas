@@ -2,4 +2,4 @@ dist
 .angular
 coverage
 node_modules
-src/app/api
+src/app/api/model

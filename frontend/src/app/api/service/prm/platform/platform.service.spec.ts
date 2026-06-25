@@ -1,12 +1,12 @@
-import {TestBed} from '@angular/core/testing';
-import {beforeEach, describe, expect, it, vi} from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {PlatformService} from './platform.service';
-import {AtlasApiService} from '../../atlas-api.service';
-import {HttpClient} from '@angular/common/http';
-import {UserService} from '../../../../core/auth/user/user.service';
-import {ReadPlatformVersion} from '../../../model/readPlatformVersion';
-import {EMPTY} from 'rxjs';
+import { PlatformService } from './platform.service';
+import { AtlasApiService } from '../../atlas-api.service';
+import { HttpClient } from '@angular/common/http';
+import { UserService } from '../../../../core/auth/user/user.service';
+import { ReadPlatformVersion } from '../../../model/readPlatformVersion';
+import { EMPTY } from 'rxjs';
 
 describe('PlatformService', () => {
   let service: PlatformService;
@@ -14,9 +14,11 @@ describe('PlatformService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PlatformService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        PlatformService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
     service = TestBed.inject(PlatformService);
@@ -31,11 +33,9 @@ describe('PlatformService', () => {
     service.getPlatformVersions('ch:1:sloid:7000');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      sloid: 'ch:1:sloid:7000'
+      sloid: 'ch:1:sloid:7000',
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/prm-directory/v1/platforms/ch:1:sloid:7000',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/prm-directory/v1/platforms/ch:1:sloid:7000');
   });
 
   it('should createPlatform', () => {
@@ -47,7 +47,7 @@ describe('PlatformService', () => {
         uicCountryCode: 85,
         checkDigit: 3,
       },
-      parentServicePointSloid: "ch:1:sloid:7000",
+      parentServicePointSloid: 'ch:1:sloid:7000',
       validFrom: new Date('2014-12-14'),
       validTo: new Date('2014-12-14'),
     };
@@ -56,10 +56,8 @@ describe('PlatformService', () => {
     service.createPlatform(platformVersion);
 
     // then
-    expect(apiService.post)
-      .toHaveBeenCalledExactlyOnceWith('/prm-directory/v1/platforms', platformVersion);
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/prm-directory/v1/platforms', platformVersion);
   });
-
 
   it('should updatePlatform', () => {
     // given
@@ -70,17 +68,15 @@ describe('PlatformService', () => {
         uicCountryCode: 85,
         checkDigit: 3,
       },
-      parentServicePointSloid: "ch:1:sloid:7000",
+      parentServicePointSloid: 'ch:1:sloid:7000',
       validFrom: new Date('2014-12-14'),
       validTo: new Date('2014-12-14'),
     };
 
     // when
-    service.updatePlatform(1,platformVersion);
+    service.updatePlatform(1, platformVersion);
 
     // then
-    expect(apiService.put)
-      .toHaveBeenCalledExactlyOnceWith('/prm-directory/v1/platforms/1', platformVersion);
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith('/prm-directory/v1/platforms/1', platformVersion);
   });
-
 });

@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, output, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  inject,
+  output,
+  input,
+} from '@angular/core';
 import { ServicePointSearchResult } from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';

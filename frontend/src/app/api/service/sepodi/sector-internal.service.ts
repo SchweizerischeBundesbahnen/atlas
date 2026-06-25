@@ -8,12 +8,16 @@ import { ReadSectorVersion } from '../../model/readSectorVersion';
   providedIn: 'root',
 })
 export class SectorInternalService {
-
   private readonly BASE_PATH = '/service-point-directory/internal/sectors';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getSectors(trafficPointSloid: string, page?: number, size?: number, sort?: Array<string>): Observable<ContainerReadSectorVersion> {
+  public getSectors(
+    trafficPointSloid: string,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
+  ): Observable<ContainerReadSectorVersion> {
     const httpParams = this.atlasApiService.paramsOf({
       page,
       size,
@@ -29,5 +33,4 @@ export class SectorInternalService {
   public revokeSector(sectorSloid: string): Observable<void> {
     return this.atlasApiService.post(`${this.BASE_PATH}/${encodeURIComponent(sectorSloid)}/revoke`);
   }
-
 }

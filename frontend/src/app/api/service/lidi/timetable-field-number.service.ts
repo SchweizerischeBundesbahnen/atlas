@@ -7,12 +7,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TimetableFieldNumberService {
-
   private readonly FIELD_NUMBER_VERSIONS = '/line-directory/v1/field-numbers/versions';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public createVersion(timetableFieldNumberVersion: TimetableFieldNumberVersion): Observable<TimetableFieldNumberVersion> {
+  public createVersion(
+    timetableFieldNumberVersion: TimetableFieldNumberVersion
+  ): Observable<TimetableFieldNumberVersion> {
     this.atlasApiService.validateParams({ timetableFieldNumberVersion });
     return this.atlasApiService.post(this.FIELD_NUMBER_VERSIONS, timetableFieldNumberVersion);
   }
@@ -22,9 +23,14 @@ export class TimetableFieldNumberService {
     return this.atlasApiService.get(`${this.FIELD_NUMBER_VERSIONS}/${encodeURIComponent(String(ttfnId))}`);
   }
 
-  public updateVersionWithVersioning(id: number, timetableFieldNumberVersion: TimetableFieldNumberVersion): Observable<TimetableFieldNumberVersion[]> {
+  public updateVersionWithVersioning(
+    id: number,
+    timetableFieldNumberVersion: TimetableFieldNumberVersion
+  ): Observable<TimetableFieldNumberVersion[]> {
     this.atlasApiService.validateParams({ id, timetableFieldNumberVersion });
-    return this.atlasApiService.put(`${this.FIELD_NUMBER_VERSIONS}/${encodeURIComponent(String(id))}`, timetableFieldNumberVersion);
+    return this.atlasApiService.put(
+      `${this.FIELD_NUMBER_VERSIONS}/${encodeURIComponent(String(id))}`,
+      timetableFieldNumberVersion
+    );
   }
-
 }

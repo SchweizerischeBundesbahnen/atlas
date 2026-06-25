@@ -1,21 +1,18 @@
-import {inject, Injectable} from '@angular/core';
-import {AtlasApiService} from "../../atlas-api.service";
-import {Observable} from "rxjs";
-import {ContactPointOverview} from "../../../model/contactPointOverview";
+import { inject, Injectable } from '@angular/core';
+import { AtlasApiService } from '../../atlas-api.service';
+import { Observable } from 'rxjs';
+import { ContactPointOverview } from '../../../model/contactPointOverview';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContactPointInternalService {
-
   private readonly INTERNAL_CONTACT_POINTS = '/prm-directory/internal/contact-points/overview';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
   public getContactPointOverview(parentServicePointSloid: String): Observable<Array<ContactPointOverview>> {
-    this.atlasApiService.validateParams({parentServicePointSloid: parentServicePointSloid});
+    this.atlasApiService.validateParams({ parentServicePointSloid: parentServicePointSloid });
     return this.atlasApiService.get(`${this.INTERNAL_CONTACT_POINTS}/${parentServicePointSloid}`);
   }
-
-
 }

@@ -8,7 +8,6 @@ import { CreateSectorVersion } from '../../model/createSectorVersion';
   providedIn: 'root',
 })
 export class SectorService {
-
   private readonly BASE_PATH = '/service-point-directory/v1/sectors';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -24,8 +23,6 @@ export class SectorService {
 
   public updateSector(id: number, sectorVersion: CreateSectorVersion): Observable<ReadSectorVersion[]> {
     this.atlasApiService.validateParams({ id, sectorVersion: sectorVersion });
-    return this.atlasApiService.put(
-      `${this.BASE_PATH}/${encodeURIComponent(String(id))}`, sectorVersion);
+    return this.atlasApiService.put(`${this.BASE_PATH}/${encodeURIComponent(String(id))}`, sectorVersion);
   }
-
 }

@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, output, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  output,
+  input,
+} from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BusinessOrganisation } from '../../../api';

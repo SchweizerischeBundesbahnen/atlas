@@ -43,18 +43,13 @@ describe('ClientCredentialAdministrationService', () => {
       size: 10,
       sort,
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      CLIENT_CREDENTIAL_BASE_PATH,
-      expect.any(HttpParams),
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(CLIENT_CREDENTIAL_BASE_PATH, expect.any(HttpParams));
   });
 
   it('should getClientCredential by id', () => {
     service.getClientCredential('client-id');
 
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      `${CLIENT_CREDENTIAL_BASE_PATH}/client-id`,
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(`${CLIENT_CREDENTIAL_BASE_PATH}/client-id`);
   });
 
   it('should createClientCredential', () => {
@@ -62,10 +57,7 @@ describe('ClientCredentialAdministrationService', () => {
 
     service.createClientCredential(createPayload);
 
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      CLIENT_CREDENTIAL_BASE_PATH,
-      createPayload,
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(CLIENT_CREDENTIAL_BASE_PATH, createPayload);
   });
 
   it('should updateClientCredentialPermissions', () => {
@@ -75,7 +67,7 @@ describe('ClientCredentialAdministrationService', () => {
 
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       `${CLIENT_CREDENTIAL_BASE_PATH}/client-id/${ApplicationType.Sepodi}`,
-      permission,
+      permission
     );
   });
 });

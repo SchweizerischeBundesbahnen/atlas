@@ -9,28 +9,33 @@ import { ReadServicePointVersion } from '../../model/readServicePointVersion';
   providedIn: 'root',
 })
 export class ServicePointInternalService {
-
   private readonly BASE_PATH = '/service-point-directory/internal/service-points';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public searchServicePoints(servicePointSearchRequest: ServicePointSearchRequest): Observable<Array<ServicePointSearchResult>> {
+  public searchServicePoints(
+    servicePointSearchRequest: ServicePointSearchRequest
+  ): Observable<Array<ServicePointSearchResult>> {
     return this.atlasApiService.post(`${this.BASE_PATH}/search`, servicePointSearchRequest);
   }
 
-  public searchSwissOnlyServicePoints(servicePointSearchRequest: ServicePointSearchRequest): Observable<Array<ServicePointSearchResult>> {
+  public searchSwissOnlyServicePoints(
+    servicePointSearchRequest: ServicePointSearchRequest
+  ): Observable<Array<ServicePointSearchResult>> {
     return this.atlasApiService.post(`${this.BASE_PATH}/search-swiss-only`, servicePointSearchRequest);
   }
 
-  public searchServicePointsWithRouteNetworkTrue(servicePointSearchRequest: ServicePointSearchRequest): Observable<Array<ServicePointSearchResult>> {
+  public searchServicePointsWithRouteNetworkTrue(
+    servicePointSearchRequest: ServicePointSearchRequest
+  ): Observable<Array<ServicePointSearchResult>> {
     return this.atlasApiService.post(`${this.BASE_PATH}/search-sp-with-route-network`, servicePointSearchRequest);
   }
 
-  public validateServicePoint(id: number):Observable<ReadServicePointVersion>{
+  public validateServicePoint(id: number): Observable<ReadServicePointVersion> {
     return this.atlasApiService.post(`${this.BASE_PATH}/versions/${encodeURIComponent(String(id))}/skip-workflow`);
   }
 
-  public revokeServicePoint(servicePointNumber: number):Observable<Array<ReadServicePointVersion>>{
+  public revokeServicePoint(servicePointNumber: number): Observable<Array<ReadServicePointVersion>> {
     return this.atlasApiService.post(`${this.BASE_PATH}/${encodeURIComponent(String(servicePointNumber))}/revoke`);
   }
 }

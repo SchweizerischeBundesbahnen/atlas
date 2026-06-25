@@ -132,14 +132,14 @@ describe('ToiletDetailComponent', () => {
       ],
       providers: [
         { provide: PermissionService, useValue: adminPermissionServiceMock },
-         { provide: ActivatedRoute, useValue: activatedRouteMock },
-         { provide: NotificationService, useValue: notificationService },
-         {
-           provide: ToiletService,
-           useValue: toiletService,
-         },
-         { provide: DialogService, useValue: dialogService },
-         SplitServicePointNumberPipe,
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: NotificationService, useValue: notificationService },
+        {
+          provide: ToiletService,
+          useValue: toiletService,
+        },
+        { provide: DialogService, useValue: dialogService },
+        SplitServicePointNumberPipe,
       ],
     });
   });

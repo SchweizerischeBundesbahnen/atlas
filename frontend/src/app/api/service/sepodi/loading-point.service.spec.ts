@@ -33,26 +33,18 @@ describe('LoadingPointService', () => {
   it('should getLoadingPoint', () => {
     service.getLoadingPoint(123, 234);
 
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/loading-points/123/234',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/loading-points/123/234');
   });
 
   it('should createLoadingPoint', () => {
     service.createLoadingPoint({} as CreateLoadingPointVersion);
 
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/loading-points',
-      {},
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/loading-points', {});
   });
 
   it('should updateLoadingPoint', () => {
     service.updateLoadingPoint(123, {} as CreateLoadingPointVersion);
 
-    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/loading-points/123',
-      {},
-    );
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/loading-points/123', {});
   });
 });

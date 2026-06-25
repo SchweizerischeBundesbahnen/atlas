@@ -7,7 +7,6 @@ import { SloidLocationModel } from '../../model/sloidLocationModel';
   providedIn: 'root',
 })
 export class LocationService {
-
   private readonly LOCATION = '/location/v1';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -15,5 +14,4 @@ export class LocationService {
   public getSloidLocationModel(slnid: string): Observable<Array<SloidLocationModel>> {
     return this.atlasApiService.get(`${this.LOCATION}/sloid/${encodeURIComponent(String(slnid))}`);
   }
-
 }

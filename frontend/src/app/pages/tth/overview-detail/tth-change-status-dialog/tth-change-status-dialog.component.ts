@@ -6,9 +6,7 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
-import {
-  TimetableHearingStatementInternalService
-} from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 import { ValidationService } from '../../../../core/validation/validation.service';
 

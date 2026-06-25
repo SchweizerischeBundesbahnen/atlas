@@ -32,8 +32,6 @@ describe('TthYearInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       year: 2025,
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/workflow/internal/tth/year/2025/close',
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/workflow/internal/tth/year/2025/close');
   });
 });

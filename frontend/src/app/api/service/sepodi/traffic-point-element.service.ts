@@ -8,7 +8,6 @@ import { ReadTrafficPointElementVersion } from '../../model/readTrafficPointElem
   providedIn: 'root',
 })
 export class TrafficPointElementService {
-
   private readonly BASE_PATH = '/service-point-directory/v1/traffic-point-elements';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -17,14 +16,18 @@ export class TrafficPointElementService {
     return this.atlasApiService.get(`${this.BASE_PATH}/${encodeURIComponent(String(sloid))}`);
   }
 
-  public createTrafficPoint(createTrafficPointElementVersion: CreateTrafficPointElementVersion): Observable<ReadTrafficPointElementVersion> {
+  public createTrafficPoint(
+    createTrafficPointElementVersion: CreateTrafficPointElementVersion
+  ): Observable<ReadTrafficPointElementVersion> {
     this.atlasApiService.validateParams({ createTrafficPointElementVersion });
     return this.atlasApiService.post(`${this.BASE_PATH}`, createTrafficPointElementVersion);
   }
 
-  public updateTrafficPoint(id: number, createTrafficPointElementVersion: CreateTrafficPointElementVersion): Observable<Array<ReadTrafficPointElementVersion>> {
+  public updateTrafficPoint(
+    id: number,
+    createTrafficPointElementVersion: CreateTrafficPointElementVersion
+  ): Observable<Array<ReadTrafficPointElementVersion>> {
     this.atlasApiService.validateParams({ id, createTrafficPointElementVersion });
     return this.atlasApiService.put(`${this.BASE_PATH}/${id}`, createTrafficPointElementVersion);
   }
-
 }

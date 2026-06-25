@@ -35,7 +35,7 @@ describe('BusinessOrganisationService', () => {
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ sboid });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/business-organisation-directory/v1/business-organisations/versions/' + encodeURIComponent(sboid),
+      '/business-organisation-directory/v1/business-organisations/versions/' + encodeURIComponent(sboid)
     );
   });
 

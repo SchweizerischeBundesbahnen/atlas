@@ -23,7 +23,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ContactPointFormComponent {
-
   @Input() form!: FormGroup<ContactPointFormGroup>;
   readonly isNew = input(false);
 

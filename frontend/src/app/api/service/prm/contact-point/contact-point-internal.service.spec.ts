@@ -13,9 +13,11 @@ describe('ContactPointInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ContactPointInternalService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        ContactPointInternalService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
     service = TestBed.inject(ContactPointInternalService);
@@ -28,10 +30,8 @@ describe('ContactPointInternalService', () => {
     service.getContactPointOverview('123');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      parentServicePointSloid: '123'
+      parentServicePointSloid: '123',
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/prm-directory/internal/contact-points/overview/123',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/prm-directory/internal/contact-points/overview/123');
   });
 });

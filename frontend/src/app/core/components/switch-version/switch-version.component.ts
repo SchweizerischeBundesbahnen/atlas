@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, AfterViewInit,
+import {
+  ChangeDetectionStrategy,
+  AfterViewInit,
   Component,
   ElementRef,
   inject,
@@ -7,7 +9,8 @@ import { ChangeDetectionStrategy, AfterViewInit,
   OnInit,
   output,
   QueryList,
-  ViewChildren, } from '@angular/core';
+  ViewChildren,
+} from '@angular/core';
 import { Record } from '../../model/record';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';

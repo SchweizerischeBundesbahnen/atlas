@@ -14,9 +14,11 @@ describe('WheelchairAccessibilityInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PlatformInternalService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        PlatformInternalService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
     service = TestBed.inject(WheelchairAccessibilityInternalService);
@@ -29,10 +31,10 @@ describe('WheelchairAccessibilityInternalService', () => {
     service.getPlatformAccessibilityToday('123');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      sloid: '123'
+      sloid: '123',
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/prm-directory/internal/wheelchair-accessibility/platform/123/today',
+      '/prm-directory/internal/wheelchair-accessibility/platform/123/today'
     );
   });
 
@@ -40,11 +42,11 @@ describe('WheelchairAccessibilityInternalService', () => {
     service.getPlatformAccessibility('123', new Date());
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      sloid: '123'
+      sloid: '123',
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/prm-directory/internal/wheelchair-accessibility/platform/123',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -52,10 +54,10 @@ describe('WheelchairAccessibilityInternalService', () => {
     service.getStopPointAccessibilityToday('123');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      sloid: '123'
+      sloid: '123',
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/prm-directory/internal/wheelchair-accessibility/stop-point/123/today',
+      '/prm-directory/internal/wheelchair-accessibility/stop-point/123/today'
     );
   });
 
@@ -63,11 +65,11 @@ describe('WheelchairAccessibilityInternalService', () => {
     service.getStopPointAccessibility('123', new Date());
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      sloid: '123'
+      sloid: '123',
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/prm-directory/internal/wheelchair-accessibility/stop-point/123',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 });

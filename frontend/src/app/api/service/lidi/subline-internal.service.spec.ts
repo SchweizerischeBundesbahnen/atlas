@@ -12,9 +12,11 @@ describe('SublineInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SublineInternalService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        SublineInternalService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
 
@@ -31,9 +33,7 @@ describe('SublineInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       slnid: '123',
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/sublines/123/revoke',
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/sublines/123/revoke');
   });
 
   it('should deleteSublines', () => {
@@ -42,8 +42,6 @@ describe('SublineInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       slnid: '123',
     });
-    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/sublines/123',
-    );
+    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/sublines/123');
   });
 });

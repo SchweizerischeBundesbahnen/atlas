@@ -27,7 +27,7 @@
           [ngClass]="column.dropdown ? 'col-2' : ''"
           class="font-bold-base color-primary-400 translated-paragraph bordered-cell"
           mat-header-cell
-          mat-sort-header="{{column.checkbox ? column.columnDef : (column.valuePath ?? column.value)}}"
+          mat-sort-header="{{ column.checkbox ? column.columnDef : (column.valuePath ?? column.value) }}"
           scope="col"
         >
           @if (column.checkbox) {

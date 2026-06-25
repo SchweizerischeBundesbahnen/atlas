@@ -15,7 +15,6 @@ import { OverviewToTabShareDataService } from '../service/overview-to-tab-share-
 export class OverviewTabHeadingComponent {
   private readonly overviewToTabShareDataService = inject(OverviewToTabShareDataService);
 
-
   @Input() cantonShort!: string;
 
   @Input() foundTimetableHearingYear!: TimetableHearingYear;

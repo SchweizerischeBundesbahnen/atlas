@@ -11,16 +11,11 @@ import { ClientCredentialCreate } from '../../model/clientCredentialCreate';
   providedIn: 'root',
 })
 export class ClientCredentialAdministrationService {
-
   private readonly CLIENT_CREDENTIAL_BASE_PATH = '/user-administration/v1/client-credentials';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  getClientCredentials(
-    page: number,
-    size: number,
-    sort?: Array<string>
-  ): Observable<ContainerClientCredential> {
+  getClientCredentials(page: number, size: number, sort?: Array<string>): Observable<ContainerClientCredential> {
     const httpParams = this.atlasApiService.paramsOf({
       page,
       size,
@@ -37,10 +32,11 @@ export class ClientCredentialAdministrationService {
     return this.atlasApiService.post(this.CLIENT_CREDENTIAL_BASE_PATH, clientCredential);
   }
 
-  updateClientCredentialPermissions(clientId: string, application: ApplicationType, permission: Permission,
+  updateClientCredentialPermissions(
+    clientId: string,
+    application: ApplicationType,
+    permission: Permission
   ): Observable<ClientCredential> {
-    return this.atlasApiService.put(
-      `${this.CLIENT_CREDENTIAL_BASE_PATH}/${clientId}/${application}`, permission);
+    return this.atlasApiService.put(`${this.CLIENT_CREDENTIAL_BASE_PATH}/${clientId}/${application}`, permission);
   }
-
 }

@@ -30,7 +30,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class DecisionFormComponent {
   protected readonly JudgementType = JudgementType;
 
-
   @Input() form!: FormGroup<DecisionFormGroup>;
 
   @Input() hasOverride = false;

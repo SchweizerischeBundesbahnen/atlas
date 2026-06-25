@@ -9,13 +9,17 @@ import { TransportCompany } from '../../model/transportCompany';
   providedIn: 'root',
 })
 export class TransportCompanyService {
-
   private readonly BASE_PATH = '/business-organisation-directory/v1/transport-companies';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  getTransportCompanies(searchCriteria?: Array<string>, statusChoices?: Array<TransportCompanyStatus>,
-                        page?: number, size?: number, sort?: Array<string>): Observable<ContainerTransportCompany> {
+  getTransportCompanies(
+    searchCriteria?: Array<string>,
+    statusChoices?: Array<TransportCompanyStatus>,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
+  ): Observable<ContainerTransportCompany> {
     const httpParams = this.atlasApiService.paramsOf({
       searchCriteria,
       statusChoices,
@@ -30,5 +34,4 @@ export class TransportCompanyService {
     this.atlasApiService.validateParams({ id });
     return this.atlasApiService.get(`${this.BASE_PATH}/${id}`);
   }
-
 }

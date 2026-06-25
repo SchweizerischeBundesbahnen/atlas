@@ -32,7 +32,7 @@ describe('LoadingPointInternalService', () => {
 
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/service-point-directory/internal/loading-points/123',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 });

@@ -41,7 +41,7 @@ describe('TransportCompanyRelationInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ transportCompanyRelation });
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/business-organisation-directory/internal/transport-company-relations',
-      transportCompanyRelation,
+      transportCompanyRelation
     );
   });
 
@@ -52,7 +52,7 @@ describe('TransportCompanyRelationInternalService', () => {
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ relationId });
     expect(apiService.delete).toHaveBeenCalledExactlyOnceWith(
-      `/business-organisation-directory/internal/transport-company-relations/${relationId}`,
+      `/business-organisation-directory/internal/transport-company-relations/${relationId}`
     );
   });
 
@@ -63,19 +63,20 @@ describe('TransportCompanyRelationInternalService', () => {
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ transportCompanyId });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      `/business-organisation-directory/internal/transport-company-relations/${transportCompanyId}`,
+      `/business-organisation-directory/internal/transport-company-relations/${transportCompanyId}`
     );
   });
 
   it('should getBoTransportCompanyRelations', () => {
-    const sboid = "ch:1:sboid:100";
+    const sboid = 'ch:1:sboid:100';
 
     service.getBoTransportCompanyRelations(sboid);
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ sboid });
     expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith({ sboid });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/business-organisation-directory/internal/transport-company-relations/tc-of-bo', expect.any(HttpParams),
+      '/business-organisation-directory/internal/transport-company-relations/tc-of-bo',
+      expect.any(HttpParams)
     );
   });
 
@@ -87,7 +88,7 @@ describe('TransportCompanyRelationInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ updateTransportCompanyRelation });
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       '/business-organisation-directory/internal/transport-company-relations',
-      updateTransportCompanyRelation,
+      updateTransportCompanyRelation
     );
   });
 });

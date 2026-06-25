@@ -12,9 +12,11 @@ describe('TimetableFieldNumberInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimetableFieldNumberInternalService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        TimetableFieldNumberInternalService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
 
@@ -51,21 +53,17 @@ describe('TimetableFieldNumberInternalService', () => {
     service.revokeTimetableFieldNumber('123');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      ttfnId: '123'
+      ttfnId: '123',
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/field-numbers/123/revoke',
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/field-numbers/123/revoke');
   });
 
   it('should deleteVersions', () => {
     service.deleteVersions('123');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      ttfnId: '123'
+      ttfnId: '123',
     });
-    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/field-numbers/123',
-    );
+    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/field-numbers/123');
   });
 });

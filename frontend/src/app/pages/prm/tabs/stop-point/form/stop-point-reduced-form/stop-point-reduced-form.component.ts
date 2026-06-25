@@ -19,7 +19,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class StopPointReducedFormComponent implements OnInit {
   private readonly prmVariantInfoService = inject(PrmVariantInfoService);
 
-
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
   readonly selectedMeansOfTransport = input<MeanOfTransport[]>();
   readonly isNew = input(false);

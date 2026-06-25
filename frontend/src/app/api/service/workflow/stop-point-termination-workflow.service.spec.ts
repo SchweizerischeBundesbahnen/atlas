@@ -49,7 +49,7 @@ describe('StopPointTerminationWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/v1/termination-stop-point/workflows',
-      terminationStopPointAddWorkflow,
+      terminationStopPointAddWorkflow
     );
   });
 
@@ -60,7 +60,7 @@ describe('StopPointTerminationWorkflowService', () => {
     // then
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ sloid: 'ch:1:sloid:1' });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/workflow/internal/termination-stop-point/workflows/termination-info/ch%3A1%3Asloid%3A1',
+      '/workflow/internal/termination-stop-point/workflows/termination-info/ch%3A1%3Asloid%3A1'
     );
   });
 
@@ -80,7 +80,7 @@ describe('StopPointTerminationWorkflowService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/workflow/v1/termination-stop-point/workflows',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -96,7 +96,7 @@ describe('StopPointTerminationWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/termination-stop-point/workflows/decision/info-plus/1',
-      decision,
+      decision
     );
   });
 
@@ -112,7 +112,7 @@ describe('StopPointTerminationWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/termination-stop-point/workflows/decision/nova/1',
-      decision,
+      decision
     );
   });
 
@@ -128,7 +128,7 @@ describe('StopPointTerminationWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/termination-stop-point/workflows/abort/123',
-      terminationAbort,
+      terminationAbort
     );
   });
 });

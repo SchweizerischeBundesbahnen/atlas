@@ -1,14 +1,13 @@
-import {inject, Injectable} from '@angular/core';
-import {AtlasApiService} from "../../atlas-api.service";
-import {Observable} from "rxjs";
-import {ReadStopPointVersion} from "../../../model/readStopPointVersion";
-import {StopPointVersion} from "../../../model/stopPointVersion";
+import { inject, Injectable } from '@angular/core';
+import { AtlasApiService } from '../../atlas-api.service';
+import { Observable } from 'rxjs';
+import { ReadStopPointVersion } from '../../../model/readStopPointVersion';
+import { StopPointVersion } from '../../../model/stopPointVersion';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StopPointService {
-
   private readonly V1_STOP_POINTS = '/prm-directory/v1/stop-points';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -27,5 +26,4 @@ export class StopPointService {
     this.atlasApiService.validateParams({ id, updateServicePointVersion: stopPointVersion });
     return this.atlasApiService.put(`${this.V1_STOP_POINTS}/${id}`, stopPointVersion);
   }
-
 }

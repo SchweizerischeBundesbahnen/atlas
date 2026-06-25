@@ -33,7 +33,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class PlatformReducedFormComponent implements OnInit {
-
   @Input() form!: FormGroup<ReducedPlatformFormGroup>;
   readonly meansOfTransport = input<MeanOfTransport[]>([]);
   readonly isNew = input(false);

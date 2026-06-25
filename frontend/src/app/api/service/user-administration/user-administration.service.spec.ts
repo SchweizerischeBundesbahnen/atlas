@@ -44,10 +44,7 @@ describe('UserAdministrationService', () => {
     expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith({
       searchQuery: 'query',
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      SEARCH_PATH,
-      expect.any(HttpParams),
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(SEARCH_PATH, expect.any(HttpParams));
   });
 
   it('should search users in atlas with application type', () => {
@@ -57,10 +54,7 @@ describe('UserAdministrationService', () => {
       searchQuery: 'query',
       applicationType: ApplicationType.Prm,
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      SEARCH_IN_ATLAS_PATH,
-      expect.any(HttpParams),
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(SEARCH_IN_ATLAS_PATH, expect.any(HttpParams));
   });
 
   it('should get users with complex filters', () => {
@@ -77,10 +71,7 @@ describe('UserAdministrationService', () => {
       page: 0,
       size: 25,
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      USER_BASE_PATH,
-      expect.any(HttpParams),
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(USER_BASE_PATH, expect.any(HttpParams));
   });
 
   it('should request current user', () => {
@@ -121,7 +112,7 @@ describe('UserAdministrationService', () => {
     });
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       `${USER_BASE_PATH}/user-id/${ApplicationType.Ttfn}`,
-      newPermission,
+      newPermission
     );
   });
 });

@@ -13,7 +13,9 @@ describe('TimetableHearingYearInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimetableHearingYearInternalService, AtlasApiService,
+      providers: [
+        TimetableHearingYearInternalService,
+        AtlasApiService,
         { provide: HttpClient, useValue: {} },
         { provide: UserService, useValue: {} },
       ],
@@ -34,10 +36,7 @@ describe('TimetableHearingYearInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       timetableHearingYear: {},
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-hearing/years',
-      {},
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/timetable-hearing/years', {});
   });
 
   it('should getHearingYear', () => {
@@ -46,9 +45,7 @@ describe('TimetableHearingYearInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       year: 2025,
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-hearing/years/2025',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/timetable-hearing/years/2025');
   });
 
   it('should getHearingYears', () => {
@@ -59,7 +56,7 @@ describe('TimetableHearingYearInternalService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/years',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -70,7 +67,7 @@ describe('TimetableHearingYearInternalService', () => {
       year: 2025,
     });
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-hearing/years/2025/start',
+      '/line-directory/internal/timetable-hearing/years/2025/start'
     );
   });
 
@@ -81,9 +78,6 @@ describe('TimetableHearingYearInternalService', () => {
       year: 2025,
       timetableHearingYear: {},
     });
-    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-hearing/years/2025',
-      {},
-    );
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/timetable-hearing/years/2025', {});
   });
 });

@@ -27,9 +27,7 @@ import { FileSizePipe } from './file-size/file-size.pipe';
   providers: [TranslatePipe],
 })
 export class FileUploadComponent {
-
   @Input() acceptedFileExtension!: string;
-
 
   @Input() acceptedFileType!: string[];
 
@@ -37,12 +35,10 @@ export class FileUploadComponent {
 
   @Input() maxFileCount!: number;
 
-
   @Input() uploadedFiles: File[] = [];
 
   @Input() alreadySavedFileNames: string[] = [];
   readonly uploadedFilesChange = output<File[]>();
-
 
   @Input() isDownloadButtonVisible: boolean = false;
   readonly isDownloadButtonDisabled = input<boolean>(false);

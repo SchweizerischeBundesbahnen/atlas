@@ -4,9 +4,7 @@ import { CantonDossierDetailComponent } from './canton-dossier-detail.component'
 import { ActivatedRoute, Router } from '@angular/router';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
 import { of } from 'rxjs';
-import {
-  TimetableHearingStatementInternalService
-} from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TthDossier } from '../../../../../api/model/tthDossier';
 import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';

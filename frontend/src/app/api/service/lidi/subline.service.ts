@@ -9,15 +9,13 @@ import { SublineVersionV2 } from '../../model/sublineVersionV2';
   providedIn: 'root',
 })
 export class SublineService {
-
   private readonly SUBLINE_VERSIONS = '/line-directory/v2/sublines/versions';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
   public getSublineVersionV2(slnid: string): Observable<ReadSublineVersionV2[]> {
     this.atlasApiService.validateParams({ slnid });
-    return this.atlasApiService.get(
-      `${this.SUBLINE_VERSIONS}/${encodeURIComponent(String(slnid))}`);
+    return this.atlasApiService.get(`${this.SUBLINE_VERSIONS}/${encodeURIComponent(String(slnid))}`);
   }
 
   public createSublineVersionV2(createSublineVersionV2: CreateSublineVersionV2): Observable<ReadSublineVersionV2> {
@@ -27,8 +25,6 @@ export class SublineService {
 
   public updateSublineVersionV2(id: number, sublineVersionV2: SublineVersionV2): Observable<ReadSublineVersionV2[]> {
     this.atlasApiService.validateParams({ id, sublineVersionV2 });
-    return this.atlasApiService.put(
-      `${this.SUBLINE_VERSIONS}/${encodeURIComponent(String(id))}`, sublineVersionV2);
+    return this.atlasApiService.put(`${this.SUBLINE_VERSIONS}/${encodeURIComponent(String(id))}`, sublineVersionV2);
   }
-
 }

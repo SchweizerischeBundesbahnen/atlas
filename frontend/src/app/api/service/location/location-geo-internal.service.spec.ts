@@ -36,12 +36,9 @@ describe('LocationGeoInternalService', () => {
     };
     service.getLocationInformation(coordinatePair);
 
-    expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({...coordinatePair, includeHeight: true});
-    expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith({...coordinatePair, includeHeight: true});
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/location/internal/geo-reference',
-      expect.any(HttpParams),
-    );
+    expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ ...coordinatePair, includeHeight: true });
+    expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith({ ...coordinatePair, includeHeight: true });
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/location/internal/geo-reference', expect.any(HttpParams));
   });
 
   it('should getHeight', () => {
@@ -56,7 +53,7 @@ describe('LocationGeoInternalService', () => {
     expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith(coordinatePair);
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/location/internal/geo-reference/height',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 });
