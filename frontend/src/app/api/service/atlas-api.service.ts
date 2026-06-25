@@ -32,10 +32,8 @@ export class AtlasApiService {
             queryParameters = this.addToHttpParams(queryParameters, element, key);
           }
         });
-      } else {
-        if (params[key] !== undefined && params[key] !== null) {
+      } else if (params[key] !== undefined && params[key] !== null) {
           queryParameters = this.addToHttpParams(queryParameters, params[key], key);
-        }
       }
     });
 
@@ -96,10 +94,8 @@ export class AtlasApiService {
         formData.append(key, params[key]);
       }
 
-      else {
-        if(params[key]){
+      else if(params[key]){
           formData.append(key, this.createBlob(params[key]));
-        }
       }
     });
 

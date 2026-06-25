@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component,
+import {
+  ChangeDetectionStrategy,
+  Component,
   ContentChild,
   Input,
   input,
@@ -7,7 +9,8 @@ import { ChangeDetectionStrategy, Component,
   output,
   SimpleChanges,
   TemplateRef,
-  ViewChild, } from '@angular/core';
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatOptgroup, MatOption } from '@angular/material/core';
 import { NgTemplateOutlet } from '@angular/common';
@@ -105,7 +108,8 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
 
   readonly selectChanged = output<{ value: TYPE[] }>();
 
-  @ViewChild('allSelected') private allSelected!: MatOption;
+  @ViewChild('allSelected')
+  private readonly allSelected!: MatOption;
 
   private _isDummyForm = false;
 

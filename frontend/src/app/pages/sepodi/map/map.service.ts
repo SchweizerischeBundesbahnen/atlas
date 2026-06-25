@@ -381,7 +381,7 @@ export class MapService {
     this.initMapEvents();
   }
 
-  private onMapClicked = (e: MapMouseEvent) => {
+  private readonly onMapClicked = (e: MapMouseEvent) => {
     if (this.coordinateSelectionMode) {
       const clickedCoordinates = e.lngLat;
       this.placeMarkerAndFlyTo(clickedCoordinates);

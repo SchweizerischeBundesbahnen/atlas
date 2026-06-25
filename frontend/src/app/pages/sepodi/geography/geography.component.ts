@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input, OnChanges, OnDestroy, output, SimpleChanges, } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  input,
+  OnChanges,
+  OnDestroy,
+  output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -87,7 +98,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   transformedCoordinatePair?: CoordinatePair;
 
-  private formDestroy$ = new Subject<void>();
+  private readonly formDestroy$ = new Subject<void>();
 
   constructor() {
     this.mapService.clickedGeographyCoordinates.pipe(takeUntilDestroyed()).subscribe((coordinatePairWGS84) => {
@@ -179,7 +190,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (this.currentSpatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(coordinates, SpatialReference.Wgs84)!;
     }
-    if (coordinates && coordinates.north && coordinates.east) {
+    if (coordinates?.north && coordinates?.east) {
       this.setHeightFromGeoData(coordinates, updateHeight);
       this.mapService.placeMarkerAndFlyTo({
         lat: coordinates.north,

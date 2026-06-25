@@ -32,7 +32,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe, TranslationSortingService],
 })
 export class StopPointCompleteFormComponent implements OnInit {
-
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
   readonly selectedMeansOfTransport = input<MeanOfTransport[]>();
   readonly isNew = input(false);
@@ -63,7 +62,7 @@ export class StopPointCompleteFormComponent implements OnInit {
     StopPointFormGroupBuilder.populateDropdownsForCompleteWithDefaultValue(this.form);
   }
 
-  private setSortedOperatingPointTypes = (): void => {
+  private readonly setSortedOperatingPointTypes = (): void => {
     this.standardAttributeTypes = this.translationSortingService.sort(
       Object.values(StandardAttributeType),
       'PRM.STOP_POINTS.STANDARD_ATTRIBUTE_TYPES.'

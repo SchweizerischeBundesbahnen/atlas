@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Pages } from '../../pages/pages';
 import { Page } from '../model/page';
 import { PermissionService } from '../auth/permission/permission.service';
@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PageService {
-  private _viewablePages: BehaviorSubject<Page[]> = new BehaviorSubject([...Pages.pages, Pages.TTFN]);
+  private readonly _viewablePages: BehaviorSubject<Page[]> = new BehaviorSubject([...Pages.pages, Pages.TTFN]);
   enabledPages: Observable<Page[]> = this._viewablePages.asObservable();
 
   private readonly permissionService = inject(PermissionService);

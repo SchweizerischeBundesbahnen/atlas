@@ -50,7 +50,7 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
   lineVersionSnapshots: LineVersionSnapshot[] = [];
   totalCount$ = 0;
 
-  private tableFilterConfigIntern = {
+  private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
     multiSelectWorkflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',

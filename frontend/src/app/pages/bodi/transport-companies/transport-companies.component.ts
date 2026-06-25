@@ -47,7 +47,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
     },
   ];
 
-  private tableFilterConfigIntern = {
+  private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
     multiSelectTransportCompanyStatus: new TableFilterMultiSelect(
       'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.',

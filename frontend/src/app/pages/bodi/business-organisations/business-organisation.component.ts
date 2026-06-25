@@ -35,7 +35,7 @@ export class BusinessOrganisationComponent implements OnDestroy {
   businessOrganisations = signal<BusinessOrganisation[]>([]);
   totalCount = signal(0);
 
-  private tableFilterConfigIntern = {
+  private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
     multiSelectStatus: new TableFilterMultiSelect(
       'COMMON.STATUS_TYPES.',
@@ -48,7 +48,7 @@ export class BusinessOrganisationComponent implements OnDestroy {
     dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
   };
   private businessOrganisationsSubscription?: Subscription;
-  private langChangeSubscription: Subscription;
+  private readonly langChangeSubscription: Subscription;
 
   constructor() {
     this.langChangeSubscription = this.businessOrganisationLanguageService

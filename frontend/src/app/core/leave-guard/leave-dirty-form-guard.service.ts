@@ -24,7 +24,7 @@ export class LeaveDirtyFormGuard {
       return true;
     }
 
-    if (component.form && component.form.dirty) {
+    if (component.form?.dirty) {
       return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',

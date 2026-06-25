@@ -245,7 +245,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       });
   }
 
-  private handleError = () => {
+  private readonly handleError = () => {
     this.enableForm();
     return EMPTY;
   };
