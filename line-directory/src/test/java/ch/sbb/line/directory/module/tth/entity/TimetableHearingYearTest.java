@@ -3,17 +3,13 @@ package ch.sbb.line.directory.module.tth.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
-import ch.sbb.line.directory.module.tth.entity.TimetableHearingYear;
+import ch.sbb.atlas.model.BaseValidatorTest;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class TimetableHearingYearTest {
-
-  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+class TimetableHearingYearTest extends BaseValidatorTest {
 
   @Test
   void shouldAcceptValidHearing() {

@@ -96,11 +96,11 @@ class StopPointServiceTest {
   void shouldThrowExceptionWhenIsReduced() {
     //given
     StopPointVersion reduced = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
-    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloidOrderByValidFrom(reduced.getSloid());
+    String sloid = reduced.getSloid();
+    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloidOrderByValidFrom(sloid);
     //when
     ReducedVariantException result = assertThrows(
-        ReducedVariantException.class,
-        () -> stopPointService.validateIsNotReduced(reduced.getSloid()));
+        ReducedVariantException.class, () -> stopPointService.validateIsNotReduced(sloid));
 
     //then
     assertThat(result).isNotNull();

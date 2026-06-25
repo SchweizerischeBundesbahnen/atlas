@@ -8,7 +8,6 @@ import ch.sbb.business.organisation.directory.module.company.mapper.CompanyMappe
 import ch.sbb.business.organisation.directory.module.company.model.CompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.module.company.service.CompanyService;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,7 +31,7 @@ public class CompanyControllerV1 implements CompanyApiV1 {
     return Container.<CompanyModel>builder()
         .objects(companies.stream()
             .map(CompanyMapper::fromEntity)
-            .collect(Collectors.toList()))
+            .toList())
         .totalCount(companies.getTotalElements())
         .build();
   }

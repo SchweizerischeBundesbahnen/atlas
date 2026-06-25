@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +22,9 @@ class GapFillerTest {
   private Entity editedEntity;
 
   private static List<ToVersioning> toVersioningList(VersionableObject... versionableObjects) {
-    return Arrays.stream(versionableObjects)
-                 .map(i -> ToVersioning.builder().versionable(i).build())
-                 .collect(Collectors.toList());
+    return new ArrayList<>(Arrays.stream(versionableObjects)
+        .map(i -> ToVersioning.builder().versionable(i).build())
+        .toList());
   }
 
   @BeforeEach

@@ -64,7 +64,7 @@ class TthDossierApiInternalControllerTest extends BaseControllerApiTest {
   private BoContactPermissionService boContactPermissionService;
 
   @MockitoBean
-  private TimetableHearingStatementClient TimetableHearingStatementClient;
+  private TimetableHearingStatementClient timetableHearingStatementClient;
 
   @MockitoBean
   private TthDossierCsvExportService tthDossierCsvExportService;

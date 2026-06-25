@@ -18,9 +18,10 @@ class PrmMeansOfTransportHelperTest {
   @Test
   void shouldNotValidateWhenMeansOfTransportCombinationIsNotAllowed() {
     //when
+    Set<MeanOfTransport> meanOfTransports = Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN);
     StopPointMeansOfTransportCombinationNotAllowedException result = assertThrows(
         StopPointMeansOfTransportCombinationNotAllowedException.class,
-        () -> PrmMeansOfTransportHelper.isReduced(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN)));
+        () -> PrmMeansOfTransportHelper.isReduced(meanOfTransports));
 
     //then
     assertThat(result).isNotNull();
@@ -37,9 +38,10 @@ class PrmMeansOfTransportHelperTest {
   @Test
   void shouldNotValidateWhenMeansOfTransportIsUnknown() {
     //when
+    Set<MeanOfTransport> meanOfTransports = Set.of(MeanOfTransport.UNKNOWN, MeanOfTransport.TRAIN);
     UnknownMeanOfTransportNotAllowedException result = assertThrows(
         UnknownMeanOfTransportNotAllowedException.class,
-        () -> PrmMeansOfTransportHelper.isReduced(Set.of(MeanOfTransport.UNKNOWN, MeanOfTransport.TRAIN)));
+        () -> PrmMeansOfTransportHelper.isReduced(meanOfTransports));
 
     //then
     assertThat(result).isNotNull();

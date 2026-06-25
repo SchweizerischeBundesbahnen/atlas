@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class SectorTemplateGenerator {
+class SectorTemplateGenerator {
 
   static final SectorCreateCsvModel SECTOR_CREATE_CSV_MODEL = SectorCreateCsvModel.builder()
       .trafficPointSloid("ch:1:sloid:7000:1:1")

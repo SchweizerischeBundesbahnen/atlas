@@ -67,15 +67,15 @@ class ImportUtilsTest {
         .validTo(LocalDate.of(2000, 12, 31))
         .build();
     ObjVersions edited = ObjVersions.builder()
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 30))
+        .validFrom(version.getValidFrom())
+        .validTo(version.getValidTo().minusDays(1))
         .build();
     List<ObjVersions> versions = new ArrayList<>();
     versions.add(version);
     //when
     ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
     //then
-    AssertionsForClassTypes.assertThat(result).isNotNull();
+    assertThat(result).isNotNull().isEqualTo(version);
   }
 
   @Test
@@ -86,15 +86,15 @@ class ImportUtilsTest {
         .validTo(LocalDate.of(2000, 12, 31))
         .build();
     ObjVersions edited = ObjVersions.builder()
-        .validFrom(LocalDate.of(2000, 1, 2))
-        .validTo(LocalDate.of(2000, 12, 31))
+        .validFrom(version.getValidFrom().plusDays(1))
+        .validTo(version.getValidTo())
         .build();
     List<ObjVersions> versions = new ArrayList<>();
     versions.add(version);
     //when
     ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
     //then
-    AssertionsForClassTypes.assertThat(result).isNotNull();
+    assertThat(result).isNotNull().isEqualTo(version);
   }
 
   @Test
@@ -105,15 +105,15 @@ class ImportUtilsTest {
         .validTo(LocalDate.of(2000, 12, 31))
         .build();
     ObjVersions edited = ObjVersions.builder()
-        .validFrom(LocalDate.of(2000, 1, 2))
-        .validTo(LocalDate.of(2000, 12, 30))
+        .validFrom(version.getValidFrom().plusDays(1))
+        .validTo(version.getValidTo().minusDays(1))
         .build();
     List<ObjVersions> versions = new ArrayList<>();
     versions.add(version);
     //when
     ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
     //then
-    AssertionsForClassTypes.assertThat(result).isNotNull();
+    assertThat(result).isNotNull().isEqualTo(version);
   }
 
   @Test

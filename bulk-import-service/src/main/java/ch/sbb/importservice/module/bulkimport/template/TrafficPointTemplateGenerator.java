@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class TrafficPointTemplateGenerator {
+class TrafficPointTemplateGenerator {
 
   private static final String DEFAULT_SLOID = "ch:1:sloid:7000:1:2";
   private static final LocalDate DEFAULT_VALID_FROM = LocalDate.of(2021, 4, 1);
@@ -24,8 +24,7 @@ public class TrafficPointTemplateGenerator {
   private static final Double DEFAULT_HEIGHT = 540.2;
   private static final String DEFAULT_PARENT_SLOID = "ch:1:sloid:7000:1";
 
-  public static TrafficPointUpdateCsvModel getTrafficPointUpdateCsvModelExample() {
-    return TrafficPointUpdateCsvModel.builder()
+  static final TrafficPointUpdateCsvModel TRAFFIC_POINT_UPDATE_CSV_MODEL = TrafficPointUpdateCsvModel.builder()
         .sloid(DEFAULT_SLOID)
         .validFrom(DEFAULT_VALID_FROM)
         .validTo(DEFAULT_VALID_TO)
@@ -40,10 +39,8 @@ public class TrafficPointTemplateGenerator {
         .height(DEFAULT_HEIGHT)
         .parentSloid(DEFAULT_PARENT_SLOID)
         .build();
-  }
 
-  public static TrafficPointCreateCsvModel getTrafficPointCreateCsvModelExample() {
-    return TrafficPointCreateCsvModel.builder()
+  static final TrafficPointCreateCsvModel TRAFFIC_POINT_CREATE_CSV_MODEL = TrafficPointCreateCsvModel.builder()
         .sloid(DEFAULT_SLOID)
         .validFrom(DEFAULT_VALID_FROM)
         .validTo(DEFAULT_VALID_TO)
@@ -61,12 +58,8 @@ public class TrafficPointTemplateGenerator {
         .height(DEFAULT_HEIGHT)
         .build();
 
-  }
-
-  public static SloidTerminateCsvModel getTrafficPointTerminateCsvModelExample() {
-    return SloidTerminateCsvModel.builder()
+  static final SloidTerminateCsvModel SLOID_TERMINATE_CSV_MODEL = SloidTerminateCsvModel.builder()
         .sloid(DEFAULT_SLOID)
         .validTo(DEFAULT_VALID_TO)
         .build();
-  }
 }

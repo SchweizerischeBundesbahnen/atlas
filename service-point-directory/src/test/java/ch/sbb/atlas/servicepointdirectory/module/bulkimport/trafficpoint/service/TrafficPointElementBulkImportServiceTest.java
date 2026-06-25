@@ -297,18 +297,19 @@ class TrafficPointElementBulkImportServiceTest {
 
   @Test
   void shouldFailValidationOnSloidWithWrongPrefixAndNotClaimSloid() {
+    BulkImportUpdateContainer<TrafficPointCreateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<TrafficPointCreateCsvModel>builder()
+        .object(TrafficPointCreateCsvModel.builder()
+            .sloid("ch:1:sloid:7000:0:123456")
+            .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+            .validFrom(bernWylereggPlatform.getValidFrom())
+            .validTo(bernWylereggPlatform.getValidTo())
+            .number(WYLEREGG_NUMBER)
+            .designation("WylereggLade")
+            .build())
+        .build();
     assertThatExceptionOfType(SloidNotValidException.class).isThrownBy(
-            () -> trafficPointElementBulkImportService.createTrafficPoint(
-                BulkImportUpdateContainer.<TrafficPointCreateCsvModel>builder()
-                    .object(TrafficPointCreateCsvModel.builder()
-                        .sloid("ch:1:sloid:7000:0:123456")
-                        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-                        .validFrom(bernWylereggPlatform.getValidFrom())
-                        .validTo(bernWylereggPlatform.getValidTo())
-                        .number(WYLEREGG_NUMBER)
-                        .designation("WylereggLade")
-                        .build())
-                    .build()))
+            () -> trafficPointElementBulkImportService.createTrafficPoint(updateContainer))
         .withMessage("The SLOID ch:1:sloid:7000:0:123456 is not valid due to: did not start with ch:1:sloid:89008");
 
     verifyNoInteractions(locationService);

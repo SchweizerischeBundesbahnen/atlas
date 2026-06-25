@@ -31,20 +31,20 @@ class BulkImportLogServiceTest {
 
   @Test
   void getLogFileFromS3() {
-    File file = new File("/test.log");
-    Mockito.when(bulkImportS3BucketService.downloadImportFile("/test.log")).thenReturn(file);
+    File file = new File("test.log");
+    Mockito.when(bulkImportS3BucketService.downloadImportFile("test.log")).thenReturn(file);
     Mockito.when(objectMapper.readValue(file, LogFile.class)).thenReturn(LogFile.builder()
         .nbOfSuccess(5L)
         .build());
 
-    LogFile logFile = bulkImportLogService.getLogFileFromS3("/test.log");
+    LogFile logFile = bulkImportLogService.getLogFileFromS3("test.log");
 
     assertThat(logFile.getNbOfSuccess()).isEqualTo(5);
   }
 
   @Test
   void shouldThrowRuntimeExceptionWhenFileDoesNotExistOrIsInvalid() {
-    Mockito.when(bulkImportS3BucketService.downloadImportFile("/test.log")).thenReturn(null);
+    Mockito.when(bulkImportS3BucketService.downloadImportFile("test.log")).thenReturn(null);
     Mockito.when(objectMapper.readValue((File) null, LogFile.class)).thenThrow(JacksonException.class);
 
     assertThrows(RuntimeException.class, () -> bulkImportLogService.getLogFileFromS3("/test.log"),

@@ -6,7 +6,6 @@ import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.BaseValidatorTest;
-import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
 import jakarta.validation.ConstraintViolation;
 import java.util.Set;
 import org.junit.jupiter.api.Test;

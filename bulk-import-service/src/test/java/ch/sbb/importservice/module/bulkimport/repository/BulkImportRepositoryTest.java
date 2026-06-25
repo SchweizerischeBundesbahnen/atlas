@@ -7,7 +7,6 @@ import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
-import ch.sbb.importservice.module.bulkimport.repository.BulkImportRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

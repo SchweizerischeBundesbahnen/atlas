@@ -7,10 +7,9 @@ import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class LineTemplateGenerator {
+class LineTemplateGenerator {
 
-  public static LineUpdateCsvModel getUpdateExample() {
-    return LineUpdateCsvModel.builder()
+  static final LineUpdateCsvModel LINE_UPDATE_CSV_MODEL = LineUpdateCsvModel.builder()
         .slnid("ch:1:slnid:1024320")
         .linienId("320")
         .validFrom(LocalDate.of(2021, 4, 1))
@@ -25,6 +24,5 @@ public class LineTemplateGenerator {
         .businessOrganisation("ch:1:sboid:100053")
         .comment("Bernina Express / Konzessionsrecht ist nur für den schweizerischen Linienabschnitt gültig")
         .build();
-  }
 
 }

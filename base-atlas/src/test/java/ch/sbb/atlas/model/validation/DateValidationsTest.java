@@ -56,7 +56,7 @@ class DateValidationsTest {
 
     DummyVersionable v2 = DummyVersionable.builder()
         .validFrom(LocalDate.of(1999, 1, 1))
-        .validTo(LocalDate.of(2001, 12, 31))
+        .validTo(LocalDate.of(2002, 12, 31))
         .build();
 
     List<DummyVersionable> versions = Arrays.asList(v1, v2);

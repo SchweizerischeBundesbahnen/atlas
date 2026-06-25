@@ -3,7 +3,6 @@ package ch.sbb.importservice.module.bulkimport.exception;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
-import ch.sbb.importservice.module.bulkimport.exception.LogFileNotFoundException;
 import org.junit.jupiter.api.Test;
 
 class LogFileNotFoundExceptionTest {

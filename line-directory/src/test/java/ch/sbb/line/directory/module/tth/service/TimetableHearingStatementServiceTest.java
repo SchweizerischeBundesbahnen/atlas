@@ -125,8 +125,9 @@ class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, Collections.emptyList());
 
+    long unknownId = createdStatement.getId() + 1;
     assertThatThrownBy(
-        () -> timetableHearingStatementService.getTimetableHearingStatementById(createdStatement.getId() + 1)).isInstanceOf(
+        () -> timetableHearingStatementService.getTimetableHearingStatementById(unknownId)).isInstanceOf(
         IdNotFoundException.class);
   }
 
@@ -154,19 +155,6 @@ class TimetableHearingStatementServiceTest {
   }
 
   @Test
-  void shouldNotGetHearingStatementIfIdIsNotValissd() {
-    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
-    TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
-
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
-        timetableHearingStatementModel, Collections.emptyList());
-
-    assertThatThrownBy(
-        () -> timetableHearingStatementService.getTimetableHearingStatementById(createdStatement.getId() + 1)).isInstanceOf(
-        IdNotFoundException.class);
-  }
-
-  @Test
   void shouldCreateHearingStatement() {
     timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
@@ -182,8 +170,9 @@ class TimetableHearingStatementServiceTest {
   void shouldNotCreateHearingStatementIfYearIsUnknown() {
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
+    List<MultipartFile> documents = Collections.emptyList();
     assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel,
-        Collections.emptyList())).isInstanceOf(
+        documents)).isInstanceOf(
         IdNotFoundException.class);
   }
 
@@ -240,9 +229,10 @@ class TimetableHearingStatementServiceTest {
         timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setTimetableYear(2020L);
 
+    List<MultipartFile> documents = Collections.emptyList();
     assertThatThrownBy(
         () -> timetableHearingStatementService.updateHearingStatement(timetableHearingStatement, updatingStatement,
-            Collections.emptyList())).isInstanceOf(
+            documents)).isInstanceOf(
         IdNotFoundException.class);
   }
 

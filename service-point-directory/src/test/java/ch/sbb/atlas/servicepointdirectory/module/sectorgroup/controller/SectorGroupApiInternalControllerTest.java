@@ -94,14 +94,14 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
         .designation("hehe")
         .build());
 
-    SectorGroupVersion sectorGroupVersion = sectorGroupVersionRepository.save(SectorTestData.getBasicSectorGroupVersion());
+    SectorGroupVersion savedVersion = sectorGroupVersionRepository.save(SectorTestData.getBasicSectorGroupVersion());
 
     sectorGroupRelationRepository.save(new SectorGroupRelation(
-        new SectorGroupRelationId(sectorGroupVersion.getSloid(), sector1)));
+        new SectorGroupRelationId(savedVersion.getSloid(), sector1)));
     sectorGroupRelationRepository.save(new SectorGroupRelation(
-        new SectorGroupRelationId(sectorGroupVersion.getSloid(), sector2)));
+        new SectorGroupRelationId(savedVersion.getSloid(), sector2)));
 
-    mvc.perform(get(BASE_PATH + "/" + sectorGroupVersion.getSloid() + "/sectors"))
+    mvc.perform(get(BASE_PATH + "/" + savedVersion.getSloid() + "/sectors"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].sloid", is(sector1)))
         .andExpect(jsonPath("$[0].designation", is("dese")))

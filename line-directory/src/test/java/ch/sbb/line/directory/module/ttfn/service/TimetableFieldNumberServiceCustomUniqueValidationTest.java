@@ -57,7 +57,7 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
   @Test
   void shouldNotThrowConflictException() {
     // Given
-    TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
+    TimetableFieldNumberVersion timetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100000")
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
@@ -69,7 +69,7 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
         .businessOrganisation("sbb")
         .build();
     // When
-    Executable saveExecutable = () -> timetableFieldNumberService.save(version);
+    Executable saveExecutable = () -> timetableFieldNumberService.save(timetableFieldNumberVersion);
     // Then
     Assertions.assertDoesNotThrow(saveExecutable);
   }
@@ -77,7 +77,7 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
   @Test
   void shouldThrowConflictExceptionIfNumberNotUnique() {
     // Given
-    TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
+    TimetableFieldNumberVersion timetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100001")
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
@@ -87,7 +87,7 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
         .validFrom(LocalDate.of(2020, 2, 1))
         .validTo(LocalDate.of(2020, 10, 1)).build();
     // When
-    Executable saveExecutable = () -> timetableFieldNumberService.save(version);
+    Executable saveExecutable = () -> timetableFieldNumberService.save(timetableFieldNumberVersion);
     // Then
     Assertions.assertThrows(TimetableFieldNumberConflictException.class, saveExecutable);
   }
@@ -95,7 +95,7 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
   @Test
   void shouldThrowConflictExceptionIfNotUniqueAndValidityOverlap() {
     // Given
-    TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
+    TimetableFieldNumberVersion timetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100001")
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
@@ -105,7 +105,7 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
         .validFrom(LocalDate.of(2019, 1, 1))
         .validTo(LocalDate.of(2020, 10, 1)).build();
     // When
-    Executable saveExecutable = () -> timetableFieldNumberService.save(version);
+    Executable saveExecutable = () -> timetableFieldNumberService.save(timetableFieldNumberVersion);
     // Then
     Assertions.assertThrows(TimetableFieldNumberConflictException.class, saveExecutable);
   }
@@ -115,7 +115,7 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
     // Given
     version.setStatus(Status.REVOKED);
 
-    TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
+    TimetableFieldNumberVersion timetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100000")
         .descriptionOutwardLine1("FPFN Description")
         .descriptionReturnLine1("FPFN Description")
@@ -127,7 +127,7 @@ class TimetableFieldNumberServiceCustomUniqueValidationTest {
         .businessOrganisation("sbb")
         .build();
     // When
-    Executable saveExecutable = () -> timetableFieldNumberService.save(version);
+    Executable saveExecutable = () -> timetableFieldNumberService.save(timetableFieldNumberVersion);
     // Then
     Assertions.assertDoesNotThrow(saveExecutable);
   }

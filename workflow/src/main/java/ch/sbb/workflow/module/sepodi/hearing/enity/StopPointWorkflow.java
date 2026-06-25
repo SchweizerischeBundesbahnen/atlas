@@ -1,13 +1,11 @@
 package ch.sbb.workflow.module.sepodi.hearing.enity;
 
-import static java.util.stream.Collectors.toSet;
-
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.redact.RedactBySboid;
 import ch.sbb.atlas.redact.Redacted;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.BaseWorkflowEntity;
 import ch.sbb.workflow.entity.Person;
 import jakarta.persistence.CascadeType;
@@ -115,8 +113,8 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   private LocalDate versionValidTo;
 
    public void setExaminants(Set<Person> examinants) {
-    this.examinants =
-        examinants.stream().peek(examinant -> examinant.setStopPointWorkflow(this)).collect(toSet());
-  }
+     examinants.forEach(examinant -> examinant.setStopPointWorkflow(this));
+     this.examinants = examinants;
+   }
 
 }

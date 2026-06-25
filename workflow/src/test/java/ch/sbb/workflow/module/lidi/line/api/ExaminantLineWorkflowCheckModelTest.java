@@ -9,7 +9,6 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 class ExaminantLineWorkflowCheckModelTest {
@@ -52,7 +51,7 @@ class ExaminantLineWorkflowCheckModelTest {
     assertThat(constraintViolations).hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
-        .collect(Collectors.toList());
+        .toList();
     assertThat(violationMessages).contains("Examinant did not accept without comment");
   }
 

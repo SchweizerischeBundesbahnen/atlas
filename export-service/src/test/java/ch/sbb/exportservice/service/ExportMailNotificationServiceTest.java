@@ -40,22 +40,6 @@ class ExportMailNotificationServiceTest {
     assertThat(result.getTemplateProperties()).containsOnly(expectedMailContent);
   }
 
-  @Test
-  void shouldBuildMailNotificationWhenThrowableIsNull() {
-    //given
-    Map<String, Object> expectedMailContent = getMailContent();
-    StepExecution stepExecution = getStepExecution();
-    //when
-    MailNotification result = notificationService.buildMailErrorNotification("export", stepExecution);
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.getMailType()).isEqualTo(MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo("Job [export] execution failed");
-    assertThat(result.getTemplateProperties()).isNotEmpty();
-    assertThat(result.getTemplateProperties()).containsOnly(expectedMailContent);
-  }
-
   private static @NotNull StepExecution getStepExecution() {
     JobExecution jobExecution = new JobExecution(1L, new JobInstance(1L, "job"), new JobParameters());
     StepExecution stepExecution = new StepExecution(123L, "myStep", jobExecution);

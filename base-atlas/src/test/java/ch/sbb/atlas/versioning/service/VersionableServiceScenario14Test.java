@@ -284,10 +284,8 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
                                                        .build();
 
     //when & then
-    assertThatExceptionOfType(VersioningException.class).isThrownBy(
-        () -> versionableService.versioningObjects(
-            versionableObject2,
-            editedVersion,
-            List.of(versionableObject1, versionableObject2, versionableObject3)));
+   List<VersionableObject> versionableObjects = List.of(versionableObject1, versionableObject2, versionableObject3);
+   assertThatExceptionOfType(VersioningException.class).isThrownBy(
+       () -> versionableService.versioningObjects(versionableObject2, editedVersion, versionableObjects));
   }
 }

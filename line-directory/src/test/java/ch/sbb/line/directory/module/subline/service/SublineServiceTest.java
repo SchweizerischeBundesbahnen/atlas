@@ -241,7 +241,7 @@ class SublineServiceTest {
     //given
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(new ArrayList<>());
     //when && then
-    assertThrows(NoSuchElementException.class, () -> sublineService.getMainLineVersion(any()));
+    assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> sublineService.getMainLineVersion("ch:1:slnid1523"));
   }
 
   @Test

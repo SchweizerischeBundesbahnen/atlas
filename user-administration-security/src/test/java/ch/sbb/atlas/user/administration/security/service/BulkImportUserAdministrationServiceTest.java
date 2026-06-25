@@ -125,9 +125,10 @@ class BulkImportUserAdministrationServiceTest {
         .build()));
 
     // Then
+    ImportType importType = importRequest.getImportType();
+    ApplicationType applicationType = importRequest.getApplicationType();
     assertThatExceptionOfType(BulkImportTerminateForbiddenException.class).isThrownBy(
-        () -> bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest.getImportType(),
-            importRequest.getApplicationType()));
+        () -> bulkImportUserAdministrationService.hasPermissionsForBulkImport(importType, applicationType));
   }
 
   @Test

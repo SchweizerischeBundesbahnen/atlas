@@ -55,8 +55,7 @@ public class TrafficPointElementVersionRowMapper extends BaseSepodiRowMapper imp
     trafficPointElementGeolocationBuilder.north(rs.getDouble("north"));
     trafficPointElementGeolocationBuilder.height(RowMapperUtil.getDouble(rs, "height"));
     if (rs.getString("spatial_reference") != null) {
-      SpatialReference spatialReference = SpatialReference.valueOf(rs.getString("spatial_reference"));
-      trafficPointElementGeolocationBuilder.spatialReference(spatialReference);
+      trafficPointElementGeolocationBuilder.spatialReference(SpatialReference.valueOf(rs.getString("spatial_reference")));
     }
     TrafficPointElementGeolocation trafficPointElementGeolocation = trafficPointElementGeolocationBuilder.build();
     if (trafficPointElementGeolocation.getSpatialReference() != null) {

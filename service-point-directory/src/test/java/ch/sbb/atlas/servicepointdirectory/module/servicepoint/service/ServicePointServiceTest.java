@@ -145,8 +145,9 @@ class ServicePointServiceTest {
         .build();
     version2.setVersion(2);
     // when then
+    List<ServicePointVersion> currentVersions = Collections.emptyList();
     assertThrows(StaleObjectStateException.class,
-        () -> servicePointService.updateServicePointVersion(version1, version2, Collections.emptyList()));
+        () -> servicePointService.updateServicePointVersion(version1, version2, currentVersions));
   }
 
   @Test

@@ -84,8 +84,8 @@ class ExportServiceBatchSchedulerServiceTest {
     when(mock.exportServicePointBatch()).thenReturn(RESPONSE.toBuilder().status(400).build());
 
     //when
-    assertThrows(SchedulingExecutionException.class,
-        () -> new ExportServiceBatchSchedulerService(mock).postTriggerExportServicePointBatch());
+    ExportServiceBatchSchedulerService exportServiceBatchSchedulerService = new ExportServiceBatchSchedulerService(mock);
+    assertThrows(SchedulingExecutionException.class, exportServiceBatchSchedulerService::postTriggerExportServicePointBatch);
   }
 
 }

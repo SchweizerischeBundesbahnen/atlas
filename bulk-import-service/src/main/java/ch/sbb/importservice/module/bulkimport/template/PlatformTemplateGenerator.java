@@ -14,10 +14,9 @@ import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class PlatformTemplateGenerator {
+class PlatformTemplateGenerator {
 
-  public static PlatformReducedUpdateCsvModel getPlatformReducedUpdateCsvModelExample() {
-    return PlatformReducedUpdateCsvModel.builder()
+  static final PlatformReducedUpdateCsvModel PLATFORM_REDUCED_UPDATE_CSV_MODEL = PlatformReducedUpdateCsvModel.builder()
         .sloid("ch:1:sloid:88253:0:1")
         .validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2099, 12, 31))
@@ -33,10 +32,8 @@ public class PlatformTemplateGenerator {
         .wheelchairAreaLength(300.0)
         .wheelchairAreaWidth(257.0)
         .build();
-  }
 
-  public static PlatformCompleteUpdateCsvModel getPlatformCompleteUpdateCsvModelExample() {
-    return PlatformCompleteUpdateCsvModel.builder()
+  static final PlatformCompleteUpdateCsvModel PLATFORM_COMPLETE_UPDATE_CSV_MODEL = PlatformCompleteUpdateCsvModel.builder()
         .sloid("ch:1:sloid:1:0:1")
         .validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2099, 12, 31))
@@ -52,13 +49,10 @@ public class PlatformTemplateGenerator {
         .levelAccessWheelchair(LevelAccessWheelchairAttributeType.TO_BE_COMPLETED)
         .superelevation(23.00)
         .build();
-  }
 
-  public static SloidTerminateCsvModel getSloidTerminateCsvModelExample() {
-    return SloidTerminateCsvModel.builder()
+  static final SloidTerminateCsvModel SLOID_TERMINATE_CSV_MODEL = SloidTerminateCsvModel.builder()
         .sloid("ch:1:sloid:1:0:1")
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-  }
 
 }

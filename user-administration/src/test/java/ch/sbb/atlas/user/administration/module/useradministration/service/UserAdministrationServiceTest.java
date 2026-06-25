@@ -115,7 +115,7 @@ class UserAdministrationServiceTest {
 
     List<UserModel> permittedUsers = userAdministrationService.filterForPermittedUserInAtlas(foundUsers, applicationType);
 
-    assertThat(1).isEqualTo(permittedUsers.size());
+    assertThat(permittedUsers).hasSize(1);
     assertThat(user1.getSbbUserId()).isEqualTo(permittedUsers.getFirst().getSbbUserId());
 
     verify(userPermissionRepositoryMock, times(3)).findBySbbUserIdIgnoreCaseAndApplication(anyString(), eq(applicationType));

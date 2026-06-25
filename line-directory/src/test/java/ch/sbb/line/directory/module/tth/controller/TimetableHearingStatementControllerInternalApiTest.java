@@ -1473,7 +1473,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     @Test
     void shouldCheckDataProtectionForExistingStatementWithDocuments() {
       // Given
-      TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
+      TimetableHearingStatementModelV2 statementModel = timetableHearingStatementControllerInternal.createStatement(
           TimetableHearingStatementModelV2.builder()
               .timetableYear(YEAR)
               .swissCanton(SwissCanton.BERN)
@@ -1483,22 +1483,22 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
               .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
               .build(),
           List.of(MULTIPART_FILES.getFirst()));
-      assertThat(statement.isDataProtectionChecked()).isFalse();
+      assertThat(statementModel.isDataProtectionChecked()).isFalse();
 
       // when
       timetableHearingStatementControllerInternal.checkDataProtection(TimetableHearingStatementDataProtectionModel.builder()
-          .id(statement.getId())
+          .id(statementModel.getId())
           .statementAnonymous(false)
           .anonymousStatement("Anonymisierte Stellungnahme")
           .documents(List.of(TimetableHearingStatementDocumentModel.builder()
-              .id(statement.getDocuments().getFirst().getId())
+              .id(statementModel.getDocuments().getFirst().getId())
               .anonymous(true)
               .build()))
           .build());
 
       // then
       TimetableHearingStatementModelV2 updatedStatement = timetableHearingStatementControllerInternal.getStatement(
-          statement.getId());
+          statementModel.getId());
       assertThat(updatedStatement.isDataProtectionChecked()).isTrue();
       assertThat(updatedStatement.getStatementAnonymous()).isFalse();
       assertThat(updatedStatement.getAnonymousStatement()).isNotNull();

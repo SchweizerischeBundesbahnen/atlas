@@ -19,6 +19,7 @@ import ch.sbb.atlas.servicepointdirectory.module.sector.exception.MissingTrainSt
 import ch.sbb.atlas.servicepointdirectory.module.sector.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.module.sector.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.repository.TrafficPointElementVersionRepository;
@@ -161,7 +162,8 @@ class SectorServiceTest {
 
     // When
     // Then
-    assertThatThrownBy(() -> sectorService.createSector(model, List.of(ServicePointTestData.getBern())))
+    List<ServicePointVersion> servicePoint = List.of(ServicePointTestData.getBern());
+    assertThatThrownBy(() -> sectorService.createSector(model, servicePoint))
         .isInstanceOf(SloidNotFoundException.class);
   }
 
@@ -186,7 +188,8 @@ class SectorServiceTest {
 
     // When
     // Then
-    assertThatThrownBy(() -> sectorService.createSector(model, List.of(ServicePointTestData.createServicePointVersion())))
+    List<ServicePointVersion> servicePoint = List.of(ServicePointTestData.createServicePointVersion());
+    assertThatThrownBy(() -> sectorService.createSector(model, servicePoint))
         .isInstanceOf(MissingTrainStopPointException.class);
   }
 
@@ -210,7 +213,8 @@ class SectorServiceTest {
 
     // When
     // Then
-    assertThatThrownBy(() -> sectorService.createSector(model, List.of(ServicePointTestData.createServicePointVersion())))
+    List<ServicePointVersion> servicePoint = List.of(ServicePointTestData.createServicePointVersion());
+    assertThatThrownBy(() -> sectorService.createSector(model, servicePoint))
         .isInstanceOf(SectorValidityException.class);
   }
 

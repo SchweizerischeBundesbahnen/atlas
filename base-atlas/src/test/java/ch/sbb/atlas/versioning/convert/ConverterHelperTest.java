@@ -115,7 +115,7 @@ class ConverterHelperTest extends BaseTest {
     assertThat(oneToOnePropertyField).isNotNull();
     assertThat(oneToOnePropertyField.getKey()).isEqualTo(Fields.oneToOneRelation);
     assertThat(oneToOnePropertyField.getOneToOne()).isNotNull();
-    Property relationValueProperty = oneToOnePropertyField.getOneToOne().getProperties().get(0);
+    Property relationValueProperty = oneToOnePropertyField.getOneToOne().getProperties().getFirst();
     assertThat(relationValueProperty.getOneToOne()).isNull();
     assertThat(relationValueProperty.getOneToMany()).isNull();
     assertThat(relationValueProperty.getKey()).isEqualTo("value");
@@ -140,7 +140,7 @@ class ConverterHelperTest extends BaseTest {
   @Test
   void shouldContainsNullPropertyWhenDeletePropertyWhenNull() {
     //given
-    VersionableObject versionableObject1 = VersionableObject
+    VersionableObject version1 = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -149,7 +149,7 @@ class ConverterHelperTest extends BaseTest {
         .oneToManyRelation(List.of(relation))
         .oneToOneRelation(Relation.builder().id(1L).value("123").build())
         .build();
-    VersionableObject versionableObject2 = VersionableObject
+    VersionableObject version2 = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -157,7 +157,7 @@ class ConverterHelperTest extends BaseTest {
         .build();
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(true, versionableObject1, versionableObject2,
+    Entity result = ConverterHelper.convertToEditedEntity(true, version1, version2,
         VERSIONABLE
     );
 
@@ -201,7 +201,7 @@ class ConverterHelperTest extends BaseTest {
         .relationsFields(List.of(Relation.Fields.value))
         .build());
 
-    VersionableObject versionableObject1 = VersionableObject
+    VersionableObject version1 = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -210,7 +210,7 @@ class ConverterHelperTest extends BaseTest {
         .oneToManyRelation(List.of(relation))
         .oneToOneRelation(Relation.builder().id(1L).value("123").build())
         .build();
-    VersionableObject versionableObject2 = VersionableObject
+    VersionableObject version2 = VersionableObject
         .builder()
         .id(1L)
         .property("doNotOvverrideMe")
@@ -219,7 +219,7 @@ class ConverterHelperTest extends BaseTest {
         .build();
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(true, versionableObject1, versionableObject2,
+    Entity result = ConverterHelper.convertToEditedEntity(true, version1, version2,
         versionableProperties
     );
 
@@ -242,7 +242,7 @@ class ConverterHelperTest extends BaseTest {
   @Test
   void shouldNotContainsNullPropertyWhenNotDeletePropertyWhenNull() {
     //given
-    VersionableObject versionableObject1 = VersionableObject
+    VersionableObject version1 = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -251,7 +251,7 @@ class ConverterHelperTest extends BaseTest {
         .oneToManyRelation(List.of(relation))
         .oneToOneRelation(Relation.builder().id(1L).value("123").build())
         .build();
-    VersionableObject versionableObject2 = VersionableObject
+    VersionableObject version2 = VersionableObject
         .builder()
         .id(1L)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -259,7 +259,7 @@ class ConverterHelperTest extends BaseTest {
         .build();
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(false, versionableObject1, versionableObject2,
+    Entity result = ConverterHelper.convertToEditedEntity(false, version1, version2,
         VERSIONABLE
     );
 
@@ -287,7 +287,7 @@ class ConverterHelperTest extends BaseTest {
     //then
     assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
-    ToVersioning firstItemToVersioning = result.get(0);
+    ToVersioning firstItemToVersioning = result.getFirst();
     assertThat(firstItemToVersioning).isNotNull();
     assertThat(firstItemToVersioning.getVersionable().getId()).isEqualTo(
         versionableObject1.getId());
@@ -301,7 +301,7 @@ class ConverterHelperTest extends BaseTest {
     List<Property> entityFirstItemProperties = entityFirstItem.getProperties();
     assertThat(entityFirstItemProperties).hasSize(3);
 
-    Property firstPropertyFirstItem = entityFirstItemProperties.get(0);
+    Property firstPropertyFirstItem = entityFirstItemProperties.getFirst();
     assertThat(firstPropertyFirstItem).isNotNull();
     assertThat(firstPropertyFirstItem.getKey()).isEqualTo(VersionableObject.Fields.property);
     assertThat(firstPropertyFirstItem.getValue()).isEqualTo("Ciao");
@@ -316,14 +316,14 @@ class ConverterHelperTest extends BaseTest {
     assertThat(secondPropertyFirstItem.getOneToOne()).isNull();
     List<Entity> oneToManyRelation = secondPropertyFirstItem.getOneToMany();
     assertThat(oneToManyRelation).hasSize(1);
-    Entity entityOneToManyRelation = oneToManyRelation.get(0);
+    Entity entityOneToManyRelation = oneToManyRelation.getFirst();
     assertThat(entityOneToManyRelation).isNotNull();
     List<Property> entityOneToManyRelationProperties = entityOneToManyRelation.getProperties();
     assertThat(entityOneToManyRelationProperties).hasSize(1);
-    assertThat(entityOneToManyRelationProperties.get(0).getKey()).isEqualTo(Relation.Fields.value);
-    assertThat(entityOneToManyRelationProperties.get(0).getValue()).isEqualTo("value1");
-    assertThat(entityOneToManyRelationProperties.get(0).getOneToOne()).isNull();
-    assertThat(entityOneToManyRelationProperties.get(0).getOneToMany()).isNull();
+    assertThat(entityOneToManyRelationProperties.getFirst().getKey()).isEqualTo(Relation.Fields.value);
+    assertThat(entityOneToManyRelationProperties.getFirst().getValue()).isEqualTo("value1");
+    assertThat(entityOneToManyRelationProperties.getFirst().getOneToOne()).isNull();
+    assertThat(entityOneToManyRelationProperties.getFirst().getOneToMany()).isNull();
 
     Property thirdPropertyFirstItem = entityFirstItemProperties.get(2);
     assertThat(thirdPropertyFirstItem).isNotNull();
@@ -347,7 +347,7 @@ class ConverterHelperTest extends BaseTest {
     List<Property> entitySecondItemProperties = entitySecondItem.getProperties();
     assertThat(entitySecondItemProperties).hasSize(3);
 
-    Property firstPropertySecondItem = entitySecondItemProperties.get(0);
+    Property firstPropertySecondItem = entitySecondItemProperties.getFirst();
     assertThat(firstPropertySecondItem).isNotNull();
     assertThat(firstPropertySecondItem.getKey()).isEqualTo(VersionableObject.Fields.property);
     assertThat(firstPropertySecondItem.getValue()).isEqualTo("Ciao2");
@@ -373,10 +373,10 @@ class ConverterHelperTest extends BaseTest {
     assertThat(oneToOneRelationSecondItem).isNotNull();
     List<Property> oneToOneRelationSecondItemProperties = oneToOneRelationSecondItem.getProperties();
     assertThat(oneToOneRelationSecondItemProperties).hasSize(1);
-    assertThat(oneToOneRelationSecondItemProperties.get(0).getOneToOne()).isNull();
-    assertThat(oneToOneRelationSecondItemProperties.get(0).getOneToMany()).isNull();
-    assertThat(oneToOneRelationSecondItemProperties.get(0).getKey()).isEqualTo("value");
-    assertThat(oneToOneRelationSecondItemProperties.get(0).getValue()).isEqualTo("value1");
+    assertThat(oneToOneRelationSecondItemProperties.getFirst().getOneToOne()).isNull();
+    assertThat(oneToOneRelationSecondItemProperties.getFirst().getOneToMany()).isNull();
+    assertThat(oneToOneRelationSecondItemProperties.getFirst().getKey()).isEqualTo("value");
+    assertThat(oneToOneRelationSecondItemProperties.getFirst().getValue()).isEqualTo("value1");
   }
 
   @Test
@@ -397,10 +397,10 @@ class ConverterHelperTest extends BaseTest {
     // index 2 = oneToOne Property
     Entity oneToOne = secondItem.getEntity().getProperties().get(2).getOneToOne();
     assertThat(oneToOne.getProperties()).hasSize(1);
-    assertThat(oneToOne.getProperties().get(0).getValue()).isEqualTo("value1");
-    assertThat(oneToOne.getProperties().get(0).getKey()).isEqualTo("value");
-    assertThat(oneToOne.getProperties().get(0).getOneToOne()).isNull();
-    assertThat(oneToOne.getProperties().get(0).getOneToMany()).isNull();
+    assertThat(oneToOne.getProperties().getFirst().getValue()).isEqualTo("value1");
+    assertThat(oneToOne.getProperties().getFirst().getKey()).isEqualTo("value");
+    assertThat(oneToOne.getProperties().getFirst().getOneToOne()).isNull();
+    assertThat(oneToOne.getProperties().getFirst().getOneToMany()).isNull();
   }
 
   @Test
@@ -414,12 +414,9 @@ class ConverterHelperTest extends BaseTest {
         .build());
 
     //when
-    assertThatThrownBy(() -> {
-      ConverterHelper.convertAllObjectsToVersioning(
-          List.of(versionableObject1, versionableObject2), versionable
-      );
-      //then
-    }).isInstanceOf(VersioningException.class)
+    List<VersionableObject> versionableObjects = List.of(versionableObject1, versionableObject2);
+    assertThatThrownBy(() -> ConverterHelper.convertAllObjectsToVersioning(versionableObjects, versionable)).isInstanceOf(
+            VersioningException.class)
         .hasMessageContaining("Error during parse field: not_defined");
   }
 
@@ -436,12 +433,9 @@ class ConverterHelperTest extends BaseTest {
         .build());
 
     //when
-    assertThatThrownBy(() -> {
-      ConverterHelper.convertAllObjectsToVersioning(
-          List.of(versionableObject1, versionableObject2), versionable
-      );
-      //then
-    }).isInstanceOf(VersioningException.class)
+    List<VersionableObject> versionableObjects = List.of(versionableObject1, versionableObject2);
+    assertThatThrownBy(() -> ConverterHelper.convertAllObjectsToVersioning(versionableObjects, versionable)).isInstanceOf(
+            VersioningException.class)
         .hasMessageContaining("Error during parse field: not_defined");
   }
 

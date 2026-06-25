@@ -10,7 +10,6 @@ import ch.sbb.business.organisation.directory.module.transportcompany.mapper.Tra
 import ch.sbb.business.organisation.directory.module.transportcompany.model.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.module.transportcompany.service.TransportCompanyService;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,7 +34,7 @@ public class TransportCompanyControllerV1 implements TransportCompanyApiV1 {
             .build());
     List<TransportCompanyModel> transportCompanyModels = transportCompanies.stream()
         .map(TransportCompanyMapper::fromEntity)
-        .collect(Collectors.toList());
+        .toList();
     return Container.<TransportCompanyModel>builder()
         .objects(transportCompanyModels)
         .totalCount(transportCompanies.getTotalElements())

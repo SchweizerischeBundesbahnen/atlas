@@ -6,8 +6,8 @@ import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -23,6 +23,7 @@ import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.model.SectorGroupRe
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository.SectorGroupRelationRepository;
 import ch.sbb.atlas.servicepointdirectory.module.sectorgroup.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.repository.TrafficPointElementVersionRepository;
@@ -244,8 +245,9 @@ class SectorGroupServiceTest {
         .designation("hehe")
         .build();
 
+    List<ServicePointVersion> servicePointVersions = List.of();
     assertThatThrownBy(() ->
-        sectorGroupService.createSectorGroup(toCreate, sloids, List.of())
+        sectorGroupService.createSectorGroup(toCreate, sloids, servicePointVersions)
     ).isInstanceOf(SectorNotExistingException.class);
   }
 
@@ -288,8 +290,9 @@ class SectorGroupServiceTest {
     doReturn("ch:1:sloid:sector:1:0:2").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
         toCreate.getTrafficPointSloid());
 
+    List<ServicePointVersion> servicePointVersions = List.of(ServicePointTestData.getBern());
     assertThatThrownBy(() ->
-        sectorGroupService.createSectorGroup(toCreate, sloids, List.of(ServicePointTestData.getBern()))
+        sectorGroupService.createSectorGroup(toCreate, sloids, servicePointVersions)
     ).isInstanceOf(SectorValidityException.class);
   }
 
@@ -321,8 +324,10 @@ class SectorGroupServiceTest {
         .designation("hehe")
         .build();
 
+    List<String> sloids = List.of(sloid, sloid2);
+    List<ServicePointVersion> servicePointVersions = List.of();
     assertThatThrownBy(() ->
-        sectorGroupService.createSectorGroup(toCreate, List.of(sloid, sloid2), List.of())
+        sectorGroupService.createSectorGroup(toCreate, sloids, servicePointVersions)
     ).isInstanceOf(SloidNotFoundException.class);
   }
 
@@ -357,8 +362,10 @@ class SectorGroupServiceTest {
         .designation("hehe")
         .build();
 
+    List<String> sloids = List.of("s1", "s2");
+    List<ServicePointVersion> servicePointVersions = List.of();
     assertThatThrownBy(() ->
-        sectorGroupService.createSectorGroup(toCreate, List.of("s1", "s2"), List.of())
+        sectorGroupService.createSectorGroup(toCreate, sloids, servicePointVersions)
     ).isInstanceOf(SloidsNotEqualException.class);
   }
 
