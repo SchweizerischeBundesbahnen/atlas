@@ -228,6 +228,7 @@
       "CONTACT_POINT": "Schalter",
       "PARKING_LOT": "Parkplatz",
       "RELATION": "Verbindung",
+      "PLATFORM": "Haltekante",
       "PLATFORM_REDUCED": "Haltekante (reduziert)",
       "PLATFORM_COMPLETE": "Haltekante (komplett)",
       "LINE": "Linie",

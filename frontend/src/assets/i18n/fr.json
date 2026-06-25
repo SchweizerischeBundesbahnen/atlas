@@ -228,6 +228,7 @@
       "CONTACT_POINT": "Guichet",
       "PARKING_LOT": "Place de stationnement",
       "RELATION": "Relation",
+      "PLATFORM": "Bordures d’arrêt",
       "PLATFORM_REDUCED": "Bordures d’arrêt (réduit)",
       "PLATFORM_COMPLETE": "Bordures d’arrêt (complet)",
       "LINE": "Ligne",
