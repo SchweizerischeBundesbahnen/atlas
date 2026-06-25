@@ -104,14 +104,14 @@
           <div>
             @if (isHearingYearActive() && isSwissCanton()) {
               <span class="font-bold-lg">
-                {{ 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX' | translate: { totalCount: totalCount } }}
+                {{ 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX' | translate: { totalCount: totalCount() } }}
                 {{ 'TTH.WHOLE_SWISS' | translate }}
               </span>
             }
 
             @if (isHearingYearActive() && !isSwissCanton()) {
               <span class="font-bold-lg">
-                {{ 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX' | translate: { totalCount: totalCount } }}
+                {{ 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX' | translate: { totalCount: totalCount() } }}
                 {{ 'TTH.SWISS_CANTON' | translate }}
                 {{ 'TTH.CANTON.' + cantonShort().toUpperCase() | translate }}
               </span>
@@ -122,7 +122,7 @@
                 'TTH.TABLE_RESULT_HEADING'
                   | translate
                     : {
-                        totalCount: totalCount,
+                        totalCount: totalCount(),
                         year: timetableYear().timetableYear,
                       }
               }}</span>
