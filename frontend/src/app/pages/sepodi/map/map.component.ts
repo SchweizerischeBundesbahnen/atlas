@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild, input } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options';
@@ -37,10 +47,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   map!: Map;
 
-  private onDestroy$ = new Subject<boolean>();
+  private readonly onDestroy$ = new Subject<boolean>();
 
   @ViewChild('map')
-  private mapContainer!: ElementRef<HTMLElement>;
+  private readonly mapContainer!: ElementRef<HTMLElement>;
 
   ngOnInit() {
     this.userService.onPermissionsLoaded().subscribe(() => {

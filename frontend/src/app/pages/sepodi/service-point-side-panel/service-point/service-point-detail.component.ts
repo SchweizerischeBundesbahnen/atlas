@@ -94,7 +94,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   readonly servicePointStatus = Status;
 
-  private onDestroy$ = new Subject<boolean>();
+  private readonly onDestroy$ = new Subject<boolean>();
 
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion?: ReadServicePointVersion;
@@ -366,7 +366,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
       });
   }
 
-  private handleError = () => {
+  private readonly handleError = () => {
     this.enableForm();
     return EMPTY;
   };

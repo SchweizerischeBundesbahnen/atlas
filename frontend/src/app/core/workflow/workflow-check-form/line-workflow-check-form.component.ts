@@ -51,7 +51,7 @@ export class LineWorkflowCheckFormComponent implements OnInit {
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
   });
-  private ngUnsubscribe = new Subject<void>();
+  private readonly ngUnsubscribe = new Subject<void>();
 
   private readonly workflowService = inject(LineWorkflowService);
   private readonly notificationService = inject(NotificationService);

@@ -9,7 +9,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'atlas-sloid',
   templateUrl: './sloid.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrls: ['./sloid.component.scss'],
   imports: [AtlasSlideToggleComponent, TextFieldComponent, ReactiveFormsModule, TranslatePipe],
   providers: [TranslatePipe],
 })

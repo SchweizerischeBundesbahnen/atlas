@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   AffectedSublinesModel,
   ApplicationRole,
@@ -380,9 +380,10 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
 
     let formsEqual = false;
     keysInitForm.forEach((key) => {
-      if (keysUpdatedForm.includes(key)) {
-        formsEqual = true;
-      } else if (initForm[key as keyof typeof initForm] === updatedForm[key as keyof typeof updatedForm]) {
+      if (
+        keysUpdatedForm.includes(key) ||
+        initForm[key as keyof typeof initForm] === updatedForm[key as keyof typeof updatedForm]
+      ) {
         formsEqual = true;
       }
     });

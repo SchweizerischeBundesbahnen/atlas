@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
@@ -21,7 +21,7 @@ export class SublineTableComponent implements OnInit, OnDestroy {
 
   @Input() eventSubject!: Observable<boolean>;
 
-  private onDestroy$ = new Subject<boolean>();
+  private readonly onDestroy$ = new Subject<boolean>();
 
   tableColumns: TableColumn<Line>[] = [
     { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },

@@ -1,16 +1,16 @@
-import {Component, contentChild, inject, input, OnInit, output, signal, TemplateRef} from '@angular/core';
-import {MatSort, MatSortHeader, Sort, SortDirection} from '@angular/material/sort';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {TableColumn} from './table-column';
-import {TableService} from './table.service';
-import {TablePagination} from './table-pagination';
-import {ColumnDropDownEvent} from './column-drop-down-event';
-import {SelectionModel} from '@angular/cdk/collections';
-import {MatCheckbox, MatCheckboxChange} from '@angular/material/checkbox';
-import {TableFilter} from '../table-filter/config/table-filter';
-import {LoadingSpinnerComponent} from '../loading-spinner/loading-spinner.component';
-import {NgClass, NgTemplateOutlet} from '@angular/common';
-import {TableFilterComponent} from '../table-filter/table-filter.component';
+import { Component, contentChild, inject, input, OnInit, output, signal, TemplateRef } from '@angular/core';
+import { MatSort, MatSortHeader, Sort, SortDirection } from '@angular/material/sort';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { TableColumn } from './table-column';
+import { TableService } from './table.service';
+import { TablePagination } from './table-pagination';
+import { ColumnDropDownEvent } from './column-drop-down-event';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { TableFilter } from '../table-filter/config/table-filter';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { TableFilterComponent } from '../table-filter/table-filter.component';
 import {
   MatCell,
   MatCellDef,
@@ -24,12 +24,12 @@ import {
   MatRowDef,
   MatTable,
 } from '@angular/material/table';
-import {MouseOverTitleDirective} from './directive/mouse-over-title.directive';
-import {SelectComponent} from '../../form-components/select/select.component';
-import {AtlasButtonComponent} from '../button/atlas-button.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {ShowTitlePipe} from './pipe/show-title.pipe';
-import {FormatPipe} from './pipe/format.pipe';
+import { MouseOverTitleDirective } from './directive/mouse-over-title.directive';
+import { SelectComponent } from '../../form-components/select/select.component';
+import { AtlasButtonComponent } from '../button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ShowTitlePipe } from './pipe/show-title.pipe';
+import { FormatPipe } from './pipe/format.pipe';
 
 @Component({
   selector: 'atlas-table',
@@ -185,7 +185,6 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   private emitTableChangedEvent(): void {
-    // this.isLoading.set(true);
     this.tableChanged.emit({
       page: this.pageIndex,
       size: this.pageSize,

@@ -120,7 +120,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
     };
   }
 
-  private handleError = () => {
+  private readonly handleError = () => {
     this.form.enable();
     return EMPTY;
   };

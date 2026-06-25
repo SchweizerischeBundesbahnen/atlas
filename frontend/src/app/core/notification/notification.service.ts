@@ -49,16 +49,20 @@ export class NotificationService {
     this.SNACK_BAR_CONFIG['duration'] = undefined;
     this.SNACK_BAR_CONFIG['panelClass'] = ['error', 'notification'];
     if (error instanceof HttpErrorResponse) {
-      this.configureNotification(code, error);
+      this.configureHttpErrorNotification(code, error);
     } else {
-      if (code) {
-        this.configureErrorCodeNotification(code);
-      } else {
-        this.configureGenericClientErrorNotification(error);
-      }
+      this.configureErrorNotification(code, error);
     }
     const errorSnackBar = this.snackBar.openFromComponent(ErrorNotificationComponent, this.SNACK_BAR_CONFIG);
     this.dismissOnNavigation(errorSnackBar);
+  }
+
+  private configureErrorNotification(code: string | undefined, error: Error) {
+    if (code) {
+      this.configureErrorCodeNotification(code);
+    } else {
+      this.configureGenericClientErrorNotification(error);
+    }
   }
 
   info(msg: string, param?: NotificationParamMessage) {
@@ -94,7 +98,7 @@ export class NotificationService {
     this.routerEventSubscription = this.routerEventPipe.subscribe(() => errorSnackBar.dismiss());
   }
 
-  private configureNotification(code: string | undefined, errorResponse: HttpErrorResponse) {
+  private configureHttpErrorNotification(code: string | undefined, errorResponse: HttpErrorResponse) {
     if (code) {
       this.configureErrorCodeNotification(code);
     } else if (errorResponse.error?.details) {

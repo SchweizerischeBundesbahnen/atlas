@@ -79,7 +79,7 @@ export class ServicePointCreationComponent implements DetailFormComponent, OnDes
     }
   }
 
-  private handleCountryChange = (country: Country | null) => {
+  private readonly handleCountryChange = (country: Country | null) => {
     if (!country) return;
     if (Countries.geolocationCountries.includes(country)) {
       this.form.controls.number.disable();
@@ -89,7 +89,7 @@ export class ServicePointCreationComponent implements DetailFormComponent, OnDes
     }
   };
 
-  private handleCountryOrTypeChange = () => {
+  private readonly handleCountryOrTypeChange = () => {
     const country = this.form.controls.country?.value;
     const servicePointType = this.form.controls.selectedType.value;
     if (

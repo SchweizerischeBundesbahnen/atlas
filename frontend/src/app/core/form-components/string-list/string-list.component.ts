@@ -43,7 +43,7 @@ export class StringListComponent implements OnChanges {
 
   showPlaceHolder$: Observable<boolean> = of(false);
   readonly inputCtrlName = 'input';
-  private _inputCtrl = new FormControl('');
+  private readonly _inputCtrl = new FormControl('');
   readonly strListFormGroup = new FormGroup({
     [this.inputCtrlName]: this._inputCtrl,
   });

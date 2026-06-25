@@ -29,7 +29,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { StopPointService } from '../../../../../api/service/prm/stop-point/stop-point.service';
 import moment from 'moment';
-import { WheelchairAccessibilityComponent } from '../../../../../core/components/wheelchair-accessibility/wheelchair-accessibility.component';
+import {
+  WheelchairAccessibilityComponent
+} from '../../../../../core/components/wheelchair-accessibility/wheelchair-accessibility.component';
 
 @Component({
   selector: 'atlas-stop-point-detail',
@@ -94,7 +96,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   backToSearchPrm() {
-    if (this.form && this.form.dirty) {
+    if (this.form?.dirty) {
       this.showConfirmationDialog();
     } else {
       this.navigateToPrmHomeSearch();
