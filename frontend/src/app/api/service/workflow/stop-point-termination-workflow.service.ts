@@ -13,14 +13,19 @@ import { StartTerminationStopPointAddWorkflow } from '../../model/startTerminati
   providedIn: 'root',
 })
 export class StopPointTerminationWorkflowService {
-
   private readonly STOP_POINT_TERMINATION = '/workflow/v1/termination-stop-point/workflows';
   private readonly STOP_POINT_TERMINATION_INTERNAL = '/workflow/internal/termination-stop-point/workflows';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  getTerminationStopPointWorkflows(searchCriterias?: string[], sboids?: string[], workflowIds?: number[],
-                                   status?: TerminationWorkflowStatus[], page?: number, size?: number, sort?: string[],
+  getTerminationStopPointWorkflows(
+    searchCriterias?: string[],
+    sboids?: string[],
+    workflowIds?: number[],
+    status?: TerminationWorkflowStatus[],
+    page?: number,
+    size?: number,
+    sort?: string[]
   ): Observable<ContainerTerminationStopPointWorkflowModel> {
     const httpParams = this.atlasApiService.paramsOf({
       searchCriterias,
@@ -39,27 +44,40 @@ export class StopPointTerminationWorkflowService {
     return this.atlasApiService.get(`${this.STOP_POINT_TERMINATION}/${encodeURIComponent(String(id))}`);
   }
 
-  public startTermination(terminationStopPointAddWorkflow: StartTerminationStopPointAddWorkflow): Observable<TerminationStopPointWorkflowModel> {
+  public startTermination(
+    terminationStopPointAddWorkflow: StartTerminationStopPointAddWorkflow
+  ): Observable<TerminationStopPointWorkflowModel> {
     return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}`, terminationStopPointAddWorkflow);
   }
 
   public getTerminationInfoBySloid(sloid: string): Observable<TerminationInfo> {
     this.atlasApiService.validateParams({ sloid });
-    return this.atlasApiService.get(`${this.STOP_POINT_TERMINATION_INTERNAL}/termination-info/${encodeURIComponent(String(sloid))}`);
+    return this.atlasApiService.get(
+      `${this.STOP_POINT_TERMINATION_INTERNAL}/termination-info/${encodeURIComponent(String(sloid))}`
+    );
   }
 
   decisionInfoPlus(id: number, decision: TerminationDecision): Observable<TerminationStopPointWorkflowModel> {
     this.atlasApiService.validateParams({ id, decision });
-    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION_INTERNAL}/decision/info-plus/${encodeURIComponent(String(id))}`, decision);
+    return this.atlasApiService.post(
+      `${this.STOP_POINT_TERMINATION_INTERNAL}/decision/info-plus/${encodeURIComponent(String(id))}`,
+      decision
+    );
   }
 
   decisionNova(id: number, decision: TerminationDecision): Observable<TerminationStopPointWorkflowModel> {
     this.atlasApiService.validateParams({ id, decision });
-    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION_INTERNAL}/decision/nova/${encodeURIComponent(String(id))}`, decision);
+    return this.atlasApiService.post(
+      `${this.STOP_POINT_TERMINATION_INTERNAL}/decision/nova/${encodeURIComponent(String(id))}`,
+      decision
+    );
   }
 
   abortTermination(id: number, terminationAbort: TerminationAbort): Observable<TerminationStopPointWorkflowModel> {
     this.atlasApiService.validateParams({ id, terminationCancel: terminationAbort });
-    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION_INTERNAL}/abort/${encodeURIComponent(String(id))}`, terminationAbort);
+    return this.atlasApiService.post(
+      `${this.STOP_POINT_TERMINATION_INTERNAL}/abort/${encodeURIComponent(String(id))}`,
+      terminationAbort
+    );
   }
 }

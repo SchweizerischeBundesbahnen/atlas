@@ -13,9 +13,11 @@ describe('TimetableFieldNumberService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimetableFieldNumberService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        TimetableFieldNumberService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
 
@@ -33,10 +35,7 @@ describe('TimetableFieldNumberService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       timetableFieldNumberVersion: {},
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/v1/field-numbers/versions',
-      {}
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/v1/field-numbers/versions', {});
   });
 
   it('should getAllVersionsVersioned', () => {
@@ -45,9 +44,7 @@ describe('TimetableFieldNumberService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       ttfnId: '123',
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/v1/field-numbers/versions/123',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/v1/field-numbers/versions/123');
   });
 
   it('should updateVersionWithVersioning', () => {
@@ -57,9 +54,6 @@ describe('TimetableFieldNumberService', () => {
       id: 1,
       timetableFieldNumberVersion: {},
     });
-    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/v1/field-numbers/versions/1',
-      {}
-    );
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith('/line-directory/v1/field-numbers/versions/1', {});
   });
 });

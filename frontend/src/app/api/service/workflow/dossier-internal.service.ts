@@ -14,18 +14,24 @@ import { Language } from '../../model/language';
   providedIn: 'root',
 })
 export class DossierInternalService {
-
   private readonly BASE_PATH = '/workflow/internal/tth/dossier';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getOverview(timetableYear?: number, hearingStatus?: HearingStatus,
-                     canton?: SwissCanton, boContactSbbuid?: string, searchCriterias?: Array<string>,
-                     statusRestrictions?: Array<DossierStatus>,
-                     page?: number, size?: number, sort?: Array<string>): Observable<ContainerTthDossier> {
+  public getOverview(
+    timetableYear?: number,
+    hearingStatus?: HearingStatus,
+    canton?: SwissCanton,
+    boContactSbbuid?: string,
+    searchCriterias?: Array<string>,
+    statusRestrictions?: Array<DossierStatus>,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
+  ): Observable<ContainerTthDossier> {
     const httpParams = this.atlasApiService.paramsOf({
-      "timetableHearingYear.timetableYear": timetableYear,
-      "timetableHearingYear.hearingStatus": hearingStatus,
+      'timetableHearingYear.timetableYear': timetableYear,
+      'timetableHearingYear.hearingStatus': hearingStatus,
       canton,
       boContactSbbuid,
       searchCriterias,
@@ -49,7 +55,7 @@ export class DossierInternalService {
 
   public updateDossier(tthDossier: TthDossier): Observable<TthDossier> {
     this.atlasApiService.validateParams({ tthDossier });
-    return this.atlasApiService.put(`${this.BASE_PATH}/${tthDossier.id}`,tthDossier);
+    return this.atlasApiService.put(`${this.BASE_PATH}/${tthDossier.id}`, tthDossier);
   }
 
   public sendDossierToBo(dossierId: number): Observable<void> {
@@ -64,12 +70,18 @@ export class DossierInternalService {
     return this.atlasApiService.post(`${this.BASE_PATH}/answer/${dossierId}`, boAnswer);
   }
 
-  public getDossiersAsCsv(lang: Language, timetableYear?: number, hearingStatus?: HearingStatus, canton?: SwissCanton,
-                          boContactSbbuid?: string, searchCriterias?: Array<string>,
-                          statusRestrictions?: Array<StatementStatus>){
+  public getDossiersAsCsv(
+    lang: Language,
+    timetableYear?: number,
+    hearingStatus?: HearingStatus,
+    canton?: SwissCanton,
+    boContactSbbuid?: string,
+    searchCriterias?: Array<string>,
+    statusRestrictions?: Array<StatementStatus>
+  ) {
     const httpParams = this.atlasApiService.paramsOf({
-      "timetableHearingYear.timetableYear": timetableYear,
-      "timetableHearingYear.hearingStatus": hearingStatus,
+      'timetableHearingYear.timetableYear': timetableYear,
+      'timetableHearingYear.hearingStatus': hearingStatus,
       canton,
       boContactSbbuid,
       searchCriterias,
@@ -78,5 +90,4 @@ export class DossierInternalService {
     });
     return this.atlasApiService.getBlob(`${this.BASE_PATH}/csv`, httpParams);
   }
-
 }

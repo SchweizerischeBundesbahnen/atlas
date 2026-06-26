@@ -36,25 +36,19 @@ describe('SectorService', () => {
     service.getSector('ch:1:sloid:7000:1');
 
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/sectors/ch%3A1%3Asloid%3A7000%3A1',
+      '/service-point-directory/v1/sectors/ch%3A1%3Asloid%3A7000%3A1'
     );
   });
 
   it('should createSector', () => {
     service.createSector({} as CreateSectorVersion);
 
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/sectors',
-      {},
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/sectors', {});
   });
 
   it('should updateSector', () => {
     service.updateSector(123, {} as CreateSectorVersion);
 
-    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/sectors/123',
-      {},
-    );
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/sectors/123', {});
   });
 });

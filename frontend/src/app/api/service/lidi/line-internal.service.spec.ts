@@ -13,7 +13,9 @@ describe('LineInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LineInternalService, AtlasApiService,
+      providers: [
+        LineInternalService,
+        AtlasApiService,
         { provide: HttpClient, useValue: {} },
         { provide: UserService, useValue: {} },
       ],
@@ -48,18 +50,13 @@ describe('LineInternalService', () => {
       size: undefined,
       sort: undefined,
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/lines',
-      expect.any(HttpParams),
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines', expect.any(HttpParams));
   });
 
   it('should getLine', () => {
     service.getLine('123');
 
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/lines/123',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/123');
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ slnid: '123' });
   });
 
@@ -69,9 +66,7 @@ describe('LineInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       slnid: '123',
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/lines/123/revoke',
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/123/revoke');
   });
 
   it('should deleteLines', () => {
@@ -80,9 +75,7 @@ describe('LineInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       slnid: '123',
     });
-    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/lines/123',
-    );
+    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/123');
   });
 
   it('should skipWorkflow', () => {
@@ -91,9 +84,7 @@ describe('LineInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       id: 1,
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/lines/versions/1/skip-workflow',
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/versions/1/skip-workflow');
   });
 
   it('should getLineVersionSnapshot', () => {
@@ -110,7 +101,7 @@ describe('LineInternalService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/lines/workflows',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -120,9 +111,7 @@ describe('LineInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       id: 1,
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/lines/workflows/1',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/workflows/1');
   });
 
   it('should checkAffectedSublines', () => {
@@ -132,9 +121,6 @@ describe('LineInternalService', () => {
       id: 1,
       updateLineVersionV2: {},
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/lines/affectedSublines/1',
-      {},
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/affectedSublines/1', {});
   });
 });

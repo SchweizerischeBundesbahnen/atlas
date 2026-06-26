@@ -19,7 +19,6 @@ export class UserSelectComponent implements OnInit {
   private readonly userService = inject(UserAdministrationService);
   private readonly tthUserService = inject(TthUserAdministrationService);
 
-
   @Input() form!: FormGroup;
 
   @Input() applicationType?: ApplicationType;

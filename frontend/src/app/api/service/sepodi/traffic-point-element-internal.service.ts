@@ -8,30 +8,47 @@ import { ReadTrafficPointElementVersion } from '../../model/readTrafficPointElem
   providedIn: 'root',
 })
 export class TrafficPointElementInternalService {
-
   private readonly BASE_PATH = '/service-point-directory/internal/traffic-point-elements';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getPlatformsOfServicePoint(servicePointNumber: number, page?: number, size?: number, sort?: Array<string>): Observable<ContainerReadTrafficPointElementVersion> {
+  public getPlatformsOfServicePoint(
+    servicePointNumber: number,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
+  ): Observable<ContainerReadTrafficPointElementVersion> {
     const httpParams = this.atlasApiService.paramsOf({
       page,
       size,
       sort,
     });
-    return this.atlasApiService.get(`${this.BASE_PATH}/platforms/${encodeURIComponent(String(servicePointNumber))}`, httpParams);
+    return this.atlasApiService.get(
+      `${this.BASE_PATH}/platforms/${encodeURIComponent(String(servicePointNumber))}`,
+      httpParams
+    );
   }
 
-  public getAreasOfServicePoint(servicePointNumber: number, page?: number, size?: number, sort?: Array<string>): Observable<ContainerReadTrafficPointElementVersion> {
+  public getAreasOfServicePoint(
+    servicePointNumber: number,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
+  ): Observable<ContainerReadTrafficPointElementVersion> {
     const httpParams = this.atlasApiService.paramsOf({
       page,
       size,
       sort,
     });
-    return this.atlasApiService.get(`${this.BASE_PATH}/areas/${encodeURIComponent(String(servicePointNumber))}`, httpParams);
+    return this.atlasApiService.get(
+      `${this.BASE_PATH}/areas/${encodeURIComponent(String(servicePointNumber))}`,
+      httpParams
+    );
   }
 
-  public getTrafficPointsOfServicePointValidToday(servicePointNumber: number): Observable<Array<ReadTrafficPointElementVersion>> {
+  public getTrafficPointsOfServicePointValidToday(
+    servicePointNumber: number
+  ): Observable<Array<ReadTrafficPointElementVersion>> {
     return this.atlasApiService.get(`${this.BASE_PATH}/actual-date/${encodeURIComponent(String(servicePointNumber))}`);
   }
 

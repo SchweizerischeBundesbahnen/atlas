@@ -30,7 +30,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class ReferencePointCompleteFormComponent {
-
   @Input() form!: FormGroup<CompleteReferencePointFormGroup>;
   readonly isNew = input(false);
 

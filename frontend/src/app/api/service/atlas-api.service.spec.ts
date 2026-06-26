@@ -8,7 +8,7 @@ import { ImportType } from '../model/importType';
 import { BusinessObjectType } from '../model/businessObjectType';
 import { ApplicationType } from '../model/applicationType';
 
-type HttpClientMock = Pick<{ [P in keyof HttpClient]: MockInstance }, 'get'|'put'|'post'|'delete'>;
+type HttpClientMock = Pick<{ [P in keyof HttpClient]: MockInstance }, 'get' | 'put' | 'post' | 'delete'>;
 
 describe('AtlasApiService', () => {
   let service: AtlasApiService;
@@ -36,10 +36,10 @@ describe('AtlasApiService', () => {
 
   it('should throw on validateParams', () => {
     expect(() => service.validateParams({ prop1: '123', prop2: undefined })).toThrowError(
-      "Required parameter 'prop2' is null or undefined.",
+      "Required parameter 'prop2' is null or undefined."
     );
     expect(() => service.validateParams({ prop1: '123', prop2: null })).toThrowError(
-      "Required parameter 'prop2' is null or undefined.",
+      "Required parameter 'prop2' is null or undefined."
     );
   });
 

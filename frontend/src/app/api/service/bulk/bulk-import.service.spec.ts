@@ -14,11 +14,7 @@ describe('BulkImportService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        BulkImportService,
-        provideHttpClient(),
-        provideHttpClientTesting()
-      ],
+      providers: [BulkImportService, provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(BulkImportService);
@@ -36,32 +32,29 @@ describe('BulkImportService', () => {
 
     service.downloadTemplate(applicationType, objectType, importType).subscribe();
 
-    const req = httpTestingController.expectOne(request =>
-      request.method === 'GET' &&
-      request.url.includes('/bulk-import-service/v1/import/bulk/template/')
+    const req = httpTestingController.expectOne(
+      (request) => request.method === 'GET' && request.url.includes('/bulk-import-service/v1/import/bulk/template/')
     );
 
     expect(req.request.responseType).toEqual('blob');
   });
 
   it('should throw an error in getBulkImportResults if id is null', () => {
-    expect(() => service.getBulkImportResults(null as any))
-      .toThrow(`Required parameter 'id' is null or undefined.`);
+    expect(() => service.getBulkImportResults(null as any)).toThrow(`Required parameter 'id' is null or undefined.`);
   });
 
   it('should call startBulkImport with correct URL, method and FormData body', async () => {
     const bulkImportRequest: BulkImportRequest = {
       applicationType: ApplicationType.Sepodi,
       objectType: BusinessObjectType.ServicePoint,
-      importType: ImportType.Create
+      importType: ImportType.Create,
     };
     const file = new Blob(['Test'], { type: 'text/plain' });
 
     service.startBulkImport(bulkImportRequest, file).subscribe();
 
-    const req = httpTestingController.expectOne(r =>
-      r.method === 'POST' &&
-      r.url.endsWith('/bulk-import-service/v1/import/bulk')
+    const req = httpTestingController.expectOne(
+      (r) => r.method === 'POST' && r.url.endsWith('/bulk-import-service/v1/import/bulk')
     );
     expect(req.request.body instanceof FormData).toBe(true);
 
@@ -69,5 +62,4 @@ describe('BulkImportService', () => {
     expect(formData.has('bulkImportRequest')).toBe(true);
     expect(formData.has('file')).toBe(true);
   });
-
 });

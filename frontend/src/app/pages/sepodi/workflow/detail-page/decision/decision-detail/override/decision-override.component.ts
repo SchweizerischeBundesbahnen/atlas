@@ -40,7 +40,6 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
 
   protected readonly JudgementType = JudgementType;
 
-
   @Input() workflowId!: number;
 
   @Input() examinantId!: number;

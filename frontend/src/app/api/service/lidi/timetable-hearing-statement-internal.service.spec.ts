@@ -16,7 +16,9 @@ describe('TimetableHearingStatementInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimetableHearingStatementInternalService, AtlasApiService,
+      providers: [
+        TimetableHearingStatementInternalService,
+        AtlasApiService,
         { provide: HttpClient, useValue: {} },
         { provide: UserService, useValue: {} },
       ],
@@ -37,7 +39,7 @@ describe('TimetableHearingStatementInternalService', () => {
 
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/update-statement-status',
-      {},
+      {}
     );
   });
 
@@ -46,7 +48,7 @@ describe('TimetableHearingStatementInternalService', () => {
 
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/update-canton',
-      {},
+      {}
     );
   });
 
@@ -67,7 +69,7 @@ describe('TimetableHearingStatementInternalService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -89,22 +91,12 @@ describe('TimetableHearingStatementInternalService', () => {
     });
     expect(apiService.getBlob).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/csv/de',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
   it('should getStatementsAsCsv with anonymized true', () => {
-    service.getStatementsAsCsv(
-      'de',
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      true,
-    );
+    service.getStatementsAsCsv('de', undefined, undefined, undefined, undefined, undefined, undefined, undefined, true);
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       language: 'de',
@@ -117,13 +109,13 @@ describe('TimetableHearingStatementInternalService', () => {
       statusRestrictions: undefined,
       ttfnid: undefined,
       transportCompanies: undefined,
-      partOfDossier:undefined,
+      partOfDossier: undefined,
       anonymized: true,
     });
 
     expect(apiService.getBlob).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/csv/de',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -133,9 +125,7 @@ describe('TimetableHearingStatementInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       id: 1,
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-hearing/statements/1',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/timetable-hearing/statements/1');
   });
 
   it('should getPreviousStatement', () => {
@@ -157,7 +147,7 @@ describe('TimetableHearingStatementInternalService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/1/previous',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -180,7 +170,7 @@ describe('TimetableHearingStatementInternalService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/1/next',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -192,14 +182,14 @@ describe('TimetableHearingStatementInternalService', () => {
       filename: 'file',
     });
     expect(apiService.getBlob).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-hearing/statements/1/documents/file',
+      '/line-directory/internal/timetable-hearing/statements/1/documents/file'
     );
   });
 
   it('should createStatement', () => {
-    service.createStatement(
-      {} as TimetableHearingStatementV2,
-      [new Blob([JSON.stringify({})], { type: 'application/json' })]);
+    service.createStatement({} as TimetableHearingStatementV2, [
+      new Blob([JSON.stringify({})], { type: 'application/json' }),
+    ]);
 
     const formData = new FormData();
     formData.append('statement', new Blob([JSON.stringify({})], { type: 'application/json' }));
@@ -211,14 +201,14 @@ describe('TimetableHearingStatementInternalService', () => {
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements',
       formData,
-      { responseType: 'json' },
+      { responseType: 'json' }
     );
   });
 
   it('should updateHearingStatement', () => {
-    service.updateHearingStatement(1,
-      {} as TimetableHearingStatementV2,
-      [new Blob([JSON.stringify({})], { type: 'application/json' })]);
+    service.updateHearingStatement(1, {} as TimetableHearingStatementV2, [
+      new Blob([JSON.stringify({})], { type: 'application/json' }),
+    ]);
 
     const formData = new FormData();
     formData.append('statement', new Blob([JSON.stringify({})], { type: 'application/json' }));
@@ -231,7 +221,7 @@ describe('TimetableHearingStatementInternalService', () => {
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/1',
       formData,
-      { responseType: 'json' },
+      { responseType: 'json' }
     );
   });
 
@@ -243,7 +233,7 @@ describe('TimetableHearingStatementInternalService', () => {
       ttfnid: '123',
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-hearing/statements/responsible-transport-companies/123/2025',
+      '/line-directory/internal/timetable-hearing/statements/responsible-transport-companies/123/2025'
     );
   });
 
@@ -251,13 +241,12 @@ describe('TimetableHearingStatementInternalService', () => {
     const dataProtectionParam = {} as TimetableHearingStatementDataProtection;
     service.checkDataProtection(dataProtectionParam);
 
-
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       dataProtection: dataProtectionParam,
     });
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/line-directory/internal/timetable-hearing/statements/check-data-protection',
-      dataProtectionParam,
+      dataProtectionParam
     );
   });
 });

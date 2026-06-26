@@ -14,9 +14,11 @@ describe('SublineService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SublineService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        SublineService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
 
@@ -34,9 +36,7 @@ describe('SublineService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       slnid: '123',
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/v2/sublines/versions/123',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/v2/sublines/versions/123');
   });
 
   it('should createSublineVersionV2', () => {
@@ -45,10 +45,7 @@ describe('SublineService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       createSublineVersionV2: {},
     });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/v2/sublines/versions',
-      {}
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/v2/sublines/versions', {});
   });
 
   it('should updateSublineVersionV2', () => {
@@ -58,9 +55,6 @@ describe('SublineService', () => {
       id: 1,
       sublineVersionV2: {},
     });
-    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/v2/sublines/versions/1',
-      {}
-    );
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith('/line-directory/v2/sublines/versions/1', {});
   });
 });

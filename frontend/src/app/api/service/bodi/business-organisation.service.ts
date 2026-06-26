@@ -9,7 +9,6 @@ import { ContainerBusinessOrganisation } from '../../model/containerBusinessOrga
   providedIn: 'root',
 })
 export class BusinessOrganisationService {
-
   private readonly BASE_PATH = '/business-organisation-directory/v1/business-organisations';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -19,8 +18,15 @@ export class BusinessOrganisationService {
     return this.atlasApiService.get(`${this.BASE_PATH}/versions/${encodeURIComponent(sboid)}`);
   }
 
-  getAllBusinessOrganisations(searchCriteria?: Array<string>, inSboids?: Array<string>, validOn?: Date, statusChoices?: Array<Status>,
-                              page?: number, size?: number, sort?: Array<string>): Observable<ContainerBusinessOrganisation> {
+  getAllBusinessOrganisations(
+    searchCriteria?: Array<string>,
+    inSboids?: Array<string>,
+    validOn?: Date,
+    statusChoices?: Array<Status>,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
+  ): Observable<ContainerBusinessOrganisation> {
     const httpParams = this.atlasApiService.paramsOf({
       searchCriteria,
       inSboids,

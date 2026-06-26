@@ -12,7 +12,9 @@ describe('TimetableYearChangeInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimetableYearChangeInternalService, AtlasApiService,
+      providers: [
+        TimetableYearChangeInternalService,
+        AtlasApiService,
         { provide: HttpClient, useValue: {} },
         { provide: UserService, useValue: {} },
       ],
@@ -31,7 +33,7 @@ describe('TimetableYearChangeInternalService', () => {
       count: 123,
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-year-change/next-years/123',
+      '/line-directory/internal/timetable-year-change/next-years/123'
     );
   });
 
@@ -41,8 +43,6 @@ describe('TimetableYearChangeInternalService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       year: 2025,
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/timetable-year-change/2025',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/timetable-year-change/2025');
   });
 });

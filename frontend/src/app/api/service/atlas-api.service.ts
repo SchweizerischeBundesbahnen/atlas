@@ -7,15 +7,14 @@ import { Observable } from 'rxjs';
 type NotBlob<T> = T extends Blob ? unknown : T;
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 export class AtlasApiService {
-
   private readonly httpClient = inject(HttpClient);
   private readonly userService = inject(UserService);
 
-  private readonly acceptAllHeaders = new HttpHeaders({ 'Accept': '*/*' });
-  private readonly createUpdateOptions: { responseType: 'json', headers: HttpHeaders } = {
+  private readonly acceptAllHeaders = new HttpHeaders({ Accept: '*/*' });
+  private readonly createUpdateOptions: { responseType: 'json'; headers: HttpHeaders } = {
     responseType: 'json',
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -25,15 +24,15 @@ export class AtlasApiService {
   paramsOf(params: { [key: string]: any }): HttpParams {
     let queryParameters = new HttpParams();
 
-    Object.keys(params).forEach(key => {
+    Object.keys(params).forEach((key) => {
       if (Array.isArray(params[key]) || params[key] instanceof Set) {
         params[key].forEach((element) => {
-          if (element !== undefined && element !== null){
+          if (element !== undefined && element !== null) {
             queryParameters = this.addToHttpParams(queryParameters, element, key);
           }
         });
       } else if (params[key] !== undefined && params[key] !== null) {
-          queryParameters = this.addToHttpParams(queryParameters, params[key], key);
+        queryParameters = this.addToHttpParams(queryParameters, params[key], key);
       }
     });
 
@@ -41,7 +40,7 @@ export class AtlasApiService {
   }
 
   validateParams(params: { [key: string]: any }): void {
-    Object.keys(params).forEach(key => {
+    Object.keys(params).forEach((key) => {
       if (params[key] === null || params[key] === undefined) {
         throw new Error(`Required parameter '${key}' is null or undefined.`);
       }
@@ -53,7 +52,7 @@ export class AtlasApiService {
     return this.httpClient.get<NotBlob<T>>(url, {
       headers: this.acceptAllHeaders,
       params,
-      responseType: 'json'
+      responseType: 'json',
     });
   }
 
@@ -62,16 +61,16 @@ export class AtlasApiService {
     return this.httpClient.get(url, {
       headers: this.acceptAllHeaders,
       params,
-      responseType: 'blob'
+      responseType: 'blob',
     });
   }
 
-  put<T>(path: string, body: any, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
+  put<T>(path: string, body: any, options?: { responseType?: 'json'; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient.put<T>(`${this.basePath}${path}`, body, options ?? this.createUpdateOptions);
   }
 
   //Overwrite default options when using form data
-  post<T>(path: string, body: any = null, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
+  post<T>(path: string, body: any = null, options?: { responseType?: 'json'; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient.post<T>(`${this.basePath}${path}`, body, options ?? this.createUpdateOptions);
   }
 
@@ -82,20 +81,15 @@ export class AtlasApiService {
   createFormData(params: { [key: string]: any }): FormData {
     const formData: FormData = new FormData();
 
-    Object.keys(params).forEach(key => {
-
-      if(Array.isArray(params[key])){
+    Object.keys(params).forEach((key) => {
+      if (Array.isArray(params[key])) {
         params[key].forEach((element) => {
-          formData.append(key, element)
-        })
-      }
-
-      else if(params[key] instanceof Blob) {
+          formData.append(key, element);
+        });
+      } else if (params[key] instanceof Blob) {
         formData.append(key, params[key]);
-      }
-
-      else if(params[key]){
-          formData.append(key, this.createBlob(params[key]));
+      } else if (params[key]) {
+        formData.append(key, this.createBlob(params[key]));
       }
     });
 

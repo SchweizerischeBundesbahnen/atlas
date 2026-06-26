@@ -7,12 +7,10 @@ import { User } from '../../model/user';
   providedIn: 'root',
 })
 export class TthUserAdministrationService {
-
   private readonly atlasApiService = inject(AtlasApiService);
 
   searchBoDossierAnsweringUsers(searchQuery: string): Observable<User[]> {
-    const httpParams = this.atlasApiService.paramsOf({searchQuery});
+    const httpParams = this.atlasApiService.paramsOf({ searchQuery });
     return this.atlasApiService.get('/user-administration/v1/search-bo-dossier-answering-users', httpParams);
   }
-
 }

@@ -34,7 +34,7 @@ describe('SectorInternalService', () => {
 
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/service-point-directory/internal/sectors/ch%3A1%3Asloid%3A7000%3A1/overview',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -42,7 +42,7 @@ describe('SectorInternalService', () => {
     service.revokeSector('ch:1:sloid:7000:1');
 
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/internal/sectors/ch%3A1%3Asloid%3A7000%3A1/revoke',
+      '/service-point-directory/internal/sectors/ch%3A1%3Asloid%3A7000%3A1/revoke'
     );
   });
 });

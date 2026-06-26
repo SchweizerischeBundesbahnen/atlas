@@ -12,7 +12,9 @@ describe('LocationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LocationService, AtlasApiService,
+      providers: [
+        LocationService,
+        AtlasApiService,
         { provide: HttpClient, useValue: {} },
         { provide: UserService, useValue: {} },
       ],
@@ -28,8 +30,6 @@ describe('LocationService', () => {
     const sloid = 'ch:1:slnid:123';
     service.getSloidLocationModel(sloid);
 
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      `/location/v1/sloid/${encodeURIComponent(sloid)}`,
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(`/location/v1/sloid/${encodeURIComponent(sloid)}`);
   });
 });

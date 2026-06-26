@@ -9,7 +9,6 @@ import { ExaminantWorkflowCheck } from '../../model/examinantWorkflowCheck';
   providedIn: 'root',
 })
 export class LineWorkflowService {
-
   private readonly LINE_WORKFLOW_INTERNAL = '/workflow/internal/line/workflows';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -18,13 +17,16 @@ export class LineWorkflowService {
     return this.atlasApiService.get(`${this.LINE_WORKFLOW_INTERNAL}/${encodeURIComponent(String(id))}`);
   }
 
-  startWorkflow(workflowStart: WorkflowStart): Observable<Workflow>{
+  startWorkflow(workflowStart: WorkflowStart): Observable<Workflow> {
     this.atlasApiService.validateParams({ workflowStart });
     return this.atlasApiService.post(`${this.LINE_WORKFLOW_INTERNAL}`, workflowStart);
   }
 
-  examinantCheck(id: number, examinantWorkflowCheck: ExaminantWorkflowCheck): Observable<Workflow>{
+  examinantCheck(id: number, examinantWorkflowCheck: ExaminantWorkflowCheck): Observable<Workflow> {
     this.atlasApiService.validateParams({ id, examinantWorkflowCheck });
-    return this.atlasApiService.post(`${this.LINE_WORKFLOW_INTERNAL}/${encodeURIComponent(String(id))}/examinant-check`, examinantWorkflowCheck);
+    return this.atlasApiService.post(
+      `${this.LINE_WORKFLOW_INTERNAL}/${encodeURIComponent(String(id))}/examinant-check`,
+      examinantWorkflowCheck
+    );
   }
 }

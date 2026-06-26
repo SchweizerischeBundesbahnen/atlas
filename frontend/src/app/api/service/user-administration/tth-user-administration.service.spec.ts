@@ -12,7 +12,9 @@ describe('TthUserAdministrationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TthUserAdministrationService, AtlasApiService,
+      providers: [
+        TthUserAdministrationService,
+        AtlasApiService,
         { provide: HttpClient, useValue: {} },
         { provide: UserService, useValue: {} },
       ],
@@ -28,8 +30,8 @@ describe('TthUserAdministrationService', () => {
     service.searchBoDossierAnsweringUsers('mail@sbb.ch');
 
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/user-administration/v1/search-bo-dossier-answering-users', expect.any(HttpParams)
+      '/user-administration/v1/search-bo-dossier-answering-users',
+      expect.any(HttpParams)
     );
   });
-
 });

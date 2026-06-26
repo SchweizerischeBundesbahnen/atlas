@@ -20,7 +20,6 @@ import { LevelAccessWheelchairAttributeType } from '../../../../../../../api/mod
   imports: [CommentComponent, ReactiveFormsModule, TextFieldComponent, SelectComponent, TranslatePipe],
 })
 export class PlatformCompleteFormComponent {
-
   @Input() form!: FormGroup<CompletePlatformFormGroup>;
   readonly isNew = input(false);
 

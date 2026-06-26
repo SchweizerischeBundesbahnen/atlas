@@ -7,7 +7,6 @@ import { TimetableHearingYear } from '../../model/timetableHearingYear';
   providedIn: 'root',
 })
 export class TthYearInternalService {
-
   private readonly BASE_PATH = '/workflow/internal/tth/year';
 
   private readonly atlasApiService = inject(AtlasApiService);

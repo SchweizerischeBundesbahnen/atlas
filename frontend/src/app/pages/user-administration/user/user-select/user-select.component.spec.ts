@@ -41,12 +41,10 @@ describe('UserSelectComponent', () => {
           useValue: userAdministrationService,
         },
       ],
-    })
-      .overrideComponent(UserSelectComponent, {
-        remove: { imports: [SearchSelectComponent] },
-        add: { imports: [MockFormSearchSelectComponent] },
-      })
-      ;
+    }).overrideComponent(UserSelectComponent, {
+      remove: { imports: [SearchSelectComponent] },
+      add: { imports: [MockFormSearchSelectComponent] },
+    });
 
     fixture = TestBed.createComponent(UserSelectComponent);
     component = fixture.componentInstance;

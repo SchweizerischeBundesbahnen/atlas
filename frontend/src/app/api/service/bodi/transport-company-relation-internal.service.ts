@@ -10,12 +10,13 @@ import { BoTransportCompanyRelation } from '../../model/boTransportCompanyRelati
   providedIn: 'root',
 })
 export class TransportCompanyRelationInternalService {
-
   private readonly BASE_PATH = '/business-organisation-directory/internal/transport-company-relations';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  createTransportCompanyRelation(transportCompanyRelation: TransportCompanyRelation): Observable<TransportCompanyBoRelation> {
+  createTransportCompanyRelation(
+    transportCompanyRelation: TransportCompanyRelation
+  ): Observable<TransportCompanyBoRelation> {
     this.atlasApiService.validateParams({ transportCompanyRelation });
     return this.atlasApiService.post(this.BASE_PATH, transportCompanyRelation);
   }

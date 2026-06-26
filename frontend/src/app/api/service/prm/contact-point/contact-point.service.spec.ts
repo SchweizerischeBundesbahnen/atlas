@@ -37,9 +37,7 @@ describe('ContactPointService', () => {
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       sloid: 'ch:1:sloid:7000',
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/prm-directory/v1/contact-points/ch:1:sloid:7000',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/prm-directory/v1/contact-points/ch:1:sloid:7000');
   });
 
   it('should createContactPoint', () => {

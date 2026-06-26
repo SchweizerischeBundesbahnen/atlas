@@ -32,17 +32,16 @@ describe('ServicePointInternalService', () => {
   it('should searchServicePoints', () => {
     service.searchServicePoints({ value: 'aoisudhf' });
 
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/internal/service-points/search',
-      { value: 'aoisudhf' },
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/service-point-directory/internal/service-points/search', {
+      value: 'aoisudhf',
+    });
   });
 
   it('should validateServicePoint', () => {
     service.validateServicePoint(123);
 
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/internal/service-points/versions/123/skip-workflow',
+      '/service-point-directory/internal/service-points/versions/123/skip-workflow'
     );
   });
 
@@ -50,7 +49,7 @@ describe('ServicePointInternalService', () => {
     service.revokeServicePoint(123);
 
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/internal/service-points/123/revoke',
+      '/service-point-directory/internal/service-points/123/revoke'
     );
   });
 });

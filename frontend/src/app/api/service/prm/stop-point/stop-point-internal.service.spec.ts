@@ -1,11 +1,11 @@
-import {TestBed} from '@angular/core/testing';
-import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {AtlasApiService} from '../../atlas-api.service';
-import {HttpClient} from '@angular/common/http';
-import {UserService} from '../../../../core/auth/user/user.service';
-import {StopPointInternalService} from './stop-point-internal.service';
-import {RecordingObligation} from '../../../model/recordingObligation';
-import {EMPTY} from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AtlasApiService } from '../../atlas-api.service';
+import { HttpClient } from '@angular/common/http';
+import { UserService } from '../../../../core/auth/user/user.service';
+import { StopPointInternalService } from './stop-point-internal.service';
+import { RecordingObligation } from '../../../model/recordingObligation';
+import { EMPTY } from 'rxjs';
 
 describe('StopPointInternalService', () => {
   let service: StopPointInternalService;
@@ -13,9 +13,11 @@ describe('StopPointInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StopPointInternalService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        StopPointInternalService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
 
@@ -30,10 +32,10 @@ describe('StopPointInternalService', () => {
     service.getRecordingObligation('123');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      sloid: '123'
+      sloid: '123',
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/prm-directory/internal/stop-points/recording-obligation/123',
+      '/prm-directory/internal/stop-points/recording-obligation/123'
     );
   });
 
@@ -42,7 +44,7 @@ describe('StopPointInternalService', () => {
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
       sloid: '123',
-      recordingObligation: {}
+      recordingObligation: {},
     });
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       '/prm-directory/internal/stop-points/recording-obligation/123',

@@ -31,12 +31,10 @@ describe('UserAdministrationClientOverviewComponent', () => {
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
         TranslatePipe,
       ],
-    })
-      .overrideComponent(UserAdministrationClientOverviewComponent, {
-        remove: { imports: [TableComponent] },
-        add: { imports: [MockTableComponent] },
-      })
-      ;
+    }).overrideComponent(UserAdministrationClientOverviewComponent, {
+      remove: { imports: [TableComponent] },
+      add: { imports: [MockTableComponent] },
+    });
 
     fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
     component = fixture.componentInstance;

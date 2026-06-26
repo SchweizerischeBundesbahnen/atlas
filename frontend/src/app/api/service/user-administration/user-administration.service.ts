@@ -13,7 +13,6 @@ import { ContainerUser } from '../../model/containerUser';
   providedIn: 'root',
 })
 export class UserAdministrationService {
-
   private readonly USER_BASE_PATH = '/user-administration/v1/users';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -25,10 +24,7 @@ export class UserAdministrationService {
     return this.atlasApiService.get('/user-administration/v1/search', httpParams);
   }
 
-  searchUsersInAtlas(
-    searchQuery: string,
-    applicationType: ApplicationType,
-  ): Observable<User[]> {
+  searchUsersInAtlas(searchQuery: string, applicationType: ApplicationType): Observable<User[]> {
     const httpParams = this.atlasApiService.paramsOf({
       searchQuery,
       applicationType,
@@ -41,7 +37,7 @@ export class UserAdministrationService {
     size: number,
     permissionRestrictions: Set<string> | undefined = undefined,
     type: PermissionRestrictionType | undefined = undefined,
-    applicationTypes: Set<ApplicationType> | undefined = undefined,
+    applicationTypes: Set<ApplicationType> | undefined = undefined
   ): Observable<ContainerUser> {
     const httpParams = this.atlasApiService.paramsOf({
       permissionRestrictions,
@@ -71,8 +67,6 @@ export class UserAdministrationService {
 
   public updateUserPermission(userId: string, application: ApplicationType, permission: Permission): Observable<User> {
     this.atlasApiService.validateParams({ userId, application, permission });
-    return this.atlasApiService.put(
-      `${this.USER_BASE_PATH}/${userId}/${application}`, permission);
+    return this.atlasApiService.put(`${this.USER_BASE_PATH}/${userId}/${application}`, permission);
   }
-
 }

@@ -51,10 +51,7 @@ describe('StopPointWorkflowService', () => {
     service.getStopPointWorkflows(['Bern']);
 
     // then
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/workflow/v1/stop-point/workflows',
-      expect.any(HttpParams),
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/workflow/v1/stop-point/workflows', expect.any(HttpParams));
   });
 
   it('should addStopPointWorkflow', () => {
@@ -70,10 +67,7 @@ describe('StopPointWorkflowService', () => {
     service.addStopPointWorkflow(stopPointAddWorkflow);
 
     // then
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/workflow/v1/stop-point/workflows',
-      stopPointAddWorkflow,
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/workflow/v1/stop-point/workflows', stopPointAddWorkflow);
   });
 
   it('should startStopPointWorkflow', () => {
@@ -94,7 +88,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/edit/1',
-      editStopPointWorkflow,
+      editStopPointWorkflow
     );
   });
 
@@ -114,7 +108,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/add-examinants/1',
-      addExaminants,
+      addExaminants
     );
   });
 
@@ -138,7 +132,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/override-vote/1/154',
-      overrideDecision,
+      overrideDecision
     );
   });
 
@@ -152,7 +146,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/obtain-otp/1',
-      otpRequest,
+      otpRequest
     );
   });
 
@@ -167,7 +161,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/verify-otp/1',
-      otpVerification,
+      otpVerification
     );
   });
 
@@ -187,7 +181,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/vote/1/154',
-      decision,
+      decision
     );
   });
 
@@ -211,7 +205,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/cancel/1',
-      stopPointRejectWorkflow,
+      stopPointRejectWorkflow
     );
   });
 
@@ -227,7 +221,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/reject/1',
-      stopPointRejectWorkflow,
+      stopPointRejectWorkflow
     );
   });
 
@@ -244,7 +238,7 @@ describe('StopPointWorkflowService', () => {
     // then
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/stop-point/workflows/restart/1',
-      stopPointRestartWorkflow,
+      stopPointRestartWorkflow
     );
   });
 });

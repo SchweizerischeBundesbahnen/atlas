@@ -8,7 +8,6 @@ import { HearingStatus } from '../../model/hearingStatus';
   providedIn: 'root',
 })
 export class TimetableHearingYearInternalService {
-
   private readonly YEARS = '/line-directory/internal/timetable-hearing/years';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -37,5 +36,4 @@ export class TimetableHearingYearInternalService {
     this.atlasApiService.validateParams({ year, timetableHearingYear });
     return this.atlasApiService.put(`${this.YEARS}/${encodeURIComponent(String(year))}`, timetableHearingYear);
   }
-
 }

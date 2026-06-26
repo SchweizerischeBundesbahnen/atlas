@@ -15,7 +15,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class BaseChangeDialogComponent {
-
   @Input() formGroup!: FormGroup;
 
   @Input() controlName!: string;

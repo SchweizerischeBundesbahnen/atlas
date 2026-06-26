@@ -35,8 +35,7 @@ describe('LineWorkflowService', () => {
   it('should startWorkflow', () => {
     // given
     const workflowStart: WorkflowStart = {
-      businessObjectId:
-        1000,
+      businessObjectId: 1000,
       swissId: 'ch:1:slnid:1456',
       workflowType: WorkflowTypeEnum.Line,
       description: 'Linie 1',
@@ -62,9 +61,7 @@ describe('LineWorkflowService', () => {
     service.getWorkflow(5);
 
     // then
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/workflow/internal/line/workflows/5',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/workflow/internal/line/workflows/5');
   });
 
   it('should examinantCheck', () => {
@@ -76,13 +73,16 @@ describe('LineWorkflowService', () => {
         firstName: 'Hansjörg',
         lastName: 'Peterlin'!,
         personFunction: 'Important Person',
-      }
+      },
     };
 
     // when
     service.examinantCheck(123, examinantWorkflowCheck);
 
     // then
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/workflow/internal/line/workflows/123/examinant-check', examinantWorkflowCheck);
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
+      '/workflow/internal/line/workflows/123/examinant-check',
+      examinantWorkflowCheck
+    );
   });
 });

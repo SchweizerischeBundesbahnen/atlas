@@ -8,12 +8,16 @@ import { Company } from '../../model/company';
   providedIn: 'root',
 })
 export class CompanyService {
-
   private readonly BASE_PATH = '/business-organisation-directory/v1/companies';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  getCompanies(searchCriteria?: Array<string>, page?: number, size?: number, sort?: Array<string>): Observable<ContainerCompany> {
+  getCompanies(
+    searchCriteria?: Array<string>,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
+  ): Observable<ContainerCompany> {
     const httpParams = this.atlasApiService.paramsOf({
       searchCriteria,
       page,
@@ -27,5 +31,4 @@ export class CompanyService {
     this.atlasApiService.validateParams({ uic });
     return this.atlasApiService.get(`${this.BASE_PATH}/${uic}`);
   }
-
 }

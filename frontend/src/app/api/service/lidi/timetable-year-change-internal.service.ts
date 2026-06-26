@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TimetableYearChangeInternalService {
-
   private readonly TTY_CHANGE = '/line-directory/internal/timetable-year-change';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -20,5 +19,4 @@ export class TimetableYearChangeInternalService {
     this.atlasApiService.validateParams({ year });
     return this.atlasApiService.get(`${this.TTY_CHANGE}/${encodeURIComponent(String(year))}`);
   }
-
 }

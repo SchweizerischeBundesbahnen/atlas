@@ -1,21 +1,20 @@
-import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {AtlasApiService} from '../atlas-api.service';
-import {UpdateHearingStatementStatus} from '../../model/updateHearingStatementStatus';
-import {UpdateHearingCanton} from '../../model/updateHearingCanton';
-import {ContainerTimetableHearingStatementV2} from '../../model/containerTimetableHearingStatementV2';
-import {SwissCanton} from '../../model/swissCanton';
-import {StatementStatus} from '../../model/statementStatus';
-import {TimetableHearingStatementV2} from '../../model/timetableHearingStatementV2';
-import {TimetableHearingStatementAlternating} from '../../model/timetableHearingStatementAlternating';
-import {TransportCompany} from '../../model/transportCompany';
-import {TimetableHearingStatementDataProtection} from "../../model/timetableHearingStatementDataProtection";
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AtlasApiService } from '../atlas-api.service';
+import { UpdateHearingStatementStatus } from '../../model/updateHearingStatementStatus';
+import { UpdateHearingCanton } from '../../model/updateHearingCanton';
+import { ContainerTimetableHearingStatementV2 } from '../../model/containerTimetableHearingStatementV2';
+import { SwissCanton } from '../../model/swissCanton';
+import { StatementStatus } from '../../model/statementStatus';
+import { TimetableHearingStatementV2 } from '../../model/timetableHearingStatementV2';
+import { TimetableHearingStatementAlternating } from '../../model/timetableHearingStatementAlternating';
+import { TransportCompany } from '../../model/transportCompany';
+import { TimetableHearingStatementDataProtection } from '../../model/timetableHearingStatementDataProtection';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TimetableHearingStatementInternalService {
-
   private readonly STATEMENTS = '/line-directory/internal/timetable-hearing/statements';
 
   private readonly atlasApiService = inject(AtlasApiService);
@@ -29,8 +28,16 @@ export class TimetableHearingStatementInternalService {
   }
 
   public getStatements(
-    timetableHearingYear?: number, canton?: SwissCanton, searchCriterias?: Array<string>, statusRestrictions?: Array<StatementStatus>,
-    ttfnid?: string, transportCompanies?: Array<number>, partOfDossier?:boolean, page?: number, size?: number, sort?: Array<string>,
+    timetableHearingYear?: number,
+    canton?: SwissCanton,
+    searchCriterias?: Array<string>,
+    statusRestrictions?: Array<StatementStatus>,
+    ttfnid?: string,
+    transportCompanies?: Array<number>,
+    partOfDossier?: boolean,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
   ): Observable<ContainerTimetableHearingStatementV2> {
     const httpParams = this.atlasApiService.paramsOf({
       timetableHearingYear,
@@ -48,8 +55,15 @@ export class TimetableHearingStatementInternalService {
   }
 
   public getStatementsAsCsv(
-    language: string, timetableHearingYear?: number, canton?: SwissCanton, searchCriterias?: Array<string>,
-    statusRestrictions?: Array<StatementStatus>, ttfnid?: string, transportCompanies?: Array<number>, partOfDossier?:boolean, anonymized?: boolean,
+    language: string,
+    timetableHearingYear?: number,
+    canton?: SwissCanton,
+    searchCriterias?: Array<string>,
+    statusRestrictions?: Array<StatementStatus>,
+    ttfnid?: string,
+    transportCompanies?: Array<number>,
+    partOfDossier?: boolean,
+    anonymized?: boolean
   ): Observable<Blob> {
     this.atlasApiService.validateParams({ language });
     const httpParams = this.atlasApiService.paramsOf({
@@ -60,7 +74,7 @@ export class TimetableHearingStatementInternalService {
       ttfnid,
       transportCompanies,
       partOfDossier,
-      anonymized
+      anonymized,
     });
     return this.atlasApiService.getBlob(`${this.STATEMENTS}/csv/${encodeURIComponent(String(language))}`, httpParams);
   }
@@ -71,8 +85,16 @@ export class TimetableHearingStatementInternalService {
   }
 
   public getPreviousStatement(
-    id: number, timetableHearingYear?: number, canton?: SwissCanton, searchCriterias?: Array<string>, statusRestrictions?: Array<StatementStatus>,
-    ttfnid?: string, transportCompanies?: Array<number>, page?: number, size?: number, sort?: Array<string>,
+    id: number,
+    timetableHearingYear?: number,
+    canton?: SwissCanton,
+    searchCriterias?: Array<string>,
+    statusRestrictions?: Array<StatementStatus>,
+    ttfnid?: string,
+    transportCompanies?: Array<number>,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
   ): Observable<TimetableHearingStatementAlternating> {
     this.atlasApiService.validateParams({ id });
     const httpParams = this.atlasApiService.paramsOf({
@@ -90,8 +112,16 @@ export class TimetableHearingStatementInternalService {
   }
 
   public getNextStatement(
-    id: number, timetableHearingYear?: number, canton?: SwissCanton, searchCriterias?: Array<string>, statusRestrictions?: Array<StatementStatus>,
-    ttfnid?: string, transportCompanies?: Array<number>, page?: number, size?: number, sort?: Array<string>,
+    id: number,
+    timetableHearingYear?: number,
+    canton?: SwissCanton,
+    searchCriterias?: Array<string>,
+    statusRestrictions?: Array<StatementStatus>,
+    ttfnid?: string,
+    transportCompanies?: Array<number>,
+    page?: number,
+    size?: number,
+    sort?: Array<string>
   ): Observable<TimetableHearingStatementAlternating> {
     this.atlasApiService.validateParams({ id });
     const httpParams = this.atlasApiService.paramsOf({
@@ -110,32 +140,43 @@ export class TimetableHearingStatementInternalService {
 
   public getStatementDocument(id: number, filename: string): Observable<Blob> {
     this.atlasApiService.validateParams({ id, filename });
-    return this.atlasApiService.getBlob(`${this.STATEMENTS}/${encodeURIComponent(String(id))}/documents/${encodeURIComponent(String(filename))}`);
-  }
-
-  public createStatement(statement: TimetableHearingStatementV2, documents?: Array<Blob>): Observable<TimetableHearingStatementV2> {
-    this.atlasApiService.validateParams({ statement });
-    return this.atlasApiService.post(this.STATEMENTS,
-      this.atlasApiService.createFormData({statement, documents}),
-      { responseType: 'json' },
+    return this.atlasApiService.getBlob(
+      `${this.STATEMENTS}/${encodeURIComponent(String(id))}/documents/${encodeURIComponent(String(filename))}`
     );
   }
 
-  public updateHearingStatement(id: number, statement: TimetableHearingStatementV2, documents?: Array<Blob>): Observable<TimetableHearingStatementV2> {
+  public createStatement(
+    statement: TimetableHearingStatementV2,
+    documents?: Array<Blob>
+  ): Observable<TimetableHearingStatementV2> {
+    this.atlasApiService.validateParams({ statement });
+    return this.atlasApiService.post(this.STATEMENTS, this.atlasApiService.createFormData({ statement, documents }), {
+      responseType: 'json',
+    });
+  }
+
+  public updateHearingStatement(
+    id: number,
+    statement: TimetableHearingStatementV2,
+    documents?: Array<Blob>
+  ): Observable<TimetableHearingStatementV2> {
     this.atlasApiService.validateParams({ statement, id });
-    return this.atlasApiService.put(`${this.STATEMENTS}/${encodeURIComponent(String(id))}`,
-      this.atlasApiService.createFormData({statement, documents}),
-      { responseType: 'json' },
+    return this.atlasApiService.put(
+      `${this.STATEMENTS}/${encodeURIComponent(String(id))}`,
+      this.atlasApiService.createFormData({ statement, documents }),
+      { responseType: 'json' }
     );
   }
 
   public getResponsibleTransportCompanies(ttfnid: string, year: number): Observable<TransportCompany[]> {
     this.atlasApiService.validateParams({ year, ttfnid });
-    return this.atlasApiService.get(`${this.STATEMENTS}/responsible-transport-companies/${encodeURIComponent(String(ttfnid))}/${encodeURIComponent(String(year))}`);
+    return this.atlasApiService.get(
+      `${this.STATEMENTS}/responsible-transport-companies/${encodeURIComponent(String(ttfnid))}/${encodeURIComponent(String(year))}`
+    );
   }
 
   public checkDataProtection(dataProtection: TimetableHearingStatementDataProtection): Observable<void> {
     this.atlasApiService.validateParams({ dataProtection });
-    return this.atlasApiService.post(`${this.STATEMENTS}/check-data-protection`,dataProtection);
+    return this.atlasApiService.post(`${this.STATEMENTS}/check-data-protection`, dataProtection);
   }
 }

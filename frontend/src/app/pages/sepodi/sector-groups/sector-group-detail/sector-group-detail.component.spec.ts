@@ -128,13 +128,11 @@ describe('SectorGroupDetailComponent', () => {
         },
         { provide: DialogService, useValue: dialogServiceSpy },
       ],
-    })
-      .overrideComponent(SectorGroupDetailComponent, {
-        set: {
-          providers: [{ provide: ValidityService, useValue: validityServiceSpy }, TranslatePipe],
-        },
-      })
-      ;
+    }).overrideComponent(SectorGroupDetailComponent, {
+      set: {
+        providers: [{ provide: ValidityService, useValue: validityServiceSpy }, TranslatePipe],
+      },
+    });
   }
 
   describe('new mode', () => {

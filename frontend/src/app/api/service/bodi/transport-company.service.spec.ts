@@ -47,7 +47,7 @@ describe('TransportCompanyService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/business-organisation-directory/v1/transport-companies',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -58,7 +58,7 @@ describe('TransportCompanyService', () => {
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ id });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      `/business-organisation-directory/v1/transport-companies/${id}`,
+      `/business-organisation-directory/v1/transport-companies/${id}`
     );
   });
 });

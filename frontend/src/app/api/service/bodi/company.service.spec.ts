@@ -44,7 +44,7 @@ describe('CompanyService', () => {
     });
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/business-organisation-directory/v1/companies',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -54,8 +54,6 @@ describe('CompanyService', () => {
     service.getCompany(uic);
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ uic });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      `/business-organisation-directory/v1/companies/${uic}`,
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(`/business-organisation-directory/v1/companies/${uic}`);
   });
 });

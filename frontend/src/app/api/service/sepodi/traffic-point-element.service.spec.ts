@@ -34,17 +34,14 @@ describe('TrafficPointElementService', () => {
     service.getTrafficPointElement('ch:1:sloid:7000');
 
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/traffic-point-elements/ch%3A1%3Asloid%3A7000',
+      '/service-point-directory/v1/traffic-point-elements/ch%3A1%3Asloid%3A7000'
     );
   });
 
   it('should createTrafficPoint', () => {
     service.createTrafficPoint({} as CreateTrafficPointElementVersion);
 
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/v1/traffic-point-elements',
-      {},
-    );
+    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/service-point-directory/v1/traffic-point-elements', {});
   });
 
   it('should updateTrafficPoint', () => {
@@ -52,7 +49,7 @@ describe('TrafficPointElementService', () => {
 
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       '/service-point-directory/v1/traffic-point-elements/123',
-      {},
+      {}
     );
   });
 });

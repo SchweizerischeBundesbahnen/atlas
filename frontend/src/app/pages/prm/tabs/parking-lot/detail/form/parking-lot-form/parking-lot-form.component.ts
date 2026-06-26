@@ -24,7 +24,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   providers: [TranslatePipe],
 })
 export class ParkingLotFormComponent {
-
   @Input() form!: FormGroup<ParkingLotFormGroup>;
   readonly isNew = input(false);
 

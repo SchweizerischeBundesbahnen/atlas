@@ -34,7 +34,7 @@ describe('TrafficPointElementInternalService', () => {
 
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/service-point-directory/internal/traffic-point-elements/areas/7000',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -43,7 +43,7 @@ describe('TrafficPointElementInternalService', () => {
 
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
       '/service-point-directory/internal/traffic-point-elements/platforms/7000',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
 
@@ -51,7 +51,7 @@ describe('TrafficPointElementInternalService', () => {
     service.getTrafficPointsOfServicePointValidToday(7000);
 
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/internal/traffic-point-elements/actual-date/7000',
+      '/service-point-directory/internal/traffic-point-elements/actual-date/7000'
     );
   });
 
@@ -59,7 +59,7 @@ describe('TrafficPointElementInternalService', () => {
     service.revokeTrafficPoint('ch:1:sloid:7000:1');
 
     expect(apiService.post).toHaveBeenCalledExactlyOnceWith(
-      '/service-point-directory/internal/traffic-point-elements/ch%3A1%3Asloid%3A7000%3A1/revoke',
+      '/service-point-directory/internal/traffic-point-elements/ch%3A1%3Asloid%3A7000%3A1/revoke'
     );
   });
 });

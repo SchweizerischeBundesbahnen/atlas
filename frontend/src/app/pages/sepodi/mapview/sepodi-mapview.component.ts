@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { GeoJsonProperties } from 'geojson';
 import { Router, RouterOutlet } from '@angular/router';
 import { Pages } from '../../pages';

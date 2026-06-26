@@ -1,12 +1,12 @@
-import {TestBed} from '@angular/core/testing';
-import {beforeEach, describe, expect, it, vi} from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {ToiletInternalService} from './toilet-internal.service';
-import {AtlasApiService} from '../../atlas-api.service';
-import {PlatformInternalService} from '../platform/platform-internal.service';
-import {HttpClient} from '@angular/common/http';
-import {UserService} from '../../../../core/auth/user/user.service';
-import {EMPTY} from 'rxjs';
+import { ToiletInternalService } from './toilet-internal.service';
+import { AtlasApiService } from '../../atlas-api.service';
+import { PlatformInternalService } from '../platform/platform-internal.service';
+import { HttpClient } from '@angular/common/http';
+import { UserService } from '../../../../core/auth/user/user.service';
+import { EMPTY } from 'rxjs';
 
 describe('ToiletInternalService', () => {
   let service: ToiletInternalService;
@@ -14,9 +14,11 @@ describe('ToiletInternalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PlatformInternalService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
-        {provide: UserService, useValue: {}},
+      providers: [
+        PlatformInternalService,
+        AtlasApiService,
+        { provide: HttpClient, useValue: {} },
+        { provide: UserService, useValue: {} },
       ],
     });
     service = TestBed.inject(ToiletInternalService);
@@ -29,10 +31,8 @@ describe('ToiletInternalService', () => {
     service.getToiletOverview('123');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      sloid: '123'
+      sloid: '123',
     });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/prm-directory/internal/toilets/overview/123',
-    );
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/prm-directory/internal/toilets/overview/123');
   });
 });

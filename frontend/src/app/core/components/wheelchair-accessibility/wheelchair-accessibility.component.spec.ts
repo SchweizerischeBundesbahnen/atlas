@@ -4,9 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { WheelchairAccessibilityComponent } from './wheelchair-accessibility.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../app.testing.mocks';
-import {
-  WheelchairAccessibilityInternalService
-} from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
+import { WheelchairAccessibilityInternalService } from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
 import { of } from 'rxjs';
 import { mock, mockClear } from 'vitest-mock-extended';
 import { WheelchairAccessibilityState } from '../../../api/model/wheelchairAccessibilityState';

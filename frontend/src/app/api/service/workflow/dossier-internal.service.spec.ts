@@ -1,17 +1,17 @@
-import {TestBed} from '@angular/core/testing';
-import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {AtlasApiService} from '../atlas-api.service';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {UserService} from '../../../core/auth/user/user.service';
-import {DossierInternalService} from './dossier-internal.service';
-import {TthDossier} from '../../model/tthDossier';
-import {SwissCanton} from '../../model/swissCanton';
-import {DossierStatus} from '../../model/dossierStatus';
-import {BoAnswer} from '../../model/boAnswer';
-import {Language} from '../../model/language';
-import {HearingStatus} from '../../model/hearingStatus';
-import {StatementStatus} from '../../model/statementStatus';
-import {EMPTY} from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AtlasApiService } from '../atlas-api.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UserService } from '../../../core/auth/user/user.service';
+import { DossierInternalService } from './dossier-internal.service';
+import { TthDossier } from '../../model/tthDossier';
+import { SwissCanton } from '../../model/swissCanton';
+import { DossierStatus } from '../../model/dossierStatus';
+import { BoAnswer } from '../../model/boAnswer';
+import { Language } from '../../model/language';
+import { HearingStatus } from '../../model/hearingStatus';
+import { StatementStatus } from '../../model/statementStatus';
+import { EMPTY } from 'rxjs';
 
 describe('DossierInternalService', () => {
   let service: DossierInternalService;
@@ -96,7 +96,7 @@ describe('DossierInternalService', () => {
 
   it('should answer question', () => {
     // when
-    const baAnswer: BoAnswer = {answerToCanton: "Alles gut!"}
+    const baAnswer: BoAnswer = { answerToCanton: 'Alles gut!' };
     service.answerQuestion(5, baAnswer);
 
     // then
@@ -115,7 +115,7 @@ describe('DossierInternalService', () => {
       SwissCanton.Bern,
       'U000001',
       ['Fahrplan', 'Bahn'],
-      statusRestrictions,
+      statusRestrictions
     );
 
     // then
@@ -130,8 +130,7 @@ describe('DossierInternalService', () => {
     });
     expect(apiService.getBlob).toHaveBeenCalledExactlyOnceWith(
       '/workflow/internal/tth/dossier/csv',
-      expect.any(HttpParams),
+      expect.any(HttpParams)
     );
   });
-
 });
