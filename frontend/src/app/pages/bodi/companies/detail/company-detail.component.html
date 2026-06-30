@@ -13,11 +13,10 @@
         <form [formGroup]="form">
           <div class="col-12 d-flex">
             <div class="d-flex flex-column col-6 pe-3">
-              <atlas-text-field
-                [formGroup]="form"
-                controlName="uicCode"
-                data-cy="uicCode"
+              <atlas-text-field-sf
+                fieldName="uicCode"
                 fieldLabel="BODI.COMPANIES.UIC_CODE"
+                [field]="companyForm.uicCode"
               />
             </div>
 

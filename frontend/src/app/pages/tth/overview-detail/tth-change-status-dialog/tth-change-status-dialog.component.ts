@@ -22,6 +22,8 @@ export class TthChangeStatusDialogComponent {
   private readonly notificationService = inject(NotificationService);
   private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
 
+
+
   readonly formGroup = new FormGroup<TthChangeStatusFormGroup>({
     internalComment: new FormControl(this.data.internalComment, [AtlasFieldLengthValidator.statement]),
   });
