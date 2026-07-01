@@ -1,22 +1,23 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Company } from '../../../../api';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CompanyFormGroup } from './company-form-group';
 import { ActivatedRoute } from '@angular/router';
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
-import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TextFieldSfComponent } from '../../../../core/form-components/text-field-sf/text-field-sf.component';
-import { form, required } from '@angular/forms/signals';
+import { disabled, form } from '@angular/forms/signals';
+import { Company } from '../../../../api';
 
 type CompanyFormModel = {
   uicCode: string;
+  countryCodeIso: string;
+  shortName: string;
+  name: string;
+  url: string;
 };
 
 @Component({
@@ -26,8 +27,6 @@ type CompanyFormModel = {
     ScrollToTopDirective,
     DetailPageContainerComponent,
     DetailPageContentComponent,
-    ReactiveFormsModule,
-    TextFieldComponent,
     LinkIconComponent,
     DetailFooterComponent,
     AtlasButtonComponent,
@@ -38,42 +37,27 @@ type CompanyFormModel = {
 })
 export class CompanyDetailComponent implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly translateService = inject(TranslateService);
 
-  company!: Company;
-  form!: FormGroup<CompanyFormGroup>;
-
-  companyFormModel = signal<CompanyFormModel>({
+  private readonly companyFormModel = signal<CompanyFormModel>({
     uicCode: '',
+    countryCodeIso: '',
+    shortName: '',
+    name: '',
+    url: '',
   });
-  companyForm = form(this.companyFormModel, (schemaPath) => {
-    required(schemaPath.uicCode, {
-      message: () => this.translateService.instant('VALIDATION.MAXLENGTH', { length: 5 }),
-    });
+  protected readonly companyForm = form(this.companyFormModel, (schemaPath) => {
+    disabled(schemaPath);
   });
 
   ngOnInit() {
-    this.company = this.activatedRoute.snapshot.data.companyDetail;
-    if (this.company) {
-      this.form = new FormGroup<CompanyFormGroup>({
-        uicCode: new FormControl({
-          value: this.company.uicCode,
-          disabled: true,
-        }),
-        countryCodeIso: new FormControl({
-          value: this.company.countryCodeIso,
-          disabled: true,
-        }),
-        shortName: new FormControl({
-          value: this.company.shortName,
-          disabled: true,
-        }),
-        name: new FormControl({ value: this.company.name, disabled: true }),
-        url: new FormControl({ value: this.company.url, disabled: true }),
-      });
-
+    const company: Company = this.activatedRoute.snapshot.data.companyDetail;
+    if (company) {
       this.companyFormModel.set({
-        uicCode: this.company.uicCode ?? 'n/A',
+        uicCode: company.uicCode ?? '',
+        countryCodeIso: company.countryCodeIso ?? '',
+        shortName: company.shortName ?? '',
+        name: company.name ?? '',
+        url: company.url ?? '',
       });
     }
   }

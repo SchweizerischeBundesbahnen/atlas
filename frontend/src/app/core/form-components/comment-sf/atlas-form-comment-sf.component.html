@@ -1,0 +1,27 @@
+<div class="d-flex flex-column">
+  @if (displayLabel()) {
+    <atlas-label-field
+      [fieldExamples]="[
+        { label: subLabel(), translate: true },
+        { label: ' | ', translate: false },
+        {
+          label: 'FORM.MAX_CHARS',
+          translate: true,
+          arg: { key: 'numberOfChars', value: maxChars() },
+        },
+      ]"
+      [required]="required()"
+      [fieldLabel]="label()"
+      [infoIconTitle]="info()"
+    />
+  }
+  <textarea
+    [attr.data-cy]="fieldName()"
+    matInput
+    rows="7"
+    [formField]="field()"
+  ></textarea>
+  <atlas-field-error-sf
+    [field]="field()"
+  />
+</div>

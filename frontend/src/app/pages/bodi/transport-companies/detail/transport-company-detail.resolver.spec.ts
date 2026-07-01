@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 import { TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { TransportCompanyDetailResolver } from './transport-company-detail-resolver.service';
+import { TransportCompanyDetailResolver } from './transport-company-detail.resolver';
 import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
 import { TransportCompanyService } from '../../../../api/service/bodi/transport-company.service';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';

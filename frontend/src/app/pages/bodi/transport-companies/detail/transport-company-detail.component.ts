@@ -1,45 +1,48 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { ApplicationType, BusinessOrganisation, TransportCompany, TransportCompanyBoRelation } from '../../../../api';
-import { Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import moment, { Moment } from 'moment';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ApplicationType, TransportCompany, TransportCompanyBoRelation, TransportCompanyStatus } from '../../../../api';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
-import { TransportCompanyFormGroup } from './transport-company-form-group';
 import { ActivatedRoute } from '@angular/router';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
-import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
-import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import {
+  BusinessOrganisationSelectComponent
+} from '../../../../core/form-components/bo-select/business-organisation-select.component';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
-import { TranslatePipe } from '@ngx-translate/core';
-import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
-import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
-import { DialogData } from '../../../../core/components/dialog/dialog.data';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { disabled, form } from '@angular/forms/signals';
+import { TextFieldSfComponent } from '../../../../core/form-components/text-field-sf/text-field-sf.component';
+import { AtlasButtonType } from '../../../../core/components/button/atlas-button.type';
+import { AtlasFormCommentSfComponent } from '../../../../core/form-components/comment-sf/atlas-form-comment-sf.component';
+import { TransportCompanyDetailFacade } from './transport-company-detail.facade';
+
+type TransportCompanyFormModel = {
+  id: number;
+  status: TransportCompanyStatus | null;
+  number: string;
+  abbreviation: string;
+  description: string;
+  enterpriseId: string;
+  businessRegisterName: string;
+  businessRegisterNumber: string;
+  comment: string;
+};
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
   styleUrls: ['./transport-company-detail.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,
     DetailPageContentComponent,
     ReactiveFormsModule,
-    TextFieldComponent,
-    CommentComponent,
     RelationComponent,
     BusinessOrganisationSelectComponent,
     DateRangeComponent,
@@ -47,250 +50,91 @@ import { DialogData } from '../../../../core/components/dialog/dialog.data';
     AtlasButtonComponent,
     BackButtonDirective,
     TranslatePipe,
+    TextFieldSfComponent,
+    AtlasFormCommentSfComponent,
   ],
 })
+// todo: define dirty on interface
 export class TransportCompanyDetailComponent implements OnInit, DetailFormComponent {
-  private readonly businessOrganisationService = inject(BusinessOrganisationService);
-  private readonly transportCompanyRelationInternalService = inject(TransportCompanyRelationInternalService);
+  protected readonly facade = inject(TransportCompanyDetailFacade);
   private readonly permissionService = inject(PermissionService);
-  private readonly businessOrganisationLanguageService = inject(BusinessOrganisationLanguageService);
-  private readonly dialogService = inject(DialogService);
-  private readonly notificationService = inject(NotificationService);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly translateService = inject(TranslateService);
 
-  transportCompany!: TransportCompany;
-  transportFormGroup!: FormGroup<TransportCompanyFormGroup>;
-  transportCompanyRelations!: TransportCompanyBoRelation[];
-  businessOrganisationSearchResults: Observable<BusinessOrganisation[]> = of([]);
-  selectedTransportCompanyRelationIndex = -1;
-  editMode = false;
-  totalCountOfFoundBusinessOrganisations = 0;
-  isUpdateRelationSelected = false;
-  relationId = 0;
-  readonly pageSizeForBusinessOrganisationSearch = 100;
-  readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
-    {
-      headerTitle: 'BODI.BUSINESS_ORGANISATION.SBOID',
-      valuePath: 'businessOrganisation.sboid',
-      columnDef: 'sboid',
-    },
-    {
-      headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
-      valuePath: 'businessOrganisation.organisationNumber',
-      columnDef: 'organisationNumber',
-    },
-    {
-      headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
-      valuePath: `businessOrganisation.${this.getCurrentLanguageAbbreviation()}`,
-      columnDef: 'abbreviation',
-    },
-    {
-      headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
-      valuePath: `businessOrganisation.${this.getCurrentLanguageDescription()}`,
-      columnDef: 'description',
-    },
-    {
-      headerTitle: 'COMMON.VALID_FROM',
-      value: 'validFrom',
-      valuePath: 'validFrom',
-      columnDef: 'validFrom',
-      formatAsDate: true,
-    },
-    {
-      headerTitle: 'COMMON.VALID_TO',
-      value: 'validTo',
-      valuePath: 'validTo',
-      columnDef: 'validTo',
-      formatAsDate: true,
-    },
-  ];
-  readonly form = new FormGroup(
-    {
-      businessOrganisation: new FormControl<BusinessOrganisation | null>(null, [Validators.required]),
-      validFrom: new FormControl<Moment | null>(null),
-      validTo: new FormControl<Moment | null>(null),
-    },
-    [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
-  );
-  readonly selectOption = (item: BusinessOrganisation) => {
-    return `${item.organisationNumber} - ${item[this.getCurrentLanguageAbbreviation()]} - ${
-      item[this.getCurrentLanguageDescription()]
-    }`;
-  };
+  private readonly transportCompanyFormModel = signal<TransportCompanyFormModel>({
+    id: 0,
+    status: null,
+    number: '',
+    abbreviation: '',
+    description: '',
+    enterpriseId: '',
+    businessRegisterName: '',
+    businessRegisterNumber: '',
+    comment: '',
+  });
+  protected readonly transportCompanyForm = form(this.transportCompanyFormModel, (schemaPath) => {
+    disabled(schemaPath);
+  });
 
+  protected readonly editPermissions = this.permissionService.hasPermissionsToCreate(ApplicationType.Bodi);
+  protected readonly AtlasButtonType = AtlasButtonType;
+  protected readonly transportCompanyRelationTableColumns = computed<TableColumn<TransportCompanyBoRelation>[]>(() => {
+    const currentLang = this.translateService.currentLang() ?? 'de';
+    const abbreviationKey = `abbreviation${currentLang[0].toUpperCase()}${currentLang[1]}`;
+    const descriptionKey = `description${currentLang[0].toUpperCase()}${currentLang[1]}`;
+    return [
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.SBOID',
+        valuePath: 'businessOrganisation.sboid',
+        columnDef: 'sboid',
+      },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
+        valuePath: 'businessOrganisation.organisationNumber',
+        columnDef: 'organisationNumber',
+      },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
+        valuePath: `businessOrganisation.${abbreviationKey}`,
+        columnDef: 'abbreviation',
+      },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
+        valuePath: `businessOrganisation.${descriptionKey}`,
+        columnDef: 'description',
+      },
+      {
+        headerTitle: 'COMMON.VALID_FROM',
+        value: 'validFrom',
+        valuePath: 'validFrom',
+        columnDef: 'validFrom',
+        formatAsDate: true,
+      },
+      {
+        headerTitle: 'COMMON.VALID_TO',
+        value: 'validTo',
+        valuePath: 'validTo',
+        columnDef: 'validTo',
+        formatAsDate: true,
+      },
+    ];
+  });
+
+  // todo: decide where to put forms (component or facade)
   ngOnInit() {
-    this.transportCompany = this.activatedRoute.snapshot.data.transportCompanyDetail[0];
+    const transportCompany: TransportCompany = this.activatedRoute.snapshot.data.transportCompanyDetail[0];
     this.transportCompanyRelations = this.activatedRoute.snapshot.data.transportCompanyDetail[1];
-    this.transportFormGroup = new FormGroup<TransportCompanyFormGroup>({
-      id: new FormControl({ value: this.transportCompany.id, disabled: true }),
-      number: new FormControl({
-        value: this.transportCompany.number,
-        disabled: true,
-      }),
-      abbreviation: new FormControl({
-        value: this.transportCompany.abbreviation,
-        disabled: true,
-      }),
-      description: new FormControl({
-        value: this.transportCompany.description,
-        disabled: true,
-      }),
-      enterpriseId: new FormControl({
-        value: this.transportCompany.enterpriseId,
-        disabled: true,
-      }),
-      businessRegisterName: new FormControl({
-        value: this.transportCompany.businessRegisterName,
-        disabled: true,
-      }),
-      businessRegisterNumber: new FormControl({
-        value: this.transportCompany.businessRegisterNumber,
-        disabled: true,
-      }),
-      comment: new FormControl({
-        value: this.transportCompany.comment,
-        disabled: true,
-      }),
+
+    this.transportCompanyFormModel.set({
+      id: transportCompany.id ?? 0,
+      status: transportCompany.transportCompanyStatus ?? null,
+      number: transportCompany.number ?? '',
+      abbreviation: transportCompany.abbreviation ?? '',
+      description: transportCompany.description ?? '',
+      enterpriseId: transportCompany.enterpriseId ?? '',
+      businessRegisterName: transportCompany.businessRegisterName ?? '',
+      businessRegisterNumber: transportCompany.businessRegisterNumber ?? '',
+      comment: transportCompany.comment ?? '',
     });
-  }
-
-  mayCreate(): boolean {
-    return this.permissionService.hasPermissionsToCreate(ApplicationType.Bodi);
-  }
-
-  leaveEditMode(): void {
-    if (!this.form.dirty) {
-      this.cancelEdit();
-      return;
-    }
-
-    this.dialogService
-      .openDialogDataWithConfirmationResult({
-        title: 'DIALOG.DISCARD_CHANGES_TITLE',
-        message: 'DIALOG.LEAVE_SITE',
-      } satisfies DialogData)
-      .subscribe((result) => {
-        if (result) {
-          this.cancelEdit();
-        }
-      });
-  }
-
-  getBusinessOrganisations(searchString: string): void {
-    if (!searchString) return;
-    this.businessOrganisationSearchResults = this.businessOrganisationService
-      .getAllBusinessOrganisations(
-        [searchString],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        this.pageSizeForBusinessOrganisationSearch
-      )
-      .pipe(
-        map((value) => {
-          this.totalCountOfFoundBusinessOrganisations = value.totalCount!;
-          return value.objects ?? [];
-        })
-      );
-  }
-
-  save(): void {
-    this.form.markAllAsTouched();
-    if (this.form.invalid) return;
-
-    const validFrom = moment(this.form.value.validFrom).toDate();
-    const validTo = moment(this.form.value.validTo).toDate();
-
-    if (this.isUpdateRelationSelected) {
-      this.handleSave(this.updateExistingRelation(validFrom, validTo));
-    } else {
-      this.handleSave(this.createRelation(validFrom, validTo));
-    }
-  }
-
-  private handleSave(save$: Observable<TransportCompanyBoRelation | void>) {
-    save$
-      .pipe(
-        switchMap(() => this.reloadRelations()),
-        tap(() => {
-          this.editMode = false;
-          this.form.reset();
-          const successMsg = this.isUpdateRelationSelected ? 'RELATION.UPDATE_SUCCESS_MSG' : 'RELATION.ADD_SUCCESS_MSG';
-          this.notificationService.success(successMsg);
-          this.isUpdateRelationSelected = false;
-          this.selectedTransportCompanyRelationIndex = -1;
-        })
-      )
-      .subscribe();
-  }
-
-  private createRelation(validFrom: Date, validTo: Date) {
-    return this.transportCompanyRelationInternalService.createTransportCompanyRelation({
-      transportCompanyId: this.transportCompany.id!,
-      sboid: this.form.value.businessOrganisation!.sboid!,
-      validFrom,
-      validTo,
-    });
-  }
-
-  private updateExistingRelation(validFrom: Date, validTo: Date) {
-    return this.transportCompanyRelationInternalService.updateTransportCompanyRelation({
-      id: this.relationId,
-      validFrom,
-      validTo,
-    });
-  }
-
-  updateRelation() {
-    this.transportCompanyRelationInternalService
-      .getTransportCompanyBoRelations(this.transportCompany.id!)
-      .subscribe((relations) => {
-        const foundRelation = relations.find((_, index) => index === this.selectedTransportCompanyRelationIndex)!;
-        this.form.setValue({
-          businessOrganisation: foundRelation.businessOrganisation!,
-          validFrom: moment(foundRelation.validFrom),
-          validTo: moment(foundRelation.validTo),
-        });
-        this.relationId = foundRelation.id!;
-        this.isUpdateRelationSelected = true;
-      });
-  }
-
-  deleteRelation(): void {
-    this.transportCompanyRelationInternalService
-      .deleteTransportCompanyRelation(this.transportCompanyRelations[this.selectedTransportCompanyRelationIndex].id!)
-      .pipe(
-        switchMap(() =>
-          this.reloadRelations().pipe(
-            tap(() => {
-              this.selectedTransportCompanyRelationIndex = -1;
-              this.isUpdateRelationSelected = false;
-              this.notificationService.success('RELATION.DELETE_SUCCESS_MSG');
-            })
-          )
-        )
-      )
-      .subscribe();
-  }
-
-  private cancelEdit(): void {
-    this.editMode = false;
-    this.isUpdateRelationSelected = false;
-    this.form.reset();
-  }
-
-  private reloadRelations(): Observable<TransportCompanyBoRelation[]> {
-    return this.transportCompanyRelationInternalService
-      .getTransportCompanyBoRelations(this.transportCompany.id!)
-      .pipe(tap((transportCompanyRelations) => (this.transportCompanyRelations = transportCompanyRelations)));
-  }
-
-  private getCurrentLanguageAbbreviation() {
-    return this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation();
-  }
-
-  private getCurrentLanguageDescription() {
-    return this.businessOrganisationLanguageService.getCurrentLanguageDescription();
   }
 }
