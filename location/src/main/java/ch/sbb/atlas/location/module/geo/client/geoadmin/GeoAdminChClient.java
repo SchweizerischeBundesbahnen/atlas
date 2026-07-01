@@ -23,7 +23,11 @@ public interface GeoAdminChClient {
   @GetMapping(value = "/rest/services/api/MapServer/identify")
   GeoAdminResponse getGeoReference(@SpringQueryMap GeoAdminParams params);
 
-  @GetMapping(value = "/rest/services/height")
+  /**
+   * Documentation at https://docs.geo.admin.ch/access-data/get-point-height.html
+   * sr=2056 specifies spatialReference LV95 by wellknownId
+   */
+  @GetMapping(value = "/rest/services/height?sr=2056")
   GeoAdminHeightResponse getHeight(@RequestParam double easting, @RequestParam double northing);
 
 }
