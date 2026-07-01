@@ -22,7 +22,7 @@ export class ParkingLotService {
     return this.atlasApiService.put(`${this.V1_PARKING_LOTS}/${id}`, parkingLotVersion);
   }
 
-  public getParkingLotVersions(sloid: String): Observable<Array<ReadParkingLotVersion>> {
+  public getParkingLotVersions(sloid: string): Observable<Array<ReadParkingLotVersion>> {
     this.atlasApiService.validateParams({ sloid });
     return this.atlasApiService.get(`${this.V1_PARKING_LOTS}/${sloid}`);
   }

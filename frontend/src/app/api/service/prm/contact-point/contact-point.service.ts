@@ -22,7 +22,7 @@ export class ContactPointService {
     return this.atlasApiService.put(`${this.V1_CONTACT_POINTS}/${id}`, contactPointVersion);
   }
 
-  public getContactPointVersions(sloid: String): Observable<Array<ReadContactPointVersion>> {
+  public getContactPointVersions(sloid: string): Observable<Array<ReadContactPointVersion>> {
     this.atlasApiService.validateParams({ sloid });
     return this.atlasApiService.get(`${this.V1_CONTACT_POINTS}/${sloid}`);
   }

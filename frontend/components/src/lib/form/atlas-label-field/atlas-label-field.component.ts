@@ -29,9 +29,9 @@ export class AtlasLabelFieldComponent {
     }
     if (fieldExample.label && fieldExample.arg) {
       return this.translatePipe.transform(fieldExample.label, {
-        [fieldExample.arg!.key]: fieldExample.arg?.value,
+        [fieldExample.arg.key]: fieldExample.arg?.value,
       });
     }
-    return fieldExample.label!;
+    return fieldExample.label;
   }
 }

@@ -10,7 +10,7 @@ export class ReferencePointInternalService {
   private readonly atlasApiService = inject(AtlasApiService);
   private readonly INTERNAL_REFERENCE_POINT = '/prm-directory/internal/reference-points/overview';
 
-  public getReferencePointsOverview(parentServicePointSloid: String): Observable<Array<ReadReferencePointVersion>> {
+  public getReferencePointsOverview(parentServicePointSloid: string): Observable<Array<ReadReferencePointVersion>> {
     this.atlasApiService.validateParams({ parentServicePointSloid });
     return this.atlasApiService.get(`${this.INTERNAL_REFERENCE_POINT}/${parentServicePointSloid}`);
   }

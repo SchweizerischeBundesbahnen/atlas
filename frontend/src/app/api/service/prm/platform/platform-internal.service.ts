@@ -11,7 +11,7 @@ export class PlatformInternalService {
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getPlatformOverview(parentSloid: String): Observable<Array<PlatformOverview>> {
+  public getPlatformOverview(parentSloid: string): Observable<Array<PlatformOverview>> {
     this.atlasApiService.validateParams({ parentSloid });
     return this.atlasApiService.get(`${this.V1_PLATFORMS}/${parentSloid}`);
   }
