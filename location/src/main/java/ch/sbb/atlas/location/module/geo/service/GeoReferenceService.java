@@ -14,6 +14,7 @@ import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
+import feign.FeignException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -67,9 +68,14 @@ public class GeoReferenceService {
     }
     try {
       return geoAdminChClient.getHeight(coordinatePair.getEast(), coordinatePair.getNorth());
+    } catch (FeignException.BadRequest e) {
+      // Bad Request = Query out of bound, no height available at this location, using height=null
+      log.debug("GeoAdmin height request failed with bad request for coordinates: {} (east), {} (north)",
+          coordinatePair.getEast(), coordinatePair.getNorth(), e);
+      return new GeoAdminHeightResponse();
     } catch (Exception e) {
-      log.warn("GeoAdmin height request failed for coordinates: {} (east), {} (north)", coordinatePair.getEast(),
-          coordinatePair.getNorth(), e);
+      log.error("GeoAdmin height request failed for coordinates: {} (east), {} (north)",
+          coordinatePair.getEast(), coordinatePair.getNorth(), e);
       throw new HeightNotCalculatableException();
     }
   }

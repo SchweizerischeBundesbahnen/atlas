@@ -22,10 +22,12 @@ import ch.sbb.atlas.location.module.geo.client.geoadmin.GeoAdminResponse.Result;
 import ch.sbb.atlas.location.module.geo.client.geoadmin.Layers;
 import ch.sbb.atlas.location.module.geo.client.journepoy.JourneyPoiClientBase;
 import ch.sbb.atlas.location.module.geo.client.journepoy.JourneyPoiConfig;
+import ch.sbb.atlas.location.module.geo.exception.HeightNotCalculatableException;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
+import feign.FeignException;
 import feign.FeignException.FeignClientException;
 import feign.Request;
 import feign.Request.HttpMethod;
@@ -96,6 +98,42 @@ class GeoReferenceServiceTest {
     assertThatExceptionOfType(AtlasException.class)
         .isThrownBy(() -> geoReferenceService.getGeoReference(coordinate))
         .withMessage("GeoReference Service not available");
+  }
+
+  @Test
+  void shouldHandleHeightBadRequestAsNoHeight() {
+    // given
+    Request request = Request.create(HttpMethod.GET, "", Collections.emptyMap(), null, null, null);
+    FeignException.BadRequest feignClientException = new FeignException.BadRequest("", request, null, null);
+    when(geoAdminChClient.getHeight(anyDouble(), anyDouble())).thenThrow(feignClientException);
+
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2568989.30320000000)
+        .north(1141633.69605000000)
+        .build();
+
+    // when
+    GeoAdminHeightResponse result = geoReferenceService.getHeight(coordinate);
+    assertThat(result).isNotNull();
+    assertThat(result.getHeight()).isNull();
+  }
+
+  @Test
+  void shouldHandleHeightErrorGracefully() {
+    // given
+    Request request = Request.create(HttpMethod.GET, "", Collections.emptyMap(), null, null, null);
+    FeignException feignClientException = new FeignClientException(500, "", request, null, null);
+    when(geoAdminChClient.getHeight(anyDouble(), anyDouble())).thenThrow(feignClientException);
+
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2568989.30320000000)
+        .north(1141633.69605000000)
+        .build();
+
+    // when
+    assertThatExceptionOfType(HeightNotCalculatableException.class).isThrownBy(() -> geoReferenceService.getHeight(coordinate));
   }
 
   @Test
