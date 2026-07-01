@@ -1,4 +1,7 @@
 spring:
+  cloud:
+    vault:
+      enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5442/prm-directory?currentSchema=prm_directory
     username: user

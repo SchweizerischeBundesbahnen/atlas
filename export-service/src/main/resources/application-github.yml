@@ -24,6 +24,9 @@ management:
       show-details: always
 
 spring:
+  cloud:
+    vault:
+      enabled: false
   application:
     name: export-service
   servlet:

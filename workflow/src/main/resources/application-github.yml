@@ -25,6 +25,9 @@ info:
     buildtime: ${time}
 
 spring:
+  cloud:
+    vault:
+      enabled: false
   application:
     name: workflow
   datasource:

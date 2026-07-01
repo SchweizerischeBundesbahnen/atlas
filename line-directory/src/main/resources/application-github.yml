@@ -1,4 +1,7 @@
 spring:
+  cloud:
+    vault:
+      enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5433/line-directory?currentSchema=line_directory
     username: user
@@ -116,4 +119,3 @@ atlas:
   client:
     gateway:
       url: "http://localhost:8888"
-
