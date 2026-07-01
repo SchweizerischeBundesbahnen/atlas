@@ -18,7 +18,6 @@ import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.mapper.TimetableFieldNumberMapper;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberValidationService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -225,8 +224,7 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
     mvc.perform(createUpdateRequest(TimetableFieldNumberMapper.toModel(version))).andExpect(status().isPreconditionFailed());
   }
 
-  private MockHttpServletRequestBuilder createUpdateRequest(TimetableFieldNumberVersionModel timetableFieldNumberVersionModel)
-      throws JsonProcessingException {
+  private MockHttpServletRequestBuilder createUpdateRequest(TimetableFieldNumberVersionModel timetableFieldNumberVersionModel) {
     return put("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .content(mapper.writeValueAsString(timetableFieldNumberVersionModel));

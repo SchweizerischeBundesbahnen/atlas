@@ -20,7 +20,7 @@ public class RetreiveMessageErrorDecoder implements ErrorDecoder {
       exceptionMessage = mapper.readValue(responseBodyIs, ErrorResponse.class);
       return new AtlasClientException(exceptionMessage);
     } catch (IOException e) {
-      log.error(e.getMessage());
+      log.error("Error during decoding: {}", e.getMessage(), e);
       return new AtlasClientException(getUnexpectedError(response));
     }
   }

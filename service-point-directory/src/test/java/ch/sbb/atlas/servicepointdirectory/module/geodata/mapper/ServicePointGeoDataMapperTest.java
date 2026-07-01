@@ -30,8 +30,7 @@ class ServicePointGeoDataMapperTest {
     assertThat(pointWgs84Web.getX()).isCloseTo(937373.39333, doubleOffset);
     assertThat(pointWgs84Web.getY()).isCloseTo(5998919.02171, doubleOffset);
     assertThat(pointWgs84Web.getUserData()).isNotNull();
-    assertThat(((Map<String, Object>) pointWgs84Web.getUserData()).size()).isGreaterThanOrEqualTo(
-        1);
+    assertThat(((Map<String, Object>) pointWgs84Web.getUserData())).hasSizeGreaterThanOrEqualTo(1);
   }
 
   @Test
@@ -41,7 +40,7 @@ class ServicePointGeoDataMapperTest {
     assertThat(point.getX()).isEqualTo(0.1D);
     assertThat(point.getY()).isEqualTo(0.1D);
     assertThat(point.getUserData()).isNotNull();
-    assertThat(((Map<String, Object>) point.getUserData()).size()).isGreaterThanOrEqualTo(1);
+    assertThat(((Map<String, Object>) point.getUserData())).hasSizeGreaterThanOrEqualTo(1);
   }
 
   @Test

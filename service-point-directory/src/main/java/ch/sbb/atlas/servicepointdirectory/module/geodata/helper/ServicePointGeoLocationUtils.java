@@ -24,8 +24,11 @@ public class ServicePointGeoLocationUtils {
 
   private static DiffResult<ServicePointGeolocation> getServicePointGeolocationDiffResult(ServicePointGeolocation current,
       ServicePointGeolocation updated) {
-    return new DiffBuilder<>(current, updated,
-        ToStringStyle.NO_CLASS_NAME_STYLE)
+    DiffBuilder<ServicePointGeolocation> diffBuilder = DiffBuilder.<ServicePointGeolocation>builder()
+        .setLeft(current)
+        .setRight(updated)
+        .setStyle(ToStringStyle.NO_CLASS_NAME_STYLE).build();
+    return diffBuilder
         .append("Height", current.getHeight(), updated.getHeight())
         .append("Country", current.getCountry(), updated.getCountry())
         .append("Canton", current.getSwissCanton(), updated.getSwissCanton())

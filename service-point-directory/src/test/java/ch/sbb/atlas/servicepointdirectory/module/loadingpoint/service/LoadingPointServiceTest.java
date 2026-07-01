@@ -135,7 +135,7 @@ class LoadingPointServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
-    assertThat(result.getTotalElements()).isEqualTo(0);
+    assertThat(result.getTotalElements()).isZero();
 
   }
 
@@ -269,7 +269,7 @@ class LoadingPointServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
-    assertThat(result.getTotalElements()).isEqualTo(0);
+    assertThat(result.getTotalElements()).isZero();
   }
 
   @Test
@@ -460,7 +460,7 @@ class LoadingPointServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
-    assertThat(result.getTotalElements()).isEqualTo(0);
+    assertThat(result.getTotalElements()).isZero();
   }
 
   @Test
@@ -537,7 +537,7 @@ class LoadingPointServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
-    assertThat(result.getTotalElements()).isEqualTo(0);
+    assertThat(result.getTotalElements()).isZero();
   }
 
   @Test
@@ -678,7 +678,7 @@ class LoadingPointServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
-    assertThat(result.getTotalElements()).isEqualTo(0);
+    assertThat(result.getTotalElements()).isZero();
   }
 
   @Test

@@ -65,9 +65,9 @@ class LineRepositoryTest {
 
     // Then
     assertThat(result.getTotalElements()).isEqualTo(1L);
-    assertThat(result.getContent().size()).isEqualTo(1L);
+    assertThat(result.getContent()).hasSize(1);
 
-    Line line = result.getContent().get(0);
+    Line line = result.getContent().getFirst();
     assertThat(line).usingRecursiveComparison()
         .ignoringFields("validFrom", "validTo", "lidiElementType", "elementType")
         .isEqualTo(validToday);
@@ -111,9 +111,9 @@ class LineRepositoryTest {
 
     // Then
     assertThat(result.getTotalElements()).isEqualTo(1L);
-    assertThat(result.getContent().size()).isEqualTo(1L);
+    assertThat(result.getContent()).hasSize(1);
 
-    Line line = result.getContent().get(0);
+    Line line = result.getContent().getFirst();
     assertThat(line).usingRecursiveComparison()
         .ignoringFields("validFrom", "validTo", "lidiElementType", "elementType")
         .isEqualTo(validNextYear);
@@ -149,9 +149,9 @@ class LineRepositoryTest {
 
     // Then
     assertThat(result.getTotalElements()).isEqualTo(1L);
-    assertThat(result.getContent().size()).isEqualTo(1L);
+    assertThat(result.getContent()).hasSize(1);
 
-    Line line = result.getContent().get(0);
+    Line line = result.getContent().getFirst();
     assertThat(line).usingRecursiveComparison()
         .ignoringFields("validFrom", "validTo", "lidiElementType", "elementType")
         .isEqualTo(validLastYear);
@@ -180,14 +180,14 @@ class LineRepositoryTest {
     lineVersionRepository.saveAndFlush(validLastYear);
 
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(SLNID);
-    assertThat(lineVersions.size()).isEqualTo(2);
+    assertThat(lineVersions).hasSize(2);
 
     // When
     lineVersionRepository.deleteAll(lineVersions);
 
     // Then
     List<LineVersion> result = lineVersionRepository.findAllBySlnidOrderByValidFrom(SLNID);
-    assertThat(result.size()).isEqualTo(0);
+    assertThat(result).isEmpty();
 
   }
 

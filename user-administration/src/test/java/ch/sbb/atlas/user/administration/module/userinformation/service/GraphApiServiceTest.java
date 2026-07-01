@@ -97,7 +97,7 @@ class GraphApiServiceTest {
 
     assertThat(configuration.queryParameters).isNotNull();
     assertThat(configuration.queryParameters.filter).isEqualTo("onPremisesSamAccountName in ('user1', 'user2')");
-    assertThat(configuration.queryParameters.count).isEqualTo(true);
+    assertThat(configuration.queryParameters.count).isTrue();
 
     assertThat(configuration.headers)
         .isNotNull()

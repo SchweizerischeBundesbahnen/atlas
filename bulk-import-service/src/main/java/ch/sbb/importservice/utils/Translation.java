@@ -20,13 +20,13 @@ public class Translation {
     private String it;
   }
 
-  private final static Map<ApplicationType, Values> applicationTranslations = Map.of(
+  private static final Map<ApplicationType, Values> applicationTranslations = Map.of(
       ApplicationType.SEPODI, new Values("Dienststellen", "points de services", "posto di servizio"),
       ApplicationType.PRM, new Values("Barrierefreiheit", "accessibilité", "accessibilità"),
       ApplicationType.LIDI, new Values("Linienverzeichnis", "liste des lignes", "elenco delle linee")
   );
 
-  private final static Map<BusinessObjectType, Values> objectTypeTranslations = Map.ofEntries(
+  private static final Map<BusinessObjectType, Values> objectTypeTranslations = Map.ofEntries(
       Map.entry(BusinessObjectType.SERVICE_POINT, new Values("Dienststelle", "service", "posto di servizio")),
       Map.entry(BusinessObjectType.TRAFFIC_POINT, new Values("Haltekante", "bordure d'arrêt", "bordo di fermata")),
       Map.entry(BusinessObjectType.LOADING_POINT, new Values("Ladestelle", "places de chargement", "posti di carico")),
@@ -46,7 +46,7 @@ public class Translation {
       Map.entry(BusinessObjectType.SUBLINE, new Values("Teillinie", "ligne partielle", "linea parziale"))
   );
 
-  private final static Map<ImportType, Values> importTypeTranslations = Map.of(
+  private static final Map<ImportType, Values> importTypeTranslations = Map.of(
       ImportType.UPDATE, new Values("aktualisiert", "mises à jour", "aggiornati"),
       ImportType.CREATE, new Values("erstellt", "créées", "creati"),
       ImportType.TERMINATE, new Values("terminiert", "terminées", "terminati")

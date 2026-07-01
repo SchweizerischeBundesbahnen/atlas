@@ -1912,7 +1912,6 @@ public class VersioningHelperTest {
 
     //then
     assertThat(result).isFalse();
-    assertThat(versioningData.getObjectToVersioningFound().isEmpty()).isFalse();
     assertThat(versioningData.getObjectToVersioningFound()).hasSize(1);
   }
 
@@ -1927,7 +1926,6 @@ public class VersioningHelperTest {
 
     //then
     assertThat(result).isTrue();
-    assertThat(versioningData.getObjectToVersioningFound().isEmpty()).isFalse();
     assertThat(versioningData.getObjectToVersioningFound()).hasSize(1);
   }
 
@@ -1944,7 +1942,7 @@ public class VersioningHelperTest {
 
     //then
     assertThat(result).isFalse();
-    assertThat(versioningData.getObjectToVersioningFound().isEmpty()).isTrue();
+    assertThat(versioningData.getObjectToVersioningFound()).isEmpty();
   }
 
   @Test

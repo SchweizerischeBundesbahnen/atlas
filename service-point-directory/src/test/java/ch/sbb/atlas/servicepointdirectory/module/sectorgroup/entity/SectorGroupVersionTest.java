@@ -45,7 +45,7 @@ class SectorGroupVersionTest extends BaseValidatorTest {
     Set<ConstraintViolation<SectorGroupVersion>> constraintViolations = validator.validate(sectorGroupVersion);
 
     //then
-    assertThat(constraintViolations).hasSize(0);
+    assertThat(constraintViolations).isEmpty();
   }
 
 }

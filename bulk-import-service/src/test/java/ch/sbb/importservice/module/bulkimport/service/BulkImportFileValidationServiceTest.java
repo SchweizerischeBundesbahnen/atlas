@@ -55,7 +55,7 @@ class BulkImportFileValidationServiceTest {
         Files.readAllBytes(file.toPath()));
 
     File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, ServicePointUpdate.CONFIG);
-    assertThat(result.length()).isEqualTo(file.length());
+    assertThat(result).hasSize(file.length());
   }
 
   @Test

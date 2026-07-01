@@ -29,7 +29,7 @@ class ServicePointBulkImportControllerTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     servicePointBulkImportController = new ServicePointBulkImportController(servicePointBulkImportService);
   }
 

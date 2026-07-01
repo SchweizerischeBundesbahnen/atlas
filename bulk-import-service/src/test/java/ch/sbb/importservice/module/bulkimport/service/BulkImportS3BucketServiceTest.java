@@ -31,7 +31,7 @@ class BulkImportS3BucketServiceTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     bulkImportS3BucketService = new BulkImportS3BucketService(amazonService);
   }
 

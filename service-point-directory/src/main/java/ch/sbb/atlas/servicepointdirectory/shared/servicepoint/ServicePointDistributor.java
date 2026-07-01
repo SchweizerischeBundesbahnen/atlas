@@ -73,10 +73,24 @@ public class ServicePointDistributor extends BaseProducer<SharedServicePointVers
   @RequiredArgsConstructor
   public static class SharedServicePointRepository {
 
+    private static final String SQL_QUERY = """
+        select sp.sloid as service_point_sloid,
+               sp.business_organisation,
+               tp.sloid as traffic_point_element_sloid,
+               CASE WHEN spvmot.means_of_transport != :mean_of_transport_unknown THEN 'true' ELSE 'false' END as stop_point
+        from service_point_version sp
+             left join service_point_version_means_of_transport spvmot
+                on sp.id = spvmot.service_point_version_id
+             left join traffic_point_element_version tp
+                on sp.number=tp.service_point_number
+        where sp.sloid is not null
+        and sp.country in (:countries)
+        """;
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public Set<SharedServicePointVersionModel> getAllServicePoints() {
-      return getServicePoints(getSqlQuery(), getBaseParameters());
+      return getServicePoints(SQL_QUERY, getBaseParameters());
     }
 
     public Set<SharedServicePointVersionModel> getServicePoints(Set<ServicePointNumber> servicePointNumbers) {
@@ -84,7 +98,7 @@ public class ServicePointDistributor extends BaseProducer<SharedServicePointVers
         return getAllServicePoints();
       }
 
-      String baseQuery = getSqlQuery();
+      String baseQuery = SQL_QUERY;
       baseQuery += "and sp.number in (:numbers)";
 
       MapSqlParameterSource parameters = getBaseParameters();
@@ -135,22 +149,6 @@ public class ServicePointDistributor extends BaseProducer<SharedServicePointVers
       paramSource.addValue("countries", Stream.of(Country.SWITZERLAND).map(Enum::name).toList());
       paramSource.addValue("mean_of_transport_unknown", MeanOfTransport.UNKNOWN.name());
       return paramSource;
-    }
-
-    private String getSqlQuery() {
-      return """
-          select sp.sloid as service_point_sloid,
-                 sp.business_organisation,
-                 tp.sloid as traffic_point_element_sloid,
-                 CASE WHEN spvmot.means_of_transport != :mean_of_transport_unknown THEN 'true' ELSE 'false' END as stop_point
-          from service_point_version sp
-               left join service_point_version_means_of_transport spvmot
-                  on sp.id = spvmot.service_point_version_id
-               left join traffic_point_element_version tp
-                  on sp.number=tp.service_point_number
-          where sp.sloid is not null
-          and sp.country in (:countries)
-          """;
     }
 
   }

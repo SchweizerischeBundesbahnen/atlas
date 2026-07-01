@@ -42,9 +42,9 @@ class GeometryTransformerTest {
         .getProjectedAreas(SWISS_AREA_WGS_84);
 
     assertThat(envelopeMap).hasSize(4);
-    assertThat(envelopeMap.containsKey(SpatialReference.WGS84WEB)).isTrue();
-    assertThat(envelopeMap.containsKey(SpatialReference.WGS84)).isTrue();
-    assertThat(envelopeMap.containsKey(SpatialReference.LV95)).isTrue();
-    assertThat(envelopeMap.containsKey(SpatialReference.LV03)).isTrue();
+    assertThat(envelopeMap).containsKey(SpatialReference.WGS84WEB);
+    assertThat(envelopeMap).containsKey(SpatialReference.WGS84);
+    assertThat(envelopeMap).containsKey(SpatialReference.LV95);
+    assertThat(envelopeMap).containsKey(SpatialReference.LV03);
   }
 }

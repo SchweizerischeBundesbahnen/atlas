@@ -563,8 +563,8 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
       // Then
       String response = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-      assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader);
-      assertThat(response).contains("Ich hätte gerne mehrere Verbindungen am Abend.");
+      assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader)
+          .contains("Ich hätte gerne mehrere Verbindungen am Abend.");
     }
 
     private ResultActions getStatementsAsCsv() throws Exception {
@@ -629,19 +629,19 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
       // Then
       String response = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-      assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader);
-      assertThat(response).contains(statement.getAnonymousStatement());
-      assertThat(response).doesNotContain(statement.getStatement());
-      assertThat(response).doesNotContain("fabienne.mueller@sbb.ch");
-      assertThat(response).doesNotContain("flo.mueller@sbb.ch");
-      assertThat(response).doesNotContain("Fabienne");
-      assertThat(response).doesNotContain("Mueller");
-      assertThat(response).doesNotContain("3001");
-      assertThat(response).doesNotContain("Bern");
-      assertThat(response).doesNotContain("Musterstrasse 1");
-      assertThat(response).doesNotContain("SBB");
-      assertThat(response).doesNotContain("Einfach eine interne Begründung");
-      assertThat(response).doesNotContain("Einfach eine öffentliche Begründung");
+      assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader)
+          .contains(statement.getAnonymousStatement())
+          .doesNotContain(statement.getStatement())
+          .doesNotContain("fabienne.mueller@sbb.ch")
+          .doesNotContain("flo.mueller@sbb.ch")
+          .doesNotContain("Fabienne")
+          .doesNotContain("Mueller")
+          .doesNotContain("3001")
+          .doesNotContain("Bern")
+          .doesNotContain("Musterstrasse 1")
+          .doesNotContain("SBB")
+          .doesNotContain("Einfach eine interne Begründung")
+          .doesNotContain("Einfach eine öffentliche Begründung");
     }
 
     @Test
@@ -680,19 +680,19 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
       // Then
       String response = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-      assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader);
       assertThat(statement.getStatementAnonymous()).isTrue();
-      assertThat(response).contains(statement.getStatement());
-      assertThat(response).doesNotContain("fabienne.mueller@sbb.ch");
-      assertThat(response).doesNotContain("flo.mueller@sbb.ch");
-      assertThat(response).doesNotContain("Fabienne");
-      assertThat(response).doesNotContain("Mueller");
-      assertThat(response).doesNotContain("3001");
-      assertThat(response).doesNotContain("Bern");
-      assertThat(response).doesNotContain("Musterstrasse 1");
-      assertThat(response).doesNotContain("SBB");
-      assertThat(response).doesNotContain("Einfach eine interne Begründung");
-      assertThat(response).doesNotContain("Einfach eine öffentliche Begründung");
+      assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader)
+          .contains(statement.getStatement())
+          .doesNotContain("fabienne.mueller@sbb.ch")
+          .doesNotContain("flo.mueller@sbb.ch")
+          .doesNotContain("Fabienne")
+          .doesNotContain("Mueller")
+          .doesNotContain("3001")
+          .doesNotContain("Bern")
+          .doesNotContain("Musterstrasse 1")
+          .doesNotContain("SBB")
+          .doesNotContain("Einfach eine interne Begründung")
+          .doesNotContain("Einfach eine öffentliche Begründung");
     }
   }
 

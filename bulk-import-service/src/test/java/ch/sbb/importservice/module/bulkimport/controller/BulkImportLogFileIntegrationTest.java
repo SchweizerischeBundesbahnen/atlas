@@ -142,7 +142,7 @@ class BulkImportLogFileIntegrationTest {
     LogFile expected = objectMapper.readValue(expectedLogFile, LogFile.class);
 
     assertThat(writtenLogFile).isEqualTo(expected);
-    verify(mailProducerService).produceMailNotification(eq(MailNotification.builder()
+    verify(mailProducerService).produceMailNotification(MailNotification.builder()
         .to(List.of("test@atlas.ch"))
         .cc(List.of("test-cc@atlas.ch"))
         .subject("Import Result " + bulkImport.getId())
@@ -161,7 +161,7 @@ class BulkImportLogFileIntegrationTest {
                 "importTypeIt", "aggiornati"
             )
         ))
-        .build()));
+        .build());
   }
 
   private void setupSepodiResponsesForMix() {
