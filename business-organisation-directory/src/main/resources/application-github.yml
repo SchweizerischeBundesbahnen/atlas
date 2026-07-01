@@ -1,4 +1,7 @@
 spring:
+  cloud:
+    vault:
+      enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5435/business-organisation-directory?currentSchema=business_organisation_directory
     username: user
