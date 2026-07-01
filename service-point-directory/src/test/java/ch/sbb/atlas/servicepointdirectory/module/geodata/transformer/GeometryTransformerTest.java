@@ -41,10 +41,10 @@ class GeometryTransformerTest {
     final Map<SpatialReference, Envelope> envelopeMap = geometryTransformer
         .getProjectedAreas(SWISS_AREA_WGS_84);
 
-    assertThat(envelopeMap).hasSize(4);
-    assertThat(envelopeMap).containsKey(SpatialReference.WGS84WEB);
-    assertThat(envelopeMap).containsKey(SpatialReference.WGS84);
-    assertThat(envelopeMap).containsKey(SpatialReference.LV95);
-    assertThat(envelopeMap).containsKey(SpatialReference.LV03);
+    assertThat(envelopeMap).hasSize(4)
+        .containsKey(SpatialReference.WGS84WEB)
+        .containsKey(SpatialReference.WGS84)
+        .containsKey(SpatialReference.LV95)
+        .containsKey(SpatialReference.LV03);
   }
 }
