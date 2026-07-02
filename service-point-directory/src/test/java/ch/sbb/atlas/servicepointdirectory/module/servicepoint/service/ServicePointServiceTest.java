@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.module.servicepoint.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -70,7 +69,7 @@ class ServicePointServiceTest {
     servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
 
     // then
-    verify(servicePointVersionRepositoryMock).findAllByNumberOrderByValidFrom(eq(servicePointNumber));
+    verify(servicePointVersionRepositoryMock).findAllByNumberOrderByValidFrom(servicePointNumber);
   }
 
   @Test
@@ -82,7 +81,7 @@ class ServicePointServiceTest {
     servicePointService.isServicePointNumberExisting(servicePointNumber);
 
     // then
-    verify(servicePointVersionRepositoryMock).existsByNumber(eq(servicePointNumber));
+    verify(servicePointVersionRepositoryMock).existsByNumber(servicePointNumber);
   }
 
   @Test
@@ -91,7 +90,7 @@ class ServicePointServiceTest {
     servicePointService.findById(123L);
 
     // then
-    verify(servicePointVersionRepositoryMock).findById(eq(123L));
+    verify(servicePointVersionRepositoryMock).findById(123L);
   }
 
   @Test

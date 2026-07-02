@@ -22,7 +22,7 @@ export class PlatformService {
     return this.atlasApiService.put(`${this.V1_PLATFORMS}/${id}`, platformVersion);
   }
 
-  public getPlatformVersions(sloid: String): Observable<Array<ReadPlatformVersion>> {
+  public getPlatformVersions(sloid: string): Observable<Array<ReadPlatformVersion>> {
     this.atlasApiService.validateParams({ sloid });
     return this.atlasApiService.get(`${this.V1_PLATFORMS}/${sloid}`);
   }

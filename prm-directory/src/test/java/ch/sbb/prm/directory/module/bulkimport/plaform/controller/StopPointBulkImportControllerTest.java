@@ -25,7 +25,7 @@ class StopPointBulkImportControllerTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     stopPointBulkImportController = new StopPointBulkImportController(stopPointBulkImportService);
   }
 

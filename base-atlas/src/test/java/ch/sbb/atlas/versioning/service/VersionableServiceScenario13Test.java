@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario13Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario13Test extends VersionableServiceBaseTest {
 
   /**
    * Scenario 13a: Update startet auf einer Version und endet in der nächsten Version

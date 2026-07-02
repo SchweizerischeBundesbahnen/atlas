@@ -176,7 +176,7 @@ class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPointElemen
   }
 
   @Test
-  public void updateTrafficPointElementGeolocationCreatorOnExistingVersion() {
+  void updateTrafficPointElementGeolocationCreatorOnExistingVersion() {
     // given
     version1 = trafficPointElementVersionRepository.saveAndFlush(version1);
     TrafficPointElementGeolocation tpeg = TrafficPointTestData.getTrafficPointGeolocationBernMittelland();

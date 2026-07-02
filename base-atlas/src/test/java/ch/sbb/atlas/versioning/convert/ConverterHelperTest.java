@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 class ConverterHelperTest extends BaseTest {
 
-  static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+  static final List<VersionableProperty> VERSIONABLE = new ArrayList<>();
 
   static {
     VERSIONABLE.add(VersionableProperty.builder()

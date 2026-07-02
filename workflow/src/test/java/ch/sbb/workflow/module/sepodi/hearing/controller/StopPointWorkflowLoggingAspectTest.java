@@ -57,7 +57,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
   private ListAppender<ILoggingEvent> listAppender;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     listAppender = new ListAppender<>();
     Logger logger = (Logger) LoggerFactory.getLogger(LoggingAspect.class);
     listAppender.start();

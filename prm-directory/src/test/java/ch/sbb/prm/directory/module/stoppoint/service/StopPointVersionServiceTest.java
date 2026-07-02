@@ -153,7 +153,7 @@ class StopPointVersionServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
-    assertThat(result.getTotalElements()).isEqualTo(0);
+    assertThat(result.getTotalElements()).isZero();
   }
 
   @Test

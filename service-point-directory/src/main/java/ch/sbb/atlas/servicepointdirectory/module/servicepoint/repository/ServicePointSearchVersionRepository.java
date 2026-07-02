@@ -29,6 +29,35 @@ public class ServicePointSearchVersionRepository {
       join service_point_version_means_of_transport as spvmt on spv.id = spvmt.service_point_version_id
       """;
 
+  private static final String DESIGNATION_OFFICIAL_CASE = """
+      (case
+          when designation_official = :perfect_match then 0
+          when upper(designation_official) like upper(:perfect_match) then 1
+          when designation_official like :starts_with then 2
+          when upper(designation_official) like upper(:starts_with) then 3
+          when designation_official like :starts_with_space then 4
+          when upper(designation_official) like upper(:starts_with_space) then 5
+          when designation_official like :ends_with then 6
+          when upper(designation_official) like upper(:ends_with) then 7
+          when designation_official like :ends_with_space then 8
+          when upper(designation_official) like upper(:ends_with_space) then 9
+          when designation_official like :contains_value then 10
+          else 11 end
+      ),
+      designation_official
+      """;
+  private static final String NUMBER_CASE = """
+      (case
+          when cast(number as text) = :perfect_match then 0
+          when cast(number as text) like :ends_with_space then 1
+          when cast(number as text) like :starts_with then 2
+          when cast(number as text) like :ends_with then 3
+          when cast(number as text) like :contains_value then 4
+          else 5 end
+      ),
+      number
+      """;
+
   private final NamedParameterJdbcTemplate jdbcTemplate;
 
   public List<ServicePointSearchResult> searchServicePoints(String value) {
@@ -174,43 +203,9 @@ public class ServicePointSearchVersionRepository {
 
   private String getDynamicCases(String value) {
     if (NumberUtils.isParsable(value)) {
-      return getNumberCase() + ",\n" + getDesignationOfficialCase() + ",\n";
+      return NUMBER_CASE + ",\n" + DESIGNATION_OFFICIAL_CASE + ",\n";
     }
-    return getDesignationOfficialCase() + ",\n" + getNumberCase() + ",\n";
-  }
-
-  private String getDesignationOfficialCase() {
-    return """
-        (case
-            when designation_official = :perfect_match then 0
-            when upper(designation_official) like upper(:perfect_match) then 1
-            when designation_official like :starts_with then 2
-            when upper(designation_official) like upper(:starts_with) then 3
-            when designation_official like :starts_with_space then 4
-            when upper(designation_official) like upper(:starts_with_space) then 5
-            when designation_official like :ends_with then 6
-            when upper(designation_official) like upper(:ends_with) then 7
-            when designation_official like :ends_with_space then 8
-            when upper(designation_official) like upper(:ends_with_space) then 9
-            when designation_official like :contains_value then 10
-            else 11 end
-        ),
-        designation_official
-        """;
-  }
-
-  private String getNumberCase() {
-    return """
-        (case
-            when cast(number as text) = :perfect_match then 0
-            when cast(number as text) like :ends_with_space then 1
-            when cast(number as text) like :starts_with then 2
-            when cast(number as text) like :ends_with then 3
-            when cast(number as text) like :contains_value then 4
-            else 5 end
-        ),
-        number
-        """;
+    return DESIGNATION_OFFICIAL_CASE + ",\n" + NUMBER_CASE + ",\n";
   }
 
   private static void validateInput(String value) {

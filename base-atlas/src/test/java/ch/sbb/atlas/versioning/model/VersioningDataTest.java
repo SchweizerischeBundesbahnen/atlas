@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersioningDataTest {
+class VersioningDataTest {
 
   private final VersionableObject editedVersion = VersionableObject
       .builder()

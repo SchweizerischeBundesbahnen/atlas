@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario4Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario4Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 4: Update, das über eine ganze Version hinausragt NEU:             |___________________________________| IST:

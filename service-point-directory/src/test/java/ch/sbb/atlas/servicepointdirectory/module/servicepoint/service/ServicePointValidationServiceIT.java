@@ -121,7 +121,7 @@ class ServicePointValidationServiceIT {
   }
 
   @Test
-  public void shouldNotThrowExceptionWhenAbbreviationEmpty() {
+  void shouldNotThrowExceptionWhenAbbreviationEmpty() {
     CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:123456")
@@ -153,7 +153,7 @@ class ServicePointValidationServiceIT {
   }
 
   @Test
-  public void shouldThrowExceptionWhenAbbreviationIsNotUnique() {
+  void shouldThrowExceptionWhenAbbreviationIsNotUnique() {
     CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:100016")
@@ -170,7 +170,7 @@ class ServicePointValidationServiceIT {
   }
 
   @Test
-  public void shouldThrowExceptionWhenTryToChangeExistingAbbreviation() {
+  void shouldThrowExceptionWhenTryToChangeExistingAbbreviation() {
     versionRepository.deleteAll();
     ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
     servicePointVersion.setDesignationLong("Wyleregg, Loraine, Bern");
@@ -193,7 +193,7 @@ class ServicePointValidationServiceIT {
   }
 
   @Test
-  public void shouldThrowExceptionWhenAddingAbbreviationToServicePointWithNonHighestDate() {
+  void shouldThrowExceptionWhenAddingAbbreviationToServicePointWithNonHighestDate() {
     versionRepository.deleteAll();
     ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
     servicePointVersion.setDesignationLong("Wyleregg, Loraine, Bern");
@@ -216,7 +216,7 @@ class ServicePointValidationServiceIT {
   }
 
   @Test
-  public void shouldSuccessfullyAddAbbreviationAndUpdateServicePoint() {
+  void shouldSuccessfullyAddAbbreviationAndUpdateServicePoint() {
     versionRepository.deleteAll();
     ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
     servicePointVersion.setDesignationLong("Wyleregg, Loraine, Bern");

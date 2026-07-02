@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario10Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario10Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 10a (Spezialfall 3): Update in der Lücke zwischen zwei Versionen

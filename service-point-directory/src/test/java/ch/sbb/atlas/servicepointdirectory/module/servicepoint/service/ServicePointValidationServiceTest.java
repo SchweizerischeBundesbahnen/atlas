@@ -37,7 +37,7 @@ class ServicePointValidationServiceTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     servicePointValidationService = new ServicePointValidationService(sharedBusinessOrganisationService,
         servicePointVersionRepository);
     when(servicePointVersionRepository.findDesignationLongOverlaps(any())).thenReturn(Collections.emptyList());

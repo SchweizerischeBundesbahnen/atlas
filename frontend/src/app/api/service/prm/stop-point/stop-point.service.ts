@@ -12,7 +12,7 @@ export class StopPointService {
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getStopPointVersions(sloid: String): Observable<Array<ReadStopPointVersion>> {
+  public getStopPointVersions(sloid: string): Observable<Array<ReadStopPointVersion>> {
     this.atlasApiService.validateParams({ sloid });
     return this.atlasApiService.get(`${this.V1_STOP_POINTS}/${sloid}`);
   }

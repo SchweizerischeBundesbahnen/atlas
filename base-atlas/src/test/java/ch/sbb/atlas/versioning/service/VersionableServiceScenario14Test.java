@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario14Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario14Test extends VersionableServiceBaseTest {
 
   /**
    * Scenario 14a: Linke Grenze ("Gültig von") auf gleichen Tag setzen, wie rechte Grenze ("Gültig bis")

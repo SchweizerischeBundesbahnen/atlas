@@ -44,7 +44,7 @@ class BulkImportControllerTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     controller = new BulkImportController(service, bulkImportLogService, bulkImportFileValidationService,
         bulkImportTemplateGenerator, bulkImporterMailService);
   }

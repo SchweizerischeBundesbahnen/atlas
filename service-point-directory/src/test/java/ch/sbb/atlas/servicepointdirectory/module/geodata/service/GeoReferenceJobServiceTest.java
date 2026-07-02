@@ -43,7 +43,7 @@ class GeoReferenceJobServiceTest {
   private GeoReferenceJobService geoReferenceJobService;
 
   @AfterEach
-  public void cleanUp() {
+  void cleanUp() {
     servicePointVersionRepository.deleteAll();
   }
 

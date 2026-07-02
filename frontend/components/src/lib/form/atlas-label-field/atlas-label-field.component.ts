@@ -1,9 +1,9 @@
-import { Component, inject, Input, input } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { NgClass } from '@angular/common';
-import { FieldExample } from '../../../../../src/app/core/form-components/text-field/field-example';
-import { InfoLinkDirective } from '../info-icon/info-link.directive';
-import { InfoIconComponent } from '../info-icon/info-icon.component';
+import {Component, inject, Input, input} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {NgClass} from '@angular/common';
+import {FieldExample} from '../../../../../src/app/core/form-components/text-field/field-example';
+import {InfoLinkDirective} from '../info-icon/info-link.directive';
+import {InfoIconComponent} from '../info-icon/info-icon.component';
 
 @Component({
   selector: 'atlas-label-field',

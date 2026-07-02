@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario6Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario6Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet

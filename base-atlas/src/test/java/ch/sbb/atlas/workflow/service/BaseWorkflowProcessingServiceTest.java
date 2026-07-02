@@ -26,7 +26,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public class BaseWorkflowProcessingServiceTest {
+class BaseWorkflowProcessingServiceTest {
 
   @Mock
   private ObjectVersionRepository objectVersionRepository;

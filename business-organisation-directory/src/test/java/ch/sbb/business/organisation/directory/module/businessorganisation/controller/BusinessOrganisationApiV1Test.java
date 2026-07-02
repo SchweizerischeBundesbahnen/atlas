@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-public class BusinessOrganisationApiV1Test extends BaseControllerApiTest {
+class BusinessOrganisationApiV1Test extends BaseControllerApiTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationVersion
       .builder()

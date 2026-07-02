@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.module.line.service;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -83,11 +83,8 @@ public class LineStatusDecider {
           return true;
         }
       }
-      if (previousLineVersion.getLineType() != LineType.ORDERLY
-          && newLineVersion.getLineType() == LineType.ORDERLY) {
-        return true;
-      }
-      return false;
+      return previousLineVersion.getLineType() != LineType.ORDERLY
+          && newLineVersion.getLineType() == LineType.ORDERLY;
     }
   }
 

@@ -34,7 +34,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
     assertThat(result.getFirst().getSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(sboid);
@@ -55,7 +54,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
     assertThat(result.getFirst().getSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(sboid);
@@ -75,7 +73,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(3);
   }
 
@@ -91,7 +88,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
   }
@@ -108,7 +104,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
   }
@@ -126,7 +121,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
   }
@@ -145,7 +139,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
   }
@@ -164,7 +157,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumberSwitzerland);
   }
@@ -181,7 +173,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
   }
@@ -200,7 +191,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     List<ServicePointVersion> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumberSwitzerland);
   }

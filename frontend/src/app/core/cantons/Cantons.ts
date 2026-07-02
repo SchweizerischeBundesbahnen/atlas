@@ -2,7 +2,7 @@ import { Canton } from './Canton';
 import { SwissCanton } from '../../api';
 
 export class Cantons {
-  public static cantons: Canton[] = [
+  public static readonly cantons: Canton[] = [
     { short: 'AG', enumCanton: SwissCanton.Aargau, path: 'ag' },
     { short: 'AI', enumCanton: SwissCanton.AppenzellInnerrhoden, path: 'ai' },
     { short: 'AR', enumCanton: SwissCanton.AppenzellAusserrhoden, path: 'ar' },

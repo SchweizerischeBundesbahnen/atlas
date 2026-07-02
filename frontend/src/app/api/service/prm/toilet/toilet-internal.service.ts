@@ -11,7 +11,7 @@ export class ToiletInternalService {
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getToiletOverview(sloid: String): Observable<Array<ToiletOverview>> {
+  public getToiletOverview(sloid: string): Observable<Array<ToiletOverview>> {
     this.atlasApiService.validateParams({ sloid });
     return this.atlasApiService.get(`${this.V1_TOILETS}/${sloid}`);
   }

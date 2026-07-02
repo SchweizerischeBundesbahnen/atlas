@@ -18,7 +18,7 @@ class ExcelToCsvConversionExceptionTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     when(cell.getRowIndex()).thenReturn(1);
     when(cell.getColumnIndex()).thenReturn(2);
   }

@@ -17,7 +17,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class VersionableMergeScenarioTest extends MergeBaseTest {
+class VersionableMergeScenarioTest extends MergeBaseTest {
 
   protected final VersionableService versionableService = new VersionableServiceImpl();
 

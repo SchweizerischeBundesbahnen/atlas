@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario7Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario7Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 7a: Neue Version in der Zukunft, die letzte Version nur berührt

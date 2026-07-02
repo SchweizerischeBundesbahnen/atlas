@@ -43,7 +43,7 @@ class AmazonServiceIntegrationTest {
     // Download
     File downloadedFile = amazonService.pullFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE);
 
-    assertThat(downloadedFile.length()).isEqualTo(file.length());
+    assertThat(downloadedFile).hasSize(file.length());
     assertThat(Files.readAllLines(file.toPath())).isEqualTo(Files.readAllLines(downloadedFile.toPath()));
   }
 

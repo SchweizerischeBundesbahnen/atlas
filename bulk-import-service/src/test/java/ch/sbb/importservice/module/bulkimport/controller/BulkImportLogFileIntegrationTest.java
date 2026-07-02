@@ -142,7 +142,7 @@ class BulkImportLogFileIntegrationTest {
     LogFile expected = objectMapper.readValue(expectedLogFile, LogFile.class);
 
     assertThat(writtenLogFile).isEqualTo(expected);
-    verify(mailProducerService).produceMailNotification(eq(MailNotification.builder()
+    verify(mailProducerService).produceMailNotification(MailNotification.builder()
         .to(List.of("test@atlas.ch"))
         .cc(List.of("test-cc@atlas.ch"))
         .subject("Import Result " + bulkImport.getId())
@@ -161,13 +161,13 @@ class BulkImportLogFileIntegrationTest {
                 "importTypeIt", "aggiornati"
             )
         ))
-        .build()));
+        .build());
   }
 
   private void setupSepodiResponsesForMix() {
     Map<Integer, Consumer<List<BulkImportItemExecutionResult>>> predefinedAnswers = Map.of(
-        2, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(2).build()),
-        5, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(5).errorResponse(ErrorResponse.builder()
+        2, answer -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(2).build()),
+        5, answer -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(5).errorResponse(ErrorResponse.builder()
                 .error("Not found")
                 .details(new TreeSet<>(Set.of(Detail.builder()
                     .message("Object with SLOID ch:1:sloid:notfound not found")
@@ -179,7 +179,7 @@ class BulkImportLogFileIntegrationTest {
                     .build())))
                 .build())
             .build()),
-        6, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(6).errorResponse(ErrorResponse.builder()
+        6, answer -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(6).errorResponse(ErrorResponse.builder()
                 .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
                 .error("No entities were modified after versioning execution.")
                 .details(new TreeSet<>(Set.of(Detail.builder()

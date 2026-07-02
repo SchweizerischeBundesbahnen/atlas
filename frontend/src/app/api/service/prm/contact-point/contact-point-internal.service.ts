@@ -11,7 +11,7 @@ export class ContactPointInternalService {
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getContactPointOverview(parentServicePointSloid: String): Observable<Array<ContactPointOverview>> {
+  public getContactPointOverview(parentServicePointSloid: string): Observable<Array<ContactPointOverview>> {
     this.atlasApiService.validateParams({ parentServicePointSloid: parentServicePointSloid });
     return this.atlasApiService.get(`${this.INTERNAL_CONTACT_POINTS}/${parentServicePointSloid}`);
   }

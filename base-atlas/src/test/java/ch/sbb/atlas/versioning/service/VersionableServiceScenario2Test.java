@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario2Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario2Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 2: Update innerhalb existierender Version NEU:                       |___________| IST:

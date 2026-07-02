@@ -5,10 +5,10 @@ export interface ServicePointSearchType {
 }
 
 export class ServicePointSearch {
-  public static PRM: ServicePointSearchType = {
+  public static readonly PRM: ServicePointSearchType = {
     navigationPath: Pages.STOP_POINTS.path,
   };
-  public static SePoDi: ServicePointSearchType = {
+  public static readonly SePoDi: ServicePointSearchType = {
     navigationPath: Pages.SERVICE_POINTS.path,
   };
 }

@@ -24,7 +24,7 @@ export class ReferencePointService {
     return this.atlasApiService.put(`${this.V1_REFERENCE_POINT}/${id}`, referencePointVersion);
   }
 
-  public getReferencePointVersions(sloid: String): Observable<Array<ReadReferencePointVersion>> {
+  public getReferencePointVersions(sloid: string): Observable<Array<ReadReferencePointVersion>> {
     this.atlasApiService.validateParams({ sloid });
     return this.atlasApiService.get(`${this.V1_REFERENCE_POINT}/${sloid}`);
   }

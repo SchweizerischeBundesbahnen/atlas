@@ -57,7 +57,7 @@ class UserPermissionRepositoryTest {
         ApplicationType.SEPODI);
     Optional<UserPermission> userPermission2 = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication("U123456",
         ApplicationType.SEPODI);
-    assertThat(userPermission.isPresent()).isTrue();
-    assertThat(userPermission2.isPresent()).isTrue();
+    assertThat(userPermission).isPresent();
+    assertThat(userPermission2).isPresent();
   }
 }

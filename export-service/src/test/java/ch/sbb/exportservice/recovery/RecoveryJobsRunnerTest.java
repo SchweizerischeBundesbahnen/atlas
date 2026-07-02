@@ -131,7 +131,7 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportServicePointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportServicePointWhenOneJobIsNotSuccessfullyExecuted() {
     //given
     StepExecution stepExecution = new StepExecution(132L,"myStep", jobExecution);
 
@@ -158,7 +158,7 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportTrafficPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportTrafficPointWhenOneJobIsNotSuccessfullyExecuted() {
     //given
     StepExecution stepExecution = new StepExecution(132L,"myStep", jobExecution);
 
@@ -185,7 +185,7 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportLoadingPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportLoadingPointWhenOneJobIsNotSuccessfullyExecuted() {
     //given
     StepExecution stepExecution = new StepExecution(132L,"myStep", jobExecution);
     JobParameters jobParameters = new JobParametersBuilder()
@@ -211,7 +211,7 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportStopPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportStopPointWhenOneJobIsNotSuccessfullyExecuted() {
     //given
     StepExecution stepExecution = new StepExecution(132L,"myStep", jobExecution);
     JobParameters jobParameters = new JobParametersBuilder()
@@ -237,7 +237,7 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportPlatformWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportPlatformWhenOneJobIsNotSuccessfullyExecuted() {
     //given
     StepExecution stepExecution = new StepExecution(132L,"myStep", jobExecution);
     JobParameters jobParameters = new JobParametersBuilder()
@@ -262,7 +262,7 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportReferencePointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportReferencePointWhenOneJobIsNotSuccessfullyExecuted() {
     //given
     StepExecution stepExecution = new StepExecution(132L,"myStep", jobExecution);
     JobParameters jobParameters = new JobParametersBuilder()
@@ -288,7 +288,7 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportContactPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportContactPointWhenOneJobIsNotSuccessfullyExecuted() {
     //given
     StepExecution stepExecution = new StepExecution(132L,"myStep", jobExecution);
     JobParameters jobParameters = new JobParametersBuilder()
@@ -314,7 +314,7 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportRelationWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportRelationWhenOneJobIsNotSuccessfullyExecuted() {
     //given
     StepExecution stepExecution = new StepExecution(132L,"myStep", jobExecution);
     JobParameters jobParameters = new JobParametersBuilder()

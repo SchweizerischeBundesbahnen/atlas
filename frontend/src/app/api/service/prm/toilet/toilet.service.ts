@@ -22,7 +22,7 @@ export class ToiletService {
     return this.atlasApiService.put(`${this.V1_TOILETS}/${id}`, toiletVersion);
   }
 
-  public getToiletVersions(sloid: String): Observable<Array<ReadToiletVersion>> {
+  public getToiletVersions(sloid: string): Observable<Array<ReadToiletVersion>> {
     this.atlasApiService.validateParams({ sloid });
     return this.atlasApiService.get(`${this.V1_TOILETS}/${sloid}`);
   }

@@ -11,7 +11,7 @@ export class ParkingLotInternalService {
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getParkingLotsOverview(parentServicePointSloid: String): Observable<Array<ParkingLotOverview>> {
+  public getParkingLotsOverview(parentServicePointSloid: string): Observable<Array<ParkingLotOverview>> {
     this.atlasApiService.validateParams({ parentServicePointSloid });
     return this.atlasApiService.get(`${this.INTERNAL_PARKING_LOTS}/${parentServicePointSloid}`);
   }

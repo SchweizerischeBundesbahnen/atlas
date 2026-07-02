@@ -12,7 +12,7 @@ export class RelationService {
 
   private readonly atlasApiService = inject(AtlasApiService);
 
-  public getRelationsBySloid(sloid: String): Observable<Array<ReadRelationVersion>> {
+  public getRelationsBySloid(sloid: string): Observable<Array<ReadRelationVersion>> {
     this.atlasApiService.validateParams({ sloid });
     return this.atlasApiService.get(`${this.V1_RELATION}/${sloid}`);
   }
