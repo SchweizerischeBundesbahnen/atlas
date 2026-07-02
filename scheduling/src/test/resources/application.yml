@@ -1,4 +1,7 @@
 spring:
+  cloud:
+    vault:
+      enabled: false
   main:
     banner-mode: OFF
 logging:
@@ -20,4 +23,3 @@ logging:
 mail:
   receiver:
     schduling: forza.napoli@sbb.ch
-
