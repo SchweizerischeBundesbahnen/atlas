@@ -67,7 +67,7 @@ public class ErrorResponse implements Serializable {
     try {
       return Optional.ofNullable(UserService.getUserIdentifier());
     } catch (Exception e) {
-      log.error("Following Exception occurred", e);
+      log.debug("Following Exception occurred", e);
       return Optional.empty();
     }
   }

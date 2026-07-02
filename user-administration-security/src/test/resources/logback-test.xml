@@ -4,4 +4,11 @@
   <include resource="org/springframework/boot/logging/logback/base.xml" />
   <logger name="org.apache.kafka" additivity="false"/>
   <logger name="ch.sbb.atlas.user.administration.security.service" level="error"/>
+  <logger name="org.springframework.core" level="error"/>
+  <logger name="org.springframework.beans" level="error"/>
+  <logger name="org.springframework.context" level="error"/>
+  <logger name="org.springframework.transaction" level="error"/>
+  <logger name="org.springframework.web" level="error"/>
+  <logger name="org.springframework.test" level="error"/>
+  <logger name="org.springframework.boot.test" level="error"/>
 </configuration>

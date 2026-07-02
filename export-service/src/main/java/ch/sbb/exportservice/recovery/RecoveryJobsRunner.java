@@ -190,7 +190,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     log.info("Clearing export directory");
     boolean dirCleared = fileService.clearDir();
     if (!dirCleared) {
-      log.error("Could not clear export directory, there might be some files left from previous exports!");
+      log.warn("Could not clear export directory, there might be some files left from previous exports!");
     }
   }
 

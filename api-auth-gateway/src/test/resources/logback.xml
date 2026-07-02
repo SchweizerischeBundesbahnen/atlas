@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
   <include resource="org/springframework/boot/logging/logback/base.xml" />
-  <logger name="ch.sbb" level="off"/>
-
   <logger name="org.springframework.core" level="error" />
   <logger name="org.springframework.beans" level="error" />
   <logger name="org.springframework.context" level="error" />
@@ -11,5 +10,4 @@
   <logger name="org.springframework.test" level="error" />
   <logger name="org.springframework.boot.test" level="error" />
   <logger name="org.springframework.security" level="error" />
-  <logger name="org.hibernate" level="error" />
 </configuration>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <include resource="org/springframework/boot/logging/logback/base.xml" />
+  <logger name="ch.sbb.mail.service.MailService" level="off"/>
+
   <logger name="org.springframework.core" level="error" />
   <logger name="org.springframework.beans" level="error" />
   <logger name="org.springframework.context" level="error" />

@@ -34,6 +34,7 @@ public class Translation {
       Map.entry(BusinessObjectType.STOP_POINT, new Values("Haltestelle", "l'arrêt", "fermata")),
       Map.entry(BusinessObjectType.CONTACT_POINT, new Values("Schalter", "guichet", "sportello")),
       Map.entry(BusinessObjectType.PARKING_LOT, new Values("Parkplatz", "places de stationnement", "parcheggio")),
+      Map.entry(BusinessObjectType.PLATFORM, new Values("Haltekante", "Bordures d’arrêt", "Bordi fermata")),
       Map.entry(BusinessObjectType.PLATFORM_REDUCED, new Values("Haltekante (reduziert)",
           "Bordures d’arrêt (réduit)", "Bordi fermata (ridotto)")),
       Map.entry(BusinessObjectType.PLATFORM_COMPLETE, new Values("Haltekante (komplett)",
