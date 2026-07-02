@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario8Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario8Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated NEU:      |______________________| IST:

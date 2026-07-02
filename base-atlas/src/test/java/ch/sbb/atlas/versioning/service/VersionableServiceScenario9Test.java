@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario9Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario9Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 9a (Fall 5): Update ausserhalb der existierenden version

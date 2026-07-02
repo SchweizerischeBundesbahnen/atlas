@@ -13,7 +13,7 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario5Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario5Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 5: Update, das über mehrere Versionen hinausragt

@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersioningHelperTest {
+class VersioningHelperTest {
 
   private final VersionableObject edited = VersionableObject
       .builder()

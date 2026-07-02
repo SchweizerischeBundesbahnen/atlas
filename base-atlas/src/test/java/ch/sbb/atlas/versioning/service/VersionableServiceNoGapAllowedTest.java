@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceNoGapAllowedTest extends VersionableServiceBaseTest {
+class VersionableServiceNoGapAllowedTest extends VersionableServiceBaseTest {
 
   @Test
   void shouldThrowExceptionOnVersionedObjectsWithGaps() {

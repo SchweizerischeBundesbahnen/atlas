@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceWarningWhenNoChangesTest extends VersionableServiceBaseTest {
+class VersionableServiceWarningWhenNoChangesTest extends VersionableServiceBaseTest {
 
   /**
    * Szenario: auf version1 validTo gleich wie version2 validTo setzen ohne properties ändern

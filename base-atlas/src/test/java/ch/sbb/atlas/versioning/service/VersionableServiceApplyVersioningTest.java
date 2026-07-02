@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-public class VersionableServiceApplyVersioningTest extends VersionableServiceBaseTest {
+class VersionableServiceApplyVersioningTest extends VersionableServiceBaseTest {
 
   @Mock
   private Consumer<VersionableObject> save;

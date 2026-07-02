@@ -55,7 +55,7 @@ class PlatformRelationServiceIntegrationTest extends BasePrmServiceTest {
   }
 
   @BeforeEach
-  protected void setUp() {
+  void setUp() {
     sharedServicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()
         .servicePointSloid(SERVICE_POINT_SLOID)
         .sboids(Set.of("ch:1:sboid:100001"))

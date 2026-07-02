@@ -41,7 +41,7 @@ class StopPointVersioningTest {
   }
 
   @BeforeEach
-  public void init() {
+  void init() {
     SharedServicePoint servicePoint =
         SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100602"),
             Collections.emptySet());

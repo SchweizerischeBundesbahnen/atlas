@@ -27,7 +27,7 @@ class ValidOrEditionTimerangeSpecificationTest {
   private CriteriaBuilder criteriaBuilder;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
   }
 

@@ -111,7 +111,7 @@ public class ServicePointDistributor extends BaseProducer<SharedServicePointVers
       Map<String, SharedServicePointVersionModel> servicePointSearchResults = new HashMap<>();
 
       jdbcTemplate.query(query, paramSource,
-          (resultSet) -> {
+          resultSet -> {
             String servicePointSloid = resultSet.getString("service_point_sloid");
             String businessOrganisation = resultSet.getString("business_organisation");
             String trafficPointElementSloid = resultSet.getString("traffic_point_element_sloid");

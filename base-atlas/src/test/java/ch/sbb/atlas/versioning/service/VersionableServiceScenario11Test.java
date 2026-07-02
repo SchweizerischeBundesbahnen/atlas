@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario11Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario11Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 11a: Update über mehrere Versionen über die Grenze

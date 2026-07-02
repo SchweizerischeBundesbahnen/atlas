@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersionableServiceScenario3Test extends VersionableServiceBaseTest {
+class VersionableServiceScenario3Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 3: Update, dass über Versionsgrenze geht

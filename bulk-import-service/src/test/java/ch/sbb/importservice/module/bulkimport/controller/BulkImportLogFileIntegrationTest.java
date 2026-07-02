@@ -166,8 +166,8 @@ class BulkImportLogFileIntegrationTest {
 
   private void setupSepodiResponsesForMix() {
     Map<Integer, Consumer<List<BulkImportItemExecutionResult>>> predefinedAnswers = Map.of(
-        2, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(2).build()),
-        5, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(5).errorResponse(ErrorResponse.builder()
+        2, answer -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(2).build()),
+        5, answer -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(5).errorResponse(ErrorResponse.builder()
                 .error("Not found")
                 .details(new TreeSet<>(Set.of(Detail.builder()
                     .message("Object with SLOID ch:1:sloid:notfound not found")
@@ -179,7 +179,7 @@ class BulkImportLogFileIntegrationTest {
                     .build())))
                 .build())
             .build()),
-        6, (answer) -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(6).errorResponse(ErrorResponse.builder()
+        6, answer -> answer.add(BulkImportItemExecutionResult.builder().lineNumber(6).errorResponse(ErrorResponse.builder()
                 .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
                 .error("No entities were modified after versioning execution.")
                 .details(new TreeSet<>(Set.of(Detail.builder()
