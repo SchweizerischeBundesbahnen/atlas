@@ -90,14 +90,14 @@
 
         <div class="mt-5">
           <atlas-relation
-            (deleteRelation)="facade.deleteRelation()"
-            (updateRelation)="facade.updateRelation()"
+            (deleteRelation)="deleteRelation()"
+            (updateRelation)="updateRelation()"
             (editModeChanged)="facade.toggleEditMode()"
             (selectedIndexChanged)="facade.selectRelation($event)"
             [editMode]="facade.isEditMode()"
             [editable]="editPermissions"
             [records]="facade.transportCompanyRelationsReadonly()"
-            [selectedIndex]="facade.selectedTransportCompanyRelationIndexReadonly()"
+            [selectedIndex]="facade.selectedRelationIndex()"
             [tableColumns]="transportCompanyRelationTableColumns()"
             titleTranslationKey="BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE"
           >
@@ -130,7 +130,7 @@
         [buttonType]="AtlasButtonType.WHITE_FOOTER_NON_EDIT"
       />
       <atlas-button
-        (buttonClicked)="facade.leaveEditModeWithDialog()"
+        (buttonClicked)="leaveEditModeWithDialog()"
         [footerEdit]="facade.isEditMode()"
         buttonDataCy="cancel"
         buttonText="COMMON.CANCEL"
@@ -138,8 +138,8 @@
         wrapperStyleClass="me-3"
       />
       <atlas-button
-        (click)="facade.save()"
-        [disabled]="!form.dirty"
+        (click)="saveRelation()"
+        [disabled]="!transportCompanyRelationForm().dirty()"
         [footerEdit]="facade.isEditMode()"
         [submitButton]="true"
         buttonDataCy="save-item"

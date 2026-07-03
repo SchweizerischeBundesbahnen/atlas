@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BusinessOrganisation, TransportCompany, TransportCompanyBoRelation } from '../../../../api';
-import { TransportCompanyDetailComponent } from './transport-company-detail.component';
-import moment from 'moment';
-import { of } from 'rxjs';
-import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { ActivatedRoute } from '@angular/router';
+import { BusinessOrganisation, TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
-import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { TransportCompanyDetailFacade } from './transport-company-detail.facade';
+import { TransportCompanyDetailComponent } from './transport-company-detail.component';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import { of } from 'rxjs';
+import moment from 'moment';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -60,30 +61,38 @@ describe('TransportCompanyDetailComponent', () => {
   let component: TransportCompanyDetailComponent;
   let fixture: ComponentFixture<TransportCompanyDetailComponent>;
 
-  let boService: BusinessOrganisationService;
-  let transportCompanyRelationInternalService: Mocked<
+  let facade: Mocked<
     Pick<
-      TransportCompanyRelationInternalService,
-      | 'createTransportCompanyRelation'
-      | 'getTransportCompanyBoRelations'
-      | 'updateTransportCompanyRelation'
-      | 'deleteTransportCompanyRelation'
+      TransportCompanyDetailFacade,
+      'init' | 'save' | 'deleteRelation' | 'selectedRelation' | 'leaveEditMode' | 'isRelationSelected'
     >
   >;
+  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
+  let notificationService: Mocked<Pick<NotificationService, 'success'>>;
 
   const mockData = [transportCompany, transportCompanyRelations];
 
   beforeEach(() => {
-    transportCompanyRelationInternalService = {
-      createTransportCompanyRelation: vi.fn(),
-      getTransportCompanyBoRelations: vi.fn(),
-      updateTransportCompanyRelation: vi.fn(),
-      deleteTransportCompanyRelation: vi.fn(),
+    facade = {
+      init: vi.fn(),
+      save: vi.fn(),
+      deleteRelation: vi.fn(),
+      selectedRelation: vi.fn(),
+      leaveEditMode: vi.fn(),
+      isRelationSelected: vi.fn(),
     };
-    transportCompanyRelationInternalService.createTransportCompanyRelation.mockReturnValue(of({}));
-    transportCompanyRelationInternalService.getTransportCompanyBoRelations.mockReturnValue(of([]));
-    transportCompanyRelationInternalService.updateTransportCompanyRelation.mockReturnValue(of(undefined));
-    transportCompanyRelationInternalService.deleteTransportCompanyRelation.mockReturnValue(of(undefined));
+    facade.save.mockReturnValue(of([]));
+    facade.deleteRelation.mockReturnValue(of([]));
+    facade.isRelationSelected.mockReturnValue(false);
+
+    dialogService = {
+      openDialogDataWithConfirmationResult: vi.fn(),
+    };
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
+
+    notificationService = {
+      success: vi.fn(),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -94,122 +103,96 @@ describe('TransportCompanyDetailComponent', () => {
           },
         },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
-        {
-          provide: TransportCompanyRelationInternalService,
-          useValue: transportCompanyRelationInternalService,
-        },
+        { provide: TransportCompanyDetailFacade, useValue: facade },
+        { provide: DialogService, useValue: dialogService },
+        { provide: NotificationService, useValue: notificationService },
         translateServiceProvider,
       ],
+    }).overrideComponent(TransportCompanyDetailComponent, {
+      set: { template: '' },
     });
 
-    boService = TestBed.inject(BusinessOrganisationService);
     fixture = TestBed.createComponent(TransportCompanyDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
+  it('should initialize facade with resolved route data', () => {
     expect(component).toBeTruthy();
-    expect(component.transportCompany).toEqual({
-      id: 1234,
-      description: 'SBB',
-    });
-    expect(component.transportCompanyRelations).toEqual(transportCompanyRelations);
+    expect(facade.init).toHaveBeenCalledExactlyOnceWith(transportCompanyRelations, 1234);
   });
 
-  it('test selectOption function', () => {
-    expect(
-      component.selectOption({
-        organisationNumber: 5,
-        abbreviationDe: 'testAbbreviation',
-        descriptionDe: 'testDescription',
-      } as BusinessOrganisation)
-    ).toBe('5 - testAbbreviation - testDescription');
+  it('should not save when relation form is invalid', () => {
+    component.saveRelation();
+
+    expect(facade.save).not.toHaveBeenCalled();
+    expect(notificationService.success).not.toHaveBeenCalled();
   });
 
-  it('should call getAllBusinessOrganisations with correct params', () => {
-    vi.spyOn(boService, 'getAllBusinessOrganisations').mockReturnValue(
-      of({
-        objects: [],
-        totalCount: 0,
-      })
-    );
-
-    component.getBusinessOrganisations('testSearchString');
-    expect(boService.getAllBusinessOrganisations).toHaveBeenCalledExactlyOnceWith(
-      ['testSearchString'],
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      100
-    );
-  });
-
-  it('should call createTransportCompanyRelation and reloadRelations', () => {
-    component.editMode = true;
-
-    component.form.setValue({
-      businessOrganisation: {
-        sboid: 'ch:1:sboid:100500',
-      } as BusinessOrganisation,
+  it('should delegate valid save to facade and show success notification', () => {
+    component.transportCompanyRelationForm().reset({
+      businessOrganisation: { sboid: 'ch:1:sboid:100500' } as BusinessOrganisation,
       validFrom: moment('2020-05-05'),
       validTo: moment('2021-05-05'),
     });
 
-    expect(component.form.valid).toBe(true);
+    component.saveRelation();
 
-    component.save();
-
-    expect(component.form.untouched).toBe(true);
-    expect(component.editMode).toBe(false);
-    expect(transportCompanyRelationInternalService.createTransportCompanyRelation).toHaveBeenCalledExactlyOnceWith({
+    expect(facade.save).toHaveBeenCalledExactlyOnceWith({
       transportCompanyId: 1234,
-      sboid: 'ch:1:sboid:100500',
-      validFrom: moment('2020-05-05').toDate(),
-      validTo: moment('2021-05-05').toDate(),
-    });
-    expect(transportCompanyRelationInternalService.getTransportCompanyBoRelations).toHaveBeenCalledExactlyOnceWith(
-      1234
-    );
-  });
-
-  it('should call updateTransportCompanyRelation and reloadRelations', () => {
-    component.editMode = true;
-    component.isUpdateRelationSelected = true;
-    component.relationId = 1;
-
-    component.form.setValue({
-      businessOrganisation: {
-        sboid: 'ch:1:sboid:100500',
-      } as BusinessOrganisation,
+      businessOrganisation: { sboid: 'ch:1:sboid:100500' },
       validFrom: moment('2020-05-05'),
       validTo: moment('2021-05-05'),
     });
+    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('RELATION.ADD_SUCCESS_MSG');
+  });
 
-    expect(component.form.valid).toBe(true);
+  it('should delegate delete action to facade and show success notification', () => {
+    component.deleteRelation();
 
-    component.save();
+    expect(facade.deleteRelation).toHaveBeenCalledExactlyOnceWith();
+    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('RELATION.DELETE_SUCCESS_MSG');
+  });
 
-    expect(component.form.untouched).toBe(true);
-    expect(component.editMode).toBe(false);
-    expect(component.isUpdateRelationSelected).toBe(false);
-    expect(transportCompanyRelationInternalService.updateTransportCompanyRelation).toHaveBeenCalledExactlyOnceWith({
+  it('should preload relation form when update action is triggered', () => {
+    const selectedRelation: TransportCompanyBoRelation = {
       id: 1,
-      validFrom: moment('2020-05-05').toDate(),
-      validTo: moment('2021-05-05').toDate(),
-    });
-    expect(transportCompanyRelationInternalService.getTransportCompanyBoRelations).toHaveBeenCalledExactlyOnceWith(
-      1234
+      businessOrganisation: { sboid: 'ch:1:sboid:900' } as BusinessOrganisation,
+      validFrom: new Date('2023-01-01'),
+      validTo: new Date('2023-12-31'),
+    };
+    facade.selectedRelation.mockReturnValue(selectedRelation);
+
+    component.updateRelation();
+
+    expect(component.transportCompanyRelationForm.businessOrganisation().value()).toEqual(
+      selectedRelation.businessOrganisation
+    );
+    expect(component.transportCompanyRelationForm.validFrom().value()?.isSame(moment(selectedRelation.validFrom))).toBe(
+      true
+    );
+    expect(component.transportCompanyRelationForm.validTo().value()?.isSame(moment(selectedRelation.validTo))).toBe(
+      true
     );
   });
 
-  it('should call deleteTransportCompanyRelation and reload relations', () => {
-    component.selectedTransportCompanyRelationIndex = 0;
-    component.deleteRelation();
-    expect(transportCompanyRelationInternalService.deleteTransportCompanyRelation).toHaveBeenCalledExactlyOnceWith(1);
-    expect(transportCompanyRelationInternalService.getTransportCompanyBoRelations).toHaveBeenCalledExactlyOnceWith(
-      1234
-    );
+  it('should leave edit mode directly when no unsaved changes are present', () => {
+    component.leaveEditModeWithDialog();
+
+    expect(dialogService.openDialogDataWithConfirmationResult).not.toHaveBeenCalled();
+    expect(facade.leaveEditMode).toHaveBeenCalledExactlyOnceWith();
+  });
+
+  it('should confirm discard when form has unsaved changes and leave on confirmation', () => {
+    component.transportCompanyRelationForm().markAsDirty();
+    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
+
+    component.leaveEditModeWithDialog();
+
+    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledExactlyOnceWith({
+      title: 'DIALOG.DISCARD_CHANGES_TITLE',
+      message: 'DIALOG.LEAVE_SITE',
+    });
+    expect(facade.leaveEditMode).toHaveBeenCalledExactlyOnceWith();
   });
 });

@@ -65,8 +65,8 @@ export class TransportCompaniesComponent implements OnInit {
 
   protected tableFilterConfig!: TableFilter<unknown>[][];
 
-  protected readonly transportCompanies = signal<TransportCompany[]>([]);
-  protected readonly totalCount = signal(0);
+  readonly transportCompanies = signal<TransportCompany[]>([]);
+  readonly totalCount = signal(0);
 
   private readonly transportCompanyService = inject(TransportCompanyService);
   private readonly route = inject(ActivatedRoute);
