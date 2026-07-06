@@ -5,8 +5,40 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class TrafficPointCreateCsvModelTest {
+
+  @ParameterizedTest
+  @NullSource
+  @ValueSource(strings = {"07", "123", "10", "0", "999"})
+  void shouldAcceptValidOrEmptyDesignationOperational(String designationOperational) {
+    TrafficPointCreateCsvModel model = TrafficPointCreateCsvModel.builder()
+        .stopPointSloid("ch:1:sloid:7000")
+        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .designationOperational(designationOperational)
+        .build();
+
+    assertThat(model.validate()).isEmpty();
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"7A", "1234", "A", "1.5", "12 ", "-1", "07x"})
+  void shouldRejectInvalidDesignationOperational(String designationOperational) {
+    TrafficPointCreateCsvModel model = TrafficPointCreateCsvModel.builder()
+        .stopPointSloid("ch:1:sloid:7000")
+        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .designationOperational(designationOperational)
+        .build();
+
+    assertThat(model.validate()).hasSize(1);
+  }
 
   @Test
   void shouldBeValidTrafficPointCreateModel() {

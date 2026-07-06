@@ -15,7 +15,7 @@ class TrafficPointTemplateGenerator {
   private static final LocalDate DEFAULT_VALID_FROM = LocalDate.of(2021, 4, 1);
   private static final LocalDate DEFAULT_VALID_TO = LocalDate.of(2099, 12, 31);
   private static final String DEFAULT_DESIGNATION = "Perron 3";
-  private static final String DEFAULT_DESIGNATION_OPEATIONAL = "CAMPSTR2";
+  private static final String DEFAULT_DESIGNATION_OPEATIONAL = "07";
   private static final Double DEFAULT_LENGTH = 12.000;
   private static final Double DEFAULT_BOARDING_AREA_HEIGHT = 16.00;
   private static final Double DEFAULT_COMPASS_DIRECTION = 278.00;
@@ -25,41 +25,41 @@ class TrafficPointTemplateGenerator {
   private static final String DEFAULT_PARENT_SLOID = "ch:1:sloid:7000:1";
 
   static final TrafficPointUpdateCsvModel TRAFFIC_POINT_UPDATE_CSV_MODEL = TrafficPointUpdateCsvModel.builder()
-        .sloid(DEFAULT_SLOID)
-        .validFrom(DEFAULT_VALID_FROM)
-        .validTo(DEFAULT_VALID_TO)
-        .designation(DEFAULT_DESIGNATION)
-        .designationOperational(DEFAULT_DESIGNATION_OPEATIONAL)
-        .length(DEFAULT_LENGTH)
-        .boardingAreaHeight(DEFAULT_BOARDING_AREA_HEIGHT)
-        .compassDirection(DEFAULT_COMPASS_DIRECTION)
-        .east(DEFAULT_EAST)
-        .north(DEFAULT_NORTH)
-        .spatialReference(SpatialReference.LV95)
-        .height(DEFAULT_HEIGHT)
-        .parentSloid(DEFAULT_PARENT_SLOID)
-        .build();
+      .sloid(DEFAULT_SLOID)
+      .validFrom(DEFAULT_VALID_FROM)
+      .validTo(DEFAULT_VALID_TO)
+      .designation(DEFAULT_DESIGNATION)
+      .designationOperational(DEFAULT_DESIGNATION_OPEATIONAL)
+      .length(DEFAULT_LENGTH)
+      .boardingAreaHeight(DEFAULT_BOARDING_AREA_HEIGHT)
+      .compassDirection(DEFAULT_COMPASS_DIRECTION)
+      .east(DEFAULT_EAST)
+      .north(DEFAULT_NORTH)
+      .spatialReference(SpatialReference.LV95)
+      .height(DEFAULT_HEIGHT)
+      .parentSloid(DEFAULT_PARENT_SLOID)
+      .build();
 
   static final TrafficPointCreateCsvModel TRAFFIC_POINT_CREATE_CSV_MODEL = TrafficPointCreateCsvModel.builder()
-        .sloid(DEFAULT_SLOID)
-        .validFrom(DEFAULT_VALID_FROM)
-        .validTo(DEFAULT_VALID_TO)
-        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-        .parentSloid(DEFAULT_PARENT_SLOID)
-        .stopPointSloid("ch:1:sloid:7000")
-        .designation(DEFAULT_DESIGNATION)
-        .designationOperational(DEFAULT_DESIGNATION_OPEATIONAL)
-        .length(DEFAULT_LENGTH)
-        .boardingAreaHeight(DEFAULT_BOARDING_AREA_HEIGHT)
-        .compassDirection(DEFAULT_COMPASS_DIRECTION)
-        .east(DEFAULT_EAST)
-        .north(DEFAULT_NORTH)
-        .spatialReference(SpatialReference.LV95)
-        .height(DEFAULT_HEIGHT)
-        .build();
+      .sloid(DEFAULT_SLOID)
+      .validFrom(DEFAULT_VALID_FROM)
+      .validTo(DEFAULT_VALID_TO)
+      .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+      .parentSloid(DEFAULT_PARENT_SLOID)
+      .stopPointSloid("ch:1:sloid:7000")
+      .designation(DEFAULT_DESIGNATION)
+      .designationOperational(DEFAULT_DESIGNATION_OPEATIONAL)
+      .length(DEFAULT_LENGTH)
+      .boardingAreaHeight(DEFAULT_BOARDING_AREA_HEIGHT)
+      .compassDirection(DEFAULT_COMPASS_DIRECTION)
+      .east(DEFAULT_EAST)
+      .north(DEFAULT_NORTH)
+      .spatialReference(SpatialReference.LV95)
+      .height(DEFAULT_HEIGHT)
+      .build();
 
   static final SloidTerminateCsvModel SLOID_TERMINATE_CSV_MODEL = SloidTerminateCsvModel.builder()
-        .sloid(DEFAULT_SLOID)
-        .validTo(DEFAULT_VALID_TO)
-        .build();
+      .sloid(DEFAULT_SLOID)
+      .validTo(DEFAULT_VALID_TO)
+      .build();
 }

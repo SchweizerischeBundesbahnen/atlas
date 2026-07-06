@@ -89,7 +89,13 @@ public class TrafficPointUpdateCsvModel implements Validatable<TrafficPointUpdat
 
   @Override
   public List<BulkImportError> validate() {
-    return BulkImportErrors.notNullForFields(this, List.of(Fields.sloid, Fields.validFrom, Fields.validTo));
+
+    List<BulkImportError> errors = BulkImportErrors.notNullForFields(this,
+        List.of(Fields.sloid, Fields.validFrom, Fields.validTo));
+    if (designationOperational != null && !designationOperational.matches("\\d{1,3}")) {
+      errors.add(BulkImportErrors.invalidDesignationOperational(Fields.designationOperational));
+    }
+    return errors;
   }
 
   @Override

@@ -69,7 +69,7 @@ class CreateTrafficPointElementVersionModelTest extends BaseValidatorTest {
     return CreateTrafficPointElementVersionModel
         .builder()
         .designation("Bezeichnung")
-        .designationOperational("gali00")
+        .designationOperational("07")
         .numberWithoutCheckDigit(1400015)
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .sloid("ch:1:sloid:1400015:0:310240")

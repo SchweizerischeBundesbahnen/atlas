@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+import org.apache.commons.lang3.StringUtils;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,9 +43,17 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
   @Size(max = AtlasFieldLengths.LENGTH_40)
   private String designation;
 
-  @Schema(description = "Designation used in (operational) timetable planning.", example = "Bezeichnung")
-  @Size(max = AtlasFieldLengths.LENGTH_20)
+  @Schema(description = "Designation used in (operational) timetable planning. Only numeric values with 1 to 3 digits are "
+      + "allowed (0-999). The field is optional and may be left empty.", example = "42")
+  @Pattern(regexp = "\\d{1,3}")
   private String designationOperational;
+
+  /**
+   * Normalises blank input to {@code null}.
+   */
+  public void setDesignationOperational(String designationOperational) {
+    this.designationOperational = StringUtils.isBlank(designationOperational) ? null : designationOperational;
+  }
 
   @Schema(description = "Length of the TrafficPointElement", example = "18.000")
   @Digits(integer = 10, fraction = 3)

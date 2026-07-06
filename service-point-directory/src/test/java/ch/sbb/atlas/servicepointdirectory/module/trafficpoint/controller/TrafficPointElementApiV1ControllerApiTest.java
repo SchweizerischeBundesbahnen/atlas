@@ -86,7 +86,7 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/traffic-point-elements/" + trafficPointElementVersion.getSloid())).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
         .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:1400015:0:310240")))
-        .andExpect(jsonPath("$[0]." + Fields.designationOperational, is("gali00")))
+        .andExpect(jsonPath("$[0]." + Fields.designationOperational, is("07")))
         .andExpect(jsonPath("$[0].hasGeolocation", is(true)))
         .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
         .andExpect(jsonPath("$[0].creator", is("e123456")));
@@ -219,7 +219,7 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
              "editor": null,
              "id": %d,
              "designation": "Bezeichnung",
-             "designationOperational": "gali00",
+             "designationOperational": "07",
              "length": null,
              "boardingAreaHeight": null,
              "compassDirection": 277.0,
@@ -561,14 +561,14 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
     createTrafficPointElementVersionModel.setSloid(savedTrafficPointElementVersionModel.getSloid());
     createTrafficPointElementVersionModel.setEtagVersion(savedTrafficPointElementVersionModel.getEtagVersion());
 
-    createTrafficPointElementVersionModel.setDesignationOperational("1 designation");
+    createTrafficPointElementVersionModel.setDesignationOperational("1");
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + createTrafficPointElementVersionModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(createTrafficPointElementVersionModel)))
         .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
-    createTrafficPointElementVersionModel.setDesignationOperational("2 designation");
+    createTrafficPointElementVersionModel.setDesignationOperational("2");
     MvcResult mvcResult = mvc.perform(
             MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + createTrafficPointElementVersionModel.getId())
                 .contentType(contentType)
