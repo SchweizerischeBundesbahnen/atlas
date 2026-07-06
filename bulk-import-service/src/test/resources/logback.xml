@@ -2,6 +2,8 @@
 <configuration>
   <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
   <include resource="org/springframework/boot/logging/logback/base.xml" />
+
+  <logger name="ch.sbb.atlas.api.model.ErrorResponse" level="off"/>
   <logger name="org.springframework.core" level="error" />
   <logger name="org.springframework.beans" level="error" />
   <logger name="org.springframework.context" level="error" />

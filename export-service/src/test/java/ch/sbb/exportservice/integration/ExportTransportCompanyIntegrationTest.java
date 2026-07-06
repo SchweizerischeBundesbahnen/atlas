@@ -16,7 +16,6 @@ import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
@@ -49,12 +48,6 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
   @Test
   void shouldExecuteExportTransportCompanyCsvJob() throws Exception {
-    log.error("Working directory: " + System.getProperty("user.dir"));
-    log.error("Following files are in export folder before job execution:");
-    try (var files = Files.list(Path.of(".", "export"))) {
-      files.forEach(filePath -> log.error(filePath.toString()));
-    }
-
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(
         URI.create("https://sbb.ch").toURL());
     when(transportCompanyCsvFileDeletingTasklet.execute(any(), any())).thenReturn(null);

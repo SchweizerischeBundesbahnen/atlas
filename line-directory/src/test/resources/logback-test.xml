@@ -13,5 +13,4 @@
   <logger name="ch.qos.logback" level="error" />
   <logger name="org.hibernate" level="error" />
   <logger name="org.apache.kafka" additivity="false"/>
-  <logger name="ch.sbb.line.directory.ApimYamlExtractionTest" level="info" />
 </configuration>

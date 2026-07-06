@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.ObjectMapper;
 
-@JsonTest
+@JsonTest(properties = "spring.main.banner-mode=off")
 @Import(JacksonJsonConfig.class)
 class JacksonJsonConfigTest {
 
