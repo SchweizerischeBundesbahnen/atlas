@@ -10,7 +10,7 @@ import {
   BusinessOrganisationDetailFormGroup,
   BusinessOrganisationDetailFormGroupBuilder,
 } from './business-organisation-detail-form-group';
-import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from '../shared/business-organisation-language.service';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
@@ -32,7 +32,9 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { Revokable, RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
 import { AtlasLabelFieldComponent } from '@atlas/form';
-import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import {
+  TransportCompanyRelationInternalService
+} from '../../../../api/service/bodi/transport-company-relation-internal.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableComponent } from '../../../../core/components/table/table.component';

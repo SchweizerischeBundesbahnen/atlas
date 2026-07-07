@@ -1,10 +1,10 @@
-import { BusinessOrganisationVersion } from '../../../api';
+import { BusinessOrganisationVersion } from '../../api';
 import { BoDisplayPipe } from './bo-display.pipe';
 import { firstValueFrom, of } from 'rxjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 import { mock } from 'vitest-mock-extended';
-import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
+import { BusinessOrganisationService } from '../../api/service/bodi/business-organisation.service';
 import { TestBed } from '@angular/core/testing';
 
 const version: BusinessOrganisationVersion = {

@@ -13,7 +13,7 @@ import { SplitServicePointNumberPipe } from '../../../core/search-service-point/
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../core/prm-recording-obligation/prm-recording-obligation.component';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
-import { BoSelectionDisplayPipe } from '../../../core/form-components/bo-select/bo-selection-display.pipe';
+import { BoSelectionDisplayPipe } from '../../../core/pipe/bo-selection-display.pipe';
 import { SloidContainerComponent } from '../../../core/sloid-container/sloid-container.component';
 
 @Component({

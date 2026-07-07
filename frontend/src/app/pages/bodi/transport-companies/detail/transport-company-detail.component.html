@@ -81,10 +81,7 @@
         <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
         <div class="col-12 d-flex mt-3">
           <div class="d-flex flex-column col-6">
-            <atlas-form-comment-sf
-              [displayLabel]="false"
-              [field]="transportCompanyForm.comment"
-            />
+            <atlas-form-comment-sf [displayLabel]="false" [field]="transportCompanyForm.comment" />
           </div>
         </div>
 
@@ -103,17 +100,17 @@
           >
             @if (facade.isEditMode()) {
               <form class="col-12 d-flex">
-<!--                todo: create bo select sf component -->
-                <atlas-bo-select
-                  [formGroup]="form"
-                  [disabled]="isUpdateRelationSelected"
-                  class="col-6 pe-3 mt-3"
-                  controlName="businessOrganisation"
-                  data-cy="businessOrganisation"
+                <atlas-bo-select-sf
+                  [disabled]="facade.isRelationSelected()"
                   valueExtraction=""
+                  class="col-6 pe-3 mt-3"
+                  data-cy="businessOrganisation"
                 />
-                <!--                todo: create date range sf -->
-                <atlas-form-date-range [formGroup]="form" class="col-6" />
+                <atlas-date-range-sf
+                  class="col-6"
+                  [validFromField]="transportCompanyRelationForm.validFrom"
+                  [validToField]="transportCompanyRelationForm.validTo"
+                />
               </form>
             }
           </atlas-relation>

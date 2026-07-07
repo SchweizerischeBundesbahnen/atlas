@@ -16,7 +16,7 @@ import { SelectComponent } from '../../../form-components/select/select.componen
 import { Countries } from '../../../country/Countries';
 import { Cantons } from '../../../cantons/Cantons';
 import { TableColumn } from '../../table/table-column';
-import { BusinessOrganisationLanguageService } from '../../../form-components/bo-select/business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from '../../../../pages/bodi/business-organisations/shared/business-organisation-language.service';
 import { firstValueFrom } from 'rxjs';
 import { RelationComponent } from '../../relation/relation.component';
 import { AtlasSpacerComponent } from '../../spacer/atlas-spacer.component';

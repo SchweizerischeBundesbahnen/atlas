@@ -15,10 +15,6 @@ import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-t
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
-import {
-  BusinessOrganisationSelectComponent
-} from '../../../../core/form-components/bo-select/business-organisation-select.component';
-import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
@@ -33,6 +29,8 @@ import moment, { Moment } from 'moment';
 import { DialogData } from '../../../../core/components/dialog/dialog.data';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { required as requiredValue } from '../../../../core/util/values';
+import { BoSelectSfComponent } from '../../../../core/form-components/bo-select-sf/bo-select-sf.component';
+import { DateRangeSfComponent } from '../../../../core/form-components/date-range-sf/date-range-sf.component';
 
 type TransportCompanyFormModel = {
   id: number;
@@ -68,17 +66,18 @@ export type TransportCompanyRelationFormModelValidated = {
     DetailPageContentComponent,
     ReactiveFormsModule,
     RelationComponent,
-    BusinessOrganisationSelectComponent,
-    DateRangeComponent,
     DetailFooterComponent,
     AtlasButtonComponent,
     BackButtonDirective,
     TranslatePipe,
     TextFieldSfComponent,
     AtlasFormCommentSfComponent,
+    BoSelectSfComponent,
+    DateRangeSfComponent,
   ],
+  providers: [TransportCompanyDetailFacade],
 })
-// todo: define dirty on interface
+// todo: test dirty on interface
 export class TransportCompanyDetailComponent implements OnInit, DetailFormComponent {
   protected readonly facade = inject(TransportCompanyDetailFacade);
 
@@ -111,9 +110,8 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
   private readonly transportCompanyRelationFormModel = signal<TransportCompanyRelationFormModel>({
     ...this.emptyFormValue,
   });
-  // todo: can dates be null?
   protected readonly transportCompanyRelationForm = form(this.transportCompanyRelationFormModel, (schemaPath) => {
-    required(schemaPath.businessOrganisation);
+    required(schemaPath);
     validateTree(schemaPath, (ctx) => {
       const validFrom = ctx.valueOf(schemaPath.validFrom);
       const validTo = ctx.valueOf(schemaPath.validTo);

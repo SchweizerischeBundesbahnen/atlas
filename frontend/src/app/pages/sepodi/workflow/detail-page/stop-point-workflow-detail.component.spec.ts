@@ -23,7 +23,7 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { StopPointWorkflowDetailFormGroupBuilder } from './detail-form/stop-point-workflow-detail-form-group';
 import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
-import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
+import { BoSelectionDisplayPipe } from '../../../../core/pipe/bo-selection-display.pipe';
 
 describe('StopPointWorkflowDetailComponent', () => {
   const workflow: ReadStopPointWorkflow = {

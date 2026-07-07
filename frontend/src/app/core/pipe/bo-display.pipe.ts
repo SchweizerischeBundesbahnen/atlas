@@ -1,9 +1,9 @@
-import { Pipe, PipeTransform, inject } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 import { map } from 'rxjs/operators';
-import { VersionsHandlingService } from '../../versioning/versions-handling.service';
-import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
+import { VersionsHandlingService } from '../versioning/versions-handling.service';
+import { BusinessOrganisationService } from '../../api/service/bodi/business-organisation.service';
 
 @Pipe({
   name: 'boDisplay',

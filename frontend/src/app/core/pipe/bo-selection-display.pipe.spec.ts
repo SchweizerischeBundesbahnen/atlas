@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mock } from 'vitest-mock-extended';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
-import { BusinessOrganisation } from '../../../api';
-import { BusinessOrganisationLanguageService } from './business-organisation-language.service';
+import { BusinessOrganisation } from '../../api';
+import { BusinessOrganisationLanguageService } from '../../pages/bodi/business-organisations/shared/business-organisation-language.service';
 
 describe('BoSelectionDisplayPipe', () => {
   let boSelectionDisplayPipe: BoSelectionDisplayPipe;

@@ -1,0 +1,46 @@
+<atlas-search-select-sf
+  (changeTrigger)="boSelectionChanged.emit($event)"
+  (searchTrigger)="searchBusinessOrganisation($event)"
+  [bindValue]="valueExtraction()"
+  [items]="(businessOrganisations | async) ?? []"
+  [disabled]="disabled()"
+>
+  <div class="d-flex flex-column">
+    <atlas-label-field
+      fieldLabel="BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION"
+      [required]="formModus()"
+      [fieldExamples]="
+        formModus()
+          ? [
+              {
+                label: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'SBOID',
+              },
+            ]
+          : []
+      "
+    />
+  </div>
+  <ng-template #labelOptionTemplates let-item>
+    <div class="text-truncate" [title]="item | boSelectionDisplay">
+      {{ item | boSelectionDisplay }}
+    </div>
+  </ng-template>
+</atlas-search-select-sf>

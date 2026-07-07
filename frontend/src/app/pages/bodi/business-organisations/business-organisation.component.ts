@@ -3,7 +3,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BusinessOrganisation, Status } from '../../../api';
-import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from './shared/business-organisation-language.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';

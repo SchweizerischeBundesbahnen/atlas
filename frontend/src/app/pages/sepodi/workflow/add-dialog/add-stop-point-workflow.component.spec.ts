@@ -17,7 +17,7 @@ import {
   StopPointWorkflowDetailFormGroup,
 } from '../detail-page/detail-form/stop-point-workflow-detail-form-group';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
+import { BoSelectionDisplayPipe } from '../../../../core/pipe/bo-selection-display.pipe';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { StopPointWorkflowService } from '../../../../api/service/workflow/stop-point-workflow.service';

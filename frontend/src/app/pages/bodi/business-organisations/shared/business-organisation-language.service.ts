@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Language } from '../../components/language-switcher/language';
+import { Language } from '../../../../core/components/language-switcher/language';
 
 export type abbreviationType = 'abbreviationDe' | 'abbreviationFr' | 'abbreviationIt';
 export type descriptionType = 'descriptionDe' | 'descriptionFr' | 'descriptionIt';
