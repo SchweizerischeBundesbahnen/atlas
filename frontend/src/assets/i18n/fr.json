@@ -1840,7 +1840,8 @@
       "NUMBER_SHORT_NOT_VALID": "L'attribut <numberShort> n'est pas valide. Le nombre doit être compris entre 1 et 99999.",
       "HEIGHT_TO_HIGH": "La hauteur doit être inférieure à 100'000.",
       "INVALID_GEOGRAPHY": "La géographie saisie n'est pas valide. Soit <north>, <east> et <spatialReference> restent vides, soit les trois champs doivent être remplis.",
-      "MEANS_OF_TRANSPORT_IS_MISSING": "L'attribut <meansOfTransport> ne doit pas être vide si l'attribut <stopPointType> a été renseigné et inversement."
+      "MEANS_OF_TRANSPORT_IS_MISSING": "L'attribut <meansOfTransport> ne doit pas être vide si l'attribut <stopPointType> a été renseigné et inversement.",
+      "DESIGNATION_OPERATIONAL_NOT_VALID": "L'attribut <designationOperational> n'est pas valide. Le nombre doit comporter entre 1 et 3 chiffres (0 à 999)."
     },
     "STATUS": {
       "INFO": "Renseignements",

@@ -86,7 +86,7 @@ public class BulkImportErrors {
     return BulkImportError.builder()
         .errorMessage("designationOperational must be numeric with 1 to 3 digits (0-999)")
         .displayInfo(DisplayInfo.builder()
-            .code("BULK_IMPORT.VALIDATION.DESIGNATION_OPERATIONAL_NOT_VALUD")
+            .code("BULK_IMPORT.VALIDATION.DESIGNATION_OPERATIONAL_NOT_VALID")
             .with(FIELD, field)
             .build()
         ).build();
