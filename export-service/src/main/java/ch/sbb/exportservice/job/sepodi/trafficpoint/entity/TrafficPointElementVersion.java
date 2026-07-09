@@ -27,7 +27,6 @@ public class TrafficPointElementVersion extends BaseEntity {
 
   private String designation;
 
-  // TODO check if DB needs migration (varchar => number): Check with Team
   private String designationOperational;
 
   private Double length;

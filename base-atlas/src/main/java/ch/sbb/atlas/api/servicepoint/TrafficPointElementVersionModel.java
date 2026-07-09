@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.servicepoint;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
@@ -45,11 +46,11 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
 
   @Schema(description = "Designation used in (operational) timetable planning. Only numeric values with 1 to 3 digits are "
       + "allowed (0-999). The field is optional and may be left empty.", example = "42")
-  @Pattern(regexp = "\\d{1,3}")
+  @Pattern(regexp = AtlasCharacterSetsRegex.DESIGNATION_OPERATIONAL)
   private String designationOperational;
 
   /**
-   * Normalises blank input to {@code null}.
+   * Normalizes blank input to {@code null}.
    */
   public void setDesignationOperational(String designationOperational) {
     this.designationOperational = StringUtils.isBlank(designationOperational) ? null : designationOperational;

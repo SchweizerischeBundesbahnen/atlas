@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseEntity;
@@ -72,7 +73,7 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
   @AtlasVersionableProperty
   private String designation;
 
-  @Pattern(regexp = "\\d{1,3}")
+  @Pattern(regexp = AtlasCharacterSetsRegex.DESIGNATION_OPERATIONAL)
   @AtlasVersionableProperty
   private String designationOperational;
 

@@ -11,8 +11,11 @@ public class AtlasCharacterSetsRegex {
   public static final String ALPHA_NUMERIC_WITH_COLON = "[0-9a-zA-Z:]*";
   public static final String SID4PT = "[-.:_0-9a-zA-Z]*";
 
-  public static final String EMAIL_ADDRESS = "^$|^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+  public static final String EMAIL_ADDRESS = "^$|^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)"
+      + "+[a-zA-Z]{2,6}$";
 
   public static final String ABBREVIATION_PATTERN = "[A-Z0-9]*";
+
+  public static final String DESIGNATION_OPERATIONAL = "\\d{1,3}";
 
 }
