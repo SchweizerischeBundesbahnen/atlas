@@ -1,19 +1,19 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="atlas" type="CompoundRunConfigurationType">
-    <toRun name="atlas compose" type="docker-deploy" />
-    <toRun name="Angular CLI Server (frontend)" type="js.build_tools.npm" />
-    <toRun name="AtlasApiAuthGatewayApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="AtlasGatewayApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="BusinessOrganisationDirectoryApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="ExportServicePointApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="ImportServicePointApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="LineDirectoryApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="LocationApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="MailApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="PrmDirectoryApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="ServicePointDirectoryApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="UserAdministration" type="SpringBootApplicationConfigurationType" />
-    <toRun name="WorkflowApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="api-auth-gateway" type="GradleRunConfiguration" />
+    <toRun name="gateway" type="GradleRunConfiguration" />
+    <toRun name="business-organisation-directory" type="GradleRunConfiguration" />
+    <toRun name="export-service" type="GradleRunConfiguration" />
+    <toRun name="line-directory" type="GradleRunConfiguration" />
+    <toRun name="location" type="GradleRunConfiguration" />
+    <toRun name="mail" type="GradleRunConfiguration" />
+    <toRun name="prm-directory" type="GradleRunConfiguration" />
+    <toRun name="scheduling" type="GradleRunConfiguration" />
+    <toRun name="service-point-directory" type="GradleRunConfiguration" />
+    <toRun name="user-administration" type="GradleRunConfiguration" />
+    <toRun name="workflow" type="GradleRunConfiguration" />
+    <toRun name="bulk-import-service" type="GradleRunConfiguration" />
+    <toRun name="frontend" type="js.build_tools.npm" />
     <method v="2" />
   </configuration>
 </component>
