@@ -87,12 +87,13 @@
 
         <div class="mt-5">
           <atlas-relation
+            (addRelation)="facade.unselectRelation()"
             (deleteRelation)="deleteRelation()"
             (updateRelation)="updateRelation()"
             (editModeChanged)="facade.toggleEditMode()"
             (selectedIndexChanged)="facade.selectRelation($event)"
             [editMode]="facade.isEditMode()"
-            [editable]="editPermissions"
+            [editable]="editPermissions && !facade.isEditMode()"
             [records]="facade.transportCompanyRelationsReadonly()"
             [selectedIndex]="facade.selectedRelationIndex()"
             [tableColumns]="transportCompanyRelationTableColumns()"
@@ -102,6 +103,7 @@
               <form class="col-12 d-flex">
                 <atlas-bo-select-sf
                   [disabled]="facade.isRelationSelected()"
+                  [field]="transportCompanyRelationForm.businessOrganisation"
                   valueExtraction=""
                   class="col-6 pe-3 mt-3"
                   data-cy="businessOrganisation"

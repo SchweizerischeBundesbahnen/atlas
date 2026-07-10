@@ -67,6 +67,7 @@ export class RelationComponent<RECORD_TYPE> {
   readonly deleteBtnNameTranslationKey = input('RELATION.DELETE');
   readonly updateBtnNameTranslationKey = input('RELATION.UPDATE');
 
+  readonly addRelation = output<void>();
   readonly deleteRelation = output<void>();
   readonly updateRelation = output<void>();
   readonly editModeChanged = output<void>();
@@ -125,6 +126,11 @@ export class RelationComponent<RECORD_TYPE> {
     });
 
     this.table.renderRows();
+  }
+
+  onAddRelation() {
+    this.addRelation.emit();
+    this.editModeChanged.emit();
   }
 
   editRelation() {

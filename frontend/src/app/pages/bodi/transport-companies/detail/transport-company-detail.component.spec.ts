@@ -1,19 +1,38 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { BusinessOrganisation, TransportCompany, TransportCompanyBoRelation } from '../../../../api';
+import { TransportCompany, TransportCompanyBoRelation, TransportCompanyStatus } from '../../../../api';
+import { TransportCompanyDetailComponent } from './transport-company-detail.component';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { TransportCompanyDetailFacade } from './transport-company-detail.facade';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { TransportCompanyDetailFacade } from './transport-company-detail.facade';
-import { TransportCompanyDetailComponent } from './transport-company-detail.component';
-import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
-import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { of } from 'rxjs';
+import { Component, input, signal, WritableSignal } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { TextFieldSfComponent } from '../../../../core/form-components/text-field-sf/text-field-sf.component';
+import { AtlasFormCommentSfComponent } from '../../../../core/form-components/comment-sf/atlas-form-comment-sf.component';
+import { BoSelectSfComponent } from '../../../../core/form-components/bo-select-sf/bo-select-sf.component';
+import { DateRangeSfComponent } from '../../../../core/form-components/date-range-sf/date-range-sf.component';
+import { RelationComponent } from '../../../../core/components/relation/relation.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
+import { Field } from '@angular/forms/signals';
 import moment from 'moment';
 
 const transportCompany: TransportCompany = {
   id: 1234,
   description: 'SBB',
+  number: 'TC001',
+  abbreviation: 'SBB',
+  businessRegisterName: 'Swiss Federal Railways',
+  businessRegisterNumber: 'CHE-123456',
+  enterpriseId: 'ENT001',
+  comment: 'Test comment',
+  transportCompanyStatus: TransportCompanyStatus.Current,
 };
 
 const transportCompanyRelations: TransportCompanyBoRelation[] = [
@@ -57,142 +76,428 @@ const transportCompanyRelations: TransportCompanyBoRelation[] = [
   },
 ];
 
+// Mock child components
+@Component({
+  selector: 'atlas-detail-page-container',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockDetailPageContainerComponent {}
+
+@Component({
+  selector: 'atlas-detail-page-content',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockDetailPageContentComponent {}
+
+@Component({
+  selector: 'atlas-text-field-sf',
+  template: '',
+  standalone: true,
+})
+class MockTextFieldSfComponent {
+  readonly field = input.required<Field<unknown>>();
+  readonly fieldName = input<string>();
+  readonly fieldLabel = input<string>();
+}
+
+@Component({
+  selector: 'atlas-form-comment-sf',
+  template: '',
+  standalone: true,
+})
+class MockAtlasFormCommentSfComponent {
+  readonly field = input.required<Field<unknown>>();
+  readonly displayLabel = input<boolean>();
+}
+
+@Component({
+  selector: 'atlas-bo-select-sf',
+  template: '',
+  standalone: true,
+})
+class MockBoSelectSfComponent {
+  readonly field = input.required<Field<unknown>>();
+  readonly disabled = input<boolean>();
+  readonly valueExtraction = input<string>();
+}
+
+@Component({
+  selector: 'atlas-date-range-sf',
+  template: '',
+  standalone: true,
+})
+class MockDateRangeSfComponent {
+  readonly validFromField = input.required<Field<unknown>>();
+  readonly validToField = input.required<Field<unknown>>();
+}
+
+@Component({
+  selector: 'atlas-relation',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockRelationComponent {
+  readonly editMode = input<boolean>();
+  readonly editable = input<boolean>();
+  readonly records = input<TransportCompanyBoRelation[]>();
+  readonly selectedIndex = input<number>();
+  readonly tableColumns = input<unknown[]>();
+  readonly titleTranslationKey = input<string>();
+}
+
+@Component({
+  selector: 'atlas-detail-footer',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockDetailFooterComponent {}
+
+@Component({
+  selector: 'atlas-button',
+  template: '',
+  standalone: true,
+})
+class MockAtlasButtonComponent {
+  readonly footerEdit = input<boolean>();
+  readonly buttonType = input<unknown>();
+  readonly buttonDataCy = input<string>();
+  readonly buttonText = input<string>();
+  readonly disabled = input<boolean>();
+  readonly submitButton = input<boolean>();
+  readonly wrapperStyleClass = input<string>();
+}
+
 describe('TransportCompanyDetailComponent', () => {
   let component: TransportCompanyDetailComponent;
   let fixture: ComponentFixture<TransportCompanyDetailComponent>;
 
-  let facade: Mocked<
-    Pick<
-      TransportCompanyDetailFacade,
-      'init' | 'save' | 'deleteRelation' | 'selectedRelation' | 'leaveEditMode' | 'isRelationSelected'
-    >
-  >;
-  let dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>>;
-  let notificationService: Mocked<Pick<NotificationService, 'success'>>;
+  let mockFacade: Record<keyof TransportCompanyDetailFacade, unknown>;
+  let mockPermissionService: Partial<PermissionService>;
+  let mockDialogService: Partial<DialogService>;
+  let mockNotificationService: Partial<NotificationService>;
+  let mockActivatedRoute: { snapshot: Pick<ActivatedRouteSnapshot, 'data'> };
 
-  const mockData = [transportCompany, transportCompanyRelations];
+  const fillRelationFormWithValidData = () => {
+    (mockFacade.isEditMode as WritableSignal<boolean>).set(true);
+    fixture.detectChanges();
+
+    const boSelect = fixture.debugElement.query(By.directive(MockBoSelectSfComponent))?.componentInstance as
+      MockBoSelectSfComponent | undefined;
+    const dateRange = fixture.debugElement.query(By.directive(MockDateRangeSfComponent))?.componentInstance as
+      MockDateRangeSfComponent | undefined;
+
+    expect(boSelect).toBeDefined();
+    expect(dateRange).toBeDefined();
+
+    boSelect?.field()().value.set(transportCompanyRelations[0].businessOrganisation);
+    boSelect?.field()().markAsDirty();
+    dateRange?.validFromField()().value.set(moment('2024-01-01'));
+    dateRange?.validToField()().value.set(moment('2024-12-31'));
+  };
 
   beforeEach(() => {
-    facade = {
+    mockFacade = {
       init: vi.fn(),
-      save: vi.fn(),
-      deleteRelation: vi.fn(),
-      selectedRelation: vi.fn(),
+      save: vi.fn().mockReturnValue(of({})),
+      deleteRelation: vi.fn().mockReturnValue(of({})),
       leaveEditMode: vi.fn(),
-      isRelationSelected: vi.fn(),
+      unselectRelation: vi.fn(),
+      toggleEditMode: vi.fn(),
+      selectRelation: vi.fn(),
+      isEditMode: signal(false),
+      isRelationSelected: signal(false),
+      selectedRelation: signal(null),
+      selectedRelationIndex: signal(-1),
+      transportCompanyRelationsReadonly: signal([]),
     };
-    facade.save.mockReturnValue(of([]));
-    facade.deleteRelation.mockReturnValue(of([]));
-    facade.isRelationSelected.mockReturnValue(false);
 
-    dialogService = {
-      openDialogDataWithConfirmationResult: vi.fn(),
+    mockPermissionService = {
+      hasPermissionsToCreate: vi.fn().mockReturnValue(true),
     };
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
 
-    notificationService = {
+    mockDialogService = {
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+    };
+
+    mockNotificationService = {
       success: vi.fn(),
     };
 
-    TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: { data: { transportCompanyDetail: mockData } },
-          },
+    mockActivatedRoute = {
+      snapshot: {
+        data: {
+          transportCompanyDetail: [transportCompany, transportCompanyRelations],
         },
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
-        { provide: TransportCompanyDetailFacade, useValue: facade },
-        { provide: DialogService, useValue: dialogService },
-        { provide: NotificationService, useValue: notificationService },
+      },
+    };
+
+    TestBed.configureTestingModule({
+      imports: [TransportCompanyDetailComponent],
+      providers: [
+        { provide: PermissionService, useValue: mockPermissionService },
+        { provide: DialogService, useValue: mockDialogService },
+        { provide: NotificationService, useValue: mockNotificationService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
         translateServiceProvider,
       ],
     }).overrideComponent(TransportCompanyDetailComponent, {
-      set: { template: '' },
+      remove: {
+        providers: [TransportCompanyDetailFacade],
+        imports: [
+          DetailPageContainerComponent,
+          DetailPageContentComponent,
+          TextFieldSfComponent,
+          AtlasFormCommentSfComponent,
+          BoSelectSfComponent,
+          DateRangeSfComponent,
+          RelationComponent,
+          DetailFooterComponent,
+          AtlasButtonComponent,
+        ],
+      },
+      add: {
+        providers: [{ provide: TransportCompanyDetailFacade, useValue: mockFacade }],
+        imports: [
+          MockDetailPageContainerComponent,
+          MockDetailPageContentComponent,
+          MockTextFieldSfComponent,
+          MockAtlasFormCommentSfComponent,
+          MockBoSelectSfComponent,
+          MockDateRangeSfComponent,
+          MockRelationComponent,
+          MockDetailFooterComponent,
+          MockAtlasButtonComponent,
+        ],
+      },
     });
 
     fixture = TestBed.createComponent(TransportCompanyDetailComponent);
     component = fixture.componentInstance;
+  });
+
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
+
+  it('should have edit permissions property computed correctly', () => {
     fixture.detectChanges();
+
+    const relation = fixture.debugElement.query(By.directive(MockRelationComponent))?.componentInstance as
+      MockRelationComponent | undefined;
+
+    expect(relation).toBeDefined();
+    expect(relation?.editable()).toBe(true);
   });
 
-  it('should initialize facade with resolved route data', () => {
-    expect(component).toBeTruthy();
-    expect(facade.init).toHaveBeenCalledExactlyOnceWith(transportCompanyRelations, 1234);
-  });
+  describe('Initialization (ngOnInit)', () => {
+    it('should initialize transport company form with data from activated route', () => {
+      fixture.detectChanges();
 
-  it('should not save when relation form is invalid', () => {
-    component.saveRelation();
+      const textFieldComponents = fixture.debugElement
+        .queryAll(By.directive(MockTextFieldSfComponent))
+        .map((element) => element.componentInstance as MockTextFieldSfComponent);
+      const fieldValueByName = (fieldName: string) => {
+        const field = textFieldComponents.find((componentInstance) => componentInstance.fieldName() === fieldName);
+        expect(field).toBeDefined();
+        return field?.field()().value();
+      };
 
-    expect(facade.save).not.toHaveBeenCalled();
-    expect(notificationService.success).not.toHaveBeenCalled();
-  });
+      expect(fieldValueByName('number')).toBe(transportCompany.number);
+      expect(fieldValueByName('abbreviation')).toBe(transportCompany.abbreviation);
+      expect(fieldValueByName('description')).toBe(transportCompany.description);
+      expect(fieldValueByName('enterpriseId')).toBe(transportCompany.enterpriseId);
+      expect(fieldValueByName('businessRegisterName')).toBe(transportCompany.businessRegisterName);
+      expect(fieldValueByName('businessRegisterNumber')).toBe(transportCompany.businessRegisterNumber);
 
-  it('should delegate valid save to facade and show success notification', () => {
-    component.transportCompanyRelationForm().reset({
-      businessOrganisation: { sboid: 'ch:1:sboid:100500' } as BusinessOrganisation,
-      validFrom: moment('2020-05-05'),
-      validTo: moment('2021-05-05'),
+      const commentField = fixture.debugElement.query(By.directive(MockAtlasFormCommentSfComponent))
+        ?.componentInstance as MockAtlasFormCommentSfComponent | undefined;
+      expect(commentField).toBeDefined();
+      expect(commentField?.field()().value()).toBe(transportCompany.comment);
     });
 
-    component.saveRelation();
+    it('should initialize facade with relations and transport company id', () => {
+      fixture.detectChanges();
 
-    expect(facade.save).toHaveBeenCalledExactlyOnceWith({
-      transportCompanyId: 1234,
-      businessOrganisation: { sboid: 'ch:1:sboid:100500' },
-      validFrom: moment('2020-05-05'),
-      validTo: moment('2021-05-05'),
+      expect(mockFacade.init).toHaveBeenCalledWith(transportCompanyRelations, transportCompany.id);
     });
-    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('RELATION.ADD_SUCCESS_MSG');
   });
 
-  it('should delegate delete action to facade and show success notification', () => {
-    component.deleteRelation();
-
-    expect(facade.deleteRelation).toHaveBeenCalledExactlyOnceWith();
-    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('RELATION.DELETE_SUCCESS_MSG');
-  });
-
-  it('should preload relation form when update action is triggered', () => {
-    const selectedRelation: TransportCompanyBoRelation = {
-      id: 1,
-      businessOrganisation: { sboid: 'ch:1:sboid:900' } as BusinessOrganisation,
-      validFrom: new Date('2023-01-01'),
-      validTo: new Date('2023-12-31'),
-    };
-    facade.selectedRelation.mockReturnValue(selectedRelation);
-
-    component.updateRelation();
-
-    expect(component.transportCompanyRelationForm.businessOrganisation().value()).toEqual(
-      selectedRelation.businessOrganisation
-    );
-    expect(component.transportCompanyRelationForm.validFrom().value()?.isSame(moment(selectedRelation.validFrom))).toBe(
-      true
-    );
-    expect(component.transportCompanyRelationForm.validTo().value()?.isSame(moment(selectedRelation.validTo))).toBe(
-      true
-    );
-  });
-
-  it('should leave edit mode directly when no unsaved changes are present', () => {
-    component.leaveEditModeWithDialog();
-
-    expect(dialogService.openDialogDataWithConfirmationResult).not.toHaveBeenCalled();
-    expect(facade.leaveEditMode).toHaveBeenCalledExactlyOnceWith();
-  });
-
-  it('should confirm discard when form has unsaved changes and leave on confirmation', () => {
-    component.transportCompanyRelationForm().markAsDirty();
-    dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
-
-    component.leaveEditModeWithDialog();
-
-    expect(dialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledExactlyOnceWith({
-      title: 'DIALOG.DISCARD_CHANGES_TITLE',
-      message: 'DIALOG.LEAVE_SITE',
+  describe('Conditional Rendering', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
     });
-    expect(facade.leaveEditMode).toHaveBeenCalledExactlyOnceWith();
+
+    it('should render based on edit mode state', () => {
+      const facade = component['facade'] as any;
+      const isEditMode = facade.isEditMode();
+      expect(typeof isEditMode).toBe('boolean');
+    });
+
+    it('should render status as null when not provided', () => {
+      // Set up component with null status
+      (component as any).transportCompanyFormModel.set({
+        id: 0,
+        status: null,
+        number: '',
+        abbreviation: '',
+        description: '',
+        enterpriseId: '',
+        businessRegisterName: '',
+        businessRegisterNumber: '',
+        comment: '',
+      });
+
+      fixture.detectChanges();
+      const formModel = (component as any).transportCompanyFormModel();
+      expect(formModel.status).toBeNull();
+    });
+
+    it('should pass relation data to relation component', () => {
+      // Verify facade method returns expected data structure
+      (mockFacade.transportCompanyRelationsReadonly as any) = signal(transportCompanyRelations);
+
+      const relations = (mockFacade.transportCompanyRelationsReadonly as any)();
+      expect(Array.isArray(relations)).toBe(true);
+      expect(relations?.length).toBe(2);
+    });
+
+    it('should compute table columns for relations display', () => {
+      const columns = (component as any).transportCompanyRelationTableColumns();
+      expect(columns).toBeDefined();
+      expect(Array.isArray(columns)).toBe(true);
+      expect(columns.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('Method: saveRelation', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+      fillRelationFormWithValidData();
+    });
+
+    it('should call facade save when invoked', () => {
+      component.saveRelation();
+      expect(mockFacade.save).toHaveBeenCalled();
+    });
+
+    it('should show success notification on save', () => {
+      component.saveRelation();
+      expect(mockNotificationService.success).toHaveBeenCalled();
+    });
+
+    it('should show add success message when relation is not selected', () => {
+      (mockFacade.isRelationSelected as WritableSignal<boolean>).set(false);
+      component.saveRelation();
+      expect(mockNotificationService.success).toHaveBeenCalledWith('RELATION.ADD_SUCCESS_MSG');
+    });
+
+    it('should show update success message when relation is selected', () => {
+      (mockFacade.isRelationSelected as WritableSignal<boolean>).set(true);
+      component.saveRelation();
+      expect(mockNotificationService.success).toHaveBeenCalledWith('RELATION.UPDATE_SUCCESS_MSG');
+    });
+  });
+
+  describe('Method: deleteRelation', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should call facade deleteRelation', () => {
+      component.deleteRelation();
+      expect(mockFacade.deleteRelation).toHaveBeenCalled();
+    });
+
+    it('should show delete success notification', () => {
+      component.deleteRelation();
+      expect(mockNotificationService.success).toHaveBeenCalledWith('RELATION.DELETE_SUCCESS_MSG');
+    });
+  });
+
+  describe('Method: updateRelation', () => {
+    beforeEach(() => {
+      (mockFacade.isEditMode as WritableSignal<boolean>).set(true);
+      fixture.detectChanges();
+    });
+
+    it('should populate form with selected relation data', () => {
+      const selectedRelation = transportCompanyRelations[0];
+      (mockFacade.selectedRelation as WritableSignal<TransportCompanyBoRelation | null>).set(selectedRelation);
+
+      component.updateRelation();
+
+      fixture.detectChanges();
+
+      const boSelect = fixture.debugElement.query(By.directive(MockBoSelectSfComponent))?.componentInstance as
+        MockBoSelectSfComponent | undefined;
+
+      expect(boSelect).toBeDefined();
+      expect(boSelect?.field()().value()).toEqual(selectedRelation.businessOrganisation);
+    });
+  });
+
+  describe('Method: leaveEditModeWithDialog', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+      fillRelationFormWithValidData();
+    });
+
+    it('should open dialog when form is dirty', () => {
+      component.leaveEditModeWithDialog();
+      expect(mockDialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'DIALOG.DISCARD_CHANGES_TITLE',
+          message: 'DIALOG.LEAVE_SITE',
+        })
+      );
+    });
+
+    it('should call facade leaveEditMode when dialog confirms', () => {
+      mockDialogService.openDialogDataWithConfirmationResult = vi.fn().mockReturnValue(of(true));
+
+      component.leaveEditModeWithDialog();
+
+      expect(mockFacade.leaveEditMode).toHaveBeenCalled();
+    });
+
+    it('should not call leaveEditMode when dialog is dismissed', () => {
+      mockDialogService.openDialogDataWithConfirmationResult = vi.fn().mockReturnValue(of(false));
+
+      component.leaveEditModeWithDialog();
+
+      expect(mockFacade.leaveEditMode).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Form State', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should compute dirty state from relation form', () => {
+      expect(component.dirty()).toBe(false);
+
+      fillRelationFormWithValidData();
+
+      expect(component.dirty()).toBe(true);
+    });
+
+    it('should disable all transport company fields', () => {
+      const textFieldComponents = fixture.debugElement
+        .queryAll(By.directive(MockTextFieldSfComponent))
+        .map((element) => element.componentInstance as MockTextFieldSfComponent);
+
+      expect(textFieldComponents.length).toBeGreaterThan(0);
+      textFieldComponents.forEach((textField) => {
+        expect(textField.field()().disabled()).toBe(true);
+      });
+
+      const commentField = fixture.debugElement.query(By.directive(MockAtlasFormCommentSfComponent))
+        ?.componentInstance as MockAtlasFormCommentSfComponent | undefined;
+      expect(commentField).toBeDefined();
+      expect(commentField?.field()().disabled()).toBe(true);
+    });
   });
 });

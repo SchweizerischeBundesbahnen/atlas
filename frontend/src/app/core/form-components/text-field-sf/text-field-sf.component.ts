@@ -1,4 +1,4 @@
-import { Component, ContentChild, input, TemplateRef } from '@angular/core';
+import { Component, contentChild, input, TemplateRef } from '@angular/core';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { NgTemplateOutlet } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -13,7 +13,7 @@ import { AtlasFieldErrorSfComponent } from '../atlas-field-error-sf/atlas-field-
   templateUrl: './text-field-sf.component.html',
 })
 export class TextFieldSfComponent {
-  // Label Field
+  // label-field
   readonly fieldLabel = input<string>();
   readonly infoIconTitle = input<string>();
   readonly infoIconLink = input<string>();
@@ -21,12 +21,8 @@ export class TextFieldSfComponent {
   readonly fieldExamples = input<FieldExample[]>([]);
 
   // general
-  @ContentChild('customChildInputPostfixTemplate')
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  customChildInputPostfixTemplate!: TemplateRef<any>;
-  @ContentChild('customChildInputPrefixTemplate')
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  customChildInputPrefixTemplate!: TemplateRef<any>;
+  readonly customChildInputPostfixTemplate = contentChild<TemplateRef<any>>('customChildInputPostfixTemplate');
+  readonly customChildInputPrefixTemplate = contentChild<TemplateRef<any>>('customChildInputPrefixTemplate');
   readonly paddingBottom = input(true);
   readonly fieldName = input.required<string>();
   readonly placeholder = input('');

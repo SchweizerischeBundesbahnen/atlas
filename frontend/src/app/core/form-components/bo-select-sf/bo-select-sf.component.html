@@ -4,6 +4,7 @@
   [bindValue]="valueExtraction()"
   [items]="(businessOrganisations | async) ?? []"
   [disabled]="disabled()"
+  [field]="field()"
 >
   <div class="d-flex flex-column">
     <atlas-label-field

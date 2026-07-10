@@ -7,11 +7,11 @@
     [items]="items()"
     [minTermLength]="2"
     [multiple]="multiple()"
-    [ngModel]="selectedValue()"
+    [ngModel]="field()().value()"
     [placeholder]="placeholderTextKey() | translate"
     [readonly]="disabled()"
     [typeahead]="searchTriggerSubject"
-    (change)="changeTrigger.emit($event)"
+    (change)="onSelectionChange($event ?? null)"
     appearance="outline"
     notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
     typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
@@ -24,5 +24,5 @@
     </ng-template>
   </ng-select>
 
-<!--  todo <atlas-field-error-sf [field]="" />-->
+  <atlas-field-error-sf [field]="field()" />
 </div>

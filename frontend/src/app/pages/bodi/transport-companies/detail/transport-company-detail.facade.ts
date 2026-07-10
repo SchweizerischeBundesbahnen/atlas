@@ -34,7 +34,7 @@ export class TransportCompanyDetailFacade {
   selectRelation(index: number) {
     this.selectedRelationId.set(this.transportCompanyRelationsReadonly()[index].id!);
   }
-  private unselectRelation() {
+  unselectRelation() {
     this.selectedRelationId.set(null);
   }
 

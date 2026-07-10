@@ -31,6 +31,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { required as requiredValue } from '../../../../core/util/values';
 import { BoSelectSfComponent } from '../../../../core/form-components/bo-select-sf/bo-select-sf.component';
 import { DateRangeSfComponent } from '../../../../core/form-components/date-range-sf/date-range-sf.component';
+import { DATE_PATTERN } from '../../../../core/date/date.service';
 
 type TransportCompanyFormModel = {
   id: number;
@@ -77,7 +78,6 @@ export type TransportCompanyRelationFormModelValidated = {
   ],
   providers: [TransportCompanyDetailFacade],
 })
-// todo: test dirty on interface
 export class TransportCompanyDetailComponent implements OnInit, DetailFormComponent {
   protected readonly facade = inject(TransportCompanyDetailFacade);
 
@@ -111,7 +111,9 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
     ...this.emptyFormValue,
   });
   protected readonly transportCompanyRelationForm = form(this.transportCompanyRelationFormModel, (schemaPath) => {
-    required(schemaPath);
+    required(schemaPath.businessOrganisation, { message: () => this.translateService.instant('VALIDATION.REQUIRED') });
+    required(schemaPath.validFrom, { message: () => this.translateService.instant('VALIDATION.REQUIRED') });
+    required(schemaPath.validTo, { message: () => this.translateService.instant('VALIDATION.REQUIRED') });
     validateTree(schemaPath, (ctx) => {
       const validFrom = ctx.valueOf(schemaPath.validFrom);
       const validTo = ctx.valueOf(schemaPath.validTo);
@@ -119,12 +121,18 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
         return [
           {
             kind: 'dateRange',
-            message: 'ValidFrom must be before validTo', // todo: translate
+            message: this.translateService.instant('VALIDATION.DATE_ORDER_ERROR', {
+              validFrom: validFrom.format(DATE_PATTERN),
+              validTo: validTo.format(DATE_PATTERN),
+            }),
             fieldTree: ctx.fieldTree.validFrom,
           },
           {
             kind: 'dateRange',
-            message: 'ValidTo must be after validFrom', // todo: translate
+            message: this.translateService.instant('VALIDATION.DATE_ORDER_ERROR', {
+              validFrom: validFrom.format(DATE_PATTERN),
+              validTo: validTo.format(DATE_PATTERN),
+            }),
             fieldTree: ctx.fieldTree.validTo,
           },
         ];

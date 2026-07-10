@@ -9,14 +9,14 @@
 }
 <div [class]="{ 'text-field-wrapper': paddingBottom() }">
   <div class="text-field-flex">
-    <ng-container #customChildInputPrefixTemplate *ngTemplateOutlet="customChildInputPrefixTemplate" />
+    <ng-container #customChildInputPrefixTemplate *ngTemplateOutlet="customChildInputPrefixTemplate()" />
     <input
       type="text"
       [formField]="field()"
       placeholder="{{ placeholder() | translate }}"
       [attr.data-cy]="fieldName()"
     />
-    <ng-container #customChildInputPostfixTemplate *ngTemplateOutlet="customChildInputPostfixTemplate" />
+    <ng-container #customChildInputPostfixTemplate *ngTemplateOutlet="customChildInputPostfixTemplate()" />
   </div>
   <atlas-field-error-sf [field]="field()" />
 </div>

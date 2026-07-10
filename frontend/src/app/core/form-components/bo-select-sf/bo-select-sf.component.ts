@@ -7,6 +7,7 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
 import { map } from 'rxjs/operators';
 import { SearchSelectSfComponent } from '../search-select-sf/search-select-sf.component';
 import { AsyncPipe } from '@angular/common';
+import { Field } from '@angular/forms/signals';
 
 @Component({
   selector: 'atlas-bo-select-sf',
@@ -19,7 +20,9 @@ export class BoSelectSfComponent {
   readonly sboidsRestrictions = input<string[]>([]);
   readonly disabled = input(false);
 
-  readonly boSelectionChanged = output<BusinessOrganisation>();
+  readonly field = input.required<Field<BusinessOrganisation | null>>();
+
+  readonly boSelectionChanged = output<BusinessOrganisation | null>();
 
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
 
