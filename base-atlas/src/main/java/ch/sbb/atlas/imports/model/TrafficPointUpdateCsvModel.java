@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.model;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion;
@@ -92,6 +93,9 @@ public class TrafficPointUpdateCsvModel implements Validatable<TrafficPointUpdat
 
     List<BulkImportError> errors = BulkImportErrors.notNullForFields(this,
         List.of(Fields.sloid, Fields.validFrom, Fields.validTo));
+    if (designationOperational != null && !designationOperational.matches(AtlasCharacterSetsRegex.DESIGNATION_OPERATIONAL)) {
+      errors.add(BulkImportErrors.invalidDesignationOperational(Fields.designationOperational));
+    }
     return errors;
   }
 

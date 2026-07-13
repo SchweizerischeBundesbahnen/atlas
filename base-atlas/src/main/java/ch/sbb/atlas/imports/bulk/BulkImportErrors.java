@@ -82,6 +82,16 @@ public class BulkImportErrors {
             .build()).build();
   }
 
+  public static BulkImportError invalidDesignationOperational(String field) {
+    return BulkImportError.builder()
+        .errorMessage("designationOperational must be numeric with 1 to 3 digits (0-999)")
+        .displayInfo(DisplayInfo.builder()
+            .code("BULK_IMPORT.VALIDATION.DESIGNATION_OPERATIONAL_NOT_VALID")
+            .with(FIELD, field)
+            .build()
+        ).build();
+  }
+
   public static BulkImportError invalidServicePointNumber() {
     return BulkImportError.builder()
         .errorMessage("Invalid Service Point Number")

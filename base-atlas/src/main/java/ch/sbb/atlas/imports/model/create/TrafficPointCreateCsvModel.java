@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.model.create;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.DefaultMapping;
@@ -84,6 +85,9 @@ public class TrafficPointCreateCsvModel implements Validatable<TrafficPointCreat
     List<BulkImportError> errors = new ArrayList<>();
     if ((stopPointSloid == null) == (number == null)) {
       errors.add(BulkImportErrors.stopPointSloidXorNumber());
+    }
+    if (designationOperational != null && !designationOperational.matches(AtlasCharacterSetsRegex.DESIGNATION_OPERATIONAL)) {
+      errors.add(BulkImportErrors.invalidDesignationOperational(TrafficPointCreateCsvModel.Fields.designationOperational));
     }
     errors.addAll(BulkImportErrors.notNullForFields(this, List.of(TrafficPointCreateCsvModel.Fields.trafficPointElementType,
         TrafficPointCreateCsvModel.Fields.validFrom, TrafficPointCreateCsvModel.Fields.validTo)));
