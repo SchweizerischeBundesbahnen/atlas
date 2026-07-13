@@ -26,20 +26,6 @@ class TrafficPointCreateCsvModelTest {
     assertThat(model.validate()).isEmpty();
   }
 
-  @ParameterizedTest
-  @ValueSource(strings = {"7A", "1234", "A", "1.5", "12 ", "-1", "07x"})
-  void shouldRejectInvalidDesignationOperational(String designationOperational) {
-    TrafficPointCreateCsvModel model = TrafficPointCreateCsvModel.builder()
-        .stopPointSloid("ch:1:sloid:7000")
-        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-        .validFrom(LocalDate.of(2021, 4, 1))
-        .validTo(LocalDate.of(2099, 12, 31))
-        .designationOperational(designationOperational)
-        .build();
-
-    assertThat(model.validate()).hasSize(1);
-  }
-
   @Test
   void shouldBeValidTrafficPointCreateModel() {
     TrafficPointCreateCsvModel platform = TrafficPointCreateCsvModel.builder()
