@@ -1,9 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AtlasApiService } from '../atlas-api.service';
 import { Observable } from 'rxjs';
-import { WorkflowStatus } from '../../model/workflowStatus';
-import { ContainerLineVersionSnapshot } from '../../model/containerLineVersionSnapshot';
-import { LineVersionSnapshot } from '../../model/lineVersionSnapshot';
 import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
 import { AffectedSublinesModel } from '../../model/affectedSublinesModel';
 import { Line } from '../../model/line';
@@ -66,28 +63,6 @@ export class LineInternalService {
   public deleteLines(slnid: string): Observable<void> {
     this.atlasApiService.validateParams({ slnid });
     return this.atlasApiService.delete(`${this.INTERNAL_LINES}/${encodeURIComponent(String(slnid))}`);
-  }
-
-  public skipWorkflow(id: number): Observable<void> {
-    this.atlasApiService.validateParams({ id });
-    return this.atlasApiService.post(`${this.INTERNAL_LINES}/versions/${encodeURIComponent(String(id))}/skip-workflow`);
-  }
-
-  public getLineVersionSnapshot(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
-    statusChoices?: Array<WorkflowStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>
-  ): Observable<ContainerLineVersionSnapshot> {
-    const httpParams = this.atlasApiService.paramsOf({ searchCriteria, validOn, statusChoices, page, size, sort });
-    return this.atlasApiService.get(`${this.INTERNAL_LINES}/workflows`, httpParams);
-  }
-
-  public getLineVersionSnapshotById(id: number): Observable<LineVersionSnapshot> {
-    this.atlasApiService.validateParams({ id });
-    return this.atlasApiService.get(`${this.INTERNAL_LINES}/workflows/${encodeURIComponent(String(id))}`);
   }
 
   public checkAffectedSublines(

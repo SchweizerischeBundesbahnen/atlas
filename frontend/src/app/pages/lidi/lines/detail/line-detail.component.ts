@@ -5,7 +5,6 @@ import {
   ApplicationType,
   LineType,
   LineVersionV2,
-  LineVersionWorkflow,
   Status,
   UpdateLineVersionV2,
 } from '../../../../api';
@@ -32,8 +31,6 @@ import { DateRangeTextComponent } from '../../../../core/versioning/date-range-t
 
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { SublineTableComponent } from './subline-table/subline-table.component';
-import { LineWorkflowComponent } from '../../../../core/workflow/line-workflow.component';
-import { LinkComponent } from '../../../../core/form-components/link/link.component';
 import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
@@ -56,8 +53,6 @@ import { DialogData } from '../../../../core/components/dialog/dialog.data';
     DateRangeTextComponent,
     SwitchVersionComponent,
     SublineTableComponent,
-    LineWorkflowComponent,
-    LinkComponent,
     LineDetailFormComponent,
     UserDetailInfoComponent,
     DetailFooterComponent,
@@ -74,10 +69,8 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
   form!: FormGroup<LineDetailFormGroup>;
   isNew = false;
   showVersionSwitch = false;
-  showWorkflow = false;
   maxValidity!: DateRange;
   boSboidRestriction: string[] = [];
-  isShowLineSnapshotHistory = false;
   private readonly onDestroy$ = new Subject<boolean>();
   private initForm!: FormGroup<LineDetailFormGroup>;
   private isValidFromShortened!: boolean;
@@ -129,8 +122,6 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
     }
 
     if (!this.isNew) {
-      this.isShowLineSnapshotHistory = this.showSnapshotHistoryLink();
-
       this.lineType = this.form.value.lineType!;
       this.conditionalValidation();
     }
@@ -153,29 +144,6 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
         this.boSboidRestriction = [];
       }
     }
-  }
-
-  navigateToSnapshot() {
-    this.router
-      .navigate([Pages.LIDI.path, Pages.WORKFLOWS.path], {
-        queryParams: {
-          slnid: this.selectedVersion.slnid,
-        },
-      })
-      .then();
-  }
-
-  showSnapshotHistoryLink(): boolean {
-    const lineVersionWorkflows: LineVersionWorkflow[] = [];
-    this.selectedVersion.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
-    return (
-      lineVersionWorkflows.length > 0 ||
-      (this.selectedVersion.lineType === LineType.Orderly && this.selectedVersion.status === Status.Validated)
-    );
-  }
-
-  reloadRecord() {
-    this.router.navigate([Pages.LIDI.path, Pages.LINES.path, this.selectedVersion.slnid]).then(() => this.ngOnInit());
   }
 
   isEditButtonVisible() {
@@ -407,10 +375,6 @@ export class LineDetailComponent implements Revokable, OnInit, OnDestroy {
     this.form = LineFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
-
-      this.showWorkflow =
-        this.selectedVersion.lineType === LineType.Orderly &&
-        (this.selectedVersion.status === Status.Draft || this.selectedVersion.status === Status.InReview);
     }
   }
 

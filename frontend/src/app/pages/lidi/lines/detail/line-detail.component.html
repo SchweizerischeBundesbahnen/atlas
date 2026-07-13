@@ -49,21 +49,6 @@
                 'LIDI.LINE.TYPES.' + lineType | translate
               }}</span>
             </div>
-            @if (form.disabled && showWorkflow) {
-              <atlas-workflow
-                [descriptionForWorkflow]="selectedVersion.description!"
-                [lineRecord]="selectedVersion"
-                (workflowEvent)="reloadRecord()"
-              />
-            }
-            @if (isShowLineSnapshotHistory) {
-              <div class="d-flex mt-3">
-                <atlas-link
-                  label="LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_SNAPHOT"
-                  (linkClicked)="navigateToSnapshot()"
-                />
-              </div>
-            }
           </div>
         </div>
       }
