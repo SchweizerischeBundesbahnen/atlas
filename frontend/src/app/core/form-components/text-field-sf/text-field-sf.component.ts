@@ -21,8 +21,8 @@ export class TextFieldSfComponent {
   readonly fieldExamples = input<FieldExample[]>([]);
 
   // general
-  readonly customChildInputPostfixTemplate = contentChild<TemplateRef<any>>('customChildInputPostfixTemplate');
-  readonly customChildInputPrefixTemplate = contentChild<TemplateRef<any>>('customChildInputPrefixTemplate');
+  readonly customChildInputPostfixTemplate = contentChild<TemplateRef<unknown>>('customChildInputPostfixTemplate');
+  readonly customChildInputPrefixTemplate = contentChild<TemplateRef<unknown>>('customChildInputPrefixTemplate');
   readonly paddingBottom = input(true);
   readonly fieldName = input.required<string>();
   readonly placeholder = input('');

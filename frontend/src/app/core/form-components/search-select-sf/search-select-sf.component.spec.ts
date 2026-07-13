@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 type TestItem = { id: string; label: string };
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-select',
   standalone: true,
   template: '',
@@ -25,12 +26,13 @@ class MockNgSelectComponent {
   readonly multiple = input(false);
   readonly ngModel = input<TestItem | null>(null);
   readonly placeholder = input('');
-  readonly readOnly = input(false, { alias: 'readonly' });
+  readonly readonly = input(false);
   readonly typeahead = input<Subject<string> | undefined>(undefined);
   readonly appearance = input();
   readonly notFoundText = input();
   readonly typeToSearchText = input();
 
+  // eslint-disable-next-line @angular-eslint/no-output-native
   readonly change = output<TestItem | null | undefined>();
 }
 
@@ -130,7 +132,7 @@ describe('SearchSelectSfComponent', () => {
     expect(ngSelect?.multiple()).toBe(true);
     expect(ngSelect?.placeholder()).toBe('COMMON.SELECT');
     expect(ngSelect?.bindValue()).toBe('id');
-    expect(ngSelect?.readOnly()).toBe(true);
+    expect(ngSelect?.readonly()).toBe(true);
     expect(ngSelect?.ngModel()).toBeNull();
     expect(ngSelect?.minTermLength()).toBe(2);
   });

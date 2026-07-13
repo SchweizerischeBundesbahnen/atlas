@@ -34,7 +34,7 @@ export class SearchSelectSfComponent<TYPE> {
 
   protected readonly changeTrigger = output<TYPE | null>();
 
-  protected readonly labelOptionTemplates = contentChild.required<TemplateRef<any>>('labelOptionTemplates');
+  protected readonly labelOptionTemplates = contentChild.required<TemplateRef<unknown>>('labelOptionTemplates');
 
   constructor() {
     this.searchTriggerSubject.asObservable().subscribe({

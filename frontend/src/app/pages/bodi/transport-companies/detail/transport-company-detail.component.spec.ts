@@ -324,50 +324,25 @@ describe('TransportCompanyDetailComponent', () => {
     });
   });
 
-  describe('Conditional Rendering', () => {
+  describe('conditional rendering', () => {
     beforeEach(() => {
       fixture.detectChanges();
     });
 
-    it('should render based on edit mode state', () => {
-      const facade = component['facade'] as any;
-      const isEditMode = facade.isEditMode();
-      expect(typeof isEditMode).toBe('boolean');
-    });
+    it('should display N/A when status is null from activated route data', () => {
+      mockActivatedRoute.snapshot.data.transportCompanyDetail = [
+        {
+          ...transportCompany,
+          transportCompanyStatus: null,
+        },
+        transportCompanyRelations,
+      ];
 
-    it('should render status as null when not provided', () => {
-      // Set up component with null status
-      (component as any).transportCompanyFormModel.set({
-        id: 0,
-        status: null,
-        number: '',
-        abbreviation: '',
-        description: '',
-        enterpriseId: '',
-        businessRegisterName: '',
-        businessRegisterNumber: '',
-        comment: '',
-      });
-
+      fixture = TestBed.createComponent(TransportCompanyDetailComponent);
+      component = fixture.componentInstance;
       fixture.detectChanges();
-      const formModel = (component as any).transportCompanyFormModel();
-      expect(formModel.status).toBeNull();
-    });
 
-    it('should pass relation data to relation component', () => {
-      // Verify facade method returns expected data structure
-      (mockFacade.transportCompanyRelationsReadonly as any) = signal(transportCompanyRelations);
-
-      const relations = (mockFacade.transportCompanyRelationsReadonly as any)();
-      expect(Array.isArray(relations)).toBe(true);
-      expect(relations?.length).toBe(2);
-    });
-
-    it('should compute table columns for relations display', () => {
-      const columns = (component as any).transportCompanyRelationTableColumns();
-      expect(columns).toBeDefined();
-      expect(Array.isArray(columns)).toBe(true);
-      expect(columns.length).toBeGreaterThan(0);
+      expect(fixture.debugElement.query(By.css('#status-value')).nativeElement.textContent).toBe('N/A');
     });
   });
 

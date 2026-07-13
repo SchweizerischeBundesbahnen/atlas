@@ -42,6 +42,7 @@ class MockAtlasFieldErrorSfComponent {
 }
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'mat-datepicker',
   standalone: true,
   template: '',
@@ -51,11 +52,12 @@ class MockMatDatepicker {
 }
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'input[matDatepicker]',
   standalone: true,
 })
 class MockMatDatepickerInput {
-  readonly matDatepicker = input<unknown>(undefined, { alias: 'matDatepicker' });
+  readonly matDatepicker = input<unknown>();
   readonly max = input<unknown>();
   readonly min = input<unknown>();
 }
