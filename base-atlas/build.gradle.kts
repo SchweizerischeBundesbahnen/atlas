@@ -19,6 +19,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-kafka")
+    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 
     // Spring Cloud
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
