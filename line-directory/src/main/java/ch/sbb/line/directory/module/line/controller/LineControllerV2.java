@@ -1,7 +1,5 @@
 package ch.sbb.line.directory.module.line.controller;
 
-import static java.util.stream.Collectors.toSet;
-
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionRequestParams;
@@ -12,7 +10,6 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.mapper.LineMapper;
-import ch.sbb.line.directory.module.line.mapper.LineVersionWorkflowMapper;
 import ch.sbb.line.directory.module.line.search.LineVersionSearchRestrictions;
 import ch.sbb.line.directory.module.line.service.LineService;
 import java.util.List;
@@ -85,10 +82,6 @@ public class LineControllerV2 implements LineApiV2 {
         .businessOrganisation(lineVersion.getBusinessOrganisation())
         .comment(lineVersion.getComment())
         .etagVersion(lineVersion.getVersion())
-        .lineVersionWorkflows(
-            lineVersion.getLineVersionWorkflows()
-                .stream()
-                .map(LineVersionWorkflowMapper::toModel).collect(toSet()))
         .creator(lineVersion.getCreator())
         .creationDate(lineVersion.getCreationDate())
         .editor(lineVersion.getEditor())

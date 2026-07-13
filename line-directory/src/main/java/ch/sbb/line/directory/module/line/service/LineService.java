@@ -42,7 +42,6 @@ public class LineService extends RevokeService<LineVersion> {
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
   private final LineUpdateValidationService lineUpdateValidationService;
-  private final LineStatusDecider lineStatusDecider;
   private final SublineShorteningService sublineShorteningService;
   private final SublineService sublineService;
 
@@ -162,7 +161,7 @@ public class LineService extends RevokeService<LineVersion> {
   }
 
   LineVersion save(LineVersion lineVersion, Optional<LineVersion> currentLineVersion, List<LineVersion> currentLineVersions) {
-    lineVersion.setStatus(lineStatusDecider.getStatusForLine(lineVersion, currentLineVersion, currentLineVersions));
+    lineVersion.setStatus(Status.VALIDATED);
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
     lineVersionRepository.saveAndFlush(lineVersion);
     return lineVersion;
@@ -173,7 +172,6 @@ public class LineService extends RevokeService<LineVersion> {
     editedVersion.setSlnid(currentVersion.getSlnid());
 
     List<LineVersion> currentVersions = findLineVersions(currentVersion.getSlnid());
-    lineUpdateValidationService.validateLineForUpdate(currentVersion, editedVersion, currentVersions);
 
     if (editedVersion.getLineType() != LineType.ORDERLY) {
       editedVersion.setSwissLineNumber(currentVersion.getSwissLineNumber());
@@ -191,7 +189,6 @@ public class LineService extends RevokeService<LineVersion> {
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, currentVersions);
     versionableService.doNotAllowGaps(versionedObjects);
-    lineUpdateValidationService.validateVersioningNotAffectingReview(currentVersions, versionedObjects);
 
     List<LineVersion> preSaveVersions = currentVersions.stream().map(ReflectionHelper::copyObjectViaBuilder).toList();
     versionableService.applyVersioning(LineVersion.class, versionedObjects,

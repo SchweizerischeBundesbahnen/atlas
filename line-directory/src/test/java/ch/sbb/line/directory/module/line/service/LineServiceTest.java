@@ -69,9 +69,6 @@ class LineServiceTest {
   @Mock
   private LineSearchRestrictions lineSearchRestrictions;
 
-  @Mock
-  private LineStatusDecider lineStatusDecider;
-
   private LineService lineService;
 
   @Mock
@@ -84,8 +81,7 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, lineUpdateValidationService, lineStatusDecider,
-        sublineShorteningService, sublineService);
+        versionableService, lineValidationService, lineUpdateValidationService, sublineShorteningService, sublineService);
   }
 
   @Test
@@ -207,8 +203,6 @@ class LineServiceTest {
     verify(lineUpdateValidationService).validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
     verify(sublineShorteningService).isOnlyValidityChanged(currentVersion, editedVersion);
     verify(sublineShorteningService).isShortening(currentVersion, editedVersion);
-    verify(lineUpdateValidationService).validateLineForUpdate(any(), any(), any());
-    verify(lineUpdateValidationService).validateVersioningNotAffectingReview(any(), any());
     verify(lineValidationService).validateLineAfterVersioningBusinessRule(editedVersion);
   }
 
