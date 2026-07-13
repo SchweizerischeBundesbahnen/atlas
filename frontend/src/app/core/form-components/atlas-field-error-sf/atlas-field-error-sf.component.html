@@ -1,7 +1,7 @@
 @if (field()().touched() && field()().invalid()) {
   <div>
     @for (validationError of field()().errors(); track validationError) {
-      <span class="font-regular-sm">
+      <span class="font-regular-xs">
         {{ validationError.message }}
       </span>
     }

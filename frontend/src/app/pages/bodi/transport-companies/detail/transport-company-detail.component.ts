@@ -214,12 +214,10 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
       validFrom: this.transportCompanyRelationForm.validFrom().value()!,
       validTo: this.transportCompanyRelationForm.validTo().value()!,
     };
+    const successMsg = this.facade.isRelationSelected() ? 'RELATION.UPDATE_SUCCESS_MSG' : 'RELATION.ADD_SUCCESS_MSG';
     this.facade.save(validatedForm).subscribe({
       next: () => {
         this.transportCompanyRelationForm().reset({ ...this.emptyFormValue });
-        const successMsg = this.facade.isRelationSelected()
-          ? 'RELATION.UPDATE_SUCCESS_MSG'
-          : 'RELATION.ADD_SUCCESS_MSG';
         this.notificationService.success(successMsg);
       },
     });

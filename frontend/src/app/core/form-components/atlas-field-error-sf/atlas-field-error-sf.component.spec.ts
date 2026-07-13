@@ -27,7 +27,7 @@ describe('AtlasFieldErrorSfComponent', () => {
 
   const getRenderedMessages = () =>
     fixture.debugElement
-      .queryAll(By.css('span.font-regular-sm'))
+      .queryAll(By.css('span.font-regular-xs'))
       .map((element) => element.nativeElement.textContent.trim());
 
   beforeEach(() => {
