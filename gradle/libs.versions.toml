@@ -29,9 +29,9 @@ protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version
 
 # Other
 swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.52" }
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.47.4" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.47.5" }
 jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
-pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.7" }
+pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.8" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.5.1" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
 tika-core = { group = "org.apache.tika", name = "tika-core", version = "3.3.1" }
