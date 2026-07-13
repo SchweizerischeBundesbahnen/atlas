@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.revoke.service.RevokeService;
-import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
@@ -22,7 +21,6 @@ import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import ch.sbb.line.directory.module.subline.repository.SublineVersionRepository;
 import ch.sbb.line.directory.module.subline.service.SublineService;
 import ch.sbb.line.directory.module.subline.service.SublineShorteningService;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -157,10 +155,6 @@ public class LineService extends RevokeService<LineVersion> {
   }
 
   LineVersion save(LineVersion lineVersion) {
-    return save(lineVersion, Optional.empty(), Collections.emptyList());
-  }
-
-  LineVersion save(LineVersion lineVersion, Optional<LineVersion> currentLineVersion, List<LineVersion> currentLineVersions) {
     lineVersion.setStatus(Status.VALIDATED);
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
     lineVersionRepository.saveAndFlush(lineVersion);
@@ -190,10 +184,7 @@ public class LineService extends RevokeService<LineVersion> {
         editedVersion, currentVersions);
     versionableService.doNotAllowGaps(versionedObjects);
 
-    List<LineVersion> preSaveVersions = currentVersions.stream().map(ReflectionHelper::copyObjectViaBuilder).toList();
-    versionableService.applyVersioning(LineVersion.class, versionedObjects,
-        version -> save(version, Optional.of(currentVersion), preSaveVersions),
-        this::deleteById);
+    versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save, this::deleteById);
     lineValidationService.validateLineAfterVersioningBusinessRule(editedVersion);
   }
 
