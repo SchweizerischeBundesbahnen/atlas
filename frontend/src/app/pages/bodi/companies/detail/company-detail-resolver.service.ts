@@ -3,21 +3,15 @@ import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { Company } from '../../../../api';
 import { Pages } from '../../../pages';
-import { NotificationService } from '../../../../core/notification/notification.service';
 import { CompanyService } from '../../../../api/service/bodi/company.service';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyDetailResolver {
   private readonly companyInternalService = inject(CompanyService);
-  private readonly notificationService = inject(NotificationService);
   private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Company> {
     const idParameter = route.paramMap.get('id')!;
-    if (Number.isNaN(idParameter)) {
-      this.notificationService.error(new Error(), 'BODI.COMPANIES.ID_NAN_ERROR');
-      return this.routeOnFailure();
-    }
     return this.companyInternalService.getCompany(idParameter).pipe(
       catchError(() => {
         return this.routeOnFailure();
