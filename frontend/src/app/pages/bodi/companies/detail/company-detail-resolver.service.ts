@@ -13,7 +13,7 @@ export class CompanyDetailResolver {
   private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Company> {
-    const idParameter = parseInt(route.paramMap.get('id') || '0');
+    const idParameter = route.paramMap.get('id')!;
     if (Number.isNaN(idParameter)) {
       this.notificationService.error(new Error(), 'BODI.COMPANIES.ID_NAN_ERROR');
       return this.routeOnFailure();

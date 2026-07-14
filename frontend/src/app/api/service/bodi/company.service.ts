@@ -27,7 +27,7 @@ export class CompanyService {
     return this.atlasApiService.get(this.BASE_PATH, httpParams);
   }
 
-  getCompany(uic: number): Observable<Company> {
+  getCompany(uic: string): Observable<Company> {
     this.atlasApiService.validateParams({ uic });
     return this.atlasApiService.get(`${this.BASE_PATH}/${uic}`);
   }
