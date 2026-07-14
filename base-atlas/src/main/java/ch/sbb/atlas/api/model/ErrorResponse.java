@@ -94,8 +94,14 @@ public class ErrorResponse implements Serializable {
     private DisplayInfo displayInfo;
 
     public String getMessage() {
-      return MessageFormat.format(message,
-          displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
+      Object[] arguments = displayInfo.getParameters().stream().map(Parameter::getValue).toArray();
+      try {
+        return MessageFormat.format(message, arguments);
+      } catch (IllegalArgumentException e) {
+        // Fallback if we can't format the message. E.g. it is a regexp validation ("{1,3}") and not a MessageFormat template.
+        log.debug("Message '{}' is not a valid MessageFormat pattern, returning it as-is", message, e);
+        return message;
+      }
     }
 
     @Override

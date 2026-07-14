@@ -86,7 +86,7 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/traffic-point-elements/" + trafficPointElementVersion.getSloid())).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
         .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:1400015:0:310240")))
-        .andExpect(jsonPath("$[0]." + Fields.designationOperational, is("gali00")))
+        .andExpect(jsonPath("$[0]." + Fields.designationOperational, is("07")))
         .andExpect(jsonPath("$[0].hasGeolocation", is(true)))
         .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
         .andExpect(jsonPath("$[0].creator", is("e123456")));
@@ -219,7 +219,7 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
              "editor": null,
              "id": %d,
              "designation": "Bezeichnung",
-             "designationOperational": "gali00",
+             "designationOperational": "07",
              "length": null,
              "boardingAreaHeight": null,
              "compassDirection": 277.0,
@@ -348,6 +348,54 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.error", is("Constraint violation")))
         .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
         .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
+  void shouldFailOnCreateWithInvalidDesignationOperational() throws Exception {
+    repository.deleteAll();
+    CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    // Not matching the @Pattern regexp "\d{1,3}" (4 digits) -> constraint violation.
+    platformToCreate.setDesignationOperational("9999");
+
+    mvc.perform(post("/v1/traffic-point-elements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(platformToCreate)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details[0].field", is("designationOperational")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.PATTERN")))
+        .andExpect(jsonPath("$.details[0].message", is("must match \"\\d{1,3}\"")));
+  }
+
+  @Test
+  void shouldFailOnUpdateWithInvalidDesignationOperational() throws Exception {
+    repository.deleteAll();
+    ReadTrafficPointElementVersionModel savedTrafficPointElementVersionModel = trafficPointElementController
+        .createTrafficPoint(TrafficPointTestData.getCreateTrafficPointVersionModel());
+
+    CreateTrafficPointElementVersionModel updateModel = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    updateModel.setId(savedTrafficPointElementVersionModel.getId());
+    updateModel.setSloid(savedTrafficPointElementVersionModel.getSloid());
+    updateModel.setEtagVersion(savedTrafficPointElementVersionModel.getEtagVersion());
+    // Not matching the @Pattern regexp "\d{1,3}" (non-numeric) -> constraint violation.
+    updateModel.setDesignationOperational("abc");
+
+    MvcResult mvcResult = mvc.perform(
+            MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + savedTrafficPointElementVersionModel.getId())
+                .contentType(contentType)
+                .content(mapper.writeValueAsString(updateModel)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details[0].field", is("designationOperational")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.PATTERN")))
+        .andExpect(jsonPath("$.details[0].message", is("must match \"\\d{1,3}\"")))
+        .andReturn();
+
+    // The message must be deserializable back into an ErrorResponse (getMessage() must not throw).
+    ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+    assertThat(errorResponse.getDetails().first().getMessage()).isEqualTo("must match \"\\d{1,3}\"");
   }
 
   @Test
@@ -561,14 +609,14 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
     createTrafficPointElementVersionModel.setSloid(savedTrafficPointElementVersionModel.getSloid());
     createTrafficPointElementVersionModel.setEtagVersion(savedTrafficPointElementVersionModel.getEtagVersion());
 
-    createTrafficPointElementVersionModel.setDesignationOperational("1 designation");
+    createTrafficPointElementVersionModel.setDesignationOperational("1");
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + createTrafficPointElementVersionModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(createTrafficPointElementVersionModel)))
         .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
-    createTrafficPointElementVersionModel.setDesignationOperational("2 designation");
+    createTrafficPointElementVersionModel.setDesignationOperational("2");
     MvcResult mvcResult = mvc.perform(
             MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + createTrafficPointElementVersionModel.getId())
                 .contentType(contentType)

@@ -46,8 +46,8 @@ export class TrafficPointElementFormGroupBuilder {
       {
         sloid: new FormControl(version?.sloid),
         designationOperational: new FormControl(version?.designationOperational, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(20),
+          AtlasCharsetsValidator.numeric,
+          Validators.maxLength(3),
         ]),
         parentSloid: new FormControl(version?.parentSloid),
         length: new FormControl(version?.length, [AtlasCharsetsValidator.decimalWithDigits(10, 3), Validators.min(0)]),

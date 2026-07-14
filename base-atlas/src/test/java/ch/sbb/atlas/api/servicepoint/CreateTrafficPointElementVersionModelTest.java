@@ -57,6 +57,33 @@ class CreateTrafficPointElementVersionModelTest extends BaseValidatorTest {
     assertThat(result).hasSize(1);
   }
 
+  @Test
+  void shouldNormalizeNullDesignationOperationalToNull() {
+    CreateTrafficPointElementVersionModel model = getCreateTrafficPointVersionModel();
+
+    model.setDesignationOperational(null);
+
+    assertThat(model.getDesignationOperational()).isNull();
+  }
+
+  @Test
+  void shouldNormalizeBlankDesignationOperationalToNull() {
+    CreateTrafficPointElementVersionModel model = getCreateTrafficPointVersionModel();
+
+    model.setDesignationOperational("   \t");
+
+    assertThat(model.getDesignationOperational()).isNull();
+  }
+
+  @Test
+  void shouldKeepNonBlankDesignationOperationalAsIs() {
+    CreateTrafficPointElementVersionModel model = getCreateTrafficPointVersionModel();
+
+    model.setDesignationOperational("042");
+
+    assertThat(model.getDesignationOperational()).isEqualTo("042");
+  }
+
   private static CreateTrafficPointElementVersionModel getCreateTrafficPointVersionModel() {
     GeolocationBaseCreateModel trafficPointElementGeolocation = GeolocationBaseCreateModel
         .builder()
@@ -69,7 +96,7 @@ class CreateTrafficPointElementVersionModelTest extends BaseValidatorTest {
     return CreateTrafficPointElementVersionModel
         .builder()
         .designation("Bezeichnung")
-        .designationOperational("gali00")
+        .designationOperational("07")
         .numberWithoutCheckDigit(1400015)
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .sloid("ch:1:sloid:1400015:0:310240")

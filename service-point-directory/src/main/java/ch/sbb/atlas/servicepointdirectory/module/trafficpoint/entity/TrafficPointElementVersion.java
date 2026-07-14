@@ -1,14 +1,15 @@
 package ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseEntity;
+import ch.sbb.atlas.revoke.Revokable;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.TrafficPointElementGeolocation;
-import ch.sbb.atlas.revoke.Revokable;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -32,6 +33,7 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -71,7 +73,7 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
   @AtlasVersionableProperty
   private String designation;
 
-  @Size(max = AtlasFieldLengths.LENGTH_20)
+  @Pattern(regexp = AtlasCharacterSetsRegex.DESIGNATION_OPERATIONAL)
   @AtlasVersionableProperty
   private String designationOperational;
 

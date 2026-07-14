@@ -98,7 +98,7 @@ public class TrafficPointTestData {
     return TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung")
-        .designationOperational("gali00")
+        .designationOperational("07")
         .servicePointNumber(SERVICE_POINT_NUMBER)
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .sloid("ch:1:sloid:1400015:0:310240")
@@ -142,7 +142,7 @@ public class TrafficPointTestData {
     return CreateTrafficPointElementVersionModel
         .builder()
         .designation("Bezeichnung")
-        .designationOperational("gali00")
+        .designationOperational("07")
         .numberWithoutCheckDigit(1400015)
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .sloid("ch:1:sloid:1400015:0:310240")
