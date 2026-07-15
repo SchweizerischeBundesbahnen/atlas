@@ -1,0 +1,28 @@
+<div>
+  <ng-content />
+
+  <ng-select
+    #ngSelect
+    [bindValue]="bindValue()"
+    [items]="items()"
+    [minTermLength]="2"
+    [multiple]="multiple()"
+    [ngModel]="field()().value()"
+    [placeholder]="placeholderTextKey() | translate"
+    [readonly]="disabled()"
+    [typeahead]="searchTriggerSubject"
+    (change)="onSelectionChange($event ?? null)"
+    appearance="outline"
+    notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
+    typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
+  >
+    <ng-template let-item="item" ng-label-tmp>
+      <ng-container *ngTemplateOutlet="labelOptionTemplates(); context: { $implicit: item }" />
+    </ng-template>
+    <ng-template let-item="item" ng-option-tmp>
+      <ng-container *ngTemplateOutlet="labelOptionTemplates(); context: { $implicit: item }" />
+    </ng-template>
+  </ng-select>
+
+  <atlas-field-error [field]="field()" />
+</div>

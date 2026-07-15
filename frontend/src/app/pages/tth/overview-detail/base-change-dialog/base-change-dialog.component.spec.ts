@@ -102,7 +102,7 @@ describe('BaseChangeDialogComponent', () => {
     const content = fixture.debugElement.query(By.css('div.dialog > div > span.message'));
     expect(content.nativeElement.textContent).toBe('message');
 
-    const publicComment = fixture.debugElement.query(By.css('atlas-form-comment'));
+    const publicComment = fixture.debugElement.query(By.css('atlas-comment'));
     const publicCommentValue = publicComment.nativeNode.querySelector('textarea').value;
     expect(publicCommentValue).toBe('Forza Napoli');
 

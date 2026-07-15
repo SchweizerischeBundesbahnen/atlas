@@ -2,11 +2,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TodayAndFutureTimetableHeaderComponent } from './today-and-future-timetable-header/today-and-future-timetable-header.component';
-import { AtlasLabelFieldComponent } from '@atlas/form';
+import { AtlasDateIconComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DateIconComponent } from '../date-icon/date-icon.component';
 
 @Component({
   selector: 'atlas-form-date-range',
@@ -19,7 +18,7 @@ import { DateIconComponent } from '../date-icon/date-icon.component';
     MatDatepickerInput,
     MatDatepicker,
     AtlasFieldErrorComponent,
-    DateIconComponent,
+    AtlasDateIconComponent,
   ],
   providers: [TranslatePipe],
 })

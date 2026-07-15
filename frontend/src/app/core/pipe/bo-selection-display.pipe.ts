@@ -5,6 +5,7 @@ import { BusinessOrganisationLanguageService } from '../../pages/bodi/business-o
 @Pipe({
   name: 'boSelectionDisplay',
   pure: false,
+  standalone: true,
 })
 export class BoSelectionDisplayPipe implements PipeTransform {
   private readonly businessOrganisationLanguageService = inject(BusinessOrganisationLanguageService);

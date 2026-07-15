@@ -36,7 +36,7 @@ subprojects {
                 property("sonar.test.inclusion", "**/*.spec.ts")
                 property("sonar.ts.tslint.configPath", "tslint.json")
                 property("sonar.typescript.lcov.reportPaths",
-                    "${project.projectDir}/coverage/components/lcov.info,${project.projectDir}/coverage/atlas-frontend/lcov.info"
+                    "${project.projectDir}/coverage/form/lcov.info,${project.projectDir}/coverage/atlas-frontend/lcov.info"
                 )
                 property("sonar.coverage.exclusions", "**/*.spec.ts,**/cypress/**,/**/*.module.ts,**/src/main.ts")
             }

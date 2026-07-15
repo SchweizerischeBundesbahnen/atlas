@@ -9,7 +9,7 @@
 
     @if (hasAnonymousText) {
       <div class="d-flex flex-column col-12">
-        <atlas-form-comment
+        <atlas-comment
           subLabel="TTH.STATEMENT.ANONYMOUS_STATEMENT"
           [formGroup]="form()"
           [displayLabel]="true"
@@ -34,7 +34,7 @@
     }
     @if (isNew() || showOriginalText) {
       <div class="pt-2 d-flex flex-column col-12">
-        <atlas-form-comment
+        <atlas-comment
           subLabel="TTH.STATEMENT.ORIGINAL_STATEMENT"
           [formGroup]="form()"
           [displayLabel]="true"

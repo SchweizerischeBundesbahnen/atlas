@@ -24,7 +24,7 @@
         </div>
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-6 pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="number"
               fieldLabel="BODI.TRANSPORT_COMPANIES.NUMBER"
               [field]="transportCompanyForm.number"
@@ -32,7 +32,7 @@
           </div>
 
           <div class="d-flex flex-column col-6 pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="abbreviation"
               fieldLabel="BODI.TRANSPORT_COMPANIES.ABBREVIATION"
               [field]="transportCompanyForm.abbreviation"
@@ -42,14 +42,14 @@
 
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-6 pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="description"
               fieldLabel="BODI.TRANSPORT_COMPANIES.DESCRIPTION"
               [field]="transportCompanyForm.description"
             />
           </div>
           <div class="d-flex flex-column col-6 pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="enterpriseId"
               fieldLabel="BODI.TRANSPORT_COMPANIES.ENTERPRISE_ID"
               [field]="transportCompanyForm.enterpriseId"
@@ -60,7 +60,7 @@
         <span class="font-bold-2xl">{{ 'BODI.TRANSPORT_COMPANIES.OFFICIAL_DATA' | translate }}</span>
         <div class="col-12 d-flex mt-3">
           <div class="d-flex flex-column col pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="businessRegisterName"
               fieldLabel="BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME"
               [field]="transportCompanyForm.businessRegisterName"
@@ -70,7 +70,7 @@
 
         <div class="col-12 d-flex mt-3">
           <div class="d-flex flex-column col pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="businessRegisterNumber"
               fieldLabel="BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NUMBER"
               [field]="transportCompanyForm.businessRegisterNumber"
@@ -81,7 +81,7 @@
         <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
         <div class="col-12 d-flex mt-3">
           <div class="d-flex flex-column col-6">
-            <atlas-form-comment-sf [displayLabel]="false" [field]="transportCompanyForm.comment" />
+            <atlas-comment [displayLabel]="false" [field]="transportCompanyForm.comment" />
           </div>
         </div>
 
@@ -101,14 +101,14 @@
           >
             @if (facade.isEditMode()) {
               <form class="col-12 d-flex">
-                <atlas-bo-select-sf
+                <atlas-bo-select
                   [disabled]="facade.isRelationSelected()"
                   [field]="transportCompanyRelationForm.businessOrganisation"
                   valueExtraction=""
                   class="col-6 pe-3 mt-3"
                   data-cy="businessOrganisation"
                 />
-                <atlas-date-range-sf
+                <atlas-date-range
                   class="col-6"
                   [validFromField]="transportCompanyRelationForm.validFrom"
                   [validToField]="transportCompanyRelationForm.validTo"

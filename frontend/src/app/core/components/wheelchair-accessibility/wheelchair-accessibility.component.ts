@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { InfoIconComponent, InfoLinkDirective } from '@atlas/form';
+import { AtlasInfoIconComponent, AtlasInfoLinkDirective } from '@atlas/form';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
 import { WheelchairAccessibilityInternalService } from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
@@ -21,14 +21,14 @@ export type AccessibilityType = 'STOP_POINT' | 'PLATFORM';
   selector: 'atlas-wheelchair-accessibility',
   imports: [
     NgOptimizedImage,
-    InfoIconComponent,
+    AtlasInfoIconComponent,
     TranslatePipe,
     OverlayModule,
     DateComponent,
     DialogCloseComponent,
     AtlasSpacerComponent,
     TableComponent,
-    InfoLinkDirective,
+    AtlasInfoLinkDirective,
   ],
   templateUrl: './wheelchair-accessibility.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,

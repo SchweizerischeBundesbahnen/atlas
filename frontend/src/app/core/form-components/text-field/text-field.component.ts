@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, ContentChild, Input, input, TemplateRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FieldExample } from './field-example';
-import { AtlasLabelFieldComponent } from '@atlas/form';
+import { AtlasLabelFieldComponent, FieldExample } from '@atlas/form';
 import { NgTemplateOutlet } from '@angular/common';
 import { EmptyToNullDirective } from '../../text-input/empty-to-null';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';

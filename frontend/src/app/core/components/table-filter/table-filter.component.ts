@@ -9,7 +9,7 @@ import { TableFilter } from './config/table-filter';
 import { TableFilterSingleSearch } from './config/table-filter-single-search';
 import { TableFilterBoolean } from './config/table-filter-boolean';
 import { NgClass } from '@angular/common';
-import { AtlasLabelFieldComponent } from '@atlas/form';
+import { AtlasDateIconComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { MatChipGrid, MatChipInput, MatChipRemove, MatChipRow } from '@angular/material/chips';
 import { AtlasSlideToggleComponent } from '../../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
@@ -19,7 +19,6 @@ import { TransportCompanySelectComponent } from '../../form-components/tu-select
 import { SelectComponent } from '../../form-components/select/select.component';
 import { MatInput } from '@angular/material/input';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
-import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
 import { InstanceOfPipe } from './instance-of.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -43,7 +42,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     SelectComponent,
     MatInput,
     MatDatepickerInput,
-    DateIconComponent,
+    AtlasDateIconComponent,
     MatDatepicker,
     AtlasFieldErrorComponent,
     InstanceOfPipe,

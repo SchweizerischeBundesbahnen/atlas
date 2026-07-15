@@ -8,14 +8,14 @@ import { SearchNavigationType } from '../search-service-point-panel/search-servi
 import { ServicePointSearch, ServicePointSearchType } from '../search-service-point/service-point-search';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointNavigationHelper } from './service-point-navigation.helper';
-import { InfoIconComponent } from '@atlas/form';
+import { AtlasInfoIconComponent } from '@atlas/form';
 
 export const NOTFOUND_LABEL = 'COMMON.NODATAFOUND';
 export const NAVIGATION_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.NAVIGATION_PLACEHOLDER';
 
 @Component({
   selector: 'atlas-navigate-service-point',
-  imports: [TranslatePipe, ReactiveFormsModule, FormsModule, NgSelectComponent, InfoIconComponent],
+  imports: [TranslatePipe, ReactiveFormsModule, FormsModule, NgSelectComponent, AtlasInfoIconComponent],
   providers: [TranslatePipe],
   templateUrl: './navigate-service-point.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,

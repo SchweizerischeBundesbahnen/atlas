@@ -10,7 +10,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { SearchResultHighlightPipe } from './search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from './split-service-point-number.pipe';
 import { ServicePointInternalService } from '../../api/service/sepodi/service-point-internal.service';
-import { InfoIconComponent } from '@atlas/form';
+import { AtlasInfoIconComponent } from '@atlas/form';
 
 const SEARCH_SERVICE_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
 const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
@@ -28,7 +28,7 @@ const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
     TranslatePipe,
     SearchResultHighlightPipe,
     SplitServicePointNumberPipe,
-    InfoIconComponent,
+    AtlasInfoIconComponent,
   ],
   providers: [TranslatePipe],
 })

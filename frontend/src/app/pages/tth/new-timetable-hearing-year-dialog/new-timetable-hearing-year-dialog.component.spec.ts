@@ -11,8 +11,7 @@ import { SelectComponent } from '../../../core/form-components/select/select.com
 import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
-import { DateIconComponent } from '../../../core/form-components/date-icon/date-icon.component';
+import { AtlasDateIconComponent, AtlasInfoIconComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 
@@ -65,10 +64,10 @@ describe('NewTimetableHearingYearDialogComponent', () => {
         AppTestingModule,
         NewTimetableHearingYearDialogComponent,
         DateRangeComponent,
-        DateIconComponent,
-        InfoIconComponent,
+        AtlasDateIconComponent,
+        AtlasInfoIconComponent,
         AtlasLabelFieldComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         SelectComponent,
         AtlasSpacerComponent,
         MockAtlasFieldErrorComponent,

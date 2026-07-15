@@ -11,17 +11,18 @@ import {
 import { TerminationDecision } from '../../../../../../api/model/terminationDecision';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { JudgementType } from '../../../../../../api';
-import { AtlasLabelFieldComponent } from '@atlas/form';
-import { DateIconComponent } from '../../../../../../core/form-components/date-icon/date-icon.component';
+import { AtlasDateIconComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
 import { MIN_DATE } from '../../../../../../core/date/date.service';
-import { StopPointTerminationWorkflowService } from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
+import {
+  StopPointTerminationWorkflowService
+} from '../../../../../../api/service/workflow/stop-point-termination-workflow.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
 import { DialogData } from '../../../../../../core/components/dialog/dialog.data';
+import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 export interface TerminationDecisionDetailDialogData extends DialogData {
@@ -49,7 +50,7 @@ export interface TerminationDecisionDetailDialogData extends DialogData {
     MatRadioGroup,
     ReactiveFormsModule,
     AtlasLabelFieldComponent,
-    DateIconComponent,
+    AtlasDateIconComponent,
     MatDatepicker,
     MatDatepickerInput,
   ],

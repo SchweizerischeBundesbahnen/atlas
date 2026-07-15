@@ -20,18 +20,17 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { disabled, form, required, validateTree } from '@angular/forms/signals';
-import { TextFieldSfComponent } from '../../../../core/form-components/text-field-sf/text-field-sf.component';
+import { AtlasCommentComponent, AtlasTextFieldComponent } from '@atlas/form';
 import { AtlasButtonType } from '../../../../core/components/button/atlas-button.type';
-import { AtlasFormCommentSfComponent } from '../../../../core/form-components/comment-sf/atlas-form-comment-sf.component';
 import { TransportCompanyDetailFacade } from './transport-company-detail.facade';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import moment, { Moment } from 'moment';
 import { DialogData } from '../../../../core/components/dialog/dialog.data';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { required as requiredValue } from '../../../../core/util/values';
-import { BoSelectSfComponent } from '../../../../core/form-components/bo-select-sf/bo-select-sf.component';
-import { DateRangeSfComponent } from '../../../../core/form-components/date-range-sf/date-range-sf.component';
 import { DATE_PATTERN } from '../../../../core/date/date.service';
+import { AtlasBoSelectComponent } from '../../../../core/form-components/atlas-bo-select/atlas-bo-select.component';
+import { AtlasDateRangeComponent } from '../../../../core/form-components/atlas-date-range/atlas-date-range.component';
 
 type TransportCompanyFormModel = {
   id: number;
@@ -71,10 +70,10 @@ export type TransportCompanyRelationFormModelValidated = {
     AtlasButtonComponent,
     BackButtonDirective,
     TranslatePipe,
-    TextFieldSfComponent,
-    AtlasFormCommentSfComponent,
-    BoSelectSfComponent,
-    DateRangeSfComponent,
+    AtlasTextFieldComponent,
+    AtlasBoSelectComponent,
+    AtlasDateRangeComponent,
+    AtlasCommentComponent,
   ],
   providers: [TransportCompanyDetailFacade],
 })

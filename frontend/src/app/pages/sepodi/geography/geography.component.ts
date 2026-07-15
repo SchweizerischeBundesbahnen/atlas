@@ -19,7 +19,7 @@ import { MapService } from '../map/map.service';
 import { MatRadioButton, MatRadioChange, MatRadioGroup } from '@angular/material/radio';
 import { filter, takeUntil } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { InfoIconComponent } from '@atlas/form';
+import { AtlasInfoIconComponent } from '@atlas/form';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
@@ -35,7 +35,7 @@ export const WGS84_MAX_DIGITS = 11;
   templateUrl: './geography.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    InfoIconComponent,
+    AtlasInfoIconComponent,
     AtlasSlideToggleComponent,
     ReactiveFormsModule,
     MatRadioGroup,

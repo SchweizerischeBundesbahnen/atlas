@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -86,7 +86,7 @@ describe('StatementDialogComponent', () => {
     const dropdownLabel = fixture.debugElement.query(By.css('div > span'));
     expect(dropdownLabel.nativeElement.textContent).to.contain('TTH.STATEMENT.DIALOG.TEXT');
 
-    const dropdownSelect = fixture.debugElement.query(By.css('atlas-form-comment'));
+    const dropdownSelect = fixture.debugElement.query(By.css('atlas-comment'));
     expect(dropdownSelect.nativeElement).toBeTruthy();
 
     const matDialogActions = fixture.debugElement.query(By.css('mat-dialog-actions'));

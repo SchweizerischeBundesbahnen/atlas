@@ -6,7 +6,7 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  selector: 'atlas-form-comment',
+  selector: 'atlas-comment',
   templateUrl: './comment.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./comment.component.scss'],

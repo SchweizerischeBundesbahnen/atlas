@@ -8,7 +8,7 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TextFieldSfComponent } from '../../../../core/form-components/text-field-sf/text-field-sf.component';
+import { AtlasTextFieldComponent } from '@atlas/form';
 import { disabled, form } from '@angular/forms/signals';
 import { Company } from '../../../../api';
 
@@ -32,7 +32,7 @@ type CompanyFormModel = {
     AtlasButtonComponent,
     BackButtonDirective,
     TranslatePipe,
-    TextFieldSfComponent,
+    AtlasTextFieldComponent,
   ],
 })
 export class CompanyDetailComponent implements OnInit {

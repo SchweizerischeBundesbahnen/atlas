@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { DateRangeComponent } from './date-range.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DateIconComponent } from '../date-icon/date-icon.component';
+import { AtlasDateIconComponent, AtlasInfoIconComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
 import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { TodayAndFutureTimetableHeaderComponent } from './today-and-future-timetable-header/today-and-future-timetable-header.component';
@@ -35,9 +34,9 @@ describe('DateRangeComponent', () => {
         MatDatepicker,
         DateRangeComponent,
         TodayAndFutureTimetableHeaderComponent,
-        DateIconComponent,
+        AtlasDateIconComponent,
         AtlasFieldErrorComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         AtlasLabelFieldComponent,
         TranslatePipe,
       ],
@@ -100,7 +99,7 @@ describe('DateRangeComponent', () => {
   });
 
   function openValidFromPickerAndSelectHeader() {
-    const datePickerToggles = fixture.debugElement.queryAll(By.css('atlas-form-date-icon'));
+    const datePickerToggles = fixture.debugElement.queryAll(By.css('atlas-date-icon'));
     expect(datePickerToggles.length).toEqual(2);
 
     const validFromToggle = datePickerToggles[0];
@@ -116,7 +115,7 @@ describe('DateRangeComponent', () => {
     todayButton.nativeElement.click();
     fixture.detectChanges();
 
-    const datePickerToggles = fixture.debugElement.queryAll(By.css('atlas-form-date-icon'));
+    const datePickerToggles = fixture.debugElement.queryAll(By.css('atlas-date-icon'));
     datePickerToggles[1].nativeElement.click();
     fixture.detectChanges();
 

@@ -10,7 +10,7 @@ import { LanguageSwitcherComponent } from '../language-switcher/language-switche
 import { UserComponent } from '../user/user.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MaintenanceIconComponent } from './maintenance-icon/maintenance-icon.component';
-import { InfoIconComponent } from '@atlas/form';
+import { AtlasInfoIconComponent } from '@atlas/form';
 
 @Component({
   selector: 'atlas-header',
@@ -20,7 +20,7 @@ import { InfoIconComponent } from '@atlas/form';
   imports: [
     MatToolbar,
     RouterLink,
-    InfoIconComponent,
+    AtlasInfoIconComponent,
     NgClass,
     LanguageSwitcherComponent,
     UserComponent,

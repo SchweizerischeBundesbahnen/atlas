@@ -3,7 +3,7 @@
   {{ geographyOptional() ? '' : '*' }}
 
   @if (geographyOptional()) {
-    <atlas-form-info-icon infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}" />
+    <atlas-info-icon infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}" />
     <atlas-slide-toggle [(toggle)]="geographyActive" [disabled]="!editMode()" />
   }
 </div>

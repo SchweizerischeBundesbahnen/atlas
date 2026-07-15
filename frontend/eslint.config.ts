@@ -14,11 +14,9 @@ export default defineConfig([
       eslintConfigPrettier,
     ],
     ignores: [
-      'projects/**/*',
       '**node_modules/**/*',
       'src/app/api/**/*',
       'cypress.config.ts',
-      'components/coverage/**/*',
       'coverage/**/*',
     ],
     processor: angular.processInlineTemplates,

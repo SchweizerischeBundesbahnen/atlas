@@ -12,16 +12,15 @@ import { Component, input, signal, WritableSignal } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
-import { TextFieldSfComponent } from '../../../../core/form-components/text-field-sf/text-field-sf.component';
-import { AtlasFormCommentSfComponent } from '../../../../core/form-components/comment-sf/atlas-form-comment-sf.component';
-import { BoSelectSfComponent } from '../../../../core/form-components/bo-select-sf/bo-select-sf.component';
-import { DateRangeSfComponent } from '../../../../core/form-components/date-range-sf/date-range-sf.component';
+import { AtlasCommentComponent, AtlasTextFieldComponent } from '@atlas/form';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
 import { Field } from '@angular/forms/signals';
 import moment from 'moment';
+import { AtlasDateRangeComponent } from '../../../../core/form-components/atlas-date-range/atlas-date-range.component';
+import { AtlasBoSelectComponent } from '../../../../core/form-components/atlas-bo-select/atlas-bo-select.component';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -92,43 +91,43 @@ class MockDetailPageContainerComponent {}
 class MockDetailPageContentComponent {}
 
 @Component({
-  selector: 'atlas-text-field-sf',
+  selector: 'atlas-text-field',
   template: '',
   standalone: true,
 })
-class MockTextFieldSfComponent {
+class MockAtlasTextFieldComponent {
   readonly field = input.required<Field<unknown>>();
   readonly fieldName = input<string>();
   readonly fieldLabel = input<string>();
 }
 
 @Component({
-  selector: 'atlas-form-comment-sf',
+  selector: 'atlas-comment',
   template: '',
   standalone: true,
 })
-class MockAtlasFormCommentSfComponent {
+class MockAtlasCommentComponent {
   readonly field = input.required<Field<unknown>>();
   readonly displayLabel = input<boolean>();
 }
 
 @Component({
-  selector: 'atlas-bo-select-sf',
+  selector: 'atlas-bo-select',
   template: '',
   standalone: true,
 })
-class MockBoSelectSfComponent {
+class MockBoSelectComponent {
   readonly field = input.required<Field<unknown>>();
   readonly disabled = input<boolean>();
   readonly valueExtraction = input<string>();
 }
 
 @Component({
-  selector: 'atlas-date-range-sf',
+  selector: 'atlas-date-range',
   template: '',
   standalone: true,
 })
-class MockDateRangeSfComponent {
+class MockAtlasDateRangeComponent {
   readonly validFromField = input.required<Field<unknown>>();
   readonly validToField = input.required<Field<unknown>>();
 }
@@ -183,10 +182,10 @@ describe('TransportCompanyDetailComponent', () => {
     (mockFacade.isEditMode as WritableSignal<boolean>).set(true);
     fixture.detectChanges();
 
-    const boSelect = fixture.debugElement.query(By.directive(MockBoSelectSfComponent))?.componentInstance as
-      MockBoSelectSfComponent | undefined;
-    const dateRange = fixture.debugElement.query(By.directive(MockDateRangeSfComponent))?.componentInstance as
-      MockDateRangeSfComponent | undefined;
+    const boSelect = fixture.debugElement.query(By.directive(MockBoSelectComponent))?.componentInstance as
+      MockBoSelectComponent | undefined;
+    const dateRange = fixture.debugElement.query(By.directive(MockAtlasDateRangeComponent))?.componentInstance as
+      MockAtlasDateRangeComponent | undefined;
 
     expect(boSelect).toBeDefined();
     expect(dateRange).toBeDefined();
@@ -248,10 +247,10 @@ describe('TransportCompanyDetailComponent', () => {
         imports: [
           DetailPageContainerComponent,
           DetailPageContentComponent,
-          TextFieldSfComponent,
-          AtlasFormCommentSfComponent,
-          BoSelectSfComponent,
-          DateRangeSfComponent,
+          AtlasTextFieldComponent,
+          AtlasCommentComponent,
+          AtlasBoSelectComponent,
+          AtlasDateRangeComponent,
           RelationComponent,
           DetailFooterComponent,
           AtlasButtonComponent,
@@ -262,10 +261,10 @@ describe('TransportCompanyDetailComponent', () => {
         imports: [
           MockDetailPageContainerComponent,
           MockDetailPageContentComponent,
-          MockTextFieldSfComponent,
-          MockAtlasFormCommentSfComponent,
-          MockBoSelectSfComponent,
-          MockDateRangeSfComponent,
+          MockAtlasTextFieldComponent,
+          MockAtlasCommentComponent,
+          MockBoSelectComponent,
+          MockAtlasDateRangeComponent,
           MockRelationComponent,
           MockDetailFooterComponent,
           MockAtlasButtonComponent,
@@ -296,8 +295,8 @@ describe('TransportCompanyDetailComponent', () => {
       fixture.detectChanges();
 
       const textFieldComponents = fixture.debugElement
-        .queryAll(By.directive(MockTextFieldSfComponent))
-        .map((element) => element.componentInstance as MockTextFieldSfComponent);
+        .queryAll(By.directive(MockAtlasTextFieldComponent))
+        .map((element) => element.componentInstance as MockAtlasTextFieldComponent);
       const fieldValueByName = (fieldName: string) => {
         const field = textFieldComponents.find((componentInstance) => componentInstance.fieldName() === fieldName);
         expect(field).toBeDefined();
@@ -311,8 +310,8 @@ describe('TransportCompanyDetailComponent', () => {
       expect(fieldValueByName('businessRegisterName')).toBe(transportCompany.businessRegisterName);
       expect(fieldValueByName('businessRegisterNumber')).toBe(transportCompany.businessRegisterNumber);
 
-      const commentField = fixture.debugElement.query(By.directive(MockAtlasFormCommentSfComponent))
-        ?.componentInstance as MockAtlasFormCommentSfComponent | undefined;
+      const commentField = fixture.debugElement.query(By.directive(MockAtlasCommentComponent))?.componentInstance as
+        MockAtlasCommentComponent | undefined;
       expect(commentField).toBeDefined();
       expect(commentField?.field()().value()).toBe(transportCompany.comment);
     });
@@ -405,8 +404,8 @@ describe('TransportCompanyDetailComponent', () => {
 
       fixture.detectChanges();
 
-      const boSelect = fixture.debugElement.query(By.directive(MockBoSelectSfComponent))?.componentInstance as
-        MockBoSelectSfComponent | undefined;
+      const boSelect = fixture.debugElement.query(By.directive(MockBoSelectComponent))?.componentInstance as
+        MockBoSelectComponent | undefined;
 
       expect(boSelect).toBeDefined();
       expect(boSelect?.field()().value()).toEqual(selectedRelation.businessOrganisation);
@@ -461,16 +460,16 @@ describe('TransportCompanyDetailComponent', () => {
 
     it('should disable all transport company fields', () => {
       const textFieldComponents = fixture.debugElement
-        .queryAll(By.directive(MockTextFieldSfComponent))
-        .map((element) => element.componentInstance as MockTextFieldSfComponent);
+        .queryAll(By.directive(MockAtlasTextFieldComponent))
+        .map((element) => element.componentInstance as MockAtlasTextFieldComponent);
 
       expect(textFieldComponents.length).toBeGreaterThan(0);
       textFieldComponents.forEach((textField) => {
         expect(textField.field()().disabled()).toBe(true);
       });
 
-      const commentField = fixture.debugElement.query(By.directive(MockAtlasFormCommentSfComponent))
-        ?.componentInstance as MockAtlasFormCommentSfComponent | undefined;
+      const commentField = fixture.debugElement.query(By.directive(MockAtlasCommentComponent))?.componentInstance as
+        MockAtlasCommentComponent | undefined;
       expect(commentField).toBeDefined();
       expect(commentField?.field()().disabled()).toBe(true);
     });

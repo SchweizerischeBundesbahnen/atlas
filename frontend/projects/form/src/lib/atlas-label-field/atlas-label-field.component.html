@@ -1,0 +1,16 @@
+<div>
+  <span [ngClass]="required() ? 'required-indicator' : ''" class="font-bold-lg">{{ fieldLabel() | translate }}</span>
+  @if (infoIconLink && infoIconTitle) {
+    <atlas-info-icon
+      atlasInfoLink
+      infoLinkTranslationKey="{{ infoIconLink }}"
+      infoTitle="{{ infoIconTitle | translate }}"
+    />
+  }
+  @if (infoIconTitle && !infoIconLink) {
+    <atlas-info-icon infoTitle="{{ infoIconTitle | translate }}" />
+  }
+</div>
+@for (fieldExample of fieldExamples; track $index) {
+  <span class="font-regular-sm">{{ translate(fieldExample) }}</span>
+}

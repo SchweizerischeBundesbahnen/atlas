@@ -3,17 +3,17 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "components": {
+    "form": {
       "projectType": "library",
-      "root": "components",
-      "sourceRoot": "components/src",
+      "root": "projects/form",
+      "sourceRoot": "projects/form/src",
       "prefix": "atlas",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
             "development": {
-              "tsConfig": "components/tsconfig.lib.json"
+              "tsConfig": "projects/form/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "development"
@@ -22,22 +22,22 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "runner": "vitest",
-            "tsConfig": "components/tsconfig.spec.json",
+            "tsConfig": "projects/form/tsconfig.spec.json",
             "watch": false,
             "coverage": true,
             "coverageReporters": ["text", "lcov"],
             "coverageInclude": [
-              "frontend/components/src/lib/**/*.ts"
+              "frontend/projects/form/src/lib/**/*.ts"
             ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": "components/eslint.config.ts",
+            "eslintConfig": "projects/form/eslint.config.ts",
             "lintFilePatterns": [
-              "components/src/**/*.ts",
-              "components/src/**/*.html"
+              "projects/form/src/**/*.ts",
+              "projects/form/src/**/*.html"
             ]
           }
         }

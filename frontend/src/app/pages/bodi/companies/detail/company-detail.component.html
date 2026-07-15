@@ -12,7 +12,7 @@
 
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-6 pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="uicCode"
               fieldLabel="BODI.COMPANIES.UIC_CODE"
               [field]="companyForm.uicCode"
@@ -20,7 +20,7 @@
           </div>
 
           <div class="d-flex flex-column col-6 pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="countryCodeIso"
               fieldLabel="BODI.COMPANIES.COUNTRY_CODE"
               [field]="companyForm.countryCodeIso"
@@ -30,7 +30,7 @@
 
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-12 pe-3">
-            <atlas-text-field-sf
+            <atlas-text-field
               fieldName="shortName"
               fieldLabel="BODI.COMPANIES.SHORT_NAME"
               [field]="companyForm.shortName"
@@ -40,19 +40,19 @@
 
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-12 pe-3">
-            <atlas-text-field-sf fieldName="name" fieldLabel="BODI.COMPANIES.NAME" [field]="companyForm.name" />
+            <atlas-text-field fieldName="name" fieldLabel="BODI.COMPANIES.NAME" [field]="companyForm.name" />
           </div>
         </div>
 
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-12 pe-3">
-            <atlas-text-field-sf fieldName="url" fieldLabel="BODI.COMPANIES.URL" [field]="companyForm.url">
+            <atlas-text-field fieldName="url" fieldLabel="BODI.COMPANIES.URL" [field]="companyForm.url">
               <ng-template #customChildInputPostfixTemplate>
                 <a [attr.href]="prependHttp(companyForm.url().value())" target="_blank" rel="noopener">
                   <atlas-link-icon />
                 </a>
               </ng-template>
-            </atlas-text-field-sf>
+            </atlas-text-field>
           </div>
         </div>
       </div>
