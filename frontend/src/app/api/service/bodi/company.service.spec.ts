@@ -49,7 +49,7 @@ describe('CompanyService', () => {
   });
 
   it('should getCompany', () => {
-    const uic = 123456;
+    const uic = '123456';
 
     service.getCompany(uic);
 
