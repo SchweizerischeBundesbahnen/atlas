@@ -185,7 +185,7 @@
               {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
             </div>
             <div class="color-gray-900">
-              {{ locationInformation?.canton | displayCanton }}
+              {{ locationInformation?.canton | transformCantonToShorthand | translate }}
             </div>
           </div>
           <div class="col-2 pe-3">
