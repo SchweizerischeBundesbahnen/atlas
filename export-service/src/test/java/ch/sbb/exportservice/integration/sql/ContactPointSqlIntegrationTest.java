@@ -77,23 +77,6 @@ class ContactPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     assertThat(result.getFirst().getParentServicePointSloid()).isEqualTo("ch:1:sloid:7000");
   }
 
-  @Test
-  void shouldReturnTimetableFutureContactPoints() throws SQLException {
-    //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    insertContactPoint(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
-        actualTimetableYearChangeDate.minusYears(1),
-        actualTimetableYearChangeDate.plusYears(1));
-    String sqlQuery = ContactPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
-
-    //when
-    List<ContactPointVersion> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-
-  }
-
   private List<ContactPointVersion> executeQuery(String sqlQuery) throws SQLException {
     List<ContactPointVersion> result = new ArrayList<>();
     Connection connection = prmDataSource.getConnection();

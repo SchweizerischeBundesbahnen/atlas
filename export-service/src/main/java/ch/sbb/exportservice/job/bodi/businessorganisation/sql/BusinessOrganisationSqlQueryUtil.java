@@ -1,9 +1,6 @@
 package ch.sbb.exportservice.job.bodi.businessorganisation.sql;
 
-import static ch.sbb.exportservice.model.ExportTypeV2.FUTURE_TIMETABLE;
-
 import ch.sbb.atlas.helper.DateHelper;
-import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.exportservice.job.SqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import java.time.LocalDate;
@@ -27,10 +24,7 @@ public class BusinessOrganisationSqlQueryUtil extends SqlQueryUtil {
   private static final String GROUP_BY = "group by bov.id, tc.id";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    LocalDate date =
-        exportTypeV2 == FUTURE_TIMETABLE ? FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now())
-            : LocalDate.now();
-    String transportCompanyRelationDateAsSqlString = DateHelper.getDateAsSqlString(date);
+    String transportCompanyRelationDateAsSqlString = DateHelper.getDateAsSqlString(LocalDate.now());
 
     String sqlQuery = ExportSqlQueryBuilder.builder()
         .exportType(exportTypeV2)

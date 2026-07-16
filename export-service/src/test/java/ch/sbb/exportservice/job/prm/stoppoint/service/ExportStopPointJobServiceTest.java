@@ -13,6 +13,6 @@ class ExportStopPointJobServiceTest {
   void shouldGetExportTypes() {
     ExportStopPointJobService exportStopPointJobService = new ExportStopPointJobService(null, null, null);
     List<JobParams> exportTypes = exportStopPointJobService.getExportTypes();
-    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE_WITH_FUTURE);
+    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE);
   }
 }

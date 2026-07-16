@@ -13,7 +13,7 @@ class ExportToiletJobServiceTest {
   void shouldGetExportTypes() {
     ExportToiletJobService exportToiletJobService = new ExportToiletJobService(null, null, null);
     List<JobParams> exportTypes = exportToiletJobService.getExportTypes();
-    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE_WITH_FUTURE);
+    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE);
   }
 
 }

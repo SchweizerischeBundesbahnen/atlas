@@ -93,22 +93,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
   }
 
   @Test
-  void shouldReturnWorldOnlyTimetableFutureData() throws SQLException {
-    //given
-    LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    int servicePointNumber = 9005886;
-    insertServicePoint(servicePointNumber, now, now, Country.EGYPT);
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
-
-    //when
-    List<ServicePointVersion> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
-  }
-
-  @Test
   void shouldReturnWorldOnlyTimetableYearsData() throws SQLException {
     //given
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
@@ -141,24 +125,6 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumber);
-  }
-
-  @Test
-  void shouldReturnSwissOnlyTimetableFutureData() throws SQLException {
-    //given
-    LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    int servicePointNumberAfghanistan = 6805886;
-    insertServicePoint(servicePointNumberAfghanistan, now, now, Country.AFGHANISTAN);
-    int servicePointNumberSwitzerland = 8572299;
-    insertServicePoint(servicePointNumberSwitzerland, now, now, Country.SWITZERLAND);
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.SWISS_FUTURE_TIMETABLE);
-
-    //when
-    List<ServicePointVersion> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-    assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumberSwitzerland);
   }
 
   @Test

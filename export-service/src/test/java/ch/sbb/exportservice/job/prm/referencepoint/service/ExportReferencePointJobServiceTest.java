@@ -13,7 +13,7 @@ class ExportReferencePointJobServiceTest {
   void shouldGetExportTypes() {
     ExportReferencePointJobService exportReferencePointJobService = new ExportReferencePointJobService(null, null, null);
     List<JobParams> exportTypes = exportReferencePointJobService.getExportTypes();
-    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE_WITH_FUTURE);
+    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE);
   }
 
 }

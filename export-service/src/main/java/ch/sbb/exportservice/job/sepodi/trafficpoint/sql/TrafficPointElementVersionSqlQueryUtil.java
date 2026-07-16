@@ -1,9 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.trafficpoint.sql;
 
-import static ch.sbb.exportservice.model.ExportTypeV2.WORLD_FUTURE_TIMETABLE;
-
 import ch.sbb.atlas.helper.DateHelper;
-import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.exportservice.job.SqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import java.time.LocalDate;
@@ -27,11 +24,7 @@ public class TrafficPointElementVersionSqlQueryUtil extends SqlQueryUtil {
   private static final String GROUP_BY_STATEMENT = "GROUP BY spv.id, tpev.id, sbov.id, tpevg.id ";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
-    LocalDate date =
-        exportTypeV2 == WORLD_FUTURE_TIMETABLE ? FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now())
-            : LocalDate.now();
-
-    String dateAsSqlString = DateHelper.getDateAsSqlString(date);
+    String dateAsSqlString = DateHelper.getDateAsSqlString(LocalDate.now());
 
     log.info("ExportTypeV2: {}", exportTypeV2);
 

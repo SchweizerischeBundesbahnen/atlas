@@ -79,22 +79,6 @@ class RelationSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     assertThat(result.getFirst().getReferencePointSloid()).isEqualTo("ch:1:sloid:7000:2");
   }
 
-  @Test
-  void shouldReturnTimetableFutureRelation() throws SQLException {
-    //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    insertRelation(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), "ch:1:sloid:7000:2",
-        actualTimetableYearChangeDate.minusYears(1), actualTimetableYearChangeDate.plusYears(1));
-    String sqlQuery = RelationVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
-
-    //when
-    List<RelationVersion> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-
-  }
-
   private List<RelationVersion> executeQuery(String sqlQuery) throws SQLException {
     List<RelationVersion> result = new ArrayList<>();
     Connection connection = prmDataSource.getConnection();

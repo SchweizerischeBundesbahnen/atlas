@@ -3,7 +3,6 @@ package ch.sbb.exportservice.integration.sql;
 import static ch.sbb.atlas.model.FutureTimetableHelper.getTimetableYearChangeDateToExportData;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.sql.TrafficPointElementVersionRowMapper;
@@ -41,30 +40,6 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     assertThat(trafficPointElementVersion).isNotNull();
     assertThat(trafficPointElementVersion.getServicePointSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
         "ch:1:sboid:101999");
-  }
-
-  @Test
-  void shouldReturnTimetableFuture() throws SQLException {
-    //given
-    final LocalDate futureDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    final int servicePointNumber = 1205887;
-    insertServicePoint(servicePointNumber, futureDate, futureDate, Country.SWITZERLAND);
-    final String sloid = "ch:1:sloid:77559:0:2";
-    insertTrafficPoint(sloid, futureDate, futureDate);
-    insertTrafficPoint("ch:1:sloid:1", futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
-
-    //when
-    final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).isNotEmpty().hasSize(1);
-    final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> t.getSloid().equals(sloid))
-        .findFirst().orElseThrow();
-    assertThat(trafficPointElementVersion).isNotNull();
-    assertThat(trafficPointElementVersion.getServicePointSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
-        "ch:1:sboid:101999");
-    result.forEach(t -> assertThat(isDateInRange(futureDate, t.getValidFrom(), t.getValidTo())).isTrue());
   }
 
   @Test

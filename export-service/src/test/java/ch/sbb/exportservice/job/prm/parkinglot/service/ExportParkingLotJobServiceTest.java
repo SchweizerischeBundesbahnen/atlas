@@ -13,6 +13,6 @@ class ExportParkingLotJobServiceTest {
   void shouldGetExportTypes() {
     ExportParkingLotJobService exportParkingLotJobService = new ExportParkingLotJobService(null, null, null);
     List<JobParams> exportTypes = exportParkingLotJobService.getExportTypes();
-    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE_WITH_FUTURE);
+    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE);
   }
 }

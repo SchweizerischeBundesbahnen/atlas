@@ -58,18 +58,6 @@ class BusinessOrganisationSqlntegrationTest {
   }
 
   @Test
-  void shouldReturnTimetableFutureBusinessOrganisations() throws SQLException {
-    //given
-    String sqlQuery = BusinessOrganisationSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
-
-    //when
-    List<BusinessOrganisation> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-  }
-
-  @Test
   void shouldReturnTimetableYearsBusinessOrganisations() throws SQLException {
     //given
     String sqlQuery = BusinessOrganisationSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
