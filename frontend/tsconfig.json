@@ -18,10 +18,10 @@
     "useDefineForClassFields": false,
     "paths": {
       "@atlas/form": [
-        "./projects/form/src/public-api.ts"
+        "./components/form/src/public-api.ts"
       ],
       "@atlas/form/*": [
-        "./projects/form/src/*"
+        "./components/form/src/*"
       ]
     }
   },
@@ -34,7 +34,7 @@
   "include": ["src/**/*.spec.ts", "src/**/*.ts"],
   "references": [
     {
-      "path": "./projects/form/tsconfig.lib.json"
+      "path": "./components/form/tsconfig.lib.json"
     }
   ]
 }

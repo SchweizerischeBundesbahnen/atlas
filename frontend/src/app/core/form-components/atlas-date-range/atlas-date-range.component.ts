@@ -1,5 +1,7 @@
 import { Component, input } from '@angular/core';
-import { TodayAndFutureTimetableHeaderComponent } from '../date-range/today-and-future-timetable-header/today-and-future-timetable-header.component';
+import {
+  TodayAndFutureTimetableHeaderComponent
+} from '../date-range/today-and-future-timetable-header/today-and-future-timetable-header.component';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
 import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { Field, FormField } from '@angular/forms/signals';
@@ -19,7 +21,7 @@ import { AtlasLabelFieldComponent } from '@atlas/form/lib/atlas-label-field/atla
     FormField,
   ],
   templateUrl: './atlas-date-range.component.html',
-  styleUrls: ['../../../../../projects/form/src/lib/atlas-text-field/atlas-text-field.component.scss'],
+  styleUrls: ['../../../../../components/form/src/lib/atlas-text-field/atlas-text-field.component.scss'],
 })
 export class AtlasDateRangeComponent {
   validFromHeader = TodayAndFutureTimetableHeaderComponent;
