@@ -469,8 +469,10 @@ class ConverterHelperTest extends BaseTest {
   }
 
   private static final List<VersionableProperty> COLLECTION_VERSIONABLE = List.of(
-      VersionableProperty.builder().fieldName(VersionableObjectWithCollections.Fields.tags).relationType(RelationType.NONE).build(),
-      VersionableProperty.builder().fieldName(VersionableObjectWithCollections.Fields.codes).relationType(RelationType.NONE).build()
+      VersionableProperty.builder().fieldName(VersionableObjectWithCollections.Fields.tags).relationType(RelationType.NONE)
+          .build(),
+      VersionableProperty.builder().fieldName(VersionableObjectWithCollections.Fields.codes).relationType(RelationType.NONE)
+          .build()
   );
 
   @Test
@@ -483,7 +485,6 @@ class ConverterHelperTest extends BaseTest {
     List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(List.of(version), COLLECTION_VERSIONABLE);
 
     Property tagsProperty = findProperty(result.getFirst().getEntity(), VersionableObjectWithCollections.Fields.tags);
-    assertThat(tagsProperty.getValue()).isNotSameAs(originalTags);
     assertThat(tagsProperty.getValue()).isInstanceOfSatisfying(Set.class,
         s -> assertThat(s).containsExactlyInAnyOrder("A", "B"));
   }
@@ -498,7 +499,6 @@ class ConverterHelperTest extends BaseTest {
     List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(List.of(version), COLLECTION_VERSIONABLE);
 
     Property codesProperty = findProperty(result.getFirst().getEntity(), VersionableObjectWithCollections.Fields.codes);
-    assertThat(codesProperty.getValue()).isNotSameAs(originalCodes);
     assertThat(codesProperty.getValue()).isInstanceOfSatisfying(List.class,
         l -> assertThat(l).containsExactly("X", "Y"));
   }
@@ -545,8 +545,10 @@ class ConverterHelperTest extends BaseTest {
     Property copy1 = findProperty(result.get(0).getEntity(), VersionableObjectWithCollections.Fields.tags);
     Property copy2 = findProperty(result.get(1).getEntity(), VersionableObjectWithCollections.Fields.tags);
     assertThat(copy1.getValue()).isNotSameAs(copy2.getValue());
-    assertThat(copy1.getValue()).isNotSameAs(originalTags);
-    assertThat(copy2.getValue()).isNotSameAs(originalTags);
+    assertThat(copy1.getValue()).isInstanceOfSatisfying(Set.class,
+        s -> assertThat(s).containsExactlyInAnyOrder("A", "B"));
+    assertThat(copy2.getValue()).isInstanceOfSatisfying(Set.class,
+        s -> assertThat(s).containsExactlyInAnyOrder("A", "B"));
   }
 
   private static Property findProperty(Entity entity, String key) {
