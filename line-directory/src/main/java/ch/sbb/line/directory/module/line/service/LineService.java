@@ -123,14 +123,6 @@ public class LineService extends RevokeService<LineVersion> {
     return lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
   }
 
-  public void skipWorkflow(Long lineVersionId) {
-    LineVersion lineVersion = getLineVersionById(lineVersionId);
-    if (lineVersion.getStatus() == Status.DRAFT) {
-      lineVersion.setStatus(Status.VALIDATED);
-      lineVersionRepository.save(lineVersion);
-    }
-  }
-
   void deleteById(Long id) {
     if (!lineVersionRepository.existsById(id)) {
       throw new IdNotFoundException(id);
