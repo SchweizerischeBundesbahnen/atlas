@@ -33,7 +33,7 @@ public class ServicePointGeoLocationUpdateConfig {
   public static final String GEO_LOCATION_VERSIONS_KEY = "GeoLocationVersions";
   public static final String UPDATE_SERVICE_POINT_GEO_JOB = "updateServicePointGeoJob";
   private static final int SERVICE_POINT_CHUNK_SIZE = 40;
-  private static final int THREAD_EXECUTION_SIZE = 64;
+  private static final int THREAD_EXECUTION_SIZE = 10;
 
   private final JobRepository jobRepository;
   private final PlatformTransactionManager transactionManager;
