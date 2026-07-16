@@ -89,7 +89,7 @@
     "@playwright/test": "1.61.1",
     "@types/node": "25.9.5",
     "@vitest/coverage-v8": "4.1.10",
-    "angular-eslint": "22.0.0",
+    "angular-eslint": "22.1.0",
     "cypress": "15.18.1",
     "cypress-failed-log": "2.10",
     "cypress-high-resolution": "1.0",
