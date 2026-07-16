@@ -8,14 +8,13 @@ import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { MockAtlasButtonComponent, MockAtlasFieldErrorComponent } from '../../../../../app.testing.mocks';
 import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
+import { AtlasDateIconComponent, AtlasInfoIconComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { SelectComponent } from '../../../../../core/form-components/select/select.component';
 import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
 import { DateRangeTextComponent } from '../../../../../core/versioning/date-range-text/date-range-text.component';
 import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
 import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
-import { DateIconComponent } from '../../../../../core/form-components/date-icon/date-icon.component';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../../../core/notification/notification.service';
@@ -112,13 +111,13 @@ describe('ReferencePointDetailComponent', () => {
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         SelectComponent,
         CommentComponent,
         DateRangeTextComponent,
         SwitchVersionComponent,
         DateRangeComponent,
-        DateIconComponent,
+        AtlasDateIconComponent,
         UserDetailInfoComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,

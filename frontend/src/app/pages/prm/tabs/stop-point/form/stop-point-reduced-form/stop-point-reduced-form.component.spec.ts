@@ -7,7 +7,7 @@ import { StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockAtlasFieldErrorComponent, MockSelectComponent } from '../../../../../../app.testing.mocks';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
+import { AtlasLabelFieldComponent, AtlasInfoIconComponent } from '@atlas/form';
 import { MeansOfTransportPickerComponent } from '../../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
 import { AppTestingModule } from '../../../../../../app.testing.module';
@@ -32,7 +32,7 @@ describe('StopPointReducedFormComponent', () => {
         MockSelectComponent,
         MockAtlasFieldErrorComponent,
         TextFieldComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         AtlasLabelFieldComponent,
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,

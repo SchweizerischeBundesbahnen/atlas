@@ -1,4 +1,4 @@
-import { Component, output, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
@@ -21,7 +21,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { PermissionService } from './core/auth/permission/permission.service';
 import { PageService } from './core/pages/page.service';
 import { Pages } from './pages/pages';
-import { FieldExample } from './core/form-components/text-field/field-example';
+import { FieldExample } from '@atlas/form';
 import { TargetPageType } from './core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { Page } from './core/model/page';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -47,10 +47,10 @@ export class MockSwitchVersionComponent {
 }
 
 @Component({
-  selector: 'atlas-form-info-icon',
+  selector: 'atlas-info-icon',
   template: '',
 })
-export class MockInfoIconComponent {
+export class MockAtlasInfoIconComponent {
   readonly infoTitle = input('');
 }
 

@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
-
 import { Pages } from '../pages';
-
-import { transportCompanyResolver } from './transport-companies/detail/transport-company-detail-resolver.service';
-import { companyResolver } from './companies/detail/company-detail-resolver.service';
+import { transportCompanyResolver } from './transport-companies/detail/transport-company-detail.resolver';
+import { companyResolver } from './companies/detail/company-detail.resolver';
 import { businessOrganisationResolver } from './business-organisations/detail/business-organisation-detail-resolver.service';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 

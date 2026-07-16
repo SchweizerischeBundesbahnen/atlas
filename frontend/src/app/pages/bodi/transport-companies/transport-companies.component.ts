@@ -1,7 +1,6 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { TransportCompany, TransportCompanyStatus } from '../../../api';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableService } from '../../../core/components/table/table.service';
@@ -19,8 +18,8 @@ import { TransportCompanyService } from '../../../api/service/bodi/transport-com
   templateUrl: './transport-companies.component.html',
   imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
-export class TransportCompaniesComponent implements OnInit, OnDestroy {
-  tableColumns: TableColumn<TransportCompany>[] = [
+export class TransportCompaniesComponent implements OnInit {
+  protected readonly tableColumns: TableColumn<TransportCompany>[] = [
     { headerTitle: 'BODI.TRANSPORT_COMPANIES.NUMBER', value: 'number' },
     {
       headerTitle: 'BODI.TRANSPORT_COMPANIES.ABBREVIATION',
@@ -64,12 +63,10 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
     ),
   };
 
-  tableFilterConfig!: TableFilter<unknown>[][];
+  protected tableFilterConfig!: TableFilter<unknown>[][];
 
-  transportCompanies = signal<TransportCompany[]>([]);
-  totalCount = signal(0);
-
-  private transportCompaniesSubscription?: Subscription;
+  readonly transportCompanies = signal<TransportCompany[]>([]);
+  readonly totalCount = signal(0);
 
   private readonly transportCompanyService = inject(TransportCompanyService);
   private readonly route = inject(ActivatedRoute);
@@ -84,7 +81,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
   }
 
   getOverview(pagination: TablePagination) {
-    this.transportCompaniesSubscription = this.transportCompanyService
+    this.transportCompanyService
       .getTransportCompanies(
         this.tableService.filter.chipSearch.getActiveSearch(),
         this.tableService.filter.multiSelectTransportCompanyStatus.getActiveSearch(),
@@ -104,9 +101,5 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
       })
       .then();
-  }
-
-  ngOnDestroy() {
-    this.transportCompaniesSubscription?.unsubscribe();
   }
 }

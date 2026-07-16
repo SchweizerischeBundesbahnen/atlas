@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
 import { MockAtlasFieldErrorComponent, MockSelectComponent } from '../../../../../../app.testing.mocks';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
+import { AtlasLabelFieldComponent, AtlasInfoIconComponent } from '@atlas/form';
 import { MeansOfTransportPickerComponent } from '../../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
 import { PrmVariantInfoService } from '../../prm-variant-info.service';
@@ -31,7 +31,7 @@ describe('StopPointCompleteFormComponent', () => {
         MockSelectComponent,
         TextFieldComponent,
         MockAtlasFieldErrorComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         AtlasLabelFieldComponent,
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,
@@ -60,7 +60,7 @@ describe('StopPointCompleteFormComponent', () => {
     });
 
     it('should display formComments', () => {
-      const formComments = fixture.debugElement.queryAll(By.css('atlas-form-comment'));
+      const formComments = fixture.debugElement.queryAll(By.css('atlas-comment'));
       const formCommentsControlName: string[] = [
         'freeText',
         'additionalInformation',

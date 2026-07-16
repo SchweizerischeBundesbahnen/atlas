@@ -38,7 +38,7 @@
             formControlName="terminationDate"
           />
           <div>
-            <atlas-form-date-icon
+            <atlas-date-icon
               tabindex="0"
               (click)="terminationDatePicker.open()"
               (keydown.enter)="terminationDatePicker.open()"
@@ -52,7 +52,7 @@
       </div>
     }
 
-    <atlas-form-comment
+    <atlas-comment
       [formGroup]="form"
       [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
       controlName="motivation"

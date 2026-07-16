@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SelectComponent } from '../../../../../../../core/form-components/select/select.component';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
 import { MockAtlasFieldErrorComponent } from '../../../../../../../app.testing.mocks';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
+import { AtlasLabelFieldComponent, AtlasInfoIconComponent } from '@atlas/form';
 import { AtlasSpacerComponent } from '../../../../../../../core/components/spacer/atlas-spacer.component';
 import { AppTestingModule } from '../../../../../../../app.testing.module';
 import { PlatformFormGroupBuilder } from '../platform-form-group';
@@ -22,7 +22,7 @@ describe('PlatformReducedFormComponent', () => {
         AppTestingModule,
         PlatformReducedFormComponent,
         SelectComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         TextFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasLabelFieldComponent,

@@ -1,18 +1,37 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BusinessOrganisation, TransportCompany, TransportCompanyBoRelation } from '../../../../api';
+import { TransportCompany, TransportCompanyBoRelation, TransportCompanyStatus } from '../../../../api';
 import { TransportCompanyDetailComponent } from './transport-company-detail.component';
-import moment from 'moment';
-import { of } from 'rxjs';
-import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
-import { ActivatedRoute } from '@angular/router';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { TransportCompanyDetailFacade } from './transport-company-detail.facade';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
-import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
-import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { of } from 'rxjs';
+import { Component, input, signal, WritableSignal } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { AtlasCommentComponent, AtlasTextFieldComponent } from '@atlas/form';
+import { RelationComponent } from '../../../../core/components/relation/relation.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
+import { Field } from '@angular/forms/signals';
+import moment from 'moment';
+import { AtlasDateRangeComponent } from '../../../../core/form-components/atlas-date-range/atlas-date-range.component';
+import { AtlasBoSelectComponent } from '../../../../core/form-components/atlas-bo-select/atlas-bo-select.component';
 
 const transportCompany: TransportCompany = {
   id: 1234,
   description: 'SBB',
+  number: 'TC001',
+  abbreviation: 'SBB',
+  businessRegisterName: 'Swiss Federal Railways',
+  businessRegisterNumber: 'CHE-123456',
+  enterpriseId: 'ENT001',
+  comment: 'Test comment',
+  transportCompanyStatus: TransportCompanyStatus.Current,
 };
 
 const transportCompanyRelations: TransportCompanyBoRelation[] = [
@@ -56,160 +75,403 @@ const transportCompanyRelations: TransportCompanyBoRelation[] = [
   },
 ];
 
+// Mock child components
+@Component({
+  selector: 'atlas-detail-page-container',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockDetailPageContainerComponent {}
+
+@Component({
+  selector: 'atlas-detail-page-content',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockDetailPageContentComponent {}
+
+@Component({
+  selector: 'atlas-text-field',
+  template: '',
+  standalone: true,
+})
+class MockAtlasTextFieldComponent {
+  readonly field = input.required<Field<unknown>>();
+  readonly fieldName = input<string>();
+  readonly fieldLabel = input<string>();
+}
+
+@Component({
+  selector: 'atlas-comment',
+  template: '',
+  standalone: true,
+})
+class MockAtlasCommentComponent {
+  readonly field = input.required<Field<unknown>>();
+  readonly displayLabel = input<boolean>();
+}
+
+@Component({
+  selector: 'atlas-bo-select',
+  template: '',
+  standalone: true,
+})
+class MockBoSelectComponent {
+  readonly field = input.required<Field<unknown>>();
+  readonly disabled = input<boolean>();
+  readonly valueExtraction = input<string>();
+}
+
+@Component({
+  selector: 'atlas-date-range',
+  template: '',
+  standalone: true,
+})
+class MockAtlasDateRangeComponent {
+  readonly validFromField = input.required<Field<unknown>>();
+  readonly validToField = input.required<Field<unknown>>();
+}
+
+@Component({
+  selector: 'atlas-relation',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockRelationComponent {
+  readonly editMode = input<boolean>();
+  readonly editable = input<boolean>();
+  readonly records = input<TransportCompanyBoRelation[]>();
+  readonly selectedIndex = input<number>();
+  readonly tableColumns = input<unknown[]>();
+  readonly titleTranslationKey = input<string>();
+}
+
+@Component({
+  selector: 'atlas-detail-footer',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockDetailFooterComponent {}
+
+@Component({
+  selector: 'atlas-button',
+  template: '',
+  standalone: true,
+})
+class MockAtlasButtonComponent {
+  readonly footerEdit = input<boolean>();
+  readonly buttonType = input<unknown>();
+  readonly buttonDataCy = input<string>();
+  readonly buttonText = input<string>();
+  readonly disabled = input<boolean>();
+  readonly submitButton = input<boolean>();
+  readonly wrapperStyleClass = input<string>();
+}
+
 describe('TransportCompanyDetailComponent', () => {
   let component: TransportCompanyDetailComponent;
   let fixture: ComponentFixture<TransportCompanyDetailComponent>;
 
-  let boService: BusinessOrganisationService;
-  let transportCompanyRelationInternalService: Mocked<
-    Pick<
-      TransportCompanyRelationInternalService,
-      | 'createTransportCompanyRelation'
-      | 'getTransportCompanyBoRelations'
-      | 'updateTransportCompanyRelation'
-      | 'deleteTransportCompanyRelation'
-    >
-  >;
+  let mockFacade: Record<keyof TransportCompanyDetailFacade, unknown>;
+  let mockPermissionService: Partial<PermissionService>;
+  let mockDialogService: Partial<DialogService>;
+  let mockNotificationService: Partial<NotificationService>;
+  let mockActivatedRoute: { snapshot: Pick<ActivatedRouteSnapshot, 'data'> };
 
-  const mockData = [transportCompany, transportCompanyRelations];
+  const fillRelationFormWithValidData = () => {
+    (mockFacade.isEditMode as WritableSignal<boolean>).set(true);
+    fixture.detectChanges();
+
+    const boSelect = fixture.debugElement.query(By.directive(MockBoSelectComponent))?.componentInstance as
+      MockBoSelectComponent | undefined;
+    const dateRange = fixture.debugElement.query(By.directive(MockAtlasDateRangeComponent))?.componentInstance as
+      MockAtlasDateRangeComponent | undefined;
+
+    expect(boSelect).toBeDefined();
+    expect(dateRange).toBeDefined();
+
+    boSelect?.field()().value.set(transportCompanyRelations[0].businessOrganisation);
+    boSelect?.field()().markAsDirty();
+    dateRange?.validFromField()().value.set(moment('2024-01-01'));
+    dateRange?.validToField()().value.set(moment('2024-12-31'));
+  };
 
   beforeEach(() => {
-    transportCompanyRelationInternalService = {
-      createTransportCompanyRelation: vi.fn(),
-      getTransportCompanyBoRelations: vi.fn(),
-      updateTransportCompanyRelation: vi.fn(),
-      deleteTransportCompanyRelation: vi.fn(),
+    mockFacade = {
+      init: vi.fn(),
+      save: vi.fn().mockReturnValue(of({})),
+      deleteRelation: vi.fn().mockReturnValue(of({})),
+      leaveEditMode: vi.fn(),
+      unselectRelation: vi.fn(),
+      toggleEditMode: vi.fn(),
+      selectRelation: vi.fn(),
+      isEditMode: signal(false),
+      isRelationSelected: signal(false),
+      selectedRelation: signal(null),
+      selectedRelationIndex: signal(-1),
+      transportCompanyRelationsReadonly: signal([]),
     };
-    transportCompanyRelationInternalService.createTransportCompanyRelation.mockReturnValue(of({}));
-    transportCompanyRelationInternalService.getTransportCompanyBoRelations.mockReturnValue(of([]));
-    transportCompanyRelationInternalService.updateTransportCompanyRelation.mockReturnValue(of(undefined));
-    transportCompanyRelationInternalService.deleteTransportCompanyRelation.mockReturnValue(of(undefined));
+
+    mockPermissionService = {
+      hasPermissionsToCreate: vi.fn().mockReturnValue(true),
+    };
+
+    mockDialogService = {
+      openDialogDataWithConfirmationResult: vi.fn().mockReturnValue(of(true)),
+    };
+
+    mockNotificationService = {
+      success: vi.fn(),
+    };
+
+    mockActivatedRoute = {
+      snapshot: {
+        data: {
+          transportCompanyDetail: [transportCompany, transportCompanyRelations],
+        },
+      },
+    };
 
     TestBed.configureTestingModule({
+      imports: [TransportCompanyDetailComponent],
       providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: { data: { transportCompanyDetail: mockData } },
-          },
-        },
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
-        {
-          provide: TransportCompanyRelationInternalService,
-          useValue: transportCompanyRelationInternalService,
-        },
+        { provide: PermissionService, useValue: mockPermissionService },
+        { provide: DialogService, useValue: mockDialogService },
+        { provide: NotificationService, useValue: mockNotificationService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
         translateServiceProvider,
       ],
+    }).overrideComponent(TransportCompanyDetailComponent, {
+      remove: {
+        providers: [TransportCompanyDetailFacade],
+        imports: [
+          DetailPageContainerComponent,
+          DetailPageContentComponent,
+          AtlasTextFieldComponent,
+          AtlasCommentComponent,
+          AtlasBoSelectComponent,
+          AtlasDateRangeComponent,
+          RelationComponent,
+          DetailFooterComponent,
+          AtlasButtonComponent,
+        ],
+      },
+      add: {
+        providers: [{ provide: TransportCompanyDetailFacade, useValue: mockFacade }],
+        imports: [
+          MockDetailPageContainerComponent,
+          MockDetailPageContentComponent,
+          MockAtlasTextFieldComponent,
+          MockAtlasCommentComponent,
+          MockBoSelectComponent,
+          MockAtlasDateRangeComponent,
+          MockRelationComponent,
+          MockDetailFooterComponent,
+          MockAtlasButtonComponent,
+        ],
+      },
     });
 
-    boService = TestBed.inject(BusinessOrganisationService);
     fixture = TestBed.createComponent(TransportCompanyDetailComponent);
     component = fixture.componentInstance;
+  });
+
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
+
+  it('should have edit permissions property computed correctly', () => {
     fixture.detectChanges();
+
+    const relation = fixture.debugElement.query(By.directive(MockRelationComponent))?.componentInstance as
+      MockRelationComponent | undefined;
+
+    expect(relation).toBeDefined();
+    expect(relation?.editable()).toBe(true);
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-    expect(component.transportCompany).toEqual({
-      id: 1234,
-      description: 'SBB',
-    });
-    expect(component.transportCompanyRelations).toEqual(transportCompanyRelations);
-  });
+  describe('Initialization (ngOnInit)', () => {
+    it('should initialize transport company form with data from activated route', () => {
+      fixture.detectChanges();
 
-  it('test selectOption function', () => {
-    expect(
-      component.selectOption({
-        organisationNumber: 5,
-        abbreviationDe: 'testAbbreviation',
-        descriptionDe: 'testDescription',
-      } as BusinessOrganisation)
-    ).toBe('5 - testAbbreviation - testDescription');
-  });
+      const textFieldComponents = fixture.debugElement
+        .queryAll(By.directive(MockAtlasTextFieldComponent))
+        .map((element) => element.componentInstance as MockAtlasTextFieldComponent);
+      const fieldValueByName = (fieldName: string) => {
+        const field = textFieldComponents.find((componentInstance) => componentInstance.fieldName() === fieldName);
+        expect(field).toBeDefined();
+        return field?.field()().value();
+      };
 
-  it('should call getAllBusinessOrganisations with correct params', () => {
-    vi.spyOn(boService, 'getAllBusinessOrganisations').mockReturnValue(
-      of({
-        objects: [],
-        totalCount: 0,
-      })
-    );
+      expect(fieldValueByName('number')).toBe(transportCompany.number);
+      expect(fieldValueByName('abbreviation')).toBe(transportCompany.abbreviation);
+      expect(fieldValueByName('description')).toBe(transportCompany.description);
+      expect(fieldValueByName('enterpriseId')).toBe(transportCompany.enterpriseId);
+      expect(fieldValueByName('businessRegisterName')).toBe(transportCompany.businessRegisterName);
+      expect(fieldValueByName('businessRegisterNumber')).toBe(transportCompany.businessRegisterNumber);
 
-    component.getBusinessOrganisations('testSearchString');
-    expect(boService.getAllBusinessOrganisations).toHaveBeenCalledExactlyOnceWith(
-      ['testSearchString'],
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      100
-    );
-  });
-
-  it('should call createTransportCompanyRelation and reloadRelations', () => {
-    component.editMode = true;
-
-    component.form.setValue({
-      businessOrganisation: {
-        sboid: 'ch:1:sboid:100500',
-      } as BusinessOrganisation,
-      validFrom: moment('2020-05-05'),
-      validTo: moment('2021-05-05'),
+      const commentField = fixture.debugElement.query(By.directive(MockAtlasCommentComponent))?.componentInstance as
+        MockAtlasCommentComponent | undefined;
+      expect(commentField).toBeDefined();
+      expect(commentField?.field()().value()).toBe(transportCompany.comment);
     });
 
-    expect(component.form.valid).toBe(true);
+    it('should initialize facade with relations and transport company id', () => {
+      fixture.detectChanges();
 
-    component.save();
-
-    expect(component.form.untouched).toBe(true);
-    expect(component.editMode).toBe(false);
-    expect(transportCompanyRelationInternalService.createTransportCompanyRelation).toHaveBeenCalledExactlyOnceWith({
-      transportCompanyId: 1234,
-      sboid: 'ch:1:sboid:100500',
-      validFrom: moment('2020-05-05').toDate(),
-      validTo: moment('2021-05-05').toDate(),
+      expect(mockFacade.init).toHaveBeenCalledWith(transportCompanyRelations, transportCompany.id);
     });
-    expect(transportCompanyRelationInternalService.getTransportCompanyBoRelations).toHaveBeenCalledExactlyOnceWith(
-      1234
-    );
   });
 
-  it('should call updateTransportCompanyRelation and reloadRelations', () => {
-    component.editMode = true;
-    component.isUpdateRelationSelected = true;
-    component.relationId = 1;
-
-    component.form.setValue({
-      businessOrganisation: {
-        sboid: 'ch:1:sboid:100500',
-      } as BusinessOrganisation,
-      validFrom: moment('2020-05-05'),
-      validTo: moment('2021-05-05'),
+  describe('conditional rendering', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
     });
 
-    expect(component.form.valid).toBe(true);
+    it('should display N/A when status is null from activated route data', () => {
+      mockActivatedRoute.snapshot.data.transportCompanyDetail = [
+        {
+          ...transportCompany,
+          transportCompanyStatus: null,
+        },
+        transportCompanyRelations,
+      ];
 
-    component.save();
+      fixture = TestBed.createComponent(TransportCompanyDetailComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
 
-    expect(component.form.untouched).toBe(true);
-    expect(component.editMode).toBe(false);
-    expect(component.isUpdateRelationSelected).toBe(false);
-    expect(transportCompanyRelationInternalService.updateTransportCompanyRelation).toHaveBeenCalledExactlyOnceWith({
-      id: 1,
-      validFrom: moment('2020-05-05').toDate(),
-      validTo: moment('2021-05-05').toDate(),
+      expect(fixture.debugElement.query(By.css('#status-value')).nativeElement.textContent).toBe('N/A');
     });
-    expect(transportCompanyRelationInternalService.getTransportCompanyBoRelations).toHaveBeenCalledExactlyOnceWith(
-      1234
-    );
   });
 
-  it('should call deleteTransportCompanyRelation and reload relations', () => {
-    component.selectedTransportCompanyRelationIndex = 0;
-    component.deleteRelation();
-    expect(transportCompanyRelationInternalService.deleteTransportCompanyRelation).toHaveBeenCalledExactlyOnceWith(1);
-    expect(transportCompanyRelationInternalService.getTransportCompanyBoRelations).toHaveBeenCalledExactlyOnceWith(
-      1234
-    );
+  describe('Method: saveRelation', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+      fillRelationFormWithValidData();
+    });
+
+    it('should call facade save when invoked', () => {
+      component.saveRelation();
+      expect(mockFacade.save).toHaveBeenCalled();
+    });
+
+    it('should show success notification on save', () => {
+      component.saveRelation();
+      expect(mockNotificationService.success).toHaveBeenCalled();
+    });
+
+    it('should show add success message when relation is not selected', () => {
+      (mockFacade.isRelationSelected as WritableSignal<boolean>).set(false);
+      component.saveRelation();
+      expect(mockNotificationService.success).toHaveBeenCalledWith('RELATION.ADD_SUCCESS_MSG');
+    });
+
+    it('should show update success message when relation is selected', () => {
+      (mockFacade.isRelationSelected as WritableSignal<boolean>).set(true);
+      component.saveRelation();
+      expect(mockNotificationService.success).toHaveBeenCalledWith('RELATION.UPDATE_SUCCESS_MSG');
+    });
+  });
+
+  describe('Method: deleteRelation', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should call facade deleteRelation', () => {
+      component.deleteRelation();
+      expect(mockFacade.deleteRelation).toHaveBeenCalled();
+    });
+
+    it('should show delete success notification', () => {
+      component.deleteRelation();
+      expect(mockNotificationService.success).toHaveBeenCalledWith('RELATION.DELETE_SUCCESS_MSG');
+    });
+  });
+
+  describe('Method: updateRelation', () => {
+    beforeEach(() => {
+      (mockFacade.isEditMode as WritableSignal<boolean>).set(true);
+      fixture.detectChanges();
+    });
+
+    it('should populate form with selected relation data', () => {
+      const selectedRelation = transportCompanyRelations[0];
+      (mockFacade.selectedRelation as WritableSignal<TransportCompanyBoRelation | null>).set(selectedRelation);
+
+      component.updateRelation();
+
+      fixture.detectChanges();
+
+      const boSelect = fixture.debugElement.query(By.directive(MockBoSelectComponent))?.componentInstance as
+        MockBoSelectComponent | undefined;
+
+      expect(boSelect).toBeDefined();
+      expect(boSelect?.field()().value()).toEqual(selectedRelation.businessOrganisation);
+    });
+  });
+
+  describe('Method: leaveEditModeWithDialog', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+      fillRelationFormWithValidData();
+    });
+
+    it('should open dialog when form is dirty', () => {
+      component.leaveEditModeWithDialog();
+      expect(mockDialogService.openDialogDataWithConfirmationResult).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'DIALOG.DISCARD_CHANGES_TITLE',
+          message: 'DIALOG.LEAVE_SITE',
+        })
+      );
+    });
+
+    it('should call facade leaveEditMode when dialog confirms', () => {
+      mockDialogService.openDialogDataWithConfirmationResult = vi.fn().mockReturnValue(of(true));
+
+      component.leaveEditModeWithDialog();
+
+      expect(mockFacade.leaveEditMode).toHaveBeenCalled();
+    });
+
+    it('should not call leaveEditMode when dialog is dismissed', () => {
+      mockDialogService.openDialogDataWithConfirmationResult = vi.fn().mockReturnValue(of(false));
+
+      component.leaveEditModeWithDialog();
+
+      expect(mockFacade.leaveEditMode).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Form State', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should compute dirty state from relation form', () => {
+      expect(component.dirty()).toBe(false);
+
+      fillRelationFormWithValidData();
+
+      expect(component.dirty()).toBe(true);
+    });
+
+    it('should disable all transport company fields', () => {
+      const textFieldComponents = fixture.debugElement
+        .queryAll(By.directive(MockAtlasTextFieldComponent))
+        .map((element) => element.componentInstance as MockAtlasTextFieldComponent);
+
+      expect(textFieldComponents.length).toBeGreaterThan(0);
+      textFieldComponents.forEach((textField) => {
+        expect(textField.field()().disabled()).toBe(true);
+      });
+
+      const commentField = fixture.debugElement.query(By.directive(MockAtlasCommentComponent))?.componentInstance as
+        MockAtlasCommentComponent | undefined;
+      expect(commentField).toBeDefined();
+      expect(commentField?.field()().disabled()).toBe(true);
+    });
   });
 });

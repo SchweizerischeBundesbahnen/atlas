@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivateFn, RouterStateSnapshot } from '@angular/router';
 import { DialogService } from '../components/dialog/dialog.service';
 import { FormGroup } from '@angular/forms';
@@ -6,6 +6,7 @@ import { DialogData } from '../components/dialog/dialog.data';
 
 export interface DetailFormComponent {
   form?: FormGroup;
+  dirty?: Signal<boolean>;
 }
 
 @Injectable({
@@ -24,7 +25,7 @@ export class LeaveDirtyFormGuard {
       return true;
     }
 
-    if (component.form?.dirty) {
+    if (component.form?.dirty || component.dirty?.()) {
       return this.dialogService.openDialogDataWithConfirmationResult({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',

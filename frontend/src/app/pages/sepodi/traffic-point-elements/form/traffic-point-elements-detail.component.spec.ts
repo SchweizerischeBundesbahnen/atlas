@@ -45,7 +45,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateModule } from '../../../../core/module/date.module';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
+import { AtlasLabelFieldComponent, AtlasInfoIconComponent } from '@atlas/form';
 
 describe('TrafficPointElementsDetailComponent', () => {
   let component: TrafficPointElementsDetailComponent;
@@ -260,7 +260,7 @@ describe('TrafficPointElementsDetailComponent', () => {
         AtlasSlideToggleComponent,
         GeographyComponent,
         DecimalNumberPipe,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         RemoveCharsDirective,
         SloidComponent,
         UserDetailInfoComponent,

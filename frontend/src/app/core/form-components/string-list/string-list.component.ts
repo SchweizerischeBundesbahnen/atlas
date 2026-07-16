@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, input, OnChanges, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
-import { FieldExample } from '../text-field/field-example';
+import { FieldExample } from '@atlas/form';
 import { concat, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TextFieldComponent } from '../text-field/text-field.component';

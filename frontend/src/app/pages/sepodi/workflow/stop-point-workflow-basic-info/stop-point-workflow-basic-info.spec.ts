@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { StopPointWorkflowBasicInfo } from './stop-point-workflow-basic-info';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
+import { BoSelectionDisplayPipe } from '../../../../core/pipe/bo-selection-display.pipe';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';

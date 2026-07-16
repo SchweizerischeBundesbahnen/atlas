@@ -11,7 +11,7 @@ import { SelectComponent } from '../../../../../../../core/form-components/selec
 import { CommentComponent } from '../../../../../../../core/form-components/comment/comment.component';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { InfoIconComponent } from '@atlas/form';
+import { AtlasInfoIconComponent } from '@atlas/form';
 import { AtlasFieldErrorComponent } from '../../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -26,7 +26,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommentComponent,
     TextFieldComponent,
     MatCheckbox,
-    InfoIconComponent,
+    AtlasInfoIconComponent,
     AtlasFieldErrorComponent,
     TranslatePipe,
   ],

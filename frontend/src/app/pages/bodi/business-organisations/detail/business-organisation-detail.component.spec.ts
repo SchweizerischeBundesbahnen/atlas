@@ -7,7 +7,7 @@ import { BusinessOrganisationDetailComponent } from './business-organisation-det
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '@atlas/form';
+import { AtlasInfoIconComponent } from '@atlas/form';
 import { adminPermissionServiceMock, MockSelectComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -131,7 +131,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
         BusinessOrganisationDetailComponent,
         MockSelectComponent,
         ErrorNotificationComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         DetailPageContainerComponent,
         DetailFooterComponent,
       ],
@@ -297,7 +297,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
         BusinessOrganisationDetailComponent,
         MockSelectComponent,
         ErrorNotificationComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         DetailPageContainerComponent,
         DetailFooterComponent,
       ],

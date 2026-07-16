@@ -17,14 +17,13 @@ import {
 import { DisplayDatePipe } from '../../../../../../core/pipe/display-date.pipe';
 import { ParkingLotFormComponent } from '../../../parking-lot/detail/form/parking-lot-form/parking-lot-form.component';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
+import { AtlasDateIconComponent, AtlasInfoIconComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
 import { SelectComponent } from '../../../../../../core/form-components/select/select.component';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { DateRangeTextComponent } from '../../../../../../core/versioning/date-range-text/date-range-text.component';
 import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
 import { DateRangeComponent } from '../../../../../../core/form-components/date-range/date-range.component';
-import { DateIconComponent } from '../../../../../../core/form-components/date-icon/date-icon.component';
 import { UserDetailInfoComponent } from '../../../../../../core/components/user-edit-info/user-detail-info.component';
 import { DetailPageContainerComponent } from '../../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../../core/components/detail-page-content/detail-page-content.component';
@@ -118,13 +117,13 @@ describe('ToiletDetailComponent', () => {
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         SelectComponent,
         CommentComponent,
         DateRangeTextComponent,
         SwitchVersionComponent,
         DateRangeComponent,
-        DateIconComponent,
+        AtlasDateIconComponent,
         UserDetailInfoComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,

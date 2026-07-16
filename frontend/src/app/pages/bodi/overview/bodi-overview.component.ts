@@ -3,7 +3,6 @@ import { Pages } from '../../pages';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
-
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

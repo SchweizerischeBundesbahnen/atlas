@@ -87,6 +87,7 @@ testem.log
 Thumbs.db
 
 # Frontend
+frontend/projects/dist
 frontend/src/app/api/git_push.sh
 frontend/src/app/api/README.md
 frontend/cypress/videos
@@ -103,7 +104,6 @@ frontend/.npmrc
 frontend/jsonZipDirectory/
 /export/
 /amazon-s3/export/
-
 
 # IntelliJ
 .idea/aws.xml
@@ -142,7 +142,6 @@ frontend/jsonZipDirectory/
 /buildSrc/.build/
 
 .cache_ggshield
-/frontend/components/coverage/
 
 # may be allowed for SDD in the future
 _docs

@@ -2,12 +2,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   output,
-  input,
+  SimpleChanges,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ import { BusinessOrganisation } from '../../../api';
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
-import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
+import { BoSelectionDisplayPipe } from '../../pipe/bo-selection-display.pipe';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 
 @Component({

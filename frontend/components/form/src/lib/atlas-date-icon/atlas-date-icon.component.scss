@@ -1,0 +1,17 @@
+@use '../../../../../src/styles/variables' as variables;
+
+svg {
+  display: block;
+
+  path {
+    fill: variables.$gray-500;
+  }
+}
+
+.active {
+  cursor: pointer;
+
+  path {
+    fill: variables.$primary-400;
+  }
+}

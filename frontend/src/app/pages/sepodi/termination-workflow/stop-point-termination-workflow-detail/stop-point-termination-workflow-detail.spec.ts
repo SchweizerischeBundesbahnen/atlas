@@ -7,7 +7,7 @@ import { StopPointTerminationWorkflowDetailData } from './stop-point-termination
 import { TranslatePipe } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
+import { BoSelectionDisplayPipe } from '../../../../core/pipe/bo-selection-display.pipe';
 import { of } from 'rxjs';
 import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
@@ -15,7 +15,9 @@ import { StopPointTerminationWorkflowDetailFormGroupBuilder } from './stop-point
 import moment from 'moment/moment';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { TerminationDecisionDetailDialogComponent } from './decision/decision-detail/termination-decision-detail-dialog.component';
+import {
+  TerminationDecisionDetailDialogComponent
+} from './decision/decision-detail/termination-decision-detail-dialog.component';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 

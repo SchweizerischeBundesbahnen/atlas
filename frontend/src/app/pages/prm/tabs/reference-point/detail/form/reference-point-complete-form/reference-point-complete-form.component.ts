@@ -6,7 +6,7 @@ import { TextFieldComponent } from '../../../../../../../core/form-components/te
 import { DateRangeComponent } from '../../../../../../../core/form-components/date-range/date-range.component';
 import { SelectComponent } from '../../../../../../../core/form-components/select/select.component';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { InfoIconComponent } from '@atlas/form';
+import { AtlasInfoIconComponent } from '@atlas/form';
 import { AtlasFieldErrorComponent } from '../../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { CommentComponent } from '../../../../../../../core/form-components/comment/comment.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,7 +22,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     DateRangeComponent,
     SelectComponent,
     MatCheckbox,
-    InfoIconComponent,
+    AtlasInfoIconComponent,
     AtlasFieldErrorComponent,
     CommentComponent,
     TranslatePipe,

@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 import { Company } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { CompanyDetailResolver } from './company-detail-resolver.service';
+import { CompanyDetailResolver } from './company-detail.resolver';
 import { CompanyService } from '../../../../api/service/bodi/company.service';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 

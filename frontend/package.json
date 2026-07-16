@@ -8,8 +8,8 @@
     "publish-frontend": "sh ./npm_publish.sh",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test:components": "ng test components",
-    "test-debug:components": "ng test components --watch=true",
+    "test:form": "ng test form",
+    "test-debug:form": "ng test form --watch=true",
     "test:atlas-frontend": "ng test atlas-frontend",
     "test-debug:atlas-frontend": "ng test atlas-frontend --watch=true",
     "lint": "ng lint",
@@ -49,7 +49,7 @@
     "frontend/src/**/*": "frontend/node_modules/prettier/bin/prettier.cjs --write --ignore-unknown"
   },
   "engines": {
-    "npm": "11.12.1"
+    "npm": "11.16.0"
   },
   "dependencies": {
     "@angular/cdk": "22.0.4",

@@ -13,13 +13,13 @@
     [alt]="wheelchairAccessibilityToday?.toLowerCase()"
   />
 
-  <atlas-form-info-icon
+  <atlas-info-icon
     [infoTitle]="
       ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.TODAY_ACCESSIBILITY' | translate) +
       ': ' +
       ('PRM.ENUMS.WHEELCHAIR_ACCESSIBILITY.' + wheelchairAccessibilityToday | translate)
     "
-  ></atlas-form-info-icon>
+  ></atlas-info-icon>
 </div>
 
 <ng-template
@@ -33,7 +33,7 @@
   <div class="overlay">
     <div class="d-flex justify-content-between">
       <div class="d-flex">
-        <atlas-form-info-icon
+        <atlas-info-icon
           atlasInfoLink
           infoLinkTranslationKey="PRM.ACCESSIBILITY_INFO_LINK"
           infoTitle="{{ 'PRM.ACCESSIBILITY_INFO_ICON' | translate }}"

@@ -18,10 +18,10 @@
     "useDefineForClassFields": false,
     "paths": {
       "@atlas/form": [
-        "./components/src/public-api.ts"
+        "./components/form/src/public-api.ts"
       ],
       "@atlas/form/*": [
-        "./components/src/*"
+        "./components/form/src/*"
       ]
     }
   },
@@ -30,11 +30,11 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true
   },
-  // without this inclusion jasmine expect does not work correctly with intellij
+  // without this inclusion jasmine expect does not work correctly with IntelliJ
   "include": ["src/**/*.spec.ts", "src/**/*.ts"],
   "references": [
     {
-      "path": "./components/tsconfig.lib.json"
+      "path": "./components/form/tsconfig.lib.json"
     }
   ]
 }

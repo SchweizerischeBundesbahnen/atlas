@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { PlatformCompleteFormComponent } from './platform-complete-form.component';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent, InfoIconComponent } from '@atlas/form';
+import { AtlasLabelFieldComponent, AtlasInfoIconComponent } from '@atlas/form';
 import { MockAtlasFieldErrorComponent } from '../../../../../../../app.testing.mocks';
 import { AtlasSpacerComponent } from '../../../../../../../core/components/spacer/atlas-spacer.component';
 import { SelectComponent } from '../../../../../../../core/form-components/select/select.component';
@@ -25,7 +25,7 @@ describe('PlatformCompleteFormComponent', () => {
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
-        InfoIconComponent,
+        AtlasInfoIconComponent,
         SelectComponent,
         CommentComponent,
       ],

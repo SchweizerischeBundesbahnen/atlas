@@ -24,7 +24,7 @@
   </div>
 
   <div class="d-flex flex-column col-6">
-    <atlas-form-comment
+    <atlas-comment
       [formGroup]="form"
       label="PRM.PLATFORMS.REDUCED.ADDITIONAL_INFORMATION"
       controlName="additionalInformation"
@@ -84,7 +84,7 @@
   <div class="d-flex flex-column col-6 pt-5" [formGroup]="form">
     <mat-checkbox formControlName="partialElevation" data-cy="partialElevation">
       {{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION' | translate }}
-      <atlas-form-info-icon infoTitle="{{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION_INFO' | translate }}" />
+      <atlas-info-icon infoTitle="{{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION_INFO' | translate }}" />
     </mat-checkbox>
     <atlas-field-error [control]="form.get('partialElevation')" />
   </div>

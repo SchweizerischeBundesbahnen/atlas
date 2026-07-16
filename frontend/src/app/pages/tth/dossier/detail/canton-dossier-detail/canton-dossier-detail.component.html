@@ -120,7 +120,7 @@
               </div>
 
               <div class="mt-3">
-                <atlas-form-comment
+                <atlas-comment
                   [formGroup]="form"
                   [displayLabel]="true"
                   label="TTH.DOSSIER.BO_QUESTION"
@@ -131,7 +131,7 @@
               </div>
               @if (form.controls.answerToCanton.getRawValue()) {
                 <div class="d-flex flex-column col-12 mt-2 mb-4">
-                  <atlas-form-comment
+                  <atlas-comment
                     [formGroup]="form"
                     controlName="answerToCanton"
                     label="TTH.DOSSIER.BO_ANSWER"
@@ -163,7 +163,7 @@
           </span>
           <atlas-spacer [divider]="true" height="10px" />
           <div class="d-flex flex-column mt-3">
-            <atlas-form-comment
+            <atlas-comment
               [formGroup]="form"
               [displayLabel]="true"
               label="TTH.DOSSIER.INTERNAL_COMMENT"
@@ -174,7 +174,7 @@
         </div>
 
         <div class="mt-5">
-          <atlas-form-comment
+          <atlas-comment
             [formGroup]="form"
             [displayLabel]="true"
             label="TTH.DOSSIER.PUBLIC_COMMENT"
