@@ -18,7 +18,7 @@ public class RouteConfig {
             .route(application, p -> p
                 .path("/" + application + "/**")
                 .filters(f -> f.rewritePath("/" + application + "/(?<path>.*)", "/$\\{path}")
-                    .filter(gatewayRequestLogging.log()))
+                    .filter(gatewayRequestLogging))
                 .uri(uri)
             ));
     return routeBuilder.build();

@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 @Slf4j
-public class GatewayRequestLogging {
+public class GatewayRequestLogging extends OrderedGatewayFilter {
 
   private static final String FEIGN_TRACING_HEADER = "traceparent";
   private static final String CORRELATION_ID_HEADER_NAME = "Correlation-Id";
@@ -20,15 +20,16 @@ public class GatewayRequestLogging {
   private static final Map<String, String> TRACING_HEADERS = Map.of(FEIGN_TRACING_HEADER, FEIGN_TRACING_HEADER,
       "correlationId", CORRELATION_ID_HEADER_NAME);
 
-  public GatewayFilter log() {
-    return new OrderedGatewayFilter((exchange, chain) -> chain.filter(exchange)
+  public GatewayRequestLogging() {
+    GatewayFilter loggingFilter = (exchange, chain) -> chain.filter(exchange)
         .then(Mono.fromRunnable(() -> TRACING_HEADERS.forEach((loggingKey, headerValue) -> {
           ServerHttpRequest request = exchange.getRequest();
           logRequest(request, loggingKey, headerValue);
 
           ServerHttpResponse response = exchange.getResponse();
           logResponse(loggingKey, headerValue, response, request);
-        }))), -1);
+        })));
+    super(loggingFilter, -1);
   }
 
   private static void logRequest(ServerHttpRequest request, String loggingKey, String headerValue) {
