@@ -43,19 +43,20 @@ public class TimetableHearingStatementExportService {
               .filePath(Path.of(fileService.getDir(), OUTPUT_DIR))
               .build()
       );
-    } else {
-      List<TimetableHearingStatementCsvModel> csvData = statements.stream()
-          .map(TimetableHearingStatementCsvModel::fromModel)
-          .sorted(comparing(TimetableHearingStatementCsvModel::getTimetableHearingStatementId)).toList();
-      return CsvExportWriter.writeCsv(
-          CsvWriteConfig.<TimetableHearingStatementCsvModel>builder()
-              .messageSource(timetableHearingStatementCsvTranslations)
-              .locale(locale)
-              .elementClass(TimetableHearingStatementCsvModel.class)
-              .csvData(csvData)
-              .filePath(Path.of(fileService.getDir(), OUTPUT_DIR))
-              .build()
-      );
     }
+
+    List<TimetableHearingStatementCsvModel> csvData = statements.stream()
+        .map(TimetableHearingStatementCsvModel::fromModel)
+        .sorted(comparing(TimetableHearingStatementCsvModel::getTimetableHearingStatementId)).toList();
+    return CsvExportWriter.writeCsv(
+        CsvWriteConfig.<TimetableHearingStatementCsvModel>builder()
+            .messageSource(timetableHearingStatementCsvTranslations)
+            .locale(locale)
+            .elementClass(TimetableHearingStatementCsvModel.class)
+            .csvData(csvData)
+            .filePath(Path.of(fileService.getDir(), OUTPUT_DIR))
+            .build()
+    );
+
   }
 }

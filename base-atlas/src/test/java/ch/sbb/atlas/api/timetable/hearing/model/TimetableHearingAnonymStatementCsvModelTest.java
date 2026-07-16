@@ -38,6 +38,8 @@ class TimetableHearingAnonymStatementCsvModelTest {
     assertThat(csvModel.getStatus()).isEqualTo(StatementStatus.RECEIVED);
     assertThat(csvModel.getTimetableHearingYear()).isEqualTo(2025L);
     assertThat(csvModel.getTopic()).isEqualTo("Service quality");
+    assertThat(csvModel.getPublicComment()).isEqualTo("Public comment");
+    assertThat(csvModel.getInternalComment()).isEqualTo("Internal comment");
   }
 
   @Test
@@ -56,6 +58,23 @@ class TimetableHearingAnonymStatementCsvModelTest {
     // Then
     assertThat(csvModel.getStatement()).isEqualTo("anonymized statement");
     assertThat(csvModel.getDocumentsPresent()).isFalse();
+  }
+
+  @Test
+  void shouldMapNullPublicAndInternalCommentWhenNotSetInModel() {
+    // Given
+    TimetableHearingStatementModelV2 statementModel = baseStatementModelBuilder()
+        .publicComment(null)
+        .internalComment(null)
+        .documents(List.of())
+        .build();
+
+    // When
+    TimetableHearingAnonymStatementCsvModel csvModel = TimetableHearingAnonymStatementCsvModel.fromModelAnonymized(statementModel);
+
+    // Then
+    assertThat(csvModel.getPublicComment()).isNull();
+    assertThat(csvModel.getInternalComment()).isNull();
   }
 
   private TimetableHearingStatementModelV2.TimetableHearingStatementModelV2Builder<?, ?> baseStatementModelBuilder() {
@@ -81,6 +100,8 @@ class TimetableHearingAnonymStatementCsvModelTest {
                 .build()
         ))
         .timetableYear(2025L)
-        .topic("Service quality");
+        .topic("Service quality")
+        .publicComment("Public comment")
+        .internalComment("Internal comment");
   }
 }
