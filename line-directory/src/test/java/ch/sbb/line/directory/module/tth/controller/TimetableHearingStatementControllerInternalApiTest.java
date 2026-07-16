@@ -596,7 +596,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     void shouldGetStatementsAsCsvAnonymized() throws Exception {
       // Given
       String expectedCsvHeader = """
-          ID;Kanton;Status;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Fahrplanjahr;Thema
+          ID;Kanton;Status;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Fahrplanjahr;Thema;"Interne Begründung";"Öffentliche Begründung"
           """;
 
       TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
@@ -639,16 +639,14 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
           .doesNotContain("3001")
           .doesNotContain("Bern")
           .doesNotContain("Musterstrasse 1")
-          .doesNotContain("SBB")
-          .doesNotContain("Einfach eine interne Begründung")
-          .doesNotContain("Einfach eine öffentliche Begründung");
+          .doesNotContain("SBB");
     }
 
     @Test
     void shouldGetStatementsAsCsvAnonymizedByBoolean() throws Exception {
       // Given
       String expectedCsvHeader = """
-          ID;Kanton;Status;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Fahrplanjahr;Thema
+          ID;Kanton;Status;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Fahrplanjahr;Thema;"Interne Begründung";"Öffentliche Begründung"
           """;
 
       TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerInternal.createStatement(
@@ -690,9 +688,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
           .doesNotContain("3001")
           .doesNotContain("Bern")
           .doesNotContain("Musterstrasse 1")
-          .doesNotContain("SBB")
-          .doesNotContain("Einfach eine interne Begründung")
-          .doesNotContain("Einfach eine öffentliche Begründung");
+          .doesNotContain("SBB");
     }
   }
 
