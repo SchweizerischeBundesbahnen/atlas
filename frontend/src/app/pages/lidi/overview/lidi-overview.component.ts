@@ -1,33 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { Pages } from '../../pages';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
-import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
-
-import { TranslatePipe } from '@ngx-translate/core';
+import { MatTabNavPanel } from '@angular/material/tabs';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
-  imports: [
-    AtlasButtonComponent,
-    MatTabNav,
-    RouterLinkActive,
-    MatTabLink,
-    RouterLink,
-    MatTabNavPanel,
-    RouterOutlet,
-    TranslatePipe,
-  ],
+  imports: [AtlasButtonComponent, MatTabNavPanel, RouterOutlet],
 })
 export class LidiOverviewComponent {
   TABS = [
     {
       link: Pages.LINES.path,
       title: 'LIDI.LINE.LINES',
-    },
-    {
-      link: Pages.WORKFLOWS.path,
-      title: 'LIDI.LINE_VERSION_SNAPSHOT.TAB_HEADER',
     },
   ];
 

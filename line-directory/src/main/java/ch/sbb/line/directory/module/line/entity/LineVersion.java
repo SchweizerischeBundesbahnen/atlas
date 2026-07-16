@@ -11,26 +11,19 @@ import ch.sbb.atlas.revoke.Revokable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.line.directory.module.workflow.entity.LineVersionWorkflow;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -105,10 +98,6 @@ public class LineVersion extends BaseVersion implements Versionable,
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @AtlasVersionableProperty
   private String comment;
-
-  @Builder.Default
-  @OneToMany(mappedBy = "lineVersion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<LineVersionWorkflow> lineVersionWorkflows = new HashSet<>();
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty

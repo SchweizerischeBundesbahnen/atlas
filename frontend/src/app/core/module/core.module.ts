@@ -15,9 +15,6 @@ import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
 import { UserDetailInfoComponent } from '../components/user-edit-info/user-detail-info.component';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
-import { LineWorkflowComponent } from '../workflow/line-workflow.component';
-import { LineWorkflowFormComponent } from '../workflow/workflow-form/line-workflow-form.component';
-import { LineWorkflowCheckFormComponent } from '../workflow/workflow-check-form/line-workflow-check-form.component';
 import { DisplayDatePipe } from '../pipe/display-date.pipe';
 import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
@@ -32,7 +29,6 @@ import { MouseOverTitleDirective } from '../components/table/directive/mouse-ove
 import { FormatPipe } from '../components/table/pipe/format.pipe';
 import { InstanceOfPipe } from '../components/table-filter/instance-of.pipe';
 import { BackButtonDirective } from '../components/button/back-button/back-button.directive';
-import { LineWorkflowDialogComponent } from '../workflow/dialog/line-workflow-dialog.component';
 import { ScrollToTopDirective } from '../scroll-to-top/scroll-to-top.directive';
 import { MaintenanceIconComponent } from '../components/header/maintenance-icon/maintenance-icon.component';
 import { DateRangeTextComponent } from '../versioning/date-range-text/date-range-text.component';
@@ -42,7 +38,9 @@ import { DecimalNumberPipe } from '../pipe/decimal-number.pipe';
 import { SearchServicePointComponent } from '../search-service-point/search-service-point.component';
 import { SearchResultHighlightPipe } from '../search-service-point/search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
-import { MeansOfTransportPickerComponent } from '../form-components/means-of-transport-picker/means-of-transport-picker.component';
+import {
+  MeansOfTransportPickerComponent
+} from '../form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { DetailPageContentComponent } from '../components/detail-page-content/detail-page-content.component';
 import { StringListComponent } from '../form-components/string-list/string-list.component';
 import { DialogContentComponent } from '../components/dialog/content/dialog-content.component';
@@ -52,10 +50,6 @@ import { NavigationSepodiPrmComponent } from '../navigation-sepodi-prm/navigatio
 import { PrmRecordingObligationComponent } from '../prm-recording-obligation/prm-recording-obligation.component';
 
 const coreComponents = [
-  LineWorkflowFormComponent,
-  LineWorkflowCheckFormComponent,
-  LineWorkflowComponent,
-  LineWorkflowDialogComponent,
   DetailPageContainerComponent,
   DetailPageContentComponent,
   DialogContentComponent,

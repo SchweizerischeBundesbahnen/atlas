@@ -13,24 +13,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
-import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
-import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.module.line.LineTestData;
-import ch.sbb.line.directory.module.line.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.module.line.repository.LineVersionRepository;
-import ch.sbb.line.directory.module.line.repository.LineVersionSnapshotRepository;
 import ch.sbb.line.directory.module.subline.controller.SublineControllerV2;
 import ch.sbb.line.directory.module.subline.repository.SublineVersionRepository;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -44,28 +36,24 @@ class LineControllerInternalApiTest extends BaseControllerApiTest {
   private final SublineControllerV2 sublineControllerV2;
   private final LineVersionRepository lineVersionRepository;
   private final SublineVersionRepository sublineVersionRepository;
-  private final LineVersionSnapshotRepository lineVersionSnapshotService;
 
   @Autowired
   LineControllerInternalApiTest(
       LineControllerV2 lineControllerV2,
       SublineControllerV2 sublineControllerV2,
       LineVersionRepository lineVersionRepository,
-      SublineVersionRepository sublineVersionRepository,
-      LineVersionSnapshotRepository lineVersionSnapshotService
+      SublineVersionRepository sublineVersionRepository
   ) {
     this.lineControllerV2 = lineControllerV2;
     this.sublineControllerV2 = sublineControllerV2;
     this.lineVersionRepository = lineVersionRepository;
     this.sublineVersionRepository = sublineVersionRepository;
-    this.lineVersionSnapshotService = lineVersionSnapshotService;
   }
 
   @AfterEach
   void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
-    lineVersionSnapshotService.deleteAll();
   }
 
   @Test
@@ -153,78 +141,6 @@ class LineControllerInternalApiTest extends BaseControllerApiTest {
             jsonPath("$.details[0].displayInfo.parameters[1].key", is("SublineVersion.slnid")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value",
             is(sublineVersionSaved.getSlnid())));
-  }
-
-  @Test
-  void shouldGetLineVersionSnaphots() throws Exception {
-    //given
-    LineVersionSnapshot lineVersionSnapshot = LineVersionSnapshot.builder()
-        .status(Status.VALIDATED)
-        .lineType(LineType.ORDERLY)
-        .concessionType(LineConcessionType.COLLECTION_LINE)
-        .offerCategory(OfferCategory.IC)
-        .shortNumber("asd")
-        .workflowStatus(WorkflowStatus.STARTED)
-        .number("number")
-        .longName("longName")
-        .description("description")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .creationDate(LocalDateTime.now())
-        .editionDate(LocalDateTime.now())
-        .editor("Marek")
-        .creator("Hamsik")
-        .businessOrganisation("businessOrganisation")
-        .comment("comment")
-        .workflowId(123L)
-        .version(1)
-        .parentObjectId(123L)
-        .description("b0.IC2")
-        .swissLineNumber("swissLineNumber")
-        .slnid("b0.IC2")
-        .build();
-
-    lineVersionSnapshotService.save(lineVersionSnapshot);
-    //when
-    mvc.perform(get("/internal/lines/workflows")
-            .queryParam("page", "0")
-            .queryParam("size", "5")
-            .queryParam("sort", "swissLineNumber,asc")
-            .contentType(contentType)
-        ).andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(1))
-        .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.longName, is("longName")))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.lineType, is(LineType.ORDERLY.toString())))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.description, is("b0.IC2")))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.workflowId, is(123)))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.parentObjectId, is(123)))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.etagVersion, is(1)));
-
-  }
-
-  @Test
-  void shouldSkipWorkflowOnLineVersion() throws Exception {
-    //given
-    LineVersionModelV2 lineVersionModel =
-        LineTestData.createLineVersionModelBuilder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .longName("long name")
-            .lineType(LineType.ORDERLY)
-            .swissLineNumber("sln")
-            .build();
-    LineVersionModelV2 lineVersionSaved = lineControllerV2.createLineVersionV2(lineVersionModel);
-
-    //when
-    mvc.perform(post("/internal/lines/versions/" + lineVersionSaved.getId().toString() + "/skip-workflow"))
-        .andExpect(status().isOk());
-
-    //then
-    List<LineVersionModelV2> lineVersions = lineControllerV2.getLineVersionsV2(lineVersionSaved.getSlnid());
-    assertThat(lineVersions).hasSize(1);
-    assertThat(lineVersions.getFirst().getStatus()).isEqualTo(Status.VALIDATED);
   }
 
 }

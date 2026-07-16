@@ -78,42 +78,6 @@ describe('LineInternalService', () => {
     expect(apiService.delete).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/123');
   });
 
-  it('should skipWorkflow', () => {
-    service.skipWorkflow(1);
-
-    expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      id: 1,
-    });
-    expect(apiService.post).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/versions/1/skip-workflow');
-  });
-
-  it('should getLineVersionSnapshot', () => {
-    const validOn = new Date(2025, 0, 1);
-    service.getLineVersionSnapshot(['123', 'test'], validOn);
-
-    expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith({
-      searchCriteria: ['123', 'test'],
-      validOn,
-      statusChoices: undefined,
-      page: undefined,
-      size: undefined,
-      sort: undefined,
-    });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(
-      '/line-directory/internal/lines/workflows',
-      expect.any(HttpParams)
-    );
-  });
-
-  it('should getLineVersionSnapshotById', () => {
-    service.getLineVersionSnapshotById(1);
-
-    expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({
-      id: 1,
-    });
-    expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/line-directory/internal/lines/workflows/1');
-  });
-
   it('should checkAffectedSublines', () => {
     service.checkAffectedSublines(1, {} as UpdateLineVersionV2);
 

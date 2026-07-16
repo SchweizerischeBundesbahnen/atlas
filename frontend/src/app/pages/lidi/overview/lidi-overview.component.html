@@ -16,14 +16,7 @@
     wrapperStyleClass="mb-5"
   />
 
-  <nav [tabPanel]="tabPanel" class="tabs" data-cy="tabs" mat-tab-nav-bar>
-    @for (tab of TABS; track tab) {
-      <a [routerLink]="tab.link" routerLinkActive="active-tab" class="font-bold-xl" mat-tab-link>
-        {{ tab.title | translate }}
-      </a>
-    }
-  </nav>
-  <div class="white-table-container-tabs">
+  <div class="white-table-container-no-tabs">
     <mat-tab-nav-panel #tabPanel>
       <router-outlet />
     </mat-tab-nav-panel>

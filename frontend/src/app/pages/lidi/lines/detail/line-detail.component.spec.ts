@@ -2,14 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
-import {
-  AffectedSublinesModel,
-  LineType,
-  LineVersionV2,
-  LineVersionWorkflow,
-  Status,
-  WorkflowProcessingStatus,
-} from '../../../../api';
+import { AffectedSublinesModel, LineType, LineVersionV2, LineVersionWorkflow, Status } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
@@ -344,67 +337,6 @@ describe('LineDetailComponent for new lineVersion', () => {
       component.save();
 
       expect(component.form.enabled).toBe(true);
-    });
-  });
-
-  describe('Show snapshot history', () => {
-    it('Should show snapshot history without workflow but orderly and validated', () => {
-      lineVersion.status = Status.Validated;
-      lineVersion.lineType = LineType.Orderly;
-      lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.selectedVersion = lineVersion;
-
-      const result = fixture.componentInstance.showSnapshotHistoryLink();
-
-      expect(result).toBeTruthy();
-    });
-
-    it('Should not show snapshot history without workflow when Temporary and validated', () => {
-      lineVersion.status = Status.Validated;
-      lineVersion.lineType = LineType.Temporary;
-      lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.selectedVersion = lineVersion;
-
-      const result = fixture.componentInstance.showSnapshotHistoryLink();
-
-      expect(result).toBeFalsy();
-    });
-
-    it('Should not show snapshot history without workflow when Operational and validated', () => {
-      lineVersion.status = Status.Validated;
-      lineVersion.lineType = LineType.Operational;
-      lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.selectedVersion = lineVersion;
-
-      const result = fixture.componentInstance.showSnapshotHistoryLink();
-
-      expect(result).toBeFalsy();
-    });
-
-    it('Should show snapshot history with workflow evaluated', () => {
-      const lineWorkflow: LineVersionWorkflow = {
-        workflowId: 1,
-        workflowProcessingStatus: WorkflowProcessingStatus.Evaluated,
-      };
-      lineVersion.lineVersionWorkflows?.add(lineWorkflow);
-      fixture.componentInstance.selectedVersion = lineVersion;
-
-      const result = fixture.componentInstance.showSnapshotHistoryLink();
-
-      expect(result).toBeTruthy();
-    });
-
-    it('Should show snapshot history with workflow in progress', () => {
-      const lineWorkflow: LineVersionWorkflow = {
-        workflowId: 1,
-        workflowProcessingStatus: WorkflowProcessingStatus.InProgress,
-      };
-      lineVersion.lineVersionWorkflows?.add(lineWorkflow);
-      fixture.componentInstance.selectedVersion = lineVersion;
-
-      const result = fixture.componentInstance.showSnapshotHistoryLink();
-
-      expect(result).toBeTruthy();
     });
   });
 });

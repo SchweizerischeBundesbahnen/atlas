@@ -69,9 +69,6 @@ class LineServiceTest {
   @Mock
   private LineSearchRestrictions lineSearchRestrictions;
 
-  @Mock
-  private LineStatusDecider lineStatusDecider;
-
   private LineService lineService;
 
   @Mock
@@ -84,8 +81,7 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, lineUpdateValidationService, lineStatusDecider,
-        sublineShorteningService, sublineService);
+        versionableService, lineValidationService, lineUpdateValidationService, sublineShorteningService, sublineService);
   }
 
   @Test
@@ -169,7 +165,7 @@ class LineServiceTest {
         Collections.emptyList());
     LineVersion lineVersion = LineTestData.lineVersion();
     // When
-    LineVersion result = lineService.save(lineVersion, Optional.empty(), Collections.emptyList());
+    LineVersion result = lineService.save(lineVersion);
 
     // Then
     verify(lineValidationService).validateLinePreconditionBusinessRule(lineVersion);
@@ -207,8 +203,6 @@ class LineServiceTest {
     verify(lineUpdateValidationService).validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
     verify(sublineShorteningService).isOnlyValidityChanged(currentVersion, editedVersion);
     verify(sublineShorteningService).isShortening(currentVersion, editedVersion);
-    verify(lineUpdateValidationService).validateLineForUpdate(any(), any(), any());
-    verify(lineUpdateValidationService).validateVersioningNotAffectingReview(any(), any());
     verify(lineValidationService).validateLineAfterVersioningBusinessRule(editedVersion);
   }
 
@@ -299,10 +293,8 @@ class LineServiceTest {
             lineVersion);
 
     // When
-    Optional<LineVersion> versionToSave = Optional.empty();
-    List<LineVersion> currentLineVersions = Collections.emptyList();
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
-        () -> lineService.save(lineVersion, versionToSave, currentLineVersions));
+        () -> lineService.save(lineVersion));
 
     verify(lineVersionRepository, never()).save(lineVersion);
 
@@ -317,10 +309,8 @@ class LineServiceTest {
             lineVersion);
 
     // When
-    Optional<LineVersion> versionToSave = Optional.empty();
-    List<LineVersion> currentLineVersions = Collections.emptyList();
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineService.save(lineVersion, versionToSave, currentLineVersions));
+        () -> lineService.save(lineVersion));
 
     verify(lineVersionRepository, never()).save(lineVersion);
 
