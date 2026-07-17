@@ -24,6 +24,8 @@ import lombok.experimental.SuperBuilder;
 public class TimetableHearingAnonymStatementCsvModel extends BaseTimetableHearingStatementCsv {
 
   private String statement;
+  private String publicComment;
+  private String internalComment;
 
   public static TimetableHearingAnonymStatementCsvModel fromModelAnonymized(
       TimetableHearingStatementModelV2 model
@@ -51,6 +53,8 @@ public class TimetableHearingAnonymStatementCsvModel extends BaseTimetableHearin
         .status(model.getStatementStatus())
         .timetableHearingYear(model.getTimetableYear())
         .topic(model.getTopic())
+        .publicComment(model.getPublicComment())
+        .internalComment(model.getInternalComment())
         .build();
   }
 
