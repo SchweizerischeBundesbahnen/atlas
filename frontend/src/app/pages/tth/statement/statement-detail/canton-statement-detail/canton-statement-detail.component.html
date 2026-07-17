@@ -84,7 +84,7 @@
                   'TTH.STATEMENT.STATEMENT_TRANSFER_COUNTRY'
                     | translate
                       : {
-                          oldSwissCanton: (statement?.oldSwissCanton! | displayCanton),
+                          oldSwissCanton: statement?.oldSwissCanton! | transformCantonToShorthand | translate,
                         }
                 }}
               </p>

@@ -1,33 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import { DisplayCantonPipe } from './display-canton.pipe';
+import { TransformCantonToShorthandPipe } from './display-canton.pipe';
 import { SwissCanton } from '../../api';
-import { TranslatePipe } from '@ngx-translate/core';
+import { describe, expect, it } from 'vitest';
 
-describe('DisplayCantonPipe', () => {
-  type TranslatePipeMock = Mocked<Pick<TranslatePipe, 'transform'>>;
-  let translatePipe: TranslatePipeMock;
-  let pipe: DisplayCantonPipe;
+describe('TransformCantonToShorthandPipe', () => {
+  const pipe = new TransformCantonToShorthandPipe();
 
-  beforeEach(() => {
-    // Mocking: stub TranslatePipe methods the tested pipe depends on
-    translatePipe = {
-      transform: vi.fn().mockImplementation((value) => value),
-    };
-
-    // Config: provide the pipe and its mocked dependencies through TestBed
-    TestBed.configureTestingModule({
-      providers: [DisplayCantonPipe, { provide: TranslatePipe, useValue: translatePipe }],
-    });
-
-    // Arrangement: obtain the pipe instance via TestBed so DI is respected
-    pipe = TestBed.inject(DisplayCantonPipe);
+  it('returns the i18n key for a canton', () => {
+    expect(pipe.transform(SwissCanton.Bern)).toBe('TTH.CANTON.BE');
   });
 
-  it('creates an instance and delegates translations', () => {
-    expect(pipe).toBeTruthy();
-    expect(pipe.transform(SwissCanton.Bern)).toBe('TTH.CANTON.BE');
+  it('returns "-" for a missing value', () => {
     expect(pipe.transform()).toBe('-');
-    expect(translatePipe.transform).toHaveBeenCalledWith('TTH.CANTON.BE');
   });
 });

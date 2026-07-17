@@ -37,7 +37,7 @@ import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atla
 import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import { DisplayCantonPipe } from '../../../../../core/cantons/display-canton.pipe';
+import { TransformCantonToShorthandPipe } from '../../../../../core/cantons/display-canton.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StatementTextComponent } from '../../statement-text/statement-text.component';
 import { StatementPersonalInformationComponent } from '../../statement-personal-information/statement-personal-information.component';
@@ -68,7 +68,7 @@ import { Pages } from '../../../../pages';
     CommentComponent,
     AtlasButtonComponent,
     DetailFooterComponent,
-    DisplayCantonPipe,
+    TransformCantonToShorthandPipe,
     AsyncPipe,
     TranslatePipe,
     NgOptimizedImage,

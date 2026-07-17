@@ -32,15 +32,13 @@ import { BackButtonDirective } from '../components/button/back-button/back-butto
 import { ScrollToTopDirective } from '../scroll-to-top/scroll-to-top.directive';
 import { MaintenanceIconComponent } from '../components/header/maintenance-icon/maintenance-icon.component';
 import { DateRangeTextComponent } from '../versioning/date-range-text/date-range-text.component';
-import { DisplayCantonPipe } from '../cantons/display-canton.pipe';
+import { TransformCantonToShorthandPipe } from '../cantons/display-canton.pipe';
 import { RemoveCharsDirective } from '../form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../pipe/decimal-number.pipe';
 import { SearchServicePointComponent } from '../search-service-point/search-service-point.component';
 import { SearchResultHighlightPipe } from '../search-service-point/search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
-import {
-  MeansOfTransportPickerComponent
-} from '../form-components/means-of-transport-picker/means-of-transport-picker.component';
+import { MeansOfTransportPickerComponent } from '../form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { DetailPageContentComponent } from '../components/detail-page-content/detail-page-content.component';
 import { StringListComponent } from '../form-components/string-list/string-list.component';
 import { DialogContentComponent } from '../components/dialog/content/dialog-content.component';
@@ -77,7 +75,7 @@ const coreComponents = [
   RelationComponent,
   DisplayDatePipe,
   DecimalNumberPipe,
-  DisplayCantonPipe,
+  TransformCantonToShorthandPipe,
   SelectComponent,
   ScrollToTopDirective,
   MaintenanceIconComponent,

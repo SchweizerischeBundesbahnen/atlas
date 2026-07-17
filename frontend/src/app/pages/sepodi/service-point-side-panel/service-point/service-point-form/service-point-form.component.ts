@@ -41,7 +41,7 @@ import { SelectComponent } from '../../../../../core/form-components/select/sele
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MeansOfTransportPickerComponent } from '../../../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
 import { KilometerMasterSearchComponent } from '../search/kilometer-master-search.component';
-import { DisplayCantonPipe } from '../../../../../core/cantons/display-canton.pipe';
+import { TransformCantonToShorthandPipe } from '../../../../../core/cantons/display-canton.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LocationGeoInternalService } from '../../../../../api/service/location/location-geo-internal.service';
 import { StationGroup } from './form-group/station-form-group';
@@ -65,7 +65,7 @@ import { StationGroup } from './form-group/station-form-group';
     MeansOfTransportPickerComponent,
     NgTemplateOutlet,
     KilometerMasterSearchComponent,
-    DisplayCantonPipe,
+    TransformCantonToShorthandPipe,
     AsyncPipe,
     TranslatePipe,
   ],
