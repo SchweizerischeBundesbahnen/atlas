@@ -6,16 +6,26 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import ch.sbb.atlas.versioning.BaseTest;
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject.Fields;
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject.Relation;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.ToVersioning;
+import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -437,6 +447,115 @@ class ConverterHelperTest extends BaseTest {
     assertThatThrownBy(() -> ConverterHelper.convertAllObjectsToVersioning(versionableObjects, versionable)).isInstanceOf(
             VersioningException.class)
         .hasMessageContaining("Error during parse field: not_defined");
+  }
+
+  // ─── snapshotIfMutableCollection tests ───────────────────────────────────────
+
+  @Data
+  @AllArgsConstructor
+  @NoArgsConstructor
+  @Builder
+  @FieldNameConstants
+  @AtlasVersionable
+  static class VersionableObjectWithCollections implements Versionable {
+
+    private LocalDate validFrom;
+    private LocalDate validTo;
+    private Long id;
+    @AtlasVersionableProperty
+    private Set<String> tags;
+    @AtlasVersionableProperty
+    private List<String> codes;
+  }
+
+  private static final List<VersionableProperty> COLLECTION_VERSIONABLE = List.of(
+      VersionableProperty.builder().fieldName(VersionableObjectWithCollections.Fields.tags).relationType(RelationType.NONE)
+          .build(),
+      VersionableProperty.builder().fieldName(VersionableObjectWithCollections.Fields.codes).relationType(RelationType.NONE)
+          .build()
+  );
+
+  @Test
+  void shouldReturnIndependentCopyForSetProperty() {
+    Set<String> originalTags = new HashSet<>(Set.of("A", "B"));
+    VersionableObjectWithCollections version = VersionableObjectWithCollections.builder()
+        .id(1L).validFrom(LocalDate.of(2024, 1, 1)).validTo(LocalDate.of(9999, 12, 31))
+        .tags(originalTags).build();
+
+    List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(List.of(version), COLLECTION_VERSIONABLE);
+
+    Property tagsProperty = findProperty(result.getFirst().getEntity(), VersionableObjectWithCollections.Fields.tags);
+    assertThat(tagsProperty.getValue()).isInstanceOfSatisfying(Set.class,
+        s -> assertThat(s).containsExactlyInAnyOrder("A", "B"));
+  }
+
+  @Test
+  void shouldReturnIndependentCopyForListProperty() {
+    List<String> originalCodes = new ArrayList<>(List.of("X", "Y"));
+    VersionableObjectWithCollections version = VersionableObjectWithCollections.builder()
+        .id(1L).validFrom(LocalDate.of(2024, 1, 1)).validTo(LocalDate.of(9999, 12, 31))
+        .codes(originalCodes).build();
+
+    List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(List.of(version), COLLECTION_VERSIONABLE);
+
+    Property codesProperty = findProperty(result.getFirst().getEntity(), VersionableObjectWithCollections.Fields.codes);
+    assertThat(codesProperty.getValue()).isInstanceOfSatisfying(List.class,
+        l -> assertThat(l).containsExactly("X", "Y"));
+  }
+
+  @Test
+  void shouldHandleNullCollectionProperty() {
+    VersionableObjectWithCollections version = VersionableObjectWithCollections.builder()
+        .id(1L).validFrom(LocalDate.of(2024, 1, 1)).validTo(LocalDate.of(9999, 12, 31))
+        .tags(null).build();
+
+    List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(List.of(version), COLLECTION_VERSIONABLE);
+
+    Property tagsProperty = findProperty(result.getFirst().getEntity(), VersionableObjectWithCollections.Fields.tags);
+    assertThat(tagsProperty.getValue()).isNull();
+  }
+
+  @Test
+  void shouldNotLeakMutationsOfOriginalSetToExtractedProperty() {
+    Set<String> originalTags = new HashSet<>(Set.of("A", "B"));
+    VersionableObjectWithCollections version = VersionableObjectWithCollections.builder()
+        .id(1L).validFrom(LocalDate.of(2024, 1, 1)).validTo(LocalDate.of(9999, 12, 31))
+        .tags(originalTags).build();
+
+    List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(List.of(version), COLLECTION_VERSIONABLE);
+
+    // simulate what the JPA persistence context does when saving the UPDATE version: clears the live Set
+    originalTags.clear();
+
+    Property tagsProperty = findProperty(result.getFirst().getEntity(), VersionableObjectWithCollections.Fields.tags);
+    assertThat(tagsProperty.getValue()).isInstanceOfSatisfying(Set.class,
+        s -> assertThat(s).containsExactlyInAnyOrder("A", "B"));
+  }
+
+  @Test
+  void shouldProduceIndependentCopiesWhenSameVersionIsExtractedMultipleTimes() {
+    Set<String> originalTags = new HashSet<>(Set.of("A", "B"));
+    VersionableObjectWithCollections version = VersionableObjectWithCollections.builder()
+        .id(1L).validFrom(LocalDate.of(2024, 1, 1)).validTo(LocalDate.of(9999, 12, 31))
+        .tags(originalTags).build();
+
+    // convertAllObjectsToVersioning extracts the same entity twice (as it would for two different property uses)
+    List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(List.of(version, version), COLLECTION_VERSIONABLE);
+
+    Property copy1 = findProperty(result.get(0).getEntity(), VersionableObjectWithCollections.Fields.tags);
+    Property copy2 = findProperty(result.get(1).getEntity(), VersionableObjectWithCollections.Fields.tags);
+    assertThat(copy1.getValue()).isNotSameAs(copy2.getValue());
+    assertThat(copy1.getValue()).isInstanceOfSatisfying(Set.class,
+        s -> assertThat(s).containsExactlyInAnyOrder("A", "B"));
+    assertThat(copy2.getValue()).isInstanceOfSatisfying(Set.class,
+        s -> assertThat(s).containsExactlyInAnyOrder("A", "B"));
+  }
+
+  private static Property findProperty(Entity entity, String key) {
+    return entity.getProperties().stream()
+        .filter(p -> key.equals(p.getKey()))
+        .findFirst()
+        .orElseThrow(() -> new AssertionError("Property not found: " + key));
   }
 
 }

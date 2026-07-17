@@ -15,7 +15,11 @@ import ch.sbb.atlas.versioning.model.VersionableProperty;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -106,12 +110,28 @@ public final class ConverterHelper {
     try {
       Field declaredField = ReflectionHelper.getFieldAccessible(versionClass,
           property.getFieldName());
-      Object propertyValue = declaredField.get(version);
+      Object propertyValue = snapshotIfMutableCollection(declaredField.get(version));
       return buildProperty(property.getFieldName(), propertyValue, property.isIgnoreDiff(), property.isDoNotOverride());
     } catch (NoSuchFieldException | IllegalAccessException e) {
       logParseError(e);
       throw new VersioningException(ERROR_DURING_PARSE_FIELD + e.getMessage());
     }
+  }
+
+  /**
+   * The extracted value is the live collection instance owned by the (managed) source entity. If it were captured by
+   * reference, every {@code VersionedObject} produced by the engine - and the source entity itself - would alias the
+   * same collection, so a change to one version would affect the others (shared identity). Snapshotting into a detached
+   * copy makes each version own an independent collection.
+   */
+  private static Object snapshotIfMutableCollection(Object value) {
+    return switch (value) {
+      case null -> null;
+      case Set<?> set -> new LinkedHashSet<>(set);
+      case List<?> list -> new ArrayList<>(list);
+      case Map<?, ?> map -> new LinkedHashMap<>(map);
+      default -> value;
+    };
   }
 
   private static void logParseError(ReflectiveOperationException e) {
