@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.module.useradministration.repository;
 
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.searching.specification.EnumSpecification;
@@ -43,7 +44,19 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
         criteriaBuilder, root);
 
     Predicate restriction = specification.toPredicate(root, query, criteriaBuilder);
-    query.where(criteriaBuilder.and(restriction, permissionRestrictionPredicate));
+
+    List<Predicate> predicates = new ArrayList<>();
+    predicates.add(restriction);
+    predicates.add(permissionRestrictionPredicate);
+    if (!applicationTypes.isEmpty()) {
+      predicates.add(
+          root.get(BasePermission_.role)
+              .in(List.of(ApplicationRole.READER, ApplicationRole.EXPLICIT_READER))
+              .not()
+      );
+    }
+
+    query.where(criteriaBuilder.and(predicates.toArray(Predicate[]::new)));
     query.groupBy(root.get(UserPermission_.sbbUserId));
     Expression<Long> count = criteriaBuilder.count(root.get(UserPermission_.sbbUserId));
     query.having(criteriaBuilder.greaterThanOrEqualTo(count, Long.valueOf(applicationTypes.size())));

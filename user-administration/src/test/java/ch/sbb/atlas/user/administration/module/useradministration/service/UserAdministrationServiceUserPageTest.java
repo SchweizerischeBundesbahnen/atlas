@@ -117,6 +117,15 @@ class UserAdministrationServiceUserPageTest {
   }
 
   @Test
+  void testWithAppTypesWithoutSboidsExcludesReaders() {
+    Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), null,
+        new HashSet<>(List.of(ApplicationType.LIDI)), null);
+    Assertions.assertEquals(2, userPage.getTotalElements());
+    Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
+    Assertions.assertFalse(userPage.getContent().contains("u111111"));
+  }
+
+  @Test
   void testWithAppTypesWithSboids() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20),
         new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")),
