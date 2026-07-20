@@ -20,6 +20,6 @@ class ExportBusinessOrganisationJobServiceTest {
 
     assertThat(exportTypes)
         .isNotNull()
-        .isEqualTo(BaseExportType.BASE_WITH_FUTURE);
+        .isEqualTo(BaseExportType.BASE);
   }
 }

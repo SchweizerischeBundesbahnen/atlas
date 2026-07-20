@@ -77,23 +77,6 @@ class PlatformSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     assertThat(result.getFirst().getParentServicePointSloid()).isEqualTo("ch:1:sloid:7000");
   }
 
-  @Test
-  void shouldReturnTimetableFuturePlatforms() throws SQLException {
-    //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    insertPlatform(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
-        actualTimetableYearChangeDate.minusYears(1),
-        actualTimetableYearChangeDate.plusYears(1));
-    String sqlQuery = PlatformVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
-
-    //when
-    List<PlatformVersion> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-
-  }
-
   private List<PlatformVersion> executeQuery(String sqlQuery) throws SQLException {
     List<PlatformVersion> result = new ArrayList<>();
     Connection connection = prmDataSource.getConnection();

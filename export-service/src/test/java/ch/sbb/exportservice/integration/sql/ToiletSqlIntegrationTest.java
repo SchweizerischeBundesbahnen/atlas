@@ -78,23 +78,6 @@ class ToiletSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     assertThat(result.getFirst().getParentServicePointSloid()).isEqualTo("ch:1:sloid:7000");
   }
 
-  @Test
-  void shouldReturnTimetableFutureToilets() throws SQLException {
-    //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    insertToilet(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
-        actualTimetableYearChangeDate.minusYears(1),
-        actualTimetableYearChangeDate.plusYears(1));
-    String sqlQuery = ToiletVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
-
-    //when
-    List<ToiletVersion> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-
-  }
-
   private List<ToiletVersion> executeQuery(String sqlQuery) throws SQLException {
     List<ToiletVersion> result = new ArrayList<>();
     Connection connection = prmDataSource.getConnection();

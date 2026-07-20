@@ -15,11 +15,9 @@ class ExportObjectV2Test {
   void shouldSupportSwissAndWorldTimetableYearsVariantsForSwissWorldObjects(ExportObjectV2 exportObject) {
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FULL)).isTrue();
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_ACTUAL)).isTrue();
-    assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FUTURE_TIMETABLE)).isTrue();
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_TIMETABLE_YEARS)).isTrue();
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FULL)).isTrue();
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_ACTUAL)).isTrue();
-    assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FUTURE_TIMETABLE)).isTrue();
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_TIMETABLE_YEARS)).isTrue();
   }
 
@@ -28,11 +26,9 @@ class ExportObjectV2Test {
     Set<ExportTypeV2> exportTypes = Set.of(
         ExportTypeV2.SWISS_FULL,
         ExportTypeV2.SWISS_ACTUAL,
-        ExportTypeV2.SWISS_FUTURE_TIMETABLE,
         ExportTypeV2.SWISS_TIMETABLE_YEARS,
         ExportTypeV2.WORLD_FULL,
         ExportTypeV2.WORLD_ACTUAL,
-        ExportTypeV2.WORLD_FUTURE_TIMETABLE,
         ExportTypeV2.WORLD_TIMETABLE_YEARS
     );
 
@@ -40,7 +36,7 @@ class ExportObjectV2Test {
     Set<ExportTypeV2> actualExportTypes = Set.copyOf(servicePoint.getSupportedExportTypes());
 
     assertThat(actualExportTypes)
-        .hasSize(8)
+        .hasSize(6)
         .isEqualTo(exportTypes);
   }
 
@@ -64,7 +60,6 @@ class ExportObjectV2Test {
     Set<ExportTypeV2> expectedDefault = Set.of(
         ExportTypeV2.FULL,
         ExportTypeV2.ACTUAL,
-        ExportTypeV2.FUTURE_TIMETABLE,
         ExportTypeV2.TIMETABLE_YEARS
     );
     Set<ExportTypeV2> actual = Set.copyOf(exportObject.getSupportedExportTypes());

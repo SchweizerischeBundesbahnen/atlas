@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.servicepoint.sql;
 
 import ch.sbb.atlas.helper.DateHelper;
-import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.exportservice.job.SqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import java.time.LocalDate;
@@ -47,20 +46,17 @@ public class ServicePointVersionSqlQueryUtil extends SqlQueryUtil {
 
   private String getSqlWhereClause(ExportTypeV2 exportTypeV2) {
     return switch (exportTypeV2) {
-      case SWISS_FULL, SWISS_ACTUAL, SWISS_FUTURE_TIMETABLE, SWISS_TIMETABLE_YEARS -> SWISS_WHERE_STATEMENT;
-      case WORLD_ACTUAL, WORLD_FUTURE_TIMETABLE, WORLD_FULL, WORLD_TIMETABLE_YEARS -> null;
+      case SWISS_FULL, SWISS_ACTUAL, SWISS_TIMETABLE_YEARS -> SWISS_WHERE_STATEMENT;
+      case WORLD_ACTUAL, WORLD_FULL, WORLD_TIMETABLE_YEARS -> null;
       default -> throw new IllegalStateException(exportTypeV2.name() + " is not allowed here.");
     };
   }
 
   private String getFromStatementQuery(ExportTypeV2 exportTypeV2) {
-    LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     return switch (exportTypeV2) {
       case SWISS_FULL, SWISS_ACTUAL, SWISS_TIMETABLE_YEARS,
            WORLD_FULL, WORLD_ACTUAL, WORLD_TIMETABLE_YEARS -> String.format(SELECT_AND_JOIN_STATEMENT,
           DateHelper.getDateAsSqlString(LocalDate.now()));
-      case WORLD_FUTURE_TIMETABLE, SWISS_FUTURE_TIMETABLE ->
-          String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
       default -> throw new IllegalStateException(exportTypeV2.name() + " is not allowed here.");
     };
   }

@@ -78,23 +78,6 @@ class ReferencePointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     assertThat(result.getFirst().getParentServicePointSloid()).isEqualTo("ch:1:sloid:7000");
   }
 
-  @Test
-  void shouldReturnTimetableFutureReferencePoints() throws SQLException {
-    //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    insertReferencePoint(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
-        actualTimetableYearChangeDate.minusYears(1),
-        actualTimetableYearChangeDate.plusYears(1));
-    String sqlQuery = ReferencePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
-
-    //when
-    List<ReferencePointVersion> result = executeQuery(sqlQuery);
-
-    //then
-    assertThat(result).hasSize(1);
-
-  }
-
   private List<ReferencePointVersion> executeQuery(String sqlQuery) throws SQLException {
     List<ReferencePointVersion> result = new ArrayList<>();
     Connection connection = prmDataSource.getConnection();

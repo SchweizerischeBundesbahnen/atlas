@@ -13,7 +13,7 @@ class ExportRelationJobServiceTest {
   void shouldGetExportTypes() {
     ExportRelationJobService exportRelationJobService = new ExportRelationJobService(null, null, null);
     List<JobParams> exportTypes = exportRelationJobService.getExportTypes();
-    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE_WITH_FUTURE);
+    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE);
   }
 
 }

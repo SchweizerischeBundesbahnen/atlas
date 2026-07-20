@@ -106,68 +106,6 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     assertThat(result.get(2).getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
   }
 
-  @Test
-  void shouldReturnFutureTimetableDateWithMatchingLoadingPointAndSePoBo() throws SQLException {
-    // given
-    final LocalDate futureDate = getTimetableYearChangeDateToExportData(LocalDate.now());
-    final int servicePointNumber = 8509111;
-    final String sboid = "ch:1:sboid:101999";
-    insertServicePoint(servicePointNumber, futureDate, futureDate, Country.AFGHANISTAN);
-    insertSharedBusinessOrganisation(sboid, "testIt", futureDate, futureDate);
-    insertLoadingPoint(50, servicePointNumber, futureDate, futureDate);
-    insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
-
-    // when
-    final List<LoadingPointVersion> result = executeQuery(sqlQuery);
-
-    // then
-    assertThat(result).isNotEmpty().hasSize(1);
-    assertThat(isDateInRange(futureDate, result.getFirst().getValidFrom(), result.getFirst().getValidTo())).isTrue();
-    assertThat(result.getFirst().getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.getFirst().getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
-  }
-
-  @Test
-  void shouldReturnFutureTimetableDateWithMatchingLoadingPointWithoutSePoBo() throws SQLException {
-    // given
-    final LocalDate futureDate = getTimetableYearChangeDateToExportData(LocalDate.now());
-    final int servicePointNumber = 8509111;
-    final String sboid = "ch:1:sboid:101999";
-    insertServicePoint(servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4), Country.AFGHANISTAN);
-    insertSharedBusinessOrganisation(sboid, "testIt", futureDate.minusMonths(5), futureDate.minusMonths(4));
-    insertLoadingPoint(50, servicePointNumber, futureDate, futureDate);
-    insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
-
-    // when
-    final List<LoadingPointVersion> result = executeQuery(sqlQuery);
-
-    // then
-    assertThat(result).isNotEmpty().hasSize(1);
-    assertThat(isDateInRange(futureDate, result.getFirst().getValidFrom(), result.getFirst().getValidTo())).isTrue();
-    assertThat(result.getFirst().getParentSloidServicePoint()).isNull();
-    assertThat(result.getFirst().getServicePointSharedBusinessOrganisation().getBusinessOrganisationNumber()).isNull();
-  }
-
-  @Test
-  void shouldReturnFutureTimetableDateWithoutMatchingLoadingPointWithoutSePoBo() throws SQLException {
-    // given
-    final LocalDate futureDate = getTimetableYearChangeDateToExportData(LocalDate.now());
-    final int servicePointNumber = 8509111;
-    final String sboid = "ch:1:sboid:101999";
-    insertServicePoint(servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4), Country.AFGHANISTAN);
-    insertSharedBusinessOrganisation(sboid, "testIt", futureDate.minusMonths(5), futureDate.minusMonths(4));
-    insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
-
-    // when
-    final List<LoadingPointVersion> result = executeQuery(sqlQuery);
-
-    // then
-    assertThat(result).isEmpty();
-  }
-
   private List<LoadingPointVersion> executeQuery(String sqlQuery) throws SQLException {
     final List<LoadingPointVersion> result = new ArrayList<>();
     Connection connection = servicePointDataSource.getConnection();

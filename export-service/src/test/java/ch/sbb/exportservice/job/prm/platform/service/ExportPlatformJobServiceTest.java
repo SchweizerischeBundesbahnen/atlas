@@ -13,7 +13,7 @@ class ExportPlatformJobServiceTest {
   void shouldGetExportTypes() {
     ExportPlatformJobService exportPlatformJobService = new ExportPlatformJobService(null, null, null);
     List<JobParams> exportTypes = exportPlatformJobService.getExportTypes();
-    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE_WITH_FUTURE);
+    assertThat(exportTypes).isNotNull().isEqualTo(BaseExportType.BASE);
   }
 
 }

@@ -14,10 +14,10 @@ class ExportFilePathV2Test {
     // Given
     exportFilePath = ExportFilePathV2.getV2Builder(
             ExportObjectV2.SERVICE_POINT,
-            ExportTypeV2.WORLD_FUTURE_TIMETABLE)
+            ExportTypeV2.WORLD_TIMETABLE_YEARS)
         .actualDate(LocalDate.of(2025, 1, 1))
         .build();
-    final String expectedFileName = "future-timetable-world-service-point-2025-01-01";
+    final String expectedFileName = "timetable-years-world-service-point-2025-01-01";
 
     // When
     final String result = exportFilePath.fileName();
