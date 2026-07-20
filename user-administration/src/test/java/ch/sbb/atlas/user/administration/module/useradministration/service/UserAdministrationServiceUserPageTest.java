@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,53 +90,67 @@ class UserAdministrationServiceUserPageTest {
   }
 
   @Test
-  void testWithoutAppTypesWithoutSboids() {
+  void shouldReturnAllUsersWhenNoFiltersApplied() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), null, null, null);
-    Assertions.assertEquals(3, userPage.getTotalElements());
-    Assertions.assertEquals(3, userPage.getContent().size());
-    Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
+
+    assertThat(userPage.getTotalElements()).isEqualTo(3);
+    assertThat(userPage.getContent()).containsExactlyInAnyOrder("u123456", "e654321", "u111111");
   }
 
   @Test
-  void testWithAppTypesWithoutSboids() {
+  void shouldFilterByApplicationTypes() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), null,
         new HashSet<>(List.of(ApplicationType.TTFN, ApplicationType.LIDI)), null);
-    Assertions.assertEquals(2, userPage.getTotalElements());
-    Assertions.assertEquals(2, userPage.getContent().size());
-    Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
+
+    assertThat(userPage.getTotalElements()).isEqualTo(2);
+    assertThat(userPage.getContent()).containsExactlyInAnyOrder("u123456", "e654321");
   }
 
   @Test
-  void testWithoutAppTypesWithSboids() {
+  void shouldFilterBySboidRestrictions() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20),
         new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")), null, PermissionRestrictionType.BUSINESS_ORGANISATION);
-    Assertions.assertEquals(2, userPage.getTotalElements());
-    Assertions.assertEquals(2, userPage.getContent().size());
-    Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
+
+    assertThat(userPage.getTotalElements()).isEqualTo(2);
+    assertThat(userPage.getContent()).containsExactlyInAnyOrder("u123456", "e654321");
   }
 
   @Test
-  void testWithAppTypesWithSboids() {
+  void shouldExcludeReadersWhenFilteringByApplicationType() {
+    Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), null,
+        new HashSet<>(List.of(ApplicationType.LIDI)), null);
+
+    assertThat(userPage.getTotalElements()).isEqualTo(2);
+    assertThat(userPage.getContent()).containsExactlyInAnyOrder("u123456", "e654321");
+  }
+
+  @Test
+  void shouldFilterByApplicationTypesAndSboids() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20),
         new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")),
         new HashSet<>(List.of(ApplicationType.TTFN, ApplicationType.LIDI)), PermissionRestrictionType.BUSINESS_ORGANISATION);
-    Assertions.assertEquals(1, userPage.getTotalElements());
-    Assertions.assertEquals(1, userPage.getContent().size());
-    Assertions.assertTrue(userPage.getContent().contains("e654321"));
 
-    userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), new HashSet<>(List.of("ch:1:sboid:102")),
-        new HashSet<>(List.of(ApplicationType.TTFN)), PermissionRestrictionType.BUSINESS_ORGANISATION);
-    Assertions.assertEquals(1, userPage.getTotalElements());
-    Assertions.assertEquals(1, userPage.getContent().size());
-    Assertions.assertTrue(userPage.getContent().contains("u123456"));
+    assertThat(userPage.getTotalElements()).isEqualTo(1);
+    assertThat(userPage.getContent()).containsExactlyInAnyOrder("e654321");
   }
 
   @Test
-  void testPaging() {
+  void shouldReturnOnlyUserWithSpecificSboidAndApplicationType() {
+    Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20),
+        new HashSet<>(List.of("ch:1:sboid:102")),
+        new HashSet<>(List.of(ApplicationType.TTFN)), PermissionRestrictionType.BUSINESS_ORGANISATION);
+
+    assertThat(userPage.getTotalElements()).isEqualTo(1);
+    assertThat(userPage.getContent()).containsExactlyInAnyOrder("u123456");
+  }
+
+  @Test
+  void shouldPageResults() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(1), new HashSet<>(List.of("ch:1:sboid:100")),
         new HashSet<>(List.of(ApplicationType.TTFN)), PermissionRestrictionType.BUSINESS_ORGANISATION);
-    Assertions.assertEquals(2, userPage.getTotalElements());
-    Assertions.assertEquals(1, userPage.getContent().size());
+
+    assertThat(userPage.getTotalElements()).isEqualTo(2);
+    assertThat(userPage.getContent()).hasSize(1);
   }
 
   @Test
