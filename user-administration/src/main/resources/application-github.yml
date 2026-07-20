@@ -18,6 +18,9 @@ server:
     include-message: always
 
 spring:
+  cloud:
+    vault:
+      enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5437/user-administration?currentSchema=user-administration
     username: user

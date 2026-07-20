@@ -4,6 +4,8 @@ spring:
   application:
     name: api-auth-gateway
   cloud:
+    vault:
+      enabled: false
     gateway:
       server:
         webflux:

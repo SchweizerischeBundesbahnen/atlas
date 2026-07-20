@@ -1,4 +1,7 @@
 spring:
+  cloud:
+    vault:
+      enabled: false
   mail:
     password: springboot
     username: duke

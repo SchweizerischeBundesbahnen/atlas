@@ -23,10 +23,10 @@ class AmazonAtlasConfigIntegrationTest {
   @MockitoBean
   private TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
-  @Value("${AMAZON_S3_ACCESS_KEY}")
+  @Value("${S3_DATA_EXPORT_ACCESS_KEY}")
   private String accessKey;
 
-  @Value("${AMAZON_S3_SECRET_KEY}")
+  @Value("${S3_DATA_EXPORT_SECRET_KEY}")
   private String secretKey;
 
   @Test

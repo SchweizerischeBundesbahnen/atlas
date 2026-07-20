@@ -25,6 +25,9 @@ info:
     buildtime: ${time}
 
 spring:
+  cloud:
+    vault:
+      enabled: false
   datasource:
     location:
       url: jdbc:postgresql://localhost:5443/location?currentSchema=location
