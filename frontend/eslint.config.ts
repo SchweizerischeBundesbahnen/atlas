@@ -13,12 +13,7 @@ export default defineConfig([
       angular.configs.tsRecommended,
       eslintConfigPrettier,
     ],
-    ignores: [
-      '**node_modules/**/*',
-      'src/app/api/**/*',
-      'cypress.config.ts',
-      'coverage/**/*',
-    ],
+    ignores: ['**node_modules/**/*', 'src/app/api/**/*', 'cypress.config.ts', 'coverage/**/*'],
     processor: angular.processInlineTemplates,
 
     rules: {

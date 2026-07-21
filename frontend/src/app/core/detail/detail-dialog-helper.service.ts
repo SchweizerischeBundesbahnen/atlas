@@ -1,4 +1,4 @@
-import { inject, Injectable, OnInit } from '@angular/core';
+import { inject, Injectable, OnInit, Signal, WritableSignal } from '@angular/core';
 import { Observable, of, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { DialogService } from '../components/dialog/dialog.service';
@@ -9,6 +9,15 @@ export interface DetailWithCancelEdit extends OnInit {
   isNew: boolean;
   back: () => void;
   form: FormGroup;
+}
+
+export interface SignalDetailWithCancelEdit<FormType extends object> extends OnInit {
+  isNew: boolean;
+  back: () => void;
+  formModel: WritableSignal<FormType>;
+  emptyFormValue: FormType;
+  dirty: Signal<boolean>;
+  editMode: WritableSignal<boolean>;
 }
 
 @Injectable({
@@ -34,17 +43,49 @@ export class DetailDialogHelperService {
   }
 
   confirmLeave(detail: DetailWithCancelEdit): Observable<boolean> {
-    return this.confirmLeaveDirtyForm(detail.form);
+    if (detail.form.dirty) {
+      return this.openLeaveDialog();
+    }
+    return of(true);
+  }
+
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  openCancelEditDialog(detail: SignalDetailWithCancelEdit<any>) {
+    this.confirmLeaving(detail)
+      .pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (detail.isNew) {
+            detail.formModel.set({ ...detail.emptyFormValue });
+            detail.back();
+          } else {
+            detail.ngOnInit();
+            detail.editMode.set(false);
+          }
+        }
+      });
+  }
+
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  confirmLeaving(detail: SignalDetailWithCancelEdit<any>): Observable<boolean> {
+    if (detail.dirty()) {
+      return this.openLeaveDialog();
+    }
+    return of(true);
   }
 
   confirmLeaveDirtyForm(form: FormGroup): Observable<boolean> {
     if (form.dirty) {
-      return this.dialogService.openDialogDataWithConfirmationResult({
-        title: 'DIALOG.DISCARD_CHANGES_TITLE',
-        message: 'DIALOG.LEAVE_SITE',
-      } satisfies DialogData);
+      return this.openLeaveDialog();
     }
     return of(true);
+  }
+
+  openLeaveDialog(): Observable<boolean> {
+    return this.dialogService.openDialogDataWithConfirmationResult({
+      title: 'DIALOG.DISCARD_CHANGES_TITLE',
+      message: 'DIALOG.LEAVE_SITE',
+    } satisfies DialogData);
   }
 
   confirmWarning(labels: Pick<DialogData, 'message' | 'confirmText'>, onConfirm: () => void) {

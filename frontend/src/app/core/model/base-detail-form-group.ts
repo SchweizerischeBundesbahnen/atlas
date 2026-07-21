@@ -10,3 +10,13 @@ export interface BaseDetailFormGroup {
   creator: FormControl<string | null | undefined>;
   editor: FormControl<string | null | undefined>;
 }
+
+export interface BaseDetailFormModel {
+  validFrom: Moment | null;
+  validTo: Moment | null;
+  etagVersion: number | null;
+  creationDate: string | null;
+  editionDate: string | null;
+  editor: string | null;
+  creator: string | null;
+}

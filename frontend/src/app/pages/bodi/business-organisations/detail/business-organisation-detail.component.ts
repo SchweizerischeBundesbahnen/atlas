@@ -1,20 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal, signal } from '@angular/core';
 import { BusinessOrganisationVersion, BusinessType } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { catchError, EMPTY } from 'rxjs';
 import { Pages } from '../../../pages';
-import {
-  BusinessOrganisationDetailFormGroup,
-  BusinessOrganisationDetailFormGroupBuilder,
-} from './business-organisation-detail-form-group';
 import { BusinessOrganisationLanguageService } from '../shared/business-organisation-language.service';
-import { ValidityService } from '../../../sepodi/validity/validity.service';
-import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
-import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
@@ -25,21 +17,26 @@ import { SwitchVersionComponent } from '../../../../core/components/switch-versi
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../../core/versioning/date-range';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
-import { ValidationService } from '../../../../core/validation/validation.service';
-import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../../core/detail/detail-dialog-helper.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { Revokable, RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
-import { AtlasLabelFieldComponent } from '@atlas/form';
-import {
-  TransportCompanyRelationInternalService
-} from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import { AtlasLabelFieldComponent, AtlasSearchSelectComponent, AtlasTextFieldComponent } from '@atlas/form';
+import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { map } from 'rxjs/operators';
 import { DialogData } from '../../../../core/components/dialog/dialog.data';
+import { AtlasDateRangeComponent } from '../../../../core/form-components/atlas-date-range/atlas-date-range.component';
+import { apply, disabled, form, Schema, schema } from '@angular/forms/signals';
+import { FormValidators } from '../../../../core/validation/form-validators.service';
+import { ValidityService } from '../../../sepodi/validity/validity.service';
+import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
+import {
+  BusinessOrganisationDetailForm,
+  BusinessOrganisationDetailFormModel,
+} from './business-organisation-detail-form-group';
 
 type TransportCompanyRelationTableEntry = {
   abbreviation?: string;
@@ -55,9 +52,9 @@ type TransportCompanyRelationTableEntry = {
   providers: [ValidityService, TranslatePipe],
   imports: [
     ReactiveFormsModule,
-    TextFieldComponent,
-    DateRangeComponent,
-    SelectComponent,
+    AtlasTextFieldComponent,
+    AtlasDateRangeComponent,
+    AtlasSearchSelectComponent,
     TranslatePipe,
     DateRangeTextComponent,
     DetailPageContainerComponent,
@@ -71,11 +68,8 @@ type TransportCompanyRelationTableEntry = {
     AtlasLabelFieldComponent,
     TableComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class BusinessOrganisationDetailComponent
-  implements Revokable, OnInit, DetailFormComponent, DetailWithCancelEdit
-{
+export class BusinessOrganisationDetailComponent implements Revokable, OnInit, DetailFormComponent {
   private readonly businessOrganisationInternalService = inject(BusinessOrganisationInternalService);
   private readonly businessOrganisationLanguageService = inject(BusinessOrganisationLanguageService);
   private readonly router = inject(Router);
@@ -83,13 +77,57 @@ export class BusinessOrganisationDetailComponent
   private readonly dialogService = inject(DialogService);
   private readonly validityService = inject(ValidityService);
   private readonly detailHelperService = inject(DetailDialogHelperService);
+  private readonly formValidators = inject(FormValidators);
 
   BUSINESS_TYPES = Object.values(BusinessType);
   versions!: BusinessOrganisationVersion[];
   selectedVersion!: BusinessOrganisationVersion;
   maxValidity!: DateRange;
 
-  form!: FormGroup<BusinessOrganisationDetailFormGroup>;
+  readonly emptyFormValue = BusinessOrganisationDetailForm.emptyFormValue;
+  readonly editMode = signal(false);
+  readonly formModel = signal<BusinessOrganisationDetailFormModel>(this.emptyFormValue);
+  readonly businessOrganisationForm = form(this.formModel, (schemaPath) => {
+    disabled(schemaPath, {
+      when: () => !this.editMode(),
+    });
+
+    const abbreviationSchema: Schema<string> = schema((field) => {
+      this.formValidators.required(field);
+      this.formValidators.maxLength(field, 10);
+      this.formValidators.iso88591(field);
+    });
+    const descriptionSchema: Schema<string> = schema((field) => {
+      this.formValidators.required(field);
+      this.formValidators.maxLength(field, 60);
+      this.formValidators.iso88591(field);
+      this.formValidators.blankOrEmptySpaceSurrounding(field);
+    });
+
+    apply(schemaPath.descriptionDe, descriptionSchema);
+    apply(schemaPath.descriptionFr, descriptionSchema);
+    apply(schemaPath.descriptionIt, descriptionSchema);
+    apply(schemaPath.descriptionEn, descriptionSchema);
+
+    apply(schemaPath.abbreviationDe, abbreviationSchema);
+    apply(schemaPath.abbreviationFr, abbreviationSchema);
+    apply(schemaPath.abbreviationIt, abbreviationSchema);
+    apply(schemaPath.abbreviationEn, abbreviationSchema);
+
+    this.formValidators.required(schemaPath.organisationNumber);
+    this.formValidators.numeric(schemaPath.organisationNumber);
+    this.formValidators.maxLength(schemaPath.organisationNumber, 5);
+
+    this.formValidators.maxLength(schemaPath.contactEnterpriseEmail, 255);
+    this.formValidators.email(schemaPath.contactEnterpriseEmail);
+
+    this.formValidators.required(schemaPath.validFrom);
+    this.formValidators.required(schemaPath.validTo);
+    this.formValidators.validToAfterOrEqualValidFrom(schemaPath);
+  });
+
+  dirty = computed(() => this.businessOrganisationForm().dirty());
+
   isNew = false;
   showVersionSwitch = false;
   isSwitchVersionDisabled = false;
@@ -127,15 +165,13 @@ export class BusinessOrganisationDetailComponent
   protected readonly tcRelations: Signal<TransportCompanyRelationTableEntry[]> = toSignal(
     this.getTcRelations().pipe(
       map((relations) =>
-        relations.map(
-          (rel): TransportCompanyRelationTableEntry => ({
-            abbreviation: rel.transportCompany?.abbreviation,
-            businessRegisterName: rel.transportCompany?.businessRegisterName,
-            validFrom: rel.validFrom,
-            validTo: rel.validTo,
-            transportCompanyId: rel.transportCompany?.id,
-          })
-        )
+        relations.map((rel): TransportCompanyRelationTableEntry => ({
+          abbreviation: rel.transportCompany?.abbreviation,
+          businessRegisterName: rel.transportCompany?.businessRegisterName,
+          validFrom: rel.validFrom,
+          validTo: rel.validTo,
+          transportCompanyId: rel.transportCompany?.id,
+        }))
       )
     ),
     {
@@ -147,7 +183,8 @@ export class BusinessOrganisationDetailComponent
     this.versions = this.activatedRoute.snapshot.data.businessOrganisationDetail;
     if (this.versions.length == 0) {
       this.isNew = true;
-      this.form = BusinessOrganisationDetailFormGroupBuilder.getFormGroup();
+      this.businessOrganisationForm().reset(this.emptyFormValue);
+      this.editMode.set(true);
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.versions);
@@ -159,12 +196,12 @@ export class BusinessOrganisationDetailComponent
   }
 
   toggleEdit() {
-    if (this.form.enabled) {
-      this.detailHelperService.showCancelEditDialog(this);
+    if (this.editMode()) {
+      this.detailHelperService.openCancelEditDialog(this);
     } else {
       this.isSwitchVersionDisabled = true;
-      this.validityService.initValidity(this.form);
-      this.form.enable();
+      this.validityService.init(this.formModel());
+      this.editMode.set(true);
     }
   }
 
@@ -179,21 +216,22 @@ export class BusinessOrganisationDetailComponent
   }
 
   save() {
-    ValidationService.validateForm(this.form);
-    if (this.form.valid) {
-      const businessOrganisationVersion = this.form.getRawValue() as unknown as BusinessOrganisationVersion;
-      this.form.disable();
-      if (this.isNew) {
-        this.create(businessOrganisationVersion);
-      } else {
-        this.validityService.updateValidity(this.form);
-        this.validityService.validate().subscribe((confirmed) => {
-          if (confirmed) {
-            this.form.disable();
-            this.update(this.selectedVersion.id!, businessOrganisationVersion);
-          }
-        });
-      }
+    this.businessOrganisationForm().markAsTouched();
+    if (this.businessOrganisationForm().invalid()) {
+      return;
+    }
+
+    const businessOrganisationVersion = BusinessOrganisationDetailForm.toApiModel(this.formModel());
+    if (this.isNew) {
+      this.create(businessOrganisationVersion);
+    } else {
+      this.validityService.update(this.formModel());
+      this.validityService.validate().subscribe((confirmed) => {
+        if (confirmed) {
+          this.editMode.set(false);
+          this.update(this.selectedVersion.id!, businessOrganisationVersion);
+        }
+      });
     }
   }
 
@@ -265,15 +303,15 @@ export class BusinessOrganisationDetailComponent
 
   private initSelectedVersion() {
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
-    this.form = BusinessOrganisationDetailFormGroupBuilder.getFormGroup(this.selectedVersion);
+    this.businessOrganisationForm().reset(BusinessOrganisationDetailForm.toFormModel(this.selectedVersion));
     if (!this.isNew) {
-      this.form.disable();
+      this.editMode.set(false);
     }
   }
 
   private handleError() {
     return () => {
-      this.form.enable();
+      this.editMode.set(true);
       return EMPTY;
     };
   }

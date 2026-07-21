@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   AfterViewInit,
   Component,
   ElementRef,
@@ -33,7 +32,6 @@ import { NgClass } from '@angular/common';
 @Component({
   selector: 'atlas-switch-version',
   templateUrl: './switch-version.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./switch-version.component.scss'],
   imports: [
     MatTable,
