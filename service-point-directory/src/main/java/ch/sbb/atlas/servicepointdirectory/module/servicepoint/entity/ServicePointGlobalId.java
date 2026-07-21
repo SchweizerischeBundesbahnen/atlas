@@ -25,13 +25,7 @@ import lombok.experimental.FieldNameConstants;
 
 /**
  * 1:1 mapping between a service point (identified by its stable {@link ServicePointNumber}) and an
- * official foreign Global-ID (e.g. Germany {@code de:05770:1282}, Austria {@code at:42:9379}).
- *
- * <p>Keyed by the service point number rather than a service point version id because the Global-ID
- * identifies the real-world stop, which is stable across all versions, whereas version ids are
- * ephemeral. The number is chosen over the sloid because it exists for every country - including
- * Didok country codes 80 (Germany) and 81 (Austria), which have no sloid. Both ends are unique,
- * enforcing the 1:1 relationship.
+ * official international Global-ID (e.g. Germany {@code de:05770:1282}, Austria {@code at:42:9379}).
  */
 @NoArgsConstructor
 @AllArgsConstructor

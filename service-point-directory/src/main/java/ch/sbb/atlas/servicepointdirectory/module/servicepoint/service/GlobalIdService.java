@@ -15,14 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Resolves and persists the {@link GlobalId} for service point versions by their stable
- * {@link ServicePointNumber} and enriches {@link ReadServicePointVersionModel} instances with it.
- *
- * <p>The intrinsic validity rules of a Global-ID (country prefix, whitespace, length, optionality)
- * live in the {@link GlobalId} value object. This service adds the rules that require persistence
- * state - namely uniqueness across all stops - and orchestrates reading and writing the mapping.
- */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

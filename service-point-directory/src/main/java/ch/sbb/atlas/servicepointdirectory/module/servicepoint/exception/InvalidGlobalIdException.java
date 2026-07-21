@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
  * stop). Carries a display code so the frontend can render a comprehensible message.
  */
 @Getter
-public class InvalidGlobalIdException extends AtlasException {
+public final class InvalidGlobalIdException extends AtlasException {
 
   private static final String FIELD = "globalId";
   private static final String CODE_PREFIX = "SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.";
@@ -62,7 +62,7 @@ public class InvalidGlobalIdException extends AtlasException {
   public static InvalidGlobalIdException alreadyUsed(GlobalId globalId) {
     return new InvalidGlobalIdException(HttpStatus.CONFLICT,
         "Global-ID '" + globalId.value() + "' is already used by another stop.",
-        CODE_PREFIX + "ALREADY_USED", List.of(new Parameter("globalId", globalId.value())));
+        CODE_PREFIX + "ALREADY_USED", List.of(new Parameter(FIELD, globalId.value())));
   }
 
   public static InvalidGlobalIdException illegalArguments() {
