@@ -18,6 +18,31 @@
         <atlas-clipboard [value]="selectedVersion.number!.number.toString()" [showMe]="true" />
       </div>
     </div>
+    @if (showGlobalId) {
+      <div class="d-flex flex-column ms-5" data-cy="selected-version-global-id">
+        <div class="font-bold-base d-flex align-items-center">
+          {{ 'SEPODI.SERVICE_POINTS.GLOBAL_ID' | translate }}
+          @if (canEditGlobalId) {
+            <i
+              class="bi bi-pencil-square ms-2 cursor-pointer"
+              (click)="editGlobalId()"
+              data-cy="edit-global-id"
+              [title]="'SEPODI.SERVICE_POINTS.GLOBAL_ID_EDIT.TITLE' | translate"
+            ></i>
+          }
+        </div>
+        @if (selectedVersion.globalId) {
+          <div class="d-flex"
+            >{{ selectedVersion.globalId }}
+            <atlas-clipboard [value]="selectedVersion.globalId" [showMe]="true" />
+          </div>
+        } @else {
+          <div class="d-flex" data-cy="global-id-empty">{{
+            'SEPODI.SERVICE_POINTS.GLOBAL_ID_EDIT.EMPTY' | translate
+          }}</div>
+        }
+      </div>
+    }
   </div>
 
   <nav mat-tab-nav-bar class="tabs mt-5" data-cy="tabs" [tabPanel]="tabPanel">

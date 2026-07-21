@@ -68,6 +68,7 @@ export * from './errorResponse';
 export * from './examinantWorkflowCheck';
 export * from './geolocation';
 export * from './geolocationCreate';
+export * from './globalIdUpdate';
 export * from './hearingStatus';
 export * from './importType';
 export * from './infoOpportunityAttributeType';

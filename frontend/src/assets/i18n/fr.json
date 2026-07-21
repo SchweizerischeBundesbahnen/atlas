@@ -311,6 +311,8 @@
     "ONE_YEAR_BEFORE": "La période d'audition doit être l'année {{number}}.",
     "PATTERN": "Format non valide. Caractères autorisés: {{allowedChars}}",
     "WHITESPACES": "Ne peut pas commencer ou se terminer par un espace.",
+    "GLOBALIDPREFIXDE": "L'ID global doit commencer par «de:».",
+    "GLOBALIDPREFIXAT": "L'ID global doit commencer par «at:».",
     "COLOR_INVALID": "Couleur attendue au format #FFFFFF",
     "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100",
     "MIN": "La valeur doit être au minimum {{min}}.",
@@ -1227,6 +1229,19 @@
     "SERVICE_POINTS": {
       "SLOID": "Swiss Location ID (SLOID)",
       "DIDOK_CODE": "Code DiDok (code et numéro du pays)",
+      "GLOBAL_ID": "Global-ID",
+      "GLOBAL_ID_EDIT": {
+        "TITLE": "Modifier l'ID global",
+        "SUCCESS": "L'ID global a été enregistré.",
+        "EMPTY": "Non défini"
+      },
+      "GLOBAL_ID_ERROR": {
+        "COUNTRY_MISMATCH": "L'ID global doit commencer par «{{prefix}}».",
+        "NOT_ALLOWED_FOR_COUNTRY": "Un ID global ne peut être saisi que pour les arrêts allemands (11, 80) et autrichiens (12, 81).",
+        "WHITESPACE": "L'ID global ne peut pas commencer ou se terminer par un espace.",
+        "MAX_LENGTH": "L'ID global ne peut pas dépasser {{maxLength}} caractères.",
+        "ALREADY_USED": "L'ID global «{{globalId}}» est déjà utilisé par un autre arrêt."
+      },
       "DIDOK_CODE_SEARCH": "Code DiDok",
       "SEARCH_OR_NAVIGATION": "Recherche / Navigation",
       "NAVIGATION": "Navigation vers SLOID",

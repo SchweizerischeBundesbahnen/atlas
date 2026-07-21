@@ -16,6 +16,9 @@ import { ReadServicePointVersion } from '../../../api';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 
 const authService: Partial<AuthService> = {};
 
@@ -64,6 +67,7 @@ const servicePointInGermany: ReadServicePointVersion[] = [
       isoCountryCode: 'DE',
     },
     country: 'GERMANY',
+    globalId: 'de:05770:1282',
     borderPoint: false,
     trafficPoint: false,
     operatingPointKilometer: false,
@@ -80,13 +84,26 @@ describe('ServicePointSidePanelComponent', () => {
   let trafficPointMapServiceSpy: Mocked<
     Pick<TrafficPointMapService, 'displayTrafficPointsOnMap' | 'clearDisplayedTrafficPoints'>
   >;
+  let dialogServiceSpy: Mocked<Pick<DialogService, 'openCustomDataWithConfirmationResult'>>;
+  let servicePointServiceSpy: Mocked<Pick<ServicePointService, 'getServicePointVersions'>>;
+  let isAtLeastSupervisor = true;
+  const permissionServiceMock: Partial<PermissionService> = {
+    isAtLeastSupervisor: () => isAtLeastSupervisor,
+  };
 
   const activatedRouteMock = { data: of({ servicePoint: [BERN_WYLEREGG] }) };
 
   beforeEach(() => {
+    isAtLeastSupervisor = true;
     trafficPointMapServiceSpy = {
       displayTrafficPointsOnMap: vi.fn(),
       clearDisplayedTrafficPoints: vi.fn(),
+    };
+    dialogServiceSpy = {
+      openCustomDataWithConfirmationResult: vi.fn(),
+    };
+    servicePointServiceSpy = {
+      getServicePointVersions: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -108,6 +125,9 @@ describe('ServicePointSidePanelComponent', () => {
           provide: TrafficPointMapService,
           useValue: trafficPointMapServiceSpy,
         },
+        { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: ServicePointService, useValue: servicePointServiceSpy },
+        { provide: PermissionService, useValue: permissionServiceMock },
         SplitServicePointNumberPipe,
       ],
     });
@@ -122,6 +142,11 @@ describe('ServicePointSidePanelComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    it('should not display the global-id when it is not set', () => {
+      expect(component.selectedVersion.globalId).toBeUndefined();
+      expect(fixture.nativeElement.querySelector('[data-cy="selected-version-global-id"]')).toBeNull();
     });
 
     it('should display current designationOfficial and validity', () => {
@@ -153,6 +178,61 @@ describe('ServicePointSidePanelComponent', () => {
 
     it('should display only 3 tabs', () => {
       expect(component.tabs).toHaveLength(3);
+    });
+
+    it('should display the global-id when it is set', () => {
+      expect(component.selectedVersion.globalId).toEqual('de:05770:1282');
+      const globalIdElement = fixture.nativeElement.querySelector('[data-cy="selected-version-global-id"]');
+      expect(globalIdElement).not.toBeNull();
+      expect(globalIdElement.textContent).toContain('de:05770:1282');
+    });
+
+    it('should surface the global-id block for a German stop', () => {
+      expect(component.showGlobalId).toBeTruthy();
+    });
+
+    it('should show the edit button when the user is at least supervisor', () => {
+      expect(component.canEditGlobalId).toBeTruthy();
+      expect(fixture.nativeElement.querySelector('[data-cy="edit-global-id"]')).not.toBeNull();
+    });
+
+    it('should hide the edit button when the user is not at least supervisor', () => {
+      isAtLeastSupervisor = false;
+      fixture.detectChanges();
+
+      expect(component.canEditGlobalId).toBeFalsy();
+      expect(fixture.nativeElement.querySelector('[data-cy="edit-global-id"]')).toBeNull();
+    });
+
+    it('should open the edit dialog with the current global-id and reload versions on confirm', () => {
+      const reloadedVersions: ReadServicePointVersion[] = servicePointInGermany.map((version) => ({
+        ...version,
+        globalId: 'de:99999:1',
+      }));
+      dialogServiceSpy.openCustomDataWithConfirmationResult.mockReturnValue(of(true));
+      servicePointServiceSpy.getServicePointVersions.mockReturnValue(of(reloadedVersions));
+
+      component.editGlobalId();
+
+      expect(dialogServiceSpy.openCustomDataWithConfirmationResult).toHaveBeenCalledWith(
+        {
+          servicePointNumber: component.selectedVersion.number.number,
+          country: 'GERMANY',
+          globalId: 'de:05770:1282',
+        },
+        expect.anything(),
+        { width: '600px' }
+      );
+      expect(servicePointServiceSpy.getServicePointVersions).toHaveBeenCalledWith(8001653);
+      expect(component.selectedVersion.globalId).toEqual('de:99999:1');
+    });
+
+    it('should not reload versions when the edit dialog is dismissed', () => {
+      dialogServiceSpy.openCustomDataWithConfirmationResult.mockReturnValue(of(false));
+
+      component.editGlobalId();
+
+      expect(servicePointServiceSpy.getServicePointVersions).not.toHaveBeenCalled();
     });
   });
 });

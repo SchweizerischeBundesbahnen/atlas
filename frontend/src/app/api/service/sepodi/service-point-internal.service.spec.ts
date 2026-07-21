@@ -52,4 +52,13 @@ describe('ServicePointInternalService', () => {
       '/service-point-directory/internal/service-points/123/revoke'
     );
   });
+
+  it('should updateGlobalId', () => {
+    service.updateGlobalId(123, { globalId: 'de:05770:1282' });
+
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
+      '/service-point-directory/internal/service-points/123/global-id',
+      { globalId: 'de:05770:1282' }
+    );
+  });
 });

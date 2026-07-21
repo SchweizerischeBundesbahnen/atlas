@@ -311,6 +311,8 @@
     "ONE_YEAR_BEFORE": "Il periodo di audizione deve essere nell'anno {{number}}.",
     "PATTERN": "Formato non valido. I caratteri permessi sono: {{allowedChars}}",
     "WHITESPACES": "Non può iniziare o terminare con uno spazio.",
+    "GLOBALIDPREFIXDE": "L'ID globale deve iniziare con «de:».",
+    "GLOBALIDPREFIXAT": "L'ID globale deve iniziare con «at:».",
     "COLOR_INVALID": "Colore previsto nel formato #FFFFFF",
     "CMYK_INVALID": "Colore CMYK previsto nel formato 0-100,0-100,0-100,0-100. Esempio 10,10,0,100",
     "MIN": "Il valore deve essere minimo {{min}}",
@@ -1227,6 +1229,19 @@
     "SERVICE_POINTS": {
       "SLOID": "Swiss Location ID (SLOID)",
       "DIDOK_CODE": "Codice DiDok (codice paese e numero)",
+      "GLOBAL_ID": "Global-ID",
+      "GLOBAL_ID_EDIT": {
+        "TITLE": "Modifica ID globale",
+        "SUCCESS": "L'ID globale è stato salvato.",
+        "EMPTY": "Non impostato"
+      },
+      "GLOBAL_ID_ERROR": {
+        "COUNTRY_MISMATCH": "L'ID globale deve iniziare con «{{prefix}}».",
+        "NOT_ALLOWED_FOR_COUNTRY": "Un ID globale può essere inserito solo per le fermate tedesche (11, 80) e austriache (12, 81).",
+        "WHITESPACE": "L'ID globale non può iniziare o terminare con uno spazio.",
+        "MAX_LENGTH": "L'ID globale non può superare {{maxLength}} caratteri.",
+        "ALREADY_USED": "L'ID globale «{{globalId}}» è già utilizzato da un'altra fermata."
+      },
       "DIDOK_CODE_SEARCH": "Codice DiDok",
       "SEARCH_OR_NAVIGATION": "Ricerca / Navigazione",
       "NAVIGATION": "Navigazione verso SLOID",
