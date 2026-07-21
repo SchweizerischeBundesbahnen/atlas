@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.1426.0"
+version = "2.1427.0"
 
 description = "ServicePointDirectory"
 
