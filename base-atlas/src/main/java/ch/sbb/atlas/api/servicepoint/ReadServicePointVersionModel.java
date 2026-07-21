@@ -31,6 +31,11 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @Valid
   private ServicePointNumber number;
 
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Schema(description = "Global ID for linking the stop point to an international reference system. "
+      + "Examples: de:05770:1282, at:42:9379")
+  private String globalId;
+
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
       + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "

@@ -15,6 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.CreateServi
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.search.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.GlobalIdService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePointService;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class ServicePointApiV1Controller implements ServicePointApiV1 {
   private final ServicePointService servicePointService;
   private final ServicePointGeoDataService servicePointGeoDataService;
   private final CreateServicePointMapper createServicePointMapper;
+  private final GlobalIdService globalIdService;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -44,7 +46,8 @@ public class ServicePointApiV1Controller implements ServicePointApiV1 {
         .build();
     Page<ServicePointVersion> servicePointVersions = servicePointService.findAll(searchRestrictions);
     return Container.<ReadServicePointVersionModel>builder()
-        .objects(servicePointVersions.stream().map(ServicePointVersionMapper::toModel).toList())
+        .objects(globalIdService.enrich(
+            servicePointVersions.stream().map(ServicePointVersionMapper::toModel).toList()))
         .totalCount(servicePointVersions.getTotalElements())
         .build();
   }
@@ -58,20 +61,20 @@ public class ServicePointApiV1Controller implements ServicePointApiV1 {
     if (servicePointVersions.isEmpty()) {
       throw new ServicePointNumberNotFoundException(number);
     }
-    return servicePointVersions;
+    return globalIdService.enrich(servicePointVersions);
   }
 
   @Override
   public List<ReadServicePointVersionModel> getServicePointVersionsBySloid(String sloid) {
-    return servicePointService.findBySloidAndOrderByValidFrom(sloid)
+    return globalIdService.enrich(servicePointService.findBySloidAndOrderByValidFrom(sloid)
         .stream()
         .map(ServicePointVersionMapper::toModel)
-        .toList();
+        .toList());
   }
 
   @Override
   public ReadServicePointVersionModel getServicePointVersion(Long id) {
-    return servicePointService.findById(id).map(ServicePointVersionMapper::toModel)
+    return servicePointService.findById(id).map(ServicePointVersionMapper::toModel).map(globalIdService::enrich)
         .orElseThrow(() -> new IdNotFoundException(id));
   }
 
@@ -85,7 +88,7 @@ public class ServicePointApiV1Controller implements ServicePointApiV1 {
     }
 
     ServicePointVersion createdVersion = servicePointService.createAndPublish(servicePointVersion, Optional.empty(), List.of());
-    return ServicePointVersionMapper.toModel(createdVersion);
+    return globalIdService.enrich(ServicePointVersionMapper.toModel(createdVersion));
   }
 
   @Override
@@ -104,7 +107,9 @@ public class ServicePointApiV1Controller implements ServicePointApiV1 {
           servicePointGeoDataService.getGeoReferenceInformation(editedVersion.getServicePointGeolocation()));
     }
 
-    return servicePointService.updateAndPublish(servicePointVersionToUpdate, editedVersion, currentVersions);
+    List<ReadServicePointVersionModel> updatedVersions = servicePointService.updateAndPublish(servicePointVersionToUpdate,
+        editedVersion, currentVersions);
+    return globalIdService.enrich(updatedVersions);
   }
 
   @Override

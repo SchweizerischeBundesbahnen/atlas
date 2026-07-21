@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointWorkfl
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServicePointStatusRevokedChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointVersionMapper;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.GlobalIdService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePointService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServicePointWorkflowApiInternalController implements ServicePointWorkflowApiInternal {
 
   private final ServicePointService servicePointService;
+  private final GlobalIdService globalIdService;
 
   @Override
   public ReadServicePointVersionModel validateServicePoint(Long id) {
@@ -34,7 +36,7 @@ public class ServicePointWorkflowApiInternalController implements ServicePointWo
 
     ServicePointVersion validatedServicePointVersion = servicePointService.validate(servicePointVersion);
 
-    return ServicePointVersionMapper.toModel(validatedServicePointVersion);
+    return globalIdService.enrich(ServicePointVersionMapper.toModel(validatedServicePointVersion));
   }
 
   @Override
@@ -53,9 +55,9 @@ public class ServicePointWorkflowApiInternalController implements ServicePointWo
     ServicePointVersion servicePointVersion = servicePointVersions.stream().filter(sp -> sp.getId().equals(id)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    return ServicePointVersionMapper.toModel(
+    return globalIdService.enrich(ServicePointVersionMapper.toModel(
         servicePointService.updateStopPointStatusForWorkflow(servicePointVersion, servicePointVersions,
-            status));
+            status)));
   }
 
 }

@@ -92,7 +92,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
 
-  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for " 
+  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
       + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 

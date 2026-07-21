@@ -14,6 +14,7 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePoin
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.TerminationDateException;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.helper.ServicePointTerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointVersionMapper;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.GlobalIdService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePointService;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointTerminationApiInternalController implements StopPointTerminationApiInternal {
 
   private final ServicePointService servicePointService;
+  private final GlobalIdService globalIdService;
 
   @Override
   public ReadServicePointVersionModel startServicePointTermination(String sloid, Long id,
@@ -40,9 +42,9 @@ public class StopPointTerminationApiInternalController implements StopPointTermi
       throw new TerminationDateException(updateTerminationServicePointModel.getTerminationDate(),
           servicePointVersion.getValidTo());
     }
-    return ServicePointVersionMapper.toModel(
+    return globalIdService.enrich(ServicePointVersionMapper.toModel(
         servicePointService.updateStopPointTerminationStatus(servicePointVersion, servicePointVersions,
-            updateTerminationServicePointModel));
+            updateTerminationServicePointModel)));
   }
 
   @Override
@@ -56,9 +58,9 @@ public class StopPointTerminationApiInternalController implements StopPointTermi
     UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
         .terminationInProgress(false)
         .build();
-    return ServicePointVersionMapper.toModel(
+    return globalIdService.enrich(ServicePointVersionMapper.toModel(
         servicePointService.updateStopPointTerminationStatus(servicePointVersion, servicePointVersions,
-            terminationServicePointModel));
+            terminationServicePointModel)));
   }
 
   @Override

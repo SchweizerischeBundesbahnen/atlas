@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.times;
@@ -39,8 +40,10 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointGlobalId;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.mapper.ServicePointGeolocationMapper;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointGlobalIdRepository;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -72,13 +75,16 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
   private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
+  private final ServicePointGlobalIdRepository servicePointGlobalIdRepository;
   private final ServicePointApiV1Controller servicePointController;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
   ServicePointApiV1ControllerApiTest(ServicePointVersionRepository repository,
+      ServicePointGlobalIdRepository servicePointGlobalIdRepository,
       ServicePointApiV1Controller servicePointController) {
     this.repository = repository;
+    this.servicePointGlobalIdRepository = servicePointGlobalIdRepository;
     this.servicePointController = servicePointController;
   }
 
@@ -102,6 +108,7 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
 
   @AfterEach
   void cleanUpDb() {
+    servicePointGlobalIdRepository.deleteAll();
     repository.deleteAll();
   }
 
@@ -133,6 +140,38 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
         .andExpect(jsonPath("$[0].creator", is("e123456")));
+  }
+
+  @Test
+  void shouldSurfaceGlobalIdWhenNumberMappingExists() throws Exception {
+    // Given - a Global-ID mapped to the service point's stable number
+    servicePointGlobalIdRepository.save(ServicePointGlobalId.builder()
+        .servicePointNumber(servicePointVersion.getNumber())
+        .globalId("de:05770:1282")
+        .build());
+
+    // When / Then - the read endpoint surfaces the Global-ID
+    mvc.perform(get("/v1/service-points/8589008")).andExpect(status().isOk())
+        .andExpect(jsonPath("$[0]." + ReadServicePointVersionModel.Fields.globalId, is("de:05770:1282")));
+  }
+
+  @Test
+  void shouldReturnNullGlobalIdWhenNoNumberMappingExists() throws Exception {
+    mvc.perform(get("/v1/service-points/8589008")).andExpect(status().isOk())
+        .andExpect(jsonPath("$[0]." + ReadServicePointVersionModel.Fields.globalId, is(nullValue())));
+  }
+
+  @Test
+  void shouldSurfaceGlobalIdOnGetBySloidEndpoint() throws Exception {
+    // Given
+    servicePointGlobalIdRepository.save(ServicePointGlobalId.builder()
+        .servicePointNumber(servicePointVersion.getNumber())
+        .globalId("at:42:9379")
+        .build());
+
+    // When / Then
+    mvc.perform(get("/v1/service-points/sloid/" + servicePointVersion.getSloid())).andExpect(status().isOk())
+        .andExpect(jsonPath("$[0]." + ReadServicePointVersionModel.Fields.globalId, is("at:42:9379")));
   }
 
   @Test
