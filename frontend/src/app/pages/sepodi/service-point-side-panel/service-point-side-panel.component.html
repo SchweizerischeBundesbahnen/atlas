@@ -26,6 +26,7 @@
             <i
               class="bi bi-pencil-square ms-2 cursor-pointer"
               (click)="editGlobalId()"
+              (keydown.enter)="editGlobalId()"
               data-cy="edit-global-id"
               [title]="'SEPODI.SERVICE_POINTS.GLOBAL_ID_EDIT.TITLE' | translate"
             ></i>
