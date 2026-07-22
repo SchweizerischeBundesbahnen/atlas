@@ -1233,6 +1233,7 @@
       "GLOBAL_ID_EDIT": {
         "TITLE": "Modifier l'ID global",
         "SUCCESS": "L'ID global a été enregistré.",
+        "DELETE_SUCCESS": "L'ID global a été supprimé.",
         "EMPTY": "Non défini"
       },
       "GLOBAL_ID_ERROR": {

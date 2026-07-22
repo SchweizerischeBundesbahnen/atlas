@@ -50,4 +50,9 @@ export class ServicePointInternalService {
       globalIdUpdate
     );
   }
+
+  public deleteGlobalId(servicePointNumber: number): Observable<Array<ReadServicePointVersion>> {
+    this.atlasApiService.validateParams({ servicePointNumber });
+    return this.atlasApiService.delete(`${this.BASE_PATH}/${encodeURIComponent(String(servicePointNumber))}/global-id`);
+  }
 }

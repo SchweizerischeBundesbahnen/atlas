@@ -51,6 +51,7 @@ export class GlobalIdEditDialogComponent {
     globalId: new FormControl(this.data.globalId, {
       nonNullable: true,
       validators: [
+        Validators.required,
         GlobalIdValidator.countryPrefix,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         Validators.maxLength(128),
@@ -58,12 +59,16 @@ export class GlobalIdEditDialogComponent {
     }),
   });
 
+  get canDelete(): boolean {
+    return !!this.data.globalId;
+  }
+
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       const globalId = this.form.controls.globalId.value;
       this.servicePointService
-        .updateGlobalId(this.data.servicePointNumber, { globalId: globalId || undefined })
+        .updateGlobalId(this.data.servicePointNumber, { globalId })
         .pipe(
           catchError(() => {
             this.dialogRef.close(false);
@@ -75,6 +80,21 @@ export class GlobalIdEditDialogComponent {
           this.dialogRef.close(true);
         });
     }
+  }
+
+  delete() {
+    this.servicePointService
+      .deleteGlobalId(this.data.servicePointNumber)
+      .pipe(
+        catchError(() => {
+          this.dialogRef.close(false);
+          return of();
+        })
+      )
+      .subscribe(() => {
+        this.notificationService.success('SEPODI.SERVICE_POINTS.GLOBAL_ID_EDIT.DELETE_SUCCESS');
+        this.dialogRef.close(true);
+      });
   }
 
   cancel() {

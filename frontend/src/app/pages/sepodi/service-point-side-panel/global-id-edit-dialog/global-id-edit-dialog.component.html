@@ -17,7 +17,7 @@
         },
       ]"
       [formGroup]="form"
-      [required]="false"
+      [required]="true"
       controlName="globalId"
       fieldLabel="SEPODI.SERVICE_POINTS.GLOBAL_ID"
       data-cy="globalId"
@@ -29,6 +29,11 @@
   <button (click)="cancel()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
     {{ 'DIALOG.CANCEL' | translate }}
   </button>
+  @if (canDelete) {
+    <button (click)="delete()" class="atlas-primary-btn me-3" data-cy="dialog-delete-button">
+      {{ 'COMMON.DELETE' | translate }}
+    </button>
+  }
   <button (click)="save()" class="atlas-primary-btn" data-cy="dialog-save-button">
     {{ 'COMMON.SAVE' | translate }}
   </button>

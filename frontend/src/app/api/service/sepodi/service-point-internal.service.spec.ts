@@ -27,6 +27,7 @@ describe('ServicePointInternalService', () => {
     vi.spyOn(apiService, 'get').mockImplementation(() => EMPTY);
     vi.spyOn(apiService, 'put').mockImplementation(() => EMPTY);
     vi.spyOn(apiService, 'post').mockImplementation(() => EMPTY);
+    vi.spyOn(apiService, 'delete').mockImplementation(() => EMPTY);
   });
 
   it('should searchServicePoints', () => {
@@ -59,6 +60,14 @@ describe('ServicePointInternalService', () => {
     expect(apiService.put).toHaveBeenCalledExactlyOnceWith(
       '/service-point-directory/internal/service-points/123/global-id',
       { globalId: 'de:05770:1282' }
+    );
+  });
+
+  it('should deleteGlobalId', () => {
+    service.deleteGlobalId(123);
+
+    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith(
+      '/service-point-directory/internal/service-points/123/global-id'
     );
   });
 });

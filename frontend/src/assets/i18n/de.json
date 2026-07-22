@@ -1233,6 +1233,7 @@
       "GLOBAL_ID_EDIT": {
         "TITLE": "Global-ID bearbeiten",
         "SUCCESS": "Die Global-ID wurde gespeichert.",
+        "DELETE_SUCCESS": "Die Global-ID wurde gelöscht.",
         "EMPTY": "Nicht gesetzt"
       },
       "GLOBAL_ID_ERROR": {
