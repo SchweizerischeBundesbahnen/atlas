@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface ServicePointGlobalIdApiInternal {
 
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "400", description = "Global-ID is invalid for the stop", content =
+      @ApiResponse(responseCode = "400", description = "Global-ID is invalid for the stop point", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "409", description = "Global-ID is already used by another stop", content =
+      @ApiResponse(responseCode = "409", description = "Global-ID is already used by another stop point", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"

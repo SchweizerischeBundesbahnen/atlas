@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 /**
  * Raised when an entered Global-ID does not satisfy the business rules (wrong country prefix, not
  * allowed for the given country, leading/trailing whitespace, too long or already used on another
- * stop). Carries a display code so the frontend can render a comprehensible message.
+ * stopPoint). Carries a display code so the frontend can render a comprehensible message.
  */
 @Getter
 public final class InvalidGlobalIdException extends AtlasException {
@@ -43,7 +43,7 @@ public final class InvalidGlobalIdException extends AtlasException {
 
   public static InvalidGlobalIdException notAllowedForCountry() {
     return new InvalidGlobalIdException(HttpStatus.BAD_REQUEST,
-        "A Global-ID can only be entered for German (11, 80) or Austrian (12, 81) stops.",
+        "A Global-ID can only be entered for German (11, 80) or Austrian (12, 81) stopPoints.",
         CODE_PREFIX + "NOT_ALLOWED_FOR_COUNTRY", List.of());
   }
 
@@ -61,7 +61,7 @@ public final class InvalidGlobalIdException extends AtlasException {
 
   public static InvalidGlobalIdException alreadyUsed(GlobalId globalId) {
     return new InvalidGlobalIdException(HttpStatus.CONFLICT,
-        "Global-ID '" + globalId.value() + "' is already used by another stop.",
+        "Global-ID '" + globalId.value() + "' is already used by another stopPoint.",
         CODE_PREFIX + "ALREADY_USED", List.of(new Parameter(FIELD, globalId.value())));
   }
 
