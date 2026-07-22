@@ -5,8 +5,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.LineCreateCsvModel;
 import ch.sbb.atlas.imports.model.LineUpdateCsvModel;
 import ch.sbb.atlas.imports.model.LineUpdateCsvModel.Fields;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -42,6 +46,7 @@ class LineBulkImportServiceTest {
   @BeforeEach
   void setUp() {
     doReturn(true).when(userAdministrationService).hasUserPermissionsToUpdate(any(), any(), any());
+    doReturn(true).when(userAdministrationService).hasUserPermissionsToCreate(any(), any());
     doNothing().when(sharedBusinessOrganisationService).validateSboidExists(any());
     lineVersion = lineVersionRepository.save(LineTestData.lineVersionV2Builder().longName(null).build());
   }
@@ -104,36 +109,34 @@ class LineBulkImportServiceTest {
   }
 
   @Test
-  void shouldUpdateAndGetMoreVersions() {
-    assertThat(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).hasSize(1);
-
-    lineBulkImportService.updateLine(BulkImportUpdateContainer.<LineUpdateCsvModel>builder()
-        .object(LineUpdateCsvModel.builder()
-            .slnid(lineVersion.getSlnid())
-            .validFrom(LocalDate.of(2020, 4, 1))
-            .validTo(LocalDate.of(2020, 7, 31))
-            .longName("LongName")
+  void shouldCreateLine() {
+    lineBulkImportService.createLine(BulkImportUpdateContainer.<LineCreateCsvModel>builder()
+        .object(LineCreateCsvModel.builder()
+            .linienId("320")
+            .validFrom(LocalDate.of(2021, 4, 1))
+            .validTo(LocalDate.of(2099, 12, 31))
+            .description("Chur - Thusis - St. Moritz - Pontresina - Tirano")
+            .number("BEX1")
+            .swissLineNumber("b0.BEX9")
+            .lineType(LineType.ORDERLY)
+            .lineConcessionType(LineConcessionType.FEDERALLY_LICENSED_OR_APPROVED_LINE)
+            .offerCategory(OfferCategory.IR)
+            .shortNumber("EX")
+            .longName("Bernina Express")
+            .businessOrganisation("ch:1:sboid:100053")
+            .comment("Bernina Express / Konzessionsrecht ist nur für den schweizerischen Linienabschnitt gültig")
             .build())
         .build());
 
-    List<LineVersion> versions =
-        lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid());
-    assertThat(versions).hasSize(3);
+    LineVersion lineVersion1 = LineVersion.builder()
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .swissLineNumber("b0.BEX9")
+        .build();
 
-    LineVersion firstVersion = versions.getFirst();
-    assertThat(firstVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
-    assertThat(firstVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 3, 31));
-    assertThat(firstVersion.getLongName()).isNull();
-
-    LineVersion secondVersion = versions.get(1);
-    assertThat(secondVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 4, 1));
-    assertThat(secondVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 7, 31));
-    assertThat(secondVersion.getLongName()).isEqualTo("LongName");
-
-    LineVersion thirdVersion = versions.getLast();
-    assertThat(thirdVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 8, 1));
-    assertThat(thirdVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 12, 31));
-    assertThat(thirdVersion.getLongName()).isNull();
+    LineVersion lineVersion2 = lineVersionRepository.findSwissLineNumberOverlaps(
+        lineVersion1).getFirst();
+    assertThat(lineVersion2.getSwissLineNumber()).isNotNull().isEqualTo("b0.BEX9");
   }
 
 }

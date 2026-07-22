@@ -493,7 +493,13 @@
         "DELETE_SUCCESS": "La ligne a été supprimée avec succès."
       },
       "LINE_ID": "LinienID / LineRef",
-      "LINE_ID_INFO": "Nécessaire pour représenter le nouveau modèle de ligne avec l'ancien ID (VDV : LinienID ; SIRI : LineRef) - comme base pour la migration SLNID."
+      "LINE_ID_INFO": "Nécessaire pour représenter le nouveau modèle de ligne avec l'ancien ID (VDV : LinienID ; SIRI : LineRef) - comme base pour la migration SLNID.",
+      "ERROR": {
+        "MANDATORY": {
+          "ORDERLY": "Pour le type de ligne 'Ordinaire', le numéro de ligne CH (CHLNR) et le type de concession doivent être indiqués.",
+          "NOT_ORDERLY": "Le numéro de ligne CH (CHLNR) et le type de concession ne peuvent être indiqués que pour le type de ligne 'Ordinaire' ."
+        }
+      }
     },
     "SUBLINE": {
       "NO_LINE_DESIGNATION_AVAILABLE": "aucune désignation de ligne disponible",

@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.lidi;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.LineCreateCsvModel;
 import ch.sbb.atlas.imports.model.LineUpdateCsvModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -14,6 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface LineBulkImportApiInternal {
 
   String BASEPATH = "internal/line/bulk-import";
+
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).CREATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
+  @PostMapping(value = BASEPATH + "/create")
+  List<BulkImportItemExecutionResult> lineCreate(
+      @RequestBody List<BulkImportUpdateContainer<LineCreateCsvModel>> bulkImportCreateContainers);
 
   @PreAuthorize("""
       @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,

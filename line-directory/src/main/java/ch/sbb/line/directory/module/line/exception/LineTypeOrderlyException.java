@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class LineTypeOrderlyException extends AtlasException {
 
-  private static final String ERROR_CODE = "LIDI.LINE.ERROR.MANDATORY";
+  private static final String ERROR_CODE_ORDERLY = "LIDI.LINE.ERROR.MANDATORY.ORDERLY";
+  private static final String ERROR_CODE_NOT_ORDERLY = "LIDI.LINE.ERROR.MANDATORY.NOT_ORDERLY";
+
   private static final String MSG_LINE_TYPE_ORDERLY = "SwissLineNumber and ConcessionType must not be null for LineType Orderly";
   private static final String MSG_LINE_TYPE_NOT_ORDERLY = "SwissLineNumber and ConcessionType only allowed for LineType Orderly";
   private final LineType lineType;
@@ -35,7 +37,7 @@ public class LineTypeOrderlyException extends AtlasException {
         .field(Fields.lineType)
         .message(getErrorMessage())
         .displayInfo(builder()
-            .code(ERROR_CODE)
+            .code(getErrorCode())
             .build()).build());
   }
 
@@ -43,4 +45,7 @@ public class LineTypeOrderlyException extends AtlasException {
     return lineType == LineType.ORDERLY ? MSG_LINE_TYPE_ORDERLY : MSG_LINE_TYPE_NOT_ORDERLY;
   }
 
+  String getErrorCode() {
+    return lineType == LineType.ORDERLY ? ERROR_CODE_ORDERLY : ERROR_CODE_NOT_ORDERLY;
+  }
 }

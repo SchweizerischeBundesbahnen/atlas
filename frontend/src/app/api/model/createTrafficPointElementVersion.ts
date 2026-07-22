@@ -39,7 +39,7 @@ export interface CreateTrafficPointElementVersion {
      */
     designation?: string;
     /**
-     * Designation used in (operational) timetable planning.
+     * Designation used in (operational) timetable planning. Only numeric values with 1 to 3 digits are allowed (0-999). The field is optional and may be left empty.
      */
     designationOperational?: string;
     /**

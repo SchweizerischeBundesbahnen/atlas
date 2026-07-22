@@ -1,13 +1,15 @@
 package ch.sbb.line.directory.module.bulkimport.line.service;
 
+import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.LineCreateCsvModel;
 import ch.sbb.atlas.imports.model.LineUpdateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUserParameter;
-import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.service.LineService;
 import java.util.List;
 import lombok.Getter;
@@ -25,6 +27,19 @@ public class LineBulkImportService {
 
   private final LineService lineService;
   private final LineApiClient lineApiClient;
+
+  @RunAsUser
+  public void createLineByUsername(@RunAsUserParameter String username,
+      BulkImportUpdateContainer<LineCreateCsvModel> bulkImportContainer) {
+    log.info("Update versions in name of the user: {}", username);
+    createLine(bulkImportContainer);
+  }
+
+  public void createLine(BulkImportUpdateContainer<LineCreateCsvModel> bulkImportUpdateContainer) {
+    LineVersionModelV2 lineVersionModelV2 = LineBulkImportCreate.apply(bulkImportUpdateContainer);
+
+    lineApiClient.createLine(lineVersionModelV2);
+  }
 
   @RunAsUser
   public void updateLineByUsername(@RunAsUserParameter String username,

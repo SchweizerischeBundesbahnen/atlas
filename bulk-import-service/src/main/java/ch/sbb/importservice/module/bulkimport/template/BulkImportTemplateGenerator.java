@@ -126,6 +126,15 @@ public class BulkImportTemplateGenerator {
         BulkImportConfig.builder()
             .application(ApplicationType.LIDI)
             .objectType(BusinessObjectType.LINE)
+            .importType(ImportType.CREATE)
+            .build(),
+        () -> LineTemplateGenerator.LINE_CREATE_CSV_MODEL
+    );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
+            .application(ApplicationType.LIDI)
+            .objectType(BusinessObjectType.LINE)
             .importType(ImportType.UPDATE)
             .build(),
         () -> LineTemplateGenerator.LINE_UPDATE_CSV_MODEL

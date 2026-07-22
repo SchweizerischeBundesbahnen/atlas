@@ -493,7 +493,13 @@
         "DELETE_SUCCESS": "Linea cancellata con successo."
       },
       "LINE_ID": "LinienID / LineRef",
-      "LINE_ID_INFO": "È necessario per la rappresentazione del nuovo modello di linea con il vecchio ID (VDV: LinienID; SIRI: LineRef) come base per la migrazione SLNID."
+      "LINE_ID_INFO": "È necessario per la rappresentazione del nuovo modello di linea con il vecchio ID (VDV: LinienID; SIRI: LineRef) come base per la migrazione SLNID.",
+      "ERROR": {
+        "MANDATORY": {
+          "ORDERLY": "Per il tipo di linea ‘Ordinaria’, è necessario indicare il numero di linea CH (CHLNR) e il tipo di concessione.",
+          "NOT_ORDERLY": "Il numero di linea CH (CHLNR) e il tipo di concessione possono essere indicati solo per il tipo di linea ‘Ordinaria’."
+        }
+      }
     },
     "SUBLINE": {
       "NO_LINE_DESIGNATION_AVAILABLE": "nessuna designazione di linea disponibile",

@@ -11,7 +11,7 @@ class LineTypeOrderlyExceptionTest {
   @Test
   void shouldMapToErrorResponse() {
     ErrorResponse errorResponse = new LineTypeOrderlyException(LineType.ORDERLY).getErrorResponse();
-    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo("LIDI.LINE.ERROR.MANDATORY");
+    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo("LIDI.LINE.ERROR.MANDATORY.ORDERLY");
   }
 
 }

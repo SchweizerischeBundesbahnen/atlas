@@ -31,6 +31,7 @@ public class BulkImportTemplateArgumentsData {
       Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.STOP_POINT, ImportType.TERMINATE)),
 
       // LIDI
+      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.SUBLINE, ImportType.UPDATE))
   );
@@ -48,7 +49,6 @@ public class BulkImportTemplateArgumentsData {
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.TERMINATE)),
 
       // LIDI
-      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.TERMINATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.SUBLINE, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.SUBLINE, ImportType.TERMINATE))
