@@ -13,7 +13,6 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePoi
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,18 +26,32 @@ public class ServicePointGlobalIdApiInternalController implements ServicePointGl
   @Override
   public List<ReadServicePointVersionModel> updateGlobalId(Integer servicePointNumber, GlobalIdUpdateModel globalId) {
     ServicePointNumber number = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber);
+    List<ServicePointVersion> versions = findExistingVersions(number);
+
+    globalIdService.save(number, GlobalId.of(globalId.getGlobalId(), number.getCountry()));
+
+    return toModels(versions);
+  }
+
+  @Override
+  public List<ReadServicePointVersionModel> deleteGlobalId(Integer servicePointNumber) {
+    ServicePointNumber number = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber);
+    List<ServicePointVersion> versions = findExistingVersions(number);
+
+    globalIdService.remove(number);
+
+    return toModels(versions);
+  }
+
+  private List<ServicePointVersion> findExistingVersions(ServicePointNumber number) {
     List<ServicePointVersion> versions = servicePointService.findAllByNumberOrderByValidFrom(number);
     if (versions.isEmpty()) {
       throw new ServicePointNumberNotFoundException(number);
     }
+    return versions;
+  }
 
-    String rawGlobalId = globalId.getGlobalId();
-    if (StringUtils.isBlank(rawGlobalId)) {
-      globalIdService.remove(number);
-    } else {
-      globalIdService.save(number, GlobalId.of(rawGlobalId, number.getCountry()));
-    }
-
+  private List<ReadServicePointVersionModel> toModels(List<ServicePointVersion> versions) {
     return globalIdService.enrich(versions.stream().map(ServicePointVersionMapper::toModel).toList());
   }
 

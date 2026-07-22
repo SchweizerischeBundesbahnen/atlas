@@ -11,11 +11,6 @@ import java.util.TreeSet;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-/**
- * Raised when an entered Global-ID does not satisfy the business rules (wrong country prefix, not
- * allowed for the given country, leading/trailing whitespace, too long or already used on another
- * stopPoint). Carries a display code so the frontend can render a comprehensible message.
- */
 @Getter
 public final class InvalidGlobalIdException extends AtlasException {
 
@@ -47,28 +42,10 @@ public final class InvalidGlobalIdException extends AtlasException {
         CODE_PREFIX + "NOT_ALLOWED_FOR_COUNTRY", List.of());
   }
 
-  public static InvalidGlobalIdException whitespace() {
-    return new InvalidGlobalIdException(HttpStatus.BAD_REQUEST,
-        "Global-ID must not contain leading or trailing whitespace.",
-        CODE_PREFIX + "WHITESPACE", List.of());
-  }
-
-  public static InvalidGlobalIdException maxLength(int maxLength) {
-    return new InvalidGlobalIdException(HttpStatus.BAD_REQUEST,
-        "Global-ID must not exceed " + maxLength + " characters.",
-        CODE_PREFIX + "MAX_LENGTH", List.of(new Parameter("maxLength", String.valueOf(maxLength))));
-  }
-
   public static InvalidGlobalIdException alreadyUsed(GlobalId globalId) {
     return new InvalidGlobalIdException(HttpStatus.CONFLICT,
         "Global-ID '" + globalId.value() + "' is already used by another stopPoint.",
         CODE_PREFIX + "ALREADY_USED", List.of(new Parameter(FIELD, globalId.value())));
-  }
-
-  public static InvalidGlobalIdException illegalArguments() {
-    return new InvalidGlobalIdException(HttpStatus.BAD_REQUEST,
-        "Global-ID must have non-null value.",
-        CODE_PREFIX + "ILLEGAL_ARGUMENT", List.of());
   }
 
   @Override

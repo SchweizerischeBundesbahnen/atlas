@@ -13,27 +13,8 @@ class GlobalIdTest {
   void shouldRejectNullValue() {
     // When / Then
     assertThatThrownBy(() -> GlobalId.of(null, Country.GERMANY))
-        .isInstanceOf(InvalidGlobalIdException.class)
-        .satisfies(e -> assertThat(((InvalidGlobalIdException) e).getCode())
-            .isEqualTo("SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.ILLEGAL_ARGUMENT"));
-  }
-
-  @Test
-  void shouldRejectEmptyValue() {
-    // When / Then
-    assertThatThrownBy(() -> GlobalId.of("", Country.GERMANY))
-        .isInstanceOf(InvalidGlobalIdException.class)
-        .satisfies(e -> assertThat(((InvalidGlobalIdException) e).getCode())
-            .isEqualTo("SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.ILLEGAL_ARGUMENT"));
-  }
-
-  @Test
-  void shouldRejectBlankValue() {
-    // When / Then
-    assertThatThrownBy(() -> GlobalId.of("   ", Country.GERMANY))
-        .isInstanceOf(InvalidGlobalIdException.class)
-        .satisfies(e -> assertThat(((InvalidGlobalIdException) e).getCode())
-            .isEqualTo("SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.ILLEGAL_ARGUMENT"));
+        .isInstanceOf(NullPointerException.class)
+        .hasMessage("Global-ID value must not be null");
   }
 
   @Test
@@ -75,36 +56,6 @@ class GlobalIdTest {
         .isInstanceOf(InvalidGlobalIdException.class)
         .satisfies(e -> assertThat(((InvalidGlobalIdException) e).getCode())
             .isEqualTo("SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.NOT_ALLOWED_FOR_COUNTRY"));
-  }
-
-  @Test
-  void shouldRejectGlobalIdWithLeadingWhitespace() {
-    // When / Then
-    assertThatThrownBy(() -> GlobalId.of(" de:05770:1282", Country.GERMANY))
-        .isInstanceOf(InvalidGlobalIdException.class)
-        .satisfies(e -> assertThat(((InvalidGlobalIdException) e).getCode())
-            .isEqualTo("SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.WHITESPACE"));
-  }
-
-  @Test
-  void shouldRejectGlobalIdWithTrailingWhitespace() {
-    // When / Then
-    assertThatThrownBy(() -> GlobalId.of("de:05770:1282 ", Country.GERMANY))
-        .isInstanceOf(InvalidGlobalIdException.class)
-        .satisfies(e -> assertThat(((InvalidGlobalIdException) e).getCode())
-            .isEqualTo("SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.WHITESPACE"));
-  }
-
-  @Test
-  void shouldRejectGlobalIdExceedingMaxLength() {
-    // Given
-    String tooLong = "de:" + "1".repeat(126);
-
-    // When / Then
-    assertThatThrownBy(() -> GlobalId.of(tooLong, Country.GERMANY))
-        .isInstanceOf(InvalidGlobalIdException.class)
-        .satisfies(e -> assertThat(((InvalidGlobalIdException) e).getCode())
-            .isEqualTo("SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.MAX_LENGTH"));
   }
 
 }

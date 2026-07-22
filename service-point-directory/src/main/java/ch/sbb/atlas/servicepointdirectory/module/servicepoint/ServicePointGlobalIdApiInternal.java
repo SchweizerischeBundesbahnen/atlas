@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,5 +35,10 @@ public interface ServicePointGlobalIdApiInternal {
   @PutMapping("{servicePointNumber}/global-id")
   List<ReadServicePointVersionModel> updateGlobalId(@PathVariable Integer servicePointNumber,
       @Valid @RequestBody GlobalIdUpdateModel globalId);
+
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).SEPODI)")
+  @DeleteMapping("{servicePointNumber}/global-id")
+  List<ReadServicePointVersionModel> deleteGlobalId(@PathVariable Integer servicePointNumber);
 
 }

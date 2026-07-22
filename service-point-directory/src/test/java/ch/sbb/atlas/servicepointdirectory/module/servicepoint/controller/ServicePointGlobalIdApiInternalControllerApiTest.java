@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -121,7 +122,7 @@ class ServicePointGlobalIdApiInternalControllerApiTest extends BaseControllerApi
   }
 
   @Test
-  void shouldRemoveGlobalIdWhenEmpty() throws Exception {
+  void shouldRemoveGlobalIdViaDelete() throws Exception {
     // Given
     servicePointGlobalIdRepository.save(ServicePointGlobalId.builder()
         .servicePointNumber(germanNumber)
@@ -129,11 +130,29 @@ class ServicePointGlobalIdApiInternalControllerApiTest extends BaseControllerApi
         .build());
 
     // When / Then
+    mvc.perform(delete("/internal/service-points/8012345/global-id")
+            .contentType(contentType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0]." + ReadServicePointVersionModel.Fields.globalId, is(nullValue())));
+
+    assertThat(servicePointGlobalIdRepository.findByServicePointNumber(germanNumber)).isEmpty();
+  }
+
+  @Test
+  void shouldReturnNotFoundWhenDeletingGlobalIdForUnknownServicePointNumber() throws Exception {
+    // When / Then
+    mvc.perform(delete("/internal/service-points/8077777/global-id")
+            .contentType(contentType))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldRejectNullGlobalIdOnUpdate() throws Exception {
+    // When / Then
     mvc.perform(put("/internal/service-points/8012345/global-id")
             .contentType(contentType)
             .content(body(null)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + ReadServicePointVersionModel.Fields.globalId, is(nullValue())));
+        .andExpect(status().isBadRequest());
 
     assertThat(servicePointGlobalIdRepository.findByServicePointNumber(germanNumber)).isEmpty();
   }
