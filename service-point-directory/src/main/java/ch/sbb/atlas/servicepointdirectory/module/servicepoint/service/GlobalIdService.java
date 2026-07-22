@@ -23,10 +23,9 @@ public class GlobalIdService {
   private final ServicePointGlobalIdRepository servicePointGlobalIdRepository;
 
   public ReadServicePointVersionModel enrich(ReadServicePointVersionModel model) {
-    if (model != null && model.getNumber() != null) {
-      servicePointGlobalIdRepository.findByServicePointNumber(model.getNumber())
-          .ifPresent(mapping -> model.setGlobalId(mapping.getGlobalId()));
-    }
+    servicePointGlobalIdRepository.findByServicePointNumber(model.getNumber())
+        .ifPresent(mapping -> model.setGlobalId(mapping.getGlobalId()));
+
     return model;
   }
 

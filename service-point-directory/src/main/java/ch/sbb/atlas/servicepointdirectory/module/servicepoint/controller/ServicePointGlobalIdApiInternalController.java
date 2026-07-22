@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePoi
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,7 +33,7 @@ public class ServicePointGlobalIdApiInternalController implements ServicePointGl
     }
 
     String rawGlobalId = globalId.getGlobalId();
-    if (rawGlobalId == null || rawGlobalId.isBlank()) {
+    if (StringUtils.isBlank(rawGlobalId)) {
       globalIdService.remove(number);
     } else {
       globalIdService.save(number, GlobalId.of(rawGlobalId, number.getCountry()));
