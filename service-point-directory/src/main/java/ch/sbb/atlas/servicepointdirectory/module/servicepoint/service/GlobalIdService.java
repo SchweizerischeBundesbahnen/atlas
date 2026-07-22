@@ -54,7 +54,7 @@ public class GlobalIdService {
     validateUniqueness(servicePointNumber, globalId);
     ServicePointGlobalId mapping = servicePointGlobalIdRepository.findByServicePointNumber(servicePointNumber)
         .map(existing -> existing.toBuilder().globalId(globalId.value()).build())
-        .orElseGet(() -> ServicePointGlobalId.builder()
+        .orElse(ServicePointGlobalId.builder()
             .servicePointNumber(servicePointNumber).globalId(globalId.value()).build());
     servicePointGlobalIdRepository.save(mapping);
   }
