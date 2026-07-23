@@ -13,9 +13,16 @@ export class FormValidators {
     return required(path, { message: () => this.translateService.instant('VALIDATION.REQUIRED') });
   }
 
-  public maxLength(path: SchemaPath<string>, value: number) {
-    return pattern(path, new RegExp(`^.{0,${value}}$`, 'u'), {
-      message: () => this.translateService.instant('VALIDATION.MAXLENGTH', { length: value }),
+  public maxLength(path: SchemaPath<string>, maxLength: number) {
+    return validate(path, ({ value }) => {
+      if (value()?.length > maxLength) {
+        return {
+          kind: 'maxlength',
+          message: this.translateService.instant('VALIDATION.MAXLENGTH', { length: maxLength }),
+        };
+      }
+
+      return null;
     });
   }
 
