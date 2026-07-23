@@ -44,6 +44,7 @@ public class ServicePointService {
   private final ServicePointValidationService servicePointValidationService;
   private final ServicePointTerminationService servicePointTerminationService;
   private final ServicePointDistributor servicePointDistributor;
+  private final GlobalIdService globalIdService;
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
     return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
@@ -126,10 +127,10 @@ public class ServicePointService {
     List<ServicePointVersion> servicePoint = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
     servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
 
-    return servicePoint
+    return globalIdService.enrich(servicePoint
         .stream()
         .map(ServicePointVersionMapper::toModel)
-        .toList();
+        .toList());
   }
 
   @TerminationCheck
@@ -192,8 +193,8 @@ public class ServicePointService {
         .toBuilder().designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
         .build();
 
-    return ServicePointVersionMapper.toModel(
-        updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions));
+    return globalIdService.enrich(ServicePointVersionMapper.toModel(
+        updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions)));
   }
 
   public ReadServicePointVersionModel terminateServicePoint(Long id,
@@ -214,8 +215,8 @@ public class ServicePointService {
         .toBuilder().validTo(terminateServicePointModel.getValidTo())
         .build();
 
-    return ServicePointVersionMapper.toModel(
-        updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions));
+    return globalIdService.enrich(ServicePointVersionMapper.toModel(
+        updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions)));
   }
 
   @PreAuthorize("""

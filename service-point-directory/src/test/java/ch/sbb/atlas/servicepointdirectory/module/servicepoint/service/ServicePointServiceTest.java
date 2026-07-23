@@ -2,7 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.module.servicepoint.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,11 +55,17 @@ class ServicePointServiceTest {
   @Mock
   private ServicePointDistributor servicePointDistributor;
 
+  @Mock
+  private GlobalIdService globalIdService;
+
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointTerminationService, servicePointDistributor);
+        servicePointValidationService, servicePointTerminationService, servicePointDistributor, globalIdService);
+    lenient().when(globalIdService.enrich(any(ReadServicePointVersionModel.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
+    lenient().when(globalIdService.enrich(anyList())).thenAnswer(invocation -> invocation.getArgument(0));
   }
 
   @Test
