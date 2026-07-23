@@ -77,9 +77,8 @@ It's applications share the following architectural goal:
 
 ## Monorepo
 
-ATLAS has a Monorepo project structure. The CI/CD is executed on each module. For each push event on
-master a Jenkins pipiline is executed. The modules are versionied and deployed with the same version
-number.
+ATLAS has a Monorepo project structure. The CI/CD is executed on each module. For each push event on master a pipiline is
+executed. The modules are versionied and deployed with the same version number.
 
 ![ATLAS Monorepo](documentation/image/ATLAS-Mono-Repo.svg)
 
