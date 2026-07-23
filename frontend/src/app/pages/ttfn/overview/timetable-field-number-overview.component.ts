@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { BusinessOrganisation, Status, TimetableFieldNumber } from '../../../api';
@@ -23,8 +23,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-timetable-field-number-overview',
   templateUrl: './timetable-field-number-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [AtlasButtonComponent, TableComponent, RouterOutlet, TranslatePipe],
+  imports: [AtlasButtonComponent, TableComponent, TranslatePipe],
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   private readonly timetableFieldNumbersService = inject(TimetableFieldNumberInternalService);
@@ -76,8 +75,8 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  timetableFieldNumbers: TimetableFieldNumber[] = [];
-  totalCount$ = 0;
+  timetableFieldNumbers = signal<TimetableFieldNumber[]>([]);
+  totalCount$ = signal(0);
 
   ngOnInit() {
     this.tableFilterConfig = this.tableService.initializeFilterConfig(this.tableFilterConfigIntern, Pages.TTFN);
@@ -96,8 +95,8 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
         addElementsToArrayWhenNotUndefined(pagination.sort, 'ttfnid,asc')
       )
       .subscribe((container) => {
-        this.timetableFieldNumbers = container.objects!;
-        this.totalCount$ = container.totalCount!;
+        this.timetableFieldNumbers.set(container.objects!);
+        this.totalCount$.set(container.totalCount!);
       });
   }
 

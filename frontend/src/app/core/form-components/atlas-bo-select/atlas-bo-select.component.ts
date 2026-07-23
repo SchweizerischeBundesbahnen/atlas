@@ -1,6 +1,6 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { BoSelectionDisplayPipe } from '../../pipe/bo-selection-display.pipe';
-import { BusinessOrganisation } from '../../../api/index';
+import { BusinessOrganisation } from '../../../api';
 import { Observable, of } from 'rxjs';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 import { map } from 'rxjs/operators';
@@ -20,13 +20,22 @@ export class AtlasBoSelectComponent {
   readonly sboidsRestrictions = input<string[]>([]);
   readonly disabled = input(false);
 
-  readonly field = input.required<Field<BusinessOrganisation | null>>();
+  readonly field = input.required<Field<BusinessOrganisation | string | null>>();
 
-  readonly boSelectionChanged = output<BusinessOrganisation | null>();
+  readonly boSelectionChanged = output<BusinessOrganisation | string | null>();
 
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
 
   private readonly businessOrganisationService = inject(BusinessOrganisationService);
+
+  constructor() {
+    effect(() => {
+      const fieldValue = this.field()().value();
+      if (typeof fieldValue === 'string') {
+        this.searchBusinessOrganisation(fieldValue);
+      }
+    });
+  }
 
   searchBusinessOrganisation(searchString: string) {
     if (searchString) {

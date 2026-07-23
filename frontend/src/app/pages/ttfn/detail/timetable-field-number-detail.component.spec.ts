@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
-import { AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TimetableFieldNumberVersion } from '../../../api';
 import moment from 'moment';
@@ -69,7 +68,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
   let router: Router;
   let mockTimetableFieldNumberService: Mocked<Pick<TimetableFieldNumberService, 'updateVersionWithVersioning'>>;
-  let mockTimetableFieldNumberInternalService: Mocked<Pick<TimetableFieldNumberInternalService, 'deleteVersions'>>;
+  let mockTimetableFieldNumberInternalService: Mocked<
+    Pick<TimetableFieldNumberInternalService, 'deleteVersions' | 'revokeTimetableFieldNumber'>
+  >;
 
   beforeEach(() => {
     mockTimetableFieldNumberService = {
@@ -77,6 +78,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     };
     mockTimetableFieldNumberInternalService = {
       deleteVersions: vi.fn(),
+      revokeTimetableFieldNumber: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -108,6 +110,8 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.isNew).toBe(false);
+    expect(component.editMode()).toBe(false);
   });
 
   it('should update Version successfully', () => {
@@ -128,7 +132,20 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
-    expect(component.form.enabled).toBe(true);
+    expect(component.editMode()).toBe(true);
+  });
+
+  it('should revoke Version successfully', () => {
+    mockTimetableFieldNumberInternalService.revokeTimetableFieldNumber.mockReturnValue(of([version]));
+    vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+    fixture.componentInstance.revoke();
+    fixture.detectChanges();
+
+    const snackBarContainer = fixture.nativeElement.parentElement.querySelector('mat-snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent.trim()).toBe('TTFN.NOTIFICATION.REVOKE_SUCCESS');
+    expect(snackBarContainer.classList).toContain('success');
+    expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should delete Version successfully', () => {
@@ -146,9 +163,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 });
 
 describe('TimetableFieldNumberDetailComponent Detail page add new version', () => {
-  const loremIpsum256Chars =
-    'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,s';
-
   let component: TimetableFieldNumberDetailComponent;
   let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
   let mockTimetableFieldNumbersService: Mocked<Pick<TimetableFieldNumberService, 'createVersion'>>;
@@ -190,133 +204,23 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should validate validFrom and validTrue range', () => {
-    const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
-    const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
-    validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
-    validFrom.markAsTouched();
-    validTo.setValue(moment('31.10.1999', 'dd.MM.yyyy'));
-    validTo.markAsTouched();
-
-    const validFromErrors = validFrom.errors;
-    expect(validFromErrors).toBeDefined();
-    expect(validFromErrors?.date_range_error).toBeDefined();
-    const validToErrors = validTo.errors;
-    expect(validToErrors).toBeDefined();
-    expect(validToErrors?.date_range_error).toBeDefined();
-  });
-
-  describe('Validation businessOrganisation', () => {
-    it('should be required', () => {
-      const businessOrganisation: AbstractControl = fixture.componentInstance.form.controls['businessOrganisation'];
-      businessOrganisation.markAsTouched();
-
-      const validationErrors = businessOrganisation.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.required).toBeDefined();
-    });
-
-    it('should not be greater then 255', () => {
-      const businessOrganisation: AbstractControl = fixture.componentInstance.form.controls['businessOrganisation'];
-      businessOrganisation.setValue(loremIpsum256Chars);
-      businessOrganisation.markAsTouched();
-
-      const validationErrors = businessOrganisation.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.maxlength).toBeDefined();
-    });
-  });
-
-  describe('Validation number', () => {
-    it('should be required', () => {
-      const number: AbstractControl = fixture.componentInstance.form.controls['number'];
-      number.markAsTouched();
-
-      const validationErrors = number.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.required).toBeDefined();
-    });
-
-    it('should not be greater then 255', () => {
-      const number: AbstractControl = fixture.componentInstance.form.controls['number'];
-      number.setValue(loremIpsum256Chars);
-      number.markAsTouched();
-
-      const validationErrors = number.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.maxlength).toBeDefined();
-    });
-  });
-
-  describe('Validation description', () => {
-    it('should not be greater then 255', () => {
-      const description: AbstractControl = fixture.componentInstance.form.controls['descriptionOutwardLine1'];
-      description.setValue(loremIpsum256Chars);
-      description.markAsTouched();
-
-      const validationErrors = description.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.maxlength).toBeDefined();
-    });
-  });
-
-  describe('Validation validFrom', () => {
-    it('should be required', () => {
-      const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
-      validFrom.markAsTouched();
-
-      const validationErrors = validFrom.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.required).toBeDefined();
-    });
-
-    it('should not be less then 01.01.1700', () => {
-      const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
-      validFrom.setValue(moment('1699-12-01 00:00:00'));
-      validFrom.markAsTouched();
-
-      const validationErrors = validFrom.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.matDatepickerMin).toBeDefined();
-    });
-  });
-
-  describe('Validation validTo', () => {
-    it('should be required', () => {
-      const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
-      validTo.markAsTouched();
-
-      const validationErrors = validTo.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.required).toBeDefined();
-    });
-
-    it('should not be greater than 31.12.9999', () => {
-      const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
-      validTo.setValue(moment('1.12.10000', 'dd.MM.yyyy'));
-      validTo.markAsTouched();
-
-      const validationErrors = validTo.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.matDatepickerMax).toBeDefined();
-    });
+    expect(component.isNew).toBe(true);
+    expect(component.editMode()).toBe(true);
   });
 
   describe('Create new Version', () => {
     it('should create successfully a new record', () => {
       vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
       mockTimetableFieldNumbersService.createVersion.mockReturnValue(of(version));
+      component.formModel.update((model) => ({
+        ...model,
+        number: '1.1',
+        businessOrganisation: 'sbb',
+        descriptionOutwardLine1: 'desc',
+        meanOfTransport: ['TRAIN'],
+        validFrom: moment('2021-06-01'),
+        validTo: moment('2029-06-01'),
+      }));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
@@ -329,10 +233,19 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
     it('should not create a new record', () => {
       mockTimetableFieldNumbersService.createVersion.mockReturnValue(throwError(() => error));
+      component.formModel.update((model) => ({
+        ...model,
+        number: '1.1',
+        businessOrganisation: 'sbb',
+        descriptionOutwardLine1: 'desc',
+        meanOfTransport: ['TRAIN'],
+        validFrom: moment('2021-06-01'),
+        validTo: moment('2029-06-01'),
+      }));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
-      expect(component.form.enabled).toBe(true);
+      expect(component.editMode()).toBe(true);
     });
   });
 });

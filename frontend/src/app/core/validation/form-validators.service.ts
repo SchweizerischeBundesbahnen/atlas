@@ -38,6 +38,25 @@ export class FormValidators {
     });
   }
 
+  public ttfnNumber(path: SchemaPath<string>) {
+    return pattern(path, /^[.0-9SN]*$/u, {
+      message: () => this.translateService.instant('VALIDATION.PATTERN', { allowedChars: '.0-9SN' }),
+    });
+  }
+
+  public atLeastOneSelected<T>(path: SchemaPath<T[]>) {
+    return validate(path, ({ value }) => {
+      if (!value() || value().length === 0) {
+        return {
+          kind: 'required',
+          message: this.translateService.instant('VALIDATION.REQUIRED'),
+        };
+      }
+
+      return null;
+    });
+  }
+
   public iso88591(path: SchemaPath<string>) {
     return pattern(path, /^[\u0020-\u00ff]*$/u, {
       message: () => this.translateService.instant('VALIDATION.PATTERN', { allowedChars: 'ISO-8859-1' }),

@@ -1,0 +1,20 @@
+<div class="picker">
+  <atlas-label-field [required]="required()" fieldLabel="SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT" />
+  <div class="means-of-transport-wrapper mt-2">
+    @for (mean of means(); track mean) {
+      <button class="border-0 p-0" [disabled]="disabled()" (click)="onSelection(mean)" type="button">
+        <img
+          [ngClass]="{ 'icon-image': !disabled() }"
+          [title]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
+          ngSrc="../../../../assets/images/means-of-transport/{{ mean | getIcon: selectedMeans() }}.svg"
+          width="35"
+          height="35"
+          [attr.data-cy]="mean"
+          [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
+        />
+      </button>
+    }
+  </div>
+  <atlas-field-error [field]="field()" />
+</div>
+

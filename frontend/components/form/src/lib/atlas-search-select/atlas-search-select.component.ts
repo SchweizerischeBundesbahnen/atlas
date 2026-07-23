@@ -26,7 +26,6 @@ export class AtlasSearchSelectComponent<TYPE> {
   readonly placeholderTextKey = input('');
   readonly bindValue = input('');
   readonly disabled = input(false);
-
   readonly field = input.required<Field<TYPE | TYPE[] | null>>();
 
   protected readonly searchTrigger = output<string>();

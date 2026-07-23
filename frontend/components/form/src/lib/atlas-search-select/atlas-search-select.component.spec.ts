@@ -31,8 +31,7 @@ class MockNgSelectComponent {
   readonly notFoundText = input();
   readonly typeToSearchText = input();
 
-  // eslint-disable-next-line @angular-eslint/no-output-native
-  readonly change = output<TestItem | null | undefined>();
+  readonly ngModelChange = output<TestItem | null | undefined>();
 }
 
 @Component({ selector: 'atlas-field-error', standalone: true, template: '' })
@@ -147,7 +146,7 @@ describe('AtlasSearchSelectComponent', () => {
     vi.spyOn(inner.field()(), 'markAsDirty');
     vi.spyOn(inner.field()(), 'markAsTouched');
 
-    getNgSelect()?.change.emit(selected);
+    getNgSelect()?.ngModelChange.emit(selected);
     fixture.detectChanges();
 
     expect(inner.field()().value()).toEqual(selected);
@@ -157,7 +156,7 @@ describe('AtlasSearchSelectComponent', () => {
   });
 
   it('should emit null when selection is cleared', () => {
-    getNgSelect()?.change.emit(undefined);
+    getNgSelect()?.ngModelChange.emit(undefined);
     fixture.detectChanges();
 
     expect(inner.field()().value()).toBeNull();

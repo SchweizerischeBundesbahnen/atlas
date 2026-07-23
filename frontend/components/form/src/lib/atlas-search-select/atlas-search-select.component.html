@@ -11,7 +11,7 @@
     [placeholder]="placeholderTextKey() | translate"
     [readonly]="disabled()"
     [typeahead]="searchTriggerSubject"
-    (change)="onSelectionChange($event ?? null)"
+    (ngModelChange)="onSelectionChange($event ?? null)"
     appearance="outline"
     notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
     typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"

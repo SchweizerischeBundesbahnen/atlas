@@ -92,6 +92,55 @@ describe('FormValidators', () => {
     });
   });
 
+  describe('ttfnNumber', () => {
+    it('should be valid for digits only', () => {
+      const field = createStringField('12345', (path) => formValidators.ttfnNumber(path));
+
+      expect(field().valid()).toBe(true);
+    });
+
+    it('should be valid for the allowed special characters', () => {
+      const field = createStringField('12.34SN', (path) => formValidators.ttfnNumber(path));
+
+      expect(field().valid()).toBe(true);
+    });
+
+    it('should be valid for an empty value', () => {
+      const field = createStringField('', (path) => formValidators.ttfnNumber(path));
+
+      expect(field().valid()).toBe(true);
+    });
+
+    it('should be invalid and expose the translated message for disallowed characters', () => {
+      const field = createStringField('12a34', (path) => formValidators.ttfnNumber(path));
+
+      expect(field().valid()).toBe(false);
+      expect(field().errors()[0].message).toBe(`VALIDATION.PATTERN|${JSON.stringify({ allowedChars: '.0-9SN' })}`);
+    });
+  });
+
+  describe('atLeastOneSelected', () => {
+    const createArrayField = <T>(initialValue: T[], apply: (path: SchemaPath<T[]>) => void) =>
+      TestBed.runInInjectionContext(() => {
+        const model = signal({ value: initialValue });
+        const testForm = form(model, (schemaPath) => apply(schemaPath.value));
+        return testForm.value;
+      });
+
+    it('should be valid when at least one element is selected', () => {
+      const field = createArrayField(['a'], (path) => formValidators.atLeastOneSelected(path));
+
+      expect(field().valid()).toBe(true);
+    });
+
+    it('should be invalid and expose the translated message when the array is empty', () => {
+      const field = createArrayField<string>([], (path) => formValidators.atLeastOneSelected(path));
+
+      expect(field().valid()).toBe(false);
+      expect(field().errors()[0].message).toBe('VALIDATION.REQUIRED');
+    });
+  });
+
   describe('iso88591', () => {
     it('should be valid for ISO-8859-1 characters', () => {
       const field = createStringField('Muster AG', (path) => formValidators.iso88591(path));

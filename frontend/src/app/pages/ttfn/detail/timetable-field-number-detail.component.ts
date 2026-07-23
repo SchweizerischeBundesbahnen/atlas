@@ -1,25 +1,21 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplicationRole, ApplicationType, TimetableFieldNumberVersion } from '../../../api';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ApplicationRole, ApplicationType, MeanOfTransport, TimetableFieldNumberVersion } from '../../../api';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { catchError, distinctUntilChanged, EMPTY, of, skipWhile, startWith } from 'rxjs';
+import { catchError, EMPTY } from 'rxjs';
 import { Pages } from '../../pages';
 import { ValidityService } from '../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
-import { AsyncPipe } from '@angular/common';
-import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
-import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
-import { BusinessOrganisationSelectComponent } from '../../../core/form-components/bo-select/business-organisation-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   DESCRIPTION_MAX_LENGTH,
-  TimetableFieldNumberDetailFormGroupBuilder,
+  NUMBER_MAX_LENGTH,
+  TimetableFieldNumberDetailForm,
+  TimetableFieldNumberDetailFormModel,
 } from './timetable-field-number-detail-form-group';
-import { MeansOfTransportPickerComponent } from '../../../core/form-components/means-of-transport-picker/means-of-transport-picker.component';
-import { map, tap } from 'rxjs/operators';
 import { required } from '../../../core/util/values';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { ScrollToTopDirective } from '../../../core/scroll-to-top/scroll-to-top.directive';
@@ -31,24 +27,31 @@ import { SwitchVersionComponent } from '../../../core/components/switch-version/
 import { UserDetailInfoComponent } from '../../../core/components/user-edit-info/user-detail-info.component';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { DetailDialogHelperService, DetailWithCancelEdit } from '../../../core/detail/detail-dialog-helper.service';
-import { ValidationService } from '../../../core/validation/validation.service';
+import {
+  DetailDialogHelperService,
+  SignalDetailWithCancelEdit,
+} from '../../../core/detail/detail-dialog-helper.service';
 import { TtfnMeanOfTransport } from '../../../api/model/ttfnMeanOfTransport';
-import { RevokeButton } from '../../../core/form-components/revoke-button/revoke-button';
+import { Revokable, RevokeButton } from '../../../core/form-components/revoke-button/revoke-button';
+import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import { apply, disabled, Field, form, Schema, schema } from '@angular/forms/signals';
+import { FormValidators } from '../../../core/validation/form-validators.service';
+import { AtlasTextFieldComponent } from '@atlas/form';
+import { AtlasBoSelectComponent } from '../../../core/form-components/atlas-bo-select/atlas-bo-select.component';
+import { AtlasDateRangeComponent } from '../../../core/form-components/atlas-date-range/atlas-date-range.component';
+import { AtlasMeansOfTransportPickerComponent } from '../../../core/form-components/atlas-means-of-transport-picker/atlas-means-of-transport-picker.component';
 
 @Component({
   selector: 'atlas-timetable-field-number-detail',
   templateUrl: './timetable-field-number-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ValidityService],
   imports: [
     ReactiveFormsModule,
-    TextFieldComponent,
-    DateRangeComponent,
-    BusinessOrganisationSelectComponent,
     TranslatePipe,
-    MeansOfTransportPickerComponent,
-    AsyncPipe,
+    AtlasTextFieldComponent,
+    AtlasBoSelectComponent,
+    AtlasDateRangeComponent,
+    AtlasMeansOfTransportPickerComponent,
     DetailPageContainerComponent,
     ScrollToTopDirective,
     DetailPageContentComponent,
@@ -60,26 +63,24 @@ import { RevokeButton } from '../../../core/form-components/revoke-button/revoke
     RevokeButton,
   ],
 })
-export class TimetableFieldNumberDetailComponent implements DetailWithCancelEdit, OnInit {
+export class TimetableFieldNumberDetailComponent
+  implements SignalDetailWithCancelEdit<TimetableFieldNumberDetailFormModel>, Revokable, DetailFormComponent, OnInit
+{
   // Interface impl
-  isNew: boolean = true;
-  form!: FormGroup;
-  protected readonly allowableMeansOfTransport = Object.values(TtfnMeanOfTransport);
-  protected readonly descriptionMaxChars: string = String(DESCRIPTION_MAX_LENGTH);
-  protected displayOutwardLine2$ = of(false);
-  protected displayOutwardLine3$ = of(false);
-  protected displayReturnLine2$ = of(false);
-  protected displayReturnLine3$ = of(false);
+  isNew = true;
+  readonly emptyFormValue = TimetableFieldNumberDetailForm.emptyFormValue;
+  protected readonly descriptionMaxChars = String(DESCRIPTION_MAX_LENGTH);
+  protected readonly allowableMeansOfTransport = Object.values(TtfnMeanOfTransport) as unknown as MeanOfTransport[];
+
   protected selectedVersion?: TimetableFieldNumberVersion;
   protected versions: TimetableFieldNumberVersion[] = [];
-  protected showSwitch?: boolean;
+  protected showSwitch = false;
   protected maxValidity?: DateRange;
   protected selectedVersionIndex?: number;
   protected boSboidRestriction: string[] = [];
+
   // DI
   private readonly permissionService = inject(PermissionService);
-  // Template variables
-  protected readonly isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Ttfn);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly timetableFieldNumberInternalService = inject(TimetableFieldNumberInternalService);
@@ -87,6 +88,70 @@ export class TimetableFieldNumberDetailComponent implements DetailWithCancelEdit
   private readonly notificationService = inject(NotificationService);
   private readonly validityService = inject(ValidityService);
   private readonly detailDialogHelperService = inject(DetailDialogHelperService);
+  private readonly formValidators = inject(FormValidators);
+
+  // Template variables
+  protected readonly isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Ttfn);
+
+  readonly editMode = signal(false);
+  readonly formModel = signal<TimetableFieldNumberDetailFormModel>(this.emptyFormValue);
+  readonly timetableFieldNumberForm = form(this.formModel, (schemaPath) => {
+    disabled(schemaPath, {
+      when: () => !this.editMode(),
+    });
+
+    const descriptionSchema: Schema<string> = schema((field) => {
+      this.formValidators.maxLength(field, DESCRIPTION_MAX_LENGTH);
+      this.formValidators.blankOrEmptySpaceSurrounding(field);
+    });
+
+    this.formValidators.required(schemaPath.number);
+    this.formValidators.ttfnNumber(schemaPath.number);
+    this.formValidators.maxLength(schemaPath.number, NUMBER_MAX_LENGTH);
+
+    this.formValidators.required(schemaPath.businessOrganisation);
+
+    this.formValidators.required(schemaPath.descriptionOutwardLine1);
+    apply(schemaPath.descriptionOutwardLine1, descriptionSchema);
+    apply(schemaPath.descriptionOutwardLine2, descriptionSchema);
+    apply(schemaPath.descriptionOutwardLine3, descriptionSchema);
+    apply(schemaPath.descriptionReturnLine1, descriptionSchema);
+    apply(schemaPath.descriptionReturnLine2, descriptionSchema);
+    apply(schemaPath.descriptionReturnLine3, descriptionSchema);
+
+    this.formValidators.atLeastOneSelected(schemaPath.meanOfTransport);
+
+    this.formValidators.required(schemaPath.validFrom);
+    this.formValidators.required(schemaPath.validTo);
+    this.formValidators.validToAfterOrEqualValidFrom(schemaPath);
+  });
+
+  readonly dirty = computed(() => this.timetableFieldNumberForm().dirty());
+
+  protected readonly displayOutwardLine2 = computed(() =>
+    this.hasContent(this.timetableFieldNumberForm.descriptionOutwardLine1)
+  );
+  protected readonly displayOutwardLine3 = computed(() =>
+    this.hasContent(this.timetableFieldNumberForm.descriptionOutwardLine2)
+  );
+  protected readonly displayReturnLine2 = computed(() =>
+    this.hasContent(this.timetableFieldNumberForm.descriptionReturnLine1)
+  );
+  protected readonly displayReturnLine3 = computed(() =>
+    this.hasContent(this.timetableFieldNumberForm.descriptionReturnLine2)
+  );
+
+  constructor() {
+    // Clear the follow-up description lines once their preceding line no longer holds content while editing.
+    effect(() => {
+      if (this.editMode()) {
+        this.resetIfHidden(this.displayOutwardLine2(), this.timetableFieldNumberForm.descriptionOutwardLine2);
+        this.resetIfHidden(this.displayOutwardLine3(), this.timetableFieldNumberForm.descriptionOutwardLine3);
+        this.resetIfHidden(this.displayReturnLine2(), this.timetableFieldNumberForm.descriptionReturnLine2);
+        this.resetIfHidden(this.displayReturnLine3(), this.timetableFieldNumberForm.descriptionReturnLine3);
+      }
+    });
+  }
 
   ngOnInit() {
     const versions = this.readVersions();
@@ -100,6 +165,8 @@ export class TimetableFieldNumberDetailComponent implements DetailWithCancelEdit
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
       this.isNew = false;
+    } else {
+      this.isNew = true;
     }
     this.initForm();
     this.showSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
@@ -138,36 +205,38 @@ export class TimetableFieldNumberDetailComponent implements DetailWithCancelEdit
   }
 
   toggleEdit() {
-    const form = required(this.form, 'form is required');
-    if (form.enabled) {
-      this.detailDialogHelperService.showCancelEditDialog(this);
+    if (this.editMode()) {
+      this.detailDialogHelperService.openCancelEditDialog(this);
     } else {
-      form.enable();
-      this.validityService.initValidity(form);
+      this.validityService.init(this.formModel());
+      this.editMode.set(true);
     }
   }
 
   save() {
-    ValidationService.validateForm(this.form);
-    if (this.form.valid) {
-      if (this.selectedVersion?.id) {
-        this.validityService.updateValidity(this.form);
-        this.validityService.validateAndDisableCustom(
-          () => this.updateRecord(),
-          () => this.form.disable()
-        );
-      } else {
-        this.createRecord();
-      }
+    this.timetableFieldNumberForm().markAsTouched();
+    if (this.timetableFieldNumberForm().invalid()) {
+      return;
+    }
+
+    if (this.selectedVersion?.id) {
+      this.validityService.update(this.formModel());
+      this.validityService.validate().subscribe((confirmed) => {
+        if (confirmed) {
+          this.editMode.set(false);
+          this.updateRecord();
+        }
+      });
+    } else {
+      this.createRecord();
     }
   }
 
   updateRecord(): void {
     const id = required(this.selectedVersion?.id, 'id is required');
     const ttfnid = required(this.selectedVersion?.ttfnid, 'ttfnid is required');
-    this.form.disable();
     this.timetableFieldNumberService
-      .updateVersionWithVersioning(id, this.getPayloadOfForm())
+      .updateVersionWithVersioning(id, TimetableFieldNumberDetailForm.toApiModel(this.formModel()))
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
@@ -177,7 +246,7 @@ export class TimetableFieldNumberDetailComponent implements DetailWithCancelEdit
 
   createRecord(): void {
     this.timetableFieldNumberService
-      .createVersion(this.getPayloadOfForm())
+      .createVersion(TimetableFieldNumberDetailForm.toApiModel(this.formModel()))
       .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
@@ -211,68 +280,28 @@ export class TimetableFieldNumberDetailComponent implements DetailWithCancelEdit
     );
   }
 
-  getFormGroup(version?: TimetableFieldNumberVersion): FormGroup {
-    const formGroup = TimetableFieldNumberDetailFormGroupBuilder.getFormGroup(version);
-
-    this.displayOutwardLine2$ = this.getDisplayObs(
-      formGroup.controls.descriptionOutwardLine1,
-      formGroup.controls.descriptionOutwardLine2
-    );
-
-    this.displayOutwardLine3$ = this.getDisplayObs(
-      formGroup.controls.descriptionOutwardLine2,
-      formGroup.controls.descriptionOutwardLine3
-    );
-
-    this.displayReturnLine2$ = this.getDisplayObs(
-      formGroup.controls.descriptionReturnLine1,
-      formGroup.controls.descriptionReturnLine2
-    );
-
-    this.displayReturnLine3$ = this.getDisplayObs(
-      formGroup.controls.descriptionReturnLine2,
-      formGroup.controls.descriptionReturnLine3
-    );
-
-    return formGroup;
+  private initForm() {
+    if (this.selectedVersion) {
+      this.timetableFieldNumberForm().reset(TimetableFieldNumberDetailForm.toFormModel(this.selectedVersion));
+      this.editMode.set(false);
+    } else {
+      this.timetableFieldNumberForm().reset(this.emptyFormValue);
+      this.editMode.set(true);
+    }
   }
 
-  private initForm() {
-    this.form = this.getFormGroup(this.selectedVersion);
-    if (this.selectedVersion) {
-      this.form.disable();
+  private hasContent(field: Field<string>): boolean {
+    return (field().value()?.length ?? 0) > 1;
+  }
+
+  private resetIfHidden(visible: boolean, field: Field<string>) {
+    if (!visible && field().value()) {
+      field().value.set('');
     }
   }
 
   private readonly handleError = () => {
-    this.form.enable();
+    this.editMode.set(true);
     return EMPTY;
   };
-
-  private getDisplayObs(
-    previous: FormControl<string | null | undefined>,
-    actual: FormControl<string | null | undefined>
-  ) {
-    return previous.valueChanges.pipe(
-      startWith(previous.value),
-      map((val) => (val?.length ?? 0) > 1),
-      distinctUntilChanged(),
-      skipWhile((val) => !val),
-      tap((val) => {
-        if (!val) {
-          actual.reset(null);
-        }
-      })
-    );
-  }
-
-  private getPayloadOfForm() {
-    if (!this.form) {
-      return {};
-    }
-    return {
-      ...this.form.value,
-      meanOfTransport: this.form.value.meanOfTransport[0],
-    };
-  }
 }
