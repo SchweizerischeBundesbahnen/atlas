@@ -1239,8 +1239,6 @@
       "GLOBAL_ID_ERROR": {
         "COUNTRY_MISMATCH": "L'ID global doit commencer par «{{prefix}}».",
         "NOT_ALLOWED_FOR_COUNTRY": "Un ID global ne peut être saisi que pour les arrêts allemands (11, 80) et autrichiens (12, 81).",
-        "WHITESPACE": "L'ID global ne peut pas commencer ou se terminer par un espace.",
-        "MAX_LENGTH": "L'ID global ne peut pas dépasser {{maxLength}} caractères.",
         "ALREADY_USED": "L'ID global «{{globalId}}» est déjà utilisé par un autre arrêt."
       },
       "DIDOK_CODE_SEARCH": "Code DiDok",
