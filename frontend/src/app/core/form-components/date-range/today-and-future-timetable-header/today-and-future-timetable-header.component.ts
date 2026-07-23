@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatCalendarHeader, MatDatepicker } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment/moment';
 import { TimetableYearChangeInternalService } from '../../../../api/service/lidi/timetable-year-change-internal.service';
@@ -8,7 +8,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-today-and-future-timetable-header',
   templateUrl: 'today-and-future-timetable-header.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButton, MatCalendarHeader, TranslatePipe],
 })
 export class TodayAndFutureTimetableHeaderComponent {
