@@ -1,0 +1,40 @@
+<atlas-dialog-close (clicked)="cancel()" />
+
+<atlas-dialog-content>
+  <div class="mb-4">
+    <span class="font-bold-4xl">{{ 'SEPODI.SERVICE_POINTS.GLOBAL_ID_EDIT.TITLE' | translate }}</span>
+  </div>
+
+  <div class="d-flex">
+    <atlas-text-field
+      [fieldExamples]="[
+        { label: 'FORM.FOR_EXAMPLE', translate: true },
+        { label: ' de:05770:1282 / at:42:9379 | ', translate: false },
+        {
+          label: 'FORM.MAX_CHARS',
+          translate: true,
+          arg: { key: 'numberOfChars', value: '128' },
+        },
+      ]"
+      [formGroup]="form"
+      [required]="true"
+      controlName="globalId"
+      fieldLabel="SEPODI.SERVICE_POINTS.GLOBAL_ID"
+      data-cy="globalId"
+    />
+  </div>
+</atlas-dialog-content>
+
+<atlas-dialog-footer>
+  <button (click)="cancel()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
+    {{ 'DIALOG.CANCEL' | translate }}
+  </button>
+  <button (click)="save()" class="atlas-primary-btn" data-cy="dialog-save-button">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
+  @if (canDelete) {
+    <button (click)="delete()" class="atlas-primary-btn me-3" data-cy="dialog-delete-button">
+      {{ 'COMMON.DELETE' | translate }}
+    </button>
+  }
+</atlas-dialog-footer>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ServicePointSearchRequest } from '../../model/servicePointSearchRequest';
 import { ServicePointSearchResult } from '../../model/servicePointSearchResult';
 import { ReadServicePointVersion } from '../../model/readServicePointVersion';
+import { GlobalIdUpdate } from '../../model/globalIdUpdate';
 
 @Injectable({
   providedIn: 'root',
@@ -37,5 +38,21 @@ export class ServicePointInternalService {
 
   public revokeServicePoint(servicePointNumber: number): Observable<Array<ReadServicePointVersion>> {
     return this.atlasApiService.post(`${this.BASE_PATH}/${encodeURIComponent(String(servicePointNumber))}/revoke`);
+  }
+
+  public updateGlobalId(
+    servicePointNumber: number,
+    globalIdUpdate: GlobalIdUpdate
+  ): Observable<Array<ReadServicePointVersion>> {
+    this.atlasApiService.validateParams({ servicePointNumber, globalIdUpdate });
+    return this.atlasApiService.put(
+      `${this.BASE_PATH}/${encodeURIComponent(String(servicePointNumber))}/global-id`,
+      globalIdUpdate
+    );
+  }
+
+  public deleteGlobalId(servicePointNumber: number): Observable<Array<ReadServicePointVersion>> {
+    this.atlasApiService.validateParams({ servicePointNumber });
+    return this.atlasApiService.delete(`${this.BASE_PATH}/${encodeURIComponent(String(servicePointNumber))}/global-id`);
   }
 }
