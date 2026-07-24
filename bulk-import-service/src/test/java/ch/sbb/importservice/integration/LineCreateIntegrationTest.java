@@ -78,7 +78,7 @@ class LineCreateIntegrationTest {
   @BeforeEach
   void setUp() {
     todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
-        + "/SEPODI/SECTOR/CREATE";
+        + "/LIDI/LINE/CREATE";
     when(amazonService.putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), anyString()))
         .thenAnswer(i -> URI.create("https://atlas-bulk-import-dev-dev.s3.eu-central-1.amazonaws.com/" +
             todaysDirectory + "/" + i.getArgument(1, File.class).getName()).toURL());

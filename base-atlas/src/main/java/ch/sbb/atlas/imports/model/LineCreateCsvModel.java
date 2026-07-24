@@ -53,6 +53,7 @@ public class LineCreateCsvModel implements Validatable<LineCreateCsvModel> {
   @DefaultMapping
   private String swissLineNumber;
 
+  @DefaultMapping
   private LineConcessionType lineConcessionType;
 
   @DefaultMapping

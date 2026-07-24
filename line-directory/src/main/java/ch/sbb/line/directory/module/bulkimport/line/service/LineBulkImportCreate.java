@@ -12,11 +12,4 @@ public class LineBulkImportCreate extends BulkImportCreateDataMapper<LineCreateC
     return new LineBulkImportCreate().applyCreate(bulkImportContainer,
         new LineVersionModelV2());
   }
-
-  @Override
-  protected void applySpecificCreate(LineCreateCsvModel createCsvModel, LineVersionModelV2 targetModel) {
-    if (createCsvModel.getLineConcessionType() != null) {
-      targetModel.setLineConcessionType(createCsvModel.getLineConcessionType());
-    }
-  }
 }

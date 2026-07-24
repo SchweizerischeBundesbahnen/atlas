@@ -13,7 +13,6 @@ import { LineType } from './lineType';
 
 
 export interface LineCreateCsvModel { 
-    slnid?: string;
     linienId?: string;
     validFrom?: Date;
     validTo?: Date;

@@ -31,7 +31,7 @@ public class LineBulkImportService {
   @RunAsUser
   public void createLineByUsername(@RunAsUserParameter String username,
       BulkImportUpdateContainer<LineCreateCsvModel> bulkImportContainer) {
-    log.info("Update versions in name of the user: {}", username);
+    log.info("Create versions in name of the user: {}", username);
     createLine(bulkImportContainer);
   }
 
