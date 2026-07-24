@@ -23,6 +23,8 @@ export interface TimetableHearingAnonymStatementCsvModel {
     documentsPresent?: boolean;
     timetableHearingYear?: number;
     topic?: string;
+    publicComment?: string;
+    internalComment?: string;
 }
 export namespace TimetableHearingAnonymStatementCsvModel {
 }
