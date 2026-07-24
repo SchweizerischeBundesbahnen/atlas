@@ -1,6 +1,6 @@
 {
   "name": "@atlas/form",
-  "version": "2.1437.0",
+  "version": "2.1438.0",
   "devDependencies": {},
   "scripts": {
     "test": "ng test components -c ci"
