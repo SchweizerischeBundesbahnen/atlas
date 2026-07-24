@@ -85,7 +85,7 @@
     "@cypress/schematic": "5.0.0",
     "@eslint/eslintrc": "3.3.6",
     "@eslint/js": "10.0.1",
-    "@openapitools/openapi-generator-cli": "2.39.1",
+    "@openapitools/openapi-generator-cli": "2.40.0",
     "@playwright/test": "1.61.1",
     "@types/node": "25.9.5",
     "@vitest/coverage-v8": "4.1.10",
@@ -100,9 +100,9 @@
     "jsdom": "29.1.1",
     "lint-staged": "17.1.0",
     "ng-packagr": "22.0.1",
-    "prettier": "3.9.5",
+    "prettier": "3.9.6",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.64.0",
+    "typescript-eslint": "8.65.0",
     "vitest": "4.1.10",
     "vitest-mock-extended": "5.1.0"
   }
