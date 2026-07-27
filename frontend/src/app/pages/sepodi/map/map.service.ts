@@ -318,7 +318,7 @@ export class MapService {
       this.popup.getElement()?.removeAllListeners?.('click');
       this.keepPopup = false;
     });
-    this.popup.getElement().addEventListener(
+    this.popup.getElement()?.addEventListener(
       'click',
       () => {
         this.keepPopup = true;
