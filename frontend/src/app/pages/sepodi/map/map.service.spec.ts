@@ -20,6 +20,22 @@ describe('MapService', () => {
   let service: MapService;
   let router: Router;
 
+  /**
+   * Shows a service point popup and returns the popup element maplibre renders the content into.
+   */
+  function givenShownPopup(): HTMLElement {
+    const popupElement = document.createElement('div');
+    popupElement.innerHTML = '<a href="/sepodi/service-points/8507000">Bern</a>';
+    vi.spyOn(service.popup, 'addTo').mockImplementation(() => service.popup);
+    vi.spyOn(service.popup, 'getElement').mockReturnValue(popupElement);
+
+    service.showServicePointPopup({
+      features: [{ geometry: { coordinates: [7.44, 46.95] }, properties: { number: 8507000 } }],
+    } as unknown as MapMouseEvent & { features?: MapGeoJSONFeature[] });
+
+    return popupElement;
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [{ provide: AuthService, useValue: authService }],
@@ -245,6 +261,51 @@ describe('MapService', () => {
 
     expect(service.popup.getLngLat().lat).toEqual(46.94883407094761);
     expect(service.popup.getLngLat().lng).toEqual(7.439133524894714);
+  });
+
+  it('should keep popup open when clicking inside the popup', () => {
+    // Given
+    service.map = mapMock;
+    const popupElement = givenShownPopup();
+
+    expect(service.keepPopup).toBe(false);
+
+    // When
+    const link = popupElement.querySelector('a')!;
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    // Then
+    expect(service.keepPopup).toBe(true);
+  });
+
+  it('should keep popup open only for the first click inside the popup', () => {
+    // Given
+    service.map = mapMock;
+    const popupElement = givenShownPopup();
+    const link = popupElement.querySelector('a')!;
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    service.keepPopup = false;
+
+    // When
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    // Then
+    expect(service.keepPopup).toBe(false);
+  });
+
+  it('should not keep popup open when the close button click bubbles up after closing', () => {
+    // Given
+    service.map = mapMock;
+    const onSpy = vi.spyOn(service.popup, 'on');
+    const popupElement = givenShownPopup();
+    const closeHandler = onSpy.mock.calls.find((call) => call[0] === 'close')![1] as () => void;
+
+    // When: closing detaches the click listener before the click bubbles up to the popup
+    closeHandler();
+    popupElement.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    // Then
+    expect(service.keepPopup).toBe(false);
   });
 
   it('should navigate to sector detail on click', () => {

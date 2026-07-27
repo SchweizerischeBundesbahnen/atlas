@@ -1,11 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import maplibregl, {
+import {
   GeoJSONSource,
   LngLat,
   LngLatLike,
   Map,
   MapGeoJSONFeature,
   MapMouseEvent,
+  Marker,
   Popup,
   VectorTileSource,
 } from 'maplibre-gl';
@@ -46,7 +47,7 @@ export class MapService {
   selectedElement = new Subject<GeoJsonProperties>();
   servicePointsShown = new BehaviorSubject(false);
   currentMapStyle!: MapStyle;
-  marker = new maplibregl.Marker({ color: '#FF0000' });
+  marker = new Marker({ color: '#FF0000' });
 
   coordinateSelectionMode = false;
   clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
@@ -311,12 +312,19 @@ export class MapService {
     }
     const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
     this.popup.setLngLat(coordinates).setHTML(htmlContentBuilder(event.features)).addTo(this.map);
+
+    // Reconsider this when zoneless
     this.popup.on('close', () => {
+      this.popup.getElement()?.removeAllListeners?.('click');
       this.keepPopup = false;
     });
-    this.popup.on('click', () => {
-      this.keepPopup = true;
-    });
+    this.popup.getElement()?.addEventListener(
+      'click',
+      () => {
+        this.keepPopup = true;
+      },
+      { once: true }
+    );
   }
 
   buildServicePointPopupInformation(features: MapGeoJSONFeature[]) {
@@ -345,7 +353,7 @@ export class MapService {
   }
 
   setPopupToFixed() {
-    this.popup.getElement().classList.add('fixed-popup');
+    this.popup.getElement()?.classList.add('fixed-popup');
   }
 
   placeMarkerAndFlyTo(coordinatePairWGS84: CoordinatePairWGS84) {

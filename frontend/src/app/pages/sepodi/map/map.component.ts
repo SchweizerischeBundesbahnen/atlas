@@ -9,7 +9,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Map } from 'maplibre-gl';
+import { LngLatLike, Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options';
 import { Subject } from 'rxjs';
@@ -120,7 +120,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   goHome() {
     const swissLongLat = [8.2275, 46.8182];
     this.map.flyTo({
-      center: swissLongLat as maplibregl.LngLatLike,
+      center: swissLongLat as LngLatLike,
       zoom: 7.25,
       speed: 0.8,
     });
