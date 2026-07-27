@@ -148,14 +148,14 @@
 
         <div class="col-12 d-flex mt-3 mb-4">
           <div class="d-flex flex-column col-12">
-            <atlas-search-select [field]="businessOrganisationForm.businessTypes" [items]="BUSINESS_TYPES" [multiple]="true">
-              <div class="d-flex flex-column">
-                <atlas-label-field [required]="false" fieldLabel="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE" />
-              </div>
-              <ng-template #labelOptionTemplates let-item>
-                {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES.' + item | translate }}
-              </ng-template>
-            </atlas-search-select>
+            <atlas-select
+              [field]="businessOrganisationForm.businessTypes"
+              [options]="BUSINESS_TYPES"
+              [multiple]="true"
+              [optionTranslateLabelPrefix]="'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES.'"
+              label="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE"
+              dataCy="businessTypes"
+            />
           </div>
         </div>
 

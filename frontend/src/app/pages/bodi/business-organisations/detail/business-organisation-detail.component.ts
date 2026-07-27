@@ -21,7 +21,7 @@ import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-fo
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { Revokable, RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
-import { AtlasLabelFieldComponent, AtlasSearchSelectComponent, AtlasTextFieldComponent } from '@atlas/form';
+import { AtlasLabelFieldComponent, AtlasSelectComponent, AtlasTextFieldComponent } from '@atlas/form';
 import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TableColumn } from '../../../../core/components/table/table-column';
@@ -54,7 +54,7 @@ type TransportCompanyRelationTableEntry = {
     ReactiveFormsModule,
     AtlasTextFieldComponent,
     AtlasDateRangeComponent,
-    AtlasSearchSelectComponent,
+    AtlasSelectComponent,
     TranslatePipe,
     DateRangeTextComponent,
     DetailPageContainerComponent,
