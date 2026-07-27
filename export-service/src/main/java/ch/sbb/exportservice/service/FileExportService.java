@@ -3,10 +3,10 @@ package ch.sbb.exportservice.service;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.StreamedFile;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,18 +17,18 @@ public class FileExportService {
   private final AmazonFileStreamingService amazonFileStreamingService;
   private final AmazonService amazonService;
 
-  public InputStreamResource streamJsonFile(final ExportFilePathV2 exportFilePathV2) {
+  public StreamedFile streamJsonFile(final ExportFilePathV2 exportFilePathV2) {
     logStreamingStart(exportFilePathV2.fileToStream());
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, exportFilePathV2.fileToStream());
   }
 
-  public InputStreamResource streamLatestJsonFile(final ExportFilePathV2 exportFilePathV2) {
+  public StreamedFile streamLatestJsonFile(final ExportFilePathV2 exportFilePathV2) {
     final String latestUploadedFileName = getLatestUploadedFileName(exportFilePathV2);
     logStreamingStart(latestUploadedFileName);
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, latestUploadedFileName);
   }
 
-  public InputStreamResource streamGzipFile(final String fileName) {
+  public StreamedFile streamGzipFile(final String fileName) {
     logStreamingStart(fileName);
     return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileName);
   }

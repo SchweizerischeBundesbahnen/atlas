@@ -22,6 +22,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
@@ -108,6 +109,18 @@ public class AmazonServiceImpl implements AmazonService {
       return getClient(bucket).getObject(GetObjectRequest.builder()
           .bucket(getAmazonBucketConfig(bucket).getBucketName())
           .key(filePath).build());
+    } catch (S3Exception amazonS3Exception) {
+      log.debug("Following S3Exception occurred", amazonS3Exception);
+      throw new FileNotFoundOnS3Exception(filePath);
+    }
+  }
+
+  @Override
+  public long getObjectContentLength(AmazonBucket bucket, String filePath) {
+    try {
+      return getClient(bucket).headObject(HeadObjectRequest.builder()
+          .bucket(getAmazonBucketConfig(bucket).getBucketName())
+          .key(filePath).build()).contentLength();
     } catch (S3Exception amazonS3Exception) {
       log.debug("Following S3Exception occurred", amazonS3Exception);
       throw new FileNotFoundOnS3Exception(filePath);

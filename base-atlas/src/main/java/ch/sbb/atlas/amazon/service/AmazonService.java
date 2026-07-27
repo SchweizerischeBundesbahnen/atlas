@@ -20,6 +20,8 @@ public interface AmazonService {
 
   InputStream pullS3Object(AmazonBucket bucket, String filePath);
 
+  long getObjectContentLength(AmazonBucket bucket, String filePath);
+
   void deleteFile(AmazonBucket bucket, String filePath);
 
   String getLatestJsonUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix);

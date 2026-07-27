@@ -3,8 +3,10 @@ package ch.sbb.exportservice.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+import ch.sbb.atlas.amazon.service.StreamedFile;
 import ch.sbb.exportservice.exception.NotAllowedExportFileExceptionV2;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
@@ -19,7 +21,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ class FileStreamingControllerApiV2Test {
   void streamExportJsonFile() throws ExecutionException, InterruptedException {
     // Given
     InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
-    Mockito.when(fileExportService.streamJsonFile(any(ExportFilePathV2.class))).thenReturn(resource);
+    when(fileExportService.streamJsonFile(any(ExportFilePathV2.class))).thenReturn(new StreamedFile(resource, 42L));
 
     // When
     CompletableFuture<ResponseEntity<InputStreamResource>> response = fileStreamingController.streamExportJsonFile(
@@ -55,13 +56,15 @@ class FileStreamingControllerApiV2Test {
     assertThat(response.get().getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.get().getBody()).isEqualTo(resource);
     assertThat(response.get().getHeaders().getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(response.get().getHeaders().getContentLength()).isEqualTo(42L);
   }
 
   @Test
   void streamLatestExportJsonFile() throws ExecutionException, InterruptedException {
     // Given
     InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
-    Mockito.when(fileExportService.streamLatestJsonFile(any(ExportFilePathV2.class))).thenReturn(resource);
+    when(fileExportService.streamLatestJsonFile(any(ExportFilePathV2.class)))
+        .thenReturn(new StreamedFile(resource, 42L));
 
     // When
     CompletableFuture<ResponseEntity<InputStreamResource>> response = fileStreamingController.streamLatestExportJsonFile(
@@ -73,13 +76,14 @@ class FileStreamingControllerApiV2Test {
     assertThat(response.get().getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.get().getBody()).isEqualTo(resource);
     assertThat(response.get().getHeaders().getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(response.get().getHeaders().getContentLength()).isEqualTo(42L);
   }
 
   @Test
   void streamExportGzFile() throws ExecutionException, InterruptedException {
     // Given
     InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
-    Mockito.when(fileExportService.streamGzipFile(any(String.class))).thenReturn(resource);
+    when(fileExportService.streamGzipFile(any(String.class))).thenReturn(new StreamedFile(resource, 42L));
 
     // When
     CompletableFuture<ResponseEntity<InputStreamResource>> response = fileStreamingController.streamExportGzFile(
@@ -92,14 +96,15 @@ class FileStreamingControllerApiV2Test {
     assertThat(response.get().getBody()).isEqualTo(resource);
     assertThat(Objects.requireNonNull(response.get().getHeaders().getContentType())).hasToString("application"
         + "/gzip");
+    assertThat(response.get().getHeaders().getContentLength()).isEqualTo(42L);
   }
 
   @Test
   void streamLatestExportGzFile() throws ExecutionException, InterruptedException {
     // Given
     InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
-    Mockito.when(fileExportService.streamGzipFile(any(String.class))).thenReturn(resource);
-    Mockito.when(fileExportService.getLatestUploadedFileName(any(ExportFilePathV2.class))).thenReturn("/test.json.gz");
+    when(fileExportService.streamGzipFile(any(String.class))).thenReturn(new StreamedFile(resource, 42L));
+    when(fileExportService.getLatestUploadedFileName(any(ExportFilePathV2.class))).thenReturn("/test.json.gz");
 
     // When
     CompletableFuture<ResponseEntity<InputStreamResource>> response = fileStreamingController.streamLatestExportGzFile(
@@ -111,6 +116,7 @@ class FileStreamingControllerApiV2Test {
     assertThat(response.get().getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.get().getBody()).isEqualTo(resource);
     assertThat(Objects.requireNonNull(response.get().getHeaders().getContentType())).hasToString("application/gzip");
+    assertThat(response.get().getHeaders().getContentLength()).isEqualTo(42L);
   }
 
   @Test
