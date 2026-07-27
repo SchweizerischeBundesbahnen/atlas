@@ -73,6 +73,7 @@
             "outputPath": {
               "base": "dist/atlas-frontend"
             },
+
             "index": "src/index.html",
             "polyfills": [
               "src/polyfills.ts",
@@ -82,7 +83,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              {
+                "glob": "{maplibre-gl-worker.mjs,maplibre-gl-shared.mjs}",
+                "input": "node_modules/maplibre-gl/dist",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/styles/styles.scss"
