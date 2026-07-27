@@ -43,7 +43,7 @@ class AmazonFileStreamingServiceTest {
         "file.json");
 
     //then
-    assertThat(response.contentLength()).isEqualTo(dataBytes.length);
+    assertThat(response.contentLength()).isEqualTo(ContentLength.of(dataBytes.length));
     String result = new String(response.resource().getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(result).isEqualTo(testData);
   }
@@ -54,13 +54,13 @@ class AmazonFileStreamingServiceTest {
     String testData = "Tesd data";
     InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(testData.getBytes()));
     when(amazonService.pullFileAsStream(any(), any())).thenReturn(inputStreamResource);
-    when(amazonService.getObjectContentLength(AmazonBucket.EXPORT, "file.json")).thenReturn(9L);
+    when(amazonService.getObjectContentLength(AmazonBucket.EXPORT, "file.json")).thenReturn(ContentLength.of(9L));
 
     //when
     StreamedFile response = amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, "file.json");
 
     //then
-    assertThat(response.contentLength()).isEqualTo(9L);
+    assertThat(response.contentLength()).isEqualTo(ContentLength.of(9L));
     String result =  new String(response.resource().getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(result).isEqualTo("Tesd data");
   }

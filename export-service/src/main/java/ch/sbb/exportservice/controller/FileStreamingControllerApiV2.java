@@ -55,7 +55,7 @@ public class FileStreamingControllerApiV2 {
     StreamedFile body = fileExportService.streamJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
     return CompletableFuture.completedFuture(ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_JSON)
-        .contentLength(body.contentLength())
+        .contentLength(body.contentLength().value())
         .body(body.resource()));
   }
 
@@ -76,7 +76,7 @@ public class FileStreamingControllerApiV2 {
     StreamedFile body = fileExportService.streamLatestJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
     return CompletableFuture.completedFuture(ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_JSON)
-        .contentLength(body.contentLength())
+        .contentLength(body.contentLength().value())
         .body(body.resource()));
   }
 
@@ -97,7 +97,7 @@ public class FileStreamingControllerApiV2 {
     ExportFilePathV2 exportFilePath = ExportFilePathV2.buildV2(exportObject, exportType);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
     StreamedFile body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
-    headers.setContentLength(body.contentLength());
+    headers.setContentLength(body.contentLength().value());
     return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body.resource()));
   }
 
@@ -119,7 +119,7 @@ public class FileStreamingControllerApiV2 {
         ExportFilePathV2.buildV2(exportObject, exportType));
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
     StreamedFile body = fileExportService.streamGzipFile(latestUploadedFileName);
-    headers.setContentLength(body.contentLength());
+    headers.setContentLength(body.contentLength().value());
     return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body.resource()));
   }
 

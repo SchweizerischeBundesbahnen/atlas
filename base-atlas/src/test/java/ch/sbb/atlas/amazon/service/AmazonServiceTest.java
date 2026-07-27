@@ -193,10 +193,10 @@ class AmazonServiceTest {
         .thenReturn(HeadObjectResponse.builder().contentLength(1234L).build());
 
     //when
-    long contentLength = amazonService.getObjectContentLength(AmazonBucket.EXPORT, filePath);
+    ContentLength contentLength = amazonService.getObjectContentLength(AmazonBucket.EXPORT, filePath);
 
     //then
-    assertThat(contentLength).isEqualTo(1234L);
+    assertThat(contentLength).isEqualTo(ContentLength.of(1234L));
   }
 
   @Test

@@ -14,6 +14,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
@@ -116,11 +117,12 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
-  public long getObjectContentLength(AmazonBucket bucket, String filePath) {
+  public ContentLength getObjectContentLength(AmazonBucket bucket, String filePath) {
     try {
-      return getClient(bucket).headObject(HeadObjectRequest.builder()
+      Long contentLength = getClient(bucket).headObject(HeadObjectRequest.builder()
           .bucket(getAmazonBucketConfig(bucket).getBucketName())
           .key(filePath).build()).contentLength();
+      return ContentLength.of(Objects.requireNonNull(contentLength, "S3 object content length missing for " + filePath));
     } catch (S3Exception amazonS3Exception) {
       log.debug("Following S3Exception occurred", amazonS3Exception);
       throw new FileNotFoundOnS3Exception(filePath);

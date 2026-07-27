@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+import ch.sbb.atlas.amazon.service.ContentLength;
 import ch.sbb.atlas.amazon.service.StreamedFile;
 import ch.sbb.exportservice.exception.NotAllowedExportFileExceptionV2;
 import ch.sbb.exportservice.model.ExportFilePathV2;
@@ -44,7 +45,7 @@ class FileStreamingControllerApiV2Test {
   void streamExportJsonFile() throws ExecutionException, InterruptedException {
     // Given
     InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
-    when(fileExportService.streamJsonFile(any(ExportFilePathV2.class))).thenReturn(new StreamedFile(resource, 42L));
+    when(fileExportService.streamJsonFile(any(ExportFilePathV2.class))).thenReturn(new StreamedFile(resource, ContentLength.of(42L)));
 
     // When
     CompletableFuture<ResponseEntity<InputStreamResource>> response = fileStreamingController.streamExportJsonFile(
@@ -64,7 +65,7 @@ class FileStreamingControllerApiV2Test {
     // Given
     InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
     when(fileExportService.streamLatestJsonFile(any(ExportFilePathV2.class)))
-        .thenReturn(new StreamedFile(resource, 42L));
+        .thenReturn(new StreamedFile(resource, ContentLength.of(42L)));
 
     // When
     CompletableFuture<ResponseEntity<InputStreamResource>> response = fileStreamingController.streamLatestExportJsonFile(
@@ -83,7 +84,7 @@ class FileStreamingControllerApiV2Test {
   void streamExportGzFile() throws ExecutionException, InterruptedException {
     // Given
     InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
-    when(fileExportService.streamGzipFile(any(String.class))).thenReturn(new StreamedFile(resource, 42L));
+    when(fileExportService.streamGzipFile(any(String.class))).thenReturn(new StreamedFile(resource, ContentLength.of(42L)));
 
     // When
     CompletableFuture<ResponseEntity<InputStreamResource>> response = fileStreamingController.streamExportGzFile(
@@ -103,7 +104,7 @@ class FileStreamingControllerApiV2Test {
   void streamLatestExportGzFile() throws ExecutionException, InterruptedException {
     // Given
     InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
-    when(fileExportService.streamGzipFile(any(String.class))).thenReturn(new StreamedFile(resource, 42L));
+    when(fileExportService.streamGzipFile(any(String.class))).thenReturn(new StreamedFile(resource, ContentLength.of(42L)));
     when(fileExportService.getLatestUploadedFileName(any(ExportFilePathV2.class))).thenReturn("/test.json.gz");
 
     // When

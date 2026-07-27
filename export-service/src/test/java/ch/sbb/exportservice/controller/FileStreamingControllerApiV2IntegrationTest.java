@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.ContentLength;
 import ch.sbb.atlas.amazon.service.StreamedFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import java.io.ByteArrayInputStream;
@@ -47,7 +48,7 @@ class FileStreamingControllerApiV2IntegrationTest extends BaseControllerApiTest 
   void shouldGetServicePointJsonSuccessfully() throws Exception {
     //given
     byte[] data = Objects.requireNonNull(this.getClass().getResourceAsStream("/service-point-data.json")).readAllBytes();
-    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), data.length);
+    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), ContentLength.of(data.length));
     doReturn(streamedFile).when(amazonFileStreamingService)
         .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
 
@@ -69,7 +70,7 @@ class FileStreamingControllerApiV2IntegrationTest extends BaseControllerApiTest 
   void shouldGetLatestServicePointJsonSuccessfully() throws Exception {
     //given
     byte[] data = Objects.requireNonNull(this.getClass().getResourceAsStream("/service-point-data.json")).readAllBytes();
-    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), data.length);
+    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), ContentLength.of(data.length));
     doReturn(streamedFile).when(amazonFileStreamingService)
         .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
 
@@ -91,7 +92,7 @@ class FileStreamingControllerApiV2IntegrationTest extends BaseControllerApiTest 
   void shouldDownloadServicePointGzipJsonSuccessfully() throws Exception {
     //given
     byte[] data = Objects.requireNonNull(this.getClass().getResourceAsStream("/service-point.json.gzip")).readAllBytes();
-    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), data.length);
+    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), ContentLength.of(data.length));
     doReturn(streamedFile).when(amazonFileStreamingService)
         .streamFile(eq(AmazonBucket.EXPORT), anyString());
 
@@ -113,7 +114,7 @@ class FileStreamingControllerApiV2IntegrationTest extends BaseControllerApiTest 
   void shouldDownloadLatestServicePointGzipJsonSuccessfully() throws Exception {
     //given
     byte[] data = Objects.requireNonNull(this.getClass().getResourceAsStream("/service-point.json.gzip")).readAllBytes();
-    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), data.length);
+    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), ContentLength.of(data.length));
     doReturn(streamedFile).when(amazonFileStreamingService)
         .streamFile(eq(AmazonBucket.EXPORT), anyString());
 
