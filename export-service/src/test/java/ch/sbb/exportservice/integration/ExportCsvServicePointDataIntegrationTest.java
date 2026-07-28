@@ -39,6 +39,7 @@ class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrat
     assertThat(magdenObrist.getBusinessOrganisationNumber()).isEqualTo(999);
     assertThat(magdenObrist.getBusinessOrganisationAbbreviationDe()).isEqualTo("SAS-Code");
     assertThat(magdenObrist.getIsoCountryCode()).isEqualTo("RU");
+    assertThat(magdenObrist.getGlobalId()).isEqualTo("ch:1:sloid:1200001");
   }
 
 }

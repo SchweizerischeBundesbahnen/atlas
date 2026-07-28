@@ -13,16 +13,18 @@ public class ServicePointVersionSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_AND_JOIN_STATEMENT = """
       SELECT spv.id, string_agg(spvmot.means_of_transport, '|') as list_of_transports, string_agg(spvc.categories, '|') as list_of_categories,
-      spv.*, spvg.country as geolocation_country, spvg.*, sbov.*, spfc.*
+      spv.*, spvg.country as geolocation_country, spvg.*, sbov.*, spfc.*, spgi.global_id
       FROM service_point_version spv
       LEFT JOIN service_point_version_means_of_transport spvmot on spv.id = spvmot.service_point_version_id
       LEFT JOIN service_point_version_categories spvc on spv.id = spvc.service_point_version_id
       LEFT JOIN service_point_version_geolocation spvg on spv.service_point_geolocation_id = spvg.id
       LEFT JOIN service_point_fot_comment spfc on spv.number = spfc.service_point_number
+      LEFT JOIN service_point_global_id spgi on spv.number = spgi.service_point_number
       LEFT JOIN shared_business_organisation_version sbov on spv.business_organisation = sbov.sboid
             AND (CASE WHEN '%s' between sbov.valid_from and sbov.valid_to THEN 0 ELSE 1 END = 0)
       """;
-  private static final String GROUP_BY_STATEMENT = "group by spv.id, spvg.id, sbov.id, spfc.service_point_number";
+  private static final String GROUP_BY_STATEMENT = "group by spv.id, spvg.id, sbov.id, spfc.service_point_number, "
+      + "spgi.global_id";
 
   private static final String SWISS_WHERE_STATEMENT = "WHERE spv.country "
       + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') ";
