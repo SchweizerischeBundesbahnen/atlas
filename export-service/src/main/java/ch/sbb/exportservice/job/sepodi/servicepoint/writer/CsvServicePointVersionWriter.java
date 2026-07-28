@@ -18,7 +18,8 @@ public class CsvServicePointVersionWriter extends BaseCsvWriter<ServicePointVers
   @Override
   protected String[] getCsvHeader() {
     return new String[]{numberShort, Fields.uicCountryCode,
-        Fields.sloid, Fields.number, Fields.checkDigit, Fields.validFrom, Fields.validTo, Fields.designationOfficial,
+        Fields.sloid, Fields.number, Fields.checkDigit, Fields.globalId, Fields.validFrom, Fields.validTo,
+        Fields.designationOfficial,
         Fields.designationLong, Fields.abbreviation, Fields.operatingPoint, Fields.operatingPointWithTimetable, Fields.stopPoint,
         Fields.stopPointType, Fields.freightServicePoint, Fields.trafficPoint,
         Fields.borderPoint, Fields.hasGeolocation, Fields.isoCountryCode,
@@ -33,7 +34,7 @@ public class CsvServicePointVersionWriter extends BaseCsvWriter<ServicePointVers
         Fields.businessOrganisationDescriptionDe, Fields.businessOrganisationDescriptionFr,
         Fields.businessOrganisationDescriptionIt, Fields.businessOrganisationDescriptionEn, Fields.fotComment, Fields.lv95East,
         Fields.lv95North, Fields.wgs84East, Fields.wgs84North,
-        Fields.height, Fields.creationDate, Fields.editionDate, Fields.status, Fields.globalId
+        Fields.height, Fields.creationDate, Fields.editionDate, Fields.status
     };
   }
 
