@@ -23,6 +23,7 @@ public class ServicePointVersionCsvProcessor extends BaseSepodiProcessor impleme
         .numberShort(version.getNumber().getNumberShort())
         .uicCountryCode(version.getCountry().getUicCode())
         .sloid(version.getSloid())
+        .globalId(version.getGlobalId())
         .number(version.getNumber().getNumber())
         .checkDigit(version.getNumber().getCheckDigit())
         .validFrom(DATE_FORMATTER_BASE.format(version.getValidFrom()))

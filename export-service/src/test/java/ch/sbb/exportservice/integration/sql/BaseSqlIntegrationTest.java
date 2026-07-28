@@ -61,6 +61,19 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
     connection.close();
   }
 
+  protected void insertServicePointGlobalId(Integer servicePointNumber, String globalId) throws SQLException {
+    final String insertSql = """
+        insert into service_point_global_id (id, service_point_number, global_id)
+        values (nextval('service_point_global_id_seq'), %d, '%s');
+        """
+        .formatted(servicePointNumber, globalId);
+    final Connection connection = servicePointDataSource.getConnection();
+    try (final PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+      preparedStatement.executeUpdate();
+    }
+    connection.close();
+  }
+
   protected String formatDate(LocalDate localDate) {
     return localDate.format(DATE_FORMATTER_BASE);
   }

@@ -18,6 +18,7 @@ public class ServicePointVersionJsonProcessor extends BaseSepodiProcessor implem
     return ReadServicePointVersionModel.builder()
         .id(servicePointVersion.getId())
         .number(servicePointVersion.getNumber())
+        .globalId(servicePointVersion.getGlobalId())
         .sloid(servicePointVersion.getSloid())
         .designationLong(servicePointVersion.getDesignationLong())
         .designationOfficial(servicePointVersion.getDesignationOfficial())

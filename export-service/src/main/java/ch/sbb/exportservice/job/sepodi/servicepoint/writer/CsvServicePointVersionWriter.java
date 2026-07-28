@@ -33,7 +33,7 @@ public class CsvServicePointVersionWriter extends BaseCsvWriter<ServicePointVers
         Fields.businessOrganisationDescriptionDe, Fields.businessOrganisationDescriptionFr,
         Fields.businessOrganisationDescriptionIt, Fields.businessOrganisationDescriptionEn, Fields.fotComment, Fields.lv95East,
         Fields.lv95North, Fields.wgs84East, Fields.wgs84North,
-        Fields.height, Fields.creationDate, Fields.editionDate, Fields.status
+        Fields.height, Fields.creationDate, Fields.editionDate, Fields.status, Fields.globalId
     };
   }
 

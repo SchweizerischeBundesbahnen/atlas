@@ -37,6 +37,8 @@ public class ServicePointVersion extends BaseEntity {
 
   private String sloid;
 
+  private String globalId;
+
   private Status status;
 
   private Integer numberShort;
