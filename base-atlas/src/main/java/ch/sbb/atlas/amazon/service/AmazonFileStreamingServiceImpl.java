@@ -13,18 +13,21 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
   private final FileService fileService;
 
   @Override
-  public InputStreamResource streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
-    try (InputStream s3Object = amazonService.pullS3Object(amazonBucket, fileToStream);
-        InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(s3Object))) {
-      return new InputStreamResource(inputStream);
+  public StreamedFile streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
+    try (InputStream s3Object = amazonService.pullS3Object(amazonBucket, fileToStream)) {
+      byte[] decompressed = fileService.gzipDecompress(s3Object);
+      InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(decompressed));
+      return new StreamedFile(resource, ContentLength.of(decompressed.length));
     } catch (IOException e) {
       throw new IllegalStateException("Could not stream the file", e);
     }
   }
 
   @Override
-  public InputStreamResource streamFile(AmazonBucket amazonBucket, String fileToStream) {
-    return amazonService.pullFileAsStream(amazonBucket, fileToStream);
+  public StreamedFile streamFile(AmazonBucket amazonBucket, String fileToStream) {
+    InputStreamResource resource = amazonService.pullFileAsStream(amazonBucket, fileToStream);
+    ContentLength contentLength = amazonService.getObjectContentLength(amazonBucket, fileToStream);
+    return new StreamedFile(resource, contentLength);
   }
 
 }

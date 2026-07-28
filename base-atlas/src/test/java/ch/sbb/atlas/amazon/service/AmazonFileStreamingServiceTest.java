@@ -39,11 +39,12 @@ class AmazonFileStreamingServiceTest {
     when(amazonService.pullS3Object(any(),any())).thenReturn(new ByteArrayInputStream(dataBytes));
     when(fileService.gzipDecompress(any(InputStream.class))).thenReturn(dataBytes);
     //when
-    InputStreamResource response = amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT,
+    StreamedFile response = amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT,
         "file.json");
 
     //then
-    String result = new String(response.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+    assertThat(response.contentLength()).isEqualTo(ContentLength.of(dataBytes.length));
+    String result = new String(response.resource().getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(result).isEqualTo(testData);
   }
 
@@ -53,12 +54,14 @@ class AmazonFileStreamingServiceTest {
     String testData = "Tesd data";
     InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(testData.getBytes()));
     when(amazonService.pullFileAsStream(any(), any())).thenReturn(inputStreamResource);
+    when(amazonService.getObjectContentLength(AmazonBucket.EXPORT, "file.json")).thenReturn(ContentLength.of(9L));
 
     //when
-    InputStreamResource response = amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, "file.json");
+    StreamedFile response = amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, "file.json");
 
     //then
-    String result =  new String(response.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+    assertThat(response.contentLength()).isEqualTo(ContentLength.of(9L));
+    String result =  new String(response.resource().getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(result).isEqualTo("Tesd data");
   }
 }

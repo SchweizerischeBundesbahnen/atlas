@@ -4,6 +4,7 @@ import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFile
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.amazon.service.StreamedFile;
 import ch.sbb.exportservice.exception.NotAllowedExportFileExceptionV2;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
@@ -51,8 +52,11 @@ public class FileStreamingControllerApiV2 {
       @PathVariable ExportObjectV2 exportObject,
       @PathVariable ExportTypeV2 exportType) {
     isExportSupported(exportObject, exportType);
-    InputStreamResource body = fileExportService.streamJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
-    return CompletableFuture.completedFuture(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body));
+    StreamedFile body = fileExportService.streamJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
+    return CompletableFuture.completedFuture(ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .contentLength(body.contentLength().value())
+        .body(body.resource()));
   }
 
   @GetMapping(value = "json/latest/{exportObject}/{exportType}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,8 +73,11 @@ public class FileStreamingControllerApiV2 {
       @PathVariable ExportObjectV2 exportObject,
       @PathVariable ExportTypeV2 exportType) {
     isExportSupported(exportObject, exportType);
-    InputStreamResource body = fileExportService.streamLatestJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
-    return CompletableFuture.completedFuture(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body));
+    StreamedFile body = fileExportService.streamLatestJsonFile(ExportFilePathV2.buildV2(exportObject, exportType));
+    return CompletableFuture.completedFuture(ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .contentLength(body.contentLength().value())
+        .body(body.resource()));
   }
 
   @GetMapping(value = "download-gzip-json/{exportObject}/{exportType}")
@@ -89,8 +96,9 @@ public class FileStreamingControllerApiV2 {
     isExportSupported(exportObject, exportType);
     ExportFilePathV2 exportFilePath = ExportFilePathV2.buildV2(exportObject, exportType);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
-    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
-    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body));
+    StreamedFile body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
+    headers.setContentLength(body.contentLength().value());
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body.resource()));
   }
 
   @GetMapping(value = "download-gzip-json/latest/{exportObject}/{exportType}")
@@ -110,8 +118,9 @@ public class FileStreamingControllerApiV2 {
     String latestUploadedFileName = fileExportService.getLatestUploadedFileName(
         ExportFilePathV2.buildV2(exportObject, exportType));
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
-    InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
-    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body));
+    StreamedFile body = fileExportService.streamGzipFile(latestUploadedFileName);
+    headers.setContentLength(body.contentLength().value());
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body.resource()));
   }
 
   private static void isExportSupported(ExportObjectV2 exportObject, ExportTypeV2 exportType) {

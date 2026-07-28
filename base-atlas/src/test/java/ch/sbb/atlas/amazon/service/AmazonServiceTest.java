@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,8 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
+import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -183,6 +186,20 @@ class AmazonServiceTest {
   }
 
   @Test
+  void shouldGetObjectContentLength() {
+    //given
+    String filePath = "path/file";
+    when(s3Client.headObject(any(HeadObjectRequest.class)))
+        .thenReturn(HeadObjectResponse.builder().contentLength(1234L).build());
+
+    //when
+    ContentLength contentLength = amazonService.getObjectContentLength(AmazonBucket.EXPORT, filePath);
+
+    //then
+    assertThat(contentLength).isEqualTo(ContentLength.of(1234L));
+  }
+
+  @Test
   void shouldGetLatestJsonUploadedObject() {
     //given
     String filePath = "path/file";
@@ -194,8 +211,8 @@ class AmazonServiceTest {
         new ByteArrayInputStream(dataBytes));
     when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(responseInputStream);
 
-    Instant first = LocalDate.of(2020, 1, 1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
-    Instant second = LocalDate.of(2020, 1, 2).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    Instant first = LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    Instant second = LocalDate.of(2020, Month.JANUARY, 2).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
     ListObjectsV2Response listObjectsV2Result = mock(ListObjectsV2Response.class);
     when(listObjectsV2Result.contents()).thenReturn(List.of(S3Object.builder()
             .key("path/file/file1.json")
