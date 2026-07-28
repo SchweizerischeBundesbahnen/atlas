@@ -21,7 +21,7 @@ class ServicePointVersionTest {
             The %s is used in ServicePointDirectory project.
             If this test fail please make sure the entire ATLAS application works properly: import, export, ...""",
         ServicePointVersion.class);
-    assertThat(result.get()).as(errorDescription).isEqualTo(66);
+    assertThat(result.get()).as(errorDescription).isEqualTo(68);
   }
 
 }
