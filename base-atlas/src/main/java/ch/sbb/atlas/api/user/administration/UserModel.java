@@ -2,9 +2,11 @@ package ch.sbb.atlas.api.user.administration;
 
 import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
 import ch.sbb.atlas.redact.Redacted;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,8 +36,13 @@ public class UserModel implements UserAdministrationEvent {
   private String firstName;
 
   @Redacted
-  @Schema(description = "User E-Mail address", example = "example@sbb.ch")
+  @Schema(description = "User E-Mail address (from Azure)", example = "example@sbb.ch")
   private String mail;
+
+  @Redacted
+  @Schema(description = "Manually maintained E-Mail address. Overrides the Azure E-Mail address "
+      + "(mail) when set, both for mail delivery and for display.", example = "example@sbb.ch")
+  private String manualMail;
 
   @Redacted
   @Schema(description = "User display name (azure)", example = "Example User (IT-PTR-CEN2-YPT)")
@@ -51,5 +58,18 @@ public class UserModel implements UserAdministrationEvent {
   @Override
   public String getUserId() {
     return getSbbUserId();
+  }
+
+  /**
+   * The manually maintained mail address always takes precedence over the Azure mail address.
+   * Not serialized on purpose (see {@link ch.sbb.atlas.redact.RedactAspect}): redaction works by
+   * reflecting over annotated fields, so a transported derived getter would silently bypass it.
+   * Consumers derive the effective mail from the two transported fields ({@link #mail} and
+   * {@link #manualMail}) themselves.
+   */
+  @JsonIgnore
+  @Schema(hidden = true)
+  public String getEffectiveMail() {
+    return StringUtils.isNotBlank(manualMail) ? manualMail : mail;
   }
 }
