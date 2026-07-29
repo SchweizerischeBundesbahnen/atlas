@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationRole, ApplicationType, MeanOfTransport, TimetableFieldNumberVersion } from '../../../api';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -34,7 +34,7 @@ import {
 import { TtfnMeanOfTransport } from '../../../api/model/ttfnMeanOfTransport';
 import { Revokable, RevokeButton } from '../../../core/form-components/revoke-button/revoke-button';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
-import { apply, disabled, Field, form, Schema, schema } from '@angular/forms/signals';
+import { apply, disabled, form, hidden, Schema, schema } from '@angular/forms/signals';
 import { FormValidators } from '../../../core/validation/form-validators.service';
 import { AtlasTextFieldComponent } from '@atlas/form';
 import { AtlasBoSelectComponent } from '../../../core/form-components/atlas-bo-select/atlas-bo-select.component';
@@ -100,6 +100,19 @@ export class TimetableFieldNumberDetailComponent
       when: () => !this.editMode(),
     });
 
+    hidden(schemaPath.descriptionOutwardLine2, {
+      when: ({ valueOf }) => valueOf(schemaPath.descriptionOutwardLine1).length <= 1,
+    });
+    hidden(schemaPath.descriptionOutwardLine3, {
+      when: ({ valueOf }) => valueOf(schemaPath.descriptionOutwardLine2).length <= 1,
+    });
+    hidden(schemaPath.descriptionReturnLine2, {
+      when: ({ valueOf }) => valueOf(schemaPath.descriptionReturnLine1).length <= 1,
+    });
+    hidden(schemaPath.descriptionReturnLine3, {
+      when: ({ valueOf }) => valueOf(schemaPath.descriptionReturnLine2).length <= 1,
+    });
+
     const descriptionSchema: Schema<string> = schema((field) => {
       this.formValidators.maxLength(field, DESCRIPTION_MAX_LENGTH);
       this.formValidators.blankOrEmptySpaceSurrounding(field);
@@ -127,31 +140,6 @@ export class TimetableFieldNumberDetailComponent
   });
 
   readonly dirty = computed(() => this.timetableFieldNumberForm().dirty());
-
-  protected readonly displayOutwardLine2 = computed(() =>
-    this.hasContent(this.timetableFieldNumberForm.descriptionOutwardLine1)
-  );
-  protected readonly displayOutwardLine3 = computed(() =>
-    this.hasContent(this.timetableFieldNumberForm.descriptionOutwardLine2)
-  );
-  protected readonly displayReturnLine2 = computed(() =>
-    this.hasContent(this.timetableFieldNumberForm.descriptionReturnLine1)
-  );
-  protected readonly displayReturnLine3 = computed(() =>
-    this.hasContent(this.timetableFieldNumberForm.descriptionReturnLine2)
-  );
-
-  constructor() {
-    // Clear the follow-up description lines once their preceding line no longer holds content while editing.
-    effect(() => {
-      if (this.editMode()) {
-        this.resetIfHidden(this.displayOutwardLine2(), this.timetableFieldNumberForm.descriptionOutwardLine2);
-        this.resetIfHidden(this.displayOutwardLine3(), this.timetableFieldNumberForm.descriptionOutwardLine3);
-        this.resetIfHidden(this.displayReturnLine2(), this.timetableFieldNumberForm.descriptionReturnLine2);
-        this.resetIfHidden(this.displayReturnLine3(), this.timetableFieldNumberForm.descriptionReturnLine3);
-      }
-    });
-  }
 
   ngOnInit() {
     const versions = this.readVersions();
@@ -287,16 +275,6 @@ export class TimetableFieldNumberDetailComponent
     } else {
       this.timetableFieldNumberForm().reset(this.emptyFormValue);
       this.editMode.set(true);
-    }
-  }
-
-  private hasContent(field: Field<string>): boolean {
-    return (field().value()?.length ?? 0) > 1;
-  }
-
-  private resetIfHidden(visible: boolean, field: Field<string>) {
-    if (!visible && field().value()) {
-      field().value.set('');
     }
   }
 

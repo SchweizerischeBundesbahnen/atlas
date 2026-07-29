@@ -9,7 +9,7 @@
     [multiple]="multiple()"
     [ngModel]="field()().value()"
     [placeholder]="placeholderTextKey() | translate"
-    [readonly]="disabled()"
+    [readonly]="field()().disabled()"
     [typeahead]="searchTriggerSubject"
     (ngModelChange)="onSelectionChange($event ?? null)"
     appearance="outline"

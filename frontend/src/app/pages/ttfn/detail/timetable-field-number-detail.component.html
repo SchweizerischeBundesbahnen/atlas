@@ -111,7 +111,7 @@
         </div>
         <div class="col-12 d-flex gap-4">
           <div class="flex-50">
-            @if (displayOutwardLine2()) {
+            @if (!timetableFieldNumberForm.descriptionOutwardLine2().hidden()) {
               <atlas-text-field
                 [field]="timetableFieldNumberForm.descriptionOutwardLine2"
                 fieldName="descriptionOutwardLine2"
@@ -119,7 +119,7 @@
             }
           </div>
           <div class="flex-50">
-            @if (displayReturnLine2()) {
+            @if (!timetableFieldNumberForm.descriptionReturnLine2().hidden()) {
               <atlas-text-field
                 [field]="timetableFieldNumberForm.descriptionReturnLine2"
                 fieldName="descriptionReturnLine2"
@@ -129,7 +129,7 @@
         </div>
         <div class="col-12 d-flex gap-4">
           <div class="flex-50">
-            @if (displayOutwardLine3()) {
+            @if (!timetableFieldNumberForm.descriptionOutwardLine3().hidden()) {
               <atlas-text-field
                 class="flex-grow-1"
                 [field]="timetableFieldNumberForm.descriptionOutwardLine3"
@@ -138,7 +138,7 @@
             }
           </div>
           <div class="flex-50">
-            @if (displayReturnLine3()) {
+            @if (!timetableFieldNumberForm.descriptionReturnLine3().hidden()) {
               <atlas-text-field
                 class="flex-grow-1"
                 [field]="timetableFieldNumberForm.descriptionReturnLine3"
@@ -149,7 +149,6 @@
         </div>
 
         <atlas-means-of-transport-picker
-          [disabled]="!editMode()"
           [field]="timetableFieldNumberForm.meanOfTransport"
           [meansOfTransportToShow]="allowableMeansOfTransport"
           [multiSelectMode]="false"

@@ -19,7 +19,6 @@ import { AtlasLabelFieldComponent } from '@atlas/form/lib/atlas-label-field/atla
 class MockAtlasSearchSelectComponent {
   readonly bindValue = input('');
   readonly items = input<BusinessOrganisation[]>([]);
-  readonly disabled = input(false);
   readonly field = input.required<Field<BusinessOrganisation | null>>();
 
   readonly changeTrigger = output<BusinessOrganisation | null>();
@@ -95,7 +94,6 @@ describe('AtlasBoSelectComponent', () => {
 
   it('correct inputs on child components', () => {
     fixture.componentRef.setInput('valueExtraction', 'customId');
-    fixture.componentRef.setInput('disabled', true);
     fixture.componentRef.setInput('formModus', false);
     fixture.detectChanges();
 
@@ -105,7 +103,6 @@ describe('AtlasBoSelectComponent', () => {
     expect(searchSelect).toBeTruthy();
     expect(labelField).toBeTruthy();
     expect(searchSelect?.bindValue()).toBe('customId');
-    expect(searchSelect?.disabled()).toBe(true);
     expect(labelField?.required()).toBe(false);
     expect(labelField?.fieldExamples()).toEqual([]);
   });

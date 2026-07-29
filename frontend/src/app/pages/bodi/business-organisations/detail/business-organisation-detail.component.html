@@ -53,6 +53,12 @@
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-3 pe-3">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' 146', translate: false },
+                { label: ' | ', translate: false },
+                { label: 'max. 99999', translate: false },
+              ]"
               [field]="businessOrganisationForm.organisationNumber"
               [required]="true"
               [fieldName]="'organisationNumber'"
@@ -64,6 +70,16 @@
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-3 pe-3">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' STI', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '10' },
+                },
+              ]"
               [field]="businessOrganisationForm.abbreviationDe"
               [required]="true"
               [fieldName]="'abbreviationDe'"
@@ -73,6 +89,16 @@
 
           <div class="d-flex flex-column col-9">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' Verkehrsbetriebe STI AG', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '60' },
+                },
+              ]"
               [field]="businessOrganisationForm.descriptionDe"
               [required]="true"
               [fieldName]="'descriptionDe'"
@@ -84,6 +110,16 @@
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-3 pe-3">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' STI', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '10' },
+                },
+              ]"
               [field]="businessOrganisationForm.abbreviationFr"
               [required]="true"
               [fieldName]="'abbreviationFr'"
@@ -93,6 +129,16 @@
 
           <div class="d-flex flex-column col-9">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' Verkehrsbetriebe STI AG', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '60' },
+                },
+              ]"
               [field]="businessOrganisationForm.descriptionFr"
               [required]="true"
               [fieldName]="'descriptionFr'"
@@ -104,6 +150,16 @@
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-3 pe-3">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' STI', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '10' },
+                },
+              ]"
               [field]="businessOrganisationForm.abbreviationIt"
               [required]="true"
               [fieldName]="'abbreviationIt'"
@@ -113,6 +169,16 @@
 
           <div class="d-flex flex-column col-9">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' Verkehrsbetriebe STI AG', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '60' },
+                },
+              ]"
               [field]="businessOrganisationForm.descriptionIt"
               [required]="true"
               [fieldName]="'descriptionIt'"
@@ -124,6 +190,16 @@
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-3 pe-3">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' STI', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '10' },
+                },
+              ]"
               [field]="businessOrganisationForm.abbreviationEn"
               [required]="true"
               [fieldName]="'abbreviationEn'"
@@ -133,6 +209,16 @@
 
           <div class="d-flex flex-column col-9">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' Verkehrsbetriebe STI AG', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '60' },
+                },
+              ]"
               [field]="businessOrganisationForm.descriptionEn"
               [required]="true"
               [fieldName]="'descriptionEn'"
@@ -176,6 +262,16 @@
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-12 pe-3">
             <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: ' hans.muster@enterprise.ch', translate: false },
+                { label: ' | ', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '255' },
+                },
+              ]"
               [field]="businessOrganisationForm.contactEnterpriseEmail"
               [fieldName]="'contactEnterpriseEmail'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.CONTACT"

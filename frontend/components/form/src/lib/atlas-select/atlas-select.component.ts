@@ -39,7 +39,6 @@ export class AtlasSelectComponent<TYPE> {
   readonly placeHolderLabel = input('FORM.DROPDOWN_PLACEHOLDER');
   readonly optionTranslateLabelPrefix = input<string>();
   readonly multiple = input(false);
-  readonly disabled = input(false);
   readonly dataCy = input<string>();
   readonly isOptional = input(false);
 

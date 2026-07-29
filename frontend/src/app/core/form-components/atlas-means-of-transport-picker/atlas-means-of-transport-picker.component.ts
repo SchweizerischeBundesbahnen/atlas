@@ -14,7 +14,6 @@ import { GetIconPipe } from '../means-of-transport-picker/get-icon.pipe';
 })
 export class AtlasMeansOfTransportPickerComponent {
   readonly field = input.required<Field<MeanOfTransport[]>>();
-  readonly disabled = input(false);
   readonly required = input(true);
   readonly meansOfTransportToShow = input<MeanOfTransport[]>();
   readonly multiSelectMode = input(true);
@@ -23,7 +22,7 @@ export class AtlasMeansOfTransportPickerComponent {
   protected readonly selectedMeans = computed(() => this.field()().value() ?? []);
 
   protected onSelection(meanOfTransport: MeanOfTransport) {
-    if (this.disabled()) {
+    if (this.field()().disabled()) {
       return;
     }
 

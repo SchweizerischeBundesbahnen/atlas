@@ -1,7 +1,7 @@
 import { Component, input, output, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Field, form } from '@angular/forms/signals';
+import { disabled, Field, form } from '@angular/forms/signals';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Subject } from 'rxjs';
 import { NgSelectComponent } from '@ng-select/ng-select';
@@ -53,7 +53,6 @@ class MockAtlasFieldErrorComponent {
       [multiple]="multiple()"
       [placeholderTextKey]="placeholderTextKey()"
       [bindValue]="bindValue()"
-      [disabled]="disabled()"
       (searchTrigger)="searchEmitted.push($event)"
       (changeTrigger)="changeEmitted.push($event)"
     >
@@ -84,6 +83,12 @@ describe('AtlasSearchSelectComponent', () => {
       const model = signal({ value: null });
       const testForm = form(model);
       return testForm.value;
+    });
+
+  const createDisabledField = (): Field<TestItem | null> =>
+    TestBed.runInInjectionContext(() => {
+      const model = signal({ value: null });
+      return form(model, (path) => disabled(path.value)).value;
     });
 
   const getNgSelect = () =>
@@ -120,7 +125,7 @@ describe('AtlasSearchSelectComponent', () => {
     fixture.componentRef.setInput('multiple', true);
     fixture.componentRef.setInput('placeholderTextKey', 'COMMON.SELECT');
     fixture.componentRef.setInput('bindValue', 'id');
-    fixture.componentRef.setInput('disabled', true);
+    fixture.componentRef.setInput('field', createDisabledField());
     fixture.detectChanges();
 
     const ngSelect = getNgSelect();

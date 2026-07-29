@@ -85,15 +85,6 @@ describe('AtlasMeansOfTransportPickerComponent', () => {
     expect(getSelectedMeans()).toEqual([]);
   });
 
-  it('should not change selection when disabled', () => {
-    fixture.componentRef.setInput('disabled', true);
-    fixture.detectChanges();
-
-    clickMean(MeanOfTransport.Train);
-
-    expect(getSelectedMeans()).toEqual([MeanOfTransport.Bus]);
-  });
-
   it('should mark field as dirty and touched on selection', () => {
     clickMean(MeanOfTransport.Train);
 
