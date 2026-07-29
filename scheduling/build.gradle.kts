@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.1445.0"
+version = "2.1446.0"
 
 description = "Atlas Scheduling Service"
 
