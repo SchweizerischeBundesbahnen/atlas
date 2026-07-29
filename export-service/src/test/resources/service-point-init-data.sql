@@ -171,6 +171,8 @@ insert into service_point_fot_comment (service_point_number, fot_comment, creati
 values (8572241, '(Bus); ohne; Fahrplandaten 2016/2018', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
         '2022-02-23 17:53:50.000000',
         'GSU_DIDOK', 0);
+insert into service_point_global_id (id, service_point_number, global_id)
+values (nextval('service_point_global_id_seq'), 8572241, 'ch:1:sloid:1200001');
 insert into service_point_version (id, service_point_geolocation_id, number, sloid, number_short, country,
                                    designation_long,
                                    designation_official, abbreviation, status_didok3, sort_code_of_destination_station,

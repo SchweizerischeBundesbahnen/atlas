@@ -28,6 +28,8 @@ public class ServicePointVersionCsvModel {
 
   private String sloid;
 
+  private String globalId;
+
   private Integer number;
 
   private Integer checkDigit;

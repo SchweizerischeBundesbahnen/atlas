@@ -35,6 +35,7 @@ public class ServicePointVersionRowMapper extends BaseSepodiRowMapper implements
         ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     servicePointVersionBuilder.country(Country.valueOf(rs.getString("country")));
     servicePointVersionBuilder.sloid(rs.getString("sloid"));
+    servicePointVersionBuilder.globalId(rs.getString("global_id"));
     servicePointVersionBuilder.validFrom(rs.getObject("valid_from", LocalDate.class));
     servicePointVersionBuilder.validTo(rs.getObject("valid_to", LocalDate.class));
     servicePointVersionBuilder.designationOfficial(rs.getString("designation_official"));

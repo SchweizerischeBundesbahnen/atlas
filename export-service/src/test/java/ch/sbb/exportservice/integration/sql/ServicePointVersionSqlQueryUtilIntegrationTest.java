@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -98,7 +99,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     int servicePointNumber = 9005886;
     insertServicePoint(servicePointNumber, now, now, Country.EGYPT);
-    insertServicePoint(5786587, LocalDate.of(2000, 1, 1), LocalDate.of(2020, 1, 1), Country.SWITZERLAND);
+    insertServicePoint(5786587, LocalDate.of(2000, Month.JANUARY, 1), LocalDate.of(2020, Month.JANUARY, 1), Country.SWITZERLAND);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_TIMETABLE_YEARS);
 
     //when
@@ -115,7 +116,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     int servicePointNumber = 9005886;
     insertServicePoint(servicePointNumber, now, now, Country.SWITZERLAND);
-    insertServicePoint(5786587, LocalDate.of(2000, 1, 1), LocalDate.of(2020, 1, 1), Country.SWITZERLAND);
+    insertServicePoint(5786587, LocalDate.of(2000, Month.JANUARY, 1), LocalDate.of(2020, Month.JANUARY, 1), Country.SWITZERLAND);
     insertServicePoint(9005999, now, now, Country.EGYPT);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.SWISS_TIMETABLE_YEARS);
 
@@ -159,6 +160,39 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     //then
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getNumber().getValue()).isEqualTo(servicePointNumberSwitzerland);
+  }
+
+  @Test
+  void shouldReturnGlobalIdOfServicePoint() throws SQLException {
+    // Given
+    final LocalDate now = LocalDate.now();
+    int servicePointNumber = 8572299;
+    insertServicePoint(servicePointNumber, now.minusMonths(5), now.minusMonths(4), Country.SWITZERLAND);
+    insertServicePointGlobalId(servicePointNumber, "ch:1:sloid:1200001");
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.SWISS_FULL);
+
+    // When
+    List<ServicePointVersion> result = executeQuery(sqlQuery);
+
+    // Then
+    assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getGlobalId()).isEqualTo("ch:1:sloid:1200001");
+  }
+
+  @Test
+  void shouldReturnNullGlobalIdWhenServicePointHasNone() throws SQLException {
+    // Given
+    final LocalDate now = LocalDate.now();
+    int servicePointNumber = 8572299;
+    insertServicePoint(servicePointNumber, now.minusMonths(5), now.minusMonths(4), Country.SWITZERLAND);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.SWISS_FULL);
+
+    // When
+    List<ServicePointVersion> result = executeQuery(sqlQuery);
+
+    // Then
+    assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getGlobalId()).isNull();
   }
 
   private List<ServicePointVersion> executeQuery(String sqlQuery) throws SQLException {

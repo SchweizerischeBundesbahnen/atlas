@@ -12,6 +12,8 @@ create sequence sector_version_seq;
 
 create sequence sector_group_version_seq;
 
+create sequence service_point_global_id_seq;
+
 create table service_point_version_geolocation
 (
     id                        bigint           not null
@@ -81,6 +83,15 @@ CREATE TABLE service_point_fot_comment
     edition_date         TIMESTAMP     NOT NULL,
     editor               VARCHAR(50)   NOT NULL,
     version              BIGINT        NOT NULL DEFAULT 0
+);
+
+CREATE TABLE service_point_global_id
+(
+    id                   BIGINT       NOT NULL PRIMARY KEY,
+    service_point_number INTEGER      NOT NULL,
+    global_id            VARCHAR(255) NOT NULL,
+    CONSTRAINT uq_service_point_global_id_service_point_number UNIQUE (service_point_number),
+    CONSTRAINT uq_service_point_global_id_global_id UNIQUE (global_id)
 );
 
 create table service_point_version_categories

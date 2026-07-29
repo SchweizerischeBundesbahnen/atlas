@@ -12,6 +12,8 @@ drop sequence sector_version_seq;
 
 drop sequence sector_group_version_seq;
 
+drop sequence service_point_global_id_seq;
+
 drop table service_point_version;
 
 drop table service_point_fot_comment;
@@ -35,3 +37,5 @@ drop table sector_group_version;
 drop table sector_group_relations;
 
 drop table shared_business_organisation_version;
+
+drop table service_point_global_id;
