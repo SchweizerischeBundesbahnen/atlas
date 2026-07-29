@@ -29,11 +29,11 @@
   <button (click)="cancel()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
     {{ 'DIALOG.CANCEL' | translate }}
   </button>
-  <button (click)="save()" class="atlas-primary-btn" data-cy="dialog-save-button">
+  <button (click)="save()" [class.me-3]="canDelete" class="atlas-primary-btn" data-cy="dialog-save-button">
     {{ 'COMMON.SAVE' | translate }}
   </button>
   @if (canDelete) {
-    <button (click)="delete()" class="atlas-primary-btn me-3" data-cy="dialog-delete-button">
+    <button (click)="delete()" class="atlas-primary-btn" data-cy="dialog-delete-button">
       {{ 'COMMON.DELETE' | translate }}
     </button>
   }
