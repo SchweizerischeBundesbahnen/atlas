@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
@@ -33,7 +33,6 @@ import { ServicePointService } from '../../../../../api/service/sepodi/service-p
   selector: 'atlas-service-point-creation',
   templateUrl: './service-point-creation.component.html',
   styleUrls: ['./service-point-creation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DetailPageContainerComponent,
     DetailPageContentComponent,

@@ -26,7 +26,7 @@
             (switchVersion)="switchVersion($event)"
             [currentRecord]="selectedVersion!"
             [records]="versions"
-            [switchDisabled]="form.enabled"
+            [switchDisabled]="editMode()"
           />
         </div>
       }
@@ -45,7 +45,7 @@
         </div>
       }
 
-      <form [formGroup]="form">
+      <form>
         @if (!selectedVersion) {
           <h2 class="font-bold-2xl mb-4">
             {{ 'TTFN.NEW_TIMETABLE_INFORMATION' | translate }}
@@ -62,10 +62,10 @@
               arg: { key: 'numberOfChars', value: '7' },
             },
           ]"
-          [formGroup]="form"
+          [field]="timetableFieldNumberForm.number"
           [required]="true"
           class="d-block w-50"
-          controlName="number"
+          fieldName="number"
           fieldLabel="TTFN.NUMBER"
         />
 
@@ -83,10 +83,10 @@
                 arg: { key: 'numberOfChars', value: descriptionMaxChars },
               },
             ]"
-            [formGroup]="form"
+            [field]="timetableFieldNumberForm.descriptionOutwardLine1"
             [required]="true"
             class="flex-grow-1"
-            controlName="descriptionOutwardLine1"
+            fieldName="descriptionOutwardLine1"
             fieldLabel="TTFN.DESCRIPTION_OUTWARD"
           />
           <atlas-text-field
@@ -102,67 +102,72 @@
                 arg: { key: 'numberOfChars', value: descriptionMaxChars },
               },
             ]"
-            [formGroup]="form"
+            [field]="timetableFieldNumberForm.descriptionReturnLine1"
             [required]="false"
             class="flex-grow-1"
-            controlName="descriptionReturnLine1"
+            fieldName="descriptionReturnLine1"
             fieldLabel="TTFN.DESCRIPTION_RETURN"
           />
         </div>
         <div class="col-12 d-flex gap-4">
           <div class="flex-50">
-            @if (displayOutwardLine2$ | async) {
-              <atlas-text-field [fieldExamples]="[]" [formGroup]="form" controlName="descriptionOutwardLine2" />
+            @if (!timetableFieldNumberForm.descriptionOutwardLine2().hidden()) {
+              <atlas-text-field
+                [field]="timetableFieldNumberForm.descriptionOutwardLine2"
+                fieldName="descriptionOutwardLine2"
+              />
             }
           </div>
           <div class="flex-50">
-            @if (displayReturnLine2$ | async) {
-              <atlas-text-field [fieldExamples]="[]" [formGroup]="form" controlName="descriptionReturnLine2" />
+            @if (!timetableFieldNumberForm.descriptionReturnLine2().hidden()) {
+              <atlas-text-field
+                [field]="timetableFieldNumberForm.descriptionReturnLine2"
+                fieldName="descriptionReturnLine2"
+              />
             }
           </div>
         </div>
         <div class="col-12 d-flex gap-4">
           <div class="flex-50">
-            @if (displayOutwardLine3$ | async) {
+            @if (!timetableFieldNumberForm.descriptionOutwardLine3().hidden()) {
               <atlas-text-field
                 class="flex-grow-1"
-                [fieldExamples]="[]"
-                [formGroup]="form"
-                controlName="descriptionOutwardLine3"
+                [field]="timetableFieldNumberForm.descriptionOutwardLine3"
+                fieldName="descriptionOutwardLine3"
               />
             }
           </div>
           <div class="flex-50">
-            @if (displayReturnLine3$ | async) {
+            @if (!timetableFieldNumberForm.descriptionReturnLine3().hidden()) {
               <atlas-text-field
                 class="flex-grow-1"
-                [fieldExamples]="[]"
-                [formGroup]="form"
-                controlName="descriptionReturnLine3"
+                [field]="timetableFieldNumberForm.descriptionReturnLine3"
+                fieldName="descriptionReturnLine3"
               />
             }
           </div>
         </div>
 
         <atlas-means-of-transport-picker
-          [disabled]="form.disabled"
-          [formGroup]="form"
+          [field]="timetableFieldNumberForm.meanOfTransport"
           [meansOfTransportToShow]="allowableMeansOfTransport"
           [multiSelectMode]="false"
-          controlName="meanOfTransport"
         />
 
         <span class="font-bold-2xl d-block mt-4">{{ 'FORM.KEY_DATA' | translate }}</span>
         <div class="w-50">
-          <atlas-form-date-range [formGroup]="form" />
+          <atlas-date-range
+            [validFromField]="timetableFieldNumberForm.validFrom"
+            [validToField]="timetableFieldNumberForm.validTo"
+          />
         </div>
 
         <div class="col-12 d-flex pb-3">
           <div class="d-flex flex-column col-6 pt-3">
             <atlas-bo-select
-              [formGroup]="form"
+              [field]="timetableFieldNumberForm.businessOrganisation"
+              [disabled]="!editMode()"
               [sboidsRestrictions]="boSboidRestriction"
-              controlName="businessOrganisation"
               data-cy="businessOrganisation"
             />
           </div>
@@ -180,14 +185,14 @@
   <atlas-detail-footer>
     <atlas-button
       (buttonClicked)="back()"
-      [footerEdit]="form.enabled"
+      [footerEdit]="editMode()"
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
       buttonType="whiteFooterNonEdit"
     />
     <atlas-button
       (buttonClicked)="toggleEdit()"
-      [footerEdit]="form.enabled"
+      [footerEdit]="editMode()"
       buttonDataCy="cancel"
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
@@ -195,8 +200,8 @@
     />
     <atlas-button
       (buttonClicked)="save()"
-      [disabled]="!form.dirty"
-      [footerEdit]="form.enabled"
+      [disabled]="!dirty()"
+      [footerEdit]="editMode()"
       [submitButton]="true"
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
@@ -209,19 +214,19 @@
             (buttonClicked)="toggleEdit()"
             applicationType="TTFN"
             [businessOrganisation]="selectedVersion.businessOrganisation"
-            [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+            [disabled]="editMode() || selectedVersion.status === 'REVOKED'"
             buttonDataCy="edit-item"
             buttonText="COMMON.EDIT"
             buttonType="edit"
             wrapperStyleClass="ms-3"
           />
         }
-        @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
+        @if (!editMode() && !isNew && selectedVersion.status !== 'REVOKED') {
           <atlas-revoke-button (revokeClicked)="revoke()" applicationType="TTFN" />
         }
         <atlas-button
           (buttonClicked)="delete()"
-          [disabled]="form.enabled"
+          [disabled]="editMode()"
           buttonDataCy="delete-item"
           buttonText="COMMON.DELETE"
           buttonType="delete"

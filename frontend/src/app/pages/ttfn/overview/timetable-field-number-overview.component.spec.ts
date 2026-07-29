@@ -89,8 +89,8 @@ describe('TimetableFieldNumberOverviewComponent', () => {
       ['ttfnid,asc']
     );
 
-    expect(component.timetableFieldNumbers.length).toEqual(1);
-    expect(component.timetableFieldNumbers[0].ttfnid).toEqual('ttfnid');
-    expect(component.totalCount$).toEqual(1);
+    expect(component.timetableFieldNumbers().length).toEqual(1);
+    expect(component.timetableFieldNumbers()[0].ttfnid).toEqual('ttfnid');
+    expect(component.totalCount$()).toEqual(1);
   });
 });

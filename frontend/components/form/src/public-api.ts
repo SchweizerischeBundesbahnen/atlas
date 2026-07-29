@@ -5,5 +5,6 @@ export * from './lib/atlas-info-icon/atlas-info-icon.component';
 export * from './lib/atlas-info-icon/atlas-info-link.directive';
 export * from './lib/atlas-label-field/atlas-label-field.component';
 export * from './lib/atlas-search-select/atlas-search-select.component';
+export * from './lib/atlas-select/atlas-select.component';
 export * from './lib/atlas-text-field/atlas-text-field.component';
 export * from './lib/atlas-text-field/field-example';

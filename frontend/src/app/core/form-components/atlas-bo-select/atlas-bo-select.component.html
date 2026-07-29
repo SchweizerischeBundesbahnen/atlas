@@ -3,7 +3,6 @@
   (searchTrigger)="searchBusinessOrganisation($event)"
   [bindValue]="valueExtraction()"
   [items]="(businessOrganisations | async) ?? []"
-  [disabled]="disabled()"
   [field]="field()"
 >
   <div class="d-flex flex-column">

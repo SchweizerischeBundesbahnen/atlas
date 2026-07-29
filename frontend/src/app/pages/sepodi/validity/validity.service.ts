@@ -3,6 +3,12 @@ import { Validity } from '../../model/validity';
 import { FormGroup } from '@angular/forms';
 import { of, take } from 'rxjs';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { Moment } from 'moment/moment';
+
+type DetailFormModelWithValidity = {
+  validFrom: Moment | null;
+  validTo: Moment | null;
+};
 
 @Injectable()
 export class ValidityService {
@@ -19,11 +25,28 @@ export class ValidityService {
     };
   }
 
+  init(form: DetailFormModelWithValidity) {
+    this.validity = {
+      initValidTo: form?.validTo,
+      initValidFrom: form?.validFrom,
+      formValidTo: undefined,
+      formValidFrom: undefined,
+    };
+  }
+
   updateValidity(form: FormGroup) {
     this.validity = {
       ...this.validity,
       formValidTo: form?.getRawValue()?.validTo,
       formValidFrom: form?.getRawValue()?.validFrom,
+    };
+  }
+
+  update(form: DetailFormModelWithValidity) {
+    this.validity = {
+      ...this.validity,
+      formValidTo: form?.validTo,
+      formValidFrom: form?.validFrom,
     };
   }
 

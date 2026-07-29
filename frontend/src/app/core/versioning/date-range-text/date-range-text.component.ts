@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { DateRange } from '../date-range';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../pipe/display-date.pipe';
 
 @Component({
-  selector: 'atlas-date-range-text [dateRange]',
+  selector: 'atlas-date-range-text',
   templateUrl: './date-range-text.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TranslatePipe, DisplayDatePipe],
   providers: [TranslatePipe],
 })

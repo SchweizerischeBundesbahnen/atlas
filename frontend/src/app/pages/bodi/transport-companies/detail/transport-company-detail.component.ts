@@ -19,7 +19,7 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { disabled, form, required, validateTree } from '@angular/forms/signals';
+import { disabled, form } from '@angular/forms/signals';
 import { AtlasCommentComponent, AtlasTextFieldComponent } from '@atlas/form';
 import { AtlasButtonType } from '../../../../core/components/button/atlas-button.type';
 import { TransportCompanyDetailFacade } from './transport-company-detail.facade';
@@ -28,9 +28,9 @@ import moment, { Moment } from 'moment';
 import { DialogData } from '../../../../core/components/dialog/dialog.data';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { required as requiredValue } from '../../../../core/util/values';
-import { DATE_PATTERN } from '../../../../core/date/date.service';
 import { AtlasBoSelectComponent } from '../../../../core/form-components/atlas-bo-select/atlas-bo-select.component';
 import { AtlasDateRangeComponent } from '../../../../core/form-components/atlas-date-range/atlas-date-range.component';
+import { FormValidators } from '../../../../core/validation/form-validators.service';
 
 type TransportCompanyFormModel = {
   id: number;
@@ -85,6 +85,7 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
   private readonly translateService = inject(TranslateService);
   private readonly dialogService = inject(DialogService);
   private readonly notificationService = inject(NotificationService);
+  private readonly formValidators = inject(FormValidators);
 
   private readonly transportCompanyFormModel = signal<TransportCompanyFormModel>({
     id: 0,
@@ -110,34 +111,11 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
     ...this.emptyFormValue,
   });
   protected readonly transportCompanyRelationForm = form(this.transportCompanyRelationFormModel, (schemaPath) => {
-    required(schemaPath.businessOrganisation, { message: () => this.translateService.instant('VALIDATION.REQUIRED') });
-    required(schemaPath.validFrom, { message: () => this.translateService.instant('VALIDATION.REQUIRED') });
-    required(schemaPath.validTo, { message: () => this.translateService.instant('VALIDATION.REQUIRED') });
-    validateTree(schemaPath, (ctx) => {
-      const validFrom = ctx.valueOf(schemaPath.validFrom);
-      const validTo = ctx.valueOf(schemaPath.validTo);
-      if (validFrom !== null && validTo !== null && validFrom.isAfter(validTo)) {
-        return [
-          {
-            kind: 'dateRange',
-            message: this.translateService.instant('VALIDATION.DATE_ORDER_ERROR', {
-              validFrom: validFrom.format(DATE_PATTERN),
-              validTo: validTo.format(DATE_PATTERN),
-            }),
-            fieldTree: ctx.fieldTree.validFrom,
-          },
-          {
-            kind: 'dateRange',
-            message: this.translateService.instant('VALIDATION.DATE_ORDER_ERROR', {
-              validFrom: validFrom.format(DATE_PATTERN),
-              validTo: validTo.format(DATE_PATTERN),
-            }),
-            fieldTree: ctx.fieldTree.validTo,
-          },
-        ];
-      }
-      return null;
-    });
+    this.formValidators.required(schemaPath.businessOrganisation);
+    this.formValidators.required(schemaPath.validFrom);
+    this.formValidators.required(schemaPath.validTo);
+
+    this.formValidators.validToAfterOrEqualValidFrom(schemaPath);
   });
   dirty = computed(() => this.transportCompanyRelationForm().dirty());
 

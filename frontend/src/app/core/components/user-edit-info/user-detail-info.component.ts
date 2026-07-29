@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, Input } from '@angular/core';
+import { Component, inject, input, Input } from '@angular/core';
 import moment from 'moment';
 import { DATE_PATTERN, DATE_TIME_FORMAT_WITHOUT_SECONDS } from '../../date/date.service';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
@@ -14,7 +14,6 @@ import { UserOpenInMailComponent } from '../user-open-in-mail/user-open-in-mail.
   selector: 'atlas-user-detail-info',
   templateUrl: './user-detail-info.component.html',
   styleUrls: ['./user-detail-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, TranslatePipe, UserOpenInMailComponent],
   providers: [TranslatePipe],
 })

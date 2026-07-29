@@ -14,14 +14,13 @@
 
     <atlas-table
       data-cy="ttfn"
-      [tableData]="timetableFieldNumbers"
-      [totalCount]="totalCount$"
+      [tableData]="timetableFieldNumbers()"
+      [totalCount]="totalCount$()"
       [tableColumns]="tableColumns"
       [tableFilterConfig]="tableFilterConfig"
       (editElementEvent)="editVersion($event)"
       (tableChanged)="getOverview($event)"
       (tableInitialized)="getOverview($event)"
     />
-    <router-outlet />
   </div>
 </div>

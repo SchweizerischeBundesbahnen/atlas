@@ -181,12 +181,15 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
     component.toggleEdit();
-    expect(component.form.enabled).toBe(true);
+    expect(component.editMode()).toBe(true);
 
-    component.form.patchValue({
-      descriptionDe: 'newDescription',
-      validFrom: moment('2021-06-05'),
-      validTo: moment('2029-06-01'),
+    component.formModel.update((form) => {
+      return {
+        ...form,
+        descriptionDe: 'newDescription',
+        validFrom: moment('2021-06-05'),
+        validTo: moment('2029-06-01'),
+      };
     });
     component.save();
     fixture.detectChanges();
@@ -203,16 +206,19 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     mockBusinessOrganisationsService.updateBusinessOrganisationVersion.mockReturnValue(throwError(() => error));
 
     component.toggleEdit();
-    expect(component.form.enabled).toBe(true);
-    component.form.patchValue({
-      descriptionDe: 'newDescription',
-      validFrom: moment('2021-06-05'),
-      validTo: moment('2029-06-01'),
+    expect(component.editMode()).toBe(true);
+    component.formModel.update((form) => {
+      return {
+        ...form,
+        descriptionDe: 'newDescription',
+        validFrom: moment('2021-06-05'),
+        validTo: moment('2029-06-01'),
+      };
     });
     component.save();
     fixture.detectChanges();
 
-    expect(component.form.enabled).toBe(true);
+    expect(component.editMode()).toBe(true);
   });
 
   it('should delete BusinessOrganisationVersion successfully', () => {
@@ -349,18 +355,21 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
       );
 
       component.ngOnInit();
-      component.form.patchValue({
-        organisationNumber: 1234,
-        descriptionDe: 'asdf',
-        descriptionFr: 'asdf',
-        descriptionIt: 'asdf',
-        descriptionEn: 'asdf',
-        abbreviationDe: 'asdf',
-        abbreviationFr: 'asdf',
-        abbreviationIt: 'asdf',
-        abbreviationEn: 'asdf',
-        validFrom: moment('2021-06-01'),
-        validTo: moment('2029-06-01'),
+      component.formModel.update((form) => {
+        return {
+          ...form,
+          organisationNumber: '1234',
+          descriptionDe: 'asdf',
+          descriptionFr: 'asdf',
+          descriptionIt: 'asdf',
+          descriptionEn: 'asdf',
+          abbreviationDe: 'asdf',
+          abbreviationFr: 'asdf',
+          abbreviationIt: 'asdf',
+          abbreviationEn: 'asdf',
+          validFrom: moment('2021-06-01'),
+          validTo: moment('2029-06-01'),
+        };
       });
       component.save();
       fixture.detectChanges();
@@ -380,7 +389,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
       component.save();
       fixture.detectChanges();
 
-      expect(component.form.enabled).toBe(true);
+      expect(component.editMode()).toBe(true);
     });
   });
 });

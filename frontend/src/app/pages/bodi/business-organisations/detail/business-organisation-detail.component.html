@@ -29,7 +29,7 @@
                 (switchVersion)="switchVersion($event)"
                 [currentRecord]="selectedVersion!"
                 [records]="versions!"
-                [switchDisabled]="form.enabled"
+                [switchDisabled]="editMode()"
               />
             }
           </div>
@@ -48,7 +48,7 @@
         </div>
       }
 
-      <form [formGroup]="form">
+      <form>
         <!-- Organisation Number -->
         <div class="col-12 d-flex">
           <div class="d-flex flex-column col-3 pe-3">
@@ -59,11 +59,11 @@
                 { label: ' | ', translate: false },
                 { label: 'max. 99999', translate: false },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.organisationNumber"
               [required]="true"
-              controlName="organisationNumber"
+              [fieldName]="'organisationNumber'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER"
-            />
+            ></atlas-text-field>
           </div>
         </div>
 
@@ -80,11 +80,11 @@
                   arg: { key: 'numberOfChars', value: '10' },
                 },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.abbreviationDe"
               [required]="true"
-              controlName="abbreviationDe"
+              [fieldName]="'abbreviationDe'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_DE"
-            />
+            ></atlas-text-field>
           </div>
 
           <div class="d-flex flex-column col-9">
@@ -99,11 +99,11 @@
                   arg: { key: 'numberOfChars', value: '60' },
                 },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.descriptionDe"
               [required]="true"
-              controlName="descriptionDe"
+              [fieldName]="'descriptionDe'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_DE"
-            />
+            ></atlas-text-field>
           </div>
         </div>
 
@@ -120,11 +120,11 @@
                   arg: { key: 'numberOfChars', value: '10' },
                 },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.abbreviationFr"
               [required]="true"
-              controlName="abbreviationFr"
+              [fieldName]="'abbreviationFr'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_FR"
-            />
+            ></atlas-text-field>
           </div>
 
           <div class="d-flex flex-column col-9">
@@ -139,11 +139,11 @@
                   arg: { key: 'numberOfChars', value: '60' },
                 },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.descriptionFr"
               [required]="true"
-              controlName="descriptionFr"
+              [fieldName]="'descriptionFr'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_FR"
-            />
+            ></atlas-text-field>
           </div>
         </div>
 
@@ -160,11 +160,11 @@
                   arg: { key: 'numberOfChars', value: '10' },
                 },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.abbreviationIt"
               [required]="true"
-              controlName="abbreviationIt"
+              [fieldName]="'abbreviationIt'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_IT"
-            />
+            ></atlas-text-field>
           </div>
 
           <div class="d-flex flex-column col-9">
@@ -179,11 +179,11 @@
                   arg: { key: 'numberOfChars', value: '60' },
                 },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.descriptionIt"
               [required]="true"
-              controlName="descriptionIt"
+              [fieldName]="'descriptionIt'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_IT"
-            />
+            ></atlas-text-field>
           </div>
         </div>
 
@@ -200,11 +200,11 @@
                   arg: { key: 'numberOfChars', value: '10' },
                 },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.abbreviationEn"
               [required]="true"
-              controlName="abbreviationEn"
+              [fieldName]="'abbreviationEn'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_EN"
-            />
+            ></atlas-text-field>
           </div>
 
           <div class="d-flex flex-column col-9">
@@ -219,30 +219,28 @@
                   arg: { key: 'numberOfChars', value: '60' },
                 },
               ]"
-              [formGroup]="form"
+              [field]="businessOrganisationForm.descriptionEn"
               [required]="true"
-              controlName="descriptionEn"
+              [fieldName]="'descriptionEn'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_EN"
-            />
+            ></atlas-text-field>
           </div>
         </div>
 
         <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
         <div class="w-50">
-          <atlas-form-date-range [formGroup]="form" />
+          <atlas-date-range [validFromField]="businessOrganisationForm.validFrom" [validToField]="businessOrganisationForm.validTo" />
         </div>
 
         <div class="col-12 d-flex mt-3 mb-4">
           <div class="d-flex flex-column col-12">
             <atlas-select
-              [additionalLabelspace]="0"
-              [formGroup]="form"
-              [multiple]="true"
+              [field]="businessOrganisationForm.businessTypes"
               [options]="BUSINESS_TYPES"
-              controlName="businessTypes"
-              dataCy="businessTypes"
+              [multiple]="true"
+              [optionTranslateLabelPrefix]="'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES.'"
               label="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE"
-              optionTranslateLabelPrefix="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES."
+              dataCy="businessTypes"
             />
           </div>
         </div>
@@ -274,10 +272,10 @@
                   arg: { key: 'numberOfChars', value: '255' },
                 },
               ]"
-              [formGroup]="form"
-              controlName="contactEnterpriseEmail"
+              [field]="businessOrganisationForm.contactEnterpriseEmail"
+              [fieldName]="'contactEnterpriseEmail'"
               fieldLabel="BODI.BUSINESS_ORGANISATION.CONTACT"
-            />
+            ></atlas-text-field>
           </div>
         </div>
       </form>
@@ -293,14 +291,14 @@
   <atlas-detail-footer>
     <atlas-button
       (buttonClicked)="back()"
-      [footerEdit]="form.enabled"
+      [footerEdit]="editMode()"
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
       buttonType="whiteFooterNonEdit"
     />
     <atlas-button
       (buttonClicked)="toggleEdit()"
-      [footerEdit]="form.enabled"
+      [footerEdit]="editMode()"
       buttonDataCy="cancel"
       buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
@@ -308,8 +306,8 @@
     />
     <atlas-button
       (buttonClicked)="save()"
-      [disabled]="!form.dirty"
-      [footerEdit]="form.enabled"
+      [disabled]="!dirty()"
+      [footerEdit]="editMode()"
       [submitButton]="true"
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
@@ -319,18 +317,18 @@
       <atlas-button
         (buttonClicked)="toggleEdit()"
         applicationType="BODI"
-        [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+        [disabled]="editMode() || selectedVersion.status === 'REVOKED'"
         buttonDataCy="edit-item"
         buttonText="COMMON.EDIT"
         buttonType="edit"
         wrapperStyleClass="ms-3"
       />
-      @if (form.disabled && !isNew && selectedVersion.status !== 'REVOKED') {
+      @if (!editMode() && !isNew && selectedVersion.status !== 'REVOKED') {
         <atlas-revoke-button (revokeClicked)="revoke()" applicationType="BODI" />
       }
       <atlas-button
         (buttonClicked)="delete()"
-        [disabled]="form.enabled"
+        [disabled]="editMode()"
         buttonDataCy="delete-item"
         buttonText="COMMON.DELETE"
         buttonType="delete"
