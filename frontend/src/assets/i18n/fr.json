@@ -342,6 +342,14 @@
     "LAST_NAME": "Nom",
     "FIRST_NAME": "Prénom",
     "MAIL": "Adresse e-mail",
+    "MANUAL_MAIL": "e-mail manuel",
+    "EDIT_MANUAL_MAIL": "Adapter l'e-mail",
+    "MANUAL_MAIL_DIALOG": {
+      "TITLE": "Adapter l'e-mail manuel",
+      "HINT": "Cette adresse e-mail est toujours prioritaire sur l'adresse reprise depuis AD.",
+      "AZURE_MAIL": "E-mail depuis Azure",
+      "DELETE_CONFIRM": "Voulez-vous vraiment supprimer l'e-mail manuel ?"
+    },
     "USER_ID": "ID d'utilisateur",
     "ACCOUNT_STATUS": "Statut du compte",
     "DISPLAY_NAME": "Nom d'affichage",
@@ -369,7 +377,9 @@
     "SELECTED_USER_HAS_NO_USER_ID": "L'utilisateur sélectionné n'a pas d'ID utilisateur enregistré",
     "NOTIFICATIONS": {
       "ADD_SUCCESS": "Utilisateur enregistré avec succès",
-      "EDIT_SUCCESS": "Enregistré avec succès"
+      "EDIT_SUCCESS": "Enregistré avec succès",
+      "MANUAL_MAIL_SAVED": "E-mail manuel enregistré avec succès",
+      "MANUAL_MAIL_DELETED": "E-mail manuel supprimé avec succès"
     },
     "CONFLICT": {
       "SBBUSERID": "L'utilisateur {{sbbUserId}} est déjà enregistré."

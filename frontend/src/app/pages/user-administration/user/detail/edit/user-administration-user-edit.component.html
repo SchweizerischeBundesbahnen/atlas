@@ -18,6 +18,11 @@
       </div>
 
       <div class="d-inline-flex">
+        <div class="d-flex me-3 font-bold-base"> {{ 'USER_ADMIN.MANUAL_MAIL' | translate }}: </div>
+        <div class="d-flex" data-cy="manual-mail-value">{{ displayUser.manualMail }}</div>
+      </div>
+
+      <div class="d-inline-flex">
         <div class="d-flex me-3 font-bold-base"> {{ 'USER_ADMIN.ACCOUNT_STATUS' | translate }}: </div>
         <div class="d-flex">
           {{ 'USER_ADMIN.ACCOUNT_STATUS_TYPE.' + user().accountStatus | translate }}
@@ -52,6 +57,11 @@
         <button atlasBackButton class="atlas-primary-btn" data-cy="backToOverview">
           {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
         </button>
+        @if (isAdmin) {
+          <button (click)="editManualMail()" class="atlas-primary-btn ms-3" data-cy="edit-manual-mail">
+            {{ 'USER_ADMIN.EDIT_MANUAL_MAIL' | translate }}
+          </button>
+        }
         <button (click)="toggleEdit()" class="atlas-primary-btn ms-3" data-cy="edit">
           {{ 'COMMON.EDIT' | translate }}
         </button>

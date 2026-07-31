@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { User } from '../../../../api';
+import { UserMailHelper } from '../../../../core/util/user-mail.helper';
 
 @Pipe({
   name: 'userSelectFormat',
@@ -7,6 +8,7 @@ import { User } from '../../../../api';
 })
 export class UserSelectFormatPipe implements PipeTransform {
   transform(user: User): string {
-    return `${user.displayName} ${user.mail ? '(' + user.mail + ')' : ''}`;
+    const effectiveMail = UserMailHelper.effectiveMail(user);
+    return `${user.displayName} ${effectiveMail ? '(' + effectiveMail + ')' : ''}`;
   }
 }

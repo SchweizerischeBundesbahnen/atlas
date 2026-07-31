@@ -36,6 +36,7 @@ describe('UserAdministrationService', () => {
     vi.spyOn(apiService, 'get').mockImplementation(() => EMPTY);
     vi.spyOn(apiService, 'post').mockImplementation(() => EMPTY);
     vi.spyOn(apiService, 'put').mockImplementation(() => EMPTY);
+    vi.spyOn(apiService, 'delete').mockImplementation(() => EMPTY);
   });
 
   it('should search users with parameter propagation', () => {
@@ -114,5 +115,18 @@ describe('UserAdministrationService', () => {
       `${USER_BASE_PATH}/user-id/${ApplicationType.Ttfn}`,
       newPermission
     );
+  });
+
+  it('should call the manual mail endpoints', () => {
+    service.updateManualMail('user-id', 'manual@sbb.ch');
+
+    expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ userId: 'user-id' });
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(`${USER_BASE_PATH}/user-id/manual-mail`, {
+      mail: 'manual@sbb.ch',
+    });
+
+    service.deleteManualMail('user-id');
+
+    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith(`${USER_BASE_PATH}/user-id/manual-mail`);
   });
 });

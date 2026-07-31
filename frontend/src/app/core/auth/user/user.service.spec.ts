@@ -53,4 +53,53 @@ describe('UserService', () => {
     expect(userService.isAdmin).toBe(false);
     expect(userService.permissions).toEqual([]);
   });
+
+  it('should use the manual mail as the current user email when an override exists', () => {
+    userService
+      .setCurrentUserAndLoadPermissions({
+        name: 'Test (ITC)',
+        email: 'azure@test.ch',
+        sbbuid: 'e123456',
+        isAdmin: true,
+        permissions: [],
+      })
+      .subscribe();
+
+    const httpTesting = TestBed.inject(HttpTestingController);
+    httpTesting.match({ method: 'GET' }).forEach((request) => {
+      request.flush({
+        displayName: 'Test (ITC)',
+        mail: 'azure@test.ch',
+        manualMail: 'manual@test.ch',
+        sbbUserId: 'e123456',
+        permissions: [],
+      });
+    });
+
+    expect(userService.currentUser?.email).toBe('manual@test.ch');
+  });
+
+  it('should use the azure mail as the current user email when no override exists', () => {
+    userService
+      .setCurrentUserAndLoadPermissions({
+        name: 'Test (ITC)',
+        email: 'azure@test.ch',
+        sbbuid: 'e123456',
+        isAdmin: true,
+        permissions: [],
+      })
+      .subscribe();
+
+    const httpTesting = TestBed.inject(HttpTestingController);
+    httpTesting.match({ method: 'GET' }).forEach((request) => {
+      request.flush({
+        displayName: 'Test (ITC)',
+        mail: 'azure@test.ch',
+        sbbUserId: 'e123456',
+        permissions: [],
+      });
+    });
+
+    expect(userService.currentUser?.email).toBe('azure@test.ch');
+  });
 });

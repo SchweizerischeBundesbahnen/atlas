@@ -342,6 +342,14 @@
     "LAST_NAME": "Cognome",
     "FIRST_NAME": "Nome",
     "MAIL": "Indirizzo e-mail",
+    "MANUAL_MAIL": "e-mail manuale",
+    "EDIT_MANUAL_MAIL": "Modifica e-mail",
+    "MANUAL_MAIL_DIALOG": {
+      "TITLE": "Modifica e-mail manuale",
+      "HINT": "Questo indirizzo e-mail ha sempre la priorità rispetto a quello ripreso da AD.",
+      "AZURE_MAIL": "E-mail da Azure",
+      "DELETE_CONFIRM": "Vuoi davvero rimuovere l'e-mail manuale?"
+    },
     "USER_ID": "ID utente",
     "ACCOUNT_STATUS": "Stato del conto",
     "DISPLAY_NAME": "Nome visualizzato",
@@ -369,7 +377,9 @@
     "SELECTED_USER_HAS_NO_USER_ID": "L'utente selezionato non ha memorizzato un ID utente",
     "NOTIFICATIONS": {
       "ADD_SUCCESS": "Utente registrato con successo",
-      "EDIT_SUCCESS": "Salvato con successo"
+      "EDIT_SUCCESS": "Salvato con successo",
+      "MANUAL_MAIL_SAVED": "E-mail manuale salvata con successo",
+      "MANUAL_MAIL_DELETED": "E-mail manuale rimossa con successo"
     },
     "CONFLICT": {
       "SBBUSERID": "L'utente {{sbbUserId}} è già memorizzato."
