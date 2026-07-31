@@ -1,6 +1,7 @@
 package ch.sbb.atlas.user.administration.module.useradministration.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.user.administration.ManualMailModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.UserAdministrationApiV1;
 import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
@@ -14,6 +15,8 @@ import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
 import ch.sbb.atlas.user.administration.module.clientcredential.mapper.ClientCredentialMapper;
 import ch.sbb.atlas.user.administration.module.clientcredential.service.ClientCredentialAdministrationService;
+import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailEnricher;
+import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailService;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.exception.RestrictionWithoutTypeException;
 import ch.sbb.atlas.user.administration.module.useradministration.mapper.UserPermissionMapper;
@@ -39,6 +42,8 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   private final UserAdministrationService userAdministrationService;
   private final ClientCredentialAdministrationService clientCredentialAdministrationService;
   private final UserPermissionDistributor userPermissionDistributor;
+  private final UserManualMailService userManualMailService;
+  private final UserManualMailEnricher userManualMailEnricher;
 
   private final GraphApiService graphApiService;
 
@@ -51,6 +56,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     Page<String> userPage = userAdministrationService.getUserPage(pageable, permissionRestrictions,
         applicationTypes, type);
     List<UserModel> userModels = graphApiService.resolveUsers(userPage.getContent());
+    userManualMailEnricher.enrich(userModels);
     userModels.forEach(user -> user.setPermissions(getUserPermissionModels(user.getUserId())));
     return Container.<UserModel>builder()
         .totalCount(userPage.getTotalElements())
@@ -64,20 +70,24 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
         .stream()
         .findFirst();
     UserModel user = userModel.orElseThrow(() -> displayUserNotFoundException(userId));
+    userManualMailEnricher.enrich(user);
     user.setPermissions(getUserPermissionModels(userId));
     return user;
   }
 
   @Override
   public UserModel getUserByMail(String mail) {
-    Optional<UserModel> userModel = graphApiService.searchUserByMail(mail)
-        .stream()
-        .findFirst();
-
-    UserModel user = userModel.orElseThrow(() -> displayUserNotFoundException(mail));
-
-    user.setPermissions(getUserPermissionModels(user.getUserId()));
-    return user;
+    return userManualMailService.findUserIdByMail(mail)
+        .map(this::getUser)
+        .orElseGet(() -> {
+          UserModel resolved = graphApiService.searchUserByMail(mail)
+              .stream()
+              .findFirst()
+              .orElseThrow(() -> displayUserNotFoundException(mail));
+          userManualMailEnricher.enrich(resolved);
+          resolved.setPermissions(getUserPermissionModels(resolved.getUserId()));
+          return resolved;
+        });
   }
 
   @Override
@@ -158,6 +168,18 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
         .forEach(clientCredentialPermission -> userPermissionDistributor.pushUserPermissionToKafka(
             KafkaModelMapper.toKafkaModel(clientCredentialPermission)));
     log.info("ClientCredentials were synched to kafka");
+  }
+
+  @Override
+  public UserModel updateManualMail(String userId, ManualMailModel manualMail) {
+    userManualMailService.upsert(userId, manualMail.getMail());
+    return getUser(userId);
+  }
+
+  @Override
+  public UserModel deleteManualMail(String userId) {
+    userManualMailService.delete(userId);
+    return getUser(userId);
   }
 
   private SimpleAtlasException displayUserNotFoundException(String user) {

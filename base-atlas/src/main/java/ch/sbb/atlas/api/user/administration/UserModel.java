@@ -6,13 +6,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import org.apache.commons.lang3.StringUtils;
 
 @Builder(toBuilder = true)
 @Data
@@ -69,6 +68,7 @@ public class UserModel implements UserAdministrationEvent {
    */
   @JsonIgnore
   @Schema(hidden = true)
+  @Redacted
   public String getEffectiveMail() {
     return StringUtils.isNotBlank(manualMail) ? manualMail : mail;
   }
