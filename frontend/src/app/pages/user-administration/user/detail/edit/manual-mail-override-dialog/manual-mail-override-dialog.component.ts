@@ -44,18 +44,18 @@ export class ManualMailOverrideDialogComponent {
     !!this.data.user.manualMailOverride && this.data.user.manualMailOverride.trim().length > 0;
 
   form = new FormGroup({
-    manualMail: new FormControl(this.data.user.manualMailOverride ?? null, this.emailValidator),
+    manualMailOverride: new FormControl(this.data.user.manualMailOverride ?? null, this.emailValidator),
   });
 
   confirm(): void {
-    const manualMail = this.form.controls.manualMail.value?.trim();
-    if (!manualMail) {
+    const manualMailOverride = this.form.controls.manualMailOverride.value?.trim();
+    if (!manualMailOverride) {
       this.performDelete();
       return;
     }
 
     this.form.disable();
-    this.userAdministrationService.updateManualMail(this.data.user.sbbUserId, manualMail).subscribe({
+    this.userAdministrationService.updateManualMail(this.data.user.sbbUserId, manualMailOverride).subscribe({
       next: (user) => {
         this.notificationService.success('USER_ADMIN.NOTIFICATIONS.MANUAL_MAIL_SAVED');
         this.dialogRef.close(user);

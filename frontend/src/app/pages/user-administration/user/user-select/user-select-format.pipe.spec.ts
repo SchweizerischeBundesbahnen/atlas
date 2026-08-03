@@ -38,7 +38,7 @@ describe('UserSelectFormatPipe', () => {
         permissions: new Set<Permission>(),
         displayName: 'Test User',
         mail: 'azure@sbb.ch',
-        manualMail: 'manual@sbb.ch',
+        manualMailOverride: 'manual@sbb.ch',
       })
     ).toBe('Test User (manual@sbb.ch)');
   });

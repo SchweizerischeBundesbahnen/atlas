@@ -1,22 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import {
-  ManualMailOverrideDialogComponent,
-  ManualMailOverrideDialogData,
-} from './manual-mail-override-dialog.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslatePipe } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { AppTestingModule } from '../../../../../../app.testing.module';
-import { Permission, User } from '../../../../../../api';
-import { UserAdministrationService } from '../../../../../../api/service/user-administration/user-administration.service';
-import { NotificationService } from '../../../../../../core/notification/notification.service';
-import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {beforeEach, describe, expect, it, type Mocked, vi} from 'vitest';
+import {ManualMailOverrideDialogComponent, ManualMailOverrideDialogData,} from './manual-mail-override-dialog.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslatePipe} from '@ngx-translate/core';
+import {of} from 'rxjs';
+import {AppTestingModule} from '../../../../../../app.testing.module';
+import {Permission, User} from '../../../../../../api';
+import {UserAdministrationService} from '../../../../../../api/service/user-administration/user-administration.service';
+import {NotificationService} from '../../../../../../core/notification/notification.service';
+import {DialogService} from '../../../../../../core/components/dialog/dialog.service';
 
 const userWithManualMail: User = {
   sbbUserId: 'u123456',
   mail: 'azure@sbb.ch',
-  manualMail: 'manual@sbb.ch',
+  manualMailOverride: 'manual@sbb.ch',
   permissions: new Set<Permission>(),
 };
 
@@ -69,7 +66,7 @@ describe('ManualMailOverrideDialogComponent', () => {
       user: userWithManualMail,
     });
 
-    expect(fixture.componentInstance.form.controls.manualMail.value).toBe('manual@sbb.ch');
+    expect(fixture.componentInstance.form.controls.manualMailOverride.value).toBe('manual@sbb.ch');
     expect(fixture.componentInstance.azureMail).toBe('azure@sbb.ch');
   });
 
@@ -80,7 +77,7 @@ describe('ManualMailOverrideDialogComponent', () => {
       user: userWithManualMail,
     });
 
-    fixture.componentInstance.form.controls.manualMail.setValue('not-an-email');
+    fixture.componentInstance.form.controls.manualMailOverride.setValue('not-an-email');
 
     expect(fixture.componentInstance.form.invalid).toBe(true);
   });
@@ -110,7 +107,7 @@ describe('ManualMailOverrideDialogComponent', () => {
   });
 
   it('should save the manual mail on confirm', () => {
-    const updatedUser: User = { ...userWithManualMail, manualMail: 'updated@sbb.ch' };
+    const updatedUser: User = { ...userWithManualMail, manualMailOverride: 'updated@sbb.ch' };
     userAdministrationService.updateManualMail.mockReturnValue(of(updatedUser));
     const fixture = createComponent({
       title: 'USER_ADMIN.MANUAL_MAIL_DIALOG.TITLE',
@@ -118,7 +115,7 @@ describe('ManualMailOverrideDialogComponent', () => {
       user: userWithManualMail,
     });
 
-    fixture.componentInstance.form.controls.manualMail.setValue('updated@sbb.ch');
+    fixture.componentInstance.form.controls.manualMailOverride.setValue('updated@sbb.ch');
     fixture.componentInstance.confirm();
 
     expect(userAdministrationService.updateManualMail).toHaveBeenCalledExactlyOnceWith('u123456', 'updated@sbb.ch');
@@ -135,7 +132,7 @@ describe('ManualMailOverrideDialogComponent', () => {
       user: userWithManualMail,
     });
 
-    fixture.componentInstance.form.controls.manualMail.setValue('');
+    fixture.componentInstance.form.controls.manualMailOverride.setValue('');
     fixture.componentInstance.confirm();
 
     expect(userAdministrationService.deleteManualMail).toHaveBeenCalledExactlyOnceWith('u123456');

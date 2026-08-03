@@ -192,25 +192,25 @@ describe('UserAdministrationUserEditComponent', () => {
 
   it('should display the manual mail row below the e-mail row', () => {
     const givenUserService = TestBed.inject(UserPermissionGivenUserService);
-    givenUserService.user = { ...givenUserService.user, manualMail: 'manual@sbb.ch' };
+    givenUserService.user = { ...givenUserService.user, manualMailOverride: 'manual@sbb.ch' };
     fixture.detectChanges();
 
-    expect(component.displayUser.manualMail).toBe('manual@sbb.ch');
+    expect(component.displayUser.manualMailOverride).toBe('manual@sbb.ch');
     const compiled = fixture.nativeElement as HTMLElement;
     const emailRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
       el.textContent?.includes('PROFILE.EMAIL')
     );
-    const manualMailRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
+    const manualMailOverrideRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
       el.textContent?.includes('USER_ADMIN.MANUAL_MAIL')
     );
-    expect(manualMailRowIndex).toBe(emailRowIndex + 1);
+    expect(manualMailOverrideRowIndex).toBe(emailRowIndex + 1);
     expect(compiled.querySelector('[data-cy="manual-mail-override-value"]')?.textContent).toContain('manual@sbb.ch');
   });
 
   it('should display an empty manual mail row when no override exists', () => {
     fixture.detectChanges();
 
-    expect(component.displayUser.manualMail).toBeUndefined();
+    expect(component.displayUser.manualMailOverride).toBeUndefined();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('[data-cy="manual-mail-override-value"]')?.textContent?.trim()).toBe('');
   });
@@ -219,7 +219,7 @@ describe('UserAdministrationUserEditComponent', () => {
     const updatedUser: User = {
       sbbUserId: 'u123456',
       permissions: new Set<Permission>(),
-      manualMail: 'new-manual@sbb.ch',
+      manualMailOverride: 'new-manual@sbb.ch',
     };
     dialogService.openDialogDataWithCustomResult.mockReturnValue(of(updatedUser));
 

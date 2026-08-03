@@ -70,7 +70,7 @@ describe('UserService', () => {
       request.flush({
         displayName: 'Test (ITC)',
         mail: 'azure@test.ch',
-        manualMail: 'manual@test.ch',
+        manualMailOverride: 'manual@test.ch',
         sbbUserId: 'e123456',
         permissions: [],
       });

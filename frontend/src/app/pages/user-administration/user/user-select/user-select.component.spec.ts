@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { UserSelectComponent } from './user-select.component';
 import { firstValueFrom, of } from 'rxjs';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
@@ -111,7 +111,7 @@ describe('UserSelectComponent', () => {
           sbbUserId: 'user1',
           permissions: new Set<Permission>(),
           mail: 'azure@sbb.ch',
-          manualMail: 'manual@sbb.ch',
+          manualMailOverride: 'manual@sbb.ch',
         },
       ])
     );
