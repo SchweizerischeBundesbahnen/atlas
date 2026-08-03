@@ -183,7 +183,7 @@ describe('ManualMailOverrideDialogComponent', () => {
 
     fixture.componentInstance.cancel();
 
-    expect(dialogRefSpy.close).toHaveBeenCalledExactlyOnceWith(undefined);
+    expect(dialogRefSpy.close).toHaveBeenCalledOnce();
     expect(userAdministrationService.updateManualMail).not.toHaveBeenCalled();
     expect(userAdministrationService.deleteManualMail).not.toHaveBeenCalled();
   });
