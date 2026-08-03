@@ -129,6 +129,7 @@ frontend/jsonZipDirectory/
 .idea/db-forest-config.xml
 
 /line-directory/export/
+/timetable-hearing/export/
 /.export/
 /frontend/cypress/test-results/
 /frontend/cypress-mochawesome-reporter.log

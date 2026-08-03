@@ -14,22 +14,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
+import ch.sbb.atlas.api.client.line.ttfn.TimetableFieldNumberApiInternalClient;
+import ch.sbb.atlas.api.client.line.ttfn.TimetableFieldNumberApiV1Client;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
-import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockUser;
-import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
-import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
-import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import ch.sbb.timetable.hearing.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.timetable.hearing.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.timetable.hearing.repository.TimetableHearingStatementRepository;
@@ -45,8 +44,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -68,50 +65,31 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
   private final TimetableHearingYearControllerInternal timetableHearingYearController;
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
   private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
-  private final TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
-
-  @MockitoBean
-  private TimetableFieldNumberService timetableFieldNumberService;
 
   @MockitoBean
   private TransportCompanyClient transportCompanyClient;
+
+  @MockitoBean
+  private TimetableFieldNumberApiV1Client timetableFieldNumberApiV1Client;
+
+  @MockitoBean
+  private TimetableFieldNumberApiInternalClient timetableFieldNumberApiInternalClient;
 
   @Autowired
   TimetableHearingStatementControllerV2ApiTest(
       TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearControllerInternal timetableHearingYearController,
       TimetableHearingStatementRepository timetableHearingStatementRepository,
-      SharedTransportCompanyRepository sharedTransportCompanyRepository,
-      TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository) {
+      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearController = timetableHearingYearController;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
     this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
-    this.timetableFieldNumberVersionRepository = timetableFieldNumberVersionRepository;
   }
 
   @BeforeEach
   void setUp() {
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
-
-    TimetableFieldNumber returnedTimetableFieldNumber = TimetableFieldNumber.builder()
-        .number("1.1")
-        .ttfnid(TTFNID)
-        .businessOrganisation(SBOID)
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(9999, 12, 31))
-        .build();
-    when(timetableFieldNumberService.getVersionsSearched(any())).thenReturn(new PageImpl<>(List.of(returnedTimetableFieldNumber),
-        Pageable.unpaged(), 1L));
-
-    TimetableFieldNumberVersion returnedTimetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
-        .number("1.1")
-        .ttfnid(TTFNID)
-        .businessOrganisation(SBOID)
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(9999, 12, 31))
-        .build();
-    when(timetableFieldNumberService.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
 
     TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
         .id(1L)
@@ -141,32 +119,38 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
         .build();
     sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany1);
 
-    TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+    TimetableFieldNumberModel timetableFieldNumber = TimetableFieldNumberModel.builder()
+        .number("1.1")
         .ttfnid(TTFNID)
-        .number("5678")
-        .descriptionOutwardLine1("Description")
-        .descriptionReturnLine1("Description")
-        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
-        .status(Status.VALIDATED)
-        .businessOrganisation("Business Organisation")
-        .validFrom(LocalDate.now())
-        .validTo(LocalDate.now().plusYears(1))
+        .businessOrganisation(SBOID)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
         .build();
+    when(timetableFieldNumberApiInternalClient.getOverview(any(), any(), any(), any(), any(), any())).thenReturn(
+        Container.<TimetableFieldNumberModel>builder()
+            .objects(List.of(timetableFieldNumber))
+            .build());
 
-    timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
+    TimetableFieldNumberVersionModel timetableFieldNumberVersion = TimetableFieldNumberVersionModel.builder()
+        .number("1.1")
+        .ttfnid(TTFNID)
+        .businessOrganisation(SBOID)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
+        .build();
+    when(timetableFieldNumberApiV1Client.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(timetableFieldNumberVersion));
   }
 
   @AfterEach
   void tearDown() {
     timetableHearingYearRepository.deleteAll();
     timetableHearingStatementRepository.deleteAll();
-    timetableFieldNumberVersionRepository.deleteAll();
     sharedTransportCompanyRepository.deleteAll();
   }
 
   @Nested
   @DisplayName("POST v2/timetable-hearing/statements/external")
-  class createStatementExternal {
+  class CreateStatementExternal {
 
     @Test
     void shouldThrowExceptionWhenNotClientCredentialsAuthUsedForExternalEndpointV2() throws Exception {

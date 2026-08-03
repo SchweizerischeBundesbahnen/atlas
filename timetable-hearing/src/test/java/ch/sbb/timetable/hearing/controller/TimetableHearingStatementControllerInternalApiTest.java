@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -20,8 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
+import ch.sbb.atlas.api.client.line.ttfn.TimetableFieldNumberApiV1Client;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
-import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberApiInternal;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
@@ -39,7 +40,6 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
@@ -50,10 +50,6 @@ import ch.sbb.atlas.redact.StringRedactor;
 import ch.sbb.atlas.user.administration.security.entity.Permission;
 import ch.sbb.atlas.user.administration.security.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
-import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
-import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
-import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import ch.sbb.timetable.hearing.entity.StatementSender;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.timetable.hearing.entity.TimetableHearingYear;
@@ -78,8 +74,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -93,6 +87,12 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   private static final long YEAR = 2022L;
   private static final String TTFNID = "ch:1:ttfnid:123123123";
   private static final String SBOID = "ch:1:sboid:123451";
+
+  @MockitoBean
+  private TimetableFieldNumberApiV1Client timetableFieldNumberApiV1Client;
+
+  @MockitoBean
+  private TimetableFieldNumberApiInternal timetableFieldNumberApiInternal;
 
   @Autowired
   private TimetableHearingYearRepository timetableHearingYearRepository;
@@ -110,13 +110,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   private SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   @Autowired
-  private TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
-
-  @Autowired
   private PermissionRepository permissionRepository;
-
-  @MockitoBean
-  private TimetableFieldNumberService timetableFieldNumberService;
 
   @MockitoBean
   private TransportCompanyClient transportCompanyClient;
@@ -138,25 +132,6 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .statementCreatableInternal(true)
         .statementEditable(true)
         .build());
-
-    TimetableFieldNumber returnedTimetableFieldNumber = TimetableFieldNumber.builder()
-        .number("1.1")
-        .ttfnid(TTFNID)
-        .businessOrganisation(SBOID)
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(9999, 12, 31))
-        .build();
-    when(timetableFieldNumberService.getVersionsSearched(any())).thenReturn(new PageImpl<>(List.of(returnedTimetableFieldNumber),
-        Pageable.unpaged(), 1L));
-
-    TimetableFieldNumberVersion returnedTimetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
-        .number("1.1")
-        .ttfnid(TTFNID)
-        .businessOrganisation(SBOID)
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(9999, 12, 31))
-        .build();
-    when(timetableFieldNumberService.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
 
     TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
         .id(1L)
@@ -186,26 +161,20 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .build();
     sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany1);
 
-    TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+    TimetableFieldNumberVersionModel timetableFieldNumberVersion = TimetableFieldNumberVersionModel.builder()
+        .number("1.1")
         .ttfnid(TTFNID)
-        .number("5678")
-        .descriptionOutwardLine1("Description")
-        .descriptionReturnLine1("Description")
-        .meanOfTransport(TtfnMeanOfTransport.TRAIN)
-        .status(Status.VALIDATED)
-        .businessOrganisation("Business Organisation")
-        .validFrom(LocalDate.now())
-        .validTo(LocalDate.now().plusYears(1))
+        .businessOrganisation(SBOID)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
         .build();
-
-    timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
+    when(timetableFieldNumberApiV1Client.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(timetableFieldNumberVersion));
   }
 
   @AfterEach
   void tearDown() {
     timetableHearingYearRepository.deleteAll();
     timetableHearingStatementRepository.deleteAll();
-    timetableFieldNumberVersionRepository.deleteAll();
     sharedTransportCompanyRepository.deleteAll();
     permissionRepository.deleteAll();
   }
@@ -827,20 +796,6 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     @Test
     void shouldCreateStatementWithoutDocuments() throws Exception {
-      TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
-          .ttfnid("ch:1:ttfnid:12341241")
-          .number("5678")
-          .descriptionOutwardLine1("Description")
-          .descriptionReturnLine1("Description")
-          .meanOfTransport(TtfnMeanOfTransport.TRAIN)
-          .status(Status.VALIDATED)
-          .businessOrganisation("Business Organisation")
-          .validFrom(LocalDate.now())
-          .validTo(LocalDate.now().plusYears(1))
-          .build();
-
-      timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
-
       TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
           .timetableYear(YEAR)
           .swissCanton(SwissCanton.BERN)
@@ -864,20 +819,6 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     @Test
     void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
-      TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
-          .ttfnid("ch:1:ttfnid:12341241")
-          .number("5678")
-          .descriptionOutwardLine1("Description")
-          .descriptionReturnLine1("Description")
-          .meanOfTransport(TtfnMeanOfTransport.TRAIN)
-          .status(Status.VALIDATED)
-          .businessOrganisation("Business Organisation")
-          .validFrom(LocalDate.now())
-          .validTo(LocalDate.now().plusYears(1))
-          .build();
-
-      timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
-
       TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
           .id(1111L)
           .timetableYear(YEAR)

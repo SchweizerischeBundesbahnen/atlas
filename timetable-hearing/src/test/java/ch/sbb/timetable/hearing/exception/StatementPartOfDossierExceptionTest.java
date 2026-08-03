@@ -2,7 +2,6 @@ package ch.sbb.timetable.hearing.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.timetable.hearing.exception.StatementPartOfDossierException;
 import org.junit.jupiter.api.Test;
 
 class StatementPartOfDossierExceptionTest {

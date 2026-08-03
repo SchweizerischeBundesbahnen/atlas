@@ -29,7 +29,8 @@ public class TimetableFieldNumberResolverService {
       log.info("Resolving timetableFieldNumber=[{}] at {} to ttfnid", timetableFieldNumber, beginningOfNextTimetableYear);
 
       List<TimetableFieldNumberModel> timetableFieldNumbers = timetableFieldNumberApiInternal.getOverview(Pageable.unpaged(),
-          Collections.emptyList(),timetableFieldNumber,null,beginningOfNextTimetableYear,Collections.emptyList()).getObjects();
+              Collections.emptyList(), timetableFieldNumber, null, beginningOfNextTimetableYear, Collections.emptyList())
+          .getObjects();
 
       if (timetableFieldNumbers.size() == 1) {
         String ttfnid = timetableFieldNumbers.getFirst().getTtfnid();
@@ -52,7 +53,8 @@ public class TimetableFieldNumberResolverService {
     LocalDate validAtDateForYear = getFirstDayOfTimetableYear(statements);
 
     Set<String> ttfnIds = statements.stream().map(TimetableHearingStatementModelV2::getTtfnid).collect(Collectors.toSet());
-    List<TimetableFieldNumberVersionModel> versions = timetableFieldNumberApiInternal.getVersionsValidAt(ttfnIds, validAtDateForYear);
+    List<TimetableFieldNumberVersionModel> versions = timetableFieldNumberApiInternal.getVersionsValidAt(ttfnIds,
+        validAtDateForYear);
 
     statements.stream()
         .filter(statement -> statement.getTtfnid() != null)
