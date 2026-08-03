@@ -1,14 +1,14 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {beforeEach, describe, expect, it, type Mocked, vi} from 'vitest';
-import {ManualMailOverrideDialogComponent, ManualMailOverrideDialogData,} from './manual-mail-override-dialog.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {TranslatePipe} from '@ngx-translate/core';
-import {of} from 'rxjs';
-import {AppTestingModule} from '../../../../../../app.testing.module';
-import {Permission, User} from '../../../../../../api';
-import {UserAdministrationService} from '../../../../../../api/service/user-administration/user-administration.service';
-import {NotificationService} from '../../../../../../core/notification/notification.service';
-import {DialogService} from '../../../../../../core/components/dialog/dialog.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import { ManualMailOverrideDialogComponent, ManualMailOverrideDialogData, } from './manual-mail-override-dialog.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { AppTestingModule } from '../../../../../../app.testing.module';
+import { Permission, User } from '../../../../../../api';
+import { UserAdministrationService } from '../../../../../../api/service/user-administration/user-administration.service';
+import { NotificationService } from '../../../../../../core/notification/notification.service';
+import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
 
 const userWithManualMail: User = {
   sbbUserId: 'u123456',
