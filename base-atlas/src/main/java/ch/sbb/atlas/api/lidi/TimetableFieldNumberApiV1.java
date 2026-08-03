@@ -23,20 +23,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Timetable Field Numbers")
-@RequestMapping("v1/field-numbers")
 @Validated
 public interface TimetableFieldNumberApiV1 {
 
+  String BASEPATH = "v1/field-numbers";
+
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
-  @GetMapping("/versions/{ttfnId}")
+  @GetMapping(BASEPATH + "/versions/{ttfnId}")
   List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
   @AuthorizedOnly
-  @PutMapping("/versions/{id}")
+  @PutMapping(BASEPATH + "/versions/{id}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Number is already taken", content =
@@ -53,7 +53,7 @@ public interface TimetableFieldNumberApiV1 {
       @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
   @AuthorizedOnly
-  @PostMapping("/versions")
+  @PostMapping(BASEPATH + "/versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),

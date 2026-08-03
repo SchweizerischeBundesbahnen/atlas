@@ -1,0 +1,27 @@
+package ch.sbb.timetable.hearing.mapper;
+
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
+import ch.sbb.timetable.hearing.entity.StatementDocument;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class StatementDocumentMapper {
+
+  public static StatementDocument toEntity(TimetableHearingStatementDocumentModel timetableHearingStatementDocumentModel) {
+    return StatementDocument.builder()
+        .id(timetableHearingStatementDocumentModel.getId())
+        .fileName(timetableHearingStatementDocumentModel.getFileName())
+        .fileSize(timetableHearingStatementDocumentModel.getFileSize())
+        .anonymous(timetableHearingStatementDocumentModel.getAnonymous())
+        .build();
+  }
+
+  public static TimetableHearingStatementDocumentModel toModel(StatementDocument statementDocument) {
+    return TimetableHearingStatementDocumentModel.builder()
+        .id(statementDocument.getId())
+        .fileName(statementDocument.getFileName())
+        .fileSize(statementDocument.getFileSize())
+        .anonymous(statementDocument.getAnonymous())
+        .build();
+  }
+}

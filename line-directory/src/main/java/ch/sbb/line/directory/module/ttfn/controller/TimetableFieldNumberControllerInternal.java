@@ -13,6 +13,7 @@ import ch.sbb.line.directory.module.ttfn.search.TimetableFieldNumberSearchRestri
 import ch.sbb.line.directory.module.ttfn.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -70,6 +71,13 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
       throw new TtfnidNotFoundException(ttfnid);
     }
     timetableFieldNumberService.deleteAll(allVersionsVersioned);
+  }
+
+  @Override
+  public List<TimetableFieldNumberVersionModel> getVersionsValidAt(Set<String> ttfnIds, LocalDate validAtDateForYear) {
+    List<TimetableFieldNumberVersion> versionsValidAt = timetableFieldNumberService.getVersionsValidAt(ttfnIds,
+        validAtDateForYear);
+    return versionsValidAt.stream().map(TimetableFieldNumberMapper::toModel).toList();
   }
 
 }
