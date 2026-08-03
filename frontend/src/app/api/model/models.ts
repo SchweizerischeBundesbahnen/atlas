@@ -81,7 +81,7 @@ export * from './lineVersionSnapshot';
 export * from './lineVersionV2';
 export * from './lineVersionWorkflow';
 export * from './localityMunicipality';
-export * from './manualMail';
+export * from './manualMailOverride';
 export * from './meanOfTransport';
 export * from './offerCategory';
 export * from './operatingPointTechnicalTimetableType';

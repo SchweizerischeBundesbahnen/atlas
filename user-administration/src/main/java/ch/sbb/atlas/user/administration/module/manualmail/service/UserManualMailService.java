@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.module.manualmail.service;
 
-import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMail;
+import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMailOverride;
 import ch.sbb.atlas.user.administration.module.manualmail.repository.UserManualMailRepository;
 import java.util.Collection;
 import java.util.Map;
@@ -23,12 +23,12 @@ public class UserManualMailService {
       delete(sbbUserId);
       return;
     }
-    UserManualMail manualMail = userManualMailRepository.findBySbbUserIdIgnoreCase(sbbUserId)
+    UserManualMailOverride manualMail = userManualMailRepository.findBySbbUserIdIgnoreCase(sbbUserId)
         .map(existing -> {
           existing.setMail(mail);
           return existing;
         })
-        .orElseGet(() -> UserManualMail.builder().sbbUserId(sbbUserId).mail(mail).build());
+        .orElseGet(() -> UserManualMailOverride.builder().sbbUserId(sbbUserId).mail(mail).build());
     userManualMailRepository.save(manualMail);
   }
 
@@ -41,11 +41,11 @@ public class UserManualMailService {
       return Map.of();
     }
     return userManualMailRepository.findAllBySbbUserIdInIgnoreCase(sbbUserIds).stream()
-        .collect(Collectors.toMap(UserManualMail::getSbbUserId, UserManualMail::getMail));
+        .collect(Collectors.toMap(UserManualMailOverride::getSbbUserId, UserManualMailOverride::getMail));
   }
 
   public Optional<String> findUserIdByMail(String mail) {
-    return userManualMailRepository.findByMailIgnoreCase(mail).map(UserManualMail::getSbbUserId);
+    return userManualMailRepository.findByMailIgnoreCase(mail).map(UserManualMailOverride::getSbbUserId);
   }
 
 }

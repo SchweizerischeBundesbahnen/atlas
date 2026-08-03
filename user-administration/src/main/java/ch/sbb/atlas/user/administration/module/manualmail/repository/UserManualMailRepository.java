@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.module.manualmail.repository;
 
-import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMail;
+import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMailOverride;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -8,13 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserManualMailRepository extends JpaRepository<UserManualMail, Long> {
+public interface UserManualMailRepository extends JpaRepository<UserManualMailOverride, Long> {
 
-  Optional<UserManualMail> findBySbbUserIdIgnoreCase(String sbbUserId);
+  Optional<UserManualMailOverride> findBySbbUserIdIgnoreCase(String sbbUserId);
 
-  List<UserManualMail> findAllBySbbUserIdInIgnoreCase(Collection<String> sbbUserIds);
+  List<UserManualMailOverride> findAllBySbbUserIdInIgnoreCase(Collection<String> sbbUserIds);
 
-  Optional<UserManualMail> findByMailIgnoreCase(String mail);
+  Optional<UserManualMailOverride> findByMailIgnoreCase(String mail);
 
   void deleteBySbbUserIdIgnoreCase(String sbbUserId);
 

@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.module.useradministration.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.user.administration.ManualMailModel;
+import ch.sbb.atlas.api.user.administration.ManualMailOverrideModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.UserAdministrationApiV1;
 import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
@@ -171,13 +171,13 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   }
 
   @Override
-  public UserModel updateManualMail(String userId, ManualMailModel manualMail) {
+  public UserModel updateManualMailOverride(String userId, ManualMailOverrideModel manualMail) {
     userManualMailService.upsert(userId, manualMail.getMail());
     return getUser(userId);
   }
 
   @Override
-  public UserModel deleteManualMail(String userId) {
+  public UserModel deleteManualMailOverride(String userId) {
     userManualMailService.delete(userId);
     return getUser(userId);
   }

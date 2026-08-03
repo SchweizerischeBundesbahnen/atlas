@@ -11,12 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(name = "ManualMail")
-public class ManualMailModel {
+@Schema(name = "ManualMailOverride")
+public class ManualMailOverrideModel {
 
   @Email
-  @Schema(description = "Manually maintained E-Mail address. An empty/blank value removes the "
-      + "override so the Azure E-Mail address applies again.", example = "example@sbb.ch")
+  @Schema(description = "Manually maintained E-Mail address override of Azure mails", example = "example@sbb.ch")
   private String mail;
 
 }

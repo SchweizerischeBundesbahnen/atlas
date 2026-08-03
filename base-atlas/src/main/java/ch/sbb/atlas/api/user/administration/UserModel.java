@@ -41,7 +41,7 @@ public class UserModel implements UserAdministrationEvent {
   @Redacted
   @Schema(description = "Manually maintained E-Mail address. Overrides the Azure E-Mail address "
       + "(mail) when set, both for mail delivery and for display.", example = "example@sbb.ch")
-  private String manualMail;
+  private String manualMailOverride;
 
   @Redacted
   @Schema(description = "User display name (azure)", example = "Example User (IT-PTR-CEN2-YPT)")
@@ -64,12 +64,12 @@ public class UserModel implements UserAdministrationEvent {
    * Not serialized on purpose (see {@link ch.sbb.atlas.redact.RedactAspect}): redaction works by
    * reflecting over annotated fields, so a transported derived getter would silently bypass it.
    * Consumers derive the effective mail from the two transported fields ({@link #mail} and
-   * {@link #manualMail}) themselves.
+   * {@link #manualMailOverride}) themselves.
    */
   @JsonIgnore
   @Schema(hidden = true)
   @Redacted
   public String getEffectiveMail() {
-    return StringUtils.isNotBlank(manualMail) ? manualMail : mail;
+    return StringUtils.isNotBlank(manualMailOverride) ? manualMailOverride : mail;
   }
 }

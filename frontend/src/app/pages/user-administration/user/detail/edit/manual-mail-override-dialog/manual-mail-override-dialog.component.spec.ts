@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import { ManualMailDialogComponent, ManualMailDialogData } from './manual-mail-dialog.component';
+import {
+  ManualMailOverrideDialogComponent,
+  ManualMailOverrideDialogData,
+} from './manual-mail-override-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -17,7 +20,7 @@ const userWithManualMail: User = {
   permissions: new Set<Permission>(),
 };
 
-const dialogRefSpy: Mocked<Pick<MatDialogRef<ManualMailDialogComponent, User | undefined>, 'close'>> = {
+const dialogRefSpy: Mocked<Pick<MatDialogRef<ManualMailOverrideDialogComponent, User | undefined>, 'close'>> = {
   close: vi.fn(),
 };
 
@@ -34,9 +37,11 @@ const dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationR
   openDialogDataWithConfirmationResult: vi.fn(),
 };
 
-function createComponent(dialogData: ManualMailDialogData): ComponentFixture<ManualMailDialogComponent> {
+function createComponent(
+  dialogData: ManualMailOverrideDialogData
+): ComponentFixture<ManualMailOverrideDialogComponent> {
   TestBed.configureTestingModule({
-    imports: [AppTestingModule, ManualMailDialogComponent],
+    imports: [AppTestingModule, ManualMailOverrideDialogComponent],
     providers: [
       { provide: MatDialogRef, useValue: dialogRefSpy },
       { provide: MAT_DIALOG_DATA, useValue: dialogData },
@@ -47,12 +52,12 @@ function createComponent(dialogData: ManualMailDialogData): ComponentFixture<Man
     ],
   });
 
-  const fixture = TestBed.createComponent(ManualMailDialogComponent);
+  const fixture = TestBed.createComponent(ManualMailOverrideDialogComponent);
   fixture.detectChanges();
   return fixture;
 }
 
-describe('ManualMailDialogComponent', () => {
+describe('ManualMailOverrideDialogComponent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });

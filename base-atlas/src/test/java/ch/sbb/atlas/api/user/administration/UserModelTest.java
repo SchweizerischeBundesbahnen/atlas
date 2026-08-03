@@ -2,9 +2,8 @@ package ch.sbb.atlas.api.user.administration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import tools.jackson.databind.ObjectMapper;
-
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 class UserModelTest {
 
@@ -15,7 +14,7 @@ class UserModelTest {
     // Given
     UserModel user = UserModel.builder()
         .mail("azure@sbb.ch")
-        .manualMail("manual@sbb.ch")
+        .manualMailOverride("manual@sbb.ch")
         .build();
 
     // When
@@ -30,7 +29,7 @@ class UserModelTest {
     // Given
     UserModel user = UserModel.builder()
         .mail("azure@sbb.ch")
-        .manualMail(null)
+        .manualMailOverride(null)
         .build();
 
     // When
@@ -45,7 +44,7 @@ class UserModelTest {
     // Given
     UserModel user = UserModel.builder()
         .mail("azure@sbb.ch")
-        .manualMail("   ")
+        .manualMailOverride("   ")
         .build();
 
     // When
@@ -60,7 +59,7 @@ class UserModelTest {
     // Given
     UserModel user = UserModel.builder()
         .mail(null)
-        .manualMail(null)
+        .manualMailOverride(null)
         .build();
 
     // When
@@ -76,15 +75,16 @@ class UserModelTest {
     UserModel user = UserModel.builder()
         .sbbUserId("u111111")
         .mail("azure@sbb.ch")
-        .manualMail("manual@sbb.ch")
+        .manualMailOverride("manual@sbb.ch")
         .build();
 
     // When
     String json = objectMapper.writeValueAsString(user);
 
     // Then
-    assertThat(json).contains("\"mail\"", "\"manualMail\"");
-    assertThat(json).doesNotContain("effectiveMail");
+    assertThat(json)
+        .contains("\"mail\"", "\"manualMailOverride\"")
+        .doesNotContain("effectiveMail");
   }
 
 }

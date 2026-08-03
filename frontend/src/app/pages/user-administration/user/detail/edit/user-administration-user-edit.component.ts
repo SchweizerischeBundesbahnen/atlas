@@ -16,7 +16,10 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
 import { ConvertUserPermissionToRecordHelper } from '../../../../../core/components/permissions/helper/convert-user-permission-to-record-helper';
 import { UserDetailInfoComponent } from '../../../../../core/components/user-edit-info/user-detail-info.component';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
-import { ManualMailDialogComponent, ManualMailDialogData } from './manual-mail-dialog/manual-mail-dialog.component';
+import {
+  ManualMailOverrideDialogComponent,
+  ManualMailOverrideDialogData,
+} from './manual-mail-override-dialog/manual-mail-override-dialog.component';
 
 @Component({
   selector: 'atlas-user-administration-user-edit',
@@ -62,13 +65,13 @@ export class UserAdministrationUserEditComponent implements OnInit {
 
   editManualMail(): void {
     this.dialogService
-      .openDialogDataWithCustomResult<ManualMailDialogData, User>(
+      .openDialogDataWithCustomResult<ManualMailOverrideDialogData, User>(
         {
           title: 'USER_ADMIN.MANUAL_MAIL_DIALOG.TITLE',
           message: 'USER_ADMIN.MANUAL_MAIL_DIALOG.HINT',
           user: this.userPermissionGivenUserService.user,
         },
-        ManualMailDialogComponent
+        ManualMailOverrideDialogComponent
       )
       .subscribe((updatedUser) => {
         if (updatedUser) {

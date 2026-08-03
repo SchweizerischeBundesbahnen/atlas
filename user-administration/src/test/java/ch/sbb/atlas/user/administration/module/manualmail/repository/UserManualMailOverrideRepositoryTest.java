@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMail;
+import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMailOverride;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-class UserManualMailRepositoryTest {
+class UserManualMailOverrideRepositoryTest {
 
   @Autowired
   private UserManualMailRepository userManualMailRepository;
@@ -22,7 +22,7 @@ class UserManualMailRepositoryTest {
   @Test
   void shouldPersistManualMailForUser() {
     // Given
-    UserManualMail manualMail = UserManualMail.builder()
+    UserManualMailOverride manualMail = UserManualMailOverride.builder()
         .sbbUserId("u123456")
         .mail("manual@sbb.ch")
         .build();
@@ -31,7 +31,7 @@ class UserManualMailRepositoryTest {
     userManualMailRepository.saveAndFlush(manualMail);
 
     // Then
-    Optional<UserManualMail> persisted = userManualMailRepository.findBySbbUserIdIgnoreCase("u123456");
+    Optional<UserManualMailOverride> persisted = userManualMailRepository.findBySbbUserIdIgnoreCase("u123456");
     assertThat(persisted).isPresent();
     assertThat(persisted.get().getMail()).isEqualTo("manual@sbb.ch");
   }
@@ -40,12 +40,13 @@ class UserManualMailRepositoryTest {
   void shouldRejectSecondManualMailForSameUser() {
     // Given
     userManualMailRepository.saveAndFlush(
-        UserManualMail.builder().sbbUserId("u123456").mail("first@sbb.ch").build());
+        UserManualMailOverride.builder().sbbUserId("u123456").mail("first@sbb.ch").build());
 
     // When / Then
-    UserManualMail userManualMail = UserManualMail.builder().sbbUserId("u123456").mail("second@sbb.ch").build();
-    
-    assertThatThrownBy(() -> userManualMailRepository.saveAndFlush(userManualMail))
+    UserManualMailOverride userManualMailOverride = UserManualMailOverride.builder().sbbUserId("u123456").mail("second@sbb.ch")
+        .build();
+
+    assertThatThrownBy(() -> userManualMailRepository.saveAndFlush(userManualMailOverride))
         .isInstanceOf(DataIntegrityViolationException.class);
   }
 
@@ -53,11 +54,11 @@ class UserManualMailRepositoryTest {
   void shouldAllowSameManualMailForTwoDifferentUsers() {
     // Given
     userManualMailRepository.saveAndFlush(
-        UserManualMail.builder().sbbUserId("u123456").mail("shared@sbb.ch").build());
+        UserManualMailOverride.builder().sbbUserId("u123456").mail("shared@sbb.ch").build());
 
     // When
     userManualMailRepository.saveAndFlush(
-        UserManualMail.builder().sbbUserId("u999999").mail("shared@sbb.ch").build());
+        UserManualMailOverride.builder().sbbUserId("u999999").mail("shared@sbb.ch").build());
 
     // Then
     assertThat(userManualMailRepository.findAll()).hasSize(2);
@@ -67,10 +68,10 @@ class UserManualMailRepositoryTest {
   void shouldFindManualMailByMailIgnoringCase() {
     // Given
     userManualMailRepository.saveAndFlush(
-        UserManualMail.builder().sbbUserId("u123456").mail("Manual@Sbb.ch").build());
+        UserManualMailOverride.builder().sbbUserId("u123456").mail("Manual@Sbb.ch").build());
 
     // When
-    Optional<UserManualMail> found = userManualMailRepository.findByMailIgnoreCase("manual@sbb.ch");
+    Optional<UserManualMailOverride> found = userManualMailRepository.findByMailIgnoreCase("manual@sbb.ch");
 
     // Then
     assertThat(found).isPresent();
@@ -81,18 +82,18 @@ class UserManualMailRepositoryTest {
   void shouldFindManualMailsForMultipleUserIdsInOneQuery() {
     // Given
     userManualMailRepository.saveAndFlush(
-        UserManualMail.builder().sbbUserId("u111111").mail("one@sbb.ch").build());
+        UserManualMailOverride.builder().sbbUserId("u111111").mail("one@sbb.ch").build());
     userManualMailRepository.saveAndFlush(
-        UserManualMail.builder().sbbUserId("u222222").mail("two@sbb.ch").build());
+        UserManualMailOverride.builder().sbbUserId("u222222").mail("two@sbb.ch").build());
     userManualMailRepository.saveAndFlush(
-        UserManualMail.builder().sbbUserId("u333333").mail("three@sbb.ch").build());
+        UserManualMailOverride.builder().sbbUserId("u333333").mail("three@sbb.ch").build());
 
     // When
-    List<UserManualMail> found = userManualMailRepository.findAllBySbbUserIdInIgnoreCase(
+    List<UserManualMailOverride> found = userManualMailRepository.findAllBySbbUserIdInIgnoreCase(
         List.of("U111111", "u222222", "u444444"));
 
     // Then
-    assertThat(found).extracting(UserManualMail::getSbbUserId).containsExactlyInAnyOrder("u111111", "u222222");
+    assertThat(found).extracting(UserManualMailOverride::getSbbUserId).containsExactlyInAnyOrder("u111111", "u222222");
   }
 
 }

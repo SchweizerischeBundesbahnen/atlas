@@ -10,6 +10,6 @@ export class UserMailHelper {
     if (!user) {
       return undefined;
     }
-    return user.manualMail && user.manualMail.trim().length > 0 ? user.manualMail : user.mail;
+    return user.manualMailOverride && user.manualMailOverride.trim().length > 0 ? user.manualMailOverride : user.mail;
   }
 }

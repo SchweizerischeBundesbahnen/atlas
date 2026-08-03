@@ -9,9 +9,9 @@
  */
 
 
-export interface ManualMail { 
+export interface ManualMailOverride { 
     /**
-     * Manually maintained E-Mail address. An empty/blank value removes the override so the Azure E-Mail address applies again.
+     * Manually maintained E-Mail address override of Azure mails
      */
     mail?: string;
 }

@@ -11,7 +11,7 @@ import { UserAccountStatus } from './userAccountStatus';
 import { Permission } from './permission';
 
 
-export interface User {
+export interface User { 
     /**
      * SBB User Id
      */
@@ -25,13 +25,13 @@ export interface User {
      */
     firstName?: string;
     /**
-     * User E-Mail address (from Azure AD)
+     * User E-Mail address (from Azure)
      */
     mail?: string;
     /**
      * Manually maintained E-Mail address. Overrides the Azure E-Mail address (mail) when set, both for mail delivery and for display.
      */
-    manualMail?: string;
+    manualMailOverride?: string;
     /**
      * User display name (azure)
      */

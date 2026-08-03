@@ -24,7 +24,7 @@ public class UserManualMailEnricher {
         .entrySet().stream()
         .collect(Collectors.toMap(entry -> entry.getKey().toLowerCase(), Map.Entry::getValue));
 
-    users.forEach(user -> user.setManualMail(manualMailsByLowerCaseUserId.get(user.getSbbUserId())));
+    users.forEach(user -> user.setManualMailOverride(manualMailsByLowerCaseUserId.get(user.getSbbUserId())));
     return users;
   }
 

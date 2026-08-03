@@ -204,7 +204,7 @@ describe('UserAdministrationUserEditComponent', () => {
       el.textContent?.includes('USER_ADMIN.MANUAL_MAIL')
     );
     expect(manualMailRowIndex).toBe(emailRowIndex + 1);
-    expect(compiled.querySelector('[data-cy="manual-mail-value"]')?.textContent).toContain('manual@sbb.ch');
+    expect(compiled.querySelector('[data-cy="manual-mail-override-value"]')?.textContent).toContain('manual@sbb.ch');
   });
 
   it('should display an empty manual mail row when no override exists', () => {
@@ -212,7 +212,7 @@ describe('UserAdministrationUserEditComponent', () => {
 
     expect(component.displayUser.manualMail).toBeUndefined();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('[data-cy="manual-mail-value"]')?.textContent?.trim()).toBe('');
+    expect(compiled.querySelector('[data-cy="manual-mail-override-value"]')?.textContent?.trim()).toBe('');
   });
 
   it('should reload the user after the dialog saved a manual mail', () => {

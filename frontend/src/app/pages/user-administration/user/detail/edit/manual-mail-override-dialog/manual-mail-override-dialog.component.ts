@@ -12,13 +12,13 @@ import { User } from '../../../../../../api';
 import { UserAdministrationService } from '../../../../../../api/service/user-administration/user-administration.service';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 
-export interface ManualMailDialogData extends DialogData {
+export interface ManualMailOverrideDialogData extends DialogData {
   user: User;
 }
 
 @Component({
-  selector: 'atlas-manual-mail-dialog',
-  templateUrl: './manual-mail-dialog.component.html',
+  selector: 'atlas-manual-mail-override-dialog',
+  templateUrl: './manual-mail-override-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogClose,
@@ -27,24 +27,24 @@ export interface ManualMailDialogData extends DialogData {
     TranslatePipe,
     AtlasButtonComponent,
     TextFieldComponent,
-
   ],
   providers: [TranslatePipe],
 })
-export class ManualMailDialogComponent {
-  private readonly dialogRef = inject<MatDialogRef<ManualMailDialogComponent, User | undefined>>(MatDialogRef);
+export class ManualMailOverrideDialogComponent {
+  private readonly dialogRef = inject<MatDialogRef<ManualMailOverrideDialogComponent, User | undefined>>(MatDialogRef);
   private readonly userAdministrationService = inject(UserAdministrationService);
   private readonly notificationService = inject(NotificationService);
   private readonly dialogService = inject(DialogService);
 
-  readonly data = inject<ManualMailDialogData>(MAT_DIALOG_DATA);
+  readonly data = inject<ManualMailOverrideDialogData>(MAT_DIALOG_DATA);
 
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
   readonly azureMail = this.data.user.mail;
-  readonly hasExistingOverride = !!this.data.user.manualMail && this.data.user.manualMail.trim().length > 0;
+  readonly hasExistingOverride =
+    !!this.data.user.manualMailOverride && this.data.user.manualMailOverride.trim().length > 0;
 
   form = new FormGroup({
-    manualMail: new FormControl(this.data.user.manualMail ?? null, this.emailValidator),
+    manualMail: new FormControl(this.data.user.manualMailOverride ?? null, this.emailValidator),
   });
 
   confirm(): void {

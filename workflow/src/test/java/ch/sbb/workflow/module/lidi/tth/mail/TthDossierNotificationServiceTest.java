@@ -66,7 +66,7 @@ class TthDossierNotificationServiceTest {
   void shouldSendNotificationToManualMailWhenCreatorHasManualMail() {
     // Given
     when(userAdministrationAdminClient.getUser(any())).thenReturn(
-        UserModel.builder().mail("user@canton.ch").manualMail("override@canton.ch").build());
+        UserModel.builder().mail("user@canton.ch").manualMailOverride("override@canton.ch").build());
     ArgumentCaptor<MailNotification> mailNotificationCaptor = ArgumentCaptor.forClass(MailNotification.class);
 
     // When

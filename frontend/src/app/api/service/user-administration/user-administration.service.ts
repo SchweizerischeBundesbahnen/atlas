@@ -8,7 +8,7 @@ import { PermissionRestrictionType } from '../../model/permissionRestrictionType
 import { UserPermissionCreate } from '../../model/userPermissionCreate';
 import { UserDisplayName } from '../../model/userDisplayName';
 import { ContainerUser } from '../../model/containerUser';
-import { ManualMail } from '../../model/manualMail';
+import { ManualMailOverride } from '../../model/manualMailOverride';
 
 @Injectable({
   providedIn: 'root',
@@ -73,12 +73,12 @@ export class UserAdministrationService {
 
   updateManualMail(userId: string, mail: string): Observable<User> {
     this.atlasApiService.validateParams({ userId });
-    const manualMail: ManualMail = { mail };
-    return this.atlasApiService.put(`${this.USER_BASE_PATH}/${userId}/manual-mail`, manualMail);
+    const manualMailOverride: ManualMailOverride = { mail };
+    return this.atlasApiService.put(`${this.USER_BASE_PATH}/${userId}/manual-mail-override`, manualMailOverride);
   }
 
   deleteManualMail(userId: string): Observable<User> {
     this.atlasApiService.validateParams({ userId });
-    return this.atlasApiService.delete(`${this.USER_BASE_PATH}/${userId}/manual-mail`);
+    return this.atlasApiService.delete(`${this.USER_BASE_PATH}/${userId}/manual-mail-override`);
   }
 }

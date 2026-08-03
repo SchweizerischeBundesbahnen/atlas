@@ -51,7 +51,7 @@ class BulkImporterMailServiceTest {
   @Test
   void shouldUseManualMailWhenAzureMailIsMissing() {
     when(userAdministrationClient.getCurrentUser()).thenReturn(
-        UserModel.builder().manualMail("manual@here.ch").build());
+        UserModel.builder().manualMailOverride("manual@here.ch").build());
 
     String mailOfCurrentUser = bulkImporterMailService.getMailOfCurrentUser();
     assertThat(mailOfCurrentUser).isEqualTo("manual@here.ch");

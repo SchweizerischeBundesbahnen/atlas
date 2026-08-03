@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class UserManualMailEnricherTest {
+class UserManualMailOverrideEnricherTest {
 
   private UserManualMailEnricher userManualMailEnricher;
 
@@ -36,7 +36,7 @@ class UserManualMailEnricherTest {
     List<UserModel> enriched = userManualMailEnricher.enrich(List.of(user1, user2));
 
     // Then
-    assertThat(enriched).extracting(UserModel::getManualMail).containsExactly("manual-one@sbb.ch", null);
+    assertThat(enriched).extracting(UserModel::getManualMailOverride).containsExactly("manual-one@sbb.ch", null);
   }
 
   @Test
@@ -49,7 +49,7 @@ class UserManualMailEnricherTest {
     UserModel enriched = userManualMailEnricher.enrich(user);
 
     // Then
-    assertThat(enriched.getManualMail()).isNull();
+    assertThat(enriched.getManualMailOverride()).isNull();
   }
 
 }

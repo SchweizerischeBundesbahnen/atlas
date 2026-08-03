@@ -20,16 +20,16 @@ import lombok.experimental.SuperBuilder;
 /**
  * Admin-maintained E-Mail override for a single contact from Azure.
  */
-@Entity(name = "user_manual_mail")
+@Entity(name = "user_manual_mail_override")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class UserManualMail extends BaseEntity {
+public class UserManualMailOverride extends BaseEntity {
 
-  private static final String ID_SEQ = "user_manual_mail_seq";
+  private static final String ID_SEQ = "user_manual_mail_override_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ)
