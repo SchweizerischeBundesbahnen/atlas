@@ -1,5 +1,6 @@
 package ch.sbb.workflow.module.lidi.tth.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,6 +14,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +59,34 @@ class BoContactPermissionServiceTest {
 
     assertThatExceptionOfType(SimpleAtlasException.class).isThrownBy(
         () -> boContactPermissionService.checkPermissionForBoContactMail("john.doe@sbb.ch"));
+  }
+
+  @Test
+  void shouldResolveBoContactByManualMail() {
+    when(userAdministrationClient.getUserByMail("manual@sbb.ch")).thenReturn(UserModel.builder()
+        .sbbUserId("u123456")
+        .mail("azure@sbb.ch")
+        .manualMailOverride("manual@sbb.ch")
+        .permissions(Set.of(PermissionModel.builder()
+            .application(ApplicationType.TIMETABLE_HEARING)
+            .permissionRestrictions(List.of(new TransportCompanyDossierAnswerPermissionRestrictionModel(true)))
+            .build()))
+        .build());
+
+    Optional<String> sbbUserId = boContactPermissionService.checkPermissionForBoContactMail("manual@sbb.ch");
+
+    assertThat(sbbUserId).contains("u123456");
+  }
+
+  @Test
+  void shouldThrowWhenResolvedUserHasNoDossierAnswerPermission() {
+    when(userAdministrationClient.getUserByMail("manual@sbb.ch")).thenReturn(UserModel.builder()
+        .sbbUserId("u123456")
+        .manualMailOverride("manual@sbb.ch")
+        .permissions(Set.of())
+        .build());
+
+    assertThatExceptionOfType(SimpleAtlasException.class).isThrownBy(
+        () -> boContactPermissionService.checkPermissionForBoContactMail("manual@sbb.ch"));
   }
 }

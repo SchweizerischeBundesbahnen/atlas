@@ -50,6 +50,19 @@ export class UserAdministrationService {
     return this.atlasApiService.get(this.USER_BASE_PATH, httpParams);
   }
 
+  getUserEmails(
+    permissionRestrictions: Set<string> | undefined = undefined,
+    type: PermissionRestrictionType | undefined = undefined,
+    applicationTypes: Set<ApplicationType> | undefined = undefined
+  ): Observable<string[]> {
+    const httpParams = this.atlasApiService.paramsOf({
+      permissionRestrictions,
+      type,
+      applicationTypes,
+    });
+    return this.atlasApiService.get(`${this.USER_BASE_PATH}/emails`, httpParams);
+  }
+
   getCurrentUser(): Observable<User> {
     return this.atlasApiService.get(`${this.USER_BASE_PATH}/current`);
   }

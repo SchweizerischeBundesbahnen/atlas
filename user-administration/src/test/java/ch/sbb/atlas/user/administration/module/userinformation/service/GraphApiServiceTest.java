@@ -2,15 +2,18 @@ package ch.sbb.atlas.user.administration.module.userinformation.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.user.administration.UserModel;
 import com.microsoft.graph.models.UserCollectionResponse;
 import com.microsoft.graph.serviceclient.GraphServiceClient;
 import com.microsoft.graph.users.UsersRequestBuilder;
 import com.microsoft.graph.users.UsersRequestBuilder.GetRequestConfiguration;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,6 +106,29 @@ class GraphApiServiceTest {
         .isNotNull()
         .hasSize(1)
         .containsKey("ConsistencyLevel");
+  }
+
+  @Test
+  void shouldResolveAllUsersWhenBatchedInParallel() {
+    // given: more ids than a single Graph resolve batch (RESOLVE_CHUNK_SIZE = 20), forcing
+    // resolveUsersInParallel to split them across multiple concurrent Graph API calls
+    List<String> userIds = IntStream.range(0, 25).mapToObj("user%d"::formatted).toList();
+
+    // when
+    List<UserModel> result = graphApiService.resolveUsersInParallel(userIds);
+
+    // then: every requested id comes back exactly once, and at least two Graph calls were made
+    assertThat(result).extracting(UserModel::getSbbUserId).containsExactlyInAnyOrderElementsOf(userIds);
+    verify(graphClient, atLeast(2)).users();
+  }
+
+  @Test
+  void shouldReturnEmptyListWhenResolvingNoUsersInParallel() {
+    // when
+    List<UserModel> result = graphApiService.resolveUsersInParallel(List.of());
+
+    // then
+    assertThat(result).isEmpty();
   }
 
   private GetRequestConfiguration verifyGetAndReturnConfiguration() {

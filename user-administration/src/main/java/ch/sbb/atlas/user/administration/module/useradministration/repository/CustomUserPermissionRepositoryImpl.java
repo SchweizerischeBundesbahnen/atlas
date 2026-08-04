@@ -33,6 +33,22 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
   @Override
   public Page<String> getFilteredUsers(Pageable pageable, Set<ApplicationType> applicationTypes,
       Set<String> permissionRestrictions, PermissionRestrictionType type) {
+    TypedQuery<String> typedQuery = buildFilteredUserIdsQuery(applicationTypes, permissionRestrictions, type);
+
+    long totalElements = typedQuery.getResultStream().count();
+    List<String> pagedElements = typedQuery.setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
+        .getResultList();
+    return new PageImpl<>(pagedElements, pageable, totalElements);
+  }
+
+  @Override
+  public List<String> getAllFilteredUserIds(Set<ApplicationType> applicationTypes, Set<String> permissionRestrictions,
+      PermissionRestrictionType type) {
+    return buildFilteredUserIdsQuery(applicationTypes, permissionRestrictions, type).getResultList();
+  }
+
+  private TypedQuery<String> buildFilteredUserIdsQuery(Set<ApplicationType> applicationTypes,
+      Set<String> permissionRestrictions, PermissionRestrictionType type) {
     EnumSpecification<UserPermission, ApplicationType> specification = new EnumSpecification<>(applicationTypes.stream().toList(),
         BasePermission_.application);
 
@@ -62,12 +78,7 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
     query.having(criteriaBuilder.greaterThanOrEqualTo(count, Long.valueOf(applicationTypes.size())));
 
     CriteriaQuery<String> select = query.select(root.get(UserPermission_.sbbUserId));
-    TypedQuery<String> typedQuery = entityManager.createQuery(select);
-
-    long totalElements = typedQuery.getResultStream().count();
-    List<String> pagedElements = typedQuery.setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
-        .getResultList();
-    return new PageImpl<>(pagedElements, pageable, totalElements);
+    return entityManager.createQuery(select);
   }
 
   private static Predicate getPermissionRestrictionPredicate(Set<String> permissionRestrictions, PermissionRestrictionType type,

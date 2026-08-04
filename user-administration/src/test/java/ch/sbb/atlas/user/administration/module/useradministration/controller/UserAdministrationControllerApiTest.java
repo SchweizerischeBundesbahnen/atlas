@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.module.useradministration.controller;
 
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +20,7 @@ import ch.sbb.atlas.api.user.administration.UserModel.Fields;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
@@ -26,6 +28,7 @@ import ch.sbb.atlas.user.administration.module.clientcredential.entity.ClientCre
 import ch.sbb.atlas.user.administration.module.clientcredential.repository.ClientCredentialPermissionRepository;
 import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMailOverride;
 import ch.sbb.atlas.user.administration.module.manualmail.repository.UserManualMailOverrideRepository;
+import ch.sbb.atlas.user.administration.module.useradministration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.service.UserPermissionRepository;
 import com.microsoft.graph.models.User;
@@ -79,16 +82,23 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   }
 
   private static UsersRequestBuilder buildGraphApiUserResult(String sbbuid) {
+    return buildGraphApiUserResult(List.of(sbbuid));
+  }
+
+  private static UsersRequestBuilder buildGraphApiUserResult(List<String> sbbuids) {
     UsersRequestBuilder usersRequestBuilderMock = mock(UsersRequestBuilder.class);
     UserCollectionResponse userCollectionResponseMock = mock(UserCollectionResponse.class);
-    User graphUser = new User();
-    graphUser.setDisplayName("Lastname Firstname");
-    graphUser.setOnPremisesSamAccountName(sbbuid);
-    graphUser.setSurname("Lastname");
-    graphUser.setGivenName("Firstname");
-    graphUser.setMail(sbbuid + "@sbb.ch");
-    graphUser.setAccountEnabled(true);
-    when(userCollectionResponseMock.getValue()).thenReturn(List.of(graphUser));
+    List<User> graphUsers = sbbuids.stream().map(sbbuid -> {
+      User graphUser = new User();
+      graphUser.setDisplayName("Lastname Firstname");
+      graphUser.setOnPremisesSamAccountName(sbbuid);
+      graphUser.setSurname("Lastname");
+      graphUser.setGivenName("Firstname");
+      graphUser.setMail(sbbuid + "@sbb.ch");
+      graphUser.setAccountEnabled(true);
+      return graphUser;
+    }).toList();
+    when(userCollectionResponseMock.getValue()).thenReturn(graphUsers);
     when(usersRequestBuilderMock.get(any())).thenReturn(userCollectionResponseMock);
     return usersRequestBuilderMock;
   }
@@ -194,6 +204,122 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
     void shouldNotGetUsersAsUnauthorized() throws Exception {
       mvc.perform(RestDocumentationRequestBuilders.get("/v1/users"))
+          .andExpect(status().isForbidden());
+    }
+  }
+
+  @Nested
+  @DisplayName("GET v1/users/emails")
+  class GetUserEmails {
+
+    private static final String SBOID = "ch:1:sboid:20009";
+
+    private void saveUserWithBoRestriction(String sbbUserId, ApplicationRole role) {
+      UserPermission userPermission = UserPermission.builder()
+          .sbbUserId(sbbUserId)
+          .role(role)
+          .application(ApplicationType.SEPODI)
+          .build();
+      userPermission.getPermissionRestrictions().add(PermissionRestriction.builder()
+          .userPermission(userPermission)
+          .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+          .restriction(SBOID)
+          .build());
+      userPermissionRepository.saveAndFlush(userPermission);
+    }
+
+    @Test
+    void shouldReturnEffectiveMailsOfAllFilteredUsersAcrossAllPages() throws Exception {
+      // given: 25 writers matching the BO filter - more than one default table page and more
+      // than one Graph API resolve batch (RESOLVE_CHUNK_SIZE = 20)
+      List<String> sbbUserIds = new ArrayList<>();
+      for (int i = 0; i < 25; i++) {
+        String sbbUserId = "u2%04d".formatted(i);
+        sbbUserIds.add(sbbUserId);
+        saveUserWithBoRestriction(sbbUserId, ApplicationRole.WRITER);
+      }
+      when(graphClient.users()).thenReturn(buildGraphApiUserResult(sbbUserIds));
+
+      // when & then
+      mvc.perform(get("/v1/users/emails")
+              .queryParam("permissionRestrictions", SBOID)
+              .queryParam("type", "BUSINESS_ORGANISATION")
+              .queryParam("applicationTypes", "SEPODI"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(25)))
+          .andExpect(jsonPath("$", hasItem("u20000@sbb.ch")))
+          .andExpect(jsonPath("$", hasItem("u20024@sbb.ch")));
+    }
+
+    @Test
+    void shouldPreferManualMailOverrideOverAzureMail() throws Exception {
+      // given
+      saveUserWithBoRestriction("u123456", ApplicationRole.WRITER);
+      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+
+      // when & then
+      mvc.perform(get("/v1/users/emails")
+              .queryParam("permissionRestrictions", SBOID)
+              .queryParam("type", "BUSINESS_ORGANISATION")
+              .queryParam("applicationTypes", "SEPODI"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)))
+          .andExpect(jsonPath("$[0]").value("manual@sbb.ch"));
+    }
+
+    @Test
+    void shouldSkipUsersWithoutResolvableMail() throws Exception {
+      // given: "u-ghost" has a matching permission but Graph does not return it (default mock
+      // only resolves "u123456"), so it comes back as accountStatus=DELETED without a mail
+      saveUserWithBoRestriction("u123456", ApplicationRole.WRITER);
+      saveUserWithBoRestriction("u-ghost", ApplicationRole.WRITER);
+
+      // when & then
+      mvc.perform(get("/v1/users/emails")
+              .queryParam("permissionRestrictions", SBOID)
+              .queryParam("type", "BUSINESS_ORGANISATION")
+              .queryParam("applicationTypes", "SEPODI"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)))
+          .andExpect(jsonPath("$[0]").value("u123456@sbb.ch"));
+    }
+
+    @Test
+    void shouldReturnDistinctMails() throws Exception {
+      // given: two sbbUserIds sharing the same manually maintained mail address
+      saveUserWithBoRestriction("u123456", ApplicationRole.WRITER);
+      saveUserWithBoRestriction("u654321", ApplicationRole.WRITER);
+      when(graphClient.users()).thenReturn(buildGraphApiUserResult(List.of("u123456", "u654321")));
+      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("shared@sbb.ch").build());
+      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u654321").mail("shared@sbb.ch").build());
+
+      // when & then
+      mvc.perform(get("/v1/users/emails")
+              .queryParam("permissionRestrictions", SBOID)
+              .queryParam("type", "BUSINESS_ORGANISATION")
+              .queryParam("applicationTypes", "SEPODI"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)))
+          .andExpect(jsonPath("$[0]").value("shared@sbb.ch"));
+    }
+
+    @Test
+    void shouldRejectRequestWhenRestrictionsGivenWithoutType() throws Exception {
+      mvc.perform(get("/v1/users/emails").queryParam("permissionRestrictions", SBOID))
+          .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldNotBeShadowedByUserIdPathVariable() throws Exception {
+      mvc.perform(get("/v1/users/emails"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$").isArray());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldNotGetUserEmailsAsUnauthorized() throws Exception {
+      mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/emails"))
           .andExpect(status().isForbidden());
     }
   }
