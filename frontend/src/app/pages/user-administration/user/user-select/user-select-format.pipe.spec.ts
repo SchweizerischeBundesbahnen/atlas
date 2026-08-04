@@ -31,25 +31,26 @@ describe('UserSelectFormatPipe', () => {
     ).toBe('Test User ');
   });
 
-  it('should display the manual mail when the user has one', () => {
+  it('should display mail as provided by the backend (already the effective value)', () => {
     expect(
       pipe.transform({
         sbbUserId: 'uid',
         permissions: new Set<Permission>(),
         displayName: 'Test User',
-        mail: 'azure@sbb.ch',
-        manualMailOverride: 'manual@sbb.ch',
+        mail: 'manual@sbb.ch',
+        originalMail: 'azure@sbb.ch',
       })
     ).toBe('Test User (manual@sbb.ch)');
   });
 
-  it('should display the azure mail when the user has no override', () => {
+  it('should display the mail when no override is active', () => {
     expect(
       pipe.transform({
         sbbUserId: 'uid',
         permissions: new Set<Permission>(),
         displayName: 'Test User',
         mail: 'azure@sbb.ch',
+        originalMail: 'azure@sbb.ch',
       })
     ).toBe('Test User (azure@sbb.ch)');
   });

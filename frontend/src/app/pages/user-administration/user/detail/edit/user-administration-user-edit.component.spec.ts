@@ -190,36 +190,40 @@ describe('UserAdministrationUserEditComponent', () => {
     expect(component.editMode).toBe(false);
   });
 
-  it('should display the manual mail row below the e-mail row', () => {
+  it('should display the original mail row below the e-mail row when an override is active', () => {
     const givenUserService = TestBed.inject(UserPermissionGivenUserService);
-    givenUserService.user = { ...givenUserService.user, manualMailOverride: 'manual@sbb.ch' };
+    givenUserService.user = { ...givenUserService.user, mail: 'manual@sbb.ch', originalMail: 'azure@sbb.ch' };
     fixture.detectChanges();
 
-    expect(component.displayUser.manualMailOverride).toBe('manual@sbb.ch');
+    expect(component.displayUser.mail).toBe('manual@sbb.ch');
+    expect(component.displayUser.originalMail).toBe('azure@sbb.ch');
     const compiled = fixture.nativeElement as HTMLElement;
     const emailRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
       el.textContent?.includes('PROFILE.EMAIL')
     );
-    const manualMailOverrideRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
-      el.textContent?.includes('USER_ADMIN.MANUAL_MAIL')
+    const originalMailRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
+      el.textContent?.includes('USER_ADMIN.ORIGINAL_MAIL')
     );
-    expect(manualMailOverrideRowIndex).toBe(emailRowIndex + 1);
-    expect(compiled.querySelector('[data-cy="manual-mail-override-value"]')?.textContent).toContain('manual@sbb.ch');
+    expect(originalMailRowIndex).toBe(emailRowIndex + 1);
+    expect(compiled.querySelector('[data-cy="original-mail-value"]')?.textContent).toContain('azure@sbb.ch');
   });
 
-  it('should display an empty manual mail row when no override exists', () => {
+  it('should hide the original mail row when no override exists', () => {
+    const givenUserService = TestBed.inject(UserPermissionGivenUserService);
+    givenUserService.user = { ...givenUserService.user, mail: 'azure@sbb.ch', originalMail: 'azure@sbb.ch' };
     fixture.detectChanges();
 
-    expect(component.displayUser.manualMailOverride).toBeUndefined();
+    expect(component.displayUser.mail).toBe(component.displayUser.originalMail);
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('[data-cy="manual-mail-override-value"]')?.textContent?.trim()).toBe('');
+    expect(compiled.querySelector('[data-cy="original-mail-value"]')).toBeNull();
   });
 
   it('should reload the user after the dialog saved a manual mail', () => {
     const updatedUser: User = {
       sbbUserId: 'u123456',
       permissions: new Set<Permission>(),
-      manualMailOverride: 'new-manual@sbb.ch',
+      mail: 'new-manual@sbb.ch',
+      originalMail: 'azure@sbb.ch',
     };
     dialogService.openDialogDataWithCustomResult.mockReturnValue(of(updatedUser));
 

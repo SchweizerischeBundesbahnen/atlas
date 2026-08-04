@@ -262,7 +262,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       mvc.perform(get("/v1/users/mail?mail=manual@sbb.ch"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
-          .andExpect(jsonPath("$.manualMailOverride").value("manual@sbb.ch"));
+          .andExpect(jsonPath("$.mail").value("manual@sbb.ch"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@yb.com"));
     }
 
     @Test
@@ -271,7 +272,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       mvc.perform(get("/v1/users/mail?mail=u123456@yb.com"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
-          .andExpect(jsonPath("$.manualMailOverride").doesNotExist());
+          .andExpect(jsonPath("$.mail").value("u123456@yb.com"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@yb.com"));
     }
 
     @Test
@@ -284,7 +286,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       mvc.perform(get("/v1/users/mail?mail=u123456@yb.com"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("e123456"))
-          .andExpect(jsonPath("$.manualMailOverride").value("u123456@yb.com"));
+          .andExpect(jsonPath("$.mail").value("u123456@yb.com"));
     }
   }
 
@@ -299,8 +301,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
               .content(mapper.writeValueAsString(new ManualMailOverrideModel("manual@sbb.ch"))))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
-          .andExpect(jsonPath("$.manualMailOverride").value("manual@sbb.ch"))
-          .andExpect(jsonPath("$.effectiveMail").doesNotExist());
+          .andExpect(jsonPath("$.mail").value("manual@sbb.ch"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@yb.com"));
     }
 
     @Test
@@ -312,7 +314,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       mvc.perform(delete("/v1/users/u123456/manual-mail-override"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
-          .andExpect(jsonPath("$.manualMailOverride").doesNotExist());
+          .andExpect(jsonPath("$.mail").value("u123456@yb.com"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@yb.com"));
     }
 
     @Test
@@ -338,7 +341,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       // when & then
       mvc.perform(get("/v1/users").queryParam("page", "0").queryParam("size", "5"))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].manualMailOverride").value("manual@sbb.ch"));
+          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].mail").value("manual@sbb.ch"))
+          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].originalMail").value("u123456@yb.com"));
     }
 
     @Test
@@ -349,9 +353,10 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       // when & then
       mvc.perform(get("/v1/users/current"))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$.manualMailOverride").value("manual@sbb.ch"));
+          .andExpect(jsonPath("$.mail").value("manual@sbb.ch"));
     }
   }
+
 
   @Nested
   @DisplayName("POST v1/users")

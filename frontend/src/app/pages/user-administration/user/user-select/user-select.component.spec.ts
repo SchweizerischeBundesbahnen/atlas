@@ -103,41 +103,4 @@ describe('UserSelectComponent', () => {
       },
     ]);
   });
-
-  it('should bind the manual mail into the mail bindValue when a user has an override', async () => {
-    userAdministrationService.searchUsers.mockReturnValue(
-      of([
-        {
-          sbbUserId: 'user1',
-          permissions: new Set<Permission>(),
-          mail: 'azure@sbb.ch',
-          manualMailOverride: 'manual@sbb.ch',
-        },
-      ])
-    );
-    fixture.componentRef.setInput('searchMode', 'default');
-    component.search('testQuery');
-    fixture.detectChanges();
-
-    const val = await firstValueFrom(component.userSearchResults$);
-    expect(val[0].mail).toBe('manual@sbb.ch');
-  });
-
-  it('should bind the azure mail when a user has no override', async () => {
-    userAdministrationService.searchUsers.mockReturnValue(
-      of([
-        {
-          sbbUserId: 'user1',
-          permissions: new Set<Permission>(),
-          mail: 'azure@sbb.ch',
-        },
-      ])
-    );
-    fixture.componentRef.setInput('searchMode', 'default');
-    component.search('testQuery');
-    fixture.detectChanges();
-
-    const val = await firstValueFrom(component.userSearchResults$);
-    expect(val[0].mail).toBe('azure@sbb.ch');
-  });
 });

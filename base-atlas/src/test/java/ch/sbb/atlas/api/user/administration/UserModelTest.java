@@ -10,81 +10,45 @@ class UserModelTest {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
-  void shouldReturnManualMailAsEffectiveMailWhenManualMailIsSet() {
-    // Given
-    UserModel user = UserModel.builder()
-        .mail("azure@sbb.ch")
-        .manualMailOverride("manual@sbb.ch")
-        .build();
-
-    // When
-    String effectiveMail = user.getEffectiveMail();
-
-    // Then
-    assertThat(effectiveMail).isEqualTo("manual@sbb.ch");
-  }
-
-  @Test
-  void shouldReturnAzureMailAsEffectiveMailWhenManualMailIsNull() {
-    // Given
-    UserModel user = UserModel.builder()
-        .mail("azure@sbb.ch")
-        .manualMailOverride(null)
-        .build();
-
-    // When
-    String effectiveMail = user.getEffectiveMail();
-
-    // Then
-    assertThat(effectiveMail).isEqualTo("azure@sbb.ch");
-  }
-
-  @Test
-  void shouldReturnAzureMailAsEffectiveMailWhenManualMailIsBlank() {
-    // Given
-    UserModel user = UserModel.builder()
-        .mail("azure@sbb.ch")
-        .manualMailOverride("   ")
-        .build();
-
-    // When
-    String effectiveMail = user.getEffectiveMail();
-
-    // Then
-    assertThat(effectiveMail).isEqualTo("azure@sbb.ch");
-  }
-
-  @Test
-  void shouldReturnNullAsEffectiveMailWhenNeitherMailIsSet() {
-    // Given
-    UserModel user = UserModel.builder()
-        .mail(null)
-        .manualMailOverride(null)
-        .build();
-
-    // When
-    String effectiveMail = user.getEffectiveMail();
-
-    // Then
-    assertThat(effectiveMail).isNull();
-  }
-
-  @Test
-  void shouldNotSerializeEffectiveMail() {
+  void shouldSerializeBothMailAndOriginalMail() {
     // Given
     UserModel user = UserModel.builder()
         .sbbUserId("u111111")
-        .mail("azure@sbb.ch")
-        .manualMailOverride("manual@sbb.ch")
+        .mail("manual@sbb.ch")
+        .originalMail("original@sbb.ch")
         .build();
 
     // When
     String json = objectMapper.writeValueAsString(user);
 
     // Then
-    assertThat(json)
-        .contains("\"mail\"", "\"manualMailOverride\"")
-        .doesNotContain("effectiveMail");
+    assertThat(json).contains("\"mail\":\"manual@sbb.ch\"", "\"originalMail\":\"original@sbb.ch\"");
+  }
+
+  @Test
+  void shouldExposeOriginalMailAsSeparateFieldWhenOverrideIsSet() {
+    // Given
+    UserModel user = UserModel.builder()
+        .mail("manual@sbb.ch")
+        .originalMail("original@sbb.ch")
+        .build();
+
+    // Then
+    assertThat(user.getMail()).isEqualTo("manual@sbb.ch");
+    assertThat(user.getOriginalMail()).isEqualTo("original@sbb.ch");
+    assertThat(user.getMail()).isNotEqualTo(user.getOriginalMail());
+  }
+
+  @Test
+  void shouldHaveEqualMailAndOriginalMailWhenNoOverrideIsSet() {
+    // Given
+    UserModel user = UserModel.builder()
+        .mail("original@sbb.ch")
+        .originalMail("original@sbb.ch")
+        .build();
+
+    // Then
+    assertThat(user.getMail()).isEqualTo(user.getOriginalMail());
   }
 
 }

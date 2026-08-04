@@ -69,8 +69,8 @@ describe('UserService', () => {
     httpTesting.match({ method: 'GET' }).forEach((request) => {
       request.flush({
         displayName: 'Test (ITC)',
-        mail: 'azure@test.ch',
-        manualMailOverride: 'manual@test.ch',
+        mail: 'manual@test.ch',
+        originalMail: 'azure@test.ch',
         sbbUserId: 'e123456',
         permissions: [],
       });
@@ -95,6 +95,7 @@ describe('UserService', () => {
       request.flush({
         displayName: 'Test (ITC)',
         mail: 'azure@test.ch',
+        originalMail: 'azure@test.ch',
         sbbUserId: 'e123456',
         permissions: [],
       });

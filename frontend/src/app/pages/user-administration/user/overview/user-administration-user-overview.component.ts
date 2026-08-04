@@ -12,13 +12,10 @@ import { TableComponent } from '../../../../core/components/table/table.componen
 import { MatLabel } from '@angular/material/form-field';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { UserSelectComponent } from '../user-select/user-select.component';
-import {
-  BusinessOrganisationSelectComponent
-} from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
-import { UserMailHelper } from '../../../../core/util/user-mail.helper';
 
 @Component({
   selector: 'atlas-user-administration-overview',
@@ -101,7 +98,7 @@ export class UserAdministrationUserOverviewComponent {
       .pipe(
         tap((result) => {
           this.userPageResult = {
-            users: this.withEffectiveMail(result.objects!),
+            users: result.objects!,
             totalCount: result.totalCount!,
           };
           this.tableService.pageIndex = pagination.page;
@@ -120,7 +117,7 @@ export class UserAdministrationUserOverviewComponent {
     } else {
       this.userAdministrationService.getUser(selectedUser.sbbUserId).subscribe((user) => {
         if (Array.from(user.permissions).length > 0) {
-          this.userPageResult = { users: this.withEffectiveMail([user]), totalCount: 1 };
+          this.userPageResult = { users: [user], totalCount: 1 };
           this.tableService.pageIndex = 0;
         } else {
           this.userPageResult = { users: [], totalCount: 0 };
@@ -145,7 +142,7 @@ export class UserAdministrationUserOverviewComponent {
       .pipe(
         tap((result) => {
           this.userPageResult = {
-            users: this.withEffectiveMail(result.objects!),
+            users: result.objects!,
             totalCount: result.totalCount!,
           };
           this.tableService.pageIndex = pageIndex;
@@ -166,9 +163,5 @@ export class UserAdministrationUserOverviewComponent {
 
   cantonChanged(cantons: SwissCanton[]) {
     this.selectedCantonOptions = cantons;
-  }
-
-  private withEffectiveMail(users: User[]): User[] {
-    return users.map((user) => ({ ...user, mail: UserMailHelper.effectiveMail(user) }));
   }
 }

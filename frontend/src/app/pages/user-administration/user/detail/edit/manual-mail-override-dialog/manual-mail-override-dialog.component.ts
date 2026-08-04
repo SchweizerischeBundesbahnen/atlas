@@ -39,12 +39,11 @@ export class ManualMailOverrideDialogComponent {
   readonly data = inject<ManualMailOverrideDialogData>(MAT_DIALOG_DATA);
 
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
-  readonly azureMail = this.data.user.mail;
-  readonly hasExistingOverride =
-    !!this.data.user.manualMailOverride && this.data.user.manualMailOverride.trim().length > 0;
+  readonly originalMail = this.data.user.originalMail;
+  readonly hasExistingOverride = this.data.user.mail !== this.data.user.originalMail;
 
   form = new FormGroup({
-    manualMailOverride: new FormControl(this.data.user.manualMailOverride ?? null, this.emailValidator),
+    manualMailOverride: new FormControl(this.hasExistingOverride ? this.data.user.mail : null, this.emailValidator),
   });
 
   confirm(): void {

@@ -15,14 +15,14 @@ public class BulkImporterMailService {
 
   public void checkImporterHasMail() {
     UserModel currentUser = userAdministrationClient.getCurrentUser();
-    if (currentUser.getEffectiveMail() == null) {
+    if (currentUser.getMail() == null) {
       throw new ImporterMailNotFoundException(currentUser);
     }
   }
 
   public String getMailOfCurrentUser() {
     UserModel currentUser = userAdministrationClient.getCurrentUser();
-    return Objects.requireNonNull(currentUser.getEffectiveMail(),
+    return Objects.requireNonNull(currentUser.getMail(),
         "Mail of current user " + currentUser.getSbbUserId() + " is null");
   }
 }

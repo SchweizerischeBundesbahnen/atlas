@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
-import { ManualMailOverrideDialogComponent, ManualMailOverrideDialogData, } from './manual-mail-override-dialog.component';
+import {
+  ManualMailOverrideDialogComponent,
+  ManualMailOverrideDialogData,
+} from './manual-mail-override-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -12,8 +15,8 @@ import { DialogService } from '../../../../../../core/components/dialog/dialog.s
 
 const userWithManualMail: User = {
   sbbUserId: 'u123456',
-  mail: 'azure@sbb.ch',
-  manualMailOverride: 'manual@sbb.ch',
+  mail: 'manual@sbb.ch',
+  originalMail: 'azure@sbb.ch',
   permissions: new Set<Permission>(),
 };
 
@@ -67,7 +70,7 @@ describe('ManualMailOverrideDialogComponent', () => {
     });
 
     expect(fixture.componentInstance.form.controls.manualMailOverride.value).toBe('manual@sbb.ch');
-    expect(fixture.componentInstance.azureMail).toBe('azure@sbb.ch');
+    expect(fixture.componentInstance.originalMail).toBe('azure@sbb.ch');
   });
 
   it('should disable save when the entered mail is invalid', () => {
@@ -86,7 +89,12 @@ describe('ManualMailOverrideDialogComponent', () => {
     const fixture = createComponent({
       title: 'USER_ADMIN.MANUAL_MAIL_DIALOG.TITLE',
       message: 'USER_ADMIN.MANUAL_MAIL_DIALOG.HINT',
-      user: { sbbUserId: 'u123456', mail: 'azure@sbb.ch', permissions: new Set<Permission>() },
+      user: {
+        sbbUserId: 'u123456',
+        mail: 'azure@sbb.ch',
+        originalMail: 'azure@sbb.ch',
+        permissions: new Set<Permission>(),
+      },
     });
 
     expect(fixture.componentInstance.hasExistingOverride).toBe(false);
@@ -107,7 +115,7 @@ describe('ManualMailOverrideDialogComponent', () => {
   });
 
   it('should save the manual mail on confirm', () => {
-    const updatedUser: User = { ...userWithManualMail, manualMailOverride: 'updated@sbb.ch' };
+    const updatedUser: User = { ...userWithManualMail, mail: 'updated@sbb.ch' };
     userAdministrationService.updateManualMail.mockReturnValue(of(updatedUser));
     const fixture = createComponent({
       title: 'USER_ADMIN.MANUAL_MAIL_DIALOG.TITLE',
@@ -124,7 +132,12 @@ describe('ManualMailOverrideDialogComponent', () => {
   });
 
   it('should delete the manual mail when the input is cleared and confirmed', () => {
-    const updatedUser: User = { sbbUserId: 'u123456', mail: 'azure@sbb.ch', permissions: new Set<Permission>() };
+    const updatedUser: User = {
+      sbbUserId: 'u123456',
+      mail: 'azure@sbb.ch',
+      originalMail: 'azure@sbb.ch',
+      permissions: new Set<Permission>(),
+    };
     userAdministrationService.deleteManualMail.mockReturnValue(of(updatedUser));
     const fixture = createComponent({
       title: 'USER_ADMIN.MANUAL_MAIL_DIALOG.TITLE',
@@ -141,7 +154,12 @@ describe('ManualMailOverrideDialogComponent', () => {
   });
 
   it('should delete the manual mail via the delete button after confirming', () => {
-    const updatedUser: User = { sbbUserId: 'u123456', mail: 'azure@sbb.ch', permissions: new Set<Permission>() };
+    const updatedUser: User = {
+      sbbUserId: 'u123456',
+      mail: 'azure@sbb.ch',
+      originalMail: 'azure@sbb.ch',
+      permissions: new Set<Permission>(),
+    };
     dialogService.openDialogDataWithConfirmationResult.mockReturnValue(of(true));
     userAdministrationService.deleteManualMail.mockReturnValue(of(updatedUser));
     const fixture = createComponent({

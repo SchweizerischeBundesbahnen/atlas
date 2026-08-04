@@ -48,10 +48,10 @@ class TthDossierNotificationServiceTest {
   }
 
   @Test
-  void shouldSendNotificationToAzureMailWhenCreatorHasNoManualMail() {
+  void shouldSendNotificationToOriginalMailWhenCreatorHasNoManualMail() {
     // Given
     when(userAdministrationAdminClient.getUser(any())).thenReturn(
-        UserModel.builder().mail("user@canton.ch").build());
+        UserModel.builder().mail("user@canton.ch").originalMail("user@canton.ch").build());
     ArgumentCaptor<MailNotification> mailNotificationCaptor = ArgumentCaptor.forClass(MailNotification.class);
 
     // When
@@ -66,7 +66,7 @@ class TthDossierNotificationServiceTest {
   void shouldSendNotificationToManualMailWhenCreatorHasManualMail() {
     // Given
     when(userAdministrationAdminClient.getUser(any())).thenReturn(
-        UserModel.builder().mail("user@canton.ch").manualMailOverride("override@canton.ch").build());
+        UserModel.builder().mail("override@canton.ch").originalMail("user@canton.ch").build());
     ArgumentCaptor<MailNotification> mailNotificationCaptor = ArgumentCaptor.forClass(MailNotification.class);
 
     // When

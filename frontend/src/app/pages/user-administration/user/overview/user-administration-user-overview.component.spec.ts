@@ -100,21 +100,21 @@ describe('UserAdministrationUserOverviewComponent', () => {
     expect(tableService.pageSize).toBe(5);
   });
 
-  it('should display the manual mail override instead of the azure mail when set', () => {
+  it('should pass the mail already resolved by the backend through unchanged', () => {
     userAdministrationService.getUsers.mockClear();
     userAdministrationService.getUsers.mockReturnValue(
       of({
         objects: [
           {
             sbbUserId: 'u123456',
-            mail: 'azure.mail@sbb.ch',
-            manualMailOverride: 'override.mail@sbb.ch',
+            mail: 'override.mail@sbb.ch',
+            originalMail: 'azure.mail@sbb.ch',
             permissions: new Set<Permission>(),
           },
           {
             sbbUserId: 'e654321',
             mail: 'azure-only.mail@sbb.ch',
-            manualMailOverride: '',
+            originalMail: 'azure-only.mail@sbb.ch',
             permissions: new Set<Permission>(),
           },
         ],
@@ -130,12 +130,12 @@ describe('UserAdministrationUserOverviewComponent', () => {
     ]);
   });
 
-  it('should display the effective mail for a single user fetched via onUserFilterChanged', () => {
+  it('should pass the mail for a single user fetched via onUserFilterChanged through unchanged', () => {
     userAdministrationService.getUser.mockReturnValue(
       of({
         sbbUserId: 'u123456',
-        mail: 'azure.mail@sbb.ch',
-        manualMailOverride: 'override.mail@sbb.ch',
+        mail: 'override.mail@sbb.ch',
+        originalMail: 'azure.mail@sbb.ch',
         permissions: new Set<Permission>([
           {
             role: ApplicationRole.Reader,

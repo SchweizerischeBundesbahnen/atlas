@@ -343,6 +343,7 @@
     "FIRST_NAME": "Nome",
     "MAIL": "Indirizzo e-mail",
     "MANUAL_MAIL": "e-mail manuale",
+    "ORIGINAL_MAIL": "Indirizzo e-mail di sistema",
     "EDIT_MANUAL_MAIL": "Modifica e-mail",
     "MANUAL_MAIL_DIALOG": {
       "TITLE": "Modifica e-mail manuale",

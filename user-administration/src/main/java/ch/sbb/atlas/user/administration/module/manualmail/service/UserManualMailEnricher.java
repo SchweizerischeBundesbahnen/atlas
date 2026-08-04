@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +25,13 @@ public class UserManualMailEnricher {
         .entrySet().stream()
         .collect(Collectors.toMap(entry -> entry.getKey().toLowerCase(), Map.Entry::getValue));
 
-    users.forEach(user -> user.setManualMailOverride(manualMailsByLowerCaseUserId.get(user.getSbbUserId())));
+    users.forEach(user -> {
+      user.setOriginalMail(user.getMail());
+      String manualMail = manualMailsByLowerCaseUserId.get(user.getSbbUserId());
+      if (StringUtils.isNotBlank(manualMail)) {
+        user.setMail(manualMail);
+      }
+    });
     return users;
   }
 

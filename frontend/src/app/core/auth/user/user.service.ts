@@ -6,7 +6,6 @@ import { User } from './user';
 import { User as UserModel } from '../../../api/model/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { UserMailHelper } from '../../util/user-mail.helper';
 
 @Injectable({
   providedIn: 'root',
@@ -60,7 +59,7 @@ export class UserService {
       .pipe(
         tap((response) => {
           this.currentUser!.permissions = response.permissions ? Array.from(response.permissions) : [];
-          this.currentUser!.email = UserMailHelper.effectiveMail(response)!;
+          this.currentUser!.email = response.mail!;
           this.permissionsLoaded.next();
           this.userChanged.next();
         }),

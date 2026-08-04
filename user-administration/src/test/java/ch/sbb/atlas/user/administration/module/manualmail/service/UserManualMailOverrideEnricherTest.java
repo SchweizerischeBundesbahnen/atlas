@@ -25,7 +25,7 @@ class UserManualMailOverrideEnricherTest {
   }
 
   @Test
-  void shouldEnrichUserPageWithManualMailsInSingleQuery() {
+  void shouldSetMailToManualMailAndKeepOriginalMailWhenOverrideExists() {
     // Given
     UserModel user1 = UserModel.builder().sbbUserId("u111111").mail("one@sbb.ch").build();
     UserModel user2 = UserModel.builder().sbbUserId("u222222").mail("two@sbb.ch").build();
@@ -36,11 +36,12 @@ class UserManualMailOverrideEnricherTest {
     List<UserModel> enriched = userManualMailEnricher.enrich(List.of(user1, user2));
 
     // Then
-    assertThat(enriched).extracting(UserModel::getManualMailOverride).containsExactly("manual-one@sbb.ch", null);
+    assertThat(enriched).extracting(UserModel::getMail).containsExactly("manual-one@sbb.ch", "two@sbb.ch");
+    assertThat(enriched).extracting(UserModel::getOriginalMail).containsExactly("one@sbb.ch", "two@sbb.ch");
   }
 
   @Test
-  void shouldLeaveManualMailNullWhenNoOverrideExists() {
+  void shouldLeaveMailEqualToOriginalMailWhenNoOverrideExists() {
     // Given
     UserModel user = UserModel.builder().sbbUserId("u333333").mail("three@sbb.ch").build();
     doReturn(Map.of()).when(userManualMailServiceMock).getMailsByUserIds(List.of("u333333"));
@@ -49,7 +50,8 @@ class UserManualMailOverrideEnricherTest {
     UserModel enriched = userManualMailEnricher.enrich(user);
 
     // Then
-    assertThat(enriched.getManualMailOverride()).isNull();
+    assertThat(enriched.getMail()).isEqualTo("three@sbb.ch");
+    assertThat(enriched.getOriginalMail()).isEqualTo("three@sbb.ch");
   }
 
 }

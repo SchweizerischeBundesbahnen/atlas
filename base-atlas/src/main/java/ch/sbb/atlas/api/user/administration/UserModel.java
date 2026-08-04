@@ -2,7 +2,6 @@ package ch.sbb.atlas.api.user.administration;
 
 import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
 import ch.sbb.atlas.redact.Redacted;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
@@ -11,7 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import org.apache.commons.lang3.StringUtils;
 
 @Builder(toBuilder = true)
 @Data
@@ -35,13 +33,14 @@ public class UserModel implements UserAdministrationEvent {
   private String firstName;
 
   @Redacted
-  @Schema(description = "User E-Mail address (from Azure)", example = "example@sbb.ch")
+  @Schema(description = "Effective E-Mail address: the manually maintained override if one is "
+      + "set, otherwise the original address from the source system.", example = "example@sbb.ch")
   private String mail;
 
   @Redacted
-  @Schema(description = "Manually maintained E-Mail address. Overrides the Azure E-Mail address "
-      + "(mail) when set, both for mail delivery and for display.", example = "example@sbb.ch")
-  private String manualMailOverride;
+  @Schema(description = "Original, unmodified E-Mail address from the source system. Differs "
+      + "from mail exactly when a manual override is currently active.", example = "example@sbb.ch")
+  private String originalMail;
 
   @Redacted
   @Schema(description = "User display name (azure)", example = "Example User (IT-PTR-CEN2-YPT)")
@@ -59,17 +58,4 @@ public class UserModel implements UserAdministrationEvent {
     return getSbbUserId();
   }
 
-  /**
-   * The manually maintained mail address always takes precedence over the Azure mail address.
-   * Not serialized on purpose (see {@link ch.sbb.atlas.redact.RedactAspect}): redaction works by
-   * reflecting over annotated fields, so a transported derived getter would silently bypass it.
-   * Consumers derive the effective mail from the two transported fields ({@link #mail} and
-   * {@link #manualMailOverride}) themselves.
-   */
-  @JsonIgnore
-  @Schema(hidden = true)
-  @Redacted
-  public String getEffectiveMail() {
-    return StringUtils.isNotBlank(manualMailOverride) ? manualMailOverride : mail;
-  }
 }

@@ -25,13 +25,13 @@ export interface User {
      */
     firstName?: string;
     /**
-     * User E-Mail address (from Azure)
+     * Effective E-Mail address: the manually maintained override if one is set, otherwise the original address from the source system.
      */
     mail?: string;
     /**
-     * Manually maintained E-Mail address. Overrides the Azure E-Mail address (mail) when set, both for mail delivery and for display.
+     * Original, unmodified E-Mail address from the source system. Differs from mail exactly when a manual override is currently active.
      */
-    manualMailOverride?: string;
+    originalMail?: string;
     /**
      * User display name (azure)
      */

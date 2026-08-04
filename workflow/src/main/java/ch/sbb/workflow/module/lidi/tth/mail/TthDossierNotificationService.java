@@ -34,7 +34,7 @@ public class TthDossierNotificationService extends BaseNotificationService {
   }
 
   public void notifyCantonAboutNewAnswer(TthDossier dossier) {
-    String creatorMail = userAdministrationAdminClient.getUser(dossier.getCreator()).getEffectiveMail();
+    String creatorMail = userAdministrationAdminClient.getUser(dossier.getCreator()).getMail();
 
     MailNotification mailNotification = MailNotification.builder()
         .to(List.of(creatorMail))

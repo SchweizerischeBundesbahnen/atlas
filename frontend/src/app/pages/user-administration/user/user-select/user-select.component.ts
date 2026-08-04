@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { map, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ApplicationType, User } from '../../../../api';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import { UserSelectFormatPipe } from './user-select-format.pipe';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 import { TthUserAdministrationService } from '../../../../api/service/user-administration/tth-user-administration.service';
-import { UserMailHelper } from '../../../../core/util/user-mail.helper';
 
 export type SearchMode = 'default' | 'inAtlas' | 'boDossierAnsweringUsers';
 
@@ -42,27 +41,14 @@ export class UserSelectComponent implements OnInit {
     }
     switch (this.searchMode()) {
       case 'default':
-        this.userSearchResults$ = this.userService.searchUsers(searchQuery).pipe(map(withEffectiveMail));
+        this.userSearchResults$ = this.userService.searchUsers(searchQuery);
         break;
       case 'inAtlas':
-        this.userSearchResults$ = this.userService
-          .searchUsersInAtlas(searchQuery, this.applicationType!)
-          .pipe(map(withEffectiveMail));
+        this.userSearchResults$ = this.userService.searchUsersInAtlas(searchQuery, this.applicationType!);
         break;
       case 'boDossierAnsweringUsers':
-        this.userSearchResults$ = this.tthUserService
-          .searchBoDossierAnsweringUsers(searchQuery)
-          .pipe(map(withEffectiveMail));
+        this.userSearchResults$ = this.tthUserService.searchBoDossierAnsweringUsers(searchQuery);
         break;
     }
   }
-}
-
-/**
- * The `mail` bindValue used by ng-select (see `atlas-user-select.html`) must always resolve to
- * the effective mail (manual override wins over Azure), so the picker never binds a stale/wrong
- * Azure address (DR-10, AK-4).
- */
-function withEffectiveMail(users: User[]): User[] {
-  return users.map((user) => ({ ...user, mail: UserMailHelper.effectiveMail(user) }));
 }
