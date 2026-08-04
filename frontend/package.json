@@ -98,7 +98,7 @@
     "eslint-config-prettier": "10.1.8",
     "jiti": "2.7.0",
     "jsdom": "30.0.1",
-    "lint-staged": "17.2.0",
+    "lint-staged": "17.3.0",
     "ng-packagr": "22.1.0",
     "prettier": "3.9.6",
     "typescript": "6.0.3",
