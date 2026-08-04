@@ -3,10 +3,15 @@ spring:
     vault:
       enabled: false
   datasource:
-    url: jdbc:postgresql://localhost:5433/timetable-hearing?currentSchema=timetable_hearing
+    url: jdbc:postgresql://localhost:5444/timetable-hearing?currentSchema=timetable_hearing
     username: user
     password: pwd
     driver-class-name: org.postgresql.Driver
+    lidi:
+      url: jdbc:postgresql://localhost:5433/line-directory?currentSchema=line_directory
+      username: user
+      password: pwd
+      driver-class-name: org.postgresql.Driver
   application:
     name: timetable-hearing
   jpa:
