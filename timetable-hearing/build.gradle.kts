@@ -40,7 +40,7 @@ dependencies {
     implementation(project(":user-administration-security"))
     implementation(project(":kafka"))
 
-    runtimeOnly("org.postgresql:postgresql")
+    implementation("org.postgresql:postgresql")
     annotationProcessor("org.hibernate.orm:hibernate-processor")
 
     // Test dependencies
