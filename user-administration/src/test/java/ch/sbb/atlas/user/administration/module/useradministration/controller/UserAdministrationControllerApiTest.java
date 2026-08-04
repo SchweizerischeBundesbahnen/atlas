@@ -263,17 +263,17 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
           .andExpect(jsonPath("$.mail").value("manual@sbb.ch"))
-          .andExpect(jsonPath("$.originalMail").value("u123456@yb.com"));
+          .andExpect(jsonPath("$.originalMail").value("u123456@sbb.ch"));
     }
 
     @Test
     void shouldFindUserByAzureMailWhenNoManualMailExists() throws Exception {
       // when & then
-      mvc.perform(get("/v1/users/mail?mail=u123456@yb.com"))
+      mvc.perform(get("/v1/users/mail?mail=u123456@sbb.ch"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
-          .andExpect(jsonPath("$.mail").value("u123456@yb.com"))
-          .andExpect(jsonPath("$.originalMail").value("u123456@yb.com"));
+          .andExpect(jsonPath("$.mail").value("u123456@sbb.ch"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@sbb.ch"));
     }
 
     @Test
@@ -302,7 +302,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
           .andExpect(jsonPath("$.mail").value("manual@sbb.ch"))
-          .andExpect(jsonPath("$.originalMail").value("u123456@yb.com"));
+          .andExpect(jsonPath("$.originalMail").value("u123456@sbb.ch"));
     }
 
     @Test
@@ -314,8 +314,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       mvc.perform(delete("/v1/users/u123456/manual-mail-override"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
-          .andExpect(jsonPath("$.mail").value("u123456@yb.com"))
-          .andExpect(jsonPath("$.originalMail").value("u123456@yb.com"));
+          .andExpect(jsonPath("$.mail").value("u123456@sbb.ch"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@sbb.ch"));
     }
 
     @Test
@@ -342,7 +342,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       mvc.perform(get("/v1/users").queryParam("page", "0").queryParam("size", "5"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].mail").value("manual@sbb.ch"))
-          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].originalMail").value("u123456@yb.com"));
+          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].originalMail").value("u123456@sbb.ch"));
     }
 
     @Test
@@ -356,7 +356,6 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
           .andExpect(jsonPath("$.mail").value("manual@sbb.ch"));
     }
   }
-
 
   @Nested
   @DisplayName("POST v1/users")
