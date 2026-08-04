@@ -93,7 +93,7 @@
     "cypress": "15.19.0",
     "cypress-failed-log": "2.10",
     "cypress-high-resolution": "1.0",
-    "cypress-mochawesome-reporter": "4.0.2",
+    "cypress-mochawesome-reporter": "5.0.0",
     "eslint": "10.8.0",
     "eslint-config-prettier": "10.1.8",
     "jiti": "2.7.0",
