@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity;
 
-import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseEntity;
@@ -33,7 +32,6 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -73,7 +71,6 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
   @AtlasVersionableProperty
   private String designation;
 
-  @Pattern(regexp = AtlasCharacterSetsRegex.DESIGNATION_OPERATIONAL)
   @AtlasVersionableProperty
   private String designationOperational;
 
