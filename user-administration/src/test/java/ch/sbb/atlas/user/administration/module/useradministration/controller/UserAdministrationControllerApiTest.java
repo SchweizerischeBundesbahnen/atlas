@@ -291,13 +291,13 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   }
 
   @Nested
-  @DisplayName("PUT/DELETE v1/users/{userId}/manual-mail-override")
+  @DisplayName("PUT/DELETE v1/users/{userId}/mail")
   class ManualMail {
 
     @Test
     void shouldSetManualMailForUser() throws Exception {
       // when & then
-      mvc.perform(put("/v1/users/u123456/manual-mail-override").contentType(contentType)
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
               .content(mapper.writeValueAsString(new ManualMailOverrideModel("manual@sbb.ch"))))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
@@ -311,7 +311,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
 
       // when & then
-      mvc.perform(delete("/v1/users/u123456/manual-mail-override"))
+      mvc.perform(delete("/v1/users/u123456/mail"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("u123456"))
           .andExpect(jsonPath("$.mail").value("u123456@sbb.ch"))
@@ -320,7 +320,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
     @Test
     void shouldRejectInvalidManualMailFormat() throws Exception {
-      mvc.perform(put("/v1/users/u123456/manual-mail-override").contentType(contentType)
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
               .content(mapper.writeValueAsString(new ManualMailOverrideModel("not-a-mail"))))
           .andExpect(status().isBadRequest());
     }
@@ -328,7 +328,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     @Test
     @WithMockJwtAuthentication(role = MockRole.STANDARD)
     void shouldForbidManualMailUpdateForNonAdmin() throws Exception {
-      mvc.perform(put("/v1/users/u123456/manual-mail-override").contentType(contentType)
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
               .content(mapper.writeValueAsString(new ManualMailOverrideModel("manual@sbb.ch"))))
           .andExpect(status().isForbidden());
     }

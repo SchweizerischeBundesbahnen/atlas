@@ -77,13 +77,13 @@ public interface UserAdministrationApiV1 {
   void syncPermissions();
 
   @AdminOnly
-  @PutMapping(BASE_PATH + "/{userId}/manual-mail-override")
+  @PutMapping(BASE_PATH + "/{userId}/mail")
   @Operation(description = "Set or replace the manually maintained E-Mail address of a user, "
       + "overriding the Azure E-Mail address")
   UserModel updateManualMailOverride(@PathVariable String userId, @RequestBody @Valid ManualMailOverrideModel manualMail);
 
   @AdminOnly
-  @DeleteMapping(BASE_PATH + "/{userId}/manual-mail-override")
+  @DeleteMapping(BASE_PATH + "/{userId}/mail")
   @Operation(description = "Remove the manually maintained E-Mail address of a user, so the "
       + "Azure E-Mail address applies again")
   UserModel deleteManualMailOverride(@PathVariable String userId);

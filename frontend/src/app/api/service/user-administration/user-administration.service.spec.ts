@@ -121,12 +121,12 @@ describe('UserAdministrationService', () => {
     service.updateManualMail('user-id', 'manual@sbb.ch');
 
     expect(apiService.validateParams).toHaveBeenCalledExactlyOnceWith({ userId: 'user-id' });
-    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(`${USER_BASE_PATH}/user-id/manual-mail-override`, {
+    expect(apiService.put).toHaveBeenCalledExactlyOnceWith(`${USER_BASE_PATH}/user-id/mail`, {
       mail: 'manual@sbb.ch',
     });
 
     service.deleteManualMail('user-id');
 
-    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith(`${USER_BASE_PATH}/user-id/manual-mail-override`);
+    expect(apiService.delete).toHaveBeenCalledExactlyOnceWith(`${USER_BASE_PATH}/user-id/mail`);
   });
 });

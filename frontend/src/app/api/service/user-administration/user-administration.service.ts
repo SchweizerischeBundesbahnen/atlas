@@ -74,11 +74,11 @@ export class UserAdministrationService {
   updateManualMail(userId: string, mail: string): Observable<User> {
     this.atlasApiService.validateParams({ userId });
     const manualMailOverride: ManualMailOverride = { mail };
-    return this.atlasApiService.put(`${this.USER_BASE_PATH}/${userId}/manual-mail-override`, manualMailOverride);
+    return this.atlasApiService.put(`${this.USER_BASE_PATH}/${userId}/mail`, manualMailOverride);
   }
 
   deleteManualMail(userId: string): Observable<User> {
     this.atlasApiService.validateParams({ userId });
-    return this.atlasApiService.delete(`${this.USER_BASE_PATH}/${userId}/manual-mail-override`);
+    return this.atlasApiService.delete(`${this.USER_BASE_PATH}/${userId}/mail`);
   }
 }
