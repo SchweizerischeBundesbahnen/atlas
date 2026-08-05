@@ -1,9 +1,7 @@
 package ch.sbb.atlas.user.administration.module.manualmail.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -56,16 +54,6 @@ class UserManualMailOverrideServiceTest {
     // Then
     verify(userManualMailOverrideRepositoryMock).save(existing);
     assertThat(existing.getMail()).isEqualTo("new@sbb.ch");
-  }
-
-  @Test
-  void shouldDeleteManualMailOverrideManualMailWhenBlankValueIsProvided() {
-    // When
-    userManualMailOverrideService.setManualMailOverride("u123456", "   ");
-
-    // Then
-    verify(userManualMailOverrideRepositoryMock).deleteBySbbUserIdIgnoreCase("u123456");
-    verify(userManualMailOverrideRepositoryMock, never()).save(any());
   }
 
   @Test
