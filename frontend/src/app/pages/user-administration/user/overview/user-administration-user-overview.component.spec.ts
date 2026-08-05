@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ApplicationRole, ApplicationType, Permission } from '../../../../api';
+import { ApplicationRole, ApplicationType, Permission, SwissCanton } from '../../../../api';
 import { UserAdministrationUserOverviewComponent } from './user-administration-user-overview.component';
 import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { TableService } from '../../../../core/components/table/table.service';
@@ -306,6 +306,52 @@ describe('UserAdministrationUserOverviewComponent', () => {
     fixture.detectChanges();
     const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
     expect(button.disabled).toBe(true);
+  });
+
+  it('should disable the copy button when no filter criteria are set', () => {
+    // Given: results exist, but neither application, business organisation nor canton is selected
+    component.selectedSearch = 'FILTER';
+    component.userPageResult = { users: [], totalCount: 42 };
+
+    // When
+    fixture.detectChanges();
+
+    // Then
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(true);
+  });
+
+  it('should enable the copy button when an application type is selected', () => {
+    component.selectedSearch = 'FILTER';
+    component.userPageResult = { users: [], totalCount: 42 };
+    component.applicationChanged([ApplicationType.Lidi]);
+
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(false);
+  });
+
+  it('should enable the copy button when a business organisation is selected', () => {
+    component.selectedSearch = 'FILTER';
+    component.userPageResult = { users: [], totalCount: 42 };
+    component.boForm.get('boSearch')?.setValue('ch:1:sboid:100000');
+
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(false);
+  });
+
+  it('should enable the copy button when a canton is selected', () => {
+    component.selectedSearch = 'FILTER_CANTON';
+    component.userPageResult = { users: [], totalCount: 42 };
+    component.cantonChanged([SwissCanton.Bern]);
+
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(false);
   });
 
   it('should send the same filter params as filterChanged for FILTER mode', () => {

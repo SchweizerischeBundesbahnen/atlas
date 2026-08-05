@@ -78,6 +78,14 @@ export class UserAdministrationUserOverviewComponent {
 
   copyingEmails = false;
 
+  get hasFilterCriteria(): boolean {
+    return (
+      this.selectedApplicationOptions.length > 0 ||
+      this.selectedCantonOptions.length > 0 ||
+      !!this.boForm.get(this.boSearchCtrlName)?.value
+    );
+  }
+
   reloadTableWithCurrentSettings(): void {
     if (this.selectedSearch === 'USER') {
       this.onUserFilterChanged(this.userSearchForm.get(this.userSearchCtrlName)?.value, this.tableService.pageIndex);

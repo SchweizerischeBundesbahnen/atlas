@@ -82,7 +82,7 @@
     <div class="mb-3">
       <button
         class="atlas-primary-btn"
-        [disabled]="copyingEmails || userPageResult.totalCount === 0"
+        [disabled]="copyingEmails || userPageResult.totalCount === 0 || !hasFilterCriteria"
         (click)="copyFilteredEmails()"
       >
         {{ 'USER_ADMIN.COPY_EMAILS' | translate }}
