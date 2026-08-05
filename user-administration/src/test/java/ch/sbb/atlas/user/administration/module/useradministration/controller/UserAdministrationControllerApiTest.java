@@ -215,6 +215,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     private static final String SBOID = "ch:1:sboid:20009";
 
     private void saveUserWithBoRestriction(String sbbUserId, ApplicationRole role) {
+      userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(sbbUserId, ApplicationType.SEPODI)
+          .ifPresent(userPermissionRepository::delete);
       UserPermission userPermission = UserPermission.builder()
           .sbbUserId(sbbUserId)
           .role(role)
@@ -238,7 +240,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         sbbUserIds.add(sbbUserId);
         saveUserWithBoRestriction(sbbUserId, ApplicationRole.WRITER);
       }
-      when(graphClient.users()).thenReturn(buildGraphApiUserResult(sbbUserIds));
+      UsersRequestBuilder users = buildGraphApiUserResult(sbbUserIds);
+      when(graphClient.users()).thenReturn(users);
 
       // when & then
       mvc.perform(get("/v1/users/emails")
@@ -255,7 +258,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     void shouldPreferManualMailOverrideOverAzureMail() throws Exception {
       // given
       saveUserWithBoRestriction("u123456", ApplicationRole.WRITER);
-      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
 
       // when & then
       mvc.perform(get("/v1/users/emails")
@@ -289,9 +292,10 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       // given: two sbbUserIds sharing the same manually maintained mail address
       saveUserWithBoRestriction("u123456", ApplicationRole.WRITER);
       saveUserWithBoRestriction("u654321", ApplicationRole.WRITER);
-      when(graphClient.users()).thenReturn(buildGraphApiUserResult(List.of("u123456", "u654321")));
-      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("shared@sbb.ch").build());
-      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u654321").mail("shared@sbb.ch").build());
+      UsersRequestBuilder users = buildGraphApiUserResult(List.of("u123456", "u654321"));
+      when(graphClient.users()).thenReturn(users);
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("shared@sbb.ch").build());
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u654321").mail("shared@sbb.ch").build());
 
       // when & then
       mvc.perform(get("/v1/users/emails")
