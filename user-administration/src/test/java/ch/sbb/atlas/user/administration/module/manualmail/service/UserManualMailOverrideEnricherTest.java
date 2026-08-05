@@ -16,12 +16,12 @@ class UserManualMailOverrideEnricherTest {
   private UserManualMailEnricher userManualMailEnricher;
 
   @Mock
-  private UserManualMailService userManualMailServiceMock;
+  private UserManualMailOverrideService userManualMailOverrideServiceMock;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    userManualMailEnricher = new UserManualMailEnricher(userManualMailServiceMock);
+    userManualMailEnricher = new UserManualMailEnricher(userManualMailOverrideServiceMock);
   }
 
   @Test
@@ -29,7 +29,7 @@ class UserManualMailOverrideEnricherTest {
     // Given
     UserModel user1 = UserModel.builder().sbbUserId("u111111").mail("one@sbb.ch").build();
     UserModel user2 = UserModel.builder().sbbUserId("u222222").mail("two@sbb.ch").build();
-    doReturn(Map.of("u111111", "manual-one@sbb.ch")).when(userManualMailServiceMock)
+    doReturn(Map.of("u111111", "manual-one@sbb.ch")).when(userManualMailOverrideServiceMock)
         .getMailsByUserIds(List.of("u111111", "u222222"));
 
     // When
@@ -44,7 +44,7 @@ class UserManualMailOverrideEnricherTest {
   void shouldLeaveMailEqualToOriginalMailWhenNoOverrideExists() {
     // Given
     UserModel user = UserModel.builder().sbbUserId("u333333").mail("three@sbb.ch").build();
-    doReturn(Map.of()).when(userManualMailServiceMock).getMailsByUserIds(List.of("u333333"));
+    doReturn(Map.of()).when(userManualMailOverrideServiceMock).getMailsByUserIds(List.of("u333333"));
 
     // When
     UserModel enriched = userManualMailEnricher.enrich(user);

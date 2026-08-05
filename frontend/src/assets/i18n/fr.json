@@ -342,14 +342,14 @@
     "LAST_NAME": "Nom",
     "FIRST_NAME": "Prénom",
     "MAIL": "Adresse e-mail",
-    "MANUAL_MAIL": "e-mail manuel",
+    "MANUAL_MAIL": "nouvel e-mail",
     "ORIGINAL_MAIL": "Adresse e-mail système",
     "EDIT_MANUAL_MAIL": "Adapter l'e-mail",
     "MANUAL_MAIL_DIALOG": {
       "TITLE": "Adapter l'e-mail manuel",
       "HINT": "Cette adresse e-mail est toujours prioritaire sur l'adresse reprise depuis AD.",
       "AZURE_MAIL": "E-mail depuis Azure",
-      "DELETE_CONFIRM": "Voulez-vous vraiment supprimer l'e-mail manuel ?"
+      "DELETE_CONFIRM": "Souhaitez-vous vraiment supprimer cet e-mail qui a été écrasé?"
     },
     "USER_ID": "ID d'utilisateur",
     "ACCOUNT_STATUS": "Statut du compte",

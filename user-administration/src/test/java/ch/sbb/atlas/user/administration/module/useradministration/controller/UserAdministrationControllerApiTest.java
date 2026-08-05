@@ -25,7 +25,7 @@ import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.user.administration.module.clientcredential.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.module.clientcredential.repository.ClientCredentialPermissionRepository;
 import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMailOverride;
-import ch.sbb.atlas.user.administration.module.manualmail.repository.UserManualMailRepository;
+import ch.sbb.atlas.user.administration.module.manualmail.repository.UserManualMailOverrideRepository;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.service.UserPermissionRepository;
 import com.microsoft.graph.models.User;
@@ -58,7 +58,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   private ClientCredentialPermissionRepository clientCredentialPermissionRepository;
 
   @Autowired
-  private UserManualMailRepository userManualMailRepository;
+  private UserManualMailOverrideRepository userManualMailOverrideRepository;
 
   @BeforeEach
   void setUp() {
@@ -97,7 +97,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   void tearDown() {
     userPermissionRepository.deleteAll();
     clientCredentialPermissionRepository.deleteAll();
-    userManualMailRepository.deleteAll();
+    userManualMailOverrideRepository.deleteAll();
   }
 
   @Nested
@@ -256,7 +256,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     @Test
     void shouldFindUserByManualMail() throws Exception {
       // given
-      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
 
       // when & then
       mvc.perform(get("/v1/users/mail?mail=manual@sbb.ch"))
@@ -280,7 +280,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     void shouldPreferManualMailMatchOverAzureMatch() throws Exception {
       // given: "u123456@yb.com" is u123456's real Azure mail (see shouldFindUserByAzureMailWhenNoManualMailExists),
       // but e123456 has manually claimed the very same address as an override.
-      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("e123456").mail("u123456@yb.com").build());
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("e123456").mail("u123456@yb.com").build());
 
       // when & then: the manual-mail-override owner (e123456) wins, not the Azure owner (u123456)
       mvc.perform(get("/v1/users/mail?mail=u123456@yb.com"))
@@ -308,7 +308,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     @Test
     void shouldDeleteManualMailForUser() throws Exception {
       // given
-      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
 
       // when & then
       mvc.perform(delete("/v1/users/u123456/mail"))
@@ -336,7 +336,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     @Test
     void shouldReturnManualMailInUserOverview() throws Exception {
       // given
-      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
 
       // when & then
       mvc.perform(get("/v1/users").queryParam("page", "0").queryParam("size", "5"))
@@ -348,7 +348,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     @Test
     void shouldReturnManualMailForCurrentUser() throws Exception {
       // given: the default mocked JWT identifies the current user as "e123456" (see IntegrationTest)
-      userManualMailRepository.save(UserManualMailOverride.builder().sbbUserId("e123456").mail("manual@sbb.ch").build());
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("e123456").mail("manual@sbb.ch").build());
 
       // when & then
       mvc.perform(get("/v1/users/current"))

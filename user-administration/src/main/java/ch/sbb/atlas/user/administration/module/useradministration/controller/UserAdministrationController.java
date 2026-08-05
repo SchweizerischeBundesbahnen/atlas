@@ -16,7 +16,7 @@ import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
 import ch.sbb.atlas.user.administration.module.clientcredential.mapper.ClientCredentialMapper;
 import ch.sbb.atlas.user.administration.module.clientcredential.service.ClientCredentialAdministrationService;
 import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailEnricher;
-import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailService;
+import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailOverrideService;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.exception.RestrictionWithoutTypeException;
 import ch.sbb.atlas.user.administration.module.useradministration.mapper.UserPermissionMapper;
@@ -42,7 +42,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   private final UserAdministrationService userAdministrationService;
   private final ClientCredentialAdministrationService clientCredentialAdministrationService;
   private final UserPermissionDistributor userPermissionDistributor;
-  private final UserManualMailService userManualMailService;
+  private final UserManualMailOverrideService userManualMailOverrideService;
   private final UserManualMailEnricher userManualMailEnricher;
 
   private final GraphApiService graphApiService;
@@ -77,7 +77,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   @Override
   public UserModel getUserByMail(String mail) {
-    return userManualMailService.findUserIdByMail(mail)
+    return userManualMailOverrideService.findUserIdByMail(mail)
         .map(this::getUser)
         .orElseGet(() -> {
           UserModel resolved = graphApiService.searchUserByMail(mail)
@@ -172,13 +172,13 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   @Override
   public UserModel updateManualMailOverride(String userId, ManualMailOverrideModel manualMail) {
-    userManualMailService.upsert(userId, manualMail.getMail());
+    userManualMailOverrideService.setManualMailOverride(userId, manualMail.getMail());
     return getUser(userId);
   }
 
   @Override
   public UserModel deleteManualMailOverride(String userId) {
-    userManualMailService.delete(userId);
+    userManualMailOverrideService.deleteManualMailOverride(userId);
     return getUser(userId);
   }
 

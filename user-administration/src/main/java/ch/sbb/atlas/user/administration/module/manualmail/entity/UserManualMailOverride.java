@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.module.manualmail.entity;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import jakarta.persistence.Entity;
@@ -7,8 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,7 +42,7 @@ public class UserManualMailOverride extends BaseEntity {
   private String sbbUserId;
 
   @NotEmpty
-  @Email
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String mail;
 

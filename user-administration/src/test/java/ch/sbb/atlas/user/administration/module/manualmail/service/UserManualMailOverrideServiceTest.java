@@ -8,7 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMailOverride;
-import ch.sbb.atlas.user.administration.module.manualmail.repository.UserManualMailRepository;
+import ch.sbb.atlas.user.administration.module.manualmail.repository.UserManualMailOverrideRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,28 +18,28 @@ import org.mockito.MockitoAnnotations;
 
 class UserManualMailOverrideServiceTest {
 
-  private UserManualMailService userManualMailService;
+  private UserManualMailOverrideService userManualMailOverrideService;
 
   @Mock
-  private UserManualMailRepository userManualMailRepositoryMock;
+  private UserManualMailOverrideRepository userManualMailOverrideRepositoryMock;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    userManualMailService = new UserManualMailService(userManualMailRepositoryMock);
+    userManualMailOverrideService = new UserManualMailOverrideService(userManualMailOverrideRepositoryMock);
   }
 
   @Test
   void shouldCreateManualMailWhenNoneExists() {
     // Given
-    doReturn(Optional.empty()).when(userManualMailRepositoryMock).findBySbbUserIdIgnoreCase("u123456");
+    doReturn(Optional.empty()).when(userManualMailOverrideRepositoryMock).findBySbbUserIdIgnoreCase("u123456");
     ArgumentCaptor<UserManualMailOverride> captor = ArgumentCaptor.forClass(UserManualMailOverride.class);
 
     // When
-    userManualMailService.upsert("u123456", "manual@sbb.ch");
+    userManualMailOverrideService.setManualMailOverride("u123456", "manual@sbb.ch");
 
     // Then
-    verify(userManualMailRepositoryMock).save(captor.capture());
+    verify(userManualMailOverrideRepositoryMock).save(captor.capture());
     assertThat(captor.getValue().getSbbUserId()).isEqualTo("u123456");
     assertThat(captor.getValue().getMail()).isEqualTo("manual@sbb.ch");
   }
@@ -48,33 +48,33 @@ class UserManualMailOverrideServiceTest {
   void shouldUpdateExistingManualMailWhenAlreadyPresent() {
     // Given
     UserManualMailOverride existing = UserManualMailOverride.builder().sbbUserId("u123456").mail("old@sbb.ch").build();
-    doReturn(Optional.of(existing)).when(userManualMailRepositoryMock).findBySbbUserIdIgnoreCase("u123456");
+    doReturn(Optional.of(existing)).when(userManualMailOverrideRepositoryMock).findBySbbUserIdIgnoreCase("u123456");
 
     // When
-    userManualMailService.upsert("u123456", "new@sbb.ch");
+    userManualMailOverrideService.setManualMailOverride("u123456", "new@sbb.ch");
 
     // Then
-    verify(userManualMailRepositoryMock).save(existing);
+    verify(userManualMailOverrideRepositoryMock).save(existing);
     assertThat(existing.getMail()).isEqualTo("new@sbb.ch");
   }
 
   @Test
-  void shouldDeleteManualMailWhenBlankValueIsProvided() {
+  void shouldDeleteManualMailOverrideManualMailWhenBlankValueIsProvided() {
     // When
-    userManualMailService.upsert("u123456", "   ");
+    userManualMailOverrideService.setManualMailOverride("u123456", "   ");
 
     // Then
-    verify(userManualMailRepositoryMock).deleteBySbbUserIdIgnoreCase("u123456");
-    verify(userManualMailRepositoryMock, never()).save(any());
+    verify(userManualMailOverrideRepositoryMock).deleteBySbbUserIdIgnoreCase("u123456");
+    verify(userManualMailOverrideRepositoryMock, never()).save(any());
   }
 
   @Test
   void shouldDoNothingWhenDeletingNonExistingManualMail() {
     // When
-    userManualMailService.delete("u123456");
+    userManualMailOverrideService.deleteManualMailOverride("u123456");
 
     // Then
-    verify(userManualMailRepositoryMock, times(1)).deleteBySbbUserIdIgnoreCase("u123456");
+    verify(userManualMailOverrideRepositoryMock, times(1)).deleteBySbbUserIdIgnoreCase("u123456");
   }
 
 }

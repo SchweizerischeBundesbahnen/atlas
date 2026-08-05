@@ -342,14 +342,14 @@
     "LAST_NAME": "Name",
     "FIRST_NAME": "Vorname",
     "MAIL": "E-Mail Adresse",
-    "MANUAL_MAIL": "manuelle E-Mail",
+    "MANUAL_MAIL": "neue E-Mail",
     "ORIGINAL_MAIL": "System-E-Mail-Adresse",
     "EDIT_MANUAL_MAIL": "Mail anpassen",
     "MANUAL_MAIL_DIALOG": {
-      "TITLE": "Manuelle E-Mail anpassen",
+      "TITLE": "E-Mail überschreiben",
       "HINT": "Diese E-Mail-Adresse hat immer Vorrang vor der aus AD übernommenen Adresse.",
       "AZURE_MAIL": "E-Mail aus Azure",
-      "DELETE_CONFIRM": "Möchten Sie die manuelle E-Mail wirklich entfernen?"
+      "DELETE_CONFIRM": "Möchten Sie die überschriebene E-Mail wirklich entfernen?"
     },
     "USER_ID": "Benutzer-ID",
     "ACCOUNT_STATUS": "Accountstatus",

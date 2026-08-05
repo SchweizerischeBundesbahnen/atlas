@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserManualMailRepository extends JpaRepository<UserManualMailOverride, Long> {
+public interface UserManualMailOverrideRepository extends JpaRepository<UserManualMailOverride, Long> {
 
   Optional<UserManualMailOverride> findBySbbUserIdIgnoreCase(String sbbUserId);
 

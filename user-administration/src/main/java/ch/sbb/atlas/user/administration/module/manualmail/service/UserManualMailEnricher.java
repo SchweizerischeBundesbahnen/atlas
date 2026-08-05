@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserManualMailEnricher {
 
-  private final UserManualMailService userManualMailService;
+  private final UserManualMailOverrideService userManualMailOverrideService;
 
   public List<UserModel> enrich(List<UserModel> users) {
 
@@ -20,7 +20,7 @@ public class UserManualMailEnricher {
       return users;
     }
 
-    Map<String, String> manualMailsByLowerCaseUserId = userManualMailService
+    Map<String, String> manualMailsByLowerCaseUserId = userManualMailOverrideService
         .getMailsByUserIds(users.stream().map(UserModel::getSbbUserId).toList())
         .entrySet().stream()
         .collect(Collectors.toMap(entry -> entry.getKey().toLowerCase(), Map.Entry::getValue));
