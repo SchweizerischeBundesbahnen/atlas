@@ -65,8 +65,8 @@ class BoContactPermissionServiceTest {
   void shouldResolveBoContactByManualMail() {
     when(userAdministrationClient.getUserByMail("manual@sbb.ch")).thenReturn(UserModel.builder()
         .sbbUserId("u123456")
-        .mail("azure@sbb.ch")
-        .manualMailOverride("manual@sbb.ch")
+        .originalMail("azure@sbb.ch")
+        .mail("manual@sbb.ch")
         .permissions(Set.of(PermissionModel.builder()
             .application(ApplicationType.TIMETABLE_HEARING)
             .permissionRestrictions(List.of(new TransportCompanyDossierAnswerPermissionRestrictionModel(true)))
@@ -82,7 +82,7 @@ class BoContactPermissionServiceTest {
   void shouldThrowWhenResolvedUserHasNoDossierAnswerPermission() {
     when(userAdministrationClient.getUserByMail("manual@sbb.ch")).thenReturn(UserModel.builder()
         .sbbUserId("u123456")
-        .manualMailOverride("manual@sbb.ch")
+        .mail("manual@sbb.ch")
         .permissions(Set.of())
         .build());
 
