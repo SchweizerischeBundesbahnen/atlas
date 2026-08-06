@@ -342,7 +342,7 @@
     "LAST_NAME": "Name",
     "FIRST_NAME": "Vorname",
     "MAIL": "E-Mail Adresse",
-    "MANUAL_MAIL": "neue E-Mail",
+    "MANUAL_MAIL": "Neue E-Mail",
     "ORIGINAL_MAIL": "System-E-Mail-Adresse",
     "EDIT_MANUAL_MAIL": "Mail anpassen",
     "MANUAL_MAIL_DIALOG": {
