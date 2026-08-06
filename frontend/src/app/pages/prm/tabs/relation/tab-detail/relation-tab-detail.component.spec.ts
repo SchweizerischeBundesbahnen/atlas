@@ -192,9 +192,7 @@ describe('RelationTabDetailComponent', () => {
     component.ngOnInit();
     relationService.getRelationsBySloid.mockReturnValue(of([relations[0]]));
 
-    component.referencePointChanged({
-      sloid: 'ch:1:sloid:12345:1',
-    } as ReadReferencePointVersion);
+    component.referencePointChanged('ch:1:sloid:12345:1');
     fixture.detectChanges();
 
     expect(component.selectedReferencePointSloid).toBe('ch:1:sloid:12345:1');

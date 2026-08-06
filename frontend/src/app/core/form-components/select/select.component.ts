@@ -46,7 +46,7 @@ export interface SelectOptionGroup {
   providers: [TranslatePipe],
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-export class SelectComponent<TYPE> implements OnInit, OnChanges {
+export class SelectComponent<TYPE, VALUE = TYPE> implements OnInit, OnChanges {
   @Input() label: string | undefined;
   readonly infoIconTitle = input<string>();
   readonly placeHolderLabel = input('FORM.DROPDOWN_PLACEHOLDER');
@@ -54,8 +54,8 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() optionTranslateLabelPrefix: string | undefined;
 
   @Input()
-  valueExtractor(option: TYPE): any {
-    return option;
+  valueExtractor(option: TYPE): VALUE {
+    return option as unknown as VALUE;
   }
 
   @Input()
@@ -106,7 +106,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
   @ContentChild('matOptionGroupPrefix') matOptionGroupPrefix!: TemplateRef<any>;
 
-  readonly selectChanged = output<{ value: TYPE[] }>();
+  readonly selectChanged = output<{ value: VALUE[] }>();
 
   @ViewChild('allSelected')
   private readonly allSelected!: MatOption;
@@ -147,9 +147,9 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
 
   toggleAllSelection() {
     if (this.allSelected.selected) {
-      const options = this.options();
-      this.getFormControlName()?.setValue(options);
-      this.selectChanged.emit({ value: options });
+      const values = this.options().map((option) => this.valueExtractor(option));
+      this.getFormControlName()?.setValue(values);
+      this.selectChanged.emit({ value: values });
       this.allSelected.select();
       this._isAllSelected = true;
     } else {
