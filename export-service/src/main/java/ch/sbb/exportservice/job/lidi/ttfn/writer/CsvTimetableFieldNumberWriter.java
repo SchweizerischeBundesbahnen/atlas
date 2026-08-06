@@ -19,7 +19,7 @@ public class CsvTimetableFieldNumberWriter extends BaseCsvWriter<TimetableFieldN
         Fields.ttfnid, Fields.validFrom, Fields.validTo, Fields.status, Fields.number,
         Fields.businessOrganisation, Fields.descriptionOutwardLine1, Fields.descriptionOutwardLine2,
         Fields.descriptionOutwardLine3, Fields.descriptionReturnLine1, Fields.descriptionReturnLine2,
-        Fields.descriptionReturnLine3, Fields.meanOfTransport, Fields.lineRelations, Fields.creationTime, Fields.editionTime
+        Fields.descriptionReturnLine3, Fields.meanOfTransport, Fields.creationTime, Fields.editionTime
     };
   }
 }

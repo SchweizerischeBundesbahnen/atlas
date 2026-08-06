@@ -24,7 +24,7 @@ class VersionableServiceScenario4Test extends VersionableServiceBaseTest {
    * 2              5        3
    */
   @Test
-   void scenario4() {
+  void scenario4() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
@@ -83,11 +83,6 @@ class VersionableServiceScenario4Test extends VersionableServiceBaseTest {
     List<Entity> oneToManyRelationEntitiesSecondVersionedObjectEntity =
         oneToManyRelationSecondVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesSecondVersionedObjectEntity).hasSize(1);
-    Entity lineRelationSecondVersionedObject = oneToManyRelationEntitiesSecondVersionedObjectEntity.get(
-        0);
-    assertThat(lineRelationSecondVersionedObject.getProperties()).hasSize(1);
-    assertThat(lineRelationSecondVersionedObject.getProperties().get(0).getValue()).isEqualTo(
-        "first Relation");
 
     VersionedObject thirdVersionedObject = sortedVersionedObjects.get(2);
     assertThat(thirdVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
@@ -106,11 +101,6 @@ class VersionableServiceScenario4Test extends VersionableServiceBaseTest {
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelationEntitiesThirdVersionedObjectEntity = oneToManyRelationThirdVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).hasSize(1);
-    Entity lineRelationThirdVersionedObject = oneToManyRelationEntitiesThirdVersionedObjectEntity.get(
-        0);
-    assertThat(lineRelationThirdVersionedObject.getProperties()).hasSize(1);
-    assertThat(lineRelationThirdVersionedObject.getProperties().get(0).getValue()).isEqualTo(
-        "first Relation");
 
     VersionedObject fourthVersionedObject = sortedVersionedObjects.get(3);
     assertThat(fourthVersionedObject.getAction()).isEqualTo(VersioningAction.NEW);
@@ -130,11 +120,6 @@ class VersionableServiceScenario4Test extends VersionableServiceBaseTest {
     List<Entity> oneToManyRelationEntitiesFourthVersionedObjectEntity =
         oneToManyRelationFourthVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesFourthVersionedObjectEntity).hasSize(1);
-    Entity lineRelationFourthVersionedObject = oneToManyRelationEntitiesFourthVersionedObjectEntity.get(
-        0);
-    assertThat(lineRelationFourthVersionedObject.getProperties()).hasSize(1);
-    assertThat(lineRelationFourthVersionedObject.getProperties().get(0).getValue()).isEqualTo(
-        "first Relation");
 
     VersionedObject fifthVersionedObject = sortedVersionedObjects.get(4);
     assertThat(fifthVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);

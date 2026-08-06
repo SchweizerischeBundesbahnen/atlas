@@ -82,14 +82,3 @@ create table timetable_field_number_version
     business_organisation        varchar(50)      not null,
     version                      bigint default 0 not null
 );
-
-CREATE SEQUENCE timetable_field_line_relation_seq START WITH 1000 INCREMENT BY 1;
-create table timetable_field_line_relation
-(
-    id                         bigint not null
-        primary key,
-    slnid                      varchar(500),
-    timetable_field_version_id bigint
-        constraint fk_timetable_field_number_version
-            references timetable_field_number_version
-);

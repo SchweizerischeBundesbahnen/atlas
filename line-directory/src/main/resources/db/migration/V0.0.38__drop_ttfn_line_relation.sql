@@ -1,0 +1,2 @@
+drop table timetable_field_line_relation;
+drop sequence timetable_field_line_relation_seq;

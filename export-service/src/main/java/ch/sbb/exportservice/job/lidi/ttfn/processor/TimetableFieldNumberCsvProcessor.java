@@ -5,7 +5,6 @@ import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_TIME_FORMATTER;
 
 import ch.sbb.exportservice.job.lidi.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.exportservice.job.lidi.ttfn.model.TimetableFieldNumberCsvModel;
-import ch.sbb.exportservice.util.RowMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 
@@ -28,7 +27,6 @@ public class TimetableFieldNumberCsvProcessor implements ItemProcessor<Timetable
         .descriptionReturnLine2(timetableFieldNumber.getDescriptionReturnLine2())
         .descriptionReturnLine3(timetableFieldNumber.getDescriptionReturnLine3())
         .meanOfTransport(timetableFieldNumber.getMeanOfTransport())
-        .lineRelations(RowMapperUtil.stringsToPipedString(timetableFieldNumber.getLineRelations()))
         .creationTime(LOCAL_DATE_TIME_FORMATTER.format(timetableFieldNumber.getCreationDate()))
         .editionTime(LOCAL_DATE_TIME_FORMATTER.format(timetableFieldNumber.getEditionDate()))
         .build();

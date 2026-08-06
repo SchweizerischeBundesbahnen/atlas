@@ -10,9 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 public class TimetableFieldNumberSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_STATEMENT = """
-      SELECT tv.*, string_agg(tflr.slnid, '|') as slnids
+      SELECT tv.*
           FROM timetable_field_number_version as tv
-          left join timetable_field_line_relation tflr on tv.id = tflr.timetable_field_version_id
       """;
   private static final String GROUP_BY_ORDER_BY_CLAUSE = """
       GROUP BY tv.id, tv.ttfnid, tv.valid_from ORDER BY tv.ttfnid, tv.valid_from

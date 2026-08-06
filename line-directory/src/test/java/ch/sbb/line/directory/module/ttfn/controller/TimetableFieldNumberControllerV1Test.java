@@ -59,7 +59,7 @@ class TimetableFieldNumberControllerV1Test {
     verify(timetableFieldNumberService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
         .ignoringFields("editor", "creator", "editionDate",
-            "creationDate", "lineRelations", "ttfnid",
+            "creationDate", "ttfnid",
             "version")
         .isEqualTo(timetableFieldNumberVersionModel);
   }

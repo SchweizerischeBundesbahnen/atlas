@@ -3,13 +3,11 @@ package ch.sbb.line.directory.module.ttfn.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.module.ttfn.repository.TimetableFieldNumberVersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -71,7 +69,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
-    assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -81,7 +78,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB2");
-    assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -91,8 +87,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(thirdTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB4");
-    Set<TimetableFieldLineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
-    assertThat(lineRelationsThirdVersion).isEmpty();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -143,7 +137,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
-    assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -200,7 +193,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
-    assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -210,7 +202,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2026, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB4");
-    assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -268,7 +259,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
-    assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -278,7 +268,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB1");
-    assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -288,7 +277,6 @@ class TimetableFieldNumberServiceMergeScenarioTest extends BaseTimetableFieldNum
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2026, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
     assertThat(thirdTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("SBB4");
-    assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo(NUMBER);
     assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");

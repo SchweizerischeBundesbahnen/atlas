@@ -23,7 +23,7 @@ class VersionableServiceScenario2Test extends VersionableServiceBaseTest {
    * 4       5          3
    */
   @Test
-   void scenario2() {
+  void scenario2() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2022, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2023, 6, 1);
@@ -88,11 +88,6 @@ class VersionableServiceScenario2Test extends VersionableServiceBaseTest {
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelationEntitiesThirdVersionedObjectEntity = oneToManyRelationThirdVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).hasSize(1);
-    Entity lineRelationThirdVersionedObject = oneToManyRelationEntitiesThirdVersionedObjectEntity.get(
-        0);
-    assertThat(lineRelationThirdVersionedObject.getProperties()).hasSize(1);
-    assertThat(lineRelationThirdVersionedObject.getProperties().get(0).getValue()).isEqualTo(
-        "first Relation");
 
     VersionedObject fourthVersionedObject = sortedVersionedObjects.get(3);
     assertThat(fourthVersionedObject.getAction()).isEqualTo(VersioningAction.NEW);
@@ -129,7 +124,7 @@ class VersionableServiceScenario2Test extends VersionableServiceBaseTest {
    * 4       5          3
    */
   @Test
-   void scenario2b() {
+  void scenario2b() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2022, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2023, 6, 1);
@@ -194,11 +189,6 @@ class VersionableServiceScenario2Test extends VersionableServiceBaseTest {
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelationEntitiesThirdVersionedObjectEntity = oneToManyRelationThirdVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).hasSize(1);
-    Entity lineRelationThirdVersionedObject = oneToManyRelationEntitiesThirdVersionedObjectEntity.get(
-        0);
-    assertThat(lineRelationThirdVersionedObject.getProperties()).hasSize(1);
-    assertThat(lineRelationThirdVersionedObject.getProperties().get(0).getValue()).isEqualTo(
-        "first Relation");
 
     VersionedObject fourthVersionedObject = sortedVersionedObjects.get(3);
     assertThat(fourthVersionedObject.getAction()).isEqualTo(VersioningAction.NEW);

@@ -6,12 +6,9 @@ import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
-import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,7 @@ class TimetableFieldNumberVersionRepositoryTest {
   }
 
   @BeforeEach
-  void setUpVersionWithTwoLineRelations() {
+  void setUp() {
     version = TimetableFieldNumberVersion.builder()
         .ttfnid("ch:1:ttfnid:100000")
         .descriptionOutwardLine1("FPFN Description")
@@ -42,15 +39,6 @@ class TimetableFieldNumberVersionRepositoryTest {
         .validTo(LocalDate.of(2020, 12, 12))
         .businessOrganisation("sbb")
         .build();
-    version.setLineRelations(new HashSet<>(
-        Set.of(TimetableFieldLineRelation.builder()
-                .slnid("ch:1:slnid:100000")
-                .timetableFieldNumberVersion(version)
-                .build(),
-            TimetableFieldLineRelation.builder()
-                .slnid("ch:1:slnid:100001")
-                .timetableFieldNumberVersion(version)
-                .build())));
     version = versionRepository.save(version);
 
     assertThat(version.getCreator()).isEqualTo(WithMockJwtAuthentication.MOCKUSER_SBB_UID);
@@ -60,8 +48,6 @@ class TimetableFieldNumberVersionRepositoryTest {
   @Test
   void shouldGetSimpleVersion() {
     //given
-    version.getLineRelations().clear();
-
     //when
     TimetableFieldNumberVersion result = versionRepository.findAll().getFirst();
 
@@ -79,17 +65,6 @@ class TimetableFieldNumberVersionRepositoryTest {
   }
 
   @Test
-  void shouldGetVersionWithTwoLineRelations() {
-    //given
-
-    //when
-    TimetableFieldNumberVersion result = versionRepository.findAll().getFirst();
-
-    //then
-    assertThat(result).usingRecursiveComparison().ignoringActualNullFields().isEqualTo(version);
-  }
-
-  @Test
   void shouldUpdateVersionOnAllVersions() {
     //given
     assertThat(version.getVersion()).isZero();
@@ -100,36 +75,6 @@ class TimetableFieldNumberVersionRepositoryTest {
 
     //then
     assertThat(result.getVersion()).isEqualTo(1);
-  }
-
-  @Test
-  void shouldUpdateVersionWithAdditionalLineRelation() {
-    //given
-    version.getLineRelations()
-        .add(TimetableFieldLineRelation.builder()
-            .slnid("ch:1:slnid:100002")
-            .timetableFieldNumberVersion(version)
-            .build());
-    versionRepository.save(version);
-
-    //when
-    TimetableFieldNumberVersion result = versionRepository.findAll().getFirst();
-
-    //then
-    assertThat(result.getLineRelations()).hasSize(3).extracting("id").isNotNull();
-  }
-
-  @Test
-  void shouldUpdateVersionDeletingLineRelation() {
-    //given
-    version.getLineRelations().remove(version.getLineRelations().iterator().next());
-    versionRepository.save(version);
-
-    //when
-    TimetableFieldNumberVersion result = versionRepository.findAll().getFirst();
-
-    //then
-    assertThat(result.getLineRelations()).hasSize(1).extracting("id").isNotNull();
   }
 
   @Test
@@ -159,16 +104,6 @@ class TimetableFieldNumberVersionRepositoryTest {
         .validTo(LocalDate.of(2021, 12, 12))
         .businessOrganisation("sbb")
         .build();
-    secondVersion.setLineRelations(new HashSet<>(
-        Set.of(
-            TimetableFieldLineRelation.builder()
-                .slnid("ch:1:slnid:100000")
-                .timetableFieldNumberVersion(secondVersion)
-                .build(),
-            TimetableFieldLineRelation.builder()
-                .slnid("ch:1:slnid:100001")
-                .timetableFieldNumberVersion(secondVersion)
-                .build())));
     versionRepository.save(secondVersion);
 
     List<TimetableFieldNumberVersion> allVersionsVersioned = versionRepository.findBySid4ptOrderByValidFrom(ttfnid);

@@ -32,7 +32,6 @@ public class TimetableFieldNumberCsvModel {
   private String descriptionReturnLine2;
   private String descriptionReturnLine3;
   private TtfnMeanOfTransport meanOfTransport;
-  private String lineRelations;
   private String creationTime;
   private String editionTime;
 }

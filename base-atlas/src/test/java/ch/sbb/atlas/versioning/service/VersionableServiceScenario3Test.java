@@ -93,12 +93,6 @@ class VersionableServiceScenario3Test extends VersionableServiceBaseTest {
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelationEntitiesThirdVersionedObjectEntity = oneToManyRelationThirdVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).hasSize(1);
-    Entity lineRelationThirdVersionedObject = oneToManyRelationEntitiesThirdVersionedObjectEntity.get(
-        0);
-    assertThat(lineRelationThirdVersionedObject.getProperties()).isNotEmpty();
-    assertThat(lineRelationThirdVersionedObject.getProperties()).hasSize(1);
-    assertThat(lineRelationThirdVersionedObject.getProperties().get(0).getValue()).isEqualTo(
-        "first Relation");
 
     VersionedObject fourthVersionedObject = sortedVersionedObjects.get(3);
     assertThat(fourthVersionedObject.getAction()).isEqualTo(VersioningAction.NEW);
@@ -119,12 +113,6 @@ class VersionableServiceScenario3Test extends VersionableServiceBaseTest {
     List<Entity> oneToManyRelationEntitiesFourthVersionedObjectEntity =
         oneToManyRelationFourthVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesFourthVersionedObjectEntity).hasSize(1);
-    Entity lineRelationFourthVersionedObject = oneToManyRelationEntitiesFourthVersionedObjectEntity.get(
-        0);
-    assertThat(lineRelationFourthVersionedObject.getProperties()).isNotEmpty();
-    assertThat(lineRelationFourthVersionedObject.getProperties()).hasSize(1);
-    assertThat(lineRelationFourthVersionedObject.getProperties().get(0).getValue()).isEqualTo(
-        "first Relation");
 
     VersionedObject fifthVersionedObject = sortedVersionedObjects.get(4);
     assertThat(fifthVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
@@ -217,11 +205,6 @@ class VersionableServiceScenario3Test extends VersionableServiceBaseTest {
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelationEntitiesThirdVersionedObjectEntity = oneToManyRelationThirdVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).hasSize(1);
-    Entity lineRelationThirdVersionedObject = oneToManyRelationEntitiesThirdVersionedObjectEntity.get(
-        0);
-    assertThat(lineRelationThirdVersionedObject.getProperties()).hasSize(1);
-    assertThat(lineRelationThirdVersionedObject.getProperties().get(0).getValue()).isEqualTo(
-        "first Relation");
 
     VersionedObject fourthVersionedObject = sortedVersionedObjects.get(3);
     assertThat(fourthVersionedObject.getAction()).isEqualTo(VersioningAction.NEW);

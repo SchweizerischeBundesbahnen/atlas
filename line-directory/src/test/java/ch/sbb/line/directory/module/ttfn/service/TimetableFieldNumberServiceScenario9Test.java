@@ -53,7 +53,6 @@ class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberS
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2019, 6, 1));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description <changed>");
-    assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -63,7 +62,6 @@ class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberS
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
-    assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -103,7 +101,6 @@ class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberS
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2019, 6, 1));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description <changed>");
-    assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -113,7 +110,6 @@ class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberS
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
-    assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -123,7 +119,6 @@ class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberS
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(thirdTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
-    assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo("80.099.2");
     assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -162,7 +157,6 @@ class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberS
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description <changed>");
-    assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("80.099.1");
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
@@ -172,7 +166,6 @@ class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberS
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(secondTemporalVersion.getDescriptionOutwardLine1()).isEqualTo("FPFN Description");
-    assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("80.099.2");
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
