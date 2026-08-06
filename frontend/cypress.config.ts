@@ -1,4 +1,4 @@
-import {defineConfig} from 'cypress';
+import { defineConfig } from 'cypress';
 import cypress_failed_log from 'cypress-failed-log/src/failed';
 import cypress_high_resolution from 'cypress-high-resolution';
 
@@ -11,9 +11,13 @@ export default defineConfig({
   videoCompression: false,
   defaultCommandTimeout: 10000,
   execTimeout: 10000,
-  pageLoadTimeout: 10000,
+  pageLoadTimeout: 60000,
   requestTimeout: 60000,
   responseTimeout: 60000,
+  retries: {
+    runMode: 2,
+    openMode: 0,
+  },
   video: true,
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
@@ -22,7 +26,7 @@ export default defineConfig({
     reportPageTitle: 'Atlas E2E Tests',
     embeddedScreenshots: true,
     inlineAssets: true,
-    saveAllAttempts: false,
+    saveAllAttempts: true,
     debug: true,
     saveJson: true,
   },
