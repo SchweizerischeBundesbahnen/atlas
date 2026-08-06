@@ -109,8 +109,8 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       });
   }
 
-  referencePointChanged(selectedRefPoint: ReadReferencePointVersion) {
-    this.selectedReferencePointSloid = selectedRefPoint.sloid;
+  referencePointChanged(selectedRefPointSloid?: string) {
+    this.selectedReferencePointSloid = selectedRefPointSloid;
     this.loadRelations(this.selectedReferencePointSloid!);
   }
 
