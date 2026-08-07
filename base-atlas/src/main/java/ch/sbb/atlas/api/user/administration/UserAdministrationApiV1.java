@@ -48,7 +48,7 @@ public interface UserAdministrationApiV1 {
       @RequestParam(required = false) PermissionRestrictionType type,
       @RequestParam(required = false) Set<ApplicationType> applicationTypes);
 
-  @AuthorizedOnly
+  @AdminOnly
   @GetMapping(BASE_PATH + "/emails")
   @Operation(description = "Retrieve the effective e-mail addresses of all users matching the given filter, unpaged. "
       + "Intended for bulk mailing use cases (e.g. copying all filtered users' e-mails to the clipboard).")
