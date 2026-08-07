@@ -1,0 +1,5 @@
+==== Timetable Hearings
+
+Timetable Hearings are held each year.
+
+Every year citizens may provide statements on the next iteration of the public transport timetable.

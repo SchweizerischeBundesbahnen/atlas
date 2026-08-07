@@ -1,0 +1,13 @@
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ATLAS-HEAD.adoc[]
+
+= Timetable Hearing
+
+== Release Notes
+
+include::../release-notes.adoc[]
+
+== Timetable Hearing REST API Documentation
+
+== Create Hearing Statement from External V2 (e.g. SKI Web) - Successfully
+
+include::{snippets}/create-statement-external/should-create-statement-external-v2-from-ski-web/atlas-doc.adoc[]
