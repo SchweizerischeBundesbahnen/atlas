@@ -17,8 +17,8 @@
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "cypress:open-e2e-release": "cypress open --config specPattern=cypress/release",
-    "cypress:run-e2e-release": "cypress run --config specPattern=cypress/release",
+    "cypress:open-e2e-release": "cypress open --config specPattern=cypress/release/**/*.cy.ts",
+    "cypress:run-e2e-release": "cypress run --config specPattern=cypress/release/**/*.cy.ts",
     "generate-api": "openapi-generator-cli generate -g typescript-angular -i ../apim-configuration/build/resources/main/local/spec.yaml -o src/app/api --type-mappings=date=Date --additional-properties apiModulePrefix=Atlas --global-property models,skipFormModel=false"
   },
   "name": "atlas-frontend",
