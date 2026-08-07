@@ -13,5 +13,6 @@ import org.springframework.stereotype.Component;
 public class GatewayConfig {
 
   private Map<String, String> routes;
+  private boolean tthModuleReroute;
 
 }
