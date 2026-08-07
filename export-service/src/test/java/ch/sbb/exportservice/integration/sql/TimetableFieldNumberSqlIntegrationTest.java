@@ -49,6 +49,10 @@ class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest 
 
     //then
     assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getTtfnid()).isEqualTo("ch:1:ttfnid:123");
+    assertThat(result.getFirst().getNumber()).isEqualTo("number");
+    assertThat(result.getFirst().getMeanOfTransport()).isEqualTo(TtfnMeanOfTransport.TRAIN);
+    assertThat(result.getFirst().getBusinessOrganisation()).isEqualTo("ch:1:sboid:100000");
   }
 
   @Test

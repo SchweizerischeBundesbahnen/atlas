@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.BaseEntity;
 import java.time.LocalDate;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,5 +37,4 @@ public class TimetableFieldNumber extends BaseEntity {
   private String descriptionReturnLine2;
   private String descriptionReturnLine3;
   private TtfnMeanOfTransport meanOfTransport;
-  private Set<String> lineRelations;
 }
