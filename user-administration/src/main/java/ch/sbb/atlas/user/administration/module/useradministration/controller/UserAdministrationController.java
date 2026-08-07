@@ -86,7 +86,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
           .build();
     }
 
-    List<UserModel> userModels = graphApiService.resolveUsersInParallel(userIds);
+    List<UserModel> userModels = graphApiService.resolveUsers(userIds);
     userManualMailEnricher.enrich(userModels);
     return userModels.stream()
         .map(UserModel::getMail)

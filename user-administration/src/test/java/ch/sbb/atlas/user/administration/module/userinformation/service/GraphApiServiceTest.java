@@ -12,6 +12,8 @@ import com.microsoft.graph.serviceclient.GraphServiceClient;
 import com.microsoft.graph.users.UsersRequestBuilder;
 import com.microsoft.graph.users.UsersRequestBuilder.GetRequestConfiguration;
 import java.util.List;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.AfterEach;
@@ -21,6 +23,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.util.ReflectionTestUtils;
 
 class GraphApiServiceTest {
 
@@ -44,6 +47,9 @@ class GraphApiServiceTest {
   void setUp() {
     mockCloseable = MockitoAnnotations.openMocks(this);
     graphApiService = new GraphApiService(graphClient);
+    // @Value is only populated by Spring; set it explicitly here so the pool-size logic under
+    // test behaves as it would at runtime instead of always collapsing to a single thread.
+    ReflectionTestUtils.setField(graphApiService, "graphParallelism", 8);
 
     when(graphClient.users()).thenReturn(usersRequestBuilder);
     when(usersRequestBuilder.get(any())).thenReturn(userCollectionResponse);
@@ -111,11 +117,11 @@ class GraphApiServiceTest {
   @Test
   void shouldResolveAllUsersWhenBatchedInParallel() {
     // given: more ids than a single Graph resolve batch (RESOLVE_CHUNK_SIZE = 20), forcing
-    // resolveUsersInParallel to split them across multiple concurrent Graph API calls
+    // resolveUsers to split them across multiple concurrent Graph API calls
     List<String> userIds = IntStream.range(0, 25).mapToObj("user%d"::formatted).toList();
 
     // when
-    List<UserModel> result = graphApiService.resolveUsersInParallel(userIds);
+    List<UserModel> result = graphApiService.resolveUsers(userIds);
 
     // then: every requested id comes back exactly once, and at least two Graph calls were made
     assertThat(result).extracting(UserModel::getSbbUserId).containsExactlyInAnyOrderElementsOf(userIds);
@@ -123,9 +129,29 @@ class GraphApiServiceTest {
   }
 
   @Test
-  void shouldReturnEmptyListWhenResolvingNoUsersInParallel() {
+  void shouldResolveBatchesConcurrentlyWhenMultipleBatchesArePending() throws Exception {
+    // given: two batches (25 ids, RESOLVE_CHUNK_SIZE = 20) and a Graph stub that only returns
+    // once both batch calls are in flight at the same time. A sequential implementation would
+    // block on the first call forever (nobody left to release the barrier), so this only
+    // completes if resolveUsers dispatches both batches concurrently.
+    List<String> userIds = IntStream.range(0, 25).mapToObj("user%d"::formatted).toList();
+    CyclicBarrier bothBatchesInFlight = new CyclicBarrier(2);
+    when(usersRequestBuilder.get(any())).thenAnswer(invocation -> {
+      bothBatchesInFlight.await(2, TimeUnit.SECONDS);
+      return userCollectionResponse;
+    });
+
     // when
-    List<UserModel> result = graphApiService.resolveUsersInParallel(List.of());
+    List<UserModel> result = graphApiService.resolveUsers(userIds);
+
+    // then
+    assertThat(result).extracting(UserModel::getSbbUserId).containsExactlyInAnyOrderElementsOf(userIds);
+  }
+
+  @Test
+  void shouldReturnEmptyListWhenResolvingNoUsers() {
+    // when
+    List<UserModel> result = graphApiService.resolveUsers(List.of());
 
     // then
     assertThat(result).isEmpty();

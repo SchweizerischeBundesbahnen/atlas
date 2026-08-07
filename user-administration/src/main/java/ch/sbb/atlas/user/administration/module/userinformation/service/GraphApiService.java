@@ -68,22 +68,13 @@ public class GraphApiService {
     });
   }
 
-  @Redacted
-  public List<UserModel> resolveUsers(List<String> userIds) {
-    List<UserModel> result = new ArrayList<>();
-    AtlasListUtil.getPartitionedSublists(userIds, RESOLVE_CHUNK_SIZE)
-        .forEach(sublist -> result.addAll(resolveUsersBatch(sublist)));
-    return result;
-  }
-
   /**
-   * Bulk-only variant of {@link #resolveUsers(List)}: resolves the Graph API batches in
-   * parallel, bounded by {@code atlas.user-administration.emails.graph-parallelism}, to keep
-   * latency reasonable for large filtered user lists (e.g. copy-all-e-mails use case) without
-   * changing the behaviour of the existing paginated {@link #resolveUsers(List)} used elsewhere.
+   * Resolves the Graph API batches in parallel, bounded by
+   * {@code atlas.user-administration.emails.graph-parallelism}, to keep latency reasonable
+   * regardless of how many users are requested.
    */
   @Redacted
-  public List<UserModel> resolveUsersInParallel(List<String> userIds) {
+  public List<UserModel> resolveUsers(List<String> userIds) {
     List<List<String>> batches = List.copyOf(AtlasListUtil.getPartitionedSublists(userIds, RESOLVE_CHUNK_SIZE));
     if (batches.isEmpty()) {
       return List.of();
@@ -101,9 +92,9 @@ public class GraphApiService {
       }
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
-      throw new IllegalStateException("Interrupted while resolving users in parallel via Graph API", e);
+      throw new IllegalStateException("Interrupted while resolving users via Graph API", e);
     } catch (ExecutionException e) {
-      throw new IllegalStateException("Failed to resolve users in parallel via Graph API", e.getCause());
+      throw new IllegalStateException("Failed to resolve users via Graph API", e.getCause());
     }
     return result;
   }
