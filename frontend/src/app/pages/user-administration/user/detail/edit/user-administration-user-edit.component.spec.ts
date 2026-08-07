@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 import { UserAdministrationUserEditComponent } from './user-administration-user-edit.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
@@ -12,7 +13,8 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 import { UserPermissionGivenUserService } from './user-permission-given-user.service';
 import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
-import { translateServiceProvider } from '../../../../../app.testing.mocks';
+import { adminPermissionServiceMock, translateServiceProvider } from '../../../../../app.testing.mocks';
+import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 
 describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
@@ -20,7 +22,7 @@ describe('UserAdministrationUserEditComponent', () => {
 
   let userAdministrationService: Mocked<Pick<UserAdministrationService, 'updateUserPermission' | 'getUserDisplayName'>>;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
-  let dialogService: Mocked<Pick<DialogService, 'confirmLeave'>>;
+  let dialogService: ReturnType<typeof mock<DialogService>>;
 
   beforeEach(() => {
     userAdministrationService = {
@@ -35,9 +37,7 @@ describe('UserAdministrationUserEditComponent', () => {
     notificationService = {
       success: vi.fn(),
     };
-    dialogService = {
-      confirmLeave: vi.fn(),
-    };
+    dialogService = mock<DialogService>();
     TestBed.configureTestingModule({
       imports: [UserAdministrationUserEditComponent],
       providers: [
@@ -54,6 +54,10 @@ describe('UserAdministrationUserEditComponent', () => {
         {
           provide: DialogService,
           useValue: dialogService,
+        },
+        {
+          provide: PermissionService,
+          useValue: adminPermissionServiceMock,
         },
         {
           provide: UserPermissionGivenUserService,
@@ -184,5 +188,58 @@ describe('UserAdministrationUserEditComponent', () => {
 
     component.toggleEdit();
     expect(component.editMode).toBe(false);
+  });
+
+  it('should display the original mail row below the e-mail row when an override is active', () => {
+    const givenUserService = TestBed.inject(UserPermissionGivenUserService);
+    givenUserService.user = { ...givenUserService.user, mail: 'manual@sbb.ch', originalMail: 'azure@sbb.ch' };
+    fixture.detectChanges();
+
+    expect(component.displayUser.mail).toBe('manual@sbb.ch');
+    expect(component.displayUser.originalMail).toBe('azure@sbb.ch');
+    const compiled = fixture.nativeElement as HTMLElement;
+    const emailRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
+      el.textContent?.includes('PROFILE.EMAIL')
+    );
+    const originalMailRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
+      el.textContent?.includes('USER_ADMIN.ORIGINAL_MAIL')
+    );
+    expect(originalMailRowIndex).toBe(emailRowIndex + 1);
+    expect(compiled.querySelector('[data-cy="original-mail-value"]')?.textContent).toContain('azure@sbb.ch');
+  });
+
+  it('should hide the original mail row when no override exists', () => {
+    const givenUserService = TestBed.inject(UserPermissionGivenUserService);
+    givenUserService.user = { ...givenUserService.user, mail: 'azure@sbb.ch', originalMail: 'azure@sbb.ch' };
+    fixture.detectChanges();
+
+    expect(component.displayUser.mail).toBe(component.displayUser.originalMail);
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('[data-cy="original-mail-value"]')).toBeNull();
+  });
+
+  it('should reload the user after the dialog saved a manual mail', () => {
+    const updatedUser: User = {
+      sbbUserId: 'u123456',
+      permissions: new Set<Permission>(),
+      mail: 'new-manual@sbb.ch',
+      originalMail: 'azure@sbb.ch',
+    };
+    dialogService.openDialogDataWithCustomResult.mockReturnValue(of(updatedUser));
+
+    component.editManualMail();
+
+    expect(dialogService.openDialogDataWithCustomResult).toHaveBeenCalledOnce();
+    expect(component.displayUser).toEqual(updatedUser);
+  });
+
+  it('should not reload the user when the dialog is cancelled', () => {
+    const givenUserService = TestBed.inject(UserPermissionGivenUserService);
+    const originalUser = givenUserService.user;
+    dialogService.openDialogDataWithCustomResult.mockReturnValue(of(undefined));
+
+    component.editManualMail();
+
+    expect(component.displayUser).toEqual(originalUser);
   });
 });

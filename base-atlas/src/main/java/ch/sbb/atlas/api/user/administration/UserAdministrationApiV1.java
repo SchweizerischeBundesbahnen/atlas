@@ -15,6 +15,7 @@ import java.util.Set;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,5 +75,17 @@ public interface UserAdministrationApiV1 {
   @PostMapping(BASE_PATH + "/sync-permissions")
   @Operation(description = "Write all user permission to kafka again for redistribution")
   void syncPermissions();
+
+  @AdminOnly
+  @PutMapping(BASE_PATH + "/{userId}/mail")
+  @Operation(description = "Set or replace the manually maintained E-Mail address of a user, "
+      + "overriding the Azure E-Mail address")
+  UserModel updateManualMailOverride(@PathVariable String userId, @RequestBody @Valid ManualMailOverrideModel manualMail);
+
+  @AdminOnly
+  @DeleteMapping(BASE_PATH + "/{userId}/mail")
+  @Operation(description = "Remove the manually maintained E-Mail address of a user, so the "
+      + "Azure E-Mail address applies again")
+  UserModel deleteManualMailOverride(@PathVariable String userId);
 
 }

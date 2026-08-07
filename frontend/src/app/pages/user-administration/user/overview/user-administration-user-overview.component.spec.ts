@@ -100,6 +100,60 @@ describe('UserAdministrationUserOverviewComponent', () => {
     expect(tableService.pageSize).toBe(5);
   });
 
+  it('should pass the mail already resolved by the backend through unchanged', () => {
+    userAdministrationService.getUsers.mockClear();
+    userAdministrationService.getUsers.mockReturnValue(
+      of({
+        objects: [
+          {
+            sbbUserId: 'u123456',
+            mail: 'override.mail@sbb.ch',
+            originalMail: 'azure.mail@sbb.ch',
+            permissions: new Set<Permission>(),
+          },
+          {
+            sbbUserId: 'e654321',
+            mail: 'azure-only.mail@sbb.ch',
+            originalMail: 'azure-only.mail@sbb.ch',
+            permissions: new Set<Permission>(),
+          },
+        ],
+        totalCount: 2,
+      })
+    );
+
+    component.loadUsers({ page: 0, size: 10 });
+
+    expect(component.userPageResult.users.map((user) => user.mail)).toEqual([
+      'override.mail@sbb.ch',
+      'azure-only.mail@sbb.ch',
+    ]);
+  });
+
+  it('should pass the mail for a single user fetched via onUserFilterChanged through unchanged', () => {
+    userAdministrationService.getUser.mockReturnValue(
+      of({
+        sbbUserId: 'u123456',
+        mail: 'override.mail@sbb.ch',
+        originalMail: 'azure.mail@sbb.ch',
+        permissions: new Set<Permission>([
+          {
+            role: ApplicationRole.Reader,
+            application: ApplicationType.Ttfn,
+            permissionRestrictions: [],
+          },
+        ]),
+      })
+    );
+
+    component.onUserFilterChanged({
+      sbbUserId: 'u123456',
+      permissions: new Set<Permission>(),
+    });
+
+    expect(component.userPageResult.users[0].mail).toBe('override.mail@sbb.ch');
+  });
+
   it('test checkIfUserExists with undefined user', () => {
     vi.spyOn(component, 'loadUsers');
     tableService.pageSize = 10;

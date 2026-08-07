@@ -15,6 +15,11 @@ import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/compo
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 import { ConvertUserPermissionToRecordHelper } from '../../../../../core/components/permissions/helper/convert-user-permission-to-record-helper';
 import { UserDetailInfoComponent } from '../../../../../core/components/user-edit-info/user-detail-info.component';
+import { PermissionService } from '../../../../../core/auth/permission/permission.service';
+import {
+  ManualMailOverrideDialogComponent,
+  ManualMailOverrideDialogData,
+} from './manual-mail-override-dialog/manual-mail-override-dialog.component';
 
 @Component({
   selector: 'atlas-user-administration-user-edit',
@@ -38,6 +43,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
   private readonly userAdministrationService = inject(UserAdministrationService);
   private readonly notificationService = inject(NotificationService);
   private readonly dialogService = inject(DialogService);
+  private readonly permissionService = inject(PermissionService);
 
   readonly user = input.required<User>();
 
@@ -47,6 +53,31 @@ export class UserAdministrationUserEditComponent implements OnInit {
   ngOnInit() {
     this.userPermissionGivenUserService.user = this.user();
     this.convertUserPermissionToRecord();
+  }
+
+  get isAdmin(): boolean {
+    return this.permissionService.isAdmin;
+  }
+
+  get displayUser(): User {
+    return this.userPermissionGivenUserService.user;
+  }
+
+  editManualMail(): void {
+    this.dialogService
+      .openDialogDataWithCustomResult<ManualMailOverrideDialogData, User>(
+        {
+          title: 'USER_ADMIN.MANUAL_MAIL_DIALOG.TITLE',
+          message: 'USER_ADMIN.MANUAL_MAIL_DIALOG.HINT',
+          user: this.userPermissionGivenUserService.user,
+        },
+        ManualMailOverrideDialogComponent
+      )
+      .subscribe((updatedUser) => {
+        if (updatedUser) {
+          this.userPermissionGivenUserService.user = updatedUser;
+        }
+      });
   }
 
   saveUser(): void {

@@ -3,13 +3,16 @@ package ch.sbb.atlas.user.administration.module.useradministration.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.user.administration.ManualMailOverrideModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserModel.Fields;
@@ -21,6 +24,8 @@ import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.user.administration.module.clientcredential.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.module.clientcredential.repository.ClientCredentialPermissionRepository;
+import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMailOverride;
+import ch.sbb.atlas.user.administration.module.manualmail.repository.UserManualMailOverrideRepository;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.service.UserPermissionRepository;
 import com.microsoft.graph.models.User;
@@ -34,7 +39,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -52,6 +56,9 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private ClientCredentialPermissionRepository clientCredentialPermissionRepository;
+
+  @Autowired
+  private UserManualMailOverrideRepository userManualMailOverrideRepository;
 
   @BeforeEach
   void setUp() {
@@ -72,8 +79,8 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   }
 
   private static UsersRequestBuilder buildGraphApiUserResult(String sbbuid) {
-    UsersRequestBuilder usersRequestBuilderMock = Mockito.mock(UsersRequestBuilder.class);
-    UserCollectionResponse userCollectionResponseMock = Mockito.mock(UserCollectionResponse.class);
+    UsersRequestBuilder usersRequestBuilderMock = mock(UsersRequestBuilder.class);
+    UserCollectionResponse userCollectionResponseMock = mock(UserCollectionResponse.class);
     User graphUser = new User();
     graphUser.setDisplayName("Lastname Firstname");
     graphUser.setOnPremisesSamAccountName(sbbuid);
@@ -90,6 +97,7 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   void tearDown() {
     userPermissionRepository.deleteAll();
     clientCredentialPermissionRepository.deleteAll();
+    userManualMailOverrideRepository.deleteAll();
   }
 
   @Nested
@@ -243,6 +251,109 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     void shouldNotDisplayInfoForUnauthorizedOnSearchByMail() throws Exception {
       mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/mail").param("mail", "e527717@sbb.ch"))
           .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldFindUserByManualMail() throws Exception {
+      // given
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+
+      // when & then
+      mvc.perform(get("/v1/users/mail?mail=manual@sbb.ch"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.mail").value("manual@sbb.ch"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@sbb.ch"));
+    }
+
+    @Test
+    void shouldFindUserByAzureMailWhenNoManualMailExists() throws Exception {
+      // when & then
+      mvc.perform(get("/v1/users/mail?mail=u123456@sbb.ch"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.mail").value("u123456@sbb.ch"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@sbb.ch"));
+    }
+
+    @Test
+    void shouldPreferManualMailMatchOverAzureMatch() throws Exception {
+      // given: "u123456@yb.com" is u123456's real Azure mail (see shouldFindUserByAzureMailWhenNoManualMailExists),
+      // but e123456 has manually claimed the very same address as an override.
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("e123456").mail("u123456@yb.com").build());
+
+      // when & then: the manual-mail-override owner (e123456) wins, not the Azure owner (u123456)
+      mvc.perform(get("/v1/users/mail?mail=u123456@yb.com"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("e123456"))
+          .andExpect(jsonPath("$.mail").value("u123456@yb.com"));
+    }
+  }
+
+  @Nested
+  @DisplayName("PUT/DELETE v1/users/{userId}/mail")
+  class ManualMail {
+
+    @Test
+    void shouldSetManualMailForUser() throws Exception {
+      // when & then
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
+              .content(mapper.writeValueAsString(new ManualMailOverrideModel("manual@sbb.ch"))))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.mail").value("manual@sbb.ch"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@sbb.ch"));
+    }
+
+    @Test
+    void shouldDeleteManualMailForUser() throws Exception {
+      // given
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+
+      // when & then
+      mvc.perform(delete("/v1/users/u123456/mail"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$.mail").value("u123456@sbb.ch"))
+          .andExpect(jsonPath("$.originalMail").value("u123456@sbb.ch"));
+    }
+
+    @Test
+    void shouldRejectInvalidManualMailFormat() throws Exception {
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
+              .content(mapper.writeValueAsString(new ManualMailOverrideModel("not-a-mail"))))
+          .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldForbidManualMailUpdateForNonAdmin() throws Exception {
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
+              .content(mapper.writeValueAsString(new ManualMailOverrideModel("manual@sbb.ch"))))
+          .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldReturnManualMailInUserOverview() throws Exception {
+      // given
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+
+      // when & then
+      mvc.perform(get("/v1/users").queryParam("page", "0").queryParam("size", "5"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].mail").value("manual@sbb.ch"))
+          .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u123456')].originalMail").value("u123456@sbb.ch"));
+    }
+
+    @Test
+    void shouldReturnManualMailForCurrentUser() throws Exception {
+      // given: the default mocked JWT identifies the current user as "e123456" (see IntegrationTest)
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("e123456").mail("manual@sbb.ch").build());
+
+      // when & then
+      mvc.perform(get("/v1/users/current"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.mail").value("manual@sbb.ch"));
     }
   }
 

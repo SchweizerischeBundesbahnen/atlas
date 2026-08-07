@@ -47,4 +47,14 @@ class BulkImporterMailServiceTest {
     assertThatExceptionOfType(ImporterMailNotFoundException.class).isThrownBy(
         () -> bulkImporterMailService.checkImporterHasMail());
   }
+
+  @Test
+  void shouldUseManualMailWhenAzureMailIsMissing() {
+    when(userAdministrationClient.getCurrentUser()).thenReturn(
+        UserModel.builder().mail("manual@here.ch").originalMail(null).build());
+
+    String mailOfCurrentUser = bulkImporterMailService.getMailOfCurrentUser();
+    assertThat(mailOfCurrentUser).isEqualTo("manual@here.ch");
+    assertThatNoException().isThrownBy(() -> bulkImporterMailService.checkImporterHasMail());
+  }
 }

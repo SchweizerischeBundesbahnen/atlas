@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { UserSelectComponent } from './user-select.component';
 import { firstValueFrom, of } from 'rxjs';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';

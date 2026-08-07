@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 @Builder(toBuilder = true)
@@ -34,8 +33,14 @@ public class UserModel implements UserAdministrationEvent {
   private String firstName;
 
   @Redacted
-  @Schema(description = "User E-Mail address", example = "example@sbb.ch")
+  @Schema(description = "Effective E-Mail address: the manually maintained override if one is "
+      + "set, otherwise the original address from the source system.", example = "example@sbb.ch")
   private String mail;
+
+  @Redacted
+  @Schema(description = "Original, unmodified E-Mail address from the source system. Differs "
+      + "from mail exactly when a manual override is currently active.", example = "example@sbb.ch")
+  private String originalMail;
 
   @Redacted
   @Schema(description = "User display name (azure)", example = "Example User (IT-PTR-CEN2-YPT)")
@@ -52,4 +57,5 @@ public class UserModel implements UserAdministrationEvent {
   public String getUserId() {
     return getSbbUserId();
   }
+
 }

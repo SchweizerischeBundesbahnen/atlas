@@ -14,8 +14,15 @@
 
       <div class="d-inline-flex">
         <div class="d-flex me-3 font-bold-base"> {{ 'PROFILE.EMAIL' | translate }}: </div>
-        <div class="d-flex">{{ user().mail }}</div>
+        <div class="d-flex">{{ displayUser.mail }}</div>
       </div>
+
+      @if (displayUser.mail !== displayUser.originalMail) {
+        <div class="d-inline-flex">
+          <div class="d-flex me-3 font-bold-base"> {{ 'USER_ADMIN.ORIGINAL_MAIL' | translate }}: </div>
+          <div class="d-flex" data-cy="original-mail-value">{{ displayUser.originalMail }}</div>
+        </div>
+      }
 
       <div class="d-inline-flex">
         <div class="d-flex me-3 font-bold-base"> {{ 'USER_ADMIN.ACCOUNT_STATUS' | translate }}: </div>
@@ -52,6 +59,11 @@
         <button atlasBackButton class="atlas-primary-btn" data-cy="backToOverview">
           {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
         </button>
+        @if (isAdmin) {
+          <button (click)="editManualMail()" class="atlas-primary-btn ms-3" data-cy="edit-manual-mail">
+            {{ 'USER_ADMIN.EDIT_MANUAL_MAIL' | translate }}
+          </button>
+        }
         <button (click)="toggleEdit()" class="atlas-primary-btn ms-3" data-cy="edit">
           {{ 'COMMON.EDIT' | translate }}
         </button>

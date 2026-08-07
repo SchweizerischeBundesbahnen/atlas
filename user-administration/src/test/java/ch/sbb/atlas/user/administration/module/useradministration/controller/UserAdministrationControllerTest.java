@@ -14,6 +14,8 @@ import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.user.administration.module.clientcredential.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.module.clientcredential.service.ClientCredentialAdministrationService;
+import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailEnricher;
+import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailOverrideService;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.exception.RestrictionWithoutTypeException;
@@ -46,6 +48,12 @@ class UserAdministrationControllerTest {
   @Mock
   private GraphApiService graphApiService;
 
+  @Mock
+  private UserManualMailOverrideService userManualMailOverrideService;
+
+  @Mock
+  private UserManualMailEnricher userManualMailEnricher;
+
   @Captor
   private ArgumentCaptor<UserAdministrationModel> userAdministrationModelArgumentCaptor;
 
@@ -56,7 +64,7 @@ class UserAdministrationControllerTest {
     MockitoAnnotations.openMocks(this);
     userAdministrationController = new UserAdministrationController(userAdministrationService,
         clientCredentialAdministrationService, userPermissionDistributor,
-        graphApiService);
+        userManualMailOverrideService, userManualMailEnricher, graphApiService);
 
     when(userAdministrationService.getUserPage(any(), any(), any(), any())).thenReturn(Page.empty());
   }

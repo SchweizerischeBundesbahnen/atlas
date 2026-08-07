@@ -22,6 +22,7 @@ public class BulkImporterMailService {
 
   public String getMailOfCurrentUser() {
     UserModel currentUser = userAdministrationClient.getCurrentUser();
-    return Objects.requireNonNull(currentUser.getMail(), "Mail of current user " + currentUser.getSbbUserId() + " is null");
+    return Objects.requireNonNull(currentUser.getMail(),
+        "Mail of current user " + currentUser.getSbbUserId() + " is null");
   }
 }
