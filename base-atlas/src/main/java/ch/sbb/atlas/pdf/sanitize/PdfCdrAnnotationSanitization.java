@@ -35,7 +35,7 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
   void sanitizeWidgetAnnotation(PDAnnotationWidget annotationWidget) {
     if (annotationWidget.getAction() != null) {
       log.debug(
-          "Found&Removed action on annotation widget, was {}", annotationWidget.getAction());
+          "Found&removed action on annotation widget, was {}", annotationWidget.getAction());
       annotationWidget.setAction(null);
       reportPerformedAction("Removed action on PDAnnotationWidget");
     }
@@ -49,14 +49,14 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
 
     if (annotationAdditionalActions.getBl() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the annotation loses the input focus, was {}",
+          "Found&removed action on annotation widget to be performed when the annotation loses the input focus, was {}",
           annotationAdditionalActions.getBl());
       annotationAdditionalActions.setBl(null);
       reportPerformedAction("Removed action input focus loss on PDAnnotationAdditionalActions");
     }
     if (annotationAdditionalActions.getD() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the mouse button is pressed inside the annotation's "
+          "Found&removed action on annotation widget to be performed when the mouse button is pressed inside the annotation's "
               + "active area, was {}",
           annotationAdditionalActions.getD());
       annotationAdditionalActions.setD(null);
@@ -64,28 +64,28 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
     }
     if (annotationAdditionalActions.getE() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the cursor enters the annotation's active area, was {}",
+          "Found&removed action on annotation widget to be performed when the cursor enters the annotation's active area, was {}",
           annotationAdditionalActions.getE());
       annotationAdditionalActions.setE(null);
       reportPerformedAction("Removed action on cursor enter on PDAnnotationAdditionalActions");
     }
     if (annotationAdditionalActions.getFo() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the annotation receives the input focus, was {}",
+          "Found&removed action on annotation widget to be performed when the annotation receives the input focus, was {}",
           annotationAdditionalActions.getFo());
       annotationAdditionalActions.setFo(null);
       reportPerformedAction("Removed action on input focus on PDAnnotationAdditionalActions");
     }
     if (annotationAdditionalActions.getPC() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the page containing the annotation is closed, was {}",
+          "Found&removed action on annotation widget to be performed when the page containing the annotation is closed, was {}",
           annotationAdditionalActions.getPC());
       annotationAdditionalActions.setPC(null);
       reportPerformedAction("Removed action on page close on PDAnnotationAdditionalActions");
     }
     if (annotationAdditionalActions.getPI() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the page containing the annotation is no longer "
+          "Found&removed action on annotation widget to be performed when the page containing the annotation is no longer "
               + "visible in the viewer application's user interface, was {}",
           annotationAdditionalActions.getPI());
       annotationAdditionalActions.setPI(null);
@@ -93,14 +93,14 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
     }
     if (annotationAdditionalActions.getPO() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the page containing the annotation is opened, was {}",
+          "Found&removed action on annotation widget to be performed when the page containing the annotation is opened, was {}",
           annotationAdditionalActions.getPO());
       annotationAdditionalActions.setPO(null);
       reportPerformedAction("Removed action on page open on PDAnnotationAdditionalActions");
     }
     if (annotationAdditionalActions.getPV() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the page containing the annotation becomes visible in"
+          "Found&removed action on annotation widget to be performed when the page containing the annotation becomes visible in"
               + " the viewer application's user interface, was {}",
           annotationAdditionalActions.getPV());
       annotationAdditionalActions.setPV(null);
@@ -108,7 +108,7 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
     }
     if (annotationAdditionalActions.getU() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the mouse button is released inside the annotation's "
+          "Found&removed action on annotation widget to be performed when the mouse button is released inside the annotation's "
               + "active area, was {}",
           annotationAdditionalActions.getU());
       annotationAdditionalActions.setU(null);
@@ -116,7 +116,7 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
     }
     if (annotationAdditionalActions.getX() != null) {
       log.debug(
-          "Found&Removed action on annotation widget to be performed when the cursor exits the annotation's active area, was {}",
+          "Found&removed action on annotation widget to be performed when the cursor exits the annotation's active area, was {}",
           annotationAdditionalActions.getX());
       annotationAdditionalActions.setX(null);
       reportPerformedAction("Removed action on cursor leave on PDAnnotationAdditionalActions");

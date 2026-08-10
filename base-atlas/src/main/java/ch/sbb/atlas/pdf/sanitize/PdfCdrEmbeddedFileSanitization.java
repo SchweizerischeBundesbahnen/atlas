@@ -18,13 +18,15 @@ import org.apache.pdfbox.pdmodel.common.filespecification.PDEmbeddedFile;
 class PdfCdrEmbeddedFileSanitization {
 
   private final PDDocument doc;
+  private final int recursionDepth;
 
-  PdfCdrEmbeddedFileSanitization(PDDocument doc) {
+  PdfCdrEmbeddedFileSanitization(PDDocument doc, int recursionDepth) {
     this.doc = doc;
+    this.recursionDepth = recursionDepth;
   }
 
   void sanitize(PDEmbeddedFilesNameTreeNode embeddedFiles) {
-    sanitizeRecursiveNameTree(embeddedFiles, this::sanitizeEmbeddedFile);
+    sanitizeRecursiveNameTree(embeddedFiles, this::sanitizeEmbeddedFile, 0);
   }
 
   private void sanitizeEmbeddedFile(PDComplexFileSpecification fileSpec) {
@@ -39,7 +41,13 @@ class PdfCdrEmbeddedFileSanitization {
       return null;
     }
 
-    log.debug("Sanitizing file: Size: {}, Mime-Type: {}, ", file.getSize(), file.getSubtype());
+    if (recursionDepth >= PdfCdr.MAX_RECURSION_DEPTH) {
+      log.warn("Reached maximum recursion depth of {} while sanitizing embedded files - dropping embedded file to prevent "
+          + "infinite recursion", PdfCdr.MAX_RECURSION_DEPTH);
+      return null;
+    }
+
+    log.debug("Sanitizing embedded file: size {}, mime-type {}", file.getSize(), file.getSubtype());
 
     ByteArrayInputStream is;
     try {
@@ -51,7 +59,7 @@ class PdfCdrEmbeddedFileSanitization {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
 
     try {
-      PdfCdr.sanitize(is, os);
+      PdfCdr.sanitize(is, os, recursionDepth + 1);
     } catch (Exception e) {
       log.error("Error during the embedded file processing", e);
       return null;
@@ -91,8 +99,14 @@ class PdfCdrEmbeddedFileSanitization {
   }
 
   private <T extends COSObjectable> void sanitizeRecursiveNameTree(PDNameTreeNode<T> efTree,
-      Consumer<T> callback) {
+      Consumer<T> callback, int treeDepth) {
     if (efTree == null) {
+      return;
+    }
+
+    if (treeDepth >= PdfCdr.MAX_RECURSION_DEPTH) {
+      log.warn("Reached maximum name tree depth of {} - stopping traversal to prevent infinite recursion",
+          PdfCdr.MAX_RECURSION_DEPTH);
       return;
     }
 
@@ -111,7 +125,7 @@ class PdfCdrEmbeddedFileSanitization {
       return;
     }
     for (PDNameTreeNode<T> node : efTree.getKids()) {
-      sanitizeRecursiveNameTree(node, callback);
+      sanitizeRecursiveNameTree(node, callback, treeDepth + 1);
     }
   }
 
