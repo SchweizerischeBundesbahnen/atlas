@@ -75,6 +75,21 @@ describe('UserAdministrationService', () => {
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith(USER_BASE_PATH, expect.any(HttpParams));
   });
 
+  it('should get user emails with complex filters', () => {
+    const restrictions = new Set(['restriction']);
+    const applicationTypes = new Set([ApplicationType.Sepodi]);
+    const permissionType = PermissionRestrictionType.Canton;
+
+    service.getUserEmails(restrictions, permissionType, applicationTypes);
+
+    expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith({
+      permissionRestrictions: restrictions,
+      type: permissionType,
+      applicationTypes,
+    });
+    expect(apiService.get).toHaveBeenCalledExactlyOnceWith(`${USER_BASE_PATH}/emails`, expect.any(HttpParams));
+  });
+
   it('should request current user', () => {
     service.getCurrentUser();
 

@@ -376,6 +376,9 @@
     "DELETE_BUSINESS_ORGANISATION": "Supprimer l'organisation commerciale",
     "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "L'utilisateur sélectionné est déjà enregistré",
     "SELECTED_USER_HAS_NO_USER_ID": "L'utilisateur sélectionné n'a pas d'ID utilisateur enregistré",
+    "COPY_EMAILS": "Copier les e-mails",
+    "COPY_EMAILS_EMPTY": "Aucune adresse e-mail trouvée pour le filtre actuel.",
+    "TOO_MANY_EMAILS_FOR_CLIPBOARD": "Il y a trop d'utilisateurs ({{count}}) pour cette action. Veuillez restreindre le filtre à un maximum de {{max}} utilisateurs.",
     "NOTIFICATIONS": {
       "ADD_SUCCESS": "Utilisateur enregistré avec succès",
       "EDIT_SUCCESS": "Enregistré avec succès",

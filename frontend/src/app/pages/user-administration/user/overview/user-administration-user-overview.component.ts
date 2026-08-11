@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
 import { tableColumns } from './table-column-definition';
@@ -16,6 +16,8 @@ import { BusinessOrganisationSelectComponent } from '../../../../core/form-compo
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'atlas-user-administration-overview',
@@ -72,6 +74,17 @@ export class UserAdministrationUserOverviewComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly tableService = inject(TableService);
+  private readonly notificationService = inject(NotificationService);
+
+  copyingEmails = false;
+
+  get hasFilterCriteria(): boolean {
+    return (
+      this.selectedApplicationOptions.length > 0 ||
+      this.selectedCantonOptions.length > 0 ||
+      !!this.boForm.get(this.boSearchCtrlName)?.value
+    );
+  }
 
   reloadTableWithCurrentSettings(): void {
     if (this.selectedSearch === 'USER') {
@@ -128,15 +141,13 @@ export class UserAdministrationUserOverviewComponent {
   }
 
   filterChanged(pageIndex = 0): void {
-    const selectedSboid = this.boForm.get(this.boSearchCtrlName)?.value;
+    const { permissionRestrictions, type } = this.currentFilter();
     this.userAdministrationService
       .getUsers(
         pageIndex,
         this.tableService.pageSize,
-        new Set<string>([selectedSboid, ...this.selectedCantonOptions]),
-        this.selectedSearch === 'FILTER'
-          ? PermissionRestrictionType.BusinessOrganisation
-          : PermissionRestrictionType.Canton,
+        permissionRestrictions,
+        type,
         new Set<ApplicationType>(this.selectedApplicationOptions)
       )
       .pipe(
@@ -151,6 +162,18 @@ export class UserAdministrationUserOverviewComponent {
       .subscribe();
   }
 
+  copyFilteredEmails(): void {
+    const { permissionRestrictions, type } = this.currentFilter();
+    this.copyingEmails = true;
+    this.userAdministrationService
+      .getUserEmails(permissionRestrictions, type, new Set<ApplicationType>(this.selectedApplicationOptions))
+      .pipe(finalize(() => (this.copyingEmails = false)))
+      .subscribe({
+        next: (emails) => this.copyEmailsToClipboard(emails),
+        error: (error: HttpErrorResponse) => this.notificationService.error(error),
+      });
+  }
+
   selectedSearchChanged(): void {
     this.loadUsers({ page: 0, size: 10 });
   }
@@ -163,5 +186,26 @@ export class UserAdministrationUserOverviewComponent {
 
   cantonChanged(cantons: SwissCanton[]) {
     this.selectedCantonOptions = cantons;
+  }
+
+  private currentFilter(): { permissionRestrictions: Set<string>; type: PermissionRestrictionType } {
+    const selectedSboid = this.boForm.get(this.boSearchCtrlName)?.value;
+    return {
+      permissionRestrictions: new Set<string>([selectedSboid, ...this.selectedCantonOptions]),
+      type:
+        this.selectedSearch === 'FILTER'
+          ? PermissionRestrictionType.BusinessOrganisation
+          : PermissionRestrictionType.Canton,
+    };
+  }
+
+  private copyEmailsToClipboard(emails: string[]): void {
+    if (emails.length === 0) {
+      this.notificationService.info('USER_ADMIN.COPY_EMAILS_EMPTY');
+      return;
+    }
+    void navigator.clipboard.writeText(emails.join('; ')).then(() => {
+      this.notificationService.success('COMMON.COPY_CLIPBOARD_SUCCESS');
+    });
   }
 }

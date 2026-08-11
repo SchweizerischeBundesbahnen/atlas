@@ -33,10 +33,10 @@
           [controlName]="boSearchCtrlName"
           [formGroup]="boForm"
           [formModus]="false"
-          class="col-6 pe-1"
+          class="col-5 pe-1"
         />
 
-        <div class="d-flex flex-column col-6 ps-3">
+        <div class="d-flex flex-column col-5 ps-3">
           <atlas-select
             (selectChanged)="applicationChanged($event.value); filterChanged()"
             [value]="selectedApplicationOptions"
@@ -47,10 +47,20 @@
             [multiple]="true"
           />
         </div>
+
+        <div class="d-flex flex-column col-2 ps-3 justify-content-end">
+          <button
+            class="atlas-primary-btn"
+            [disabled]="copyingEmails || userPageResult.totalCount === 0 || !hasFilterCriteria"
+            (click)="copyFilteredEmails()"
+          >
+            {{ 'USER_ADMIN.COPY_EMAILS' | translate }}
+          </button>
+        </div>
       </div>
     } @else {
       <div class="d-flex flex-row">
-        <div class="d-flex flex-column col-6 ps-1">
+        <div class="d-flex flex-column col-5 ps-1">
           <atlas-select
             (selectChanged)="cantonChanged($event.value); filterChanged()"
             [value]="selectedCantonOptions"
@@ -63,7 +73,7 @@
           />
         </div>
 
-        <div class="d-flex flex-column col-6 ps-3">
+        <div class="d-flex flex-column col-5 ps-3">
           <atlas-select
             (selectChanged)="applicationChanged($event.value); filterChanged()"
             [value]="selectedApplicationOptions"
@@ -73,6 +83,16 @@
             [options]="applicationCantonOptions"
             [multiple]="true"
           />
+        </div>
+
+        <div class="d-flex flex-column col-2 ps-3 justify-content-end">
+          <button
+            class="atlas-primary-btn"
+            [disabled]="copyingEmails || userPageResult.totalCount === 0 || !hasFilterCriteria"
+            (click)="copyFilteredEmails()"
+          >
+            {{ 'USER_ADMIN.COPY_EMAILS' | translate }}
+          </button>
         </div>
       </div>
     }

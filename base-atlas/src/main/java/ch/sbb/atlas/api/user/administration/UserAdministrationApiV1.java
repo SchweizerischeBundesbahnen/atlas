@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Set;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,15 @@ public interface UserAdministrationApiV1 {
   @PageableAsQueryParam
   @Operation(description = "Retrieve Overview for all the managed Users")
   Container<UserModel> getUsers(@Parameter(hidden = true) Pageable pageable,
+      @RequestParam(required = false) Set<String> permissionRestrictions,
+      @RequestParam(required = false) PermissionRestrictionType type,
+      @RequestParam(required = false) Set<ApplicationType> applicationTypes);
+
+  @AdminOnly
+  @GetMapping(BASE_PATH + "/emails")
+  @Operation(description = "Retrieve the effective e-mail addresses of all users matching the given filter, unpaged. "
+      + "Intended for bulk mailing use cases (e.g. copying all filtered users' e-mails to the clipboard).")
+  List<String> getUserEmails(
       @RequestParam(required = false) Set<String> permissionRestrictions,
       @RequestParam(required = false) PermissionRestrictionType type,
       @RequestParam(required = false) Set<ApplicationType> applicationTypes);

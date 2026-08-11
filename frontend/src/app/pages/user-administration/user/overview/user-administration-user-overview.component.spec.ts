@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, Subject } from 'rxjs';
-import { ApplicationRole, ApplicationType, Permission } from '../../../../api';
+import { of, Subject, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ApplicationRole, ApplicationType, Permission, SwissCanton } from '../../../../api';
 import { UserAdministrationUserOverviewComponent } from './user-administration-user-overview.component';
 import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { TableService } from '../../../../core/components/table/table.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
 import { FormatPipe } from '../../../../core/components/table/pipe/format.pipe';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
@@ -14,19 +16,30 @@ describe('UserAdministrationUserOverviewComponent', () => {
   let component: UserAdministrationUserOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationUserOverviewComponent>;
 
-  let userAdministrationService: Mocked<Pick<UserAdministrationService, 'getUsers' | 'getUser'>>;
+  let userAdministrationService: Mocked<Pick<UserAdministrationService, 'getUsers' | 'getUser' | 'getUserEmails'>>;
+  let notificationService: Mocked<Pick<NotificationService, 'success' | 'info' | 'error'>>;
   let tableService: TableService;
 
   beforeEach(() => {
     userAdministrationService = {
       getUsers: vi.fn().mockReturnValue(of({ objects: [], totalCount: 0 })),
       getUser: vi.fn(),
+      getUserEmails: vi.fn().mockReturnValue(of([])),
+    };
+    notificationService = {
+      success: vi.fn(),
+      info: vi.fn(),
+      error: vi.fn(),
     };
     TestBed.configureTestingModule({
       providers: [
         {
           provide: UserAdministrationService,
           useValue: userAdministrationService,
+        },
+        {
+          provide: NotificationService,
+          useValue: notificationService,
         },
         {
           provide: PermissionService,
@@ -264,5 +277,164 @@ describe('UserAdministrationUserOverviewComponent', () => {
     component.selectedSearch = 'FILTER';
     component.reloadTableWithCurrentSettings();
     expect(component.filterChanged).toHaveBeenCalledExactlyOnceWith(10);
+  });
+
+  it('should not render the copy button in USER search mode', () => {
+    component.selectedSearch = 'USER';
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button).toBeNull();
+  });
+
+  it('should render the copy button in FILTER search mode', () => {
+    component.selectedSearch = 'FILTER';
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button).not.toBeNull();
+  });
+
+  it('should render the copy button in FILTER_CANTON search mode', () => {
+    component.selectedSearch = 'FILTER_CANTON';
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button).not.toBeNull();
+  });
+
+  it('should disable the copy button when there are no results', () => {
+    component.selectedSearch = 'FILTER';
+    component.userPageResult = { users: [], totalCount: 0 };
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(true);
+  });
+
+  it('should disable the copy button when no filter criteria are set', () => {
+    // Given: results exist, but neither application, business organisation nor canton is selected
+    component.selectedSearch = 'FILTER';
+    component.userPageResult = { users: [], totalCount: 42 };
+
+    // When
+    fixture.detectChanges();
+
+    // Then
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(true);
+  });
+
+  it('should enable the copy button when an application type is selected', () => {
+    component.selectedSearch = 'FILTER';
+    component.userPageResult = { users: [], totalCount: 42 };
+    component.applicationChanged([ApplicationType.Lidi]);
+
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(false);
+  });
+
+  it('should enable the copy button when a business organisation is selected', () => {
+    component.selectedSearch = 'FILTER';
+    component.userPageResult = { users: [], totalCount: 42 };
+    component.boForm.get('boSearch')?.setValue('ch:1:sboid:100000');
+
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(false);
+  });
+
+  it('should enable the copy button when a canton is selected', () => {
+    component.selectedSearch = 'FILTER_CANTON';
+    component.userPageResult = { users: [], totalCount: 42 };
+    component.cantonChanged([SwissCanton.Bern]);
+
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button.atlas-primary-btn');
+    expect(button.disabled).toBe(false);
+  });
+
+  it('should send the same filter params as filterChanged for FILTER mode', () => {
+    component.selectedSearch = 'FILTER';
+    component.boForm.get('boSearch')?.setValue('ch:1:sboid:100000');
+    component.applicationChanged([ApplicationType.Lidi]);
+
+    component.filterChanged();
+    const filterChangedArgs = userAdministrationService.getUsers.mock.calls.at(-1);
+
+    userAdministrationService.getUserEmails.mockClear();
+    component.copyFilteredEmails();
+
+    expect(userAdministrationService.getUserEmails).toHaveBeenCalledExactlyOnceWith(
+      filterChangedArgs![2],
+      filterChangedArgs![3],
+      filterChangedArgs![4]
+    );
+  });
+
+  it('should send the same filter params as filterChanged for FILTER_CANTON mode', () => {
+    component.selectedSearch = 'FILTER_CANTON';
+    component.cantonChanged(['BERN']);
+    component.applicationChanged([ApplicationType.TimetableHearing]);
+
+    component.filterChanged();
+    const filterChangedArgs = userAdministrationService.getUsers.mock.calls.at(-1);
+
+    userAdministrationService.getUserEmails.mockClear();
+    component.copyFilteredEmails();
+
+    expect(userAdministrationService.getUserEmails).toHaveBeenCalledExactlyOnceWith(
+      filterChangedArgs![2],
+      filterChangedArgs![3],
+      filterChangedArgs![4]
+    );
+  });
+
+  it('should copy the joined emails to the clipboard and show a success notification', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+    userAdministrationService.getUserEmails.mockReturnValue(of(['a@sbb.ch', 'b@sbb.ch']));
+
+    component.copyFilteredEmails();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(writeText).toHaveBeenCalledExactlyOnceWith('a@sbb.ch; b@sbb.ch');
+    expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('COMMON.COPY_CLIPBOARD_SUCCESS');
+    expect(component.copyingEmails).toBe(false);
+  });
+
+  it('should show an info notification and not touch the clipboard when there are no emails', () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+    userAdministrationService.getUserEmails.mockReturnValue(of([]));
+
+    component.copyFilteredEmails();
+
+    expect(writeText).not.toHaveBeenCalled();
+    expect(notificationService.info).toHaveBeenCalledExactlyOnceWith('USER_ADMIN.COPY_EMAILS_EMPTY');
+    expect(component.copyingEmails).toBe(false);
+  });
+
+  it('should show an error notification and reset the loading flag when the request fails', () => {
+    const error = new HttpErrorResponse({ status: 400 });
+    userAdministrationService.getUserEmails.mockReturnValue(throwError(() => error));
+
+    component.copyFilteredEmails();
+
+    expect(notificationService.error).toHaveBeenCalledExactlyOnceWith(error);
+    expect(component.copyingEmails).toBe(false);
+  });
+
+  it('should set the loading flag while the request is in flight', () => {
+    const subject = new Subject<string[]>();
+    userAdministrationService.getUserEmails.mockReturnValue(subject);
+
+    component.copyFilteredEmails();
+    expect(component.copyingEmails).toBe(true);
+
+    subject.next([]);
+    subject.complete();
+    expect(component.copyingEmails).toBe(false);
   });
 });

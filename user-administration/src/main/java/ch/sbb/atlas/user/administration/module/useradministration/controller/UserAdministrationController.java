@@ -29,6 +29,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -47,6 +49,9 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   private final GraphApiService graphApiService;
 
+  @Value("${atlas.user-administration.emails.max-users:1000}")
+  private int maxUsersForEmailExport;
+
   @Override
   public Container<UserModel> getUsers(Pageable pageable, Set<String> permissionRestrictions, PermissionRestrictionType type,
       Set<ApplicationType> applicationTypes) {
@@ -62,6 +67,32 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
         .totalCount(userPage.getTotalElements())
         .objects(userModels)
         .build();
+  }
+
+  @Override
+  public List<String> getUserEmails(Set<String> permissionRestrictions, PermissionRestrictionType type,
+      Set<ApplicationType> applicationTypes) {
+    if (permissionRestrictions != null && !permissionRestrictions.isEmpty() && type == null) {
+      throw new RestrictionWithoutTypeException();
+    }
+    List<String> userIds = userAdministrationService.getAllFilteredUserIds(permissionRestrictions, applicationTypes, type);
+    if (userIds.size() > maxUsersForEmailExport) {
+      throw SimpleAtlasException.builder()
+          .status(HttpStatus.BAD_REQUEST)
+          .message("Filter matches %d users, which exceeds the limit of %d users for the e-mail export"
+              .formatted(userIds.size(), maxUsersForEmailExport))
+          .displayCode("USER_ADMIN.TOO_MANY_EMAILS_FOR_CLIPBOARD")
+          .error("Too many users to export e-mails for")
+          .build();
+    }
+
+    List<UserModel> userModels = graphApiService.resolveUsers(userIds);
+    userManualMailEnricher.enrich(userModels);
+    return userModels.stream()
+        .map(UserModel::getMail)
+        .filter(StringUtils::isNotBlank)
+        .distinct()
+        .toList();
   }
 
   @Override
