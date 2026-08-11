@@ -1,11 +1,13 @@
 package ch.sbb.atlas.gateway;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder.Builder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Slf4j
 @Configuration
 public class RouteConfig {
 
@@ -13,6 +15,16 @@ public class RouteConfig {
   public RouteLocator routes(RouteLocatorBuilder routeLocatorBuilder, GatewayConfig gatewayConfig,
       GatewayRequestLogging gatewayRequestLogging) {
     Builder routeBuilder = routeLocatorBuilder.routes();
+
+    if (gatewayConfig.isTthModuleReroute()) {
+      log.info("TTH Module (new) Reroute is enabled");
+      String timetableHearingUri = gatewayConfig.getRoutes().get("timetable-hearing");
+      routeBuilder.route("tth-cutover",
+          p -> p.predicate(exchange -> exchange.getRequest().getURI().getRawPath().contains("/timetable-hearing/"))
+              .filters(f -> f.rewritePath("/line-directory/(?<path>.*)", "/$\\{path}").filter(gatewayRequestLogging))
+              .uri(timetableHearingUri));
+    }
+
     gatewayConfig.getRoutes().forEach((application, uri) ->
         routeBuilder
             .route(application, p -> p
