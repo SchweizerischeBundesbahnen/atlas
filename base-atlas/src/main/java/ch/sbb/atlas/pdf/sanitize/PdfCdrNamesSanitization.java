@@ -11,12 +11,12 @@ class PdfCdrNamesSanitization extends PdfCdrReporter {
     super(result);
   }
 
-  void sanitizeNamed(PDDocument doc, PDDocumentNameDictionary names) {
+  void sanitizeNamed(PDDocument doc, PDDocumentNameDictionary names, int recursionDepth) {
     if (names == null) {
       return;
     }
 
-    new PdfCdrEmbeddedFileSanitization(doc).sanitize(names.getEmbeddedFiles());
+    new PdfCdrEmbeddedFileSanitization(doc, recursionDepth).sanitize(names.getEmbeddedFiles());
 
     if (names.getJavaScript() != null) {
       names.setJavascript(null);

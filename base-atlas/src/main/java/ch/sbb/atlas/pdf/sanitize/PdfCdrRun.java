@@ -8,9 +8,9 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 @Slf4j
 class PdfCdrRun {
 
-  PdfCdrResult sanitize(PDDocument doc, OutputStream outputStream) throws IOException {
+  PdfCdrResult sanitize(PDDocument doc, OutputStream outputStream, int recursionDepth) throws IOException {
     PdfCdrResult result = new PdfCdrResult();
-    new PdfCdrNamesSanitization(result).sanitizeNamed(doc, doc.getDocumentCatalog().getNames());
+    new PdfCdrNamesSanitization(result).sanitizeNamed(doc, doc.getDocumentCatalog().getNames(), recursionDepth);
     new PdfCdrDocumentCatalogSanitization(result).sanitize(doc.getDocumentCatalog());
     new PdfCdrDocumentOutlineSanitization(result).sanitizeDocumentOutline(doc.getDocumentCatalog().getDocumentOutline());
 

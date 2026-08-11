@@ -27,7 +27,7 @@ class PdfCdrDocumentCatalogSanitization extends PdfCdrReporter {
   void sanitize(PDDocumentCatalog docCatalog) throws IOException {
     sanitizeOpenAction(docCatalog);
     sanitizeDocumentActions(docCatalog.getActions());
-    sanitizePageActions(docCatalog.getPages());
+    sanitizePageTreeFromActions(docCatalog.getPages());
     sanitizeAcroFormActions(docCatalog.getAcroForm());
   }
 
@@ -62,8 +62,8 @@ class PdfCdrDocumentCatalogSanitization extends PdfCdrReporter {
     }
   }
 
-  private void sanitizePageActions(PDPageTree pages) throws IOException {
-    log.trace("Checking Pages Actions");
+  private void sanitizePageTreeFromActions(PDPageTree pages) throws IOException {
+    log.trace("Checking Pages Tree");
     for (PDPage page : pages) {
       sanitizePage(page);
     }
@@ -110,7 +110,7 @@ class PdfCdrDocumentCatalogSanitization extends PdfCdrReporter {
       reportPerformedAction("Removed after saving action from PDDocumentCatalogAdditionalActions");
     }
     if (documentActions.getWC() != null) {
-      log.debug("Found&removed action before closing (was {}", documentActions.getWC());
+      log.debug("Found&removed action before closing (was {})", documentActions.getWC());
       documentActions.setWC(null);
       reportPerformedAction("Removed before closing action from PDDocumentCatalogAdditionalActions");
     }
