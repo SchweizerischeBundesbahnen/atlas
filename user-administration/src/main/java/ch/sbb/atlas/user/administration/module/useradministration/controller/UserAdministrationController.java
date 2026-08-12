@@ -17,6 +17,7 @@ import ch.sbb.atlas.user.administration.module.clientcredential.mapper.ClientCre
 import ch.sbb.atlas.user.administration.module.clientcredential.service.ClientCredentialAdministrationService;
 import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailEnricher;
 import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailOverrideService;
+import ch.sbb.atlas.user.administration.module.manualmail.validation.ManualMailOverrideValidationService;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.exception.RestrictionWithoutTypeException;
 import ch.sbb.atlas.user.administration.module.useradministration.mapper.UserPermissionMapper;
@@ -46,6 +47,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   private final UserPermissionDistributor userPermissionDistributor;
   private final UserManualMailOverrideService userManualMailOverrideService;
   private final UserManualMailEnricher userManualMailEnricher;
+  private final ManualMailOverrideValidationService manualMailOverrideValidationService;
 
   private final GraphApiService graphApiService;
 
@@ -203,6 +205,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   @Override
   public UserModel updateManualMailOverride(String userId, ManualMailOverrideModel manualMail) {
+    manualMailOverrideValidationService.validateMailNotInUse(userId, manualMail.getMail());
     userManualMailOverrideService.setManualMailOverride(userId, manualMail.getMail());
     return getUser(userId);
   }
