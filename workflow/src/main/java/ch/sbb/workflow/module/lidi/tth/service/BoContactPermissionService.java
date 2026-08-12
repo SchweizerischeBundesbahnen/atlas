@@ -36,7 +36,7 @@ public class BoContactPermissionService {
         throw SimpleAtlasException.builder()
             .status(HttpStatus.PRECONDITION_FAILED)
             .messageAndError("You are not allowed to answer any questions")
-            .displayCode("TTH.ERROR.NOT_ALLOWED_BO_CONTACT", List.of(new Parameter("mail", mail)))
+            .displayCode("TTH.ERROR.NOT_ALLOWED_BO_CONTACT", List.of(new Parameter("mail", user.getMail())))
             .build();
       }
 
