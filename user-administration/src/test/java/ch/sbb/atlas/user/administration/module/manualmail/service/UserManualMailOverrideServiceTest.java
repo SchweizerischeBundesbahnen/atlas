@@ -4,9 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import ch.sbb.atlas.user.administration.module.manualmail.entity.UserManualMailOverride;
 import ch.sbb.atlas.user.administration.module.manualmail.repository.UserManualMailOverrideRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,6 +65,31 @@ class UserManualMailOverrideServiceTest {
 
     // Then
     verify(userManualMailOverrideRepositoryMock, times(1)).deleteBySbbUserIdIgnoreCase("u123456");
+  }
+
+  @Test
+  void shouldFindUserIdsByPartialMail() {
+    // Given
+    doReturn(List.of(
+        UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build(),
+        UserManualMailOverride.builder().sbbUserId("u999999").mail("manual.other@sbb.ch").build()))
+        .when(userManualMailOverrideRepositoryMock).findTop10ByMailContainingIgnoreCase("manual");
+
+    // When
+    List<String> userIds = userManualMailOverrideService.findUserIdsByMailContaining("manual");
+
+    // Then
+    assertThat(userIds).containsExactly("u123456", "u999999");
+  }
+
+  @Test
+  void shouldNotSearchUserIdsWhenSearchQueryIsBlank() {
+    // When
+    List<String> userIds = userManualMailOverrideService.findUserIdsByMailContaining("  ");
+
+    // Then
+    assertThat(userIds).isEmpty();
+    verifyNoInteractions(userManualMailOverrideRepositoryMock);
   }
 
 }
