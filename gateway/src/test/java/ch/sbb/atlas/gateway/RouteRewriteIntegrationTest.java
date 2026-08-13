@@ -92,6 +92,23 @@ class RouteRewriteIntegrationTest {
           TimeUnit.MILLISECONDS);
       assertThat(lineDirectoryRequest).isNull();
     }
+
+    @Test
+    void shouldRouteToNewTimetableHearingService() throws InterruptedException {
+      lineDirectoryMockServer.enqueue(new MockResponse().setResponseCode(200));
+      timetableHearingMockServer.enqueue(new MockResponse().setResponseCode(200));
+
+      webClient.get().uri("/timetable-hearing/internal/migrate-from-lidi").exchange().expectStatus().isOk();
+
+      RecordedRequest timetableHearingRequest = timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
+          TimeUnit.MILLISECONDS);
+      assertThat(timetableHearingRequest).isNotNull();
+      assertThat(timetableHearingRequest.getPath()).isEqualTo("/internal/migrate-from-lidi");
+
+      RecordedRequest lineDirectoryRequest = lineDirectoryMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
+          TimeUnit.MILLISECONDS);
+      assertThat(lineDirectoryRequest).isNull();
+    }
   }
 
   @Nested

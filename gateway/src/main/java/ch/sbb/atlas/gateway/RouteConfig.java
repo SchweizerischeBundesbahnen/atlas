@@ -20,7 +20,10 @@ public class RouteConfig {
       log.info("TTH Module (new) Reroute is enabled");
       String timetableHearingUri = gatewayConfig.getRoutes().get("timetable-hearing");
       routeBuilder.route("tth-cutover",
-          p -> p.predicate(exchange -> exchange.getRequest().getURI().getRawPath().contains("/timetable-hearing/"))
+          p -> p.predicate(exchange -> {
+                String requestPath = exchange.getRequest().getURI().getRawPath();
+                return requestPath.startsWith("/line-directory") && requestPath.contains("/timetable-hearing/");
+              })
               .filters(f -> f.rewritePath("/line-directory/(?<path>.*)", "/$\\{path}").filter(gatewayRequestLogging))
               .uri(timetableHearingUri));
     }
