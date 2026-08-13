@@ -10,4 +10,3 @@ public class AtlasAdminFeignConfig extends OAuthClientConfig {
     super("atlasAdmin");
   }
 }
-
