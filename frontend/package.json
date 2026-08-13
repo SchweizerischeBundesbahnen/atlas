@@ -65,7 +65,7 @@
     "@ng-select/ng-select": "23.6.0",
     "@ngx-translate/core": "18.0.0",
     "@ngx-translate/http-loader": "18.0.0",
-    "angular-auth-oidc-client": "21.0.2",
+    "angular-auth-oidc-client": "21.0.3",
     "angular-server-side-configuration": "22.0.2",
     "bootstrap": "5.3",
     "geotiff": "3.0.5",
