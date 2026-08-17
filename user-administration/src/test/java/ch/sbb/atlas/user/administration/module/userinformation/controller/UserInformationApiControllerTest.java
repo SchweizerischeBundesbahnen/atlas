@@ -107,6 +107,35 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
     }
 
     @Test
+    void shouldFindUserByManuallyOverriddenMailUnknownToAzure() throws Exception {
+      // Given
+      userManualMailOverrideRepository.save(
+          UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+
+      // When / Then
+      mvc.perform(get("/v1/search")
+              .param("searchQuery", "manual@sbb.ch"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.length()").value(1))
+          .andExpect(jsonPath("$[0].sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$[0].mail").value("manual@sbb.ch"))
+          .andExpect(jsonPath("$[0].originalMail").value("u123456@sbb.ch"));
+    }
+
+    @Test
+    void shouldNotFindUserByManuallyOverriddenMailOfAnotherUser() throws Exception {
+      // Given
+      userManualMailOverrideRepository.save(
+          UserManualMailOverride.builder().sbbUserId("u999999").mail("other@sbb.ch").build());
+
+      // When / Then
+      mvc.perform(get("/v1/search")
+              .param("searchQuery", "other@sbb.ch"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
     @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
     void shouldNotAllowSearchToUnauthorized() throws Exception {
       mvc.perform(get("/v1/search").param("searchQuery", "testQuery"))
@@ -132,6 +161,37 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.length()").value(1))
           .andExpect(jsonPath("$[0].sbbUserId").value("u123456"));
+    }
+
+    @Test
+    void shouldFindUserInAtlasByManuallyOverriddenMailUnknownToAzure() throws Exception {
+      // Given
+      userManualMailOverrideRepository.save(
+          UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+
+      // When / Then
+      mvc.perform(get("/v1/search-in-atlas")
+              .param("searchQuery", "manual@sbb.ch")
+              .param("applicationType", "SEPODI"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.length()").value(1))
+          .andExpect(jsonPath("$[0].sbbUserId").value("u123456"))
+          .andExpect(jsonPath("$[0].mail").value("manual@sbb.ch"))
+          .andExpect(jsonPath("$[0].originalMail").value("u123456@sbb.ch"));
+    }
+
+    @Test
+    void shouldNotFindUserInAtlasByManuallyOverriddenMailWhenPermissionForOtherApplication() throws Exception {
+      // Given
+      userManualMailOverrideRepository.save(
+          UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+
+      // When / Then
+      mvc.perform(get("/v1/search-in-atlas")
+              .param("searchQuery", "manual@sbb.ch")
+              .param("applicationType", "LIDI"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.length()").value(0));
     }
 
     @Test
