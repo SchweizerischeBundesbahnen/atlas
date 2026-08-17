@@ -79,6 +79,21 @@ class UserManualMailOverrideRepositoryTest {
   }
 
   @Test
+  void shouldFindManualMailsByPartialMailIgnoringCase() {
+    // Given
+    userManualMailOverrideRepository.saveAndFlush(
+        UserManualMailOverride.builder().sbbUserId("u123456").mail("Manual.Contact@Sbb.ch").build());
+    userManualMailOverrideRepository.saveAndFlush(
+        UserManualMailOverride.builder().sbbUserId("u999999").mail("other@sbb.ch").build());
+
+    // When
+    List<UserManualMailOverride> found = userManualMailOverrideRepository.findTop10ByMailContainingIgnoreCase("manual.contact");
+
+    // Then
+    assertThat(found).extracting(UserManualMailOverride::getSbbUserId).containsExactly("u123456");
+  }
+
+  @Test
   void shouldFindManualMailsForMultipleUserIdsInOneQuery() {
     // Given
     userManualMailOverrideRepository.saveAndFlush(

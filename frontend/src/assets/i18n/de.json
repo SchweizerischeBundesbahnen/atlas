@@ -379,6 +379,7 @@
     "COPY_EMAILS": "E-Mails kopieren",
     "COPY_EMAILS_EMPTY": "Keine E-Mail-Adressen für die aktuelle Filterung gefunden.",
     "TOO_MANY_EMAILS_FOR_CLIPBOARD": "Es gibt zu viele Benutzer ({{count}}) für diese Aktion. Bitte grenzen Sie die Filterung auf maximal {{max}} Benutzer ein.",
+    "MAIL_ALREADY_IN_USE": "Die E-Mail Adresse {{mail}} wird bereits vom Benutzer {{sbbUserId}} verwendet.",
     "NOTIFICATIONS": {
       "ADD_SUCCESS": "Benutzer erfolgreich erfasst",
       "EDIT_SUCCESS": "Erfolgreich gespeichert",

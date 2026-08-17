@@ -379,6 +379,7 @@
     "COPY_EMAILS": "Copia e-mail",
     "COPY_EMAILS_EMPTY": "Nessun indirizzo e-mail trovato per il filtro attuale.",
     "TOO_MANY_EMAILS_FOR_CLIPBOARD": "Ci sono troppi utenti ({{count}}) per questa azione. Si prega di limitare il filtro a un massimo di {{max}} utenti.",
+    "MAIL_ALREADY_IN_USE": "L'indirizzo e-mail {{mail}} è già utilizzato dall'utente {{sbbUserId}}.",
     "NOTIFICATIONS": {
       "ADD_SUCCESS": "Utente registrato con successo",
       "EDIT_SUCCESS": "Salvato con successo",

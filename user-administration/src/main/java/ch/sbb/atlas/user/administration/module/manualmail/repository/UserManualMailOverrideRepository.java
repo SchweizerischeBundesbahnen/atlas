@@ -16,6 +16,8 @@ public interface UserManualMailOverrideRepository extends JpaRepository<UserManu
 
   Optional<UserManualMailOverride> findByMailIgnoreCase(String mail);
 
+  List<UserManualMailOverride> findTop10ByMailContainingIgnoreCase(String mail);
+
   void deleteBySbbUserIdIgnoreCase(String sbbUserId);
 
 }

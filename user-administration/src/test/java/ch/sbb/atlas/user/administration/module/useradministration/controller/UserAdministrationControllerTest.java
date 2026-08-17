@@ -16,6 +16,7 @@ import ch.sbb.atlas.user.administration.module.clientcredential.entity.ClientCre
 import ch.sbb.atlas.user.administration.module.clientcredential.service.ClientCredentialAdministrationService;
 import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailEnricher;
 import ch.sbb.atlas.user.administration.module.manualmail.service.UserManualMailOverrideService;
+import ch.sbb.atlas.user.administration.module.manualmail.validation.ManualMailOverrideValidationService;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.module.useradministration.exception.RestrictionWithoutTypeException;
@@ -54,6 +55,9 @@ class UserAdministrationControllerTest {
   @Mock
   private UserManualMailEnricher userManualMailEnricher;
 
+  @Mock
+  private ManualMailOverrideValidationService manualMailOverrideValidationService;
+
   @Captor
   private ArgumentCaptor<UserAdministrationModel> userAdministrationModelArgumentCaptor;
 
@@ -64,7 +68,7 @@ class UserAdministrationControllerTest {
     MockitoAnnotations.openMocks(this);
     userAdministrationController = new UserAdministrationController(userAdministrationService,
         clientCredentialAdministrationService, userPermissionDistributor,
-        userManualMailOverrideService, userManualMailEnricher, graphApiService);
+        userManualMailOverrideService, userManualMailEnricher, manualMailOverrideValidationService, graphApiService);
 
     when(userAdministrationService.getUserPage(any(), any(), any(), any())).thenReturn(Page.empty());
   }

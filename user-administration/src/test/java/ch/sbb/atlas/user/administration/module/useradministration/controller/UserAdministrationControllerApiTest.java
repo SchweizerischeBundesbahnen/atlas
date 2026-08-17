@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.module.useradministration.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
@@ -461,6 +462,54 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
               .content(mapper.writeValueAsString(new ManualMailOverrideModel("manual@sbb.ch"))))
           .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldRejectManualMailAlreadyUsedAsManualMailOfAnotherUser() throws Exception {
+      // given
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("e654321").mail("taken@sbb.ch").build());
+
+      // when & then
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
+              .content(mapper.writeValueAsString(new ManualMailOverrideModel("taken@sbb.ch"))))
+          .andExpect(status().isConflict())
+          .andExpect(jsonPath("$.details[0].displayInfo.code").value("USER_ADMIN.MAIL_ALREADY_IN_USE"));
+      assertThat(userManualMailOverrideRepository.findBySbbUserIdIgnoreCase("u123456")).isEmpty();
+    }
+
+    @Test
+    void shouldAllowUpdatingManualMailToTheSameValueForTheSameUser() throws Exception {
+      // given
+      userManualMailOverrideRepository.save(UserManualMailOverride.builder().sbbUserId("u123456").mail("manual@sbb.ch").build());
+
+      // when & then
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
+              .content(mapper.writeValueAsString(new ManualMailOverrideModel("manual@sbb.ch"))))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.mail").value("manual@sbb.ch"));
+    }
+
+    @Test
+    void shouldRejectManualMailAlreadyUsedAsAzureMailOfAnotherUser() throws Exception {
+      // given: the Graph API knows e654321 with the mail e654321@sbb.ch
+      UsersRequestBuilder users = buildGraphApiUserResult("e654321");
+      when(graphClient.users()).thenReturn(users);
+
+      // when & then
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
+              .content(mapper.writeValueAsString(new ManualMailOverrideModel("e654321@sbb.ch"))))
+          .andExpect(status().isConflict())
+          .andExpect(jsonPath("$.details[0].displayInfo.code").value("USER_ADMIN.MAIL_ALREADY_IN_USE"));
+      assertThat(userManualMailOverrideRepository.findBySbbUserIdIgnoreCase("u123456")).isEmpty();
+    }
+
+    @Test
+    void shouldAllowManualMailWhichIsTheAzureMailOfTheEditedUser() throws Exception {
+      // when & then
+      mvc.perform(put("/v1/users/u123456/mail").contentType(contentType)
+              .content(mapper.writeValueAsString(new ManualMailOverrideModel("u123456@sbb.ch"))))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.mail").value("u123456@sbb.ch"));
     }
 
     @Test
