@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,38 +19,51 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MigrationRepository {
 
-  private static final List<String> TABLES = List.of(
+  private static final List<String> LIDI_TABLES = List.of(
       "timetable_hearing_year",
       "timetable_hearing_statement",
       "timetable_hearing_statement_emails",
       "timetable_hearing_statement_responsible_transport_companies",
       "statement_document");
-  private static final List<String> SEQUENCES = List.of(
+  private static final List<String> LIDI_SEQUENCES = List.of(
       "timetable_hearing_statement_seq",
       "statement_document_seq");
+
+  private static final List<String> WORKFLOW_TABLES = List.of(
+      "tth_dossier",
+      "tth_dossier_statement_ids",
+      "tth_dossier_question");
+  private static final List<String> WORKFLOW_SEQUENCES = List.of(
+      "tth_dossier_seq",
+      "tth_dossier_question_seq");
 
   private static final int PIPE_SIZE = 64_000;
   public static final int SEQUENCE_POSTFIX_LENGTH = 4;
 
   private final DataSource lineDirectoryDataSource;
+  private final DataSource workflowDataSource;
   private final DataSource timetableHearingDataSource;
 
   public MigrationRepository(
       @Qualifier("lineDirectoryDataSource") DataSource lineDirectoryDataSource,
+      @Qualifier("workflowDataSource") DataSource workflowDataSource,
       @Qualifier("dataSource") DataSource timetableHearingDataSource) {
     this.lineDirectoryDataSource = lineDirectoryDataSource;
+    this.workflowDataSource = workflowDataSource;
     this.timetableHearingDataSource = timetableHearingDataSource;
   }
 
   public void migrateFromLidi() {
-    log.info("Starting migration from LiDi");
+    log.info("Starting migration from LiDi and Workflow");
     truncateTablesInTimetableHearing();
     log.info("Tables in timetable-hearing truncated");
 
-    copyAllTables();
-    log.info("Copied data from LiDi to timetable-hearing");
+    copyAllTables(lineDirectoryDataSource, LIDI_TABLES, "LiDi");
+    copyAllTables(workflowDataSource, WORKFLOW_TABLES, "Workflow");
+    log.info("Copied data from LiDi and Workflow to timetable-hearing");
 
-    setSequencesCorrectly();
+    setSequencesCorrectly(LIDI_SEQUENCES);
+    setSequencesCorrectly(WORKFLOW_SEQUENCES);
     log.info("Updated sequences for timetable-hearing");
 
     log.info("Migration completed.");
@@ -60,7 +74,7 @@ public class MigrationRepository {
     try (Connection connection = timetableHearingDataSource.getConnection();
         Statement statement = connection.createStatement()) {
 
-      TABLES.forEach(table -> {
+      Stream.concat(WORKFLOW_TABLES.stream(), LIDI_TABLES.stream()).forEach(table -> {
         try {
           statement.execute("TRUNCATE TABLE " + table + " CASCADE");
         } catch (SQLException e) {
@@ -72,16 +86,16 @@ public class MigrationRepository {
   }
 
   @SneakyThrows
-  private void copyAllTables() {
-    log.info("Copying {} table(s) from lidi to timetable-hearing", TABLES.size());
+  private void copyAllTables(DataSource sourceDataSource, List<String> tables, String sourceName) {
+    log.info("Copying {} table(s) from {} to timetable-hearing", tables.size(), sourceName);
 
-    try (Connection source = lineDirectoryDataSource.getConnection();
+    try (Connection source = sourceDataSource.getConnection();
         Connection target = timetableHearingDataSource.getConnection()) {
 
       CopyManager sourceCopy = source.unwrap(PGConnection.class).getCopyAPI();
       CopyManager targetCopy = target.unwrap(PGConnection.class).getCopyAPI();
 
-      TABLES.forEach(table -> copyTable(sourceCopy, targetCopy, table));
+      tables.forEach(table -> copyTable(sourceCopy, targetCopy, table));
     }
   }
 
@@ -108,11 +122,11 @@ public class MigrationRepository {
   }
 
   @SneakyThrows
-  private void setSequencesCorrectly() {
+  private void setSequencesCorrectly(List<String> sequences) {
     try (Connection connection = timetableHearingDataSource.getConnection();
         Statement statement = connection.createStatement()) {
 
-      SEQUENCES.forEach(sequence -> {
+      sequences.forEach(sequence -> {
         try {
           String tableOfSequence = getTableOfSequence(sequence);
           statement.execute("select setval('" + sequence + "', (select max(id) from " + tableOfSequence + "), true)");

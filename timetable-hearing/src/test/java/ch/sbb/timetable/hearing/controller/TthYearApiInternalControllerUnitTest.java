@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
-import ch.sbb.timetable.hearing.service.TthYearService;
+import ch.sbb.timetable.hearing.service.YearService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class TthYearApiInternalControllerUnitTest {
 
   @Mock
-  private TthYearService tthYearService;
+  private YearService yearService;
 
   @InjectMocks
   private TthYearApiInternalController tthYearApiInternalController;
@@ -26,23 +26,23 @@ class TthYearApiInternalControllerUnitTest {
   void shouldStartTimetableHearingYear() {
     // given
     TimetableHearingYearModel tthYear = TimetableHearingYearModel.builder().build();
-    when(tthYearService.startTimetableHearingYear(anyLong())).thenReturn(tthYear);
+    when(yearService.startTimetableHearingYear(anyLong())).thenReturn(tthYear);
     // when
     TimetableHearingYearModel startedYear = tthYearApiInternalController.startTimetableHearingYear(2027L);
     // then
     assertThat(startedYear).isEqualTo(tthYear);
-    verify(tthYearService).startTimetableHearingYear(2027L);
+    verify(yearService).startTimetableHearingYear(2027L);
   }
 
   @Test
   void shouldCloseTimetableHearingYear() {
     // given
     TimetableHearingYearModel tthYear = TimetableHearingYearModel.builder().build();
-    when(tthYearService.closeTimetableHearingYear(anyLong())).thenReturn(tthYear);
+    when(yearService.closeTimetableHearingYear(anyLong())).thenReturn(tthYear);
     // when
     TimetableHearingYearModel closedYear = tthYearApiInternalController.closeTimetableHearingYear(2026L);
     // then
     assertThat(closedYear).isEqualTo(tthYear);
-    verify(tthYearService).closeTimetableHearingYear(2026L);
+    verify(yearService).closeTimetableHearingYear(2026L);
   }
 }

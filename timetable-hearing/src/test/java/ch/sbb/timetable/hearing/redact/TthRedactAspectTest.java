@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.user.administration.security.redact.TthRedactAspect;
-import ch.sbb.timetable.hearing.entity.TthDossier;
-import ch.sbb.timetable.hearing.entity.TthDossierQuestion;
+import ch.sbb.timetable.hearing.entity.Dossier;
+import ch.sbb.timetable.hearing.entity.DossierQuestion;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ class TthRedactAspectTest {
   @Test
   void shouldRedactStatementCorrectly() {
     // given
-    TthDossier sensitiveDossier = TthDossier.builder()
+    Dossier sensitiveDossier = Dossier.builder()
         .swissCanton(SwissCanton.BERN)
         .topic("Dossier Topic")
         .dossierStatus(DossierStatus.ADDED)
@@ -25,10 +25,10 @@ class TthRedactAspectTest {
         .statementIds(List.of(1000L))
         .boContactMail("john.doe@sbb.ch")
         .boDeadlineToAnswer(LocalDate.of(2099, 12, 31))
-        .dossierQuestions(List.of(TthDossierQuestion.builder().question("how are you?").answerToCanton("fine").build()))
+        .dossierQuestions(List.of(DossierQuestion.builder().question("how are you?").answerToCanton("fine").build()))
         .build();
 
-    TthDossier redactedDossier = TthDossier.builder()
+    Dossier redactedDossier = Dossier.builder()
         .swissCanton(SwissCanton.BERN)
         .topic("Dossier Topic")
         .dossierStatus(DossierStatus.ADDED)
@@ -37,7 +37,7 @@ class TthRedactAspectTest {
         .statementIds(List.of(1000L))
         .boContactMail("john.doe@sbb.ch")
         .boDeadlineToAnswer(LocalDate.of(2099, 12, 31))
-        .dossierQuestions(List.of(TthDossierQuestion.builder().question("how are you?").answerToCanton("fine").build()))
+        .dossierQuestions(List.of(DossierQuestion.builder().question("how are you?").answerToCanton("fine").build()))
         .build();
 
     // when & then
