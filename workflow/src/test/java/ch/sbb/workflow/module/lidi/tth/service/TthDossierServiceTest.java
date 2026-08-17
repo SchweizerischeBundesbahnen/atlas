@@ -106,7 +106,7 @@ class TthDossierServiceTest {
         .dossierStatus(DossierStatus.ADDED)
         .statementIds(List.of(132L, 145L))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
-        .tthDossierYear(tthDossierYear)
+        .timetableYear(tthDossierYear.getTimetableYear())
         .build();
     question = TthDossierQuestion.builder()
         .tthDossier(dossier)
@@ -379,7 +379,7 @@ class TthDossierServiceTest {
         .dossierStatus(DossierStatus.DOSSIER_BO_CHECK)
         .statementIds(List.of(132L, 145L))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
-        .tthDossierYear(year)
+        .timetableYear(year.getTimetableYear())
         .build();
 
     TthDossier dossier2 = TthDossier.builder()
@@ -392,7 +392,7 @@ class TthDossierServiceTest {
         .dossierStatus(DossierStatus.DOSSIER_BO_CHECK)
         .statementIds(List.of(132L, 145L))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
-        .tthDossierYear(year)
+        .timetableYear(year.getTimetableYear())
         .build();
 
     TthDossier dossier3 = TthDossier.builder()
@@ -405,7 +405,7 @@ class TthDossierServiceTest {
         .boContactSbbuid("u123456")
         .statementIds(List.of(132L, 145L))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
-        .tthDossierYear(year)
+        .timetableYear(year.getTimetableYear())
         .build();
 
     tthDossierRepository.saveAndFlush(dossier);
@@ -459,6 +459,27 @@ class TthDossierServiceTest {
         tthDossierService.getDossiers(TthDossierSearchRestrictions.builder()
             .requestParams(TthDossierRequestParams.builder()
                 .statusRestriction(DossierStatus.DOSSIER_BO_CHECK)
+                .build())
+            .pageable(Pageable.unpaged())
+            .build()).getContent();
+    assertThat(dossiers).isEmpty();
+  }
+
+  @Test
+  void shouldFindDossiersByTimetableHearingYear() {
+    List<TthDossier> dossiers =
+        tthDossierService.getDossiers(TthDossierSearchRestrictions.builder()
+            .requestParams(TthDossierRequestParams.builder()
+                .timetableHearingYear(2024L)
+                .build())
+            .pageable(Pageable.unpaged())
+            .build()).getContent();
+    assertThat(dossiers).hasSize(1);
+
+    dossiers =
+        tthDossierService.getDossiers(TthDossierSearchRestrictions.builder()
+            .requestParams(TthDossierRequestParams.builder()
+                .timetableHearingYear(2025L)
                 .build())
             .pageable(Pageable.unpaged())
             .build()).getContent();

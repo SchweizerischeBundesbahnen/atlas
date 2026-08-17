@@ -181,7 +181,6 @@ describe('TthDossierOverviewComponent', () => {
 
       expect(dossierService.getOverview).toHaveBeenCalledWith(
         2024,
-        HearingStatus.Active,
         expect.any(String),
         undefined,
         expect.anything(),
@@ -204,7 +203,6 @@ describe('TthDossierOverviewComponent', () => {
 
       expect(dossierService.getOverview).toHaveBeenCalledWith(
         2024,
-        HearingStatus.Active,
         expect.any(String),
         'u123456',
         expect.anything(),
@@ -299,7 +297,6 @@ describe('TthDossierOverviewComponent', () => {
       expect(dossierService.getDossiersAsCsv).toHaveBeenCalledExactlyOnceWith(
         Language.Fr,
         2024,
-        HearingStatus.Active,
         SwissCanton.Zurich,
         undefined,
         [],

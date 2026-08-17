@@ -88,7 +88,7 @@ class TthDossierApiInternalControllerTest extends BaseControllerApiTest {
         .statementIds(List.of(1001L))
         .swissCanton(SwissCanton.BERN)
         .dossierStatus(DossierStatus.ADDED)
-        .tthDossierYear(tthDossierYear).build();
+        .timetableYear(tthDossierYear.getTimetableYear()).build();
     tthDossier = tthDossierRepository.saveAndFlush(tthDossier);
   }
 
@@ -287,7 +287,7 @@ class TthDossierApiInternalControllerTest extends BaseControllerApiTest {
           .statementIds(List.of(1001L))
           .swissCanton(SwissCanton.BERN)
           .dossierStatus(DossierStatus.DOSSIER_BO_CHECK)
-          .tthDossierYear(tthDossierYear)
+          .timetableYear(tthDossierYear.getTimetableYear())
           .boContactSbbuid(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
           .build();
       dossierWithQuestion.setDossierQuestions(List.of(TthDossierQuestion.builder()
@@ -383,7 +383,7 @@ class TthDossierApiInternalControllerTest extends BaseControllerApiTest {
           .statementIds(List.of(1001L))
           .swissCanton(SwissCanton.BERN)
           .dossierStatus(DossierStatus.DOSSIER_CANTON_CHECK)
-          .tthDossierYear(tthDossierYear)
+          .timetableYear(tthDossierYear.getTimetableYear())
           .boContactSbbuid(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
           .build();
       dossierWithQuestion.setDossierQuestions(List.of(TthDossierQuestion.builder()

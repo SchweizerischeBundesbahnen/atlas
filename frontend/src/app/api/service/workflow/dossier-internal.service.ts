@@ -7,7 +7,6 @@ import { SwissCanton } from '../../model/swissCanton';
 import { BoAnswer } from '../../model/boAnswer';
 import { ContainerTthDossier } from '../../model/containerTthDossier';
 import { StatementStatus } from '../../model/statementStatus';
-import { HearingStatus } from '../../model/hearingStatus';
 import { Language } from '../../model/language';
 
 @Injectable({
@@ -19,8 +18,7 @@ export class DossierInternalService {
   private readonly atlasApiService = inject(AtlasApiService);
 
   public getOverview(
-    timetableYear?: number,
-    hearingStatus?: HearingStatus,
+    timetableHearingYear?: number,
     canton?: SwissCanton,
     boContactSbbuid?: string,
     searchCriterias?: Array<string>,
@@ -30,8 +28,7 @@ export class DossierInternalService {
     sort?: Array<string>
   ): Observable<ContainerTthDossier> {
     const httpParams = this.atlasApiService.paramsOf({
-      'timetableHearingYear.timetableYear': timetableYear,
-      'timetableHearingYear.hearingStatus': hearingStatus,
+      timetableHearingYear,
       canton,
       boContactSbbuid,
       searchCriterias,
@@ -72,16 +69,14 @@ export class DossierInternalService {
 
   public getDossiersAsCsv(
     lang: Language,
-    timetableYear?: number,
-    hearingStatus?: HearingStatus,
+    timetableHearingYear?: number,
     canton?: SwissCanton,
     boContactSbbuid?: string,
     searchCriterias?: Array<string>,
     statusRestrictions?: Array<StatementStatus>
   ) {
     const httpParams = this.atlasApiService.paramsOf({
-      'timetableHearingYear.timetableYear': timetableYear,
-      'timetableHearingYear.hearingStatus': hearingStatus,
+      timetableHearingYear,
       canton,
       boContactSbbuid,
       searchCriterias,

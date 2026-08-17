@@ -5,7 +5,7 @@ import { firstValueFrom, of } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
 import { ContainerTthDossier } from '../../../../../api/model/containerTthDossier';
-import { HearingStatus, SwissCanton } from '../../../../../api';
+import { SwissCanton } from '../../../../../api';
 import { DossierStatus } from '../../../../../api/model/dossierStatus';
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
 
@@ -62,7 +62,6 @@ describe('DossierSelectComponent', () => {
     expect(dossierInternalService.getOverview).toHaveBeenCalledTimes(1);
     expect(dossierInternalService.getOverview).toHaveBeenCalledWith(
       2026,
-      HearingStatus.Active,
       SwissCanton.Bern,
       undefined,
       ['testQuery'],
