@@ -12,11 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class DossierNotificationService extends BaseNotificationService {
+public class DossierNotificationService {
+
+  @Value("${spring.profiles.active:local}")
+  protected String activeProfile;
+
+  @Value("${mail.workflow.stop-point.from}")
+  protected String from;
 
   private final MailProducerService mailProducerService;
   private final UserAdministrationAdminClient userAdministrationAdminClient;
