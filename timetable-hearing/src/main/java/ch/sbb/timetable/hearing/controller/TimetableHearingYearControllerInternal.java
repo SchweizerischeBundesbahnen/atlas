@@ -4,8 +4,6 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearApiInternal;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
-import ch.sbb.timetable.hearing.aop.LoggingAspect.WorkflowType;
-import ch.sbb.timetable.hearing.aop.MethodLogged;
 import ch.sbb.timetable.hearing.entity.TimetableHearingYear;
 import ch.sbb.timetable.hearing.mapper.TimeTableHearingYearMapper;
 import ch.sbb.timetable.hearing.model.TimetableHearingYearSearchRestrictions;
@@ -47,7 +45,6 @@ public class TimetableHearingYearControllerInternal implements TimetableHearingY
   }
 
   @Override
-  @MethodLogged(workflowType = WorkflowType.TTH_DOSSIER_WORKFLOW)
   public TimetableHearingYearModel startHearingYear(Long year) {
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(year);
     TimetableHearingYear startedHearing = timetableHearingYearService.startTimetableHearing(hearingYear);

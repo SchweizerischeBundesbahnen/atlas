@@ -24,8 +24,10 @@ public class DossierRequestParams {
   @Parameter(description = "Filter on the timetable hearing year of a dossier.")
   private Long timetableHearingYear;
 
+  @Parameter(description = "Filter on the canton of a dossier.")
   private SwissCanton canton;
 
+  @Parameter(description = "Filter on the BO contact of a dossier.")
   private String boContactSbbuid;
 
   @Singular(ignoreNullCollections = true)

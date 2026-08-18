@@ -6,8 +6,6 @@ import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.atlas.user.administration.security.redact.TthRedacted;
-import ch.sbb.timetable.hearing.aop.LoggingAspect.WorkflowType;
-import ch.sbb.timetable.hearing.aop.MethodLogged;
 import ch.sbb.timetable.hearing.entity.Dossier;
 import ch.sbb.timetable.hearing.entity.DossierQuestion;
 import ch.sbb.timetable.hearing.entity.TimetableHearingYear;
@@ -68,7 +66,6 @@ public class DossierService {
   @Transactional
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType)"
       + ".TIMETABLE_HEARING, #dossier)")
-  @MethodLogged(workflowType = WorkflowType.TTH_DOSSIER_WORKFLOW)
   public Dossier createDossier(Dossier dossier) {
     TimetableHearingYear activeHearingYear = timetableHearingYearService.getActiveHearingYear();
 
@@ -84,7 +81,6 @@ public class DossierService {
   @Transactional
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType)"
       + ".TIMETABLE_HEARING, #dossier)")
-  @MethodLogged(workflowType = WorkflowType.TTH_DOSSIER_WORKFLOW)
   public void sendDossierToBo(Dossier dossier) {
     dossier.setDossierStatus(DossierStatus.DOSSIER_BO_CHECK);
 
@@ -96,7 +92,6 @@ public class DossierService {
   @Transactional
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType)"
       + ".TIMETABLE_HEARING, #dossier)")
-  @MethodLogged(workflowType = WorkflowType.TTH_DOSSIER_WORKFLOW)
   public void completeDossier(Dossier dossier, DossierStatus status) {
     checkDossierIsInEditableStatus(dossier);
     if (!status.isAllowedForCompleteTransition()) {
@@ -114,7 +109,6 @@ public class DossierService {
   @Transactional
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType)"
       + ".TIMETABLE_HEARING, #dossier)")
-  @MethodLogged(workflowType = WorkflowType.TTH_DOSSIER_WORKFLOW)
   public Dossier updateDossier(Long dossierId, Dossier dossier) {
     Dossier currentDossier = getDossierById(dossierId);
     List<Long> previousStatementIds = new ArrayList<>(currentDossier.getStatementIds());
