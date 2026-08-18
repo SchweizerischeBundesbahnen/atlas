@@ -13,11 +13,12 @@
       <mat-radio-group
         formControlName="hasStatementPersonalInformation"
         (change)="statementPersonalInformationChanged($event.value)"
+        data-cy="statement-personal-information"
       >
-        <mat-radio-button [value]="true">
+        <mat-radio-button [value]="true" data-cy="statement-personal-information-yes">
           {{ 'COMMON.YES' | translate }}
         </mat-radio-button>
-        <mat-radio-button [value]="false">
+        <mat-radio-button [value]="false" data-cy="statement-personal-information-no">
           {{ 'COMMON.NO' | translate }}
         </mat-radio-button>
         <atlas-field-error [control]="hasStatementPersonalInformationControl" />
@@ -50,11 +51,13 @@
           buttonText="COMMON.CANCEL"
           buttonType="defaultPrimary"
           wrapperStyleClass="me-3"
+          buttonDataCy="data-protection-cancel"
           (buttonClicked)="closeDialog()"
         />
         <atlas-button
           [buttonText]="hasDocuments ? 'DIALOG.OK' : 'COMMON.SAVE_AND_CLOSE'"
           buttonType="defaultPrimary"
+          buttonDataCy="data-protection-confirm-statement"
           (buttonClicked)="completeTextDataProtection()"
         />
       </div>

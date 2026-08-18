@@ -1,0 +1,13 @@
+# Contained toolchain + cached browser path (installed by scripts/doctor.sh)
+scripts/node_modules/
+scripts/.chrome-path
+scripts/package-lock.json
+
+# Rendered build artifacts (regenerated from sources)
+*.html
+*.pdf
+*.pptx
+overflow-report.json
+
+# Rendered diagram SVGs are regenerated from their .mmd sources
+examples/diagrams/*.svg

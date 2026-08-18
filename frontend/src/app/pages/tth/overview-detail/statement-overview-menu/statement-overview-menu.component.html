@@ -3,6 +3,7 @@
   [matMenuTriggerFor]="menu"
   [disabled]="column().disabled"
   [ngClass]="column().disabled ? 'color-gray-400' : 'color-primary-400'"
+  data-cy="statement-overview-menu"
 >
   <i class="icon bi bi-three-dots-vertical"></i>
 </button>
@@ -12,11 +13,11 @@
     <span>{{ 'TTH.BUTTON.DUPLICATE' | translate }}</span>
   </button>
   @if (!row().dossierId) {
-    <button mat-menu-item class="color-primary-400" (click)="createDossier(row())">
+    <button mat-menu-item class="color-primary-400" (click)="createDossier(row())" data-cy="create-dossier">
       <i class="icon bi bi-folder me-2"></i>
       <span>{{ 'TTH.BUTTON.CREATE_DOSSIER' | translate }}</span>
     </button>
-    <button mat-menu-item class="color-primary-400" (click)="addToDossier(row())">
+    <button mat-menu-item class="color-primary-400" (click)="addToDossier(row())" data-cy="add-to-dossier">
       <i class="icon bi bi-folder-plus me-2"></i>
       <span>{{ 'TTH.BUTTON.ADD_TO_DOSSIER' | translate }}</span>
     </button>
