@@ -62,7 +62,7 @@ class RouteConfigTest {
     // Then
     List<Route> routes = routeLocator.getRoutes().collectList().block();
     assertThat(routes).isNotNull().extracting(Route::getId)
-        .containsExactly("tth-cutover", "tth-year-cutover", "timetable-hearing");
+        .containsExactly("tth-cutover", "tth-year-cutover", "tth-dossier-cutover", "timetable-hearing");
   }
 
   private ConfigurableApplicationContext createMockGatewayContext() {

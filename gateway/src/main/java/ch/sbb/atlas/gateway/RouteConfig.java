@@ -32,6 +32,10 @@ public class RouteConfig {
                       "/internal/timetable-hearing/years/$\\{path}")
                   .filter(gatewayRequestLogging))
               .uri(timetableHearingUri));
+      routeBuilder.route("tth-dossier-cutover",
+          p -> p.path("/workflow/internal/tth/dossier", "/workflow/internal/tth/dossier/**")
+              .filters(f -> f.rewritePath("/workflow/(?<path>.*)", "/$\\{path}").filter(gatewayRequestLogging))
+              .uri(timetableHearingUri));
     }
 
     gatewayConfig.getRoutes().forEach((application, uri) ->
