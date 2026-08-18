@@ -26,6 +26,12 @@ public class RouteConfig {
               })
               .filters(f -> f.rewritePath("/line-directory/(?<path>.*)", "/$\\{path}").filter(gatewayRequestLogging))
               .uri(timetableHearingUri));
+      routeBuilder.route("tth-year-cutover",
+          p -> p.path("/workflow/internal/tth/year/**")
+              .filters(f -> f.rewritePath("/workflow/internal/tth/year/(?<path>.*)",
+                      "/internal/timetable-hearing/years/$\\{path}")
+                  .filter(gatewayRequestLogging))
+              .uri(timetableHearingUri));
     }
 
     gatewayConfig.getRoutes().forEach((application, uri) ->

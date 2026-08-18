@@ -1,4 +1,4 @@
-package ch.sbb.timetable.hearing.service;
+package ch.sbb.timetable.hearing.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -22,18 +22,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-class YearServiceTest {
+class TimetableHearingYearControllerInternalDossierTest {
 
-  private final YearService yearService;
+  private final TimetableHearingYearControllerInternal timetableHearingYearController;
   private final DossierRepository dossierRepository;
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
 
   @Autowired
-  YearServiceTest(YearService yearService, DossierRepository dossierRepository,
+  TimetableHearingYearControllerInternalDossierTest(
+      TimetableHearingYearControllerInternal timetableHearingYearController, DossierRepository dossierRepository,
       TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingStatementRepository timetableHearingStatementRepository) {
-    this.yearService = yearService;
+    this.timetableHearingYearController = timetableHearingYearController;
     this.dossierRepository = dossierRepository;
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
@@ -61,7 +62,7 @@ class YearServiceTest {
         .build()).getId();
 
     // when
-    yearService.closeTimetableHearingYear(2026L);
+    timetableHearingYearController.closeTimetableHearing(2026L, null);
 
     // then
     assertThat(dossierRepository.findById(dossierId).orElseThrow().getDossierStatus()).isEqualTo(DossierStatus.CANCELED);
@@ -81,7 +82,7 @@ class YearServiceTest {
 
     // when & then
     assertThatExceptionOfType(IllegalStateException.class)
-        .isThrownBy(() -> yearService.closeTimetableHearingYear(2026L));
+        .isThrownBy(() -> timetableHearingYearController.closeTimetableHearing(2026L, null));
   }
 
   @Test
@@ -90,7 +91,7 @@ class YearServiceTest {
     givenHearingYear(2028L, HearingStatus.PLANNED);
 
     // when
-    yearService.startTimetableHearingYear(2028L);
+    timetableHearingYearController.startHearingYear(2028L);
 
     // then
     assertThat(timetableHearingYearRepository.findById(2028L).orElseThrow().getHearingStatus())

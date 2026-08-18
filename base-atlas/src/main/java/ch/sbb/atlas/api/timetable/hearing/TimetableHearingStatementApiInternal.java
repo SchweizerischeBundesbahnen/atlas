@@ -5,6 +5,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFI
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
 import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -41,7 +42,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "[INTERNAL] Timetable Hearing Statements")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Timetable Hearing Statements")
 @Validated
 public interface TimetableHearingStatementApiInternal {
 
