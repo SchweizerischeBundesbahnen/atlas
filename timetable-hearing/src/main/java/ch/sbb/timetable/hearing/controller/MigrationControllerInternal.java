@@ -1,20 +1,18 @@
 package ch.sbb.timetable.hearing.controller;
 
-import ch.sbb.atlas.annotation.AdminOnly;
+import ch.sbb.timetable.hearing.api.MigrationApiInternal;
 import ch.sbb.timetable.hearing.repository.MigrationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class MigrationControllerInternal {
+public class MigrationControllerInternal implements MigrationApiInternal {
 
   private final MigrationRepository migrationRepository;
 
-  @AdminOnly
-  @PostMapping("/internal/migrate-from-lidi")
-  void copyFromLidi() {
+  @Override
+  public void copyFromLidi() {
     migrationRepository.migrateFromLidi();
   }
 }
