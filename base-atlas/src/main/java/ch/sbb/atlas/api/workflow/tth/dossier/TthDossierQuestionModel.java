@@ -30,4 +30,7 @@ public class TthDossierQuestionModel extends AuditableVersionModel {
       + "peak hours.")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_5000)
   private String answerToCanton;
+
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  private Integer etagVersion;
 }

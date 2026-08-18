@@ -14,6 +14,7 @@ public class DossierQuestionMapper {
         .dossier(dossier)
         .question(model.getQuestion())
         .answerToCanton(model.getAnswerToCanton())
+        .version(model.getEtagVersion())
         .build();
   }
 
@@ -26,6 +27,7 @@ public class DossierQuestionMapper {
         .creator(entity.getCreator())
         .editionDate(entity.getEditionDate())
         .editor(entity.getEditor())
+        .etagVersion(entity.getVersion())
         .build();
   }
 

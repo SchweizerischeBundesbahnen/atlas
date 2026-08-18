@@ -6,9 +6,12 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
 import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
+import ch.sbb.atlas.api.workflow.tth.dossier.TthDossierModel;
+import ch.sbb.atlas.api.workflow.tth.dossier.TthDossierQuestionModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.timetable.hearing.entity.Dossier;
+import ch.sbb.timetable.hearing.entity.DossierQuestion;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -134,5 +137,33 @@ class DossierMapperTest {
 
     assertThatExceptionOfType(SimpleAtlasException.class).isThrownBy(
         () -> DossierMapper.toBatchUpdateModel(dossier, DossierStatus.DISSOLVED));
+  }
+
+  @Test
+  void shouldMapVersionToEtagVersion() {
+    dossier.setVersion(3);
+    dossier.setDossierQuestions(List.of(DossierQuestion.builder().id(2L).question("Warum?").version(4).build()));
+
+    TthDossierModel model = DossierMapper.toModel(dossier);
+
+    assertThat(model.getEtagVersion()).isEqualTo(3);
+    assertThat(model.getQuestions().getFirst().getEtagVersion()).isEqualTo(4);
+  }
+
+  @Test
+  void shouldMapEtagVersionToVersion() {
+    TthDossierModel model = TthDossierModel.builder()
+        .id(1L)
+        .swissCanton(SwissCanton.BERN)
+        .topic("Bern, Salem - Takt")
+        .statementIds(List.of(132L))
+        .etagVersion(3)
+        .questions(List.of(TthDossierQuestionModel.builder().id(2L).question("Warum?").etagVersion(4).build()))
+        .build();
+
+    Dossier entity = DossierMapper.toEntity(model);
+
+    assertThat(entity.getVersion()).isEqualTo(3);
+    assertThat(entity.getDossierQuestions().getFirst().getVersion()).isEqualTo(4);
   }
 }

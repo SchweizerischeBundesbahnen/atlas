@@ -32,9 +32,12 @@ public class MigrationRepository {
       "statement_document_seq");
 
   private static final List<TableMigration> WORKFLOW_TABLES = List.of(
-      new TableMigration("tth_dossier", "dossier"),
+      new TableMigration("tth_dossier", "dossier",
+          "id, topic, dossier_status, internal_comment, public_comment, bo_contact_mail, bo_deadline_to_answer, "
+              + "creation_date, creator, edition_date, editor, swiss_canton, timetable_year, bo_contact_sbbuid"),
       new TableMigration("tth_dossier_statement_ids", "dossier_statement_ids"),
-      new TableMigration("tth_dossier_question", "dossier_question"));
+      new TableMigration("tth_dossier_question", "dossier_question",
+          "id, dossier_id, question, answer_to_canton, creation_date, creator, edition_date, editor"));
   private static final List<String> WORKFLOW_SEQUENCES = List.of(
       "dossier_seq",
       "dossier_question_seq");
@@ -109,7 +112,7 @@ public class MigrationRepository {
       Thread exporter = new Thread(() -> export(sourceCopy, table.source(), out), "copy-out-" + table.source());
       exporter.start();
 
-      long rows = targetCopy.copyIn("COPY " + table.target() + " FROM STDIN (FORMAT BINARY)", in);
+      long rows = targetCopy.copyIn(table.copyInStatement(), in);
       exporter.join();
 
       log.info("Copied {} row(s) of table '{}' to '{}'", rows, table.source(), table.target());
@@ -147,7 +150,19 @@ public class MigrationRepository {
     throw new IllegalArgumentException(sequence);
   }
 
-  private record TableMigration(String source, String target) {
+  /**
+   * The columns of the target table have to be listed explicitly whenever it does not match the source table exactly, since
+   * the binary copy maps the streamed columns positionally.
+   */
+  private record TableMigration(String source, String target, String targetColumns) {
 
+    TableMigration(String source, String target) {
+      this(source, target, null);
+    }
+
+    String copyInStatement() {
+      String columns = targetColumns == null ? "" : " (" + targetColumns + ")";
+      return "COPY " + target + columns + " FROM STDIN (FORMAT BINARY)";
+    }
   }
 }

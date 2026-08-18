@@ -24,6 +24,7 @@ public class DossierMapper {
         .boContactMail(model.getBoContactMail())
         .boDeadlineToAnswer(model.getBoDeadlineToAnswer())
         .dossierStatus(model.getDossierStatus())
+        .version(model.getEtagVersion())
         .build();
 
     dossier.setDossierQuestions(model.getQuestions().stream().map(i -> DossierQuestionMapper.toEntity(i, dossier)).toList());
@@ -49,6 +50,7 @@ public class DossierMapper {
         .creator(entity.getCreator())
         .editionDate(entity.getEditionDate())
         .editor(entity.getEditor())
+        .etagVersion(entity.getVersion())
         .build();
   }
 

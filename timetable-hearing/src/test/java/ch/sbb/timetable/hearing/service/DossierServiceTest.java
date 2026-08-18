@@ -329,12 +329,13 @@ class DossierServiceTest {
   @Test
   void shouldAnswerQuestionAsBo() {
     dossierService.sendDossierToBo(exampleDossier);
+    Dossier dossierInBoCheck = dossierService.getDossierById(exampleDossier.getId());
 
     // when
     String boAnswer = "Joa das geht schon.";
-    assertThat(exampleDossier.getDossierStatus()).isEqualTo(DossierStatus.DOSSIER_BO_CHECK);
+    assertThat(dossierInBoCheck.getDossierStatus()).isEqualTo(DossierStatus.DOSSIER_BO_CHECK);
 
-    dossierService.answerQuestion(question.getId(), boAnswer, exampleDossier);
+    dossierService.answerQuestion(question.getId(), boAnswer, dossierInBoCheck);
     // then
     Dossier dossier = dossierService.getDossierById(exampleDossier.getId());
 

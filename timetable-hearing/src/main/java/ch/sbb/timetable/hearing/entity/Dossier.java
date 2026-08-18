@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
 import ch.sbb.atlas.api.workflow.tth.dossier.StatementDossierLinked;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.redact.Redacted;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
@@ -43,7 +44,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "dossier")
 @Redacted
-public class Dossier extends BaseWorkflowEntity implements StatementDossierLinked, CantonAssociated, BoContactAssociated {
+public class Dossier extends BaseEntity implements StatementDossierLinked, CantonAssociated, BoContactAssociated {
 
   private static final String VERSION_SEQ = "dossier_seq";
 

@@ -38,5 +38,9 @@ export interface TthDossierQuestion {
      * Answer from the BO to the canton
      */
     answerToCanton?: string;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
 }
 

@@ -17,6 +17,7 @@ create table dossier
     creator               VARCHAR(50)  NOT NULL,
     edition_date          TIMESTAMP    NOT NULL,
     editor                VARCHAR(50)  NOT NULL,
+    version               BIGINT       DEFAULT 0 NOT NULL,
     swiss_canton          VARCHAR(50),
     timetable_year        BIGINT
         CONSTRAINT fk_dossier_timetable_year
@@ -53,6 +54,7 @@ create table dossier_question
     creator          VARCHAR(50) NOT NULL,
     edition_date     TIMESTAMP   NOT NULL,
     editor           VARCHAR(50) NOT NULL,
+    version          BIGINT      DEFAULT 0 NOT NULL,
 
     CONSTRAINT fk_dossier_question_dossier_id
         FOREIGN KEY (dossier_id)

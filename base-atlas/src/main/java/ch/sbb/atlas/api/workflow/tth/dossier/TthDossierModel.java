@@ -73,4 +73,7 @@ public class TthDossierModel extends AuditableVersionModel implements StatementD
   @Schema(description = "Questions for the BO to answer")
   private List<@Valid TthDossierQuestionModel> questions = new ArrayList<>();
 
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  private Integer etagVersion;
+
 }

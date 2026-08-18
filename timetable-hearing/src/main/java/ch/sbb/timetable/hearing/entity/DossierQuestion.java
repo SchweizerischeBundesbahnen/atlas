@@ -1,6 +1,7 @@
 package ch.sbb.timetable.hearing.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "dossier_question")
-public class DossierQuestion extends BaseWorkflowEntity {
+public class DossierQuestion extends BaseEntity {
 
   private static final String VERSION_SEQ = "dossier_question_seq";
 
