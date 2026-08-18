@@ -57,7 +57,7 @@ class YearServiceTest {
         .topic("topic")
         .dossierStatus(DossierStatus.ADDED)
         .statementIds(List.of(statement.getId()))
-        .tthDossierYear(hearingYear)
+        .timetableYear(hearingYear.getTimetableYear())
         .build()).getId();
 
     // when

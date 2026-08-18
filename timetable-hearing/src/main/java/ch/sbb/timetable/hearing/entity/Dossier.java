@@ -45,7 +45,7 @@ import lombok.experimental.SuperBuilder;
 @Redacted
 public class Dossier extends BaseWorkflowEntity implements StatementDossierLinked, CantonAssociated, BoContactAssociated {
 
-  private static final String VERSION_SEQ = "tth_dossier_seq";
+  private static final String VERSION_SEQ = "dossier_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)

@@ -82,7 +82,7 @@ class DossierRepositoryTest {
             .boContactMail("test@bo.ch")
             .boDeadlineToAnswer(LocalDate.of(2025, 12, 31))
             .statementIds(List.of(addedStatementId1, addedStatementId2))
-            .tthDossierYear(timetableHearingYear)
+            .timetableYear(timetableHearingYear.getTimetableYear())
             .build(),
         Dossier.builder()
             .swissCanton(SwissCanton.BERN)
@@ -91,7 +91,7 @@ class DossierRepositoryTest {
             .boContactMail("test@bo.ch")
             .boDeadlineToAnswer(LocalDate.of(2025, 12, 31))
             .statementIds(List.of(cantonCheckStatementId))
-            .tthDossierYear(timetableHearingYear)
+            .timetableYear(timetableHearingYear.getTimetableYear())
             .build(),
         Dossier.builder()
             .swissCanton(SwissCanton.BERN)
@@ -100,7 +100,7 @@ class DossierRepositoryTest {
             .boContactMail("test@bo.ch")
             .boDeadlineToAnswer(LocalDate.of(2025, 12, 31))
             .statementIds(List.of(canceledStatementId1, canceledStatementId2))
-            .tthDossierYear(timetableHearingYear)
+            .timetableYear(timetableHearingYear.getTimetableYear())
             .build()
     ));
     // when
@@ -121,7 +121,7 @@ class DossierRepositoryTest {
             .boContactMail("test@bo.ch")
             .boDeadlineToAnswer(LocalDate.of(2025, 12, 31))
             .statementIds(List.of(statementId(), statementId()))
-            .tthDossierYear(timetableHearingYear)
+            .timetableYear(timetableHearingYear.getTimetableYear())
             .build(),
         Dossier.builder()
             .swissCanton(SwissCanton.BERN)
@@ -130,7 +130,7 @@ class DossierRepositoryTest {
             .boContactMail("test@bo.ch")
             .boDeadlineToAnswer(LocalDate.of(2025, 12, 31))
             .statementIds(List.of(statementId()))
-            .tthDossierYear(timetableHearingYear)
+            .timetableYear(timetableHearingYear.getTimetableYear())
             .build(),
         Dossier.builder()
             .swissCanton(SwissCanton.BERN)
@@ -139,7 +139,7 @@ class DossierRepositoryTest {
             .boContactMail("test@bo.ch")
             .boDeadlineToAnswer(LocalDate.of(2025, 12, 31))
             .statementIds(List.of(statementId()))
-            .tthDossierYear(timetableHearingYear)
+            .timetableYear(timetableHearingYear.getTimetableYear())
             .build(),
         Dossier.builder()
             .swissCanton(SwissCanton.BERN)
@@ -148,7 +148,7 @@ class DossierRepositoryTest {
             .boContactMail("test@bo.ch")
             .boDeadlineToAnswer(LocalDate.of(2025, 12, 31))
             .statementIds(List.of(statementId()))
-            .tthDossierYear(timetableHearingYear)
+            .timetableYear(timetableHearingYear.getTimetableYear())
             .build()
     )).stream().map(Dossier::getId).toList();
     // when

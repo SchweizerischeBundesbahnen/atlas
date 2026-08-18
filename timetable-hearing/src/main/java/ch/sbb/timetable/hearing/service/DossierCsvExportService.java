@@ -26,10 +26,10 @@ public class DossierCsvExportService {
   private static final String OUTPUT_DIR = "dossiers";
 
   private final FileService fileService;
-  private final MessageSource tthDossierCsvTranslations;
+  private final MessageSource dossierCsvTranslations;
   private final TimetableHearingStatementService timetableHearingStatementService;
 
-  public List<DossierTuCsvModel> getTthDossierTuCsvModels(Page<Dossier> dossiers) {
+  public List<DossierTuCsvModel> getDossierTuCsvModels(Page<Dossier> dossiers) {
     List<Long> statementIds = dossiers.stream()
         .flatMap(dossier -> dossier.getStatementIds().stream())
         .distinct()
@@ -54,7 +54,7 @@ public class DossierCsvExportService {
   public <T> File writeCsv(List<T> csvData, Class<T> elementClass, Locale locale) {
     return CsvExportWriter.writeCsv(
         CsvWriteConfig.<T>builder()
-            .messageSource(tthDossierCsvTranslations)
+            .messageSource(dossierCsvTranslations)
             .locale(locale)
             .elementClass(elementClass)
             .csvData(csvData)

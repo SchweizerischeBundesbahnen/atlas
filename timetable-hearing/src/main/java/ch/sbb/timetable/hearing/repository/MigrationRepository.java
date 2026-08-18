@@ -19,23 +19,25 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MigrationRepository {
 
-  private static final List<String> LIDI_TABLES = List.of(
-      "timetable_hearing_year",
-      "timetable_hearing_statement",
-      "timetable_hearing_statement_emails",
-      "timetable_hearing_statement_responsible_transport_companies",
-      "statement_document");
+  private static final List<TableMigration> LIDI_TABLES = Stream.of(
+          "timetable_hearing_year",
+          "timetable_hearing_statement",
+          "timetable_hearing_statement_emails",
+          "timetable_hearing_statement_responsible_transport_companies",
+          "statement_document")
+      .map(table -> new TableMigration(table, table))
+      .toList();
   private static final List<String> LIDI_SEQUENCES = List.of(
       "timetable_hearing_statement_seq",
       "statement_document_seq");
 
-  private static final List<String> WORKFLOW_TABLES = List.of(
-      "tth_dossier",
-      "tth_dossier_statement_ids",
-      "tth_dossier_question");
+  private static final List<TableMigration> WORKFLOW_TABLES = List.of(
+      new TableMigration("tth_dossier", "dossier"),
+      new TableMigration("tth_dossier_statement_ids", "dossier_statement_ids"),
+      new TableMigration("tth_dossier_question", "dossier_question"));
   private static final List<String> WORKFLOW_SEQUENCES = List.of(
-      "tth_dossier_seq",
-      "tth_dossier_question_seq");
+      "dossier_seq",
+      "dossier_question_seq");
 
   private static final int PIPE_SIZE = 64_000;
   public static final int SEQUENCE_POSTFIX_LENGTH = 4;
@@ -76,17 +78,17 @@ public class MigrationRepository {
 
       Stream.concat(WORKFLOW_TABLES.stream(), LIDI_TABLES.stream()).forEach(table -> {
         try {
-          statement.execute("TRUNCATE TABLE " + table + " CASCADE");
+          statement.execute("TRUNCATE TABLE " + table.target() + " CASCADE");
         } catch (SQLException e) {
           throw new IllegalStateException(e);
         }
-        log.info("Truncated table '{}'", table);
+        log.info("Truncated table '{}'", table.target());
       });
     }
   }
 
   @SneakyThrows
-  private void copyAllTables(DataSource sourceDataSource, List<String> tables, String sourceName) {
+  private void copyAllTables(DataSource sourceDataSource, List<TableMigration> tables, String sourceName) {
     log.info("Copying {} table(s) from {} to timetable-hearing", tables.size(), sourceName);
 
     try (Connection source = sourceDataSource.getConnection();
@@ -100,17 +102,17 @@ public class MigrationRepository {
   }
 
   @SneakyThrows
-  private static void copyTable(CopyManager sourceCopy, CopyManager targetCopy, String table) {
+  private static void copyTable(CopyManager sourceCopy, CopyManager targetCopy, TableMigration table) {
     try (PipedInputStream in = new PipedInputStream(PIPE_SIZE);
         PipedOutputStream out = new PipedOutputStream(in)) {
 
-      Thread exporter = new Thread(() -> export(sourceCopy, table, out), "copy-out-" + table);
+      Thread exporter = new Thread(() -> export(sourceCopy, table.source(), out), "copy-out-" + table.source());
       exporter.start();
 
-      long rows = targetCopy.copyIn("COPY " + table + " FROM STDIN (FORMAT BINARY)", in);
+      long rows = targetCopy.copyIn("COPY " + table.target() + " FROM STDIN (FORMAT BINARY)", in);
       exporter.join();
 
-      log.info("Copied {} row(s) of table '{}'", rows, table);
+      log.info("Copied {} row(s) of table '{}' to '{}'", rows, table.source(), table.target());
     }
   }
 
@@ -143,5 +145,9 @@ public class MigrationRepository {
       return sequence.substring(0, sequence.length() - SEQUENCE_POSTFIX_LENGTH);
     }
     throw new IllegalArgumentException(sequence);
+  }
+
+  private record TableMigration(String source, String target) {
+
   }
 }

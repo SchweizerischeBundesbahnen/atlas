@@ -98,7 +98,7 @@ class DossierApiInternalControllerTest extends BaseControllerApiTest {
         .statementIds(List.of(statementId))
         .swissCanton(SwissCanton.BERN)
         .dossierStatus(DossierStatus.ADDED)
-        .tthDossierYear(timetableHearingYear).build();
+        .timetableYear(timetableHearingYear.getTimetableYear()).build();
     dossier = dossierRepository.saveAndFlush(dossier);
   }
 
@@ -153,7 +153,7 @@ class DossierApiInternalControllerTest extends BaseControllerApiTest {
       csvFile.deleteOnExit();
       Files.writeString(csvFile.toPath(), "id;topic\n1;TOPIC\n", StandardCharsets.UTF_8);
 
-      when(dossierCsvExportService.getTthDossierTuCsvModels(any())).thenReturn(List.of());
+      when(dossierCsvExportService.getDossierTuCsvModels(any())).thenReturn(List.of());
       when(dossierCsvExportService.writeCsv(any(), any(), any())).thenReturn(csvFile);
 
       mvc.perform(get("/internal/tth/dossier/csv")
@@ -309,7 +309,7 @@ class DossierApiInternalControllerTest extends BaseControllerApiTest {
           .statementIds(List.of(statementId))
           .swissCanton(SwissCanton.BERN)
           .dossierStatus(DossierStatus.DOSSIER_BO_CHECK)
-          .tthDossierYear(timetableHearingYear)
+          .timetableYear(timetableHearingYear.getTimetableYear())
           .boContactSbbuid(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
           .build();
       dossierWithQuestion.setDossierQuestions(List.of(DossierQuestion.builder()
@@ -405,7 +405,7 @@ class DossierApiInternalControllerTest extends BaseControllerApiTest {
           .statementIds(List.of(statementId))
           .swissCanton(SwissCanton.BERN)
           .dossierStatus(DossierStatus.DOSSIER_CANTON_CHECK)
-          .tthDossierYear(timetableHearingYear)
+          .timetableYear(timetableHearingYear.getTimetableYear())
           .boContactSbbuid(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
           .build();
       dossierWithQuestion.setDossierQuestions(List.of(DossierQuestion.builder()

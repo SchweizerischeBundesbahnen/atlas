@@ -96,7 +96,7 @@ class MigrationRepositoryTest {
     assertThat(dossier.getDossierStatus()).isEqualTo(DossierStatus.ADDED);
     assertThat(dossier.getSwissCanton()).isEqualTo(SwissCanton.BERN);
     assertThat(dossier.getStatementIds()).containsExactlyInAnyOrder(100L, 101L);
-    assertThat(dossier.getTthDossierYear().getTimetableYear()).isEqualTo(2024L);
+    assertThat(dossier.getTimetableYear()).isEqualTo(2024L);
     assertThat(dossier.getDossierQuestions())
         .extracting(DossierQuestion::getQuestion)
         .containsExactly("Kann der Takt erhoeht werden?");

@@ -59,7 +59,7 @@ class DossierCsvExportServiceTest {
     // when
     List<DossierTuCsvModel> csvModels = new DossierCsvExportService(fileService, tthDossierCsvTranslations,
         timetableHearingStatementService)
-        .getTthDossierTuCsvModels(new PageImpl<>(List.of(dossierWithQuestion, dossierWithoutQuestion)));
+        .getDossierTuCsvModels(new PageImpl<>(List.of(dossierWithQuestion, dossierWithoutQuestion)));
 
     // then
     assertThat(csvModels).hasSize(3);
@@ -88,7 +88,7 @@ class DossierCsvExportServiceTest {
     // when
     List<DossierTuCsvModel> csvModels = new DossierCsvExportService(fileService, tthDossierCsvTranslations,
         timetableHearingStatementService)
-        .getTthDossierTuCsvModels(new PageImpl<>(List.of(dossier22, dossier11)));
+        .getDossierTuCsvModels(new PageImpl<>(List.of(dossier22, dossier11)));
 
     // then
     assertThat(csvModels)

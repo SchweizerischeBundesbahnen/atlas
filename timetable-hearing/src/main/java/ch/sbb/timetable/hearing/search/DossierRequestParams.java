@@ -2,7 +2,6 @@ package ch.sbb.timetable.hearing.search;
 
 import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.timetable.hearing.entity.TimetableHearingYear;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,8 @@ import lombok.ToString;
 @Builder
 public class DossierRequestParams {
 
-  private TimetableHearingYear timetableHearingYear;
+  @Parameter(description = "Filter on the timetable hearing year of a dossier.")
+  private Long timetableHearingYear;
 
   private SwissCanton canton;
 

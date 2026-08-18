@@ -109,7 +109,7 @@ class DossierServiceTest {
         .dossierStatus(DossierStatus.ADDED)
         .statementIds(List.of(firstStatement.getId(), secondStatement.getId()))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
-        .tthDossierYear(year)
+        .timetableYear(year.getTimetableYear())
         .build();
     question = DossierQuestion.builder()
         .dossier(dossier)
@@ -170,7 +170,7 @@ class DossierServiceTest {
         .build()));
 
     assertThat(dossier.getId()).isNotNull();
-    assertThat(dossier.getTthDossierYear().getTimetableYear()).isEqualTo(TIMETABLE_YEAR);
+    assertThat(dossier.getTimetableYear()).isEqualTo(TIMETABLE_YEAR);
     assertThat(dossier.getDossierQuestions()).hasSize(1);
     assertThat(reloadStatement(statement).getStatementStatus()).isEqualTo(StatementStatus.IN_REVIEW);
   }
@@ -394,7 +394,7 @@ class DossierServiceTest {
         .dossierStatus(DossierStatus.DOSSIER_BO_CHECK)
         .statementIds(List.of(givenStatement().getId()))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
-        .tthDossierYear(year)
+        .timetableYear(year.getTimetableYear())
         .build();
 
     Dossier dossier2 = Dossier.builder()
@@ -407,7 +407,7 @@ class DossierServiceTest {
         .dossierStatus(DossierStatus.DOSSIER_BO_CHECK)
         .statementIds(List.of(givenStatement().getId()))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
-        .tthDossierYear(year)
+        .timetableYear(year.getTimetableYear())
         .build();
 
     Dossier dossier3 = Dossier.builder()
@@ -420,7 +420,7 @@ class DossierServiceTest {
         .boContactSbbuid("u123456")
         .statementIds(List.of(givenStatement().getId()))
         .boDeadlineToAnswer(LocalDate.now().plusDays(7))
-        .tthDossierYear(year)
+        .timetableYear(year.getTimetableYear())
         .build();
 
     dossierRepository.saveAndFlush(dossier);
@@ -474,6 +474,27 @@ class DossierServiceTest {
         dossierService.getDossiers(DossierSearchRestrictions.builder()
             .requestParams(DossierRequestParams.builder()
                 .statusRestriction(DossierStatus.DOSSIER_BO_CHECK)
+                .build())
+            .pageable(Pageable.unpaged())
+            .build()).getContent();
+    assertThat(dossiers).isEmpty();
+  }
+
+  @Test
+  void shouldFindDossiersByTimetableHearingYear() {
+    List<Dossier> dossiers =
+        dossierService.getDossiers(DossierSearchRestrictions.builder()
+            .requestParams(DossierRequestParams.builder()
+                .timetableHearingYear(TIMETABLE_YEAR)
+                .build())
+            .pageable(Pageable.unpaged())
+            .build()).getContent();
+    assertThat(dossiers).hasSize(1);
+
+    dossiers =
+        dossierService.getDossiers(DossierSearchRestrictions.builder()
+            .requestParams(DossierRequestParams.builder()
+                .timetableHearingYear(2025L)
                 .build())
             .pageable(Pageable.unpaged())
             .build()).getContent();

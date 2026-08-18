@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface DossierQuestionRepository extends JpaRepository<DossierQuestion, Long> {
 
   @Query("""
-        select q from tth_dossier_question q
+        select q from dossier_question q
         join fetch q.dossier d
         where q.id = :id
       """)

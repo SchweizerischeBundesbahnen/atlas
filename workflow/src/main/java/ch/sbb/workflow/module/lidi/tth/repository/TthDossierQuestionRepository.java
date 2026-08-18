@@ -12,7 +12,7 @@ public interface TthDossierQuestionRepository extends JpaRepository<TthDossierQu
 
   @Query("""
         select q from tth_dossier_question q
-        join fetch q.dossier d
+        join fetch q.tthDossier d
         where q.id = :id
       """)
   Optional<TthDossierQuestion> findByIdWithDossier(@Param("id") Long id);

@@ -56,7 +56,7 @@ public class DossierApiInternalController implements DossierApiInternal {
             .requestParams(requestParams)
             .build()
     );
-    List<DossierTuCsvModel> csvRows = dossierCsvExportService.getTthDossierTuCsvModels(dossiers);
+    List<DossierTuCsvModel> csvRows = dossierCsvExportService.getDossierTuCsvModels(dossiers);
     File csvFile = dossierCsvExportService.writeCsv(csvRows, DossierTuCsvModel.class, toLocale(lang));
     try {
       return new InputStreamResource(new FileInputStream(csvFile));

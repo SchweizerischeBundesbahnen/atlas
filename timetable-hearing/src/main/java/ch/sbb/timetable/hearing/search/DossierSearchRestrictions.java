@@ -26,7 +26,7 @@ public class DossierSearchRestrictions {
   public Specification<Dossier> getSpecification() {
     return new EnumSpecification<>(requestParams.getCanton(), Dossier_.swissCanton)
         .and(new EnumSpecification<>(requestParams.getStatusRestrictions(), Dossier_.dossierStatus))
-        .and(new LongSpecification<>(Dossier_.timetableYear, requestParams.getTimetableHearingYear().getTimetableYear()))
+        .and(new LongSpecification<>(Dossier_.timetableYear, requestParams.getTimetableHearingYear()))
         .and(new SingleStringSpecification<>(requestParams.getBoContactSbbuid(), Fields.boContactSbbuid))
         .and(new SearchCriteriaSpecification<>(requestParams.getSearchCriterias(), List.of(Fields.id, Fields.topic)));
   }
