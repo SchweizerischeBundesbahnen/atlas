@@ -17,8 +17,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
@@ -86,10 +84,8 @@ public class TthDossier extends BaseWorkflowEntity implements StatementDossierLi
 
   private LocalDate boDeadlineToAnswer;
 
-  @ManyToOne
   @NotNull
-  @JoinColumn(name = "timetable_year")
-  private TthDossierYear tthDossierYear;
+  private Long timetableYear;
 
   @Builder.Default
   @OneToMany(mappedBy = "tthDossier", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

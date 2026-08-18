@@ -9,7 +9,6 @@ import { SwissCanton } from '../../model/swissCanton';
 import { DossierStatus } from '../../model/dossierStatus';
 import { BoAnswer } from '../../model/boAnswer';
 import { Language } from '../../model/language';
-import { HearingStatus } from '../../model/hearingStatus';
 import { StatementStatus } from '../../model/statementStatus';
 import { EMPTY } from 'rxjs';
 
@@ -56,7 +55,7 @@ describe('DossierInternalService', () => {
 
   it('should get dossier overview', () => {
     // when
-    service.getOverview(2026, HearingStatus.Active, SwissCanton.Bern, undefined, ['Busse']);
+    service.getOverview(2026, SwissCanton.Bern, undefined, ['Busse']);
 
     // then
     expect(apiService.get).toHaveBeenCalledExactlyOnceWith('/workflow/internal/tth/dossier', expect.any(HttpParams));
@@ -108,20 +107,11 @@ describe('DossierInternalService', () => {
     const statusRestrictions: StatementStatus[] = [StatementStatus.Accepted, StatementStatus.Rejected];
 
     // when
-    service.getDossiersAsCsv(
-      Language.Fr,
-      2026,
-      HearingStatus.Active,
-      SwissCanton.Bern,
-      'U000001',
-      ['Fahrplan', 'Bahn'],
-      statusRestrictions
-    );
+    service.getDossiersAsCsv(Language.Fr, 2026, SwissCanton.Bern, 'U000001', ['Fahrplan', 'Bahn'], statusRestrictions);
 
     // then
     expect(apiService.paramsOf).toHaveBeenCalledExactlyOnceWith({
-      'timetableHearingYear.timetableYear': 2026,
-      'timetableHearingYear.hearingStatus': HearingStatus.Active,
+      timetableHearingYear: 2026,
       canton: SwissCanton.Bern,
       boContactSbbuid: 'U000001',
       searchCriterias: ['Fahrplan', 'Bahn'],

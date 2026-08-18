@@ -83,7 +83,7 @@ public class TthDossierService {
     checkPermissionForBoContactMailAndSetSbbuid(dossier);
 
     dossier.setDossierStatus(DossierStatus.ADDED);
-    dossier.setTthDossierYear(dossierYear);
+    dossier.setTimetableYear(dossierYear.getTimetableYear());
     TthDossier tthDossier = dossierRepository.saveAndFlush(dossier);
     timetableHearingStatementClient.updateStatements(TthDossierMapper.toBatchUpdateModel(dossier));
     return tthDossier;
@@ -139,7 +139,7 @@ public class TthDossierService {
           .build();
     }
 
-    dossier.setTthDossierYear(currentDossier.getTthDossierYear());
+    dossier.setTimetableYear(currentDossier.getTimetableYear());
 
     TthDossier updatedDossier = dossierRepository.saveAndFlush(dossier);
     updateRemovedStatements(previousStatementIds, dossier);

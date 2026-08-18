@@ -95,7 +95,6 @@ export class TthDossierOverviewComponent {
     this.dossierInternalService
       .getOverview(
         this.timetableYear().timetableYear,
-        this.hearingStatus(),
         Cantons.getSwissCantonFromShort(this.cantonShort()),
         this.userType === 'BO_TTH' ? this.userService.currentUser!.sbbuid : undefined,
         this.tableService.filter.chipSearch.getActiveSearch(),
@@ -175,7 +174,6 @@ export class TthDossierOverviewComponent {
       .getDossiersAsCsv(
         mapToLanguageModel(this.translateService.getCurrentLang()!) ?? Language.De,
         this.timetableYear().timetableYear,
-        this.hearingStatus(),
         Cantons.getSwissCantonFromShort(this.cantonShort()),
         this.userType === 'BO_TTH' ? this.userService.currentUser!.sbbuid : undefined,
         this.tableService.filter.chipSearch.getActiveSearch(),

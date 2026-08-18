@@ -63,7 +63,7 @@ class TthYearServiceTest {
         .topic("topic")
         .dossierStatus(DossierStatus.ADDED)
         .statementIds(List.of(1L, 3L))
-        .tthDossierYear(tthDossierYear)
+        .timetableYear(tthDossierYear.getTimetableYear())
         .build()).getId();
     doThrow(FeignException.class).when(timetableHearingYearApiInternalClient).closeTimetableHearing(anyLong(), anyList());
     // when
@@ -86,7 +86,7 @@ class TthYearServiceTest {
         .topic("topic")
         .dossierStatus(DossierStatus.ADDED)
         .statementIds(List.of(1L, 3L))
-        .tthDossierYear(tthDossierYear)
+        .timetableYear(tthDossierYear.getTimetableYear())
         .build()).getId();
     when(timetableHearingYearApiInternalClient.closeTimetableHearing(anyLong(), anyList())).thenReturn(null);
     // when
