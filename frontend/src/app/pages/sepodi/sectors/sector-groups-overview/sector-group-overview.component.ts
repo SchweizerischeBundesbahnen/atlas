@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { of, Subject, switchMap } from 'rxjs';
 import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
@@ -14,6 +16,8 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { SectorPermissionService } from '../sector-permission.service';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVersion';
+import { SectorGroupService } from '../../../../api/service/sepodi/sector-group.service';
+import { SectorMapService } from '../../map/sector-map.service';
 
 @Component({
   selector: 'atlas-sector-group-overview',
@@ -22,13 +26,18 @@ import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVer
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sector-group-overview.component.scss'],
 })
-export class SectorGroupOverviewComponent implements OnInit {
+export class SectorGroupOverviewComponent implements OnInit, OnDestroy {
   private readonly sectorGroupInternalService = inject(SectorGroupInternalService);
+  private readonly sectorGroupService = inject(SectorGroupService);
+  private readonly sectorMapService = inject(SectorMapService);
   private readonly sectorInternalService = inject(SectorInternalService);
   private readonly tableService = inject(TableService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly sectorPermissionService = inject(SectorPermissionService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  private readonly hoveredSectorGroupSloid$ = new Subject<string | null>();
 
   trafficPointSloid!: string;
 
@@ -70,6 +79,15 @@ export class SectorGroupOverviewComponent implements OnInit {
     this.sectorInternalService.getSectors(this.trafficPointSloid).subscribe((sectors) => {
       this.hasAtLeastTwoSectors = sectors.totalCount! >= 2;
     });
+
+    this.hoveredSectorGroupSloid$
+      .pipe(
+        switchMap((sloid) => (sloid ? this.sectorGroupService.getSectorsBySectorGroupSloid(sloid) : of([]))),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((sectors) => {
+        this.sectorMapService.highlightSectorsBySloids(sectors.map((sector) => sector.sloid!));
+      });
   }
 
   editSectorGroup(clickedRow: ReadSectorGroupVersion) {
@@ -78,6 +96,18 @@ export class SectorGroupOverviewComponent implements OnInit {
         relativeTo: this.route,
       })
       .then();
+  }
+
+  onRowHovered(row: ReadSectorGroupVersion) {
+    this.hoveredSectorGroupSloid$.next(row.sloid ?? null);
+  }
+
+  onRowHoverEnded() {
+    this.hoveredSectorGroupSloid$.next(null);
+  }
+
+  ngOnDestroy() {
+    this.sectorMapService.clearHighlightedSector();
   }
 
   getSectorGroupOverview(pagination: TablePagination) {

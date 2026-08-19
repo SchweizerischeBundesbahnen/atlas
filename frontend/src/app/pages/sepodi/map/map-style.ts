@@ -124,12 +124,8 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
     hovered_sector: {
       type: 'geojson',
       data: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [0, 0],
-        },
-        properties: null,
+        type: 'FeatureCollection',
+        features: [],
       },
     },
   },

@@ -127,25 +127,30 @@ export class SectorMapService implements OnDestroy {
   }
 
   highlightSectorBySloid(sloid: string) {
-    const sector = this.displayedSectors.find((displayedSector) => displayedSector.sloid === sloid);
-    if (sector) {
-      this.setHoveredSectorCoordinates(sector.coordinates);
-    }
+    this.highlightSectorsBySloids([sloid]);
+  }
+
+  highlightSectorsBySloids(sloids: string[]) {
+    const sectors = this.displayedSectors.filter((displayedSector) => sloids.includes(displayedSector.sloid));
+    this.setHighlightedSectors(sectors);
   }
 
   clearHighlightedSector() {
-    this.setHoveredSectorCoordinates();
+    this.setHighlightedSectors([]);
   }
 
-  private setHoveredSectorCoordinates(coordinates?: CoordinatePair) {
+  private setHighlightedSectors(sectors: DisplayableSector[]) {
     const source = this.mapService.map.getSource('hovered_sector') as GeoJSONSource;
     source.setData({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [coordinates?.east ?? 0, coordinates?.north ?? 0],
-      },
-      properties: {},
+      type: 'FeatureCollection',
+      features: sectors.map((sector) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [sector.coordinates.east, sector.coordinates.north],
+        },
+        properties: {},
+      })),
     });
   }
 }

@@ -23,6 +23,8 @@
       [tableColumns]="tableColumnsSectorGroups"
       [tableFilterConfig]="tableFilterConfig"
       (editElementEvent)="editSectorGroup($event)"
+      (rowHovered)="onRowHovered($event)"
+      (rowHoverEnded)="onRowHoverEnded()"
       (tableChanged)="getSectorGroupOverview($event)"
       (tableInitialized)="getSectorGroupOverview($event)"
     />
