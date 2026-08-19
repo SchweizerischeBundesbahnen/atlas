@@ -138,6 +138,7 @@ export class SectorGroupDetailComponent implements DetailFormComponent, DetailWi
 
   ngOnDestroy() {
     this.sectorMapService.clearDisplayedSectors();
+    this.sectorMapService.clearHighlightedSector();
   }
 
   private initSelectedVersion(): void {
@@ -243,6 +244,16 @@ export class SectorGroupDetailComponent implements DetailFormComponent, DetailWi
       ])
     );
     window.open(url, '_blank');
+  }
+
+  onRowHovered(row: ReadSectorVersion) {
+    if (row.sloid) {
+      this.sectorMapService.highlightSectorBySloid(row.sloid);
+    }
+  }
+
+  onRowHoverEnded() {
+    this.sectorMapService.clearHighlightedSector();
   }
 
   getOverview(sectorGroupSloid: string) {

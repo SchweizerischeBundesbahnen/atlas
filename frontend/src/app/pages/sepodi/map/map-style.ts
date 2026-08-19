@@ -121,6 +121,17 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
         properties: null,
       },
     },
+    hovered_sector: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [0, 0],
+        },
+        properties: null,
+      },
+    },
   },
   layers: [
     {
@@ -262,6 +273,16 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
     {
       id: 'current_sector',
       source: 'current_sector',
+      type: 'symbol',
+      layout: {
+        'icon-allow-overlap': true,
+        'icon-image': 'SELECTED_SECTOR_INDICATOR',
+        'icon-size': ['interpolate', ['linear'], ['zoom'], 9, 0.4, 10, 0.6, 12, 0.8, 14, 1, 16, 1.4],
+      },
+    },
+    {
+      id: 'hovered_sector',
+      source: 'hovered_sector',
       type: 'symbol',
       layout: {
         'icon-allow-overlap': true,

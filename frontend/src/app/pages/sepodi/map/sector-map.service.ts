@@ -24,6 +24,7 @@ export class SectorMapService implements OnDestroy {
   private readonly mapService = inject(MapService);
   private readonly sectorInternalService = inject(SectorInternalService);
   private readonly onDestroy$ = new Subject<boolean>();
+  private displayedSectors: DisplayableSector[] = [];
 
   static buildSectorPopupInformation(features: MapGeoJSONFeature[]) {
     let popupHtml = '';
@@ -72,6 +73,7 @@ export class SectorMapService implements OnDestroy {
   }
 
   public setDisplayedSectors(sectors: DisplayableSector[]) {
+    this.displayedSectors = sectors;
     const source = this.mapService.map.getSource(MAP_SECTOR_LAYER_NAME) as GeoJSONSource;
     const sectorGeoInformation: Feature[] = sectors.map((point) => {
       return {
@@ -122,5 +124,28 @@ export class SectorMapService implements OnDestroy {
 
   clearCurrentSector() {
     this.displayCurrentSector();
+  }
+
+  highlightSectorBySloid(sloid: string) {
+    const sector = this.displayedSectors.find((displayedSector) => displayedSector.sloid === sloid);
+    if (sector) {
+      this.setHoveredSectorCoordinates(sector.coordinates);
+    }
+  }
+
+  clearHighlightedSector() {
+    this.setHoveredSectorCoordinates();
+  }
+
+  private setHoveredSectorCoordinates(coordinates?: CoordinatePair) {
+    const source = this.mapService.map.getSource('hovered_sector') as GeoJSONSource;
+    source.setData({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [coordinates?.east ?? 0, coordinates?.north ?? 0],
+      },
+      properties: {},
+    });
   }
 }
