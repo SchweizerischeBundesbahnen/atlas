@@ -77,6 +77,8 @@ export class TableComponent<DATATYPE> implements OnInit {
   readonly tableData = input.required<DATATYPE[]>();
 
   readonly editElementEvent = output<DATATYPE>();
+  readonly rowHovered = output<DATATYPE>();
+  readonly rowHoverEnded = output<DATATYPE>();
   readonly tableChanged = output<TablePagination>();
   readonly tableInitialized = output<TablePagination>();
   readonly changeDropdownEvent = output<ColumnDropDownEvent<DATATYPE>>();

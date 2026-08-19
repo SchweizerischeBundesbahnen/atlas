@@ -92,4 +92,37 @@ describe('TrafficPointMapService', () => {
     const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
     expect(data.geometry.coordinates).toEqual([7.44908190053, 46.96102079646]);
   });
+
+  it('should highlight a displayed TrafficPoint by sloid', () => {
+    trafficPointElementInternalService.getTrafficPointsOfServicePointValidToday.mockReturnValue(
+      of(BERN_WYLEREGG_TRAFFIC_POINTS)
+    );
+    service.displayTrafficPointsOnMap(8507000);
+
+    service.highlightTrafficPointBySloid('ch:1:sloid:89008:0:2');
+
+    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('hovered_traffic_point');
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
+    expect(data.geometry.coordinates).toEqual([7.4479859044, 46.96057330114]);
+  });
+
+  it('should not highlight anything when sloid is not currently displayed on the map', () => {
+    trafficPointElementInternalService.getTrafficPointsOfServicePointValidToday.mockReturnValue(
+      of(BERN_WYLEREGG_TRAFFIC_POINTS)
+    );
+    service.displayTrafficPointsOnMap(8507000);
+    sourceMock.setData.mockClear();
+
+    service.highlightTrafficPointBySloid('unknown-sloid');
+
+    expect(sourceMock.setData).not.toHaveBeenCalled();
+  });
+
+  it('should clear highlighted TrafficPoint on map', () => {
+    service.clearHighlightedTrafficPoint();
+
+    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('hovered_traffic_point');
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
+    expect(data.geometry.coordinates).toEqual([0, 0]);
+  });
 });

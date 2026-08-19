@@ -39,6 +39,8 @@
     [tableColumns]="isTrafficPointArea ? tableColumnsAreas : tableColumnsPlatforms"
     [tableFilterConfig]="tableFilterConfig"
     (editElementEvent)="editVersion($event)"
+    (rowHovered)="onRowHovered($event)"
+    (rowHoverEnded)="onRowHoverEnded()"
     (tableChanged)="getOverview($event)"
     (tableInitialized)="getOverview($event)"
   />
