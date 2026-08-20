@@ -69,7 +69,7 @@ describe('ServicePointDetailComponent', () => {
   >;
   let notificationServiceSpy: Mocked<Pick<NotificationService, 'success'>>;
   let mapServiceSpy: Mocked<
-    Pick<MapService, 'placeMarkerAndFlyTo' | 'deselectServicePoint' | 'refreshMap'> & {
+    Pick<MapService, 'placeMarkerAndFlyTo' | 'deselectServicePoint' | 'selectServicePoint' | 'refreshMap'> & {
       mapInitialized: BehaviorSubject<boolean>;
     }
   >;
@@ -96,6 +96,7 @@ describe('ServicePointDetailComponent', () => {
     mapServiceSpy = {
       placeMarkerAndFlyTo: vi.fn(),
       deselectServicePoint: vi.fn(),
+      selectServicePoint: vi.fn(),
       refreshMap: vi.fn(),
       mapInitialized: new BehaviorSubject<boolean>(false),
     };
@@ -439,5 +440,19 @@ describe('ServicePointDetailComponent', () => {
     component.addWorkflow();
 
     expect(dialogServiceSpy.openWithoutResult).toHaveBeenCalledTimes(1);
+  });
+
+  it('should keep the service point highlighted on destroy when switching to another tab', () => {
+    component.ngOnDestroy();
+
+    expect(mapServiceSpy.deselectServicePoint).not.toHaveBeenCalled();
+  });
+
+  it('should select the switched version on the map', () => {
+    // When
+    component.switchVersion(1);
+
+    // Then
+    expect(mapServiceSpy.selectServicePoint).toHaveBeenCalledWith(BERN[1].servicePointGeolocation?.wgs84);
   });
 });

@@ -26,7 +26,6 @@ import { GeographyFormGroup, GeographyFormGroupBuilder } from '../../geography/g
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidityService } from '../../validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { takeUntil } from 'rxjs/operators';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
@@ -94,8 +93,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   readonly servicePointStatus = Status;
 
-  private readonly onDestroy$ = new Subject<boolean>();
-
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion?: ReadServicePointVersion;
   selectableStopPointTypes: StopPointType[] = [];
@@ -133,14 +130,12 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this._terminationInProgress = terminationInProgress;
   }
 
-  private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   constructor() {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initServicePoint();
-      this.displayAndSelectServicePointOnMap();
     });
   }
 
@@ -164,9 +159,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   ngOnDestroy() {
-    this.mapService.deselectServicePoint();
-    this.onDestroy$.next(true);
-    this.onDestroy$.complete();
     this.formDestroy$.next();
     this.formDestroy$.complete();
   }
@@ -212,7 +204,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this._savedGeographyForm = undefined;
     this.isSwitchVersionDisabled = false;
     this.selectedVersion = version;
-    this.displayAndSelectServicePointOnMap();
+    this.mapService.selectServicePoint(version.servicePointGeolocation?.wgs84);
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
@@ -223,18 +215,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.showRevokeButton = !(
       this.servicePointVersions.map((value) => value.status).includes('IN_REVIEW') || version.status === 'REVOKED'
     );
-  }
-
-  private displayAndSelectServicePointOnMap() {
-    this.mapService.mapInitialized.pipe(takeUntil(this.onDestroy$)).subscribe((initialized) => {
-      if (initialized) {
-        if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
-          this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
-        }
-        this.mapService.centerOn(this.selectedVersion?.servicePointGeolocation?.wgs84);
-        this.mapService.displayCurrentCoordinates(this.selectedVersion?.servicePointGeolocation?.wgs84);
-      }
-    });
   }
 
   toggleEdit() {

@@ -134,6 +134,7 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
       }
 
       this.trafficPointMapService.displayTrafficPointsOnMap(this.servicePointVersions[0].number.number);
+      this.mapService.selectServicePoint(this.selectedVersion.servicePointGeolocation?.wgs84);
     });
   }
 
