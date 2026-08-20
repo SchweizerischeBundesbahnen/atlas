@@ -48,6 +48,23 @@ class RouteConfigTest {
     assertThat(routes.getFirst().getUri()).hasToString(value);
   }
 
+  @Test
+  void shouldConfigureTthCutoverRoutesWhenRerouteIsEnabled() {
+    // Given
+    GatewayConfig gatewayConfig = new GatewayConfig();
+    gatewayConfig.setTthModuleReroute(true);
+    gatewayConfig.setRoutes(Map.of("timetable-hearing", "http://timetable-hearing-backend:8080"));
+
+    // When
+    RouteLocator routeLocator = routeConfig.routes(
+        new RouteLocatorBuilder(createMockGatewayContext()), gatewayConfig, gatewayRequestLogging);
+
+    // Then
+    List<Route> routes = routeLocator.getRoutes().collectList().block();
+    assertThat(routes).isNotNull().extracting(Route::getId)
+        .containsExactly("tth-cutover", "tth-year-cutover", "tth-dossier-cutover", "timetable-hearing");
+  }
+
   private ConfigurableApplicationContext createMockGatewayContext() {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
     context.register(PathRoutePredicateFactory.class);

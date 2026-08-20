@@ -20,6 +20,8 @@ export interface DossierDetailFormGroup {
   questionId: FormControl<number | null | undefined>;
   question: FormControl<string | null | undefined>;
   answerToCanton: FormControl<string | null | undefined>;
+  etagVersion: FormControl<number | null | undefined>;
+  questionEtagVersion: FormControl<number | null | undefined>;
 }
 
 export class DossierFormGroupBuilder {
@@ -44,6 +46,8 @@ export class DossierFormGroupBuilder {
       question: new FormControl(dossier?.questions.at(0)?.question, [Validators.maxLength(5000)]),
       answerToCanton: new FormControl(dossier?.questions.at(0)?.answerToCanton, [Validators.maxLength(5000)]),
       dossierStatus: new FormControl(dossier?.dossierStatus),
+      etagVersion: new FormControl(dossier?.etagVersion),
+      questionEtagVersion: new FormControl(dossier?.questions.at(0)?.etagVersion),
     });
   }
 
@@ -58,6 +62,7 @@ export class DossierFormGroupBuilder {
       boContactMail: form.controls.boContactMail.value!,
       boDeadlineToAnswer: form.controls.boDeadlineToAnswer.value?.toDate(),
       dossierStatus: form.controls.dossierStatus.value!,
+      etagVersion: form.controls.etagVersion.value!,
       questions: [],
     };
     dossier.questions = [
@@ -65,6 +70,7 @@ export class DossierFormGroupBuilder {
         id: form.controls.questionId.value!,
         question: form.controls.question.value!,
         answerToCanton: form.controls.answerToCanton.value!,
+        etagVersion: form.controls.questionEtagVersion.value!,
       },
     ];
     return dossier;

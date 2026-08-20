@@ -17,12 +17,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 @RequiredArgsConstructor
-public class TthStatementRedactAspect {
+public class StatementRedactAspect {
 
   private final BoUserMailCheckService boUserMailCheckService;
   private final CantonBasedUserAdministrationService cantonBasedUserAdministrationService;
 
-  @Around("@annotation(ch.sbb.timetable.hearing.redact.TthStatementRedacted)")
+  @Around("@annotation(ch.sbb.timetable.hearing.redact.StatementRedacted)")
   public Object redactSensitiveDataForStatement(ProceedingJoinPoint joinPoint) throws Throwable {
     Object resultObject = joinPoint.proceed();
 

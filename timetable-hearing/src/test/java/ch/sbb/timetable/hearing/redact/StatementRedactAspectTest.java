@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class TthStatementRedactAspectTest {
+class StatementRedactAspectTest {
 
   @Mock
   private BoUserMailCheckService boUserMailCheckService;
@@ -29,12 +29,12 @@ class TthStatementRedactAspectTest {
   @Mock
   private CantonBasedUserAdministrationService cantonBasedUserAdministrationService;
 
-  private TthStatementRedactAspect tthStatementRedactAspect;
+  private StatementRedactAspect tthStatementRedactAspect;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    tthStatementRedactAspect = new TthStatementRedactAspect(boUserMailCheckService, cantonBasedUserAdministrationService);
+    tthStatementRedactAspect = new StatementRedactAspect(boUserMailCheckService, cantonBasedUserAdministrationService);
   }
 
   @Test
@@ -60,7 +60,7 @@ class TthStatementRedactAspectTest {
     TimetableHearingStatement resultObject = getSensitiveStatement();
     resultObject.setDossierContactMail(mailTo);
     resultObject.setStatementAnonymous(false);
-    TimetableHearingStatement redactObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(resultObject);
+    TimetableHearingStatement redactObject = (TimetableHearingStatement) StatementRedactAspect.redactObject(resultObject);
     doReturn(true).when(boUserMailCheckService).isCurrentUserAssignedTo(resultObject);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(resultObject, redactObject);
@@ -76,7 +76,7 @@ class TthStatementRedactAspectTest {
     TimetableHearingStatement resultObject = getSensitiveStatement();
     resultObject.setDossierContactMail(mailTo);
     resultObject.setStatementAnonymous(false);
-    TimetableHearingStatement redactObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(resultObject);
+    TimetableHearingStatement redactObject = (TimetableHearingStatement) StatementRedactAspect.redactObject(resultObject);
     doReturn(true).when(boUserMailCheckService).isCurrentUserAssignedTo(resultObject);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(resultObject, redactObject);
@@ -92,7 +92,7 @@ class TthStatementRedactAspectTest {
     TimetableHearingStatement resultObject = getSensitiveStatement();
     resultObject.setDossierContactMail(mailTo);
     resultObject.setStatementAnonymous(false);
-    TimetableHearingStatement redactObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(resultObject);
+    TimetableHearingStatement redactObject = (TimetableHearingStatement) StatementRedactAspect.redactObject(resultObject);
     doReturn(false).when(boUserMailCheckService).isCurrentUserAssignedTo(resultObject);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(resultObject, redactObject);
@@ -138,7 +138,7 @@ class TthStatementRedactAspectTest {
 
     //then
     assertThat(result).isInstanceOf(TimetableHearingStatement.class);
-    assertThat(result).usingRecursiveComparison().isEqualTo(TthStatementRedactAspect.redactObject(resultObject));
+    assertThat(result).usingRecursiveComparison().isEqualTo(StatementRedactAspect.redactObject(resultObject));
   }
 
   @Test
@@ -149,7 +149,7 @@ class TthStatementRedactAspectTest {
     TimetableHearingStatement redactedStatement = getRedactedSensitiveStatement();
 
     // when & then
-    Object redactObject = TthStatementRedactAspect.redactObject(sensitiveStatement);
+    Object redactObject = StatementRedactAspect.redactObject(sensitiveStatement);
     assertThat(redactObject).usingRecursiveComparison().isEqualTo(redactedStatement);
   }
 
@@ -177,7 +177,7 @@ class TthStatementRedactAspectTest {
         .build();
 
     // when & then
-    Object redactObject = TthStatementRedactAspect.redactObject(sensitiveStatement);
+    Object redactObject = StatementRedactAspect.redactObject(sensitiveStatement);
     assertThat(redactObject).usingRecursiveComparison().isEqualTo(redactedStatement);
   }
 
@@ -201,7 +201,7 @@ class TthStatementRedactAspectTest {
 
     // when & then
     //given
-    TimetableHearingStatement redactedObject = (TimetableHearingStatement) TthStatementRedactAspect.redactObject(sensitiveStatement);
+    TimetableHearingStatement redactedObject = (TimetableHearingStatement) StatementRedactAspect.redactObject(sensitiveStatement);
     doReturn(true).when(boUserMailCheckService).isCurrentUserAssignedTo(sensitiveStatement);
     //when
     tthStatementRedactAspect.redactStatementForBoUser(sensitiveStatement, redactedObject);

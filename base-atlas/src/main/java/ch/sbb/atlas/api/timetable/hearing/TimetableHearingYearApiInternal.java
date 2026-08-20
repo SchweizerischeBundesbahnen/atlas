@@ -5,6 +5,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFI
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
 import ch.sbb.atlas.annotation.AuthorizedOnly;
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "[INTERNAL] Timetable Hearing Years")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Timetable Hearing Years")
 public interface TimetableHearingYearApiInternal {
 
   String BASE_PATH = "internal/timetable-hearing/years";
@@ -69,5 +70,5 @@ public interface TimetableHearingYearApiInternal {
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingYearModel closeTimetableHearing(@PathVariable Long year,
-      @RequestBody List<Long> statementIdsToRemoveFromDossier);
+      @RequestBody(required = false) List<Long> statementIdsToRemoveFromDossier);
 }

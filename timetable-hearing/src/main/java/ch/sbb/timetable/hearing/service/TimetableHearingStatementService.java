@@ -1,6 +1,7 @@
 package ch.sbb.timetable.hearing.service;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
+import static java.util.Comparator.comparing;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.client.line.ttfn.TimetableFieldNumberApiV1Client;
@@ -10,6 +11,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
+import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingAnonymStatementCsvModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -22,7 +24,7 @@ import ch.sbb.timetable.hearing.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.timetable.hearing.mapper.StatementSenderMapperV2;
 import ch.sbb.timetable.hearing.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.timetable.hearing.model.TimetableHearingStatementSearchRestrictions;
-import ch.sbb.timetable.hearing.redact.TthStatementRedacted;
+import ch.sbb.timetable.hearing.redact.StatementRedacted;
 import ch.sbb.timetable.hearing.repository.TimetableHearingStatementRepository;
 import ch.sbb.timetable.hearing.repository.TimetableHearingYearRepository;
 import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
@@ -57,6 +59,7 @@ public class TimetableHearingStatementService {
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
   private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
   private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
+  private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
     log.info("Loading statements using {}", searchRestrictions);
@@ -67,7 +70,7 @@ public class TimetableHearingStatementService {
     timetableHearingStatementRepository.removeDossierRelationAndSetReceivedFor(statementIds);
   }
 
-  @TthStatementRedacted
+  @StatementRedacted
   @PostAuthorize("""
       @cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)
       or
@@ -279,6 +282,17 @@ public class TimetableHearingStatementService {
 
   public TimetableHearingStatement getTimetableHearingStatementsById(Long id) {
     return timetableHearingStatementRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  public List<TimetableHearingAnonymStatementCsvModel> getStatementsByIdAnonymized(List<Long> ids) {
+    return timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
+            getTimetableHearingStatementsByIds(ids).stream()
+                .map(TimetableHearingStatementMapperV2::toModel)
+                .toList())
+        .stream()
+        .map(TimetableHearingAnonymStatementCsvModel::fromModelAnonymized)
+        .sorted(comparing(TimetableHearingAnonymStatementCsvModel::getTimetableHearingStatementId))
+        .toList();
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
