@@ -6,12 +6,53 @@ import { BehaviorSubject, of } from 'rxjs';
 import { MAP_SECTOR_LAYER_NAME } from './map-style';
 import { SectorMapService } from './sector-map.service';
 import { SectorInternalService } from '../../../api/service/sepodi/sector-internal.service';
+import { ReadSectorVersion } from '../../../api/model/readSectorVersion';
 import { SpatialReference } from '../../../api';
 import { Point } from 'geojson';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
 describe('SectorMapService', () => {
   let service: SectorMapService;
+
+  const SECTOR_A: ReadSectorVersion = {
+    trafficPointSloid: 'ch:1:sloid:7000:1',
+    validFrom: new Date('2014-12-14'),
+    validTo: new Date('2014-12-14'),
+    designation: 'A',
+    sectorGeolocation: {
+      lv95: {
+        north: 0,
+        east: 0,
+        spatialReference: SpatialReference.Lv95,
+      },
+      spatialReference: 'WGS84WEB',
+      wgs84: {
+        north: 46.96102079646,
+        east: 7.44908190053,
+        spatialReference: SpatialReference.Wgs84,
+      },
+      lv03: {
+        north: 0,
+        east: 0,
+        spatialReference: SpatialReference.Lv03,
+      },
+    },
+    sloid: 'ch:1:sloid:7000:1:1',
+  };
+
+  const SECTOR_B: ReadSectorVersion = {
+    ...SECTOR_A,
+    designation: 'B',
+    sectorGeolocation: {
+      ...SECTOR_A.sectorGeolocation!,
+      wgs84: {
+        north: 46.96057330114,
+        east: 7.4479859044,
+        spatialReference: SpatialReference.Wgs84,
+      },
+    },
+    sloid: 'ch:1:sloid:7000:1:2',
+  };
 
   const sourceMock = mock<GeoJSONSource>();
   const mapMock = mockDeep<Map>();
@@ -132,5 +173,59 @@ describe('SectorMapService', () => {
     expect(sourceMock.setData).toHaveBeenCalled();
     const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
     expect(data.geometry.coordinates).toEqual([0, 0]);
+  });
+
+  it('should highlight a displayed Sector by sloid', () => {
+    // Given
+    sectorInternalService.getSectorsValidToday.mockReturnValue(of([SECTOR_A, SECTOR_B]));
+    service.displaySectorsOnMap(8507000, 'ch:1:sloid:7000:0:1');
+
+    // When
+    service.highlightSectorBySloid('ch:1:sloid:7000:1:1');
+
+    // Then
+    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('hovered_sector');
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
+    expect(data.features).toHaveLength(1);
+    expect((data.features[0].geometry as Point).coordinates).toEqual([7.44908190053, 46.96102079646]);
+  });
+
+  it('should highlight all displayed Sectors matching the given sloids', () => {
+    // Given
+    sectorInternalService.getSectorsValidToday.mockReturnValue(of([SECTOR_A, SECTOR_B]));
+    service.displaySectorsOnMap(8507000, 'ch:1:sloid:7000:0:1');
+
+    // When
+    service.highlightSectorsBySloids(['ch:1:sloid:7000:1:1', 'ch:1:sloid:7000:1:2']);
+
+    // Then
+    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('hovered_sector');
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
+    expect(data.features).toHaveLength(2);
+    expect(data.features.map((feature) => (feature.geometry as Point).coordinates)).toEqual([
+      [7.44908190053, 46.96102079646],
+      [7.4479859044, 46.96057330114],
+    ]);
+  });
+
+  it('should clear the highlight when no sloid is currently displayed on the map', () => {
+    // Given
+    sectorInternalService.getSectorsValidToday.mockReturnValue(of([SECTOR_A, SECTOR_B]));
+    service.displaySectorsOnMap(8507000, 'ch:1:sloid:7000:0:1');
+
+    // When
+    service.highlightSectorsBySloids(['unknown-sloid']);
+
+    // Then
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
+    expect(data.features).toHaveLength(0);
+  });
+
+  it('should clear highlighted Sectors on map', () => {
+    service.clearHighlightedSector();
+
+    expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('hovered_sector');
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
+    expect(data.features).toHaveLength(0);
   });
 });

@@ -93,6 +93,74 @@ describe('MapService', () => {
     });
   });
 
+  it('should select service point and zoom in when zoomed out too far', () => {
+    // Given
+    service.map = mapMock;
+    mapMock.getZoom.mockReturnValue(10);
+    service.mapInitialized.next(true);
+
+    // When
+    service.selectServicePoint({
+      north: 46.96096807883433,
+      east: 7.448919722210154,
+      spatialReference: SpatialReference.Wgs84,
+    });
+
+    // Then
+    expect(mapMock.setZoom).toHaveBeenCalledWith(14);
+    expect(mapMock.flyTo).toHaveBeenCalled();
+    expect((service.map.getSource('current_coordinates') as GeoJSONSource).setData).toHaveBeenCalledWith({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [7.448919722210154, 46.96096807883433],
+      },
+      properties: {},
+    });
+  });
+
+  it('should keep the current zoom when selecting a service point while zoomed in', () => {
+    // Given
+    service.map = mapMock;
+    mapMock.setZoom.mockClear();
+    mapMock.getZoom.mockReturnValue(16);
+    service.mapInitialized.next(true);
+
+    // When
+    service.selectServicePoint({
+      north: 46.96096807883433,
+      east: 7.448919722210154,
+      spatialReference: SpatialReference.Wgs84,
+    });
+
+    // Then
+    expect(mapMock.setZoom).not.toHaveBeenCalled();
+  });
+
+  it('should cancel a pending service point selection when deselected before the map is initialized', () => {
+    // Given
+    service.map = mapMock;
+    service.selectServicePoint({
+      north: 46.96096807883433,
+      east: 7.448919722210154,
+      spatialReference: SpatialReference.Wgs84,
+    });
+
+    // When
+    service.deselectServicePoint();
+    service.mapInitialized.next(true);
+
+    // Then
+    expect((service.map.getSource('current_coordinates') as GeoJSONSource).setData).toHaveBeenLastCalledWith({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [0, 0],
+      },
+      properties: {},
+    });
+  });
+
   it('should switch to different map style', () => {
     service.map = mapMock;
 

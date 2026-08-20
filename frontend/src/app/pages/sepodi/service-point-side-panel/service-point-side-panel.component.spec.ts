@@ -11,6 +11,7 @@ import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
+import { MapService } from '../map/map.service';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 import { ReadServicePointVersion } from '../../../api';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
@@ -84,6 +85,7 @@ describe('ServicePointSidePanelComponent', () => {
   let trafficPointMapServiceSpy: Mocked<
     Pick<TrafficPointMapService, 'displayTrafficPointsOnMap' | 'clearDisplayedTrafficPoints'>
   >;
+  let mapServiceSpy: Mocked<Pick<MapService, 'deselectServicePoint' | 'selectServicePoint'>>;
   let dialogServiceSpy: Mocked<Pick<DialogService, 'openCustomDataWithConfirmationResult'>>;
   let servicePointServiceSpy: Mocked<Pick<ServicePointService, 'getServicePointVersions'>>;
   let isAtLeastSupervisor = true;
@@ -98,6 +100,10 @@ describe('ServicePointSidePanelComponent', () => {
     trafficPointMapServiceSpy = {
       displayTrafficPointsOnMap: vi.fn(),
       clearDisplayedTrafficPoints: vi.fn(),
+    };
+    mapServiceSpy = {
+      deselectServicePoint: vi.fn(),
+      selectServicePoint: vi.fn(),
     };
     dialogServiceSpy = {
       openCustomDataWithConfirmationResult: vi.fn(),
@@ -125,6 +131,7 @@ describe('ServicePointSidePanelComponent', () => {
           provide: TrafficPointMapService,
           useValue: trafficPointMapServiceSpy,
         },
+        { provide: MapService, useValue: mapServiceSpy },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: ServicePointService, useValue: servicePointServiceSpy },
         { provide: PermissionService, useValue: permissionServiceMock },
@@ -159,6 +166,18 @@ describe('ServicePointSidePanelComponent', () => {
       expect(component.tabs).toHaveLength(5);
 
       expect(trafficPointMapServiceSpy.displayTrafficPointsOnMap).toHaveBeenCalled();
+    });
+
+    it('should deselect the service point on destroy', () => {
+      component.ngOnDestroy();
+
+      expect(mapServiceSpy.deselectServicePoint).toHaveBeenCalled();
+    });
+
+    it('should select the service point on the map on init, independently of the active tab', () => {
+      expect(mapServiceSpy.selectServicePoint).toHaveBeenCalledWith(
+        component.selectedVersion.servicePointGeolocation?.wgs84
+      );
     });
   });
 

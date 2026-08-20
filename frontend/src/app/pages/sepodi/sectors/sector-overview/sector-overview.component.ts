@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
@@ -13,6 +13,7 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { SectorPermissionService } from '../sector-permission.service';
 import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
+import { SectorMapService } from '../../map/sector-map.service';
 
 @Component({
   selector: 'atlas-sector-overview',
@@ -21,8 +22,9 @@ import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sector-overview.component.scss'],
 })
-export class SectorOverviewComponent implements OnInit {
+export class SectorOverviewComponent implements OnInit, OnDestroy {
   private readonly sectorInternalService = inject(SectorInternalService);
+  private readonly sectorMapService = inject(SectorMapService);
   private readonly tableService = inject(TableService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -65,6 +67,20 @@ export class SectorOverviewComponent implements OnInit {
 
   editSector(clickedRow: ReadSectorVersion) {
     this.router.navigate([clickedRow.sloid], { relativeTo: this.route }).then();
+  }
+
+  onRowHovered(row: ReadSectorVersion) {
+    if (row.sloid) {
+      this.sectorMapService.highlightSectorBySloid(row.sloid);
+    }
+  }
+
+  onRowHoverEnded() {
+    this.sectorMapService.clearHighlightedSector();
+  }
+
+  ngOnDestroy(): void {
+    this.sectorMapService.clearHighlightedSector();
   }
 
   getSectorOverview(pagination: TablePagination) {

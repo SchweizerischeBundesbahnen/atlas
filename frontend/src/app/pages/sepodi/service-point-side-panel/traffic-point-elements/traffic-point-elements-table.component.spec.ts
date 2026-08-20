@@ -21,6 +21,7 @@ import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
+import { TrafficPointMapService } from '../../map/traffic-point-map.service';
 
 describe('TrafficPointElementsTableComponent', () => {
   let component: TrafficPointElementsTableComponent;
@@ -31,6 +32,9 @@ describe('TrafficPointElementsTableComponent', () => {
 
   let trafficPointElementInternalServiceSpy: Mocked<
     Pick<TrafficPointElementInternalService, 'getPlatformsOfServicePoint'>
+  >;
+  let trafficPointMapServiceSpy: Mocked<
+    Pick<TrafficPointMapService, 'highlightTrafficPointBySloid' | 'clearHighlightedTrafficPoint'>
   >;
 
   const activatedRouteMock = {
@@ -62,6 +66,11 @@ describe('TrafficPointElementsTableComponent', () => {
     };
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
+    trafficPointMapServiceSpy = {
+      highlightTrafficPointBySloid: vi.fn(),
+      clearHighlightedTrafficPoint: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
       imports: [TrafficPointElementsTableComponent],
       providers: [
@@ -72,6 +81,10 @@ describe('TrafficPointElementsTableComponent', () => {
         {
           provide: TrafficPointElementInternalService,
           useValue: trafficPointElementInternalServiceSpy,
+        },
+        {
+          provide: TrafficPointMapService,
+          useValue: trafficPointMapServiceSpy,
         },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: routerSpy },
@@ -113,5 +126,20 @@ describe('TrafficPointElementsTableComponent', () => {
   it('should navigate to edit trafficpoint', () => {
     component.editVersion(BERN_WYLEREGG_TRAFFIC_POINTS[0]);
     expect(routerSpy.navigate).toHaveBeenCalledWith(['ch:1:sloid:89008:0:1'], expect.any(Object));
+  });
+
+  it('should highlight the traffic point on the map when a row is hovered', () => {
+    component.onRowHovered(BERN_WYLEREGG_TRAFFIC_POINTS[0]);
+    expect(trafficPointMapServiceSpy.highlightTrafficPointBySloid).toHaveBeenCalledWith('ch:1:sloid:89008:0:1');
+  });
+
+  it('should clear the highlighted traffic point on the map when a row is no longer hovered', () => {
+    component.onRowHoverEnded();
+    expect(trafficPointMapServiceSpy.clearHighlightedTrafficPoint).toHaveBeenCalled();
+  });
+
+  it('should clear the highlighted traffic point on destroy', () => {
+    component.ngOnDestroy();
+    expect(trafficPointMapServiceSpy.clearHighlightedTrafficPoint).toHaveBeenCalled();
   });
 });

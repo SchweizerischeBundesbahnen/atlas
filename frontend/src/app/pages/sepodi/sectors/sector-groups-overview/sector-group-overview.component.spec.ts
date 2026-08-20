@@ -6,20 +6,35 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectorGroupInternalService } from '../../../../api/service/sepodi/sector-group-internal.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
 import { ContainerReadSectorVersion } from '../../../../api/model/containerReadSectorVersion';
 import { SectorInternalService } from '../../../../api/service/sepodi/sector-internal.service';
+import { SectorGroupService } from '../../../../api/service/sepodi/sector-group.service';
+import { SectorMapService } from '../../map/sector-map.service';
+import { ReadSectorGroupVersion } from '../../../../api/model/readSectorGroupVersion';
+import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
+import { BERN_PLATFORM_1_SECTOR_MULTIPLE } from '../../../../../test/data/sector';
 
 describe('SectorGroupOverviewComponent', () => {
   let component: SectorGroupOverviewComponent;
   let fixture: ComponentFixture<SectorGroupOverviewComponent>;
 
   let sectorGroupInternalServiceSpy: Mocked<Pick<SectorGroupInternalService, 'getSectorGroups'>>;
+  let sectorGroupServiceSpy: Mocked<Pick<SectorGroupService, 'getSectorsBySectorGroupSloid'>>;
+  let sectorMapServiceSpy: Mocked<Pick<SectorMapService, 'highlightSectorsBySloids' | 'clearHighlightedSector'>>;
   let sectorInternalServiceSpy: Mocked<Pick<SectorInternalService, 'getSectors'>>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
+
+  const SECTOR_GROUP_A: ReadSectorGroupVersion = {
+    trafficPointSloid: 'ch:1:sloid:7000:1',
+    validFrom: new Date('2014-12-14'),
+    validTo: new Date('2014-12-14'),
+    designation: 'A',
+    sloid: 'ch:1:sloid:7000:1:1',
+  };
 
   const activatedRouteMock = {
     parent: {
@@ -55,6 +70,16 @@ describe('SectorGroupOverviewComponent', () => {
     };
     sectorInternalServiceSpy.getSectors.mockReturnValue(subject.asObservable());
 
+    sectorGroupServiceSpy = {
+      getSectorsBySectorGroupSloid: vi.fn(),
+    };
+    sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of([]));
+
+    sectorMapServiceSpy = {
+      highlightSectorsBySloids: vi.fn(),
+      clearHighlightedSector: vi.fn(),
+    };
+
     routerSpy = {
       navigate: vi.fn(),
     };
@@ -73,6 +98,14 @@ describe('SectorGroupOverviewComponent', () => {
         {
           provide: SectorInternalService,
           useValue: sectorInternalServiceSpy,
+        },
+        {
+          provide: SectorGroupService,
+          useValue: sectorGroupServiceSpy,
+        },
+        {
+          provide: SectorMapService,
+          useValue: sectorMapServiceSpy,
         },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
@@ -137,5 +170,53 @@ describe('SectorGroupOverviewComponent', () => {
     fixture.detectChanges();
 
     expect(component.hasAtLeastTwoSectors).toBe(true);
+  });
+
+  it('should highlight all sectors of the hovered sector group on the map', () => {
+    // Given
+    sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of(BERN_PLATFORM_1_SECTOR_MULTIPLE));
+
+    // When
+    component.onRowHovered(SECTOR_GROUP_A);
+
+    // Then
+    expect(sectorGroupServiceSpy.getSectorsBySectorGroupSloid).toHaveBeenCalledWith('ch:1:sloid:7000:1:1');
+    expect(sectorMapServiceSpy.highlightSectorsBySloids).toHaveBeenCalledWith([
+      'ch:1:sloid:7000:1:1:1',
+      'ch:1:sloid:7000:1:1:2',
+    ]);
+  });
+
+  it('should clear the highlighted sectors when a row is no longer hovered', () => {
+    // Given
+    sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(of(BERN_PLATFORM_1_SECTOR_MULTIPLE));
+    component.onRowHovered(SECTOR_GROUP_A);
+    sectorMapServiceSpy.highlightSectorsBySloids.mockClear();
+
+    // When
+    component.onRowHoverEnded();
+
+    // Then
+    expect(sectorMapServiceSpy.highlightSectorsBySloids).toHaveBeenCalledWith([]);
+  });
+
+  it('should not highlight sectors of a sector group that is no longer hovered', () => {
+    // Given
+    const pendingSectors = new Subject<ReadSectorVersion[]>();
+    sectorGroupServiceSpy.getSectorsBySectorGroupSloid.mockReturnValue(pendingSectors.asObservable());
+    component.onRowHovered(SECTOR_GROUP_A);
+
+    // When
+    component.onRowHoverEnded();
+    pendingSectors.next(BERN_PLATFORM_1_SECTOR_MULTIPLE);
+
+    // Then
+    expect(sectorMapServiceSpy.highlightSectorsBySloids).toHaveBeenCalledExactlyOnceWith([]);
+  });
+
+  it('should clear the highlighted sectors on destroy', () => {
+    component.ngOnDestroy();
+
+    expect(sectorMapServiceSpy.clearHighlightedSector).toHaveBeenCalled();
   });
 });

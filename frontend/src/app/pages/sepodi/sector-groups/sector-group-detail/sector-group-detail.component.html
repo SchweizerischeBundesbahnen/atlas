@@ -61,6 +61,8 @@
             [tableData]="sectorVersions"
             [tableColumns]="tableColumns"
             (editElementEvent)="rowClicked($event)"
+            (rowHovered)="onRowHovered($event)"
+            (rowHoverEnded)="onRowHoverEnded()"
             (tableChanged)="getOverview(selectedVersion.sloid!)"
             (tableInitialized)="getOverview(selectedVersion.sloid!)"
             [sortingDisabled]="true"

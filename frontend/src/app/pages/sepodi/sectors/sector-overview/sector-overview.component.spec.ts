@@ -12,12 +12,15 @@ import { SpatialReference } from '../../../../api';
 import { BERN } from '../../../../../test/data/service-point';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { adminPermissionServiceMock, translateServiceProvider } from '../../../../app.testing.mocks';
+import { SectorMapService } from '../../map/sector-map.service';
+import { ReadSectorVersion } from '../../../../api/model/readSectorVersion';
 
 describe('SectorOverviewComponent', () => {
   let component: SectorOverviewComponent;
   let fixture: ComponentFixture<SectorOverviewComponent>;
 
   let sectorInternalServiceSpy: Mocked<Pick<SectorInternalService, 'getSectors'>>;
+  let sectorMapServiceSpy: Mocked<Pick<SectorMapService, 'highlightSectorBySloid' | 'clearHighlightedSector'>>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
 
   const activatedRouteMock = {
@@ -38,11 +41,42 @@ describe('SectorOverviewComponent', () => {
     totalCount: 0,
   };
 
+  const SECTOR_A: ReadSectorVersion = {
+    trafficPointSloid: 'ch:1:sloid:7000:1',
+    validFrom: new Date('2014-12-14'),
+    validTo: new Date('2014-12-14'),
+    designation: 'A',
+    sectorGeolocation: {
+      lv95: {
+        north: 0,
+        east: 0,
+        spatialReference: SpatialReference.Lv95,
+      },
+      spatialReference: 'WGS84WEB',
+      wgs84: {
+        north: 0,
+        east: 0,
+        spatialReference: SpatialReference.Wgs84,
+      },
+      lv03: {
+        north: 0,
+        east: 0,
+        spatialReference: SpatialReference.Lv03,
+      },
+    },
+    sloid: 'ch:1:sloid:7000:1:1',
+  };
+
   beforeEach(() => {
     sectorInternalServiceSpy = {
       getSectors: vi.fn(),
     };
     sectorInternalServiceSpy.getSectors.mockReturnValue(of(sectorOverview));
+
+    sectorMapServiceSpy = {
+      highlightSectorBySloid: vi.fn(),
+      clearHighlightedSector: vi.fn(),
+    };
 
     routerSpy = {
       navigate: vi.fn(),
@@ -58,6 +92,10 @@ describe('SectorOverviewComponent', () => {
         {
           provide: SectorInternalService,
           useValue: sectorInternalServiceSpy,
+        },
+        {
+          provide: SectorMapService,
+          useValue: sectorMapServiceSpy,
         },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
@@ -85,31 +123,7 @@ describe('SectorOverviewComponent', () => {
   });
 
   it('should navigate to sector detail', () => {
-    component.editSector({
-      trafficPointSloid: 'ch:1:sloid:7000:1',
-      validFrom: new Date('2014-12-14'),
-      validTo: new Date('2014-12-14'),
-      designation: 'A',
-      sectorGeolocation: {
-        lv95: {
-          north: 0,
-          east: 0,
-          spatialReference: SpatialReference.Lv95,
-        },
-        spatialReference: 'WGS84WEB',
-        wgs84: {
-          north: 0,
-          east: 0,
-          spatialReference: SpatialReference.Wgs84,
-        },
-        lv03: {
-          north: 0,
-          east: 0,
-          spatialReference: SpatialReference.Lv03,
-        },
-      },
-      sloid: 'ch:1:sloid:7000:1:1',
-    });
+    component.editSector(SECTOR_A);
 
     expect(routerSpy.navigate).toHaveBeenCalledWith(['ch:1:sloid:7000:1:1'], expect.any(Object));
   });
@@ -124,5 +138,23 @@ describe('SectorOverviewComponent', () => {
     component.addSector();
 
     expect(routerSpy.navigate).toHaveBeenCalledWith(['add'], expect.any(Object));
+  });
+
+  it('should highlight the sector on the map when a row is hovered', () => {
+    component.onRowHovered({ ...SECTOR_A });
+
+    expect(sectorMapServiceSpy.highlightSectorBySloid).toHaveBeenCalledWith('ch:1:sloid:7000:1:1');
+  });
+
+  it('should clear the highlighted sector on the map when a row is no longer hovered', () => {
+    component.onRowHoverEnded();
+
+    expect(sectorMapServiceSpy.clearHighlightedSector).toHaveBeenCalled();
+  });
+
+  it('should clear the highlighted sector on destroy', () => {
+    component.ngOnDestroy();
+
+    expect(sectorMapServiceSpy.clearHighlightedSector).toHaveBeenCalled();
   });
 });

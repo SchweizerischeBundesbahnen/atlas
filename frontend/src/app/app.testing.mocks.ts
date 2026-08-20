@@ -149,6 +149,8 @@ export class MockTableComponent<DATATYPE> {
 
   readonly checkBoxSelection = input(new SelectionModel<TimetableHearingStatementV2>(true, []));
   readonly editElementEvent = output<DATATYPE>();
+  readonly rowHovered = output<DATATYPE>();
+  readonly rowHoverEnded = output<DATATYPE>();
   readonly getTableElementsEvent = output<TablePagination>();
 }
 

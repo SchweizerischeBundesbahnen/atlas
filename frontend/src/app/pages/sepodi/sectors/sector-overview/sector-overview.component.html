@@ -22,6 +22,8 @@
       [tableColumns]="tableColumnsSectors"
       [tableFilterConfig]="tableFilterConfig"
       (editElementEvent)="editSector($event)"
+      (rowHovered)="onRowHovered($event)"
+      (rowHoverEnded)="onRowHoverEnded()"
       (tableChanged)="getSectorOverview($event)"
       (tableInitialized)="getSectorOverview($event)"
     />

@@ -37,6 +37,8 @@ describe('SectorGroupDetailComponent', () => {
       | 'displayCurrentSector'
       | 'clearCurrentSector'
       | 'setDisplayedSectors'
+      | 'highlightSectorBySloid'
+      | 'clearHighlightedSector'
     >
   >;
   let trafficPointMapServiceSpy: Mocked<
@@ -73,6 +75,8 @@ describe('SectorGroupDetailComponent', () => {
       displayCurrentSector: vi.fn(),
       clearCurrentSector: vi.fn(),
       setDisplayedSectors: vi.fn(),
+      highlightSectorBySloid: vi.fn(),
+      clearHighlightedSector: vi.fn(),
     };
     trafficPointMapServiceSpy = {
       displayTrafficPointsOnMap: vi.fn(),
@@ -241,6 +245,24 @@ describe('SectorGroupDetailComponent', () => {
       component.revoke();
 
       expect(sectorGroupInternalServiceSpy.revokeSectorGroup).toHaveBeenCalled();
+    });
+
+    it('should highlight the sector on the map when a row is hovered', () => {
+      component.onRowHovered(BERN_PLATFORM_1_SECTOR_A[0]);
+
+      expect(sectorMapServiceSpy.highlightSectorBySloid).toHaveBeenCalledWith('ch:1:sloid:7000:1:1:1');
+    });
+
+    it('should clear the highlighted sector on the map when a row is no longer hovered', () => {
+      component.onRowHoverEnded();
+
+      expect(sectorMapServiceSpy.clearHighlightedSector).toHaveBeenCalled();
+    });
+
+    it('should clear the highlighted sector on destroy', () => {
+      component.ngOnDestroy();
+
+      expect(sectorMapServiceSpy.clearHighlightedSector).toHaveBeenCalled();
     });
   });
 });

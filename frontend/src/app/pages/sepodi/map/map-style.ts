@@ -1,4 +1,10 @@
-import { StyleSpecification } from 'maplibre-gl';
+import {
+  ExpressionSpecification,
+  GeoJSONSourceSpecification,
+  RasterSourceSpecification,
+  StyleSpecification,
+  SymbolLayerSpecification,
+} from 'maplibre-gl';
 import { environment } from '../../../../environments/environment';
 
 export const SERVICE_POINT_MIN_ZOOM = 12;
@@ -6,23 +12,87 @@ export const MAP_SOURCE_NAME = 'geodata';
 export const MAP_LAYER_NAME = 'service-points';
 export const MAP_TRAFFIC_POINT_LAYER_NAME = 'traffic_points';
 export const MAP_SECTOR_LAYER_NAME = 'sectors';
+
+const geoAdminRasterSource = (wmtsLayer: string): RasterSourceSpecification => ({
+  type: 'raster',
+  tiles: [`https://wmts.geo.admin.ch/1.0.0/${wmtsLayer}/default/current/3857/{z}/{x}/{y}.jpeg`],
+  tileSize: 256,
+  attribution: '&copy; OpenStreetMap Contributors',
+  bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
+});
+
+const ICON_SIZE: ExpressionSpecification = [
+  'interpolate',
+  ['linear'],
+  ['zoom'],
+  9,
+  0.2,
+  10,
+  0.4,
+  12,
+  0.6,
+  14,
+  0.8,
+  16,
+  1,
+];
+const INDICATOR_ICON_SIZE: ExpressionSpecification = [
+  'interpolate',
+  ['linear'],
+  ['zoom'],
+  9,
+  0.4,
+  10,
+  0.6,
+  12,
+  0.8,
+  14,
+  1,
+  16,
+  1.4,
+];
+
+const symbolLayer = (
+  id: string,
+  iconImage: string | ExpressionSpecification,
+  size: ExpressionSpecification
+): SymbolLayerSpecification => ({
+  id,
+  source: id,
+  type: 'symbol',
+  layout: {
+    'icon-allow-overlap': true,
+    'icon-image': iconImage,
+    'icon-size': size,
+  },
+});
+
+const EMPTY_GEO_JSON_FEATURE_SOURCE: GeoJSONSourceSpecification = {
+  type: 'geojson',
+  data: {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [0, 0],
+    },
+    properties: null,
+  },
+};
+
+const EMPTY_GEO_JSON_FEATURECOLLECTION_SOURCE: GeoJSONSourceSpecification = {
+  type: 'geojson',
+  data: {
+    type: 'FeatureCollection',
+    features: [],
+  },
+};
+
 export const MAP_STYLE_SPEC: StyleSpecification = {
   version: 8,
   sources: {
-    swisstopofarbe: {
-      type: 'raster',
-      tiles: ['https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap Contributors',
-      bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
-    },
-    swisstopograu: {
-      type: 'raster',
-      tiles: ['https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/3857/{z}/{x}/{y}.jpeg'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap Contributors',
-      bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
-    },
+    swisstopofarbe: geoAdminRasterSource('ch.swisstopo.pixelkarte-farbe'),
+    swisstopograu: geoAdminRasterSource('ch.swisstopo.pixelkarte-grau'),
+    satellite_swiss: geoAdminRasterSource('ch.swisstopo.swissimage-product'),
     osm: {
       type: 'raster',
       tiles: [
@@ -40,13 +110,6 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       tileSize: 256,
       attribution: 'Esri, Maxar, Earthstar Geographics, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community',
     },
-    satellite_swiss: {
-      type: 'raster',
-      tiles: ['https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage-product/default/current/3857/{z}/{x}/{y}.jpeg'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap Contributors',
-      bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
-    },
     geodata: {
       type: 'vector',
       minzoom: SERVICE_POINT_MIN_ZOOM,
@@ -55,61 +118,13 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       ],
       promoteId: 'number',
     },
-    current_coordinates: {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [0, 0],
-        },
-        properties: null,
-      },
-    },
-    traffic_points: {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [0, 0],
-        },
-        properties: null,
-      },
-    },
-    current_traffic_point: {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [0, 0],
-        },
-        properties: null,
-      },
-    },
-    sectors: {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [0, 0],
-        },
-        properties: null,
-      },
-    },
-    current_sector: {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [0, 0],
-        },
-        properties: null,
-      },
-    },
+    current_coordinates: EMPTY_GEO_JSON_FEATURE_SOURCE,
+    traffic_points: EMPTY_GEO_JSON_FEATURE_SOURCE,
+    current_traffic_point: EMPTY_GEO_JSON_FEATURE_SOURCE,
+    hovered_traffic_point: EMPTY_GEO_JSON_FEATURE_SOURCE,
+    sectors: EMPTY_GEO_JSON_FEATURE_SOURCE,
+    current_sector: EMPTY_GEO_JSON_FEATURE_SOURCE,
+    hovered_sector: EMPTY_GEO_JSON_FEATURECOLLECTION_SOURCE,
   },
   layers: [
     {
@@ -208,45 +223,11 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
         'circle-stroke-width': 3,
       },
     },
-    {
-      id: MAP_TRAFFIC_POINT_LAYER_NAME,
-      source: MAP_TRAFFIC_POINT_LAYER_NAME,
-      type: 'symbol',
-      layout: {
-        'icon-allow-overlap': true,
-        'icon-image': ['get', 'type'],
-        'icon-size': ['interpolate', ['linear'], ['zoom'], 9, 0.2, 10, 0.4, 12, 0.6, 14, 0.8, 16, 1],
-      },
-    },
-    {
-      id: 'current_traffic_point',
-      source: 'current_traffic_point',
-      type: 'symbol',
-      layout: {
-        'icon-allow-overlap': true,
-        'icon-image': 'SELECTED_TP_INDICATOR',
-        'icon-size': ['interpolate', ['linear'], ['zoom'], 9, 0.4, 10, 0.6, 12, 0.8, 14, 1, 16, 1.4],
-      },
-    },
-    {
-      id: MAP_SECTOR_LAYER_NAME,
-      source: MAP_SECTOR_LAYER_NAME,
-      type: 'symbol',
-      layout: {
-        'icon-allow-overlap': true,
-        'icon-image': 'SECTOR',
-        'icon-size': ['interpolate', ['linear'], ['zoom'], 9, 0.2, 10, 0.4, 12, 0.6, 14, 0.8, 16, 1],
-      },
-    },
-    {
-      id: 'current_sector',
-      source: 'current_sector',
-      type: 'symbol',
-      layout: {
-        'icon-allow-overlap': true,
-        'icon-image': 'SELECTED_SECTOR_INDICATOR',
-        'icon-size': ['interpolate', ['linear'], ['zoom'], 9, 0.4, 10, 0.6, 12, 0.8, 14, 1, 16, 1.4],
-      },
-    },
+    symbolLayer(MAP_TRAFFIC_POINT_LAYER_NAME, ['get', 'type'], ICON_SIZE),
+    symbolLayer('current_traffic_point', 'SELECTED_TP_INDICATOR', INDICATOR_ICON_SIZE),
+    symbolLayer('hovered_traffic_point', 'SELECTED_TP_INDICATOR', INDICATOR_ICON_SIZE),
+    symbolLayer(MAP_SECTOR_LAYER_NAME, 'SECTOR', ICON_SIZE),
+    symbolLayer('current_sector', 'SELECTED_SECTOR_INDICATOR', INDICATOR_ICON_SIZE),
+    symbolLayer('hovered_sector', 'SELECTED_SECTOR_INDICATOR', INDICATOR_ICON_SIZE),
   ],
 };

@@ -127,7 +127,7 @@ describe('TableComponent', () => {
     fixture.detectChanges();
     const tableCells = fixture.debugElement.queryAll(By.css('td .atlas-select'));
     expect(tableCells).toBeDefined();
-    expect(tableCells.length).toEqual(3);
+    expect(tableCells).toHaveLength(3);
     tableCells.forEach((value) => {
       expect(value.nativeElement.textContent.trim()).toEqual('FORM.DROPDOWN_PLACEHOLDER');
     });
@@ -199,5 +199,19 @@ describe('TableComponent', () => {
     component.toggleCheckBox(new MatCheckboxChange(), { prop: 'row' });
 
     expect(component.checkedBoxEvent.emit).toHaveBeenCalled();
+  });
+
+  it('should emit rowHovered and rowHoverEnded on mouse enter/leave', () => {
+    vi.spyOn(component.rowHovered, 'emit').mockImplementation(() => {});
+    vi.spyOn(component.rowHoverEnded, 'emit').mockImplementation(() => {});
+
+    fixture.detectChanges();
+    const firstRow = fixture.debugElement.query(By.css('.atlas-table-row'));
+
+    firstRow.triggerEventHandler('mouseenter', {});
+    expect(component.rowHovered.emit).toHaveBeenCalledWith(tableDataInput()[0]);
+
+    firstRow.triggerEventHandler('mouseleave', {});
+    expect(component.rowHoverEnded.emit).toHaveBeenCalledWith(tableDataInput()[0]);
   });
 });

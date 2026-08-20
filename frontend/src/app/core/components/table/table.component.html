@@ -139,6 +139,8 @@
     <tr
       (click)="edit(row)"
       (keydown.enter)="edit(row)"
+      (mouseenter)="rowHovered.emit(row)"
+      (mouseleave)="rowHoverEnded.emit(row)"
       *matRowDef="let row; columns: getColumnDefs()"
       class="atlas-table-row"
       mat-row

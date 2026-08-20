@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
@@ -12,6 +12,7 @@ import { TableComponent } from '../../../../core/components/table/table.componen
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
+import { TrafficPointMapService } from '../../map/traffic-point-map.service';
 
 @Component({
   selector: 'atlas-service-point-traffic-point-elements-table',
@@ -20,8 +21,9 @@ import { TrafficPointElementInternalService } from '../../../../api/service/sepo
   styleUrls: ['./traffic-point-elements-table.component.scss'],
   imports: [AtlasButtonComponent, NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, TranslatePipe],
 })
-export class TrafficPointElementsTableComponent implements OnInit {
+export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   private readonly trafficPointElementInternalService = inject(TrafficPointElementInternalService);
+  private readonly trafficPointMapService = inject(TrafficPointMapService);
   private readonly tableService = inject(TableService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -96,6 +98,20 @@ export class TrafficPointElementsTableComponent implements OnInit {
 
   editVersion($event: ReadTrafficPointElementVersion) {
     this.router.navigate([$event.sloid], { relativeTo: this.route }).then();
+  }
+
+  onRowHovered(row: ReadTrafficPointElementVersion) {
+    if (row.sloid) {
+      this.trafficPointMapService.highlightTrafficPointBySloid(row.sloid);
+    }
+  }
+
+  onRowHoverEnded() {
+    this.trafficPointMapService.clearHighlightedTrafficPoint();
+  }
+
+  ngOnDestroy(): void {
+    this.trafficPointMapService.clearHighlightedTrafficPoint();
   }
 
   get servicePointNumber() {

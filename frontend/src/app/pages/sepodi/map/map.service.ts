@@ -19,7 +19,7 @@ import {
 } from './map-style';
 import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX } from './map-options';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, filter, Subject, take, takeUntil } from 'rxjs';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { Pages } from '../../pages';
 import { MapIconsService } from './map-icons.service';
@@ -51,6 +51,9 @@ export class MapService {
 
   coordinateSelectionMode = false;
   clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
+
+  private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
+  private readonly cancelServicePointSelection$ = new Subject<void>();
 
   popup = new Popup({
     closeButton: true,
@@ -112,9 +115,26 @@ export class MapService {
   }
 
   deselectServicePoint() {
+    this.cancelServicePointSelection$.next();
     if (this.map) {
       this.displayCurrentCoordinates();
     }
+  }
+
+  selectServicePoint(coordinates?: CoordinatePair) {
+    this.mapInitialized
+      .pipe(
+        filter((initialized) => initialized),
+        take(1),
+        takeUntil(this.cancelServicePointSelection$)
+      )
+      .subscribe(() => {
+        if (this.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
+          this.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
+        }
+        this.centerOn(coordinates);
+        this.displayCurrentCoordinates(coordinates);
+      });
   }
 
   removeMap() {
