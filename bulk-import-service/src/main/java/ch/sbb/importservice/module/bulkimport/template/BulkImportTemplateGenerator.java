@@ -88,6 +88,15 @@ public class BulkImportTemplateGenerator {
 
     templateLookup.put(
         BulkImportConfig.builder()
+            .application(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.SECTOR_GROUP)
+            .importType(ImportType.CREATE)
+            .build(),
+        () -> SectorGroupTemplateGenerator.SECTOR_GROUP_CREATE_CSV_MODEL
+    );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
             .application(ApplicationType.PRM)
             .objectType(BusinessObjectType.PLATFORM_REDUCED)
             .importType(ImportType.UPDATE)

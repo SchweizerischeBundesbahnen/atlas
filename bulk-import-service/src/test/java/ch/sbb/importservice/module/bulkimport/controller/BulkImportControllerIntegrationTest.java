@@ -25,6 +25,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.module.bulkimport.client.LineBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.PlatformBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
+import ch.sbb.importservice.module.bulkimport.client.SectorGroupBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.SublineBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
@@ -66,6 +67,9 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @MockitoBean
   private SublineBulkImportClient sublineBulkImportClient;
+
+  @MockitoBean
+  private SectorGroupBulkImportClient sectorGroupBulkImportClient;
 
   @MockitoBean
   private AmazonService amazonService;
@@ -329,6 +333,38 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/update_subline.csv");
 
     verify(sublineBulkImportClient, atLeastOnce()).sublineUpdate(any());
+  }
+
+  @Test
+  void shouldImportSectorGroupCreate() throws IOException {
+    todaysDirectory = "e123456/" + DATE_FORMATTER_BASE.format(LocalDate.now())
+        + "/SEPODI/SECTOR_GROUP/CREATE";
+    File file = ImportFiles.getFileByPath("import-files/valid/sector-group-create.csv");
+
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "sector-group-create.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+        .applicationType(ApplicationType.SEPODI)
+        .objectType(BusinessObjectType.SECTOR_GROUP)
+        .importType(ImportType.CREATE)
+        .emails(List.of("test-cc@atlas.ch"))
+        .build();
+
+    when(sectorGroupBulkImportClient.bulkImportCreate(any())).thenReturn(
+        List.of(BulkImportItemExecutionResult.builder()
+            .lineNumber(2)
+            .build()));
+    bulkImportController.startBulkImport(bulkImportRequest, multipartFile);
+
+    List<BulkImport> bulkImports = bulkImportRepository.findAll();
+    assertThat(bulkImports).hasSize(1);
+
+    BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
+    assertThat(bulkImport.getId()).isNotNull();
+    assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/sector-group-create.csv");
+
+    verify(sectorGroupBulkImportClient, atLeastOnce()).bulkImportCreate(any());
   }
 
   @Test
