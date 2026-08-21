@@ -8,10 +8,14 @@ import ch.sbb.atlas.imports.model.PlatformCompleteUpdateCsvModel;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.create.SectorGroupCreateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.importservice.module.bulkimport.service.ImportFiles;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -34,6 +38,10 @@ class BulkImportCsvReaderTest {
 
   private static final String PLATFORM_COMPLETE_UPDATE_HEADER = """
       sloid;validFrom;validTo;boardingDevice;additionalInformation;shuttle;adviceAccessInfo;contrastingAreas;dynamicAudio;dynamicVisual;inclination;inclinationWidth;levelAccessWheelchair;superelevation
+      """;
+
+  private static final String SECTOR_GROUP_CREATE_HEADER = """
+      trafficPointSloid;validFrom;validTo;designation;length;sectorSloids
       """;
 
   @Test
@@ -226,6 +234,103 @@ class BulkImportCsvReaderTest {
     assertThat(result.hasDataValidationErrors()).isFalse();
     assertThat(result.getAttributesToNull()).hasSize(3)
         .containsExactlyInAnyOrder("height", "meansOfTransport", "businessOrganisation");
+  }
+
+  @Test
+  void shouldDeserializePipedEnumSets() throws IOException {
+    String csvLine = """
+        ch:1:sloid:7000;;01.04.2021;31.12.2099;Bern;;;true;;;BUS|TRAIN|BOAT;POINT_OF_SALE|GALLERY;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;540.0
+        """;
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        ServicePointUpdateCsvModel.class, SERVICE_POINT_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.hasDataValidationErrors()).isFalse();
+    assertThat(result.getObject().getMeansOfTransport())
+        .containsExactlyInAnyOrder(MeanOfTransport.BUS, MeanOfTransport.TRAIN, MeanOfTransport.BOAT);
+    assertThat(result.getObject().getCategories())
+        .containsExactlyInAnyOrder(Category.POINT_OF_SALE, Category.GALLERY);
+  }
+
+  @Test
+  void shouldDeserializeSingleEnumWithoutPipeSeparator() throws IOException {
+    String csvLine = """
+        ch:1:sloid:7000;;01.04.2021;31.12.2099;Bern;;;true;;;BUS;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;540.0
+        """;
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        ServicePointUpdateCsvModel.class, SERVICE_POINT_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.hasDataValidationErrors()).isFalse();
+    assertThat(result.getObject().getMeansOfTransport()).containsExactly(MeanOfTransport.BUS);
+    assertThat(result.getObject().getCategories()).isNull();
+  }
+
+  @Test
+  void shouldReportOnlyInvalidValuesOfPipedEnumSet() throws IOException {
+    String csvLine = """
+        ch:1:sloid:7000;;01.04.2021;31.12.2099;Bern;;;true;;;BUS|TRAINS|BOAT;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;540.0
+        """;
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        ServicePointUpdateCsvModel.class, SERVICE_POINT_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.hasDataValidationErrors()).isTrue();
+    assertThat(result.getBulkImportLogEntry().getErrors()).hasSize(1);
+    assertThat(result.getBulkImportLogEntry().getErrors().getFirst().getErrorMessage())
+        .isEqualTo("Expected ENUM but got TRAINS in column meansOfTransport");
+  }
+
+  @Test
+  void shouldDeserializePipedStringSetKeepingTheCsvOrder() throws IOException {
+    String csvLine = """
+        ch:1:sloid:3:0:3;01.01.2026;31.12.2026;AB;35.0;ch:1:sloid:3:0:3:2|ch:1:sloid:3:0:3:1|ch:1:sloid:3:0:3:3
+        """;
+    BulkImportUpdateContainer<SectorGroupCreateCsvModel> result = BulkImportCsvReader.readObject(
+        SectorGroupCreateCsvModel.class, SECTOR_GROUP_CREATE_HEADER, csvLine, 1);
+
+    assertThat(result.hasDataValidationErrors()).isFalse();
+    assertThat(result.getObject().getSectorSloids()).containsExactly("ch:1:sloid:3:0:3:2",
+        "ch:1:sloid:3:0:3:1", "ch:1:sloid:3:0:3:3");
+  }
+
+  @Test
+  void shouldDeserializeSingleStringWithoutPipeSeparator() throws IOException {
+    String csvLine = """
+        ch:1:sloid:3:0:3;01.01.2026;31.12.2026;AB;35.0;ch:1:sloid:3:0:3:1
+        """;
+    BulkImportUpdateContainer<SectorGroupCreateCsvModel> result = BulkImportCsvReader.readObject(
+        SectorGroupCreateCsvModel.class, SECTOR_GROUP_CREATE_HEADER, csvLine, 1);
+
+    assertThat(result.getObject().getSectorSloids()).containsExactly("ch:1:sloid:3:0:3:1");
+  }
+
+  @Test
+  void shouldDeserializeEmptyStringSetColumnAsNull() throws IOException {
+    String csvLine = """
+        ch:1:sloid:3:0:3;01.01.2026;31.12.2026;AB;35.0;
+        """;
+    BulkImportUpdateContainer<SectorGroupCreateCsvModel> result = BulkImportCsvReader.readObject(
+        SectorGroupCreateCsvModel.class, SECTOR_GROUP_CREATE_HEADER, csvLine, 1);
+
+    assertThat(result.getObject().getSectorSloids()).isNull();
+  }
+
+  @Test
+  void shouldReadSectorGroupCreateCsvCorrectlyWithPipedStringSet() {
+    File file = ImportFiles.getFileByPath("import-files/valid/sector-group-create.csv");
+
+    List<BulkImportUpdateContainer<SectorGroupCreateCsvModel>> sectorGroups =
+        BulkImportCsvReader.readLinesFromFileWithNullingValue(file, SectorGroupCreateCsvModel.class);
+
+    assertThat(sectorGroups).hasSize(1);
+
+    SectorGroupCreateCsvModel actual = sectorGroups.getFirst().getObject();
+    assertThat(actual.getTrafficPointSloid()).isEqualTo("ch:1:sloid:3:0:3");
+    assertThat(actual.getValidFrom()).isEqualTo(LocalDate.of(2026, 1, 1));
+    assertThat(actual.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
+    assertThat(actual.getDesignation()).isEqualTo("AB");
+    assertThat(actual.getLength()).isEqualTo(35.0);
+    assertThat(actual.getSectorSloids())
+        .containsExactly("ch:1:sloid:3:0:3:1", "ch:1:sloid:3:0:3:2");
+    assertThat(actual.validate()).isEmpty();
   }
 
 }

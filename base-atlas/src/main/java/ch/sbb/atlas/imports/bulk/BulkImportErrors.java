@@ -37,6 +37,16 @@ public class BulkImportErrors {
             .build()).build();
   }
 
+  public static BulkImportError minSize(String field, int minSize) {
+    return BulkImportError.builder()
+        .errorMessage("Field " + field + " must contain at least " + minSize + " entries")
+        .displayInfo(DisplayInfo.builder()
+            .code("BULK_IMPORT.VALIDATION.FIELD_MIN_SIZE")
+            .with(FIELD, field)
+            .with("minSize", String.valueOf(minSize))
+            .build()).build();
+  }
+
   public static BulkImportError isUicCountryCodeValid(String field) {
     return BulkImportError.builder()
         .errorMessage("The uicCountryCode is not valid.")

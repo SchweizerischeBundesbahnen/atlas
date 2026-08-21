@@ -31,6 +31,7 @@ public class Translation {
       Map.entry(BusinessObjectType.TRAFFIC_POINT, new Values("Haltekante", "bordure d'arrêt", "bordo di fermata")),
       Map.entry(BusinessObjectType.LOADING_POINT, new Values("Ladestelle", "places de chargement", "posti di carico")),
       Map.entry(BusinessObjectType.SECTOR, new Values("Sektor", "secteur", "settore")),
+      Map.entry(BusinessObjectType.SECTOR_GROUP, new Values("Sektorengruppe", "groupe de secteurs", "gruppo di settori")),
       Map.entry(BusinessObjectType.STOP_POINT, new Values("Haltestelle", "l'arrêt", "fermata")),
       Map.entry(BusinessObjectType.CONTACT_POINT, new Values("Schalter", "guichet", "sportello")),
       Map.entry(BusinessObjectType.PARKING_LOT, new Values("Parkplatz", "places de stationnement", "parcheggio")),
