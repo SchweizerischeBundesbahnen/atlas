@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.servicepoint;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.SectorUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.SectorCreateCsvModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -21,5 +22,12 @@ public interface SectorBulkImportApi {
   @PostMapping(value = BASEPATH + "/create")
   List<BulkImportItemExecutionResult> bulkImportCreate(
       @RequestBody List<BulkImportUpdateContainer<SectorCreateCsvModel>> bulkImportCreateContainers);
+
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  @PostMapping(value = BASEPATH + "/update")
+  List<BulkImportItemExecutionResult> bulkImportUpdate(
+      @RequestBody List<BulkImportUpdateContainer<SectorUpdateCsvModel>> bulkImportUpdateContainers);
 
 }

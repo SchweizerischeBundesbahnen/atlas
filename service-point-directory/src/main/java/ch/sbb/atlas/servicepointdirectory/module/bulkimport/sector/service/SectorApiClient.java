@@ -15,4 +15,8 @@ public class SectorApiClient {
     sectorApiV1.createSectorVersion(createSectorVersionModel);
   }
 
+  public void updateSectorVersion(Long currentVersionId, CreateSectorVersionModel updateSectorVersionModel) {
+    sectorApiV1.updateSectorVersion(currentVersionId, updateSectorVersionModel);
+  }
+
 }
