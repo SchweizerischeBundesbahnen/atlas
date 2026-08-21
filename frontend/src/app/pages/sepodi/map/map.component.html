@@ -1,22 +1,6 @@
 <div class="map-wrapper d-flex position-relative">
   <div class="map" #map data-cy="sepodi-map"></div>
 
-  <button
-    mat-icon-button
-    class="map-bo-filter-button"
-    [ngClass]="{ active: boFilterActive() }"
-    [title]="boFilterLabel() | translate: { count: boFilterCount() }"
-    [attr.aria-label]="boFilterLabel() | translate: { count: boFilterCount() }"
-    [attr.aria-pressed]="boFilterActive()"
-    data-cy="sepodi-map-bo-filter"
-    (click)="openBoFilterDialog()"
-  >
-    <em class="bi" [ngClass]="boFilterActive() ? 'bi-funnel-fill' : 'bi-funnel'" data-cy="bo-filter-icon"></em>
-    @if (boFilterActive()) {
-      <span class="bo-filter-count font-regular-xs" data-cy="bo-filter-count">{{ boFilterCount() }}</span>
-    }
-  </button>
-
   @if (!servicePointsShown) {
     <div
       class="zoom-hint-container font-regular-xl p-3"
@@ -27,52 +11,82 @@
       <i class="bi bi-zoom-in"></i>
     </div>
   }
-  <button mat-icon-button class="map-style-selector" (click)="toggleStyleSelection()">
-    <em class="bi bi-stack"></em>
-  </button>
-  @if (showMapStyleSelection) {
-    <div class="map-styles map-popup-menu">
-      <div class="popup-content d-flex flex-column">
-        @for (style of availableMapStyles; track style) {
-          <button
-            [ngClass]="{ current: style === currentMapStyle }"
-            class="style-switch-button mb-1"
-            (click)="switchToStyle(style)"
-          >
-            {{ style.label | translate }}
-          </button>
-        }
-      </div>
-    </div>
-  }
-  <button mat-icon-button class="map-legend-button" (click)="toggleLegend()">
-    <em class="bi bi-geo-alt-fill"></em>
-  </button>
-  @if (showMapLegend) {
-    <div class="map-legend map-popup-menu">
-      <div class="popup-content">
-        @for (row of legend; track row) {
-          <div class="legend-row d-flex flex-row align-items-center">
-            <div class="image d-flex pe-2">
-              <img [src]="row.icon.src" height="10px" width="10px" [alt]="'SEPODI.MAP_LEGEND.' + row.id | translate" />
-            </div>
-            <div class="text d-flex">
-              {{ 'SEPODI.MAP_LEGEND.' + row.id | translate }}
-            </div>
+
+  <div class="map-controls d-flex flex-column align-items-end gap-3">
+    <button
+      mat-icon-button
+      class="map-control-button map-bo-filter-button"
+      [ngClass]="{ active: boFilterActive() }"
+      [title]="boFilterLabel() | translate: { count: boFilterCount() }"
+      [attr.aria-label]="boFilterLabel() | translate: { count: boFilterCount() }"
+      [attr.aria-pressed]="boFilterActive()"
+      data-cy="sepodi-map-bo-filter"
+      (click)="openBoFilterDialog()"
+    >
+      <em class="bi" [ngClass]="boFilterActive() ? 'bi-funnel-fill' : 'bi-funnel'" data-cy="bo-filter-icon"></em>
+      @if (boFilterActive()) {
+        <span class="bo-filter-count font-regular-xs" data-cy="bo-filter-count">{{ boFilterCount() }}</span>
+      }
+    </button>
+
+    <button mat-icon-button class="map-control-button zoom-in" (click)="zoomIn()">
+      <em class="bi bi-plus"></em>
+    </button>
+
+    <button mat-icon-button class="map-control-button zoom-out" (click)="zoomOut()">
+      <em class="bi bi-dash"></em>
+    </button>
+
+    <div class="map-control">
+      <button mat-icon-button class="map-control-button map-style-selector" (click)="toggleStyleSelection()">
+        <em class="bi bi-stack"></em>
+      </button>
+      @if (showMapStyleSelection) {
+        <div class="map-styles map-popup-menu">
+          <div class="popup-content d-flex flex-column">
+            @for (style of availableMapStyles; track style) {
+              <button
+                [ngClass]="{ current: style === currentMapStyle }"
+                class="style-switch-button mb-1"
+                (click)="switchToStyle(style)"
+              >
+                {{ style.label | translate }}
+              </button>
+            }
           </div>
-        }
-      </div>
+        </div>
+      }
     </div>
-  }
-  <button mat-icon-button class="map-style-selector zoom-in" (click)="zoomIn()">
-    <em class="bi bi-plus"></em>
-  </button>
 
-  <button mat-icon-button class="map-style-selector zoom-out" (click)="zoomOut()">
-    <em class="bi bi-dash"></em>
-  </button>
+    <div class="map-control">
+      <button mat-icon-button class="map-control-button map-legend-button" (click)="toggleLegend()">
+        <em class="bi bi-geo-alt-fill"></em>
+      </button>
+      @if (showMapLegend) {
+        <div class="map-legend map-popup-menu">
+          <div class="popup-content">
+            @for (row of legend; track row) {
+              <div class="legend-row d-flex flex-row align-items-center">
+                <div class="image d-flex pe-2">
+                  <img
+                    [src]="row.icon.src"
+                    height="10px"
+                    width="10px"
+                    [alt]="'SEPODI.MAP_LEGEND.' + row.id | translate"
+                  />
+                </div>
+                <div class="text d-flex">
+                  {{ 'SEPODI.MAP_LEGEND.' + row.id | translate }}
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
 
-  <button mat-icon-button class="map-style-selector zoom-home" (click)="goHome()">
-    <em class="bi bi-house-door"></em>
-  </button>
+    <button mat-icon-button class="map-control-button zoom-home" (click)="goHome()">
+      <em class="bi bi-house-door"></em>
+    </button>
+  </div>
 </div>

@@ -2,6 +2,10 @@
 
 $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
 
+$map-controls-offset: 15px;
+$map-controls-bottom-offset: 45px;
+$map-control-popup-gap: 25px;
+
 .map-wrapper {
   width: 100%;
   height: 100%;
@@ -11,30 +15,67 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
     width: 100%;
   }
 
-  .map-style-selector {
-    background: white;
+  .map-controls {
     position: absolute;
-    bottom: 155px;
-    right: 15px;
+    right: $map-controls-offset;
+    bottom: $map-controls-bottom-offset;
   }
 
-  .zoom-in {
-    bottom: 265px;
+  .map-control {
+    position: relative;
+    display: flex;
   }
 
-  .zoom-out {
-    bottom: 210px;
+  .map-control-button {
+    background: white;
   }
 
-  .zoom-home {
-    bottom: 45px;
+  .map-popup-menu {
+    position: absolute;
+    right: 100%;
+    bottom: 0;
+    margin-right: $map-control-popup-gap;
+
+    -webkit-box-shadow: $map-overlay-element-shadow;
+    box-shadow: $map-overlay-element-shadow;
+    border-radius: variables.$border-radius-small;
+
+    .popup-content {
+      background-color: white;
+      position: relative;
+      z-index: 999;
+      border-radius: variables.$border-radius-small;
+
+      padding: 10px;
+      text-wrap-mode: nowrap;
+    }
+
+    &:after {
+      content: '';
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-shadow: $map-overlay-element-shadow;
+      border-radius: variables.$border-radius-small;
+    }
+
+    &:before {
+      content: '';
+      width: 20px;
+      height: 20px;
+      transform: rotate(45deg);
+      box-shadow: $map-overlay-element-shadow;
+      background: #fff;
+      position: absolute;
+      z-index: 998;
+      right: -10px;
+      bottom: 10px;
+    }
   }
 
   .map-styles {
-    position: absolute;
-    bottom: 155px;
-    right: 80px;
-
     button {
       border-radius: variables.$border-radius;
       border: unset;
@@ -49,19 +90,7 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
     }
   }
 
-  .map-legend-button {
-    background: white;
-    position: absolute;
-    bottom: 100px;
-    right: 15px;
-  }
-
   .map-bo-filter-button {
-    background: white;
-    position: absolute;
-    bottom: 320px;
-    right: 15px;
-
     &.active {
       color: variables.$primary-500;
     }
@@ -81,12 +110,6 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
     }
   }
 
-  .map-legend {
-    position: absolute;
-    bottom: 100px;
-    right: 80px;
-  }
-
   .zoom-hint-container {
     position: absolute;
     left: 50%;
@@ -98,43 +121,5 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
     background-color: white;
     border-radius: variables.$border-radius-small;
     box-shadow: $map-overlay-element-shadow;
-  }
-
-  .map-popup-menu {
-    -webkit-box-shadow: $map-overlay-element-shadow;
-    box-shadow: $map-overlay-element-shadow;
-    border-radius: variables.$border-radius-small;
-
-    .popup-content {
-      background-color: white;
-      position: relative;
-      z-index: 999;
-      border-radius: variables.$border-radius-small;
-
-      padding: 10px;
-    }
-
-    &:after {
-      content: '';
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      box-shadow: $map-overlay-element-shadow;
-      border-radius: variables.$border-radius-small;
-    }
-    &:before {
-      content: '';
-      width: 20px;
-      height: 20px;
-      transform: rotate(45deg);
-      box-shadow: $map-overlay-element-shadow;
-      background: #fff;
-      position: absolute;
-      z-index: 998;
-      right: -10px;
-      bottom: 10px;
-    }
   }
 }
