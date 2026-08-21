@@ -13,14 +13,20 @@ import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.GeoTestData;
+import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeoData;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.mapper.ServicePointGeoDataMapper;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.repository.ServicePointGeolocationRepository;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.transformer.BoundingBoxTransformer;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.transformer.GeometryTransformer;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Point;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -178,5 +184,34 @@ class ServicePointGeoDataServiceTest {
     assertThat(result).isEqualTo(expectedResponse);
     assertThat(result.getHeight()).isEqualTo(1201.0);
     verify(locationGeoClient).getHeight(coordinatePair);
+  }
+
+  @Test
+  void shouldEncodeSboidIntoVectorTileForServicePointGeoData() {
+    // given
+    ServicePointGeoData geoData = GeoTestData.testGeoDataWgs84Web();
+    ServicePointGeoDataMapper realMapper = new ServicePointGeoDataMapper();
+    VectorTileService realVectorTileService = new VectorTileService();
+    Point point = realMapper.mapGeoDataToWgs84WebGeometry(geoData);
+
+    // when
+    Tile tile = realVectorTileService.encodeTileLayer("service-points", List.of(point), new Envelope(0D, 1D, 0D, 1D));
+
+    // then
+    Tile.Layer layer = tile.getLayers(0);
+    int sboidKeyIndex = layer.getKeysList().indexOf("sboid");
+    assertThat(sboidKeyIndex).isNotEqualTo(-1);
+
+    Tile.Feature feature = layer.getFeatures(0);
+    List<Integer> tags = feature.getTagsList();
+    int valueIndex = -1;
+    for (int i = 0; i < tags.size(); i += 2) {
+      if (tags.get(i) == sboidKeyIndex) {
+        valueIndex = tags.get(i + 1);
+        break;
+      }
+    }
+    assertThat(valueIndex).isNotEqualTo(-1);
+    assertThat(layer.getValues(valueIndex).getStringValue()).isEqualTo(geoData.getBusinessOrganisation());
   }
 }

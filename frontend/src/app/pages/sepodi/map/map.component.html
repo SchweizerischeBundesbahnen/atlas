@@ -1,5 +1,22 @@
 <div class="map-wrapper d-flex position-relative">
   <div class="map" #map data-cy="sepodi-map"></div>
+
+  <button
+    mat-icon-button
+    class="map-bo-filter-button"
+    [ngClass]="{ active: boFilterActive() }"
+    [title]="boFilterLabel() | translate: { count: boFilterCount() }"
+    [attr.aria-label]="boFilterLabel() | translate: { count: boFilterCount() }"
+    [attr.aria-pressed]="boFilterActive()"
+    data-cy="sepodi-map-bo-filter"
+    (click)="openBoFilterDialog()"
+  >
+    <em class="bi" [ngClass]="boFilterActive() ? 'bi-funnel-fill' : 'bi-funnel'" data-cy="bo-filter-icon"></em>
+    @if (boFilterActive()) {
+      <span class="bo-filter-count font-regular-xs" data-cy="bo-filter-count">{{ boFilterCount() }}</span>
+    }
+  </button>
+
   @if (!servicePointsShown) {
     <div
       class="zoom-hint-container font-regular-xl p-3"

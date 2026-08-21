@@ -1,0 +1,32 @@
+@use 'src/styles/variables' as variables;
+
+.dialog-title {
+  text-align: center;
+}
+
+.selected-bo {
+  border-bottom: 1px solid variables.$gray-100;
+  padding: 0.25rem 0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.remove-bo-button {
+  color: variables.$gray-700;
+
+  &:hover {
+    color: variables.$errorColor;
+  }
+}
+
+.no-selection {
+  color: variables.$gray-600;
+}
+
+mat-dialog-actions {
+  box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: variables.$border-radius;
+  border-bottom-right-radius: variables.$border-radius;
+}

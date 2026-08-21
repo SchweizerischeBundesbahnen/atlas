@@ -1,0 +1,47 @@
+<atlas-dialog-close (clicked)="cancel()" />
+<atlas-dialog-content>
+  <div class="mb-4 dialog-title">
+    <span class="font-bold-4xl">{{ 'SEPODI.MAP_BO_FILTER.TITLE' | translate }}</span>
+  </div>
+  <div class="col-12 px-5 pb-3">
+    <atlas-bo-select
+      (boSelectionChanged)="boSelectionChanged($event)"
+      [field]="searchForm.businessOrganisation"
+      [formModus]="false"
+      valueExtraction=""
+      data-cy="map-bo-filter-select"
+    />
+
+    <div class="selected-bos mt-3">
+      @for (row of selectionRows(); track row.businessOrganisation.sboid) {
+        <div class="selected-bo d-flex align-items-center justify-content-between" data-cy="map-bo-filter-selected">
+          <span class="text-truncate">{{ row.name }} - {{ row.abbreviation }} - {{ row.organisationNumber }}</span>
+          <button
+            mat-icon-button
+            type="button"
+            class="remove-bo-button"
+            (click)="removeBusinessOrganisation(row.businessOrganisation)"
+            [attr.aria-label]="'SEPODI.MAP_BO_FILTER.REMOVE' | translate"
+            [title]="'SEPODI.MAP_BO_FILTER.REMOVE' | translate"
+            data-cy="map-bo-filter-remove"
+          >
+            <em class="bi bi-x-circle-fill"></em>
+          </button>
+        </div>
+      } @empty {
+        <span class="no-selection font-regular-lg">{{ 'SEPODI.MAP_BO_FILTER.NO_SELECTION' | translate }}</span>
+      }
+    </div>
+  </div>
+</atlas-dialog-content>
+<atlas-dialog-footer>
+  <button (click)="reset()" class="atlas-primary-btn me-3" data-cy="map-bo-filter-reset">
+    {{ 'SEPODI.MAP_BO_FILTER.RESET' | translate }}
+  </button>
+  <button (click)="cancel()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
+    {{ 'COMMON.CANCEL' | translate }}
+  </button>
+  <button (click)="apply()" class="atlas-primary-btn primary-color-btn" data-cy="dialog-confirm-button">
+    {{ 'COMMON.APPLY' | translate }}
+  </button>
+</atlas-dialog-footer>

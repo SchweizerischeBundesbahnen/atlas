@@ -56,6 +56,31 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
     right: 15px;
   }
 
+  .map-bo-filter-button {
+    background: white;
+    position: absolute;
+    bottom: 320px;
+    right: 15px;
+
+    &.active {
+      color: variables.$primary-500;
+    }
+
+    .bo-filter-count {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      min-width: 14px;
+      height: 14px;
+      padding: 0 3px;
+      border-radius: 7px;
+      background: variables.$primary-500;
+      color: white;
+      line-height: 14px;
+      text-align: center;
+    }
+  }
+
   .map-legend {
     position: absolute;
     bottom: 100px;

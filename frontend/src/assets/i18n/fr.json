@@ -1548,6 +1548,14 @@
       "SECTOR": "Secteur",
       "ON_DEMAND": "On Demand"
     },
+    "MAP_BO_FILTER": {
+      "TITLE": "Filtrer par organisation d'affaires",
+      "TOOLTIP": "Filtrer par organisation d'affaires",
+      "TOOLTIP_ACTIVE": "Filtré par {{count}} organisation(s) d'affaires – cliquer pour modifier",
+      "NO_SELECTION": "Aucune organisation d'affaires sélectionnée.",
+      "REMOVE": "Supprimer l'organisation d'affaires",
+      "RESET": "Réinitialiser"
+    },
     "BACK_TO_MAP": "Fermer",
     "ZOOM_IN_HINT": "Pour afficher les services, zoomez plus près.",
     "AUTOMATIC_SLOID": "Elle est indiquée automatiquement.",

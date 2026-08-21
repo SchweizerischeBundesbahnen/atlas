@@ -1548,6 +1548,14 @@
       "SECTOR": "Settore",
       "ON_DEMAND": "On Demand"
     },
+    "MAP_BO_FILTER": {
+      "TITLE": "Filtra per organizzazione aziendale",
+      "TOOLTIP": "Filtra per organizzazione aziendale",
+      "TOOLTIP_ACTIVE": "Filtrato per {{count}} organizzazione/i aziendale/i – clicca per modificare",
+      "NO_SELECTION": "Nessuna organizzazione aziendale selezionata.",
+      "REMOVE": "Rimuovi l'organizzazione aziendale",
+      "RESET": "Ripristina"
+    },
     "BACK_TO_MAP": "Chiudere",
     "ZOOM_IN_HINT": "Ingrandire l'immagine per visualizzare i posti di servizi.",
     "AUTOMATIC_SLOID": "viene assegnato automaticamente.",

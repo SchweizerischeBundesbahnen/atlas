@@ -44,6 +44,15 @@ class ServicePointGeoDataMapperTest {
   }
 
   @Test
+  void shouldMapSboidFromBusinessOrganisationIntoUserData() {
+    final ServicePointGeoData geoData = testGeoDataWgs84Web();
+    final Point point = servicePointGeoDataMapper.mapGeoDataToWgs84WebGeometry(geoData);
+
+    final Map<String, Object> userData = (Map<String, Object>) point.getUserData();
+    assertThat(userData).containsEntry("sboid", "ch:1:sboid:100626");
+  }
+
+  @Test
   void mapToGeometryList() {
     final ServicePointGeoData geoData = testGeoDataWgs84Web();
     final List<Point> points = servicePointGeoDataMapper.mapToWgs84WebGeometry(List.of(geoData));

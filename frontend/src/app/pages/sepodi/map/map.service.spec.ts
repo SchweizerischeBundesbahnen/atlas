@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { GeoJSONSource, Map, MapGeoJSONFeature, MapMouseEvent, Marker } from 'maplibre-gl';
-import { SpatialReference } from '../../../api';
+import { BusinessOrganisation, SpatialReference } from '../../../api';
 import { MAP_STYLES } from './map-options';
 import { Router } from '@angular/router';
 import { mock, mockDeep } from 'vitest-mock-extended';
@@ -409,5 +409,132 @@ describe('MapService', () => {
       'sectors',
       'ch:1:sloid:7000:0:2:1',
     ]);
+  });
+
+  describe('business organisation filter', () => {
+    const sbb = {
+      sboid: 'ch:1:sboid:100001',
+      descriptionDe: 'Schweizerische Bundesbahnen',
+      abbreviationDe: 'SBB',
+      organisationNumber: 1,
+    } as BusinessOrganisation;
+    const bls = {
+      sboid: 'ch:1:sboid:100002',
+      descriptionDe: 'BLS AG',
+      abbreviationDe: 'BLS',
+      organisationNumber: 2,
+    } as BusinessOrganisation;
+
+    beforeEach(() => {
+      mapMock.setFilter.mockClear();
+      service.map = mapMock;
+    });
+
+    it('should set the sboid filter on the geodata layer for a non empty selection', () => {
+      // When
+      service.applyBoFilter([sbb, bls]);
+
+      // Then
+      expect(mapMock.setFilter).toHaveBeenCalledWith('geodata', [
+        'in',
+        ['get', 'sboid'],
+        ['literal', ['ch:1:sboid:100001', 'ch:1:sboid:100002']],
+      ]);
+    });
+
+    it('should remove the filter from the geodata layer for an empty selection', () => {
+      // Given
+      service.applyBoFilter([sbb]);
+      mapMock.setFilter.mockClear();
+
+      // When
+      service.applyBoFilter([]);
+
+      // Then
+      expect(mapMock.setFilter).toHaveBeenCalledWith('geodata', null);
+    });
+
+    it('should mark the bo filter as active for a non empty selection', () => {
+      // When
+      service.applyBoFilter([sbb]);
+
+      // Then
+      expect(service.boFilterActive()).toBe(true);
+    });
+
+    it('should mark the bo filter as inactive for an empty selection', () => {
+      // Given
+      service.applyBoFilter([sbb]);
+
+      // When
+      service.applyBoFilter([]);
+
+      // Then
+      expect(service.boFilterActive()).toBe(false);
+    });
+
+    it('should not be active initially', () => {
+      expect(service.boFilterActive()).toBe(false);
+      expect(service.boFilter()).toEqual([]);
+    });
+
+    it('should expose the currently applied business organisations', () => {
+      // When
+      service.applyBoFilter([sbb, bls]);
+
+      // Then
+      expect(service.boFilter()).toEqual([sbb, bls]);
+    });
+
+    it('should not keep a reference to the applied selection array', () => {
+      // Given
+      const selection = [sbb];
+
+      // When
+      service.applyBoFilter(selection);
+      selection.push(bls);
+
+      // Then
+      expect(service.boFilter()).toEqual([sbb]);
+    });
+
+    it('should ignore business organisations without sboid', () => {
+      // When
+      service.applyBoFilter([sbb, { descriptionDe: 'Unknown' } as BusinessOrganisation]);
+
+      // Then
+      expect(mapMock.setFilter).toHaveBeenCalledWith('geodata', [
+        'in',
+        ['get', 'sboid'],
+        ['literal', ['ch:1:sboid:100001']],
+      ]);
+    });
+
+    it('should reset the bo filter when the map is removed', () => {
+      // Given
+      service.applyBoFilter([sbb]);
+
+      // When
+      service.removeMap();
+
+      // Then
+      expect(service.boFilter()).toEqual([]);
+      expect(service.boFilterActive()).toBe(false);
+    });
+
+    it('should not leak the bo filter into a newly created map', () => {
+      // Given
+      vi.spyOn(service, 'createMap').mockReturnValue(mapMock);
+      vi.spyOn(service, 'deselectServicePoint').mockImplementation(() => {});
+      service.applyBoFilter([sbb]);
+      service.removeMap();
+      mapMock.setFilter.mockClear();
+
+      // When
+      service.initMap(document.createElement('div'));
+
+      // Then
+      expect(mapMock.setFilter).not.toHaveBeenCalled();
+    });
   });
 });
