@@ -9,6 +9,7 @@ springCloudDependenciesVersion = "2025.1.2"
 # Java Convention Dependencies
 openapi-starter-common = { group = "org.springdoc", name = "springdoc-openapi-starter-common", version = "3.1.0" }
 springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.0" }
+spring-cloud-dependencies = { group = "org.springframework.cloud", name = "spring-cloud-dependencies", version.ref = "springCloudDependenciesVersion" }
 
 # Geo Data Libs
 proj4j = { group = "org.locationtech.proj4j", name = "proj4j", version.ref = "proj4jVersion" }
