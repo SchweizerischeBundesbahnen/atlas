@@ -2,7 +2,7 @@
 okhttpVersion = "5.5.0"
 proj4jVersion = "1.4.3"
 shedlockVersion = "7.9.0"
-protobufVersion = "4.35.1"
+protobufVersion = "4.36.0"
 springCloudDependenciesVersion = "2025.1.2"
 
 [libraries]
@@ -29,20 +29,20 @@ protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version
 
 # Other
 swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.54" }
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.54.0" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.54.2" }
 jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.8" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.5.1" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
 tika-core = { group = "org.apache.tika", name = "tika-core", version = "3.3.2" }
-greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version = "2.1.12" }
+greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version = "2.1.13" }
 microsoft-graph = { group = "com.microsoft.graph", name = "microsoft-graph", version = "6.67.0" }
 azure-identity = { group = "com.azure", name = "azure-identity", version = "1.18.4" }
 
 # Gradle Plugin Dependencies
 asciidoctor-gradle-plugin = { group = "org.asciidoctor.jvm.convert", name = "org.asciidoctor.jvm.convert.gradle.plugin", version = "4.0.5" }
 spring-dependency-management-gradle-plugin = { group = "io.spring.dependency-management", name = "io.spring.dependency-management.gradle.plugin", version = "1.1.7" }
-spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "4.1.0" }
+spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "4.1.1" }
 
 
 [bundles]
