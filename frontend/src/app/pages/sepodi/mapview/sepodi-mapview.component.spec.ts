@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
 import { SepodiMapviewComponent } from './sepodi-mapview.component';
 import { AuthService } from '../../../core/auth/auth.service';
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { ServicePointSearchType } from '../../../core/search-service-point/service-point-search';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -13,6 +13,8 @@ import { MapService } from '../map/map.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { GeoJsonProperties } from 'geojson';
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { MapComponent } from '../map/map.component';
+import { SearchServicePointPanelComponent } from '../../../core/search-service-point-panel/search-service-point-panel.component';
 
 @Component({
   selector: 'atlas-map',
@@ -24,10 +26,11 @@ export class MockAtlasMapComponent {
 
 @Component({
   selector: 'atlas-search-service-point-panel',
-  template: '<h1>SearchServicePointMockComponent</h1>',
+  template: '<h1>SearchServicePointMockComponent</h1><ng-content />',
 })
 class SearchServicePointMockComponent {
   readonly searchType = input.required<ServicePointSearchType>();
+  readonly toggleEvent = output<void>();
 }
 
 describe('SepodiMapviewComponent', () => {
@@ -71,6 +74,11 @@ describe('SepodiMapviewComponent', () => {
         provideHttpClientTesting(),
         { provide: TranslatePipe },
       ],
+    });
+
+    TestBed.overrideComponent(SepodiMapviewComponent, {
+      remove: { imports: [MapComponent, SearchServicePointPanelComponent] },
+      add: { imports: [MockAtlasMapComponent, SearchServicePointMockComponent] },
     });
 
     fixture = TestBed.createComponent(SepodiMapviewComponent);

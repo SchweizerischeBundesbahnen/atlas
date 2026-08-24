@@ -29,6 +29,7 @@ public class ServicePointGeoDataMapper {
     properties.put("number", geolocation.getNumber());
     properties.put("type", geolocation.getServicePointType());
     properties.put("designationOfficial", geolocation.getDesignationOfficial());
+    properties.put("sboid", geolocation.getBusinessOrganisation());
 
     return properties;
   }

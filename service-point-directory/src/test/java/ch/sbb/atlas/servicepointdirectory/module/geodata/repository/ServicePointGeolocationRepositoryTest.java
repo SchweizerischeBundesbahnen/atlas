@@ -70,6 +70,14 @@ class ServicePointGeolocationRepositoryTest {
   }
 
   @Test
+  void shouldReturnBusinessOrganisationFromGeoDataView() {
+    List<ServicePointGeoData> servicePoints = repository.findAll();
+
+    assertThat(servicePoints).isNotEmpty().hasSize(1);
+    assertThat(servicePoints.get(0).getBusinessOrganisation()).isEqualTo("somesboid");
+  }
+
+  @Test
   void shouldFindCorrectServicePointType() {
     List<ServicePointGeoData> servicePoints = repository.findAll();
 

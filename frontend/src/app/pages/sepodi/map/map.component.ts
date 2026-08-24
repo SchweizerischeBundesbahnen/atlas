@@ -13,7 +13,7 @@ import { LngLatLike, Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options';
 import { Subject } from 'rxjs';
-import { ApplicationType } from '../../../api';
+import { ApplicationType, BusinessOrganisation } from '../../../api';
 import { takeUntil } from 'rxjs/operators';
 import { MapIcon, MapIconsService } from './map-icons.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
@@ -22,6 +22,9 @@ import { SERVICE_POINT_MIN_ZOOM } from './map-style';
 import { NgClass } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { MapBoFilterDialogComponent } from './map-bo-filter-dialog/map-bo-filter-dialog.component';
+import { MapBoFilterDialogData } from './map-bo-filter-dialog/map-bo-filter-dialog-data';
 
 @Component({
   selector: 'atlas-map',
@@ -34,6 +37,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly mapService = inject(MapService);
   private readonly userService = inject(UserService);
   private readonly permissionService = inject(PermissionService);
+  private readonly dialogService = inject(DialogService);
 
   public readonly isSidePanelOpen = input(false);
 
@@ -124,5 +128,35 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       zoom: 7.25,
       speed: 0.8,
     });
+  }
+
+  openBoFilterDialog() {
+    const dialogData: MapBoFilterDialogData = {
+      title: 'SEPODI.MAP_BO_FILTER.TITLE',
+      message: '',
+      businessOrganisations: [...this.mapService.boFilter()],
+    };
+    this.dialogService
+      .openDialogDataWithCustomResult<MapBoFilterDialogData, BusinessOrganisation[]>(
+        dialogData,
+        MapBoFilterDialogComponent
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.mapService.applyBoFilter(result);
+        }
+      });
+  }
+
+  boFilterActive(): boolean {
+    return this.mapService.boFilterActive();
+  }
+
+  boFilterCount(): number {
+    return this.mapService.boFilter().length;
+  }
+
+  boFilterLabel(): string {
+    return this.boFilterActive() ? 'SEPODI.MAP_BO_FILTER.TOOLTIP_ACTIVE' : 'SEPODI.MAP_BO_FILTER.TOOLTIP';
   }
 }

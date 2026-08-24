@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeoD
 import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import java.time.LocalDate;
+import java.time.Month;
 
 public class GeoTestData {
 
@@ -27,8 +28,9 @@ public class GeoTestData {
         .swissMunicipalityNumber(5)
         .swissMunicipalityName("Bern")
         .swissLocalityName("Bern")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
+        .businessOrganisation("ch:1:sboid:100626")
+        .validFrom(LocalDate.of(2020, Month.JANUARY, 1))
+        .validTo(LocalDate.of(2020, Month.DECEMBER, 31))
         .build();
   }
 
@@ -47,8 +49,9 @@ public class GeoTestData {
         .swissMunicipalityNumber(5)
         .swissMunicipalityName("Bern")
         .swissLocalityName("Bern")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
+        .businessOrganisation("ch:1:sboid:100626")
+        .validFrom(LocalDate.of(2020, Month.JANUARY, 1))
+        .validTo(LocalDate.of(2020, Month.DECEMBER, 31))
         .build();
   }
 
@@ -78,8 +81,8 @@ public class GeoTestData {
         .abbreviation("BE")
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
+        .validFrom(LocalDate.of(2020, Month.JANUARY, 1))
+        .validTo(LocalDate.of(2020, Month.DECEMBER, 31))
         .build();
   }
 }

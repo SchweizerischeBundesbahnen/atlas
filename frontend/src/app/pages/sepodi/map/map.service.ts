@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import {
   GeoJSONSource,
   LngLat,
@@ -20,7 +20,7 @@ import {
 import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX } from './map-options';
 import { BehaviorSubject, filter, Subject, take, takeUntil } from 'rxjs';
-import { CoordinatePair, SpatialReference } from '../../../api';
+import { BusinessOrganisation, CoordinatePair, SpatialReference } from '../../../api';
 import { Pages } from '../../pages';
 import { MapIconsService } from './map-icons.service';
 import { Router } from '@angular/router';
@@ -54,6 +54,10 @@ export class MapService {
 
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private readonly cancelServicePointSelection$ = new Subject<void>();
+
+  private readonly _boFilter = signal<BusinessOrganisation[]>([]);
+  readonly boFilter = this._boFilter.asReadonly();
+  readonly boFilterActive = computed(() => this._boFilter().length > 0);
 
   popup = new Popup({
     closeButton: true,
@@ -139,6 +143,22 @@ export class MapService {
 
   removeMap() {
     this.map.remove();
+    this._boFilter.set([]);
+  }
+
+  applyBoFilter(businessOrganisations: BusinessOrganisation[]) {
+    this._boFilter.set([...businessOrganisations]);
+    this.updateBoFilterOnMap();
+  }
+
+  private updateBoFilterOnMap() {
+    if (!this.map) {
+      return;
+    }
+    const sboids = this._boFilter()
+      .map((businessOrganisation) => businessOrganisation.sboid)
+      .filter((sboid): sboid is string => !!sboid);
+    this.map.setFilter(MAP_SOURCE_NAME, sboids.length > 0 ? ['in', ['get', 'sboid'], ['literal', sboids]] : null);
   }
 
   switchToStyle(style: MapStyle) {

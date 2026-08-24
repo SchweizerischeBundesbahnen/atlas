@@ -1548,6 +1548,14 @@
       "SECTOR": "Sektor",
       "ON_DEMAND": "On Demand"
     },
+    "MAP_BO_FILTER": {
+      "TITLE": "Nach Geschäftsorganisation filtern",
+      "TOOLTIP": "Nach Geschäftsorganisation filtern",
+      "TOOLTIP_ACTIVE": "Nach {{count}} Geschäftsorganisation(en) gefiltert – zum Bearbeiten klicken",
+      "NO_SELECTION": "Keine Geschäftsorganisation ausgewählt.",
+      "REMOVE": "Geschäftsorganisation entfernen",
+      "RESET": "Zurücksetzen"
+    },
     "BACK_TO_MAP": "Schliessen",
     "ZOOM_IN_HINT": "Zum Anzeigen von Dienststellen, zoomen Sie näher heran.",
     "AUTOMATIC_SLOID": "wird automatisch vergeben",
