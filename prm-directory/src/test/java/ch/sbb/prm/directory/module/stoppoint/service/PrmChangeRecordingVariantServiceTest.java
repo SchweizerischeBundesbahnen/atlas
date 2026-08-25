@@ -10,6 +10,7 @@ import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.BasePrmServiceTest;
 import ch.sbb.prm.directory.location.service.PrmLocationService;
@@ -59,13 +60,16 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
 
   private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
 
+  private final StopPointService stopPointService;
+
   @Autowired
   PrmChangeRecordingVariantServiceTest(
       SharedServicePointRepository sharedServicePointRepository,
       PrmLocationService prmLocationService, StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository, PlatformRepository platformRepository, ToiletRepository toiletRepository,
       ParkingLotRepository parkingLotRepository, RelationRepository relationRepository,
-      ContactPointRepository contactPointRepository, PrmChangeRecordingVariantService prmChangeRecordingVariantService) {
+      ContactPointRepository contactPointRepository, PrmChangeRecordingVariantService prmChangeRecordingVariantService,
+      StopPointService stopPointService) {
     super(sharedServicePointRepository, prmLocationService);
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
@@ -75,6 +79,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     this.relationRepository = relationRepository;
     this.contactPointRepository = contactPointRepository;
     this.prmChangeRecordingVariantService = prmChangeRecordingVariantService;
+    this.stopPointService = stopPointService;
   }
 
   @AfterEach
@@ -318,6 +323,59 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
 
   }
 
+  @Test
+  void shouldAllowValidityChangeAfterChangingStopPointRecordVariantFromCompleteToReduced() {
+    //given
+    StopPointVersion completeVersion = StopPointTestData.builderVersionCompleteFull()
+        .sloid(PARENT_SERVICE_POINT_SLOID)
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8570000))
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
+    stopPointRepository.saveAndFlush(completeVersion);
+
+    StopPointVersion reducedVersion = prmChangeRecordingVariantService.stopPointChangeRecordingVariant(completeVersion,
+        Set.of(MeanOfTransport.BUS));
+    assertCompleteAttributesAreNull(reducedVersion);
+
+    StopPointVersion editedVersion = reducedVersion.toBuilder().build();
+    editedVersion.setValidTo(reducedVersion.getValidTo().minusMonths(1));
+
+    //when
+    stopPointService.updateStopPointVersion(reducedVersion, editedVersion);
+
+    //then
+    List<StopPointVersion> result = stopPointRepository.findAllBySloidOrderByValidFrom(reducedVersion.getSloid());
+    assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getValidTo()).isEqualTo(editedVersion.getValidTo());
+    assertCompleteAttributesAreNull(result.getFirst());
+  }
+
+  @Test
+  void shouldAllowValidityChangeAfterChangingStopPointRecordVariantFromReducedToComplete() {
+    //given
+    StopPointVersion reducedVersion = StopPointTestData.builderVersionReduced()
+        .sloid(PARENT_SERVICE_POINT_SLOID)
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8570000))
+        .build();
+    stopPointRepository.saveAndFlush(reducedVersion);
+
+    StopPointVersion completeVersion = prmChangeRecordingVariantService.stopPointChangeRecordingVariant(reducedVersion,
+        Set.of(MeanOfTransport.TRAIN));
+    assertCompleteAttributesAreToBeCompleted(completeVersion);
+
+    StopPointVersion editedVersion = completeVersion.toBuilder().build();
+    editedVersion.setValidTo(completeVersion.getValidTo().minusMonths(1));
+
+    //when
+    stopPointService.updateStopPointVersion(completeVersion, editedVersion);
+
+    //then
+    List<StopPointVersion> result = stopPointRepository.findAllBySloidOrderByValidFrom(completeVersion.getSloid());
+    assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getValidTo()).isEqualTo(editedVersion.getValidTo());
+    assertCompleteAttributesAreToBeCompleted(result.getFirst());
+  }
+
   private static void assertStopPointContent(StopPointVersion stopPointVersionToUpdate, StopPointVersion result) {
     assertThat(result.getSloid()).isEqualTo(stopPointVersionToUpdate.getSloid());
     assertThat(result.getNumber()).isEqualTo(stopPointVersionToUpdate.getNumber());
@@ -333,7 +391,16 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(result.getAssistanceCondition()).isNull();
     assertThat(result.getInfoTicketMachine()).isNull();
     assertThat(result.getUrl()).isNull();
+    if (result.isReduced()) {
+      assertCompleteAttributesAreNull(result);
+    } else {
+      assertCompleteAttributesAreToBeCompleted(result);
+    }
+  }
+
+  private static void assertCompleteAttributesAreToBeCompleted(StopPointVersion result) {
     assertThat(result.getAlternativeTransport()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
+    assertThat(result.getShuttleService()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
     assertThat(result.getAssistanceAvailability()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
     assertThat(result.getAssistanceService()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
     assertThat(result.getAudioTicketMachine()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
@@ -343,6 +410,22 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(result.getWheelchairTicketMachine()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
     assertThat(result.getAssistanceRequestFulfilled()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
     assertThat(result.getTicketMachine()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+    assertThat(result.getInteroperable()).isFalse();
+  }
+
+  private static void assertCompleteAttributesAreNull(StopPointVersion result) {
+    assertThat(result.getAlternativeTransport()).isNull();
+    assertThat(result.getShuttleService()).isNull();
+    assertThat(result.getAssistanceAvailability()).isNull();
+    assertThat(result.getAssistanceService()).isNull();
+    assertThat(result.getAudioTicketMachine()).isNull();
+    assertThat(result.getDynamicAudioSystem()).isNull();
+    assertThat(result.getDynamicOpticSystem()).isNull();
+    assertThat(result.getVisualInfo()).isNull();
+    assertThat(result.getWheelchairTicketMachine()).isNull();
+    assertThat(result.getAssistanceRequestFulfilled()).isNull();
+    assertThat(result.getTicketMachine()).isNull();
+    assertThat(result.getInteroperable()).isNull();
   }
 
   @Test
@@ -389,16 +472,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(result.getInfoTicketMachine()).isNull();
     assertThat(result.getUrl()).isNull();
     assertThat(result.getMeansOfTransport()).containsOnly(MeanOfTransport.TRAIN);
-    assertThat(result.getAlternativeTransport()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getAssistanceAvailability()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getAssistanceService()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getAudioTicketMachine()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getDynamicAudioSystem()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getDynamicOpticSystem()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getVisualInfo()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getWheelchairTicketMachine()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getAssistanceRequestFulfilled()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getTicketMachine()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+    assertCompleteAttributesAreToBeCompleted(result);
 
   }
 

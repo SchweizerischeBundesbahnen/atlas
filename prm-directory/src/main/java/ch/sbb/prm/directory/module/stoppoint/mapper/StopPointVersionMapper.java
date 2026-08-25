@@ -12,6 +12,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.exception.ServicePointNonSwissCountryNotAllowedException;
 import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.util.PrmMeansOfTransportHelper;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -108,29 +109,37 @@ public class StopPointVersionMapper {
 
   public static StopPointVersion resetToDefaultValue(StopPointVersion version,
       LocalDate validFrom, LocalDate validTo, Set<MeanOfTransport> meanOfTransports) {
-    return StopPointVersion.builder()
+    StopPointVersion resettedVersion = StopPointVersion.builder()
         .sloid(version.getSloid())
         .status(Status.VALIDATED)
         .number(version.getNumber())
         .validFrom(validFrom)
         .validTo(validTo)
         .meansOfTransport(meanOfTransports)
-        .alternativeTransport(StandardAttributeType.TO_BE_COMPLETED)
-        .shuttleService(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceAvailability(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceService(StandardAttributeType.TO_BE_COMPLETED)
-        .audioTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
-        .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
-        .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
-        .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .ticketMachine(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .creator(version.getCreator())
         .creationDate(version.getCreationDate())
         .editor(version.getEditor())
         .editionDate(version.getEditionDate())
         .build();
+    if (!PrmMeansOfTransportHelper.isReduced(meanOfTransports)) {
+      initDefaultDropdownDataComplete(resettedVersion);
+    }
+    return resettedVersion;
+  }
+
+  private static void initDefaultDropdownDataComplete(StopPointVersion version) {
+    version.setAlternativeTransport(StandardAttributeType.TO_BE_COMPLETED);
+    version.setShuttleService(StandardAttributeType.TO_BE_COMPLETED);
+    version.setAssistanceAvailability(StandardAttributeType.TO_BE_COMPLETED);
+    version.setAssistanceService(StandardAttributeType.TO_BE_COMPLETED);
+    version.setAudioTicketMachine(StandardAttributeType.TO_BE_COMPLETED);
+    version.setDynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED);
+    version.setDynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED);
+    version.setVisualInfo(StandardAttributeType.TO_BE_COMPLETED);
+    version.setWheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED);
+    version.setAssistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+    version.setTicketMachine(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+    version.setInteroperable(false);
   }
 
 }
