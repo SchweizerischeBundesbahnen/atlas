@@ -92,9 +92,8 @@ public class TrafficPointElementApiV1Controller implements TrafficPointElementAp
         .orElseThrow(() -> new IdNotFoundException(id));
 
     if (!trafficPointElementVersionToUpdate.getSloid().equals(trafficPointElementVersionModel.getSloid())) {
-      String exceptionMessage = "Sloid for provided id: " + trafficPointElementVersionToUpdate.getSloid() +
-          " and sloid in the request body: " + trafficPointElementVersionModel.getSloid() + " are not equal.";
-      throw new SloidsNotEqualException(exceptionMessage);
+      throw SloidsNotEqualException.trafficPointSloidsNotEqual(trafficPointElementVersionToUpdate.getSloid(),
+          trafficPointElementVersionModel.getSloid());
     }
 
     update(trafficPointElementVersionToUpdate,

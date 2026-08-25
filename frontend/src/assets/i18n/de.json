@@ -1446,7 +1446,8 @@
       "VALIDITY_CONFIRMATION": {
         "TITLE": "Gültigkeit",
         "MESSAGE": "Achtung, die zugeordnete Dienststelle ist von {{validFrom}} bis {{validTo}} gültig. Bitte passen Sie die Gültigkeit entsprechend an."
-      }
+      },
+      "SLOIDS_NOT_EQUAL_ERROR": "Die Sloid {{sloid}} der Haltekante stimmt nicht mit der Sloid {{requestSloid}} in der Anfrage überein."
     },
     "BOARDING_AREAS": {
       "BOARDING_AREA": "Bereich",
@@ -1484,7 +1485,8 @@
         "ADD_SUCCESS": "Die Sektorengruppe wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Sektorengruppe wurde erfolgreich gespeichert.",
         "REVOKE_SUCCESS": "Die Sektorengruppe wurde erfolgreich als Fehlerfassung gekennzeichnet."
-      }
+      },
+      "TRAFFIC_POINT_SLOID_NOT_EQUAL_ERROR": "Die Haltekanten-Sloid {{sectorTrafficPointSloid}} des Sektors stimmt nicht mit der Haltekanten-Sloid {{sectorGroupTrafficPointSloid}} der Sektorengruppe überein."
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen",

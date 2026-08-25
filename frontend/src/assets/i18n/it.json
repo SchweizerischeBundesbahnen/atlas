@@ -1446,7 +1446,8 @@
       "VALIDITY_CONFIRMATION": {
         "TITLE": "Validità ",
         "MESSAGE": "Attenzione, il posto di servizio assegnato è valido da {{validFrom}} a {{validTo}}. Si prega di regolare la validità di conseguenza."
-      }
+      },
+      "SLOIDS_NOT_EQUAL_ERROR": "Lo sloid {{sloid}} del bordo di fermata non corrisponde allo sloid {{requestSloid}} della richiesta."
     },
     "BOARDING_AREAS": {
       "BOARDING_AREA": "Zona",
@@ -1484,7 +1485,8 @@
         "ADD_SUCCESS": "Gruppo di settori aggiunto con successo.",
         "EDIT_SUCCESS": "Gruppo di settori salvato correttamente.",
         "REVOKE_SUCCESS": "Il gruppo di settore è stato contrassegnato correttamente come registrazione di errore."
-      }
+      },
+      "TRAFFIC_POINT_SLOID_NOT_EQUAL_ERROR": "Lo sloid del bordo di fermata {{sectorTrafficPointSloid}} del settore non corrisponde allo sloid del bordo di fermata {{sectorGroupTrafficPointSloid}} del gruppo di settori."
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Posti di carico",

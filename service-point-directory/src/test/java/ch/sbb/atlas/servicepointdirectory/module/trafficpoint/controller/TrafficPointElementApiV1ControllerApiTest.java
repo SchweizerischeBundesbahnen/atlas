@@ -592,6 +592,9 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getMessage()).isEqualTo(
         "Sloid for provided id: ch:1:sloid:1400015:0:310240 and sloid in the request body: ch:1:sloid:1400015:0:310241 are not "
             + "equal.");
+    assertThat(errorResponse.getDetails()).hasSize(1);
+    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
+        "SEPODI.TRAFFIC_POINT_ELEMENTS.SLOIDS_NOT_EQUAL_ERROR");
 
   }
 
