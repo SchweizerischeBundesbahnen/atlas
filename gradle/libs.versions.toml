@@ -3,7 +3,7 @@ okhttpVersion = "5.5.0"
 proj4jVersion = "1.4.3"
 shedlockVersion = "7.9.0"
 protobufVersion = "4.36.0"
-springCloudDependenciesVersion = "2025.1.2"
+springCloudDependenciesVersion = "2025.1.3"
 
 [libraries]
 # Java Convention Dependencies
