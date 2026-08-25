@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.SectorBulkImportApi;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.SectorUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.SectorCreateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.sector.service.SectorBulkImportService;
 import java.util.List;
@@ -23,6 +24,14 @@ public class SectorBulkImportController extends BaseBulkImportControllerInternal
     return executeBulkImport(bulkImportCreateContainers,
         sectorBulkImportService::createSectorByUserName,
         sectorBulkImportService::createSector);
+  }
+
+  @Override
+  public List<BulkImportItemExecutionResult> bulkImportUpdate(
+      List<BulkImportUpdateContainer<SectorUpdateCsvModel>> bulkImportUpdateContainers) {
+    return executeBulkImport(bulkImportUpdateContainers,
+        sectorBulkImportService::updateSectorByUserName,
+        sectorBulkImportService::updateSector);
   }
 
 }

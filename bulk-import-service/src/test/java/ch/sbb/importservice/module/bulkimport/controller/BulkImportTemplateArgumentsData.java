@@ -23,6 +23,7 @@ public class BulkImportTemplateArgumentsData {
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.TERMINATE)),
 
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.CREATE)),
+      Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.UPDATE)),
 
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR_GROUP, ImportType.CREATE)),
 
@@ -47,7 +48,6 @@ public class BulkImportTemplateArgumentsData {
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.TERMINATE)),
-      Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.TERMINATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR_GROUP, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR_GROUP, ImportType.TERMINATE)),
