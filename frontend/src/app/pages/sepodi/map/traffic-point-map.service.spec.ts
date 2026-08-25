@@ -93,29 +93,30 @@ describe('TrafficPointMapService', () => {
     expect(data.geometry.coordinates).toEqual([7.44908190053, 46.96102079646]);
   });
 
-  it('should highlight a displayed TrafficPoint by sloid', () => {
-    trafficPointElementInternalService.getTrafficPointsOfServicePointValidToday.mockReturnValue(
-      of(BERN_WYLEREGG_TRAFFIC_POINTS)
-    );
-    service.displayTrafficPointsOnMap(8507000);
+  it('should highlight a TrafficPoint of a version valid in the past', () => {
+    // Given
+    const pastVersionCoordinates = {
+      north: 46.947853,
+      east: 7.435045,
+      spatialReference: 'WGS84' as const,
+    };
 
-    service.highlightTrafficPointBySloid('ch:1:sloid:89008:0:2');
+    // When
+    service.highlightTrafficPoint(pastVersionCoordinates);
 
+    // Then
     expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('hovered_traffic_point');
     const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
-    expect(data.geometry.coordinates).toEqual([7.4479859044, 46.96057330114]);
+    expect(data.geometry.coordinates).toEqual([7.435045, 46.947853]);
+    expect(data.properties).toEqual({});
   });
 
-  it('should not highlight anything when sloid is not currently displayed on the map', () => {
-    trafficPointElementInternalService.getTrafficPointsOfServicePointValidToday.mockReturnValue(
-      of(BERN_WYLEREGG_TRAFFIC_POINTS)
-    );
-    service.displayTrafficPointsOnMap(8507000);
-    sourceMock.setData.mockClear();
+  it('should clear the highlight when a TrafficPoint version has no coordinates', () => {
+    service.highlightTrafficPoint(undefined);
 
-    service.highlightTrafficPointBySloid('unknown-sloid');
-
-    expect(sourceMock.setData).not.toHaveBeenCalled();
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.Feature<Point>;
+    expect(data.geometry.coordinates).toEqual([0, 0]);
+    expect(data.properties).toEqual({});
   });
 
   it('should clear highlighted TrafficPoint on map', () => {

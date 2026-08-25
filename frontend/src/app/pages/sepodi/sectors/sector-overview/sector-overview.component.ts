@@ -70,8 +70,11 @@ export class SectorOverviewComponent implements OnInit, OnDestroy {
   }
 
   onRowHovered(row: ReadSectorVersion) {
-    if (row.sloid) {
-      this.sectorMapService.highlightSectorBySloid(row.sloid);
+    const coordinates = row.sectorGeolocation?.wgs84;
+    if (coordinates) {
+      this.sectorMapService.highlightSector(coordinates);
+    } else {
+      this.sectorMapService.clearHighlightedSector();
     }
   }
 

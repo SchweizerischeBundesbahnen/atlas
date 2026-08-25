@@ -24,7 +24,6 @@ export class SectorMapService implements OnDestroy {
   private readonly mapService = inject(MapService);
   private readonly sectorInternalService = inject(SectorInternalService);
   private readonly onDestroy$ = new Subject<boolean>();
-  private displayedSectors: DisplayableSector[] = [];
 
   static buildSectorPopupInformation(features: MapGeoJSONFeature[]) {
     let popupHtml = '';
@@ -73,7 +72,6 @@ export class SectorMapService implements OnDestroy {
   }
 
   public setDisplayedSectors(sectors: DisplayableSector[]) {
-    this.displayedSectors = sectors;
     const source = this.mapService.map.getSource(MAP_SECTOR_LAYER_NAME) as GeoJSONSource;
     const sectorGeoInformation: Feature[] = sectors.map((point) => {
       return {
@@ -126,28 +124,27 @@ export class SectorMapService implements OnDestroy {
     this.displayCurrentSector();
   }
 
-  highlightSectorBySloid(sloid: string) {
-    this.highlightSectorsBySloids([sloid]);
+  highlightSector(coordinates?: CoordinatePair) {
+    this.setHighlightedCoordinates(coordinates ? [coordinates] : []);
   }
 
-  highlightSectorsBySloids(sloids: string[]) {
-    const sectors = this.displayedSectors.filter((displayedSector) => sloids.includes(displayedSector.sloid));
-    this.setHighlightedSectors(sectors);
+  highlightSectors(coordinates: CoordinatePair[]) {
+    this.setHighlightedCoordinates(coordinates);
   }
 
   clearHighlightedSector() {
-    this.setHighlightedSectors([]);
+    this.setHighlightedCoordinates([]);
   }
 
-  private setHighlightedSectors(sectors: DisplayableSector[]) {
+  private setHighlightedCoordinates(coordinates: CoordinatePair[]) {
     const source = this.mapService.map.getSource('hovered_sector') as GeoJSONSource;
     source.setData({
       type: 'FeatureCollection',
-      features: sectors.map((sector) => ({
+      features: coordinates.map((coordinate) => ({
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: [sector.coordinates.east, sector.coordinates.north],
+          coordinates: [coordinate.east, coordinate.north],
         },
         properties: {},
       })),

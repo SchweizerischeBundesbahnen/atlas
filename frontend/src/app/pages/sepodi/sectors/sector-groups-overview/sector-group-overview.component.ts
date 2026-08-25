@@ -86,7 +86,9 @@ export class SectorGroupOverviewComponent implements OnInit, OnDestroy {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((sectors) => {
-        this.sectorMapService.highlightSectorsBySloids(sectors.map((sector) => sector.sloid!));
+        this.sectorMapService.highlightSectors(
+          sectors.map((sector) => sector.sectorGeolocation?.wgs84).filter((coordinates) => coordinates !== undefined)
+        );
       });
   }
 

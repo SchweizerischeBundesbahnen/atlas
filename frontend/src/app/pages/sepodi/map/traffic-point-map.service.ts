@@ -25,7 +25,6 @@ export class TrafficPointMapService implements OnDestroy {
   private readonly trafficPointElementInternalService = inject(TrafficPointElementInternalService);
 
   private readonly onDestroy$ = new Subject<boolean>();
-  private displayedTrafficPoints: DisplayableTrafficPoint[] = [];
 
   static buildTrafficPointPopupInformation(features: MapGeoJSONFeature[]) {
     let popupHtml = '';
@@ -75,7 +74,6 @@ export class TrafficPointMapService implements OnDestroy {
   }
 
   setDisplayedTrafficPoints(trafficPoints: DisplayableTrafficPoint[]) {
-    this.displayedTrafficPoints = trafficPoints;
     const source = this.mapService.map.getSource(MAP_TRAFFIC_POINT_LAYER_NAME) as GeoJSONSource | undefined;
     const trafficPointGeoInformation: Feature[] = trafficPoints.map((point) => {
       return {
@@ -128,11 +126,8 @@ export class TrafficPointMapService implements OnDestroy {
     this.displayCurrentTrafficPoint();
   }
 
-  highlightTrafficPointBySloid(sloid: string) {
-    const point = this.displayedTrafficPoints.find((trafficPoint) => trafficPoint.sloid === sloid);
-    if (point) {
-      this.setHoveredTrafficPointCoordinates(point.coordinates);
-    }
+  highlightTrafficPoint(coordinates?: CoordinatePair) {
+    this.setHoveredTrafficPointCoordinates(coordinates);
   }
 
   clearHighlightedTrafficPoint() {
