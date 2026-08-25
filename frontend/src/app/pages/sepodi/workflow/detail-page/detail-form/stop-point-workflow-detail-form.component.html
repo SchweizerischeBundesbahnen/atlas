@@ -66,13 +66,26 @@
     </div>
 
     @if (oldDesignation) {
-      <div class="col-8" data-cy="old-designation-official">
+      <div class="col" data-cy="old-designation-official">
         <div class="font-bold-base">
           {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OLD_DESIGNATION_OFFICIAL' | translate }}
         </div>
         <div>{{ oldDesignation }}</div>
       </div>
     }
+
+    <div class="col" data-cy="stop-point-type">
+      <div class="font-bold-base">
+        {{ 'SEPODI.SERVICE_POINTS.STOP_POINT_TYPE' | translate }}
+      </div>
+      <div>
+        @if (stopPoint.stopPointType) {
+          {{ 'SEPODI.SERVICE_POINTS.STOP_POINT_TYPES.' + stopPoint.stopPointType | translate }}
+        } @else {
+          -
+        }
+      </div>
+    </div>
   </div>
 
   @if (currentWorkflow) {
