@@ -36,7 +36,11 @@ public class TimetableFieldNumberSearchRestrictions extends
         .stringAttributes(
             List.of(
                 TimetableFieldNumber.Fields.descriptionOutwardLine1,
-                TimetableFieldNumber.Fields.ttfnid,
+                TimetableFieldNumber.Fields.descriptionOutwardLine2,
+                TimetableFieldNumber.Fields.descriptionOutwardLine3,
+                TimetableFieldNumber.Fields.descriptionReturnLine1,
+                TimetableFieldNumber.Fields.descriptionReturnLine2,
+                TimetableFieldNumber.Fields.descriptionReturnLine3,
                 TimetableFieldNumber.Fields.number))
         .singleStringAttribute(TimetableFieldNumber_.number)
         .validFromAttribute(TimetableFieldNumber_.validFrom)
