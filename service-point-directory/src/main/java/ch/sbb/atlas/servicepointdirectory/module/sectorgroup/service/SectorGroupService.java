@@ -124,7 +124,8 @@ public class SectorGroupService extends RevokeService<SectorGroupVersion> {
   private void isTrafficPointSloidMatchingOverAllObjects(List<SectorVersion> sectorVersions, String trafficPointSloid) {
     sectorVersions.forEach(sectorVersion -> {
       if (!sectorVersion.getTrafficPointSloid().equals(trafficPointSloid)) {
-        throw new SloidsNotEqualException("Traffic Point sloid of sector not matching with sector group traffic point sloid");
+        throw SloidsNotEqualException.sectorGroupTrafficPointSloidNotEqual(sectorVersion.getTrafficPointSloid(),
+            trafficPointSloid);
       }
     });
   }

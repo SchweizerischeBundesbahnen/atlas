@@ -19,7 +19,7 @@ class SectorTemplateGenerator {
       .north(1199749.812)
       .spatialReference(SpatialReference.LV95)
       .height(540.2)
-      .edgeHeight(16.1)
+      .edgeHeight(16.0)
       .build();
 
   static final SectorUpdateCsvModel SECTOR_UPDATE_CSV_MODEL = SectorUpdateCsvModel.builder()
@@ -32,7 +32,7 @@ class SectorTemplateGenerator {
       .spatialReference(SpatialReference.LV95)
       .height(540.2)
       .length(17.5)
-      .edgeHeight(16.1)
+      .edgeHeight(16.0)
       .build();
 
 }
