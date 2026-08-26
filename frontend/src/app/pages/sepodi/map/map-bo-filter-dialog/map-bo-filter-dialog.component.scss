@@ -1,19 +1,32 @@
 @use 'src/styles/variables' as variables;
 
-.dialog-title {
-  text-align: center;
+// Fixed, viewport-driven width so the dialog does not resize with the selection.
+// Floor and cap match the global dialog container min/max width.
+:host {
+  display: block;
+  width: clamp(678px, 60vw, 1100px);
 }
 
 .selected-bo {
   border-bottom: 1px solid variables.$gray-100;
   padding: 0.25rem 0;
+  gap: 0.5rem;
 
   &:last-child {
     border-bottom: none;
   }
 }
 
+.selected-bo-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  mask-image: linear-gradient(to right, black calc(100% - 2.5rem), transparent 100%);
+}
+
 .remove-bo-button {
+  flex: 0 0 auto;
   color: variables.$gray-700;
 
   &:hover {
