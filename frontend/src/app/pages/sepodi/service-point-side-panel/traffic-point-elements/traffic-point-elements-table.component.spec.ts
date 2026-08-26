@@ -11,6 +11,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import {
+  BERN_TRAFFIC_POINT_PLATFORM_1,
   BERN_WYLEREGG_TRAFFIC_POINTS,
   BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER,
 } from '../../../../../test/data/traffic-point-element';
@@ -22,6 +23,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
 import { TrafficPointMapService } from '../../map/traffic-point-map.service';
+import { ReadTrafficPointElementVersion } from '../../../../api';
 
 describe('TrafficPointElementsTableComponent', () => {
   let component: TrafficPointElementsTableComponent;
@@ -34,7 +36,7 @@ describe('TrafficPointElementsTableComponent', () => {
     Pick<TrafficPointElementInternalService, 'getPlatformsOfServicePoint'>
   >;
   let trafficPointMapServiceSpy: Mocked<
-    Pick<TrafficPointMapService, 'highlightTrafficPointBySloid' | 'clearHighlightedTrafficPoint'>
+    Pick<TrafficPointMapService, 'highlightTrafficPoint' | 'clearHighlightedTrafficPoint'>
   >;
 
   const activatedRouteMock = {
@@ -67,7 +69,7 @@ describe('TrafficPointElementsTableComponent', () => {
     routerSpy.navigate.mockReturnValue(Promise.resolve(true));
 
     trafficPointMapServiceSpy = {
-      highlightTrafficPointBySloid: vi.fn(),
+      highlightTrafficPoint: vi.fn(),
       clearHighlightedTrafficPoint: vi.fn(),
     };
 
@@ -130,7 +132,51 @@ describe('TrafficPointElementsTableComponent', () => {
 
   it('should highlight the traffic point on the map when a row is hovered', () => {
     component.onRowHovered(BERN_WYLEREGG_TRAFFIC_POINTS[0]);
-    expect(trafficPointMapServiceSpy.highlightTrafficPointBySloid).toHaveBeenCalledWith('ch:1:sloid:89008:0:1');
+    expect(trafficPointMapServiceSpy.highlightTrafficPoint).toHaveBeenCalledWith(
+      BERN_WYLEREGG_TRAFFIC_POINTS[0].trafficPointElementGeolocation!.wgs84
+    );
+  });
+
+  it('should highlight the traffic point of a version valid in the past when its row is hovered', () => {
+    // Given
+    const pastVersion = BERN_TRAFFIC_POINT_PLATFORM_1[1] as unknown as ReadTrafficPointElementVersion;
+
+    // When
+    component.onRowHovered(pastVersion);
+
+    // Then
+    expect(trafficPointMapServiceSpy.highlightTrafficPoint).toHaveBeenCalledWith({
+      north: 46.947853,
+      east: 7.435045,
+      spatialReference: 'WGS84',
+    });
+  });
+
+  it('should highlight the traffic point of a version valid in the future when its row is hovered', () => {
+    // Given
+    const futureVersion = BERN_TRAFFIC_POINT_PLATFORM_1[2] as unknown as ReadTrafficPointElementVersion;
+
+    // When
+    component.onRowHovered(futureVersion);
+
+    // Then
+    expect(trafficPointMapServiceSpy.highlightTrafficPoint).toHaveBeenCalledWith({
+      north: 46.94841167916,
+      east: 7.43798616183,
+      spatialReference: 'WGS84',
+    });
+  });
+
+  it('should clear the highlight when a hovered version has no geolocation', () => {
+    // Given
+    const versionWithoutGeolocation = BERN_TRAFFIC_POINT_PLATFORM_1[0] as unknown as ReadTrafficPointElementVersion;
+
+    // When
+    component.onRowHovered(versionWithoutGeolocation);
+
+    // Then
+    expect(trafficPointMapServiceSpy.clearHighlightedTrafficPoint).toHaveBeenCalled();
+    expect(trafficPointMapServiceSpy.highlightTrafficPoint).not.toHaveBeenCalled();
   });
 
   it('should clear the highlighted traffic point on the map when a row is no longer hovered', () => {

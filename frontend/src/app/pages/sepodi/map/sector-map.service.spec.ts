@@ -6,53 +6,12 @@ import { BehaviorSubject, of } from 'rxjs';
 import { MAP_SECTOR_LAYER_NAME } from './map-style';
 import { SectorMapService } from './sector-map.service';
 import { SectorInternalService } from '../../../api/service/sepodi/sector-internal.service';
-import { ReadSectorVersion } from '../../../api/model/readSectorVersion';
 import { SpatialReference } from '../../../api';
 import { Point } from 'geojson';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
 describe('SectorMapService', () => {
   let service: SectorMapService;
-
-  const SECTOR_A: ReadSectorVersion = {
-    trafficPointSloid: 'ch:1:sloid:7000:1',
-    validFrom: new Date('2014-12-14'),
-    validTo: new Date('2014-12-14'),
-    designation: 'A',
-    sectorGeolocation: {
-      lv95: {
-        north: 0,
-        east: 0,
-        spatialReference: SpatialReference.Lv95,
-      },
-      spatialReference: 'WGS84WEB',
-      wgs84: {
-        north: 46.96102079646,
-        east: 7.44908190053,
-        spatialReference: SpatialReference.Wgs84,
-      },
-      lv03: {
-        north: 0,
-        east: 0,
-        spatialReference: SpatialReference.Lv03,
-      },
-    },
-    sloid: 'ch:1:sloid:7000:1:1',
-  };
-
-  const SECTOR_B: ReadSectorVersion = {
-    ...SECTOR_A,
-    designation: 'B',
-    sectorGeolocation: {
-      ...SECTOR_A.sectorGeolocation!,
-      wgs84: {
-        north: 46.96057330114,
-        east: 7.4479859044,
-        spatialReference: SpatialReference.Wgs84,
-      },
-    },
-    sloid: 'ch:1:sloid:7000:1:2',
-  };
 
   const sourceMock = mock<GeoJSONSource>();
   const mapMock = mockDeep<Map>();
@@ -175,28 +134,37 @@ describe('SectorMapService', () => {
     expect(data.geometry.coordinates).toEqual([0, 0]);
   });
 
-  it('should highlight a displayed Sector by sloid', () => {
+  it('should highlight a Sector of a version valid in the past', () => {
     // Given
-    sectorInternalService.getSectorsValidToday.mockReturnValue(of([SECTOR_A, SECTOR_B]));
-    service.displaySectorsOnMap(8507000, 'ch:1:sloid:7000:0:1');
+    const pastVersionCoordinates = {
+      north: 46.947853,
+      east: 7.435045,
+      spatialReference: 'WGS84' as const,
+    };
 
     // When
-    service.highlightSectorBySloid('ch:1:sloid:7000:1:1');
+    service.highlightSector(pastVersionCoordinates);
 
     // Then
     expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('hovered_sector');
     const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
     expect(data.features).toHaveLength(1);
-    expect((data.features[0].geometry as Point).coordinates).toEqual([7.44908190053, 46.96102079646]);
+    expect((data.features[0].geometry as Point).coordinates).toEqual([7.435045, 46.947853]);
   });
 
-  it('should highlight all displayed Sectors matching the given sloids', () => {
-    // Given
-    sectorInternalService.getSectorsValidToday.mockReturnValue(of([SECTOR_A, SECTOR_B]));
-    service.displaySectorsOnMap(8507000, 'ch:1:sloid:7000:0:1');
+  it('should clear the highlight when a Sector version has no coordinates', () => {
+    service.highlightSector(undefined);
 
+    const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
+    expect(data.features).toHaveLength(0);
+  });
+
+  it('should highlight all given Sector coordinates', () => {
     // When
-    service.highlightSectorsBySloids(['ch:1:sloid:7000:1:1', 'ch:1:sloid:7000:1:2']);
+    service.highlightSectors([
+      { north: 46.96102079646, east: 7.44908190053, spatialReference: 'WGS84' },
+      { north: 46.96057330114, east: 7.4479859044, spatialReference: 'WGS84' },
+    ]);
 
     // Then
     expect(mapServiceSpy.map.getSource).toHaveBeenCalledWith('hovered_sector');
@@ -208,15 +176,9 @@ describe('SectorMapService', () => {
     ]);
   });
 
-  it('should clear the highlight when no sloid is currently displayed on the map', () => {
-    // Given
-    sectorInternalService.getSectorsValidToday.mockReturnValue(of([SECTOR_A, SECTOR_B]));
-    service.displaySectorsOnMap(8507000, 'ch:1:sloid:7000:0:1');
+  it('should clear the highlight when no Sector coordinates are given', () => {
+    service.highlightSectors([]);
 
-    // When
-    service.highlightSectorsBySloids(['unknown-sloid']);
-
-    // Then
     const data = sourceMock.setData.mock.calls.at(-1)?.[0] as GeoJSON.FeatureCollection;
     expect(data.features).toHaveLength(0);
   });

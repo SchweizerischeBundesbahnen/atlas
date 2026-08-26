@@ -101,8 +101,11 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   }
 
   onRowHovered(row: ReadTrafficPointElementVersion) {
-    if (row.sloid) {
-      this.trafficPointMapService.highlightTrafficPointBySloid(row.sloid);
+    const coordinates = row.trafficPointElementGeolocation?.wgs84;
+    if (coordinates) {
+      this.trafficPointMapService.highlightTrafficPoint(coordinates);
+    } else {
+      this.trafficPointMapService.clearHighlightedTrafficPoint();
     }
   }
 

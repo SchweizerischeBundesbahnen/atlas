@@ -37,7 +37,7 @@ describe('SectorGroupDetailComponent', () => {
       | 'displayCurrentSector'
       | 'clearCurrentSector'
       | 'setDisplayedSectors'
-      | 'highlightSectorBySloid'
+      | 'highlightSector'
       | 'clearHighlightedSector'
     >
   >;
@@ -75,7 +75,7 @@ describe('SectorGroupDetailComponent', () => {
       displayCurrentSector: vi.fn(),
       clearCurrentSector: vi.fn(),
       setDisplayedSectors: vi.fn(),
-      highlightSectorBySloid: vi.fn(),
+      highlightSector: vi.fn(),
       clearHighlightedSector: vi.fn(),
     };
     trafficPointMapServiceSpy = {
@@ -250,7 +250,16 @@ describe('SectorGroupDetailComponent', () => {
     it('should highlight the sector on the map when a row is hovered', () => {
       component.onRowHovered(BERN_PLATFORM_1_SECTOR_A[0]);
 
-      expect(sectorMapServiceSpy.highlightSectorBySloid).toHaveBeenCalledWith('ch:1:sloid:7000:1:1:1');
+      expect(sectorMapServiceSpy.highlightSector).toHaveBeenCalledWith(
+        BERN_PLATFORM_1_SECTOR_A[0].sectorGeolocation!.wgs84
+      );
+    });
+
+    it('should clear the highlight when a hovered sector version has no geolocation', () => {
+      component.onRowHovered({ ...BERN_PLATFORM_1_SECTOR_A[0], sectorGeolocation: undefined });
+
+      expect(sectorMapServiceSpy.clearHighlightedSector).toHaveBeenCalled();
+      expect(sectorMapServiceSpy.highlightSector).not.toHaveBeenCalled();
     });
 
     it('should clear the highlighted sector on the map when a row is no longer hovered', () => {

@@ -20,7 +20,7 @@ describe('SectorOverviewComponent', () => {
   let fixture: ComponentFixture<SectorOverviewComponent>;
 
   let sectorInternalServiceSpy: Mocked<Pick<SectorInternalService, 'getSectors'>>;
-  let sectorMapServiceSpy: Mocked<Pick<SectorMapService, 'highlightSectorBySloid' | 'clearHighlightedSector'>>;
+  let sectorMapServiceSpy: Mocked<Pick<SectorMapService, 'highlightSector' | 'clearHighlightedSector'>>;
   let routerSpy: Mocked<Pick<Router, 'navigate'>>;
 
   const activatedRouteMock = {
@@ -67,6 +67,34 @@ describe('SectorOverviewComponent', () => {
     sloid: 'ch:1:sloid:7000:1:1',
   };
 
+  const SECTOR_A_PAST_VERSION: ReadSectorVersion = {
+    ...SECTOR_A,
+    validFrom: new Date('2014-12-14'),
+    validTo: new Date('2019-12-31'),
+    sectorGeolocation: {
+      ...SECTOR_A.sectorGeolocation!,
+      wgs84: {
+        north: 46.947853,
+        east: 7.435045,
+        spatialReference: SpatialReference.Wgs84,
+      },
+    },
+  };
+
+  const SECTOR_A_FUTURE_VERSION: ReadSectorVersion = {
+    ...SECTOR_A,
+    validFrom: new Date('2099-01-01'),
+    validTo: new Date('2099-12-31'),
+    sectorGeolocation: {
+      ...SECTOR_A.sectorGeolocation!,
+      wgs84: {
+        north: 46.94841167916,
+        east: 7.43798616183,
+        spatialReference: SpatialReference.Wgs84,
+      },
+    },
+  };
+
   beforeEach(() => {
     sectorInternalServiceSpy = {
       getSectors: vi.fn(),
@@ -74,7 +102,7 @@ describe('SectorOverviewComponent', () => {
     sectorInternalServiceSpy.getSectors.mockReturnValue(of(sectorOverview));
 
     sectorMapServiceSpy = {
-      highlightSectorBySloid: vi.fn(),
+      highlightSector: vi.fn(),
       clearHighlightedSector: vi.fn(),
     };
 
@@ -143,7 +171,43 @@ describe('SectorOverviewComponent', () => {
   it('should highlight the sector on the map when a row is hovered', () => {
     component.onRowHovered({ ...SECTOR_A });
 
-    expect(sectorMapServiceSpy.highlightSectorBySloid).toHaveBeenCalledWith('ch:1:sloid:7000:1:1');
+    expect(sectorMapServiceSpy.highlightSector).toHaveBeenCalledWith(SECTOR_A.sectorGeolocation!.wgs84);
+  });
+
+  it('should highlight the sector of a version valid in the past when its row is hovered', () => {
+    // When
+    component.onRowHovered({ ...SECTOR_A_PAST_VERSION });
+
+    // Then
+    expect(sectorMapServiceSpy.highlightSector).toHaveBeenCalledWith({
+      north: 46.947853,
+      east: 7.435045,
+      spatialReference: SpatialReference.Wgs84,
+    });
+  });
+
+  it('should highlight the sector of a version valid in the future when its row is hovered', () => {
+    // When
+    component.onRowHovered({ ...SECTOR_A_FUTURE_VERSION });
+
+    // Then
+    expect(sectorMapServiceSpy.highlightSector).toHaveBeenCalledWith({
+      north: 46.94841167916,
+      east: 7.43798616183,
+      spatialReference: SpatialReference.Wgs84,
+    });
+  });
+
+  it('should clear the highlight when a hovered sector version has no geolocation', () => {
+    // Given
+    const sectorWithoutGeolocation: ReadSectorVersion = { ...SECTOR_A, sectorGeolocation: undefined };
+
+    // When
+    component.onRowHovered(sectorWithoutGeolocation);
+
+    // Then
+    expect(sectorMapServiceSpy.clearHighlightedSector).toHaveBeenCalled();
+    expect(sectorMapServiceSpy.highlightSector).not.toHaveBeenCalled();
   });
 
   it('should clear the highlighted sector on the map when a row is no longer hovered', () => {
