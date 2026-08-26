@@ -33,6 +33,21 @@ public class TimetableFieldNumber {
   @Column(name = "description_outward_line_1")
   private String descriptionOutwardLine1;
 
+  @Column(name = "description_outward_line_2")
+  private String descriptionOutwardLine2;
+
+  @Column(name = "description_outward_line_3")
+  private String descriptionOutwardLine3;
+
+  @Column(name = "description_return_line_1")
+  private String descriptionReturnLine1;
+
+  @Column(name = "description_return_line_2")
+  private String descriptionReturnLine2;
+
+  @Column(name = "description_return_line_3")
+  private String descriptionReturnLine3;
+
   @Enumerated(EnumType.STRING)
   private Status status;
 

@@ -14,9 +14,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +35,7 @@ class TimetableFieldNumberServiceSearchTest {
   private static final LocalDate SEARCH_DATE = LocalDate.now();
   private static final LocalDate START_OF_MONTH_AT_SEARCH_DATE = SEARCH_DATE.withDayOfMonth(1);
   private static final LocalDate END_OF_MONTH_AT_SEARCH_DATE = SEARCH_DATE.withDayOfMonth(SEARCH_DATE.lengthOfMonth());
+  private static final String BUCHSATZTITEL = "Buchsatztitel Grenchen Nord";
 
   private final TimetableFieldNumberVersionRepository versionRepository;
   private final List<TimetableFieldNumberVersion> versionList = new ArrayList<>();
@@ -53,6 +59,22 @@ class TimetableFieldNumberServiceSearchTest {
         .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
         .validTo(END_OF_MONTH_AT_SEARCH_DATE)
         .businessOrganisation("sbb");
+  }
+
+  private static Stream<Arguments> searchableDescriptionLines() {
+    return Stream.of(
+        Arguments.of(TimetableFieldNumberVersion.Fields.descriptionOutwardLine1,
+            (Consumer<TimetableFieldNumberVersion>) version -> version.setDescriptionOutwardLine1(BUCHSATZTITEL)),
+        Arguments.of(TimetableFieldNumberVersion.Fields.descriptionOutwardLine2,
+            (Consumer<TimetableFieldNumberVersion>) version -> version.setDescriptionOutwardLine2(BUCHSATZTITEL)),
+        Arguments.of(TimetableFieldNumberVersion.Fields.descriptionOutwardLine3,
+            (Consumer<TimetableFieldNumberVersion>) version -> version.setDescriptionOutwardLine3(BUCHSATZTITEL)),
+        Arguments.of(TimetableFieldNumberVersion.Fields.descriptionReturnLine1,
+            (Consumer<TimetableFieldNumberVersion>) version -> version.setDescriptionReturnLine1(BUCHSATZTITEL)),
+        Arguments.of(TimetableFieldNumberVersion.Fields.descriptionReturnLine2,
+            (Consumer<TimetableFieldNumberVersion>) version -> version.setDescriptionReturnLine2(BUCHSATZTITEL)),
+        Arguments.of(TimetableFieldNumberVersion.Fields.descriptionReturnLine3,
+            (Consumer<TimetableFieldNumberVersion>) version -> version.setDescriptionReturnLine3(BUCHSATZTITEL)));
   }
 
   @BeforeEach
@@ -300,7 +322,7 @@ class TimetableFieldNumberServiceSearchTest {
     List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
             .pageable(Pageable.ofSize(20).withPage(0))
-            .searchCriterias(List.of("ch:1:ttfnid:100002"))
+            .searchCriterias(List.of("TimetableFieldNumberVersion 4"))
             .statusRestrictions(List.of(Status.IN_REVIEW))
             .build()).toList();
     // Then
@@ -309,11 +331,49 @@ class TimetableFieldNumberServiceSearchTest {
     searchResult = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
             .pageable(Pageable.ofSize(20).withPage(0))
-            .searchCriterias(List.of("ch:1:ttfnid:100003"))
+            .searchCriterias(List.of("TimetableFieldNumberVersion 5"))
             .statusRestrictions(List.of(Status.IN_REVIEW))
             .build()).toList();
     assertThat(searchResult).hasSize(1);
     assertThat(searchResult).first().usingRecursiveComparison().isEqualTo(versionList.get(4));
+  }
+
+  @ParameterizedTest
+  @MethodSource("searchableDescriptionLines")
+  void shouldFindVersionByEveryDescriptionLine(String descriptionLine,
+      Consumer<TimetableFieldNumberVersion> descriptionLineSetter) {
+    // Given
+    TimetableFieldNumberVersion version = versionBuilder()
+        .ttfnid("ch:1:ttfnid:100020")
+        .number("20.0")
+        .descriptionOutwardLine1(null)
+        .build();
+    descriptionLineSetter.accept(version);
+    versionRepository.saveAndFlush(version);
+
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .searchCriterias(List.of(BUCHSATZTITEL))
+            .build()).toList();
+
+    // Then
+    assertThat(searchResult).as("search on %s", descriptionLine).hasSize(1);
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo("ch:1:ttfnid:100020");
+  }
+
+  @Test
+  void shouldNotFindVersionByTtfnid() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.ofSize(20).withPage(0))
+            .searchCriterias(List.of("ch:1:ttfnid:100001"))
+            .build()).toList();
+    // Then
+    assertThat(searchResult).isEmpty();
   }
 
   @Test
