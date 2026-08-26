@@ -115,6 +115,13 @@ describe('MapBoFilterDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should align the title with the left edge of the content', () => {
+    // Then
+    const title = fixture.debugElement.query(By.css('[data-cy="map-bo-filter-title"]')).nativeElement as HTMLElement;
+    expect(title.classList).toContain('px-5');
+    expect(title.classList).not.toContain('dialog-title');
+  });
+
   it('should start without a selection when no filter is applied', () => {
     expect(component.selectedBusinessOrganisations()).toEqual([]);
     expect(selectedRows()).toHaveLength(0);
@@ -182,6 +189,16 @@ describe('MapBoFilterDialogComponent', () => {
     expect(row.textContent).toContain('Schweizerische Bundesbahnen');
     expect(row.textContent).toContain('SBB');
     expect(row.textContent).toContain('1');
+  });
+
+  it('should fade out overflowing text instead of truncating it with an ellipsis', () => {
+    // When
+    pick(sbb);
+
+    // Then
+    const label = selectedRows()[0].querySelector('[data-cy="map-bo-filter-selected-label"]')!;
+    expect(label.classList).toContain('selected-bo-label');
+    expect(label.classList).not.toContain('text-truncate');
   });
 
   it('should remove a single business organisation from the selection', () => {

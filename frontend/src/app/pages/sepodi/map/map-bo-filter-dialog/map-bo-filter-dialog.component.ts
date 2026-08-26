@@ -8,9 +8,7 @@ import { AtlasBoSelectComponent } from '../../../../core/form-components/atlas-b
 import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
 import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
-import {
-  BusinessOrganisationLanguageService
-} from '../../../bodi/business-organisations/shared/business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from '../../../bodi/business-organisations/shared/business-organisation-language.service';
 import { MapBoFilterDialogData } from './map-bo-filter-dialog-data';
 
 interface BoFilterSelectionForm {

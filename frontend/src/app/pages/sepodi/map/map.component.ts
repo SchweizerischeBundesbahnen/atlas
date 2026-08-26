@@ -26,6 +26,8 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { MapBoFilterDialogComponent } from './map-bo-filter-dialog/map-bo-filter-dialog.component';
 import { MapBoFilterDialogData } from './map-bo-filter-dialog/map-bo-filter-dialog-data';
 
+const BO_FILTER_DIALOG_WIDTH = 'min(90vw, 800px)';
+
 @Component({
   selector: 'atlas-map',
   templateUrl: './map.component.html',
@@ -139,7 +141,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogService
       .openDialogDataWithCustomResult<MapBoFilterDialogData, BusinessOrganisation[]>(
         dialogData,
-        MapBoFilterDialogComponent
+        MapBoFilterDialogComponent,
+        { width: BO_FILTER_DIALOG_WIDTH }
       )
       .subscribe((result) => {
         if (result) {

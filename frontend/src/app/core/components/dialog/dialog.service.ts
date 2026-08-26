@@ -34,11 +34,13 @@ export class DialogService {
 
   openDialogDataWithCustomResult<D extends DialogData, R>(
     dialogData: D,
-    dialogComponent: ComponentType<unknown> = DialogComponent
+    dialogComponent: ComponentType<unknown> = DialogComponent,
+    dialogConfig?: Pick<MatDialogConfig<D>, 'width'>
   ): Observable<R | undefined> {
     const dialogRef = this.matDialog.open<unknown, D, R>(dialogComponent, {
       data: dialogData,
       ...(basicDialogConfig satisfies MatDialogConfig<D>),
+      ...(dialogConfig satisfies MatDialogConfig<D> | undefined),
     });
     return dialogRef.afterClosed().pipe(take(1));
   }

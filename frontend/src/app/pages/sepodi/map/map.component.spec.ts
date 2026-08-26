@@ -144,7 +144,23 @@ describe('MapComponent', () => {
       // Then
       expect(dialogService.openDialogDataWithCustomResult).toHaveBeenCalledWith(
         expect.objectContaining({ businessOrganisations: [sbb] }),
-        MapBoFilterDialogComponent
+        MapBoFilterDialogComponent,
+        expect.objectContaining({ width: expect.any(String) })
+      );
+    });
+
+    it('should open the bo filter dialog with a stable width', () => {
+      // Given
+      dialogService.openDialogDataWithCustomResult.mockReturnValue(of(undefined));
+
+      // When
+      component.openBoFilterDialog();
+
+      // Then
+      expect(dialogService.openDialogDataWithCustomResult).toHaveBeenCalledWith(
+        expect.anything(),
+        MapBoFilterDialogComponent,
+        { width: 'min(90vw, 800px)' }
       );
     });
 
