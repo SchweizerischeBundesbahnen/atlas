@@ -1,5 +1,12 @@
 @use 'src/styles/variables' as variables;
 
+// Fixed, viewport-driven width so the dialog does not resize with the selection.
+// Floor and cap match the global dialog container min/max width.
+:host {
+  display: block;
+  width: clamp(678px, 60vw, 1100px);
+}
+
 .selected-bo {
   border-bottom: 1px solid variables.$gray-100;
   padding: 0.25rem 0;

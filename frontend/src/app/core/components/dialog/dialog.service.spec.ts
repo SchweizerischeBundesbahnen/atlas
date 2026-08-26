@@ -74,16 +74,6 @@ describe('DialogService', () => {
     expect(matDialog.open).toHaveBeenCalledTimes(1);
   });
 
-  it('should forward the given dialog config on openDialogDataWithCustomResult()', async () => {
-    // When
-    await firstValueFrom(
-      service.openDialogDataWithCustomResult<DialogData, boolean>(dialogData, DialogComponent, { width: '800px' })
-    );
-
-    // Then
-    expect(matDialog.open).toHaveBeenCalledWith(DialogComponent, expect.objectContaining({ width: '800px' }));
-  });
-
   it('should openWithoutResult()', () => {
     service.openWithoutResult(DialogComponent, dialogData);
 
