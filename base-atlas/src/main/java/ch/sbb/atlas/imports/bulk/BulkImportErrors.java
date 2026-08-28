@@ -20,6 +20,14 @@ public class BulkImportErrors {
             .build()).build();
   }
 
+  public static BulkImportError sloidOrNumber() {
+    return BulkImportError.builder()
+        .errorMessage("SlOID or number must be given")
+        .displayInfo(DisplayInfo.builder()
+            .code("BULK_IMPORT.VALIDATION.SLOID_OR_NUMBER")
+            .build()).build();
+  }
+
   public static BulkImportError stopPointSloidXorNumber() {
     return BulkImportError.builder()
         .errorMessage("stopPointSloid xor number must be given")

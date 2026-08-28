@@ -30,12 +30,18 @@ public class BaseBulkImportControllerInternal {
             .lineNumber(bulkImportContainer.getLineNumber())
             .build());
       } catch (Exception exception) {
-        log.error("Data Execution Error! bulkImportId={} lineNumber={} Mapping Exception",
-            bulkImportContainer.getBulkImportId(), bulkImportContainer.getLineNumber(), exception);
-        results.add(BulkImportItemExecutionResult.builder()
+        BulkImportItemExecutionResult result = BulkImportItemExecutionResult.builder()
             .lineNumber(bulkImportContainer.getLineNumber())
             .errorResponse(ErrorResponseMapper.mapToErrorResponse(exception))
-            .build());
+            .build();
+        if (result.isInfo()) {
+          log.info("Data Execution Info! bulkImportId={} lineNumber={} {}",
+              bulkImportContainer.getBulkImportId(), bulkImportContainer.getLineNumber(), exception.getMessage());
+        } else {
+          log.error("Data Execution Error! bulkImportId={} lineNumber={} Mapping Exception",
+              bulkImportContainer.getBulkImportId(), bulkImportContainer.getLineNumber(), exception);
+        }
+        results.add(result);
       }
     });
     return results;

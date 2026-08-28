@@ -1,6 +1,7 @@
 package ch.sbb.importservice.module.bulkimport.template;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.imports.model.ServicePointGlobalIdUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
 import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
@@ -11,6 +12,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 
@@ -19,11 +21,11 @@ class ServicePointTemplateGenerator {
 
   private static final String DEFAULT_SLOID = "ch:1:sloid:7000";
   private static final Integer DEFAULT_NUMBER = 8512345;
-  private static final LocalDate DEFAULT_VALID_TO = LocalDate.of(2099, 12, 31);
+  private static final LocalDate DEFAULT_VALID_TO = LocalDate.of(2099, Month.DECEMBER, 31);
 
   static final ServicePointUpdateCsvModel SERVICE_POINT_UPDATE_CSV_MODEL = ServicePointUpdateCsvModel.builder()
       .sloid(DEFAULT_SLOID)
-      .validFrom(LocalDate.of(2021, 4, 1))
+      .validFrom(LocalDate.of(2021, Month.APRIL, 1))
       .validTo(DEFAULT_VALID_TO)
       .designationOfficial("Bern")
       .freightServicePoint(false)
@@ -45,7 +47,7 @@ class ServicePointTemplateGenerator {
   static final ServicePointCreateCsvModel SERVICE_POINT_CREATE_CSV_MODEL = ServicePointCreateCsvModel.builder()
       .numberShort(7000)
       .uicCountryCode(85)
-      .validFrom(LocalDate.of(2021, 4, 1))
+      .validFrom(LocalDate.of(2021, Month.APRIL, 1))
       .validTo(DEFAULT_VALID_TO)
       .designationOfficial("Bern")
       .designationLong("Bern")
@@ -69,5 +71,12 @@ class ServicePointTemplateGenerator {
       .number(DEFAULT_NUMBER)
       .validTo(DEFAULT_VALID_TO)
       .build();
+
+  static final ServicePointGlobalIdUpdateCsvModel SERVICE_POINT_GLOBAL_ID_UPDATE_CSV_MODEL =
+      ServicePointGlobalIdUpdateCsvModel.builder()
+          .sloid(DEFAULT_SLOID)
+          .number(DEFAULT_NUMBER)
+          .globalId("de:05770:1282")
+          .build();
 
 }

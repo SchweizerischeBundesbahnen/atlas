@@ -8,6 +8,7 @@ export const OPTIONS_APPLICATION_TYPE: string[] = Object.values([
 
 export const OPTIONS_OBJECT_TYPE_SEPODI: string[] = Object.values([
   BusinessObjectType.ServicePoint,
+  BusinessObjectType.ServicePointGlobalId,
   BusinessObjectType.TrafficPoint,
   BusinessObjectType.LoadingPoint,
   BusinessObjectType.Sector,

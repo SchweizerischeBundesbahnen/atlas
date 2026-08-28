@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.Service
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,31 @@ public class GlobalIdService {
   @Transactional
   public void save(ServicePointNumber servicePointNumber, GlobalId globalId) {
     validateUniqueness(servicePointNumber, globalId);
+    upsert(servicePointNumber, globalId);
+  }
+
+  @Transactional
+  public Optional<ServicePointNumber> saveWithRepoint(ServicePointNumber servicePointNumber, GlobalId globalId) {
+    Optional<ServicePointNumber> displaced = releaseGlobalId(servicePointNumber, globalId);
+    upsert(servicePointNumber, globalId);
+    return displaced;
+  }
+
+  /**
+   * Frees the Global-ID up if another service point holds it.
+   *
+   * <p>The delete is conditional on the row still holding this Global-ID, so a holder that a concurrent transaction has
+   * meanwhile moved elsewhere is left alone. In that case nothing is deleted and nothing is reported; the claim that follows
+   * then either succeeds because the Global-ID is genuinely free, or hits the unique index and is retried by the caller.
+   */
+  private Optional<ServicePointNumber> releaseGlobalId(ServicePointNumber servicePointNumber, GlobalId globalId) {
+    return servicePointGlobalIdRepository.findByGlobalId(globalId.value())
+        .map(ServicePointGlobalId::getServicePointNumber)
+        .filter(holder -> !Objects.equals(holder, servicePointNumber))
+        .filter(holder -> servicePointGlobalIdRepository.releaseGlobalIdFrom(globalId.value(), holder) > 0);
+  }
+
+  private void upsert(ServicePointNumber servicePointNumber, GlobalId globalId) {
     ServicePointGlobalId mapping = servicePointGlobalIdRepository.findByServicePointNumber(servicePointNumber)
         .map(existing -> existing.toBuilder().globalId(globalId.value()).build())
         .orElse(ServicePointGlobalId.builder()
@@ -63,6 +89,15 @@ public class GlobalIdService {
   public void remove(ServicePointNumber servicePointNumber) {
     servicePointGlobalIdRepository.findByServicePointNumber(servicePointNumber)
         .ifPresent(servicePointGlobalIdRepository::delete);
+  }
+
+  @Transactional
+  public Optional<String> removeAndGet(ServicePointNumber servicePointNumber) {
+    return servicePointGlobalIdRepository.findByServicePointNumber(servicePointNumber)
+        .map(mapping -> {
+          servicePointGlobalIdRepository.delete(mapping);
+          return mapping.getGlobalId();
+        });
   }
 
   public void validateUniqueness(ServicePointNumber servicePointNumber, GlobalId globalId) {

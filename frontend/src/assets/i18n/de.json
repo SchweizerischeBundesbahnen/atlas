@@ -220,6 +220,7 @@
       "LIDI": "Linienverzeichnis",
       "OBJECT": "Objekt",
       "SERVICE_POINT": "Dienststelle",
+      "SERVICE_POINT_GLOBAL_ID": "Dienststelle Global-ID",
       "TRAFFIC_POINT": "Haltekante",
       "SECTOR": "Sektor",
       "SECTOR_GROUP": "Sektorengruppe",
@@ -1261,7 +1262,13 @@
       "GLOBAL_ID_ERROR": {
         "COUNTRY_MISMATCH": "Die Global-ID muss mit «{{prefix}}» beginnen.",
         "NOT_ALLOWED_FOR_COUNTRY": "Eine Global-ID kann nur für deutsche (11, 80) und österreichische (12, 81) Haltestellen erfasst werden.",
-        "ALREADY_USED": "Die Global-ID «{{globalId}}» wird bereits von einer anderen Haltestelle verwendet."
+        "ALREADY_USED": "Die Global-ID «{{globalId}}» wird bereits von einer anderen Haltestelle verwendet.",
+        "EMPTY": "Die Global-ID ist leer. Verwenden Sie <null>, um eine erfasste Global-ID zu entfernen.",
+        "SLOID_NUMBER_MISMATCH": "Die SLOID «{{sloid}}» gehört nicht zur Dienststellennummer «{{number}}»."
+      },
+      "GLOBAL_ID_INFO": {
+        "REPOINTED": "Die Global-ID «{{globalId}}» wurde der Dienststelle «{{servicePointNumber}}» entzogen.",
+        "REMOVED": "Die Global-ID «{{globalId}}» wurde entfernt."
       },
       "DIDOK_CODE_SEARCH": "Didok-Code",
       "SEARCH_OR_NAVIGATION": "Suche / Navigation",
@@ -1878,6 +1885,7 @@
     "VALIDATION": {
       "DATA_MAPPING_ERROR": "Beim Attribut <{{field}}> wurde der Typ {{expectedType}} erwartet, der angegebene Wert war allerdings \"{{errorValue}}\".",
       "SLOID_XOR_NUMBER": "Es muss entweder die <sloid> oder die <number> (nicht beides) angegeben werden.",
+      "SLOID_OR_NUMBER": "Es muss die <sloid> oder die <number> angegeben werden.",
       "STOPPOINTSLOID_XOR_NUMBER": "Es muss entweder die <stopPointSloid> oder die <number> (nicht beides) angegeben werden.",
       "INVALID_SERVICE_POINT_NUMBER": "Die Dienststellennummer ist ungültig.",
       "FIELD_MANDATORY": "Das Attribut <{{field}}> darf nicht leer sein.",

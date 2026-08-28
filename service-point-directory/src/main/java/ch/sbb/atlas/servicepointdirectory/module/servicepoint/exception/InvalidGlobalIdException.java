@@ -48,6 +48,12 @@ public final class InvalidGlobalIdException extends AtlasException {
         CODE_PREFIX + "ALREADY_USED", List.of(new Parameter(FIELD, globalId.value())));
   }
 
+  public static InvalidGlobalIdException empty() {
+    return new InvalidGlobalIdException(HttpStatus.BAD_REQUEST,
+        "The globalId is empty. Use <null> to remove an assigned Global-ID.",
+        CODE_PREFIX + "EMPTY", List.of());
+  }
+
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()

@@ -9,11 +9,13 @@
  */
 
 
-export type BusinessObjectType = 'SERVICE_POINT' | 'TRAFFIC_POINT' | 'LOADING_POINT' | 'SECTOR' | 'SECTOR_GROUP' | 'STOP_POINT' | 'PLATFORM' | 'PLATFORM_REDUCED' | 'PLATFORM_COMPLETE' | 'REFERENCE_POINT' | 'PARKING_LOT' | 'CONTACT_POINT' | 'TOILET' | 'RELATION' | 'LINE' | 'SUBLINE';
+export type BusinessObjectType = 'SERVICE_POINT' | 'SERVICE_POINT_GLOBAL_ID' | 'TRAFFIC_POINT' | 'LOADING_POINT' | 'SECTOR' | 'SECTOR_GROUP' | 'STOP_POINT' | 'PLATFORM' | 'PLATFORM_REDUCED' | 'PLATFORM_COMPLETE' | 'REFERENCE_POINT' | 'PARKING_LOT' | 'CONTACT_POINT' | 'TOILET' | 'RELATION' | 'LINE' | 'SUBLINE';
 
 export const BusinessObjectType = {
 
     ServicePoint: 'SERVICE_POINT' as BusinessObjectType,
+
+    ServicePointGlobalId: 'SERVICE_POINT_GLOBAL_ID' as BusinessObjectType,
 
     TrafficPoint: 'TRAFFIC_POINT' as BusinessObjectType,
 

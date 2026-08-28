@@ -24,6 +24,13 @@ class TranslationTest {
   }
 
   @Test
+  void shouldTranslateEveryObjectTypeSoTheCompletionMailNeverFailsOnANewScenario() {
+    for (BusinessObjectType objectType : BusinessObjectType.values()) {
+      assertThat(Translation.of(objectType)).as("translation for %s", objectType).isNotNull();
+    }
+  }
+
+  @Test
   void getForImportType() {
     assertThat(Translation.of(ImportType.CREATE).getDe()).isEqualTo("erstellt");
     assertThat(Translation.of(ImportType.CREATE).getFr()).isEqualTo("créées");
