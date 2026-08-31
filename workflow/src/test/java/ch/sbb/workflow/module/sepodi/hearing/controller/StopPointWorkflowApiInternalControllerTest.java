@@ -240,6 +240,7 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
           .firstName("Marek")
           .lastName("Hamsik")
           .function("Centrocampista")
+          .organisation("SBB")
           .mail(MAIL_ADDRESS).build();
 
       StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
