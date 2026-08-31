@@ -3,6 +3,7 @@ package ch.sbb.workflow.module.sepodi.hearing.model.sepodi;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -28,6 +29,7 @@ public class EditStopPointWorkflowModel {
   private String workflowComment;
 
   @Schema(description = "List hearing examinants")
+  @Valid
   private List<StopPointClientPersonModel> examinants;
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
