@@ -8,12 +8,17 @@ import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.ServicePointGlobalIdUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.module.bulkimport.servicepoint.exception.GlobalIdBulkImportInfoException;
 import ch.sbb.atlas.servicepointdirectory.module.bulkimport.servicepoint.service.ServicePointBulkImportService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.controller.ServicePointBulkImportController;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServicePointIdentifierMismatchException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +81,7 @@ class ServicePointBulkImportControllerTest {
             .object(ServicePointTerminateCsvModel.builder()
                 .sloid("ch:1:sloid:7000")
                 .number(8500001)
-                .validTo(LocalDate.of(2020, 1, 1))
+                .validTo(LocalDate.of(2020, Month.JANUARY, 1))
                 .build())
             .build();
     List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportTerminate(
@@ -96,7 +101,7 @@ class ServicePointBulkImportControllerTest {
             .object(ServicePointTerminateCsvModel.builder()
                 .sloid("ch:1:sloid:7000")
                 .number(8500001)
-                .validTo(LocalDate.of(2020, 1, 1))
+                .validTo(LocalDate.of(2020, Month.JANUARY, 1))
                 .build())
             .inNameOf(userName)
             .build();
@@ -108,6 +113,90 @@ class ServicePointBulkImportControllerTest {
     verify(servicePointBulkImportService, never()).terminateServicePoint(updateContainer);
     assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
         .isEqualTo(true);
+  }
+
+  @Test
+  void shouldBulkUpdateGlobalIdViaService() {
+    BulkImportUpdateContainer<ServicePointGlobalIdUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<ServicePointGlobalIdUpdateCsvModel>builder()
+            .object(ServicePointGlobalIdUpdateCsvModel.builder()
+                .number(1105770)
+                .globalId("de:05770:1282")
+                .build())
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        servicePointBulkImportController.bulkImportGlobalIdUpdate(List.of(updateContainer));
+
+    verify(servicePointBulkImportService, never()).updateGlobalIdByUserName("userName", updateContainer);
+    verify(servicePointBulkImportService).updateGlobalId(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
+        .isEqualTo(true);
+  }
+
+  @Test
+  void shouldBulkUpdateGlobalIdViaServiceWithUserName() {
+    String userName = "e123456";
+    BulkImportUpdateContainer<ServicePointGlobalIdUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<ServicePointGlobalIdUpdateCsvModel>builder()
+            .object(ServicePointGlobalIdUpdateCsvModel.builder()
+                .number(1105770)
+                .globalId("de:05770:1282")
+                .build())
+            .inNameOf(userName)
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        servicePointBulkImportController.bulkImportGlobalIdUpdate(List.of(updateContainer));
+
+    verify(servicePointBulkImportService).updateGlobalIdByUserName(userName, updateContainer);
+    verify(servicePointBulkImportService, never()).updateGlobalId(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
+        .isEqualTo(true);
+  }
+
+  @Test
+  void shouldReportGlobalIdRepointingAsInfoRatherThanAsError() {
+    doThrow(GlobalIdBulkImportInfoException.repointed("de:05770:1282",
+        ServicePointNumber.ofNumberWithoutCheckDigit(1105771)))
+        .when(servicePointBulkImportService).updateGlobalId(any());
+
+    BulkImportUpdateContainer<ServicePointGlobalIdUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<ServicePointGlobalIdUpdateCsvModel>builder()
+            .object(ServicePointGlobalIdUpdateCsvModel.builder()
+                .number(1105770)
+                .globalId("de:05770:1282")
+                .build())
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        servicePointBulkImportController.bulkImportGlobalIdUpdate(List.of(updateContainer));
+
+    assertThat(bulkImportItemExecutionResults).hasSize(1);
+    assertThat(bulkImportItemExecutionResults.getFirst().isSuccess()).isFalse();
+    assertThat(bulkImportItemExecutionResults.getFirst().isInfo()).isTrue();
+  }
+
+  @Test
+  void shouldReportGlobalIdIdentifierMismatchAsError() {
+    doThrow(new ServicePointIdentifierMismatchException("ch:1:sloid:9999", 1105770))
+        .when(servicePointBulkImportService).updateGlobalId(any());
+
+    BulkImportUpdateContainer<ServicePointGlobalIdUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<ServicePointGlobalIdUpdateCsvModel>builder()
+            .object(ServicePointGlobalIdUpdateCsvModel.builder()
+                .sloid("ch:1:sloid:9999")
+                .number(1105770)
+                .globalId("de:05770:1282")
+                .build())
+            .build();
+
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults =
+        servicePointBulkImportController.bulkImportGlobalIdUpdate(List.of(updateContainer));
+
+    assertThat(bulkImportItemExecutionResults).hasSize(1);
+    assertThat(bulkImportItemExecutionResults.getFirst().isSuccess()).isFalse();
+    assertThat(bulkImportItemExecutionResults.getFirst().isInfo()).isFalse();
   }
 
   @Test
