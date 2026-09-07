@@ -1,14 +1,14 @@
 [versions]
 okhttpVersion = "5.5.0"
 proj4jVersion = "1.4.3"
-shedlockVersion = "7.9.0"
+shedlockVersion = "7.10.0"
 protobufVersion = "4.36.1"
 springCloudDependenciesVersion = "2025.1.3"
 
 [libraries]
 # Java Convention Dependencies
-openapi-starter-common = { group = "org.springdoc", name = "springdoc-openapi-starter-common", version = "3.1.0" }
-springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.0" }
+openapi-starter-common = { group = "org.springdoc", name = "springdoc-openapi-starter-common", version = "3.1.1" }
+springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.1" }
 spring-cloud-dependencies = { group = "org.springframework.cloud", name = "spring-cloud-dependencies", version.ref = "springCloudDependenciesVersion" }
 
 # Geo Data Libs
@@ -30,7 +30,7 @@ protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version
 
 # Other
 swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.55" }
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.54.12" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.54.13" }
 jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.8" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.5.1" }
