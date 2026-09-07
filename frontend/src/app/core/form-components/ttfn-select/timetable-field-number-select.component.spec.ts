@@ -104,6 +104,18 @@ describe('TimetableFieldNumberSelectComponent', () => {
     );
   });
 
+  it('should not exclude expired versions when resolving the referenced ttfnid', () => {
+    formGroupInput.set(
+      new FormGroup({
+        testControl: new FormControl(TTFNID),
+      })
+    );
+    fixture.detectChanges();
+
+    const excludeExpiredArg = timetableFieldNumberServiceMock.getOverview.mock.calls[0][9];
+    expect(excludeExpiredArg).toBeUndefined();
+  });
+
   it('should expose the resolved timetable field number', async () => {
     formGroupInput.set(
       new FormGroup({
@@ -118,7 +130,7 @@ describe('TimetableFieldNumberSelectComponent', () => {
     expect(timetableFieldNumbers).toEqual([REFERENCED_TTFN]);
   });
 
-  it('should search by free text without validity restriction', () => {
+  it('should search by free text excluding expired timetable field numbers', () => {
     component.searchTimetableFieldNumber('1.1');
 
     expect(timetableFieldNumberServiceMock.getOverview).toHaveBeenCalledWith(
@@ -129,7 +141,9 @@ describe('TimetableFieldNumberSelectComponent', () => {
       undefined,
       undefined,
       undefined,
-      ['ttfnid,ASC']
+      ['ttfnid,ASC'],
+      undefined,
+      true
     );
   });
 

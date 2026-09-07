@@ -126,7 +126,7 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(9999, 12, 31))
         .build();
-    when(timetableFieldNumberApiInternalClient.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternalClient.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder()
             .objects(List.of(timetableFieldNumber))
             .build());
@@ -202,6 +202,27 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
           .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
           .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(2)))
           .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents + "[0].id", notNullValue()));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.ATLAS_ADMIN, user = MockUser.CLIENT_CREDENTIAL)
+    void shouldCreateStatementExternalForExpiredTimetableFieldNumber() throws Exception {
+      timetableHearingYearController.startHearingYear(YEAR);
+
+      TimetableFieldNumberModel expired = TimetableFieldNumberModel.builder()
+          .number("1.1")
+          .ttfnid(TTFNID)
+          .businessOrganisation(SBOID)
+          .validFrom(LocalDate.of(2000, 1, 1))
+          .validTo(LocalDate.of(2001, 12, 31))
+          .build();
+      when(timetableFieldNumberApiInternalClient.getOverview(any(), any(), any(), any(), any(), any(), any(), any()))
+          .thenReturn(Container.<TimetableFieldNumberModel>builder().objects(List.of(expired)).build());
+
+      mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
+              .file(getMockMultipartFile()))
+          .andExpect(status().isCreated())
+          .andExpect(jsonPath("$.ttfnid", is(TTFNID)));
     }
 
     private static MockMultipartFile getMockMultipartFile() {

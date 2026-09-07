@@ -66,7 +66,18 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   searchTimetableFieldNumber(searchString: string) {
     if (searchString) {
       this.timetableFieldNumbers = this.timetableFieldNumbersService
-        .getOverview([searchString], undefined, undefined, undefined, undefined, undefined, undefined, ['ttfnid,ASC'])
+        .getOverview(
+          [searchString],
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          ['ttfnid,ASC'],
+          undefined,
+          true
+        )
         .pipe(map((value) => value.objects ?? []));
     }
   }

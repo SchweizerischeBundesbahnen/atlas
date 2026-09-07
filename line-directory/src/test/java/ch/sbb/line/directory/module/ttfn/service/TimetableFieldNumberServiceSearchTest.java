@@ -631,4 +631,114 @@ class TimetableFieldNumberServiceSearchTest {
     assertThat(searchResult).hasSize(1);
     assertThat(searchResult.getFirst().getDescriptionOutwardLine1()).isEqualTo("after gap");
   }
+
+  @Test
+  void searchWithExcludeExpiredKeepsTimetableFieldNumberValidToday() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:300000";
+    versionRepository.saveAndFlush(versionBuilder().ttfnid(ttfnid).number("200.0").descriptionOutwardLine1("today")
+        .validFrom(SEARCH_DATE.minusDays(1)).validTo(SEARCH_DATE.plusDays(1)).build());
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .excludeExpired(true)
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+    assertThat(searchResult.getFirst().getDescriptionOutwardLine1()).isEqualTo("today");
+  }
+
+  @Test
+  void searchWithExcludeExpiredKeepsTimetableFieldNumberValidOnlyInFuture() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:300001";
+    versionRepository.saveAndFlush(versionBuilder().ttfnid(ttfnid).number("201.0").descriptionOutwardLine1("future")
+        .validFrom(SEARCH_DATE.plusYears(1)).validTo(SEARCH_DATE.plusYears(2)).build());
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .excludeExpired(true)
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+    assertThat(searchResult.getFirst().getDescriptionOutwardLine1()).isEqualTo("future");
+  }
+
+  @Test
+  void searchWithExcludeExpiredDropsTimetableFieldNumberValidOnlyInPast() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:300002";
+    versionRepository.saveAllAndFlush(List.of(
+        versionBuilder().ttfnid(ttfnid).number("202.0").descriptionOutwardLine1("older past")
+            .validFrom(SEARCH_DATE.minusYears(5)).validTo(SEARCH_DATE.minusYears(4)).build(),
+        versionBuilder().ttfnid(ttfnid).number("202.1").descriptionOutwardLine1("latest past")
+            .validFrom(SEARCH_DATE.minusYears(3)).validTo(SEARCH_DATE.minusYears(2)).build()));
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .excludeExpired(true)
+            .build()).toList();
+    // Then
+    assertThat(searchResult).isEmpty();
+  }
+
+  @Test
+  void searchWithExcludeExpiredKeepsTimetableFieldNumberWithPastAndFutureVersions() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:300003";
+    versionRepository.saveAllAndFlush(List.of(
+        versionBuilder().ttfnid(ttfnid).number("203.0").descriptionOutwardLine1("past")
+            .validFrom(SEARCH_DATE.minusYears(3)).validTo(SEARCH_DATE.minusYears(2)).build(),
+        versionBuilder().ttfnid(ttfnid).number("203.1").descriptionOutwardLine1("future")
+            .validFrom(SEARCH_DATE.plusYears(1)).validTo(SEARCH_DATE.plusYears(2)).build()));
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .excludeExpired(true)
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+    assertThat(searchResult.getFirst().getDescriptionOutwardLine1()).isEqualTo("future");
+  }
+
+  @Test
+  void searchWithExcludeExpiredFalseKeepsExpiredTimetableFieldNumber() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:300004";
+    versionRepository.saveAndFlush(versionBuilder().ttfnid(ttfnid).number("204.0").descriptionOutwardLine1("past")
+        .validFrom(SEARCH_DATE.minusYears(3)).validTo(SEARCH_DATE.minusYears(2)).build());
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .excludeExpired(false)
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+  }
+
+  @Test
+  void searchWithExcludeExpiredNullKeepsExpiredTimetableFieldNumber() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:300005";
+    versionRepository.saveAndFlush(versionBuilder().ttfnid(ttfnid).number("205.0").descriptionOutwardLine1("past")
+        .validFrom(SEARCH_DATE.minusYears(3)).validTo(SEARCH_DATE.minusYears(2)).build());
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+  }
 }

@@ -181,7 +181,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(9999, 12, 31))
         .build();
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any()))
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any()))
         .thenReturn(Container.<TimetableFieldNumberModel>builder()
             .objects(List.of(timetableFieldNumber))
             .totalCount(1)
@@ -1271,7 +1271,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
           .validFrom(LocalDate.of(2000, 1, 1))
           .validTo(LocalDate.of(2001, 12, 31))
           .build();
-      when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any()))
+      when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any()))
           .thenReturn(Container.<TimetableFieldNumberModel>builder()
               .objects(List.of(expiredTimetableFieldNumber))
               .totalCount(1)
@@ -1284,7 +1284,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     @Test
     void shouldReturnEmptyListWhenNoTimetableFieldNumberFound() throws Exception {
-      when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any()))
+      when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any()))
           .thenReturn(Container.<TimetableFieldNumberModel>builder()
               .objects(List.of())
               .totalCount(0)

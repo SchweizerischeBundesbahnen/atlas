@@ -51,7 +51,7 @@ class TimetableFieldNumberResolverServiceTest {
 
   @Test
   void shouldResolveTtfnidWithoutValidityRestriction() {
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder()
             .objects(List.of(TimetableFieldNumberModel.builder().ttfnid(TTFNID).build()))
             .build());
@@ -59,12 +59,12 @@ class TimetableFieldNumberResolverServiceTest {
     String result = timetableFieldNumberResolverService.resolveTtfnid("1.1");
 
     assertThat(result).isEqualTo(TTFNID);
-    verify(timetableFieldNumberApiInternal).getOverview(any(), any(), eq("1.1"), isNull(), isNull(), any(), any());
+    verify(timetableFieldNumberApiInternal).getOverview(any(), any(), eq("1.1"), isNull(), isNull(), any(), any(), isNull());
   }
 
   @Test
   void shouldResolveTtfnidWhenAllVersionsExpired() {
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder()
             .objects(List.of(TimetableFieldNumberModel.builder().ttfnid(TTFNID).build()))
             .build());
@@ -74,7 +74,7 @@ class TimetableFieldNumberResolverServiceTest {
 
   @Test
   void shouldNotResolveTtfnidWhenNumberIsAmbiguous() {
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder()
             .objects(List.of(TimetableFieldNumberModel.builder().ttfnid(TTFNID).build(),
                 TimetableFieldNumberModel.builder().ttfnid(OTHER_TTFNID).build()))
@@ -117,7 +117,7 @@ class TimetableFieldNumberResolverServiceTest {
 
   @Test
   void shouldResolveAdditionalVersionInfoWithSingleApiCallForDistinctTtfnids() {
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder().objects(Collections.emptyList()).build());
 
     timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
@@ -125,7 +125,7 @@ class TimetableFieldNumberResolverServiceTest {
 
     ArgumentCaptor<List<String>> ttfnIdsCaptor = ArgumentCaptor.captor();
     verify(timetableFieldNumberApiInternal, times(1)).getOverview(any(), any(), any(), any(), any(), any(),
-        ttfnIdsCaptor.capture());
+        ttfnIdsCaptor.capture(), isNull());
     assertThat(ttfnIdsCaptor.getValue()).containsExactly(TTFNID, OTHER_TTFNID);
   }
 
@@ -137,12 +137,12 @@ class TimetableFieldNumberResolverServiceTest {
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getTimetableFieldNumber()).isNull();
     assertThat(result.getFirst().getTimetableFieldDescription()).isNull();
-    verify(timetableFieldNumberApiInternal, never()).getOverview(any(), any(), any(), any(), any(), any(), any());
+    verify(timetableFieldNumberApiInternal, never()).getOverview(any(), any(), any(), any(), any(), any(), any(), any());
   }
 
   @Test
   void shouldKeepDisplayFieldsNullWhenApiReturnsNoRow() {
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder().objects(Collections.emptyList()).build());
 
     List<TimetableHearingStatementModelV2> result =
@@ -153,7 +153,7 @@ class TimetableFieldNumberResolverServiceTest {
   }
 
   private void mockOverviewFor(String ttfnid, String number, String description) {
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder()
             .objects(List.of(TimetableFieldNumberModel.builder()
                 .ttfnid(ttfnid)

@@ -36,7 +36,8 @@ public interface TimetableFieldNumberApiInternal {
       @RequestParam(required = false) String businessOrganisation,
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices,
-      @Parameter @RequestParam(required = false) List<String> ttfnIds);
+      @Parameter @RequestParam(required = false) List<String> ttfnIds,
+      @Parameter @RequestParam(required = false) Boolean excludeExpired);
 
   @PostMapping(BASEPATH + "/{ttfnId}/revoke")
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"

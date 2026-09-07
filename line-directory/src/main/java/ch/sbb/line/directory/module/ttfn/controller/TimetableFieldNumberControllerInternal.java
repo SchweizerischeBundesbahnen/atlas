@@ -30,11 +30,11 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
   @Override
   public Container<TimetableFieldNumberModel> getOverview(Pageable pageable,
       List<String> searchCriteria, String number, String businessOrganisation,
-      LocalDate validOn, List<Status> statusChoices, List<String> ttfnIds) {
+      LocalDate validOn, List<Status> statusChoices, List<String> ttfnIds, Boolean excludeExpired) {
     log.info(
-        "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={}, statusChoices={} and "
-            + "ttfnIds={}",
-        pageable, searchCriteria, validOn, statusChoices, ttfnIds);
+        "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={}, statusChoices={}, "
+            + "ttfnIds={} and excludeExpired={}",
+        pageable, searchCriteria, validOn, statusChoices, ttfnIds, excludeExpired);
     Page<TimetableFieldNumber> timetableFieldNumberPage = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
             .pageable(pageable)
@@ -44,6 +44,7 @@ public class TimetableFieldNumberControllerInternal implements TimetableFieldNum
             .validOn(validOn)
             .businessOrganisation(businessOrganisation)
             .ttfnIds(ttfnIds)
+            .excludeExpired(excludeExpired)
             .build());
     List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(TimetableFieldNumberMapper::toModel)
         .toList();
