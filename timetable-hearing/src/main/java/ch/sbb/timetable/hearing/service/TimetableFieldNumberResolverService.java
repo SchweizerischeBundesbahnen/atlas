@@ -23,7 +23,7 @@ public class TimetableFieldNumberResolverService {
       log.info("Resolving timetableFieldNumber=[{}] to ttfnid", timetableFieldNumber);
 
       List<TimetableFieldNumberModel> timetableFieldNumbers = timetableFieldNumberApiInternal.getOverview(Pageable.unpaged(),
-              Collections.emptyList(), timetableFieldNumber, null, null, Collections.emptyList(), Collections.emptyList(),
+              null, timetableFieldNumber, null, null, null, null,
               null)
           .getObjects();
 
@@ -55,7 +55,7 @@ public class TimetableFieldNumberResolverService {
     }
 
     List<TimetableFieldNumberModel> timetableFieldNumbers = timetableFieldNumberApiInternal.getOverview(Pageable.unpaged(),
-        Collections.emptyList(), null, null, null, Collections.emptyList(), ttfnIds, null).getObjects();
+        null, null, null, null, null, ttfnIds, null).getObjects();
 
     statements.stream()
         .filter(statement -> statement.getTtfnid() != null)

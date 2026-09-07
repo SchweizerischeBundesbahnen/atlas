@@ -835,6 +835,29 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     }
 
     @Test
+    void shouldResolveTimetableFieldDisplayFieldsOnCreate() throws Exception {
+      TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
+          .timetableYear(YEAR)
+          .swissCanton(SwissCanton.BERN)
+          .ttfnid(TTFNID)
+          .statementSender(TimetableHearingStatementSenderModelV2.builder()
+              .emails(Set.of("fabienne.mueller@sbb.ch"))
+              .build())
+          .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+          .build();
+
+      MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+          MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+      mvc.perform(multipart(HttpMethod.POST, "/internal/timetable-hearing/statements")
+              .file(statementJson))
+          .andExpect(status().isCreated())
+          .andExpect(jsonPath("$." + Fields.ttfnid, is(TTFNID)))
+          .andExpect(jsonPath("$.timetableFieldNumber", is("1.1")))
+          .andExpect(jsonPath("$.timetableFieldDescription", is("Bern - Zuerich")));
+    }
+
+    @Test
     void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
       TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
           .id(1111L)
@@ -993,6 +1016,36 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
           .andExpect(status().isOk())
           .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
           .andExpect(jsonPath("$." + TimetableHearingStatementDataProtectionModel.Fields.documents, hasSize(0)));
+    }
+
+    @Test
+    void shouldResolveTimetableFieldDisplayFieldsOnUpdate() throws Exception {
+      TimetableHearingStatement existingStatement = timetableHearingStatementRepository.saveAndFlush(
+          TimetableHearingStatement.builder()
+              .timetableYear(YEAR)
+              .statementStatus(StatementStatus.RECEIVED)
+              .swissCanton(SwissCanton.BERN)
+              .ttfnid(TTFNID)
+              .statementSender(StatementSender.builder()
+                  .emails(List.of("fabienne.mueller@sbb.ch"))
+                  .build())
+              .responsibleTransportCompanies(Collections.emptySet())
+              .documents(Collections.emptySet())
+              .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+              .build());
+
+      TimetableHearingStatementModelV2 statement = TimetableHearingStatementMapperV2.toModel(existingStatement);
+      statement.setStatementStatus(StatementStatus.JUNK);
+
+      MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+          MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+      mvc.perform(multipart(HttpMethod.PUT, "/internal/timetable-hearing/statements/" + statement.getId())
+              .file(statementJson))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$." + Fields.ttfnid, is(TTFNID)))
+          .andExpect(jsonPath("$.timetableFieldNumber", is("1.1")))
+          .andExpect(jsonPath("$.timetableFieldDescription", is("Bern - Zuerich")));
     }
 
     private ResultActions updateStatement() throws Exception {

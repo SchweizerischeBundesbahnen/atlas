@@ -89,6 +89,34 @@ class TimetableFieldNumberControllerInternalApiTest extends BaseControllerApiTes
   }
 
   @Test
+  void shouldFilterByTtfnIdsWhenEmptyStatusChoicesParamIsSentByFeignClient() throws Exception {
+    mvc.perform(get("/internal/field-numbers")
+            .queryParam("searchCriteria", "")
+            .queryParam("statusChoices", "")
+            .queryParam("ttfnIds", version.getTtfnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
+  }
+
+  @Test
+  void shouldIgnoreEmptySearchCriteriaParam() throws Exception {
+    mvc.perform(get("/internal/field-numbers")
+            .queryParam("searchCriteria", "")
+            .queryParam("ttfnIds", version.getTtfnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
+  }
+
+  @Test
+  void shouldIgnoreEmptyStatusChoicesParam() throws Exception {
+    mvc.perform(get("/internal/field-numbers")
+            .queryParam("statusChoices", "")
+            .queryParam("ttfnIds", version.getTtfnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
+  }
+
+  @Test
   void shouldReturnEmptyResultForUnknownTtfnIds() throws Exception {
     mvc.perform(get("/internal/field-numbers")
             .queryParam("ttfnIds", "ch:1:ttfnid:does-not-exist"))

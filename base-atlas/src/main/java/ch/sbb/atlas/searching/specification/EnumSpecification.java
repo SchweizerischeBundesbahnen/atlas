@@ -33,7 +33,7 @@ public class EnumSpecification<T, E> implements Specification<T> {
   }
 
   public EnumSpecification(List<E> enumRestrictions, String enumAttribute, Boolean notIn) {
-    this.enumRestrictions = Objects.requireNonNull(enumRestrictions);
+    this.enumRestrictions = Objects.requireNonNull(enumRestrictions).stream().filter(Objects::nonNull).toList();
     this.enumAttribute = enumAttribute;
     this.notIn = notIn;
   }

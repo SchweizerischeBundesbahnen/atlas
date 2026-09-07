@@ -134,7 +134,9 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
       throw new ForbiddenDueToHearingYearSettingsException(hearingYear.getTimetableYear(),
           TimetableHearingYear_.STATEMENT_CREATABLE_INTERNAL);
     }
-    return timetableHearingStatementService.createHearingStatementV2(statement, documents);
+    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(statement,
+        documents);
+    return timetableFieldNumberResolverService.resolveAdditionalVersionInfo(List.of(createdStatement)).getFirst();
   }
 
   @Override
@@ -150,7 +152,9 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
     statement.setId(id);
     TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement,
         statement, documents);
-    return TimetableHearingStatementMapperV2.toModel(hearingStatement);
+    return timetableFieldNumberResolverService
+        .resolveAdditionalVersionInfo(List.of(TimetableHearingStatementMapperV2.toModel(hearingStatement)))
+        .getFirst();
   }
 
   @Override

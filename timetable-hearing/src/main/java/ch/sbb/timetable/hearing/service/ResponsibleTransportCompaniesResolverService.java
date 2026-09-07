@@ -44,7 +44,7 @@ public class ResponsibleTransportCompaniesResolverService {
 
   private String resolveBusinessOrganisationSboid(String ttfnid) {
     List<TimetableFieldNumberModel> timetableFieldNumbers = timetableFieldNumberApiInternal.getOverview(Pageable.unpaged(),
-            Collections.emptyList(), null, null, null, Collections.emptyList(), List.of(ttfnid), null)
+            null, null, null, null, null, List.of(ttfnid), null)
         .getObjects();
 
     if (timetableFieldNumbers.isEmpty()) {

@@ -93,6 +93,25 @@ describe('OpenStatementInMailService', () => {
     );
   });
 
+  it('should not render raw ttfnid when display fields are missing', () => {
+    const statement: TimetableHearingStatementV2 = {
+      id: 456,
+      swissCanton: SwissCanton.Bern,
+      statement: 'Mehr Bös pls',
+      ttfnid: 'ch:1:ttfnid:123123123',
+      statementSender: {
+        emails: new Set('me@sbb.ch'),
+      },
+    };
+
+    const mailToLink = openStatementInMailService.buildMailToLink(statement);
+
+    expect(mailToLink).not.toContain('ttfnid');
+    expect(mailToLink).toBe(
+      'mailto:?subject=Anfrage%20Stellungnahme%20456%20&body=Stellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
+    );
+  });
+
   it('should construct mailto link with stopplace', () => {
     const statement: TimetableHearingStatementV2 = {
       id: 456,
