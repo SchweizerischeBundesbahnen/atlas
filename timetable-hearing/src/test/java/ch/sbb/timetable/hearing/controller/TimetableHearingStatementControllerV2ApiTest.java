@@ -126,7 +126,7 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(9999, 12, 31))
         .build();
-    when(timetableFieldNumberApiInternalClient.getOverview(any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternalClient.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder()
             .objects(List.of(timetableFieldNumber))
             .build());

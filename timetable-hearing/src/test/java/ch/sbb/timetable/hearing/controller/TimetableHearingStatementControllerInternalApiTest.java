@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -22,7 +23,9 @@ import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.line.ttfn.TimetableFieldNumberApiV1Client;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberApiInternal;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
@@ -169,6 +172,20 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .validTo(LocalDate.of(9999, 12, 31))
         .build();
     when(timetableFieldNumberApiV1Client.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(timetableFieldNumberVersion));
+
+    TimetableFieldNumberModel timetableFieldNumber = TimetableFieldNumberModel.builder()
+        .number("1.1")
+        .ttfnid(TTFNID)
+        .descriptionOutwardLine1("Bern - Zuerich")
+        .businessOrganisation(SBOID)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
+        .build();
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any()))
+        .thenReturn(Container.<TimetableFieldNumberModel>builder()
+            .objects(List.of(timetableFieldNumber))
+            .totalCount(1)
+            .build());
   }
 
   @AfterEach
@@ -1242,6 +1259,40 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
           .andExpect(status().isOk())
           .andExpect(jsonPath("$", hasSize(1)))
           .andExpect(jsonPath("$[0].id", is(sharedTransportCompany.getId().intValue())));
+    }
+
+    @Test
+    void shouldGetResponsibleTransportCompaniesForTimetableFieldNumberNotValidInGivenYear() throws Exception {
+      TimetableFieldNumberModel expiredTimetableFieldNumber = TimetableFieldNumberModel.builder()
+          .number("1.1")
+          .ttfnid(TTFNID)
+          .descriptionOutwardLine1("Bern - Zuerich")
+          .businessOrganisation(SBOID)
+          .validFrom(LocalDate.of(2000, 1, 1))
+          .validTo(LocalDate.of(2001, 12, 31))
+          .build();
+      when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any()))
+          .thenReturn(Container.<TimetableFieldNumberModel>builder()
+              .objects(List.of(expiredTimetableFieldNumber))
+              .totalCount(1)
+              .build());
+
+      mvc.perform(get("/internal/timetable-hearing/statements/responsible-transport-companies/" + TTFNID + "/" + YEAR))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoTimetableFieldNumberFound() throws Exception {
+      when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any()))
+          .thenReturn(Container.<TimetableFieldNumberModel>builder()
+              .objects(List.of())
+              .totalCount(0)
+              .build());
+
+      mvc.perform(get("/internal/timetable-hearing/statements/responsible-transport-companies/" + TTFNID + "/" + YEAR))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test

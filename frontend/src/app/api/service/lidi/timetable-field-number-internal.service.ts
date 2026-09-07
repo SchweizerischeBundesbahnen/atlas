@@ -21,7 +21,8 @@ export class TimetableFieldNumberInternalService {
     statusChoices?: Array<Status>,
     page?: number,
     size?: number,
-    sort?: Array<string>
+    sort?: Array<string>,
+    ttfnIds?: Array<string>
   ): Observable<ContainerTimetableFieldNumber> {
     const httpParams = this.atlasApiService.paramsOf({
       searchCriteria,
@@ -32,6 +33,7 @@ export class TimetableFieldNumberInternalService {
       page,
       size,
       sort,
+      ttfnIds,
     });
     return this.atlasApiService.get(this.INTERNAL_FIELD_NUMBERS, httpParams);
   }

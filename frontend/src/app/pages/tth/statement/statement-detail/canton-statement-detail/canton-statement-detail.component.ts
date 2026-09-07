@@ -25,7 +25,6 @@ import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty
 import { TableService } from '../../../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../../../core/util/arrays';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
-import { TimetableYearChangeInternalService } from '../../../../../api/service/lidi/timetable-year-change-internal.service';
 import { LoadingSpinnerService } from '../../../../../core/components/loading-spinner/loading-spinner.service';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
@@ -102,7 +101,6 @@ export class CantonStatementDetailComponent
   private readonly dialogService = inject(DialogService);
   private readonly notificationService = inject(NotificationService);
   private readonly permissionService = inject(PermissionService);
-  private readonly timetableYearChangeService = inject(TimetableYearChangeInternalService);
   private readonly timetableHearingYearsService = inject(TimetableHearingYearInternalService);
   private readonly openStatementInMailService = inject(OpenStatementInMailService);
   private readonly statementShareService = inject(StatementShareService);
@@ -149,7 +147,6 @@ export class CantonStatementDetailComponent
 
     this.initForm();
     this.initYearOptions();
-    this.initTtfnValidOnHandler();
     this.initCantonOptions();
     this.initStatusOptions();
   }
@@ -204,7 +201,7 @@ export class CantonStatementDetailComponent
   }
 
   openAsMail() {
-    this.openStatementInMailService.openAsMail(this.statement!, this.ttfnValidOn);
+    this.openStatementInMailService.openAsMail(this.statement!);
   }
 
   downloadLocalFile(id: number, documents: Array<TimetableHearingStatementDocument> | undefined) {
@@ -291,16 +288,6 @@ export class CantonStatementDetailComponent
       this.form.controls.statementStatus.setValue(StatementStatus.Received);
       this.form.controls.statementStatus.disable();
     }
-  }
-
-  private initTtfnValidOnHandler() {
-    this.form.controls.timetableYear.valueChanges.subscribe((year) => {
-      if (year) {
-        this.timetableYearChangeService.getTimetableYearChange(year - 1).subscribe((result) => {
-          this.ttfnValidOn = result;
-        });
-      }
-    });
   }
 
   private createStatement(statement: TimetableHearingStatementV2) {

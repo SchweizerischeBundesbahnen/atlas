@@ -30,7 +30,6 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   readonly formModus = input(true);
   readonly required = input(true);
   readonly formGroup = input.required<FormGroup>();
-  readonly validOn = input<Date>();
   readonly disabled = input(false);
 
   readonly selectedTimetableFieldNumberChanged = output();
@@ -58,17 +57,25 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
     const ttfnControl = this.formGroup().get(this.controlName())!;
     this.formSubscription = ttfnControl.valueChanges.subscribe((change) => {
       this.selectedTimetableFieldNumberChanged.emit(change);
-      this.searchTimetableFieldNumber(change);
+      this.resolveReferencedTimetableFieldNumber(change);
     });
 
-    this.searchTimetableFieldNumber(ttfnControl.value as string);
+    this.resolveReferencedTimetableFieldNumber(ttfnControl.value as string);
   }
 
   searchTimetableFieldNumber(searchString: string) {
     if (searchString) {
       this.timetableFieldNumbers = this.timetableFieldNumbersService
-        .getOverview([searchString], undefined, undefined, this.validOn(), undefined, undefined, undefined, [
-          'ttfnid,ASC',
+        .getOverview([searchString], undefined, undefined, undefined, undefined, undefined, undefined, ['ttfnid,ASC'])
+        .pipe(map((value) => value.objects ?? []));
+    }
+  }
+
+  private resolveReferencedTimetableFieldNumber(ttfnid: string) {
+    if (ttfnid) {
+      this.timetableFieldNumbers = this.timetableFieldNumbersService
+        .getOverview(undefined, undefined, undefined, undefined, undefined, undefined, undefined, ['ttfnid,ASC'], [
+          ttfnid,
         ])
         .pipe(map((value) => value.objects ?? []));
     }

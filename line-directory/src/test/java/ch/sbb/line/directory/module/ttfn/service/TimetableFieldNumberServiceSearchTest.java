@@ -464,4 +464,171 @@ class TimetableFieldNumberServiceSearchTest {
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getTtfnid()).isEqualTo(versionList.getFirst().getTtfnid());
   }
+
+  @Test
+  void searchWithTtfnIdsFiltersToGivenTtfnids() {
+    // Given initial dataset
+    String ttfnid = versionList.getFirst().getTtfnid();
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+    assertThat(searchResult.getFirst().getTtfnid()).isEqualTo(ttfnid);
+  }
+
+  @Test
+  void searchWithMultipleTtfnIdsReturnsOneRowPerTtfnid() {
+    // Given initial dataset
+    List<String> ttfnIds = versionList.stream().map(TimetableFieldNumberVersion::getTtfnid).distinct().toList();
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(ttfnIds)
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(ttfnIds.size());
+    assertThat(searchResult).extracting(TimetableFieldNumber::getTtfnid).containsExactlyInAnyOrderElementsOf(ttfnIds);
+  }
+
+  @Test
+  void searchWithUnknownTtfnIdReturnsEmptyResult() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of("ch:1:ttfnid:does-not-exist"))
+            .build()).toList();
+    // Then
+    assertThat(searchResult).isEmpty();
+  }
+
+  @Test
+  void searchWithEmptyTtfnIdsAppliesNoFilter() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of())
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(4);
+  }
+
+  @Test
+  void searchWithNullTtfnIdsAppliesNoFilter() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(4);
+  }
+
+  @Test
+  void searchWithTtfnIdsAndNumberAppliesBothPredicates() {
+    // Given initial dataset
+    String ttfnid = versionList.getFirst().getTtfnid();
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .number("does-not-match")
+            .build()).toList();
+    // Then
+    assertThat(searchResult).isEmpty();
+  }
+
+  @Test
+  void searchWithTtfnIdsPrefersVersionValidToday() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:200000";
+    versionRepository.saveAll(List.of(
+        versionBuilder().ttfnid(ttfnid).number("100.0").descriptionOutwardLine1("past")
+            .validFrom(SEARCH_DATE.minusYears(3)).validTo(SEARCH_DATE.minusYears(2)).build(),
+        versionBuilder().ttfnid(ttfnid).number("100.1").descriptionOutwardLine1("today")
+            .validFrom(SEARCH_DATE.minusDays(1)).validTo(SEARCH_DATE.plusDays(1)).build(),
+        versionBuilder().ttfnid(ttfnid).number("100.2").descriptionOutwardLine1("future")
+            .validFrom(SEARCH_DATE.plusYears(2)).validTo(SEARCH_DATE.plusYears(3)).build()));
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+    assertThat(searchResult.getFirst().getDescriptionOutwardLine1()).isEqualTo("today");
+  }
+
+  @Test
+  void searchWithTtfnIdsFallsBackToEarliestFutureVersionWhenNoneValidToday() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:200001";
+    versionRepository.saveAll(List.of(
+        versionBuilder().ttfnid(ttfnid).number("101.0").descriptionOutwardLine1("past")
+            .validFrom(SEARCH_DATE.minusYears(3)).validTo(SEARCH_DATE.minusYears(2)).build(),
+        versionBuilder().ttfnid(ttfnid).number("101.1").descriptionOutwardLine1("next future")
+            .validFrom(SEARCH_DATE.plusYears(1)).validTo(SEARCH_DATE.plusYears(2)).build(),
+        versionBuilder().ttfnid(ttfnid).number("101.2").descriptionOutwardLine1("later future")
+            .validFrom(SEARCH_DATE.plusYears(3)).validTo(SEARCH_DATE.plusYears(4)).build()));
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+    assertThat(searchResult.getFirst().getDescriptionOutwardLine1()).isEqualTo("next future");
+  }
+
+  @Test
+  void searchWithTtfnIdsFallsBackToLatestPastVersionWhenNoValidOrFutureVersionExists() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:200002";
+    versionRepository.saveAll(List.of(
+        versionBuilder().ttfnid(ttfnid).number("102.0").descriptionOutwardLine1("older past")
+            .validFrom(SEARCH_DATE.minusYears(5)).validTo(SEARCH_DATE.minusYears(4)).build(),
+        versionBuilder().ttfnid(ttfnid).number("102.1").descriptionOutwardLine1("latest past")
+            .validFrom(SEARCH_DATE.minusYears(3)).validTo(SEARCH_DATE.minusYears(2)).build()));
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+    assertThat(searchResult.getFirst().getDescriptionOutwardLine1()).isEqualTo("latest past");
+  }
+
+  @Test
+  void searchWithTtfnIdsSelectsVersionAfterValidityGapAroundToday() {
+    // Given
+    String ttfnid = "ch:1:ttfnid:200003";
+    versionRepository.saveAll(List.of(
+        versionBuilder().ttfnid(ttfnid).number("103.0").descriptionOutwardLine1("before gap")
+            .validFrom(SEARCH_DATE.minusYears(2)).validTo(SEARCH_DATE.minusDays(10)).build(),
+        versionBuilder().ttfnid(ttfnid).number("103.1").descriptionOutwardLine1("after gap")
+            .validFrom(SEARCH_DATE.plusDays(10)).validTo(SEARCH_DATE.plusYears(2)).build()));
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .ttfnIds(List.of(ttfnid))
+            .build()).toList();
+    // Then
+    assertThat(searchResult).hasSize(1);
+    assertThat(searchResult.getFirst().getDescriptionOutwardLine1()).isEqualTo("after gap");
+  }
 }

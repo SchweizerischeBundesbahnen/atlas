@@ -20,7 +20,6 @@ export abstract class StatementDetailBaseComponent {
   protected readonly route = inject(ActivatedRoute);
   protected readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
 
-  protected ttfnValidOn: Date | undefined = undefined;
   statement: TimetableHearingStatementV2 | undefined;
   protected hearingStatus!: HearingStatus;
   form!: FormGroup<StatementDetailFormGroup>;

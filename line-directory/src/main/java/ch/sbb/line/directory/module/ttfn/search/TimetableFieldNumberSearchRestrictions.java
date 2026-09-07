@@ -20,6 +20,8 @@ public class TimetableFieldNumberSearchRestrictions extends
 
   private String number;
 
+  private List<String> ttfnIds;
+
   @Override
   protected SingularAttribute<TimetableFieldNumber, Status> getStatus() {
     return TimetableFieldNumber_.status;
@@ -27,7 +29,10 @@ public class TimetableFieldNumberSearchRestrictions extends
 
   @Override
   public Specification<TimetableFieldNumber> getSpecification() {
-    return getBaseSpecification().and(specificationBuilder().exactMatchStringSpecification(number));
+    return getBaseSpecification()
+        .and(specificationBuilder().exactMatchStringSpecification(number))
+        .and(specificationBuilder().stringInSpecification(
+            ttfnIds == null ? List.of() : ttfnIds, TimetableFieldNumber_.ttfnid));
   }
 
   @Override
