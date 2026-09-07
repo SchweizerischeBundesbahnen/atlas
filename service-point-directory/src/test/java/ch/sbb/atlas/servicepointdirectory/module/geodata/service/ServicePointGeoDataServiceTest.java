@@ -214,4 +214,33 @@ class ServicePointGeoDataServiceTest {
     assertThat(valueIndex).isNotEqualTo(-1);
     assertThat(layer.getValues(valueIndex).getStringValue()).isEqualTo(geoData.getBusinessOrganisation());
   }
+
+  @Test
+  void shouldEncodeMeansOfTransportIntoVectorTile() {
+    // given
+    ServicePointGeoData geoData = GeoTestData.testGeoDataWgs84Web();
+    ServicePointGeoDataMapper realMapper = new ServicePointGeoDataMapper();
+    VectorTileService realVectorTileService = new VectorTileService();
+    Point point = realMapper.mapGeoDataToWgs84WebGeometry(geoData);
+
+    // when
+    Tile tile = realVectorTileService.encodeTileLayer("service-points", List.of(point), new Envelope(0D, 1D, 0D, 1D));
+
+    // then
+    Tile.Layer layer = tile.getLayers(0);
+    int meansOfTransportKeyIndex = layer.getKeysList().indexOf("meansOfTransport");
+    assertThat(meansOfTransportKeyIndex).isNotEqualTo(-1);
+
+    Tile.Feature feature = layer.getFeatures(0);
+    List<Integer> tags = feature.getTagsList();
+    int valueIndex = -1;
+    for (int i = 0; i < tags.size(); i += 2) {
+      if (tags.get(i) == meansOfTransportKeyIndex) {
+        valueIndex = tags.get(i + 1);
+        break;
+      }
+    }
+    assertThat(valueIndex).isNotEqualTo(-1);
+    assertThat(layer.getValues(valueIndex).getStringValue()).isEqualTo(geoData.getMeansOfTransport());
+  }
 }

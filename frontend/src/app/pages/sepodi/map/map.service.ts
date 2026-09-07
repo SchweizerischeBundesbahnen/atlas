@@ -1,5 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import {
+  FilterSpecification,
   GeoJSONSource,
   LngLat,
   LngLatLike,
@@ -20,7 +21,7 @@ import {
 import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX } from './map-options';
 import { BehaviorSubject, filter, Subject, take, takeUntil } from 'rxjs';
-import { BusinessOrganisation, CoordinatePair, SpatialReference } from '../../../api';
+import { BusinessOrganisation, CoordinatePair, MeanOfTransport, SpatialReference } from '../../../api';
 import { Pages } from '../../pages';
 import { MapIconsService } from './map-icons.service';
 import { Router } from '@angular/router';
@@ -58,6 +59,10 @@ export class MapService {
   private readonly _boFilter = signal<BusinessOrganisation[]>([]);
   readonly boFilter = this._boFilter.asReadonly();
   readonly boFilterActive = computed(() => this._boFilter().length > 0);
+
+  private readonly _meansOfTransportFilter = signal<MeanOfTransport[]>([]);
+  readonly meansOfTransportFilter = this._meansOfTransportFilter.asReadonly();
+  readonly meansOfTransportFilterActive = computed(() => this._meansOfTransportFilter().length > 0);
 
   popup = new Popup({
     closeButton: true,
@@ -144,21 +149,40 @@ export class MapService {
   removeMap() {
     this.map.remove();
     this._boFilter.set([]);
+    this._meansOfTransportFilter.set([]);
   }
 
   applyBoFilter(businessOrganisations: BusinessOrganisation[]) {
     this._boFilter.set([...businessOrganisations]);
-    this.updateBoFilterOnMap();
+    this.updateServicePointFilterOnMap();
   }
 
-  private updateBoFilterOnMap() {
+  applyMeansOfTransportFilter(meansOfTransport: MeanOfTransport[]) {
+    this._meansOfTransportFilter.set([...meansOfTransport]);
+    this.updateServicePointFilterOnMap();
+  }
+
+  private updateServicePointFilterOnMap() {
     if (!this.map) {
       return;
     }
     const sboids = this._boFilter()
       .map((businessOrganisation) => businessOrganisation.sboid)
       .filter((sboid): sboid is string => !!sboid);
-    this.map.setFilter(MAP_SOURCE_NAME, sboids.length > 0 ? ['in', ['get', 'sboid'], ['literal', sboids]] : null);
+    const meansOfTransports = this._meansOfTransportFilter();
+
+    const filters = [];
+    if (sboids.length > 0) {
+      filters.push(['in', ['get', 'sboid'], ['literal', sboids]]);
+    }
+    if (meansOfTransports.length > 0) {
+      filters.push([
+        'any',
+        ...meansOfTransports.map((mean) => ['in', `,${mean},`, ['to-string', ['get', 'meansOfTransport']]]),
+      ]);
+    }
+    const filter = filters.length === 0 ? null : filters.length === 1 ? filters[0] : ['all', ...filters];
+    this.map.setFilter(MAP_SOURCE_NAME, filter as FilterSpecification | null);
   }
 
   switchToStyle(style: MapStyle) {

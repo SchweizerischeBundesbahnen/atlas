@@ -7,12 +7,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeoData;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointType;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointVersionRepository;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Envelope;
@@ -75,6 +77,43 @@ class ServicePointGeolocationRepositoryTest {
 
     assertThat(servicePoints).isNotEmpty().hasSize(1);
     assertThat(servicePoints.get(0).getBusinessOrganisation()).isEqualTo("somesboid");
+  }
+
+  @Test
+  void shouldReturnMeansOfTransportFromGeoDataView() {
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.flush();
+    ServicePointVersion servicePointVersion = testServicePoint();
+    servicePointVersion.setMeansOfTransport(Set.of(MeanOfTransport.TRAIN, MeanOfTransport.BUS));
+    servicePointVersion.setServicePointGeolocation(testGeolocationWgs84());
+    servicePointVersionRepository.saveAndFlush(servicePointVersion);
+
+    List<ServicePointGeoData> servicePoints = repository.findAll();
+
+    assertThat(servicePoints).isNotEmpty();
+    assertThat(servicePoints).extracting(ServicePointGeoData::getMeansOfTransport).containsOnly(",BUS,TRAIN,");
+  }
+
+  @Test
+  void shouldReturnStopPointWithMultipleMeansOfTransportOnlyOnce() {
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.flush();
+    ServicePointVersion servicePointVersion = testServicePoint();
+    servicePointVersion.setMeansOfTransport(Set.of(MeanOfTransport.TRAIN, MeanOfTransport.BUS));
+    servicePointVersion.setServicePointGeolocation(testGeolocationWgs84());
+    servicePointVersionRepository.saveAndFlush(servicePointVersion);
+
+    List<ServicePointGeoData> servicePoints = repository.findAll();
+
+    assertThat(servicePoints).hasSize(1);
+  }
+
+  @Test
+  void shouldReturnNullMeansOfTransportForServicePointWithoutMeansOfTransport() {
+    List<ServicePointGeoData> servicePoints = repository.findAll();
+
+    assertThat(servicePoints).isNotEmpty().hasSize(1);
+    assertThat(servicePoints.get(0).getMeansOfTransport()).isNull();
   }
 
   @Test

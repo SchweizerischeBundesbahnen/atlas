@@ -90,12 +90,12 @@ $map-control-popup-gap: 25px;
     }
   }
 
-  .map-bo-filter-button {
+  .map-service-point-filter-button {
     &.active {
       color: variables.$primary-500;
     }
 
-    .bo-filter-count {
+    .filter-count {
       position: absolute;
       top: 2px;
       right: 2px;

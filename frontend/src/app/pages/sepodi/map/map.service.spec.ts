@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { GeoJSONSource, Map, MapGeoJSONFeature, MapMouseEvent, Marker } from 'maplibre-gl';
-import { BusinessOrganisation, SpatialReference } from '../../../api';
+import { BusinessOrganisation, MeanOfTransport, SpatialReference } from '../../../api';
 import { MAP_STYLES } from './map-options';
 import { Router } from '@angular/router';
 import { mock, mockDeep } from 'vitest-mock-extended';
@@ -527,6 +527,164 @@ describe('MapService', () => {
       vi.spyOn(service, 'createMap').mockReturnValue(mapMock);
       vi.spyOn(service, 'deselectServicePoint').mockImplementation(() => {});
       service.applyBoFilter([sbb]);
+      service.removeMap();
+      mapMock.setFilter.mockClear();
+
+      // When
+      service.initMap(document.createElement('div'));
+
+      // Then
+      expect(mapMock.setFilter).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('means of transport filter', () => {
+    const sbb = {
+      sboid: 'ch:1:sboid:100001',
+      descriptionDe: 'Schweizerische Bundesbahnen',
+      abbreviationDe: 'SBB',
+      organisationNumber: 1,
+    } as BusinessOrganisation;
+
+    beforeEach(() => {
+      mapMock.setFilter.mockClear();
+      service.map = mapMock;
+    });
+
+    it('should set the means of transport filter on the geodata layer for a non empty selection', () => {
+      // When
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train, MeanOfTransport.Bus]);
+
+      // Then
+      expect(mapMock.setFilter).toHaveBeenCalledWith('geodata', [
+        'any',
+        ['in', ',TRAIN,', ['to-string', ['get', 'meansOfTransport']]],
+        ['in', ',BUS,', ['to-string', ['get', 'meansOfTransport']]],
+      ]);
+    });
+
+    it('should remove the filter from the geodata layer when both filters are empty', () => {
+      // Given
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train]);
+      mapMock.setFilter.mockClear();
+
+      // When
+      service.applyMeansOfTransportFilter([]);
+
+      // Then
+      expect(mapMock.setFilter).toHaveBeenCalledWith('geodata', null);
+    });
+
+    it('should combine the bo filter and the means of transport filter with all', () => {
+      // Given
+      service.applyBoFilter([sbb]);
+      mapMock.setFilter.mockClear();
+
+      // When
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train]);
+
+      // Then
+      expect(mapMock.setFilter).toHaveBeenCalledWith('geodata', [
+        'all',
+        ['in', ['get', 'sboid'], ['literal', ['ch:1:sboid:100001']]],
+        ['any', ['in', ',TRAIN,', ['to-string', ['get', 'meansOfTransport']]]],
+      ]);
+    });
+
+    it('should keep the bo filter when the means of transport filter is reset', () => {
+      // Given
+      service.applyBoFilter([sbb]);
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train]);
+      mapMock.setFilter.mockClear();
+
+      // When
+      service.applyMeansOfTransportFilter([]);
+
+      // Then
+      expect(mapMock.setFilter).toHaveBeenCalledWith('geodata', [
+        'in',
+        ['get', 'sboid'],
+        ['literal', ['ch:1:sboid:100001']],
+      ]);
+    });
+
+    it('should keep the means of transport filter when the bo filter is reset', () => {
+      // Given
+      service.applyBoFilter([sbb]);
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train]);
+      mapMock.setFilter.mockClear();
+
+      // When
+      service.applyBoFilter([]);
+
+      // Then
+      expect(mapMock.setFilter).toHaveBeenCalledWith('geodata', [
+        'any',
+        ['in', ',TRAIN,', ['to-string', ['get', 'meansOfTransport']]],
+      ]);
+    });
+
+    it('should mark the means of transport filter as active for a non empty selection', () => {
+      // When
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train]);
+
+      // Then
+      expect(service.meansOfTransportFilterActive()).toBe(true);
+    });
+
+    it('should mark the means of transport filter as inactive for an empty selection', () => {
+      // Given
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train]);
+
+      // When
+      service.applyMeansOfTransportFilter([]);
+
+      // Then
+      expect(service.meansOfTransportFilterActive()).toBe(false);
+    });
+
+    it('should not be active initially', () => {
+      expect(service.meansOfTransportFilterActive()).toBe(false);
+      expect(service.meansOfTransportFilter()).toEqual([]);
+    });
+
+    it('should expose the currently applied means of transport', () => {
+      // When
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train, MeanOfTransport.Bus]);
+
+      // Then
+      expect(service.meansOfTransportFilter()).toEqual([MeanOfTransport.Train, MeanOfTransport.Bus]);
+    });
+
+    it('should not keep a reference to the applied selection array', () => {
+      // Given
+      const selection = [MeanOfTransport.Train];
+
+      // When
+      service.applyMeansOfTransportFilter(selection);
+      selection.push(MeanOfTransport.Bus);
+
+      // Then
+      expect(service.meansOfTransportFilter()).toEqual([MeanOfTransport.Train]);
+    });
+
+    it('should reset the means of transport filter when the map is removed', () => {
+      // Given
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train]);
+
+      // When
+      service.removeMap();
+
+      // Then
+      expect(service.meansOfTransportFilter()).toEqual([]);
+      expect(service.meansOfTransportFilterActive()).toBe(false);
+    });
+
+    it('should not leak the means of transport filter into a newly created map', () => {
+      // Given
+      vi.spyOn(service, 'createMap').mockReturnValue(mapMock);
+      vi.spyOn(service, 'deselectServicePoint').mockImplementation(() => {});
+      service.applyMeansOfTransportFilter([MeanOfTransport.Train]);
       service.removeMap();
       mapMock.setFilter.mockClear();
 

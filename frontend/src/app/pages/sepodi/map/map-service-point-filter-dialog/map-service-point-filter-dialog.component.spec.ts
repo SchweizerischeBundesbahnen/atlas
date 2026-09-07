@@ -5,9 +5,9 @@ import { By } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Field } from '@angular/forms/signals';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { BusinessOrganisation } from '../../../../api';
-import { MapBoFilterDialogComponent } from './map-bo-filter-dialog.component';
-import { MapBoFilterDialogData } from './map-bo-filter-dialog-data';
+import { BusinessOrganisation, MeanOfTransport } from '../../../../api';
+import { MapServicePointFilterDialogComponent } from './map-service-point-filter-dialog.component';
+import { MapServicePointFilterDialogData } from './map-service-point-filter-dialog-data';
 import { AtlasBoSelectComponent } from '../../../../core/form-components/atlas-bo-select/atlas-bo-select.component';
 import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
@@ -55,15 +55,16 @@ const bls: BusinessOrganisation = {
   validTo: new Date('2099-12-31'),
 };
 
-describe('MapBoFilterDialogComponent', () => {
-  let component: MapBoFilterDialogComponent;
-  let fixture: ComponentFixture<MapBoFilterDialogComponent>;
-  let dialogRefSpy: Mocked<Pick<MatDialogRef<MapBoFilterDialogComponent>, 'close'>>;
+describe('MapServicePointFilterDialogComponent', () => {
+  let component: MapServicePointFilterDialogComponent;
+  let fixture: ComponentFixture<MapServicePointFilterDialogComponent>;
+  let dialogRefSpy: Mocked<Pick<MatDialogRef<MapServicePointFilterDialogComponent>, 'close'>>;
 
-  const dialogData: MapBoFilterDialogData = {
-    title: 'SEPODI.MAP_BO_FILTER.TITLE',
+  const dialogData: MapServicePointFilterDialogData = {
+    title: 'SEPODI.MAP_SERVICE_POINT_FILTER.TITLE',
     message: '',
     businessOrganisations: [],
+    meansOfTransport: [],
   };
 
   function boSelect(): MockBoSelectComponent {
@@ -72,7 +73,7 @@ describe('MapBoFilterDialogComponent', () => {
 
   function selectedRows(): HTMLElement[] {
     return fixture.debugElement
-      .queryAll(By.css('[data-cy="map-bo-filter-selected"]'))
+      .queryAll(By.css('[data-cy="map-service-point-filter-bo-selected"]'))
       .map((row) => row.nativeElement as HTMLElement);
   }
 
@@ -81,9 +82,28 @@ describe('MapBoFilterDialogComponent', () => {
     fixture.detectChanges();
   }
 
-  function createComponent(businessOrganisations: BusinessOrganisation[] = []) {
+  function motNoSelectionMessage(): HTMLElement | null {
+    return fixture.debugElement.query(By.css('[data-cy="map-service-point-filter-mot-no-selection"]'))
+      ?.nativeElement as HTMLElement | null;
+  }
+
+  function boNoSelectionMessage(): HTMLElement | null {
+    return fixture.debugElement.query(By.css('[data-cy="map-service-point-filter-bo-no-selection"]'))
+      ?.nativeElement as HTMLElement | null;
+  }
+
+  function clickMean(mean: MeanOfTransport) {
+    (fixture.debugElement.query(By.css(`[data-cy=${mean}]`)).nativeElement as HTMLElement).click();
+    fixture.detectChanges();
+  }
+
+  function createComponent(
+    businessOrganisations: BusinessOrganisation[] = [],
+    meansOfTransport: MeanOfTransport[] = []
+  ) {
     dialogData.businessOrganisations = businessOrganisations;
-    fixture = TestBed.createComponent(MapBoFilterDialogComponent);
+    dialogData.meansOfTransport = meansOfTransport;
+    fixture = TestBed.createComponent(MapServicePointFilterDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }
@@ -94,7 +114,7 @@ describe('MapBoFilterDialogComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
-        MapBoFilterDialogComponent,
+        MapServicePointFilterDialogComponent,
         DialogCloseComponent,
         DialogContentComponent,
         DialogFooterComponent,
@@ -103,7 +123,7 @@ describe('MapBoFilterDialogComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: dialogData },
         { provide: MatDialogRef, useValue: dialogRefSpy },
       ],
-    }).overrideComponent(MapBoFilterDialogComponent, {
+    }).overrideComponent(MapServicePointFilterDialogComponent, {
       remove: { imports: [AtlasBoSelectComponent] },
       add: { imports: [MockBoSelectComponent] },
     });
@@ -117,7 +137,8 @@ describe('MapBoFilterDialogComponent', () => {
 
   it('should align the title with the left edge of the content', () => {
     // Then
-    const title = fixture.debugElement.query(By.css('[data-cy="map-bo-filter-title"]')).nativeElement as HTMLElement;
+    const title = fixture.debugElement.query(By.css('[data-cy="map-service-point-filter-title"]'))
+      .nativeElement as HTMLElement;
     expect(title.classList).toContain('px-5');
     expect(title.classList).not.toContain('dialog-title');
   });
@@ -125,14 +146,26 @@ describe('MapBoFilterDialogComponent', () => {
   it('should start without a selection when no filter is applied', () => {
     expect(component.selectedBusinessOrganisations()).toEqual([]);
     expect(selectedRows()).toHaveLength(0);
+    expect(boNoSelectionMessage()).toBeTruthy();
+    expect(component.selectedMeansOfTransport()).toEqual([]);
+    expect(motNoSelectionMessage()).toBeTruthy();
   });
 
-  it('should prefill the selection with the currently applied filter', () => {
+  it('should prefill the bo selection with the currently applied filter', () => {
     // When
     createComponent([sbb, bls]);
 
     // Then
     expect(component.selectedBusinessOrganisations()).toEqual([sbb, bls]);
+  });
+
+  it('should prefill the mot selection with the currently applied filter', () => {
+    // When
+    createComponent([], [MeanOfTransport.Train, MeanOfTransport.Bus]);
+
+    // Then
+    expect(component.selectedMeansOfTransport()).toEqual([MeanOfTransport.Train, MeanOfTransport.Bus]);
+    expect(motNoSelectionMessage()).toBeFalsy();
   });
 
   it('should add a picked business organisation to the selection', () => {
@@ -196,7 +229,7 @@ describe('MapBoFilterDialogComponent', () => {
     pick(sbb);
 
     // Then
-    const label = selectedRows()[0].querySelector('[data-cy="map-bo-filter-selected-label"]')!;
+    const label = selectedRows()[0].querySelector('[data-cy="map-service-point-filter-bo-selected-label"]')!;
     expect(label.classList).toContain('selected-bo-label');
     expect(label.classList).not.toContain('text-truncate');
   });
@@ -219,16 +252,35 @@ describe('MapBoFilterDialogComponent', () => {
     createComponent([sbb, bls]);
 
     // When
-    fixture.debugElement.queryAll(By.css('[data-cy="map-bo-filter-remove"]'))[0].nativeElement.click();
+    fixture.debugElement.queryAll(By.css('[data-cy="map-service-point-filter-bo-remove"]'))[0].nativeElement.click();
     fixture.detectChanges();
 
     // Then
     expect(component.selectedBusinessOrganisations()).toEqual([bls]);
   });
 
-  it('should clear the selection on reset', () => {
+  it('should add a clicked mean of transport to the selection', () => {
+    // When
+    clickMean(MeanOfTransport.Train);
+
+    // Then
+    expect(component.selectedMeansOfTransport()).toEqual([MeanOfTransport.Train]);
+  });
+
+  it('should remove a mean of transport when clicked again', () => {
     // Given
-    createComponent([sbb, bls]);
+    createComponent([], [MeanOfTransport.Train]);
+
+    // When
+    clickMean(MeanOfTransport.Train);
+
+    // Then
+    expect(component.selectedMeansOfTransport()).toEqual([]);
+  });
+
+  it('should clear both the bo and the mot selection on reset', () => {
+    // Given
+    createComponent([sbb, bls], [MeanOfTransport.Train]);
 
     // When
     component.reset();
@@ -237,6 +289,8 @@ describe('MapBoFilterDialogComponent', () => {
     // Then
     expect(component.selectedBusinessOrganisations()).toEqual([]);
     expect(selectedRows()).toHaveLength(0);
+    expect(component.selectedMeansOfTransport()).toEqual([]);
+    expect(motNoSelectionMessage()).toBeTruthy();
   });
 
   it('should keep the dialog open on reset', () => {
@@ -250,27 +304,30 @@ describe('MapBoFilterDialogComponent', () => {
     expect(dialogRefSpy.close).not.toHaveBeenCalled();
   });
 
-  it('should return the selection as dialog result on apply', () => {
+  it('should return both selections as dialog result on apply', () => {
     // Given
-    createComponent([sbb, bls]);
+    createComponent([sbb, bls], [MeanOfTransport.Train]);
 
     // When
     component.apply();
 
     // Then
-    expect(dialogRefSpy.close).toHaveBeenCalledWith([sbb, bls]);
+    expect(dialogRefSpy.close).toHaveBeenCalledWith({
+      businessOrganisations: [sbb, bls],
+      meansOfTransport: [MeanOfTransport.Train],
+    });
   });
 
-  it('should return an empty selection as dialog result on apply after a reset', () => {
+  it('should return empty selections as dialog result on apply after a reset', () => {
     // Given
-    createComponent([sbb]);
+    createComponent([sbb], [MeanOfTransport.Train]);
     component.reset();
 
     // When
     component.apply();
 
     // Then
-    expect(dialogRefSpy.close).toHaveBeenCalledWith([]);
+    expect(dialogRefSpy.close).toHaveBeenCalledWith({ businessOrganisations: [], meansOfTransport: [] });
   });
 
   it('should close without a result on cancel', () => {

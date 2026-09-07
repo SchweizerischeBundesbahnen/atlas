@@ -13,7 +13,7 @@ import { LngLatLike, Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options';
 import { Subject } from 'rxjs';
-import { ApplicationType, BusinessOrganisation } from '../../../api';
+import { ApplicationType, BusinessOrganisation, MeanOfTransport } from '../../../api';
 import { takeUntil } from 'rxjs/operators';
 import { MapIcon, MapIconsService } from './map-icons.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
@@ -23,8 +23,8 @@ import { NgClass } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { MapBoFilterDialogComponent } from './map-bo-filter-dialog/map-bo-filter-dialog.component';
-import { MapBoFilterDialogData } from './map-bo-filter-dialog/map-bo-filter-dialog-data';
+import { MapServicePointFilterDialogComponent } from './map-service-point-filter-dialog/map-service-point-filter-dialog.component';
+import { MapServicePointFilterDialogData } from './map-service-point-filter-dialog/map-service-point-filter-dialog-data';
 
 @Component({
   selector: 'atlas-map',
@@ -130,33 +130,37 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  openBoFilterDialog() {
-    const dialogData: MapBoFilterDialogData = {
-      title: 'SEPODI.MAP_BO_FILTER.TITLE',
+  openFilterDialog() {
+    const dialogData: MapServicePointFilterDialogData = {
+      title: 'SEPODI.MAP_SERVICE_POINT_FILTER.TITLE',
       message: '',
       businessOrganisations: [...this.mapService.boFilter()],
+      meansOfTransport: [...this.mapService.meansOfTransportFilter()],
     };
     this.dialogService
-      .openDialogDataWithCustomResult<MapBoFilterDialogData, BusinessOrganisation[]>(
-        dialogData,
-        MapBoFilterDialogComponent
-      )
+      .openDialogDataWithCustomResult<
+        MapServicePointFilterDialogData,
+        { businessOrganisations: BusinessOrganisation[]; meansOfTransport: MeanOfTransport[] }
+      >(dialogData, MapServicePointFilterDialogComponent)
       .subscribe((result) => {
         if (result) {
-          this.mapService.applyBoFilter(result);
+          this.mapService.applyBoFilter(result.businessOrganisations);
+          this.mapService.applyMeansOfTransportFilter(result.meansOfTransport);
         }
       });
   }
 
-  boFilterActive(): boolean {
-    return this.mapService.boFilterActive();
+  filterActive(): boolean {
+    return this.mapService.boFilterActive() || this.mapService.meansOfTransportFilterActive();
   }
 
-  boFilterCount(): number {
-    return this.mapService.boFilter().length;
+  filterCount(): number {
+    return this.mapService.boFilter().length + this.mapService.meansOfTransportFilter().length;
   }
 
-  boFilterLabel(): string {
-    return this.boFilterActive() ? 'SEPODI.MAP_BO_FILTER.TOOLTIP_ACTIVE' : 'SEPODI.MAP_BO_FILTER.TOOLTIP';
+  filterLabel(): string {
+    return this.filterActive()
+      ? 'SEPODI.MAP_SERVICE_POINT_FILTER.TOOLTIP_ACTIVE'
+      : 'SEPODI.MAP_SERVICE_POINT_FILTER.TOOLTIP';
   }
 }
