@@ -38,7 +38,6 @@ dependencies {
     implementation(libs.swagger.core)
     implementation(libs.aws.s3)
     implementation(libs.jaxb.api)
-    implementation(libs.pdfbox)
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
 
     // Project dependencies

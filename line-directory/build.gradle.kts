@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":versioning"))
     implementation(project(":user-administration-security"))
     implementation(project(":kafka"))
+    implementation(project(":pdf-sanitize"))
 
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.hibernate.orm:hibernate-processor")
