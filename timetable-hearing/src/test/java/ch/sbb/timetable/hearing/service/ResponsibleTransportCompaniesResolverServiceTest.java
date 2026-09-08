@@ -3,7 +3,6 @@ package ch.sbb.timetable.hearing.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -74,13 +73,13 @@ class ResponsibleTransportCompaniesResolverServiceTest {
 
     ArgumentCaptor<List<String>> ttfnIdsCaptor = ArgumentCaptor.captor();
     verify(timetableFieldNumberApiInternal).getOverview(any(), any(), any(), any(), eq(null), any(),
-        ttfnIdsCaptor.capture(), isNull());
+        ttfnIdsCaptor.capture());
     assertThat(ttfnIdsCaptor.getValue()).containsExactly(TTFNID);
   }
 
   @Test
   void shouldReturnEmptyListWhenNoTimetableFieldNumberFound() {
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder().objects(Collections.emptyList()).build());
 
     List<TransportCompanyModel> result =
@@ -115,7 +114,7 @@ class ResponsibleTransportCompaniesResolverServiceTest {
   }
 
   private void mockOverviewReturning(TimetableFieldNumberModel model) {
-    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberApiInternal.getOverview(any(), any(), any(), any(), any(), any(), any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder().objects(List.of(model)).build());
   }
 }

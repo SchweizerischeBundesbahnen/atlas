@@ -132,21 +132,6 @@ class TimetableFieldNumberControllerInternalApiTest extends BaseControllerApiTes
   }
 
   @Test
-  void shouldExcludeExpiredTimetableFieldNumberWhenExcludeExpiredIsTrue() throws Exception {
-    mvc.perform(get("/internal/field-numbers")
-            .queryParam("excludeExpired", "true"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(0));
-  }
-
-  @Test
-  void shouldKeepExpiredTimetableFieldNumberWhenExcludeExpiredOmitted() throws Exception {
-    mvc.perform(get("/internal/field-numbers"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(1));
-  }
-
-  @Test
   void shouldReturnBadRequestExceptionOnInvalidSortParam() throws Exception {
     // given
     Mockito.doThrow(

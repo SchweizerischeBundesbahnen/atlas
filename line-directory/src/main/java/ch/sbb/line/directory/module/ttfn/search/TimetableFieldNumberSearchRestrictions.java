@@ -6,7 +6,6 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumber_;
 import jakarta.persistence.metamodel.SingularAttribute;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
 import lombok.ToString;
@@ -23,8 +22,6 @@ public class TimetableFieldNumberSearchRestrictions extends
 
   private List<String> ttfnIds;
 
-  private Boolean excludeExpired;
-
   @Override
   protected SingularAttribute<TimetableFieldNumber, Status> getStatus() {
     return TimetableFieldNumber_.status;
@@ -35,16 +32,7 @@ public class TimetableFieldNumberSearchRestrictions extends
     return getBaseSpecification()
         .and(specificationBuilder().exactMatchStringSpecification(number))
         .and(specificationBuilder().stringInSpecification(
-            ttfnIds == null ? List.of() : ttfnIds, TimetableFieldNumber_.ttfnid))
-        .and(notExpiredSpecification());
-  }
-
-  private Specification<TimetableFieldNumber> notExpiredSpecification() {
-    if (!Boolean.TRUE.equals(excludeExpired)) {
-      return (root, query, criteriaBuilder) -> criteriaBuilder.and();
-    }
-    return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(
-        root.get(TimetableFieldNumber_.validTo), LocalDate.now());
+            ttfnIds == null ? List.of() : ttfnIds, TimetableFieldNumber_.ttfnid));
   }
 
   @Override
