@@ -16,6 +16,13 @@ class BulkImportErrorsTest {
   }
 
   @Test
+  void shouldBuildBulkImportErrorForSloidOrNumber() {
+    BulkImportError bulkImportError = BulkImportErrors.sloidOrNumber();
+    assertThat(bulkImportError.getErrorMessage()).isEqualTo("SlOID or number must be given");
+    assertThat(bulkImportError.getDisplayInfo().getCode()).isEqualTo("BULK_IMPORT.VALIDATION.SLOID_OR_NUMBER");
+  }
+
+  @Test
   void shouldBuildBulkImportErrorForNotNull() {
     BulkImportError bulkImportError = BulkImportErrors.notNull("validFrom");
     assertThat(bulkImportError.getErrorMessage()).isEqualTo("Field validFrom must not be null");

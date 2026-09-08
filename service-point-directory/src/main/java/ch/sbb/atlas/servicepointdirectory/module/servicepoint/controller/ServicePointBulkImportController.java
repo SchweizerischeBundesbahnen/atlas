@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.ServicePointBulkImportApi;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.ServicePointGlobalIdUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
 import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
@@ -40,5 +41,13 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
     return executeBulkImport(bulkImportContainers,
         servicePointBulkImportService::terminateServicePointByUserName,
         servicePointBulkImportService::terminateServicePoint);
+  }
+
+  @Override
+  public List<BulkImportItemExecutionResult> bulkImportGlobalIdUpdate(
+      List<BulkImportUpdateContainer<ServicePointGlobalIdUpdateCsvModel>> bulkImportContainers) {
+    return executeBulkImport(bulkImportContainers,
+        servicePointBulkImportService::updateGlobalIdByUserName,
+        servicePointBulkImportService::updateGlobalId);
   }
 }

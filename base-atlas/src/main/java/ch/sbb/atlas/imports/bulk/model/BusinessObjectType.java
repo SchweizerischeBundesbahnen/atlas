@@ -7,6 +7,7 @@ import java.util.Set;
 public enum BusinessObjectType {
 
   SERVICE_POINT,
+  SERVICE_POINT_GLOBAL_ID,
   TRAFFIC_POINT,
   LOADING_POINT,
   SECTOR,
@@ -27,8 +28,8 @@ public enum BusinessObjectType {
 
   ;
 
-  public static final Set<BusinessObjectType> SEPODI_BUSINESS_OBJECTS = Set.of(SERVICE_POINT, TRAFFIC_POINT, LOADING_POINT,
-      SECTOR, SECTOR_GROUP);
+  public static final Set<BusinessObjectType> SEPODI_BUSINESS_OBJECTS = Set.of(SERVICE_POINT, SERVICE_POINT_GLOBAL_ID,
+      TRAFFIC_POINT, LOADING_POINT, SECTOR, SECTOR_GROUP);
   public static final Set<BusinessObjectType> PRM_BUSINESS_OBJECTS = Set.of(STOP_POINT, PLATFORM_REDUCED, PLATFORM_COMPLETE,
       PLATFORM,
       REFERENCE_POINT, PARKING_LOT, CONTACT_POINT, TOILET, RELATION);

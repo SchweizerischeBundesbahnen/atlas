@@ -220,6 +220,7 @@
       "LIDI": "Elenco delle linee",
       "OBJECT": "Oggetto",
       "SERVICE_POINT": "Posto di servizio",
+      "SERVICE_POINT_GLOBAL_ID": "Posto di servizio ID globale",
       "TRAFFIC_POINT": "Bordo di fermata",
       "SECTOR": "Settore",
       "SECTOR_GROUP": "Gruppo di settori",
@@ -1261,7 +1262,13 @@
       "GLOBAL_ID_ERROR": {
         "COUNTRY_MISMATCH": "L'ID globale deve iniziare con «{{prefix}}».",
         "NOT_ALLOWED_FOR_COUNTRY": "Un ID globale può essere inserito solo per le fermate tedesche (11, 80) e austriache (12, 81).",
-        "ALREADY_USED": "L'ID globale «{{globalId}}» è già utilizzato da un'altra fermata."
+        "ALREADY_USED": "L'ID globale «{{globalId}}» è già utilizzato da un'altra fermata.",
+        "EMPTY": "L'ID globale è vuoto. Utilizzare <null> per rimuovere un ID globale registrato.",
+        "SLOID_NUMBER_MISMATCH": "Lo SLOID «{{sloid}}» non appartiene al numero del posto di servizio «{{number}}»."
+      },
+      "GLOBAL_ID_INFO": {
+        "REPOINTED": "L'ID globale «{{globalId}}» è stato tolto al posto di servizio «{{servicePointNumber}}».",
+        "REMOVED": "L'ID globale «{{globalId}}» è stato rimosso."
       },
       "DIDOK_CODE_SEARCH": "Codice DiDok",
       "SEARCH_OR_NAVIGATION": "Ricerca / Navigazione",
@@ -1878,6 +1885,7 @@
     "VALIDATION": {
       "DATA_MAPPING_ERROR": "Per l'attributo <{{field}}> era previsto il tipo {{expectedType}}, ma il valore specificato era \"{{errorValue}}\".",
       "SLOID_XOR_NUMBER": "Deve essere specificato o lo <sloid> o il <number> (non entrambi).",
+      "SLOID_OR_NUMBER": "Deve essere specificato lo <sloid> o il <number>.",
       "STOPPOINTSLOID_XOR_NUMBER": "Deve essere specificato o lo <stopPointSloid> o il <number> (non entrambi).",
       "INVALID_SERVICE_POINT_NUMBER": "Il numero del centro di assistenza non è valido.",
       "FIELD_MANDATORY": "L'attributo <{{field}}> non deve essere vuoto.",

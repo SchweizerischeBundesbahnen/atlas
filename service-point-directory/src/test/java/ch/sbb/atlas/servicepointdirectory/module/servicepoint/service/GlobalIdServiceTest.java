@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -94,9 +96,10 @@ class GlobalIdServiceTest {
     // Given
     when(servicePointGlobalIdRepository.findByGlobalId("de:05770:1282")).thenReturn(
         Optional.of(ServicePointGlobalId.builder().servicePointNumber(AUSTRIAN_NUMBER).globalId("de:05770:1282").build()));
+    GlobalId globalId = GlobalId.of("de:05770:1282", Country.GERMANY);
 
     // When / Then
-    assertThatThrownBy(() -> globalIdService.validateUniqueness(GERMAN_NUMBER, GlobalId.of("de:05770:1282", Country.GERMANY)))
+    assertThatThrownBy(() -> globalIdService.validateUniqueness(GERMAN_NUMBER, globalId))
         .isInstanceOf(InvalidGlobalIdException.class)
         .satisfies(e -> assertThat(((InvalidGlobalIdException) e).getCode())
             .isEqualTo("SEPODI.SERVICE_POINTS.GLOBAL_ID_ERROR.ALREADY_USED"));
@@ -171,5 +174,114 @@ class GlobalIdServiceTest {
 
     // Then
     verify(servicePointGlobalIdRepository, never()).delete(any());
+  }
+
+  @Test
+  void shouldTakeGlobalIdAwayFromItsHolderAndReportItOnRepoint() {
+    // Given
+    ServicePointGlobalId holder = ServicePointGlobalId.builder().id(7L).servicePointNumber(AUSTRIAN_NUMBER)
+        .globalId("de:05770:1282").build();
+    when(servicePointGlobalIdRepository.findByGlobalId("de:05770:1282")).thenReturn(Optional.of(holder));
+    when(servicePointGlobalIdRepository.releaseGlobalIdFrom("de:05770:1282", AUSTRIAN_NUMBER)).thenReturn(1);
+    when(servicePointGlobalIdRepository.findByServicePointNumber(GERMAN_NUMBER)).thenReturn(Optional.empty());
+
+    // When
+    Optional<ServicePointNumber> displaced = globalIdService.saveWithRepoint(GERMAN_NUMBER,
+        GlobalId.of("de:05770:1282", Country.GERMANY));
+
+    // Then
+    assertThat(displaced).contains(AUSTRIAN_NUMBER);
+    ArgumentCaptor<ServicePointGlobalId> captor = ArgumentCaptor.forClass(ServicePointGlobalId.class);
+    verify(servicePointGlobalIdRepository).save(captor.capture());
+    assertThat(captor.getValue().getServicePointNumber()).isEqualTo(GERMAN_NUMBER);
+  }
+
+  @Test
+  void shouldReleaseTheGlobalIdBeforeClaimingIt() {
+    // Given
+    ServicePointGlobalId holder = ServicePointGlobalId.builder().id(7L).servicePointNumber(AUSTRIAN_NUMBER)
+        .globalId("de:05770:1282").build();
+    when(servicePointGlobalIdRepository.findByGlobalId("de:05770:1282")).thenReturn(Optional.of(holder));
+    when(servicePointGlobalIdRepository.releaseGlobalIdFrom("de:05770:1282", AUSTRIAN_NUMBER)).thenReturn(1);
+    when(servicePointGlobalIdRepository.findByServicePointNumber(GERMAN_NUMBER)).thenReturn(Optional.empty());
+
+    // When
+    globalIdService.saveWithRepoint(GERMAN_NUMBER, GlobalId.of("de:05770:1282", Country.GERMANY));
+
+    // Then
+    InOrder inOrder = inOrder(servicePointGlobalIdRepository);
+    inOrder.verify(servicePointGlobalIdRepository).releaseGlobalIdFrom("de:05770:1282", AUSTRIAN_NUMBER);
+    inOrder.verify(servicePointGlobalIdRepository).save(any());
+  }
+
+  @Test
+  void shouldNotReportADisplacementWhenTheHolderNoLongerHeldTheGlobalId() {
+    // Given a holder that a concurrent transaction moved elsewhere between the read and the conditional delete
+    ServicePointGlobalId holder = ServicePointGlobalId.builder().id(7L).servicePointNumber(AUSTRIAN_NUMBER)
+        .globalId("de:05770:1282").build();
+    when(servicePointGlobalIdRepository.findByGlobalId("de:05770:1282")).thenReturn(Optional.of(holder));
+    when(servicePointGlobalIdRepository.releaseGlobalIdFrom("de:05770:1282", AUSTRIAN_NUMBER)).thenReturn(0);
+    when(servicePointGlobalIdRepository.findByServicePointNumber(GERMAN_NUMBER)).thenReturn(Optional.empty());
+
+    // When
+    Optional<ServicePointNumber> displaced = globalIdService.saveWithRepoint(GERMAN_NUMBER,
+        GlobalId.of("de:05770:1282", Country.GERMANY));
+
+    // Then
+    assertThat(displaced).isEmpty();
+  }
+
+  @Test
+  void shouldNotDisplaceTheServicePointThatAlreadyHoldsTheGlobalId() {
+    // Given
+    ServicePointGlobalId holder = ServicePointGlobalId.builder().id(7L).servicePointNumber(GERMAN_NUMBER)
+        .globalId("de:05770:1282").build();
+    when(servicePointGlobalIdRepository.findByGlobalId("de:05770:1282")).thenReturn(Optional.of(holder));
+    when(servicePointGlobalIdRepository.findByServicePointNumber(GERMAN_NUMBER)).thenReturn(Optional.of(holder));
+
+    // When
+    Optional<ServicePointNumber> displaced = globalIdService.saveWithRepoint(GERMAN_NUMBER,
+        GlobalId.of("de:05770:1282", Country.GERMANY));
+
+    // Then
+    assertThat(displaced).isEmpty();
+    verify(servicePointGlobalIdRepository, never()).releaseGlobalIdFrom(any(), any());
+  }
+
+  @Test
+  void shouldReportNobodyDisplacedWhenTheGlobalIdIsFree() {
+    // Given
+    when(servicePointGlobalIdRepository.findByGlobalId("de:05770:1282")).thenReturn(Optional.empty());
+    when(servicePointGlobalIdRepository.findByServicePointNumber(GERMAN_NUMBER)).thenReturn(Optional.empty());
+
+    // When
+    Optional<ServicePointNumber> displaced = globalIdService.saveWithRepoint(GERMAN_NUMBER,
+        GlobalId.of("de:05770:1282", Country.GERMANY));
+
+    // Then
+    assertThat(displaced).isEmpty();
+    verify(servicePointGlobalIdRepository, never()).releaseGlobalIdFrom(any(), any());
+    verify(servicePointGlobalIdRepository).save(any());
+  }
+
+  @Test
+  void shouldReportTheRemovedGlobalIdOnRemoveAndGet() {
+    // Given
+    ServicePointGlobalId existing = ServicePointGlobalId.builder().id(5L).servicePointNumber(GERMAN_NUMBER)
+        .globalId("de:05770:1282").build();
+    when(servicePointGlobalIdRepository.findByServicePointNumber(GERMAN_NUMBER)).thenReturn(Optional.of(existing));
+
+    // When / Then
+    assertThat(globalIdService.removeAndGet(GERMAN_NUMBER)).contains("de:05770:1282");
+    verify(servicePointGlobalIdRepository).delete(existing);
+  }
+
+  @Test
+  void shouldReportNothingRemovedWhenNoMappingExists() {
+    // Given
+    when(servicePointGlobalIdRepository.findByServicePointNumber(GERMAN_NUMBER)).thenReturn(Optional.empty());
+
+    // When / Then
+    assertThat(globalIdService.removeAndGet(GERMAN_NUMBER)).isEmpty();
   }
 }

@@ -18,6 +18,9 @@ public class BulkImportTemplateArgumentsData {
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.TERMINATE)),
 
+      Arguments.of(
+          new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT_GLOBAL_ID, ImportType.UPDATE)),
+
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.TERMINATE)),
@@ -49,6 +52,10 @@ public class BulkImportTemplateArgumentsData {
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.TERMINATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR, ImportType.TERMINATE)),
+      Arguments.of(
+          new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT_GLOBAL_ID, ImportType.CREATE)),
+      Arguments.of(
+          new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT_GLOBAL_ID, ImportType.TERMINATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR_GROUP, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SECTOR_GROUP, ImportType.TERMINATE)),
 

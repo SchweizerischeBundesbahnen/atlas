@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.servicepoint;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.ServicePointGlobalIdUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
 import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
@@ -37,5 +38,12 @@ public interface ServicePointBulkImportApi {
   @PostMapping(value = BASEPATH + "/terminate")
   List<BulkImportItemExecutionResult> bulkImportTerminate(
       @RequestBody List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> bulkImportContainers);
+
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  @PostMapping(value = BASEPATH + "/global-id-update")
+  List<BulkImportItemExecutionResult> bulkImportGlobalIdUpdate(
+      @RequestBody List<BulkImportUpdateContainer<ServicePointGlobalIdUpdateCsvModel>> bulkImportContainers);
 
 }

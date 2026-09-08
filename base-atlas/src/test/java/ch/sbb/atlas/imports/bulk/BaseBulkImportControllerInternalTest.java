@@ -8,9 +8,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
+import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -85,5 +87,33 @@ class BaseBulkImportControllerInternalTest {
 
     assertThat(results).hasSize(1);
     assertThat(results.getFirst().getErrorResponse()).isNotNull();
+  }
+
+  @Test
+  void shouldReportInfoRatherThanErrorWhenTheFailureIsMerelyInformational() {
+    // Given
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> containers = List.of(
+        BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
+            .lineNumber(1)
+            .object(ServicePointUpdateCsvModel.builder()
+                .sloid("ch:1:sloid:7000")
+                .number(8507000)
+                .build())
+            .build());
+
+    BiConsumer<String, BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateByUser = mock();
+    Consumer<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> update = mock();
+
+    doThrow(new VersioningNoChangesException()).when(update).accept(any());
+
+    // When
+    List<BulkImportItemExecutionResult> results = bulkImportController.executeBulkImport(containers,
+        updateByUser, update);
+
+    // Then
+    assertThat(results).hasSize(1);
+    assertThat(results.getFirst().isInfo()).isTrue();
+    assertThat(results.getFirst().isSuccess()).isFalse();
+    assertThat(results.getFirst().getErrorResponse().getStatus()).isEqualTo(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS);
   }
 }

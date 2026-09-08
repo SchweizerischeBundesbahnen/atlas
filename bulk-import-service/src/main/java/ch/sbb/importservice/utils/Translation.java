@@ -28,6 +28,8 @@ public class Translation {
 
   private static final Map<BusinessObjectType, Values> objectTypeTranslations = Map.ofEntries(
       Map.entry(BusinessObjectType.SERVICE_POINT, new Values("Dienststelle", "service", "posto di servizio")),
+      Map.entry(BusinessObjectType.SERVICE_POINT_GLOBAL_ID, new Values("Dienststelle Global-ID", "service Global-ID",
+          "posto di servizio Global-ID")),
       Map.entry(BusinessObjectType.TRAFFIC_POINT, new Values("Haltekante", "bordure d'arrêt", "bordo di fermata")),
       Map.entry(BusinessObjectType.LOADING_POINT, new Values("Ladestelle", "places de chargement", "posti di carico")),
       Map.entry(BusinessObjectType.SECTOR, new Values("Sektor", "secteur", "settore")),
