@@ -1,6 +1,23 @@
 import { defineConfig } from 'cypress';
 import cypress_failed_log from 'cypress-failed-log/src/failed';
 import cypress_high_resolution from 'cypress-high-resolution';
+import cypress_mochawesome_reporter from 'cypress-mochawesome-reporter/plugin';
+
+/**
+ * Non-secret variables that specs may read synchronously via Cypress.expose().
+ * Everything else stays in the Node process and must be read with cy.env().
+ */
+const PUBLIC_CONFIG_KEYS = ['API_URL', 'API_URL_UNAUTHORIZED'] as const;
+
+/**
+ * Bridges the existing CYPRESS_ env-var and cypress.env.json hand-over into `expose`, so the
+ * contract towards CI stays unchanged while specs stop using Cypress.env().
+ */
+function pickPublicConfig(env: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    PUBLIC_CONFIG_KEYS.filter((key) => env[key] !== undefined).map((key) => [key, env[key]])
+  );
+}
 
 export default defineConfig({
   videosFolder: 'cypress/test-results/videos',
@@ -10,7 +27,6 @@ export default defineConfig({
   viewportHeight: 1080,
   videoCompression: false,
   defaultCommandTimeout: 10000,
-  execTimeout: 10000,
   pageLoadTimeout: 60000,
   requestTimeout: 60000,
   responseTimeout: 60000,
@@ -30,12 +46,11 @@ export default defineConfig({
     debug: true,
     saveJson: true,
   },
-  env: {
+  // cypress-high-resolution 2.x reads `resolution` from `expose`, no longer from `env`.
+  expose: {
     resolution: 'high',
   },
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
     async setupNodeEvents(on, config) {
       on('task', {
         failed: cypress_failed_log(),
@@ -45,7 +60,8 @@ export default defineConfig({
         },
       });
       cypress_high_resolution(on, config);
-      require('cypress-mochawesome-reporter/plugin')(on);
+      cypress_mochawesome_reporter(on);
+      config.expose = { ...config.expose, ...pickPublicConfig(config.env) };
       return config;
     },
     baseUrl: 'http://localhost:4200',
