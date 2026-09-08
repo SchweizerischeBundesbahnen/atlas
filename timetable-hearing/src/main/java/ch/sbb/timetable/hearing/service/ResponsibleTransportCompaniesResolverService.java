@@ -2,17 +2,16 @@ package ch.sbb.timetable.hearing.service;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
-import ch.sbb.atlas.api.client.line.ttfn.TimetableFieldNumberApiV1Client;
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberApiInternal;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.timetable.hearing.exception.NoValidVersionAtDateException;
 import ch.sbb.timetable.hearing.mapper.ResponsibleTransportCompanyMapper;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -20,13 +19,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ResponsibleTransportCompaniesResolverService {
 
-  private final TimetableFieldNumberApiV1Client timetableFieldNumberApiV1Client;
+  private final TimetableFieldNumberApiInternal timetableFieldNumberApiInternal;
   private final TransportCompanyClient transportCompanyClient;
 
   public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid, LocalDate validOn) {
     if (ttfnid != null) {
-      String sboid = resolveBusinessOrganisationSboid(ttfnid, validOn);
-      return resolveTransportCompanies(sboid);
+      return resolveTransportCompanies(resolveBusinessOrganisationSboid(ttfnid));
     }
     return Collections.emptyList();
   }
@@ -44,28 +42,16 @@ public class ResponsibleTransportCompaniesResolverService {
     return Collections.emptyList();
   }
 
-  private String resolveBusinessOrganisationSboid(String ttfnid, LocalDate validOn) {
-    if (ttfnid != null) {
-      List<TimetableFieldNumberVersionModel> timetableFieldNumberVersions =
-          timetableFieldNumberApiV1Client.getAllVersionsVersioned(ttfnid);
+  private String resolveBusinessOrganisationSboid(String ttfnid) {
+    List<TimetableFieldNumberModel> timetableFieldNumbers = timetableFieldNumberApiInternal.getOverview(Pageable.unpaged(),
+            null, null, null, null, null, List.of(ttfnid))
+        .getObjects();
 
-      TimetableFieldNumberVersionModel versionValidOnNextTimetableYear = getVersionValidOn(timetableFieldNumberVersions, validOn);
-
-      return versionValidOnNextTimetableYear.getBusinessOrganisation();
+    if (timetableFieldNumbers.isEmpty()) {
+      log.info("No timetable field number found for ttfnid={}", ttfnid);
+      return null;
     }
-    return null;
-  }
-
-  private static TimetableFieldNumberVersionModel getVersionValidOn(List<TimetableFieldNumberVersionModel> timetableFieldNumberVersions,
-      LocalDate validOn) {
-    LocalDate beginningOfNextTimetableYear = FutureTimetableHelper.getActualTimetableYearChangeDate(validOn);
-
-    return timetableFieldNumberVersions.stream().filter(
-            version -> !version.getValidFrom().isAfter(beginningOfNextTimetableYear) &&
-                !version.getValidTo().isBefore(beginningOfNextTimetableYear))
-        .findFirst()
-        .orElseThrow(() -> new NoValidVersionAtDateException(beginningOfNextTimetableYear,
-            timetableFieldNumberVersions.getFirst().getTtfnid()));
+    return timetableFieldNumbers.getFirst().getBusinessOrganisation();
   }
 
 }

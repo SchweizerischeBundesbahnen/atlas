@@ -97,7 +97,6 @@ export class MockTimetableFieldNumberSelectComponent {
   readonly formModus = input(true);
   readonly required = input(true);
   readonly formGroup = input.required<FormGroup>();
-  readonly validOn = input<Date>();
   readonly disabled = input.required<boolean>();
 
   readonly selectedTimetableFieldNumberChanged = output();

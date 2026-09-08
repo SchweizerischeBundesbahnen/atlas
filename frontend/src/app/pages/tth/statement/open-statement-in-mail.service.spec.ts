@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
 import { TranslatePipe } from '@ngx-translate/core';
 import { OpenStatementInMailService } from './open-statement-in-mail.service';
-import { Status, SwissCanton, TimetableFieldNumber, TimetableHearingStatementV2 } from '../../../api';
+import { SwissCanton, TimetableHearingStatementV2 } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 
@@ -44,21 +44,13 @@ describe('OpenStatementInMailService', () => {
       id: 456,
       swissCanton: SwissCanton.Bern,
       statement: 'Mehr Bös pls',
+      timetableFieldNumber: '1.1',
+      timetableFieldDescription: 'description',
       statementSender: {
         emails: new Set('me@sbb.ch'),
       },
     };
-    const ttfn: TimetableFieldNumber = {
-      ttfnid: 'ttfnid',
-      number: '1.1',
-      descriptionOutwardLine1: 'description',
-      status: Status.Validated,
-      validFrom: new Date('2021-06-01'),
-      validTo: new Date('2029-06-01'),
-      businessOrganisation: 'sbb',
-    };
-
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, ttfn);
+    const mailToLink = openStatementInMailService.buildMailToLink(statement);
 
     expect(mailToLink).toBe(
       'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld%3A%201.1%20description%0D%0D&body=Fahrplanfeld%3A%201.1%20description%0D%0DStellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
@@ -75,7 +67,7 @@ describe('OpenStatementInMailService', () => {
       },
     };
 
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, undefined);
+    const mailToLink = openStatementInMailService.buildMailToLink(statement);
 
     expect(mailToLink).toBe(
       'mailto:?subject=Anfrage%20Stellungnahme%20456%20&body=Stellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
@@ -87,25 +79,36 @@ describe('OpenStatementInMailService', () => {
       id: 456,
       swissCanton: SwissCanton.Bern,
       statement: 'Test & Forza Juve',
+      timetableFieldNumber: '1.1',
+      timetableFieldDescription: 'Das ist eine & Beschreibung',
       statementSender: {
         emails: new Set('me@sbb.ch'),
       },
     };
 
-    const ttfn: TimetableFieldNumber = {
-      ttfnid: 'ttfnid',
-      number: '1.1',
-      descriptionOutwardLine1: 'Das ist eine & Beschreibung',
-      status: Status.Validated,
-      validFrom: new Date('2021-06-01'),
-      validTo: new Date('2029-06-01'),
-      businessOrganisation: 'sbb',
-    };
-
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, ttfn);
+    const mailToLink = openStatementInMailService.buildMailToLink(statement);
 
     expect(mailToLink).toBe(
       'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld%3A%201.1%20Das%20ist%20eine%20%26%20Beschreibung%0D%0D&body=Fahrplanfeld%3A%201.1%20Das%20ist%20eine%20%26%20Beschreibung%0D%0DStellungnahme%3A%20Test%20%26%20Forza%20Juve'
+    );
+  });
+
+  it('should not render raw ttfnid when display fields are missing', () => {
+    const statement: TimetableHearingStatementV2 = {
+      id: 456,
+      swissCanton: SwissCanton.Bern,
+      statement: 'Mehr Bös pls',
+      ttfnid: 'ch:1:ttfnid:123123123',
+      statementSender: {
+        emails: new Set('me@sbb.ch'),
+      },
+    };
+
+    const mailToLink = openStatementInMailService.buildMailToLink(statement);
+
+    expect(mailToLink).not.toContain('ttfnid');
+    expect(mailToLink).toBe(
+      'mailto:?subject=Anfrage%20Stellungnahme%20456%20&body=Stellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
     );
   });
 
@@ -115,21 +118,13 @@ describe('OpenStatementInMailService', () => {
       swissCanton: SwissCanton.Bern,
       statement: 'Mehr Bös pls',
       stopPlace: 'Erste Haltestelle nach der Post',
+      timetableFieldNumber: '1.1',
+      timetableFieldDescription: 'description',
       statementSender: {
         emails: new Set('me@sbb.ch'),
       },
     };
-    const ttfn: TimetableFieldNumber = {
-      ttfnid: 'ttfnid',
-      number: '1.1',
-      descriptionOutwardLine1: 'description',
-      status: Status.Validated,
-      validFrom: new Date('2021-06-01'),
-      validTo: new Date('2029-06-01'),
-      businessOrganisation: 'sbb',
-    };
-
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, ttfn);
+    const mailToLink = openStatementInMailService.buildMailToLink(statement);
 
     expect(mailToLink).toBe(
       'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld%3A%201.1%20description%0D%0D&body=Fahrplanfeld%3A%201.1%20description%0D%0DHaltestelle%3A%20Erste%20Haltestelle%20nach%20der%20Post%0D%0DStellungnahme%3A%20Mehr%20B%C3%B6s%20pls'

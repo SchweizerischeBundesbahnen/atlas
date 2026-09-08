@@ -24,7 +24,6 @@ import { TimetableHearingStatementInternalService } from '../../../../api/servic
 })
 export class StatementDataComponent {
   readonly form = input.required<FormGroup<StatementDetailFormGroup>>();
-  readonly ttfnValidOn = input.required<Date>();
   readonly statement = input.required<TimetableHearingStatementV2>();
   readonly isNew = input<boolean>();
 

@@ -79,6 +79,59 @@ class TimetableFieldNumberControllerInternalApiTest extends BaseControllerApiTes
   }
 
   @Test
+  void shouldReturnExpiredTimetableFieldNumberFilteredByTtfnIds() throws Exception {
+    mvc.perform(get("/internal/field-numbers")
+            .queryParam("ttfnIds", version.getTtfnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1))
+        .andExpect(jsonPath("$.objects[0].ttfnid").value(version.getTtfnid()))
+        .andExpect(jsonPath("$.objects[0].number").value(version.getNumber()));
+  }
+
+  @Test
+  void shouldFilterByTtfnIdsWhenEmptyStatusChoicesParamIsSentByFeignClient() throws Exception {
+    mvc.perform(get("/internal/field-numbers")
+            .queryParam("searchCriteria", "")
+            .queryParam("statusChoices", "")
+            .queryParam("ttfnIds", version.getTtfnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
+  }
+
+  @Test
+  void shouldIgnoreEmptySearchCriteriaParam() throws Exception {
+    mvc.perform(get("/internal/field-numbers")
+            .queryParam("searchCriteria", "")
+            .queryParam("ttfnIds", version.getTtfnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
+  }
+
+  @Test
+  void shouldIgnoreEmptyStatusChoicesParam() throws Exception {
+    mvc.perform(get("/internal/field-numbers")
+            .queryParam("statusChoices", "")
+            .queryParam("ttfnIds", version.getTtfnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
+  }
+
+  @Test
+  void shouldReturnEmptyResultForUnknownTtfnIds() throws Exception {
+    mvc.perform(get("/internal/field-numbers")
+            .queryParam("ttfnIds", "ch:1:ttfnid:does-not-exist"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(0));
+  }
+
+  @Test
+  void shouldIgnoreTtfnIdsWhenParamOmitted() throws Exception {
+    mvc.perform(get("/internal/field-numbers"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
+  }
+
+  @Test
   void shouldReturnBadRequestExceptionOnInvalidSortParam() throws Exception {
     // given
     Mockito.doThrow(

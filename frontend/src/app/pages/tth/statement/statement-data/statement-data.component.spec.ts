@@ -71,7 +71,6 @@ describe('StatementData', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('form', statementFormGroup);
     fixture.componentRef.setInput('statement', statement);
-    fixture.componentRef.setInput('ttfnValidOn', new Date());
     fixture.detectChanges();
   });
 

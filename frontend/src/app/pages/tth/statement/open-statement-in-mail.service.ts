@@ -1,40 +1,27 @@
 import { Injectable, inject } from '@angular/core';
-import { TimetableFieldNumber, TimetableHearingStatementV2 } from '../../../api';
+import { TimetableHearingStatementV2 } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OpenStatementInMailService {
   private readonly translatePipe = inject(TranslatePipe);
-  private readonly timetableFieldNumbersService = inject(TimetableFieldNumberInternalService);
 
-  openAsMail(statement: TimetableHearingStatementV2, ttfnValidOn: Date | undefined) {
-    if (statement?.ttfnid) {
-      this.timetableFieldNumbersService
-        .getOverview([statement!.ttfnid!], undefined, undefined, ttfnValidOn, undefined, undefined, undefined, [
-          'ttfnid,ASC',
-        ])
-        .subscribe((result) => {
-          const resolvedTtfn = result.objects![0];
-          this.openStatementInMailClient(statement, resolvedTtfn);
-        });
-    } else {
-      this.openStatementInMailClient(statement, undefined);
-    }
+  openAsMail(statement: TimetableHearingStatementV2) {
+    this.openStatementInMailClient(statement);
   }
 
-  openStatementInMailClient(statement: TimetableHearingStatementV2, resolvedTtfn: TimetableFieldNumber | undefined) {
+  openStatementInMailClient(statement: TimetableHearingStatementV2) {
     const a = document.createElement('a');
-    a.href = this.buildMailToLink(statement, resolvedTtfn);
+    a.href = this.buildMailToLink(statement);
     a.click();
   }
 
-  buildMailToLink(statement: TimetableHearingStatementV2, resolvedTtfn: TimetableFieldNumber | undefined) {
+  buildMailToLink(statement: TimetableHearingStatementV2) {
     const statementInfo = this.buildStatementInfo(statement);
     const stopPointInfo = this.buildStopPointInfo(statement);
-    const ttfnInfo = this.buildTtfnInfo(resolvedTtfn);
+    const ttfnInfo = this.buildTtfnInfo(statement);
 
     const subject = this.buildSubject(ttfnInfo, statement.id);
     const body = `${ttfnInfo}${stopPointInfo}${statementInfo}`;
@@ -50,9 +37,11 @@ export class OpenStatementInMailService {
     return statement?.stopPlace ? `${stopPointLabel}: ${statement?.stopPlace}\r\r` : '';
   }
 
-  private buildTtfnInfo(resolvedTtfn: TimetableFieldNumber | undefined) {
+  private buildTtfnInfo(statement: TimetableHearingStatementV2) {
     const ttfnLabel = this.translatePipe.transform('TTH.STATEMENT.TTFN');
-    return resolvedTtfn ? `${ttfnLabel}: ${resolvedTtfn.number} ${resolvedTtfn.descriptionOutwardLine1}\r\r` : '';
+    return statement?.timetableFieldNumber
+      ? `${ttfnLabel}: ${statement.timetableFieldNumber} ${statement.timetableFieldDescription}\r\r`
+      : '';
   }
 
   private buildSubject(ttfnInfo: string | undefined, id: number | undefined) {
