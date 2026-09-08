@@ -4,7 +4,7 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_CONTACT_PO
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.s3.service.AmazonService;
 import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.job.BaseExportJobService.JobParams;

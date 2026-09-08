@@ -114,10 +114,10 @@ Libraries used to perform:
 
 * business object **versioning** according to
   the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
-  See [Versioning documentation](base-atlas/documentation/versioning/README.md);
+  See [Versioning documentation](versioning/README.md);
 * CSV and ZIP exports. See [Export documentation](base-atlas/documentation/export/README.md);
 * Amazon REST Client operations.
-  See [Amazon documentation](base-atlas/documentation/amazon/README.md);
+  See [Amazon documentation](atlas-s3/README.md);
 
 ### Frontend
 

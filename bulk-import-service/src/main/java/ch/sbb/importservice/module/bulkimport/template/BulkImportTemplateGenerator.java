@@ -1,6 +1,6 @@
 package ch.sbb.importservice.module.bulkimport.template;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;

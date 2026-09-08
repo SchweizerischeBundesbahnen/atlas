@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.prm.contactpoint.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.exportservice.job.prm.contactpoint.entity.ContactPointVersion;
 import ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel;

@@ -2,7 +2,7 @@ package ch.sbb.workflow.module.lidi.tth.controller;
 
 import static ch.sbb.atlas.model.Language.toLocale;
 
-import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.s3.exception.FileException;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.workflow.tth.dossier.BoAnswerModel;
 import ch.sbb.atlas.api.workflow.tth.dossier.DossierStatus;

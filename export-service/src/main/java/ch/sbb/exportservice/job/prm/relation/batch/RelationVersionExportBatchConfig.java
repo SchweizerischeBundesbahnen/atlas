@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.prm.relation.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion;
 import ch.sbb.exportservice.job.prm.relation.model.RelationVersionCsvModel;

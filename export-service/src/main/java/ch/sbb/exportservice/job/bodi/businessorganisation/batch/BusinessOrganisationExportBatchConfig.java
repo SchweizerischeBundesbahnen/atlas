@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.bodi.businessorganisation.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.exportservice.job.bodi.businessorganisation.entity.BusinessOrganisation;
 import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisationCsvModel;

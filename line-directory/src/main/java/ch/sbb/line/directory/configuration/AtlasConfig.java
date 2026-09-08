@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.configuration;
 
-import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.amazon.service.FileServiceImpl;
+import ch.sbb.atlas.s3.service.FileService;
+import ch.sbb.atlas.s3.service.FileServiceImpl;
 import ch.sbb.atlas.business.organisation.SharedBusinessOrganisationConfig;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.transport.company.SharedTransportCompanyConfig;

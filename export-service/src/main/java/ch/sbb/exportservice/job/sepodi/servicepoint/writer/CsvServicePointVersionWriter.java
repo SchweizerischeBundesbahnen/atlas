@@ -2,7 +2,7 @@ package ch.sbb.exportservice.job.sepodi.servicepoint.writer;
 
 import static ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel.Fields.numberShort;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel.Fields;

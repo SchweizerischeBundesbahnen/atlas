@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.tasklet.upload;
 
-import ch.sbb.atlas.amazon.exception.FileException;
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.exception.FileException;
+import ch.sbb.atlas.s3.service.AmazonService;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import java.io.File;
 import java.io.IOException;

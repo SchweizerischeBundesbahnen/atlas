@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.lidi.line.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LINE_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LINE_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.exportservice.job.lidi.line.entity.Line;
 import ch.sbb.exportservice.job.lidi.line.model.LineCsvModel;

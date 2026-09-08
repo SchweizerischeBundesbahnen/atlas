@@ -2,7 +2,7 @@ package ch.sbb.importservice.module.bulkimport.service;
 
 import static ch.sbb.importservice.module.bulkimport.reader.BulkImportCsvReader.getFileHeader;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.importservice.module.bulkimport.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.module.bulkimport.exception.FileHeaderValidationException;

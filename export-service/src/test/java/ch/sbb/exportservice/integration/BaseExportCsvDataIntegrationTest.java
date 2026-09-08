@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.integration;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.s3.service.AmazonService;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;

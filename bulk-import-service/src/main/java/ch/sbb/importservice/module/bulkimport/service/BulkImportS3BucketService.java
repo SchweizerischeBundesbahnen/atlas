@@ -2,8 +2,8 @@ package ch.sbb.importservice.module.bulkimport.service;
 
 import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.service.AmazonService;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
 import java.io.File;
 import java.time.LocalDate;

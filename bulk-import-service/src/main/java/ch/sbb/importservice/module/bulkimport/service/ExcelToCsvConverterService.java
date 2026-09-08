@@ -1,6 +1,6 @@
 package ch.sbb.importservice.module.bulkimport.service;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.importservice.module.bulkimport.exception.ExcelToCsvConversionException;

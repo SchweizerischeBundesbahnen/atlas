@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.sepodi.servicepoint.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.job.sepodi.servicepoint.entity.ServicePointVersion;
 import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;

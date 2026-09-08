@@ -1,6 +1,6 @@
 package ch.sbb.importservice.module.bulkimport.log;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;

@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.bodi.businessorganisation.writer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

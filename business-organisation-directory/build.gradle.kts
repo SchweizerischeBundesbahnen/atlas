@@ -48,6 +48,7 @@ dependencies {
 
     // Project dependencies
     implementation(project(":base-atlas"))
+    implementation(project(":atlas-s3"))
     implementation(project(":versioning"))
     implementation(project(":kafka"))
     implementation(project(":user-administration-security"))

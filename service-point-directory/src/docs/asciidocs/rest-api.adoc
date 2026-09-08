@@ -4,7 +4,7 @@ include::../../../../auto-rest-doc/src/main/resources/layout/common/ATLAS-HEAD.a
 
 include::../release-notes.adoc[]
 
-include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
+include::../../../../base-atlas/documentation/data-consuming-rules/when_to_use_files_or_API.adoc[]
 
 = Service Point Directory REST API Documentation
 

@@ -10,8 +10,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
@@ -22,6 +20,8 @@ import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.service.AmazonService;
 import ch.sbb.importservice.config.mail.MailProducerService;
 import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.controller.BulkImportController;

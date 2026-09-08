@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.prm.referencepoint.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.exportservice.job.prm.referencepoint.entity.ReferencePointVersion;
 import ch.sbb.exportservice.job.prm.referencepoint.model.ReferencePointVersionCsvModel;

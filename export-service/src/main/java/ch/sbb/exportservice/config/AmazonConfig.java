@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.atlas.amazon.config.AmazonAtlasConfig.configureAmazonS3Client;
+import static ch.sbb.atlas.s3.config.AmazonAtlasConfig.configureAmazonS3Client;
 
-import ch.sbb.atlas.amazon.config.AmazonConfigProps;
-import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
-import ch.sbb.atlas.amazon.service.AmazonFileStreamingServiceImpl;
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.AmazonServiceImpl;
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.config.AmazonConfigProps;
+import ch.sbb.atlas.s3.service.AmazonFileStreamingService;
+import ch.sbb.atlas.s3.service.AmazonFileStreamingServiceImpl;
+import ch.sbb.atlas.s3.service.AmazonService;
+import ch.sbb.atlas.s3.service.AmazonServiceImpl;
+import ch.sbb.atlas.s3.service.FileService;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

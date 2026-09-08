@@ -36,7 +36,6 @@ dependencies {
     // Libraries
     implementation(libs.bundles.geo.data)
     implementation(libs.swagger.core)
-    implementation(libs.aws.s3)
     implementation(libs.jaxb.api)
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
 

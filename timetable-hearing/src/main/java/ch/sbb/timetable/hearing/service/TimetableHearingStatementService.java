@@ -3,7 +3,7 @@ package ch.sbb.timetable.hearing.service;
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
 import static java.util.Comparator.comparing;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.client.line.ttfn.TimetableFieldNumberApiV1Client;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDataProtectionModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;

@@ -2,7 +2,7 @@ package ch.sbb.exportservice.job.prm.recording.obligation.batch;
 
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RECORDING_OBLIGATION_CSV_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.prm.recording.obligation.entity.RecordingObligation;
 import ch.sbb.exportservice.job.prm.recording.obligation.model.RecordingObligationCsvModel;
 import ch.sbb.exportservice.job.prm.recording.obligation.processor.RecordingObligationCsvProcessor;

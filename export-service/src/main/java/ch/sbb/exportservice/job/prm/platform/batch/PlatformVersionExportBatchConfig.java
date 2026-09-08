@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.prm.platform.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PLATFORM_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.exportservice.job.prm.platform.entity.PlatformVersion;
 import ch.sbb.exportservice.job.prm.platform.model.PlatformVersionCsvModel;

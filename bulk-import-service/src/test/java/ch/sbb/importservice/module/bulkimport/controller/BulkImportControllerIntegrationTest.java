@@ -14,18 +14,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportRequest;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.service.AmazonService;
 import ch.sbb.importservice.module.bulkimport.client.LineBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.PlatformBulkImportClient;
-import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.SectorGroupBulkImportClient;
+import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.SublineBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
