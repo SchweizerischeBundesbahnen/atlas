@@ -103,8 +103,8 @@ final class ToVersionableMapper {
       if (actualTypeArguments.length != 1) {
         throw new VersioningException("Expected a generic depth of one");
       }
-      String collectionClassName = actualTypeArguments[0].getTypeName();
-      return Class.forName(collectionClassName).getConstructor().newInstance();
+      Class<?> collectionElementClass = (Class<?>) actualTypeArguments[0];
+      return collectionElementClass.getConstructor().newInstance();
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }
