@@ -18,7 +18,7 @@ import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServiceP
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.TerminationInProgressException;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

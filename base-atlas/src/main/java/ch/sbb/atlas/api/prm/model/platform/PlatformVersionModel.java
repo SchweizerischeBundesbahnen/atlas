@@ -10,7 +10,7 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.api.prm.model.PrmApiConstants;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;

@@ -3,7 +3,7 @@ package ch.sbb.atlas.api.servicepoint.sector;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.AuditableVersionModel;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Digits;

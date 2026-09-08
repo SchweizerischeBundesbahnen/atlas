@@ -2,7 +2,7 @@ package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.versioning.convert.ReflectionHelper;
+import ch.sbb.atlas.helper.ReflectionHelper;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;

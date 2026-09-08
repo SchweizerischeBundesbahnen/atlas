@@ -19,10 +19,10 @@ import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.GeolocationBaseE
 import ch.sbb.atlas.servicepointdirectory.module.geodata.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.converter.CategoryConverter;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
+import ch.sbb.atlas.versionable.AtlasVersionable;
+import ch.sbb.atlas.versionable.AtlasVersionableProperty;
+import ch.sbb.atlas.versionable.Versionable;
+import ch.sbb.atlas.versionable.VersionableProperty.RelationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

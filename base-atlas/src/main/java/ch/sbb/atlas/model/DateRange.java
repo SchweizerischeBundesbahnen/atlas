@@ -1,7 +1,7 @@
 package ch.sbb.atlas.model;
 
 import ch.sbb.atlas.helper.DateHelper;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serial;
 import java.io.Serializable;

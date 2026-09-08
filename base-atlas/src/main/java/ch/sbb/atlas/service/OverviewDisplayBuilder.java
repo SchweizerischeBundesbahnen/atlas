@@ -2,7 +2,7 @@ package ch.sbb.atlas.service;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.DateRange;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;

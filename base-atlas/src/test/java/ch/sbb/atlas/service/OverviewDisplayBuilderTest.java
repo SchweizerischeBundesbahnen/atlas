@@ -3,7 +3,7 @@ package ch.sbb.atlas.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.module.recordingobbligation.entiy;
 
 import ch.sbb.atlas.model.entity.BaseEntity;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versionable.AtlasVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;

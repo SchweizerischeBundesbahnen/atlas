@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.redact.RedactBySboid;
 import ch.sbb.atlas.redact.Redacted;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versionable.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.BaseWorkflowEntity;
 import ch.sbb.workflow.entity.Person;

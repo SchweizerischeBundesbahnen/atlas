@@ -37,6 +37,7 @@ dependencies {
 
     // Project dependencies
     implementation(project(":base-atlas"))
+    implementation(project(":versioning"))
     implementation(project(":user-administration-security"))
     implementation(project(":kafka"))
 
