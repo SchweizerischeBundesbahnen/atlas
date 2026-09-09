@@ -1,6 +1,7 @@
 package ch.sbb.workflow.module.sepodi.hearing.model.sepodi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
+import ch.sbb.workflow.otp.helper.OtpHelper;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -20,7 +21,9 @@ public class OtpVerificationModel {
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   private String examinantMail;
 
+  @Schema(description = "One-time code")
   @NotNull
+  @Pattern(regexp = OtpHelper.OTP_CODE_REGEX)
   private String pinCode;
 
 }

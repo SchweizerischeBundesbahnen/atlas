@@ -14,6 +14,8 @@ import { DialogCloseComponent } from '../../../../../../core/components/dialog/c
 import { of, throwError } from 'rxjs';
 import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
 
+const CANONICAL_OTP_CODE = '33d0988f-3e6b-4dc1-acd4-a929694712e8';
+
 describe('DecisionStepperComponent', () => {
   let component: DecisionStepperComponent;
   let fixture: ComponentFixture<DecisionStepperComponent>;
@@ -64,6 +66,38 @@ describe('DecisionStepperComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('pin validator', () => {
+    it('should be invalid for 6-digit numeric code', () => {
+      component.pin.controls.pin.setValue('123456');
+
+      expect(component.pin.controls.pin.invalid).toBe(true);
+      expect(component.pin.controls.pin.hasError('pattern')).toBe(true);
+    });
+
+    it('should be invalid for uppercase uuid', () => {
+      component.pin.controls.pin.setValue(CANONICAL_OTP_CODE.toUpperCase());
+
+      expect(component.pin.controls.pin.invalid).toBe(true);
+      expect(component.pin.controls.pin.hasError('pattern')).toBe(true);
+    });
+
+    it('should be invalid for uuid with leading or trailing space', () => {
+      component.pin.controls.pin.setValue(` ${CANONICAL_OTP_CODE}`);
+      expect(component.pin.controls.pin.invalid).toBe(true);
+      expect(component.pin.controls.pin.hasError('pattern')).toBe(true);
+
+      component.pin.controls.pin.setValue(`${CANONICAL_OTP_CODE} `);
+      expect(component.pin.controls.pin.invalid).toBe(true);
+      expect(component.pin.controls.pin.hasError('pattern')).toBe(true);
+    });
+
+    it('should be valid for canonical lowercase uuid v4', () => {
+      component.pin.controls.pin.setValue(CANONICAL_OTP_CODE);
+
+      expect(component.pin.controls.pin.valid).toBe(true);
+    });
+  });
+
   describe('stepper', () => {
     function testObtainOtpStep() {
       component.mail.controls.mail.setValue('techsupport@atlas.ch');
@@ -81,7 +115,7 @@ describe('DecisionStepperComponent', () => {
     }
 
     function testVerifyPinStep() {
-      component.pin.controls.pin.setValue('234313');
+      component.pin.controls.pin.setValue(CANONICAL_OTP_CODE);
       spWfServiceSpy.verifyOtp.mockReturnValue(
         of({
           id: 50,
@@ -97,7 +131,7 @@ describe('DecisionStepperComponent', () => {
 
       expect(spWfServiceSpy.verifyOtp).toHaveBeenCalledExactlyOnceWith(1, {
         examinantMail: 'techsupport@atlas.ch',
-        pinCode: '234313',
+        pinCode: CANONICAL_OTP_CODE,
       });
       expect(component.stepper?.selectedIndex).toEqual(2);
       expect(component.stepper?.selected?.completed).toBe(false);
@@ -115,7 +149,7 @@ describe('DecisionStepperComponent', () => {
 
       expect(spWfServiceSpy.voteWorkflow).toHaveBeenCalledExactlyOnceWith(1, 50, {
         examinantMail: 'techsupport@atlas.ch',
-        pinCode: '234313',
+        pinCode: CANONICAL_OTP_CODE,
         judgement: 'YES',
         motivation: 'cool',
         firstName: 'first',
@@ -154,7 +188,7 @@ describe('DecisionStepperComponent', () => {
     fixture.detectChanges();
     component.stepper?.next();
 
-    component.pin.controls.pin.setValue('234313');
+    component.pin.controls.pin.setValue(CANONICAL_OTP_CODE);
     spWfServiceSpy.verifyOtp.mockReturnValue(throwError(() => 'bad pin') as never);
 
     component.completeVerifyPinStep();
@@ -162,7 +196,7 @@ describe('DecisionStepperComponent', () => {
 
     expect(spWfServiceSpy.verifyOtp).toHaveBeenCalledExactlyOnceWith(1, {
       examinantMail: '',
-      pinCode: '234313',
+      pinCode: CANONICAL_OTP_CODE,
     });
     expect(component.loading).toBe(false);
     expect(component.stepper?.selectedIndex).toEqual(1);

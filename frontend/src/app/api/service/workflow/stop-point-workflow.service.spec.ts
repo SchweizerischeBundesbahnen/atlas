@@ -153,7 +153,7 @@ describe('StopPointWorkflowService', () => {
   it('should verifyOtp', () => {
     const otpVerification: OtpVerification = {
       examinantMail: 'bernt@mueli.ch',
-      pinCode: '64548',
+      pinCode: '33d0988f-3e6b-4dc1-acd4-a929694712e8',
     };
     // when
     service.verifyOtp(1, otpVerification);

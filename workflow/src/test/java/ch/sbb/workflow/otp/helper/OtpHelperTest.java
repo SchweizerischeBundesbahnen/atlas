@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class OtpHelperTest {
@@ -27,5 +28,28 @@ class OtpHelperTest {
       boolean isUnique = generatedPinCodes.add(pinCode);
       assertThat(isUnique).isTrue();
     }
+  }
+
+  @Test
+  void shouldGeneratePinCodeAsCanonicalLowercaseUuidV4() {
+    String pinCode = OtpHelper.generatePinCode();
+
+    assertThat(pinCode).hasSize(36).matches(OtpHelper.OTP_CODE_REGEX);
+    assertThat(UUID.fromString(pinCode).version()).isEqualTo(4);
+  }
+
+  @Test
+  void shouldRejectLegacySixDigitPinCode() {
+    assertThat(OtpHelper.OTP_CODE_REGEX).doesNotMatch("123456");
+  }
+
+  @Test
+  void shouldRejectUppercaseOrPaddedUuid() {
+    String pinCode = OtpHelper.generatePinCode();
+
+    assertThat(pinCode.toUpperCase()).doesNotMatch(OtpHelper.OTP_CODE_REGEX);
+    assertThat(" " + pinCode).doesNotMatch(OtpHelper.OTP_CODE_REGEX);
+    assertThat(pinCode + "\n").doesNotMatch(OtpHelper.OTP_CODE_REGEX);
+    assertThat(pinCode.replace("-", "")).doesNotMatch(OtpHelper.OTP_CODE_REGEX);
   }
 }

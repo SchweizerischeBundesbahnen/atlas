@@ -18,7 +18,12 @@ import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowPinCodeI
 import ch.sbb.workflow.module.sepodi.hearing.mail.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.module.sepodi.hearing.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.otp.entity.Otp;
+import ch.sbb.workflow.otp.helper.OtpHelper;
 import ch.sbb.workflow.otp.repository.OtpRepository;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -29,6 +34,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -150,6 +156,85 @@ class StopPointWorkflowOtpServiceTest {
         MAIL_ADDRESS);
     assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class).isThrownBy(
         () -> stopPointWorkflowOtpService.validatePinCode(examinant, "101010"));
+  }
+
+  @Test
+  void shouldObtainOtpAsCanonicalUuid() {
+    stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+
+    verify(notificationService).sendPinCodeMail(any(), anyString(), pincodeCaptor.capture());
+    assertThat(pincodeCaptor.getValue()).matches(OtpHelper.OTP_CODE_REGEX);
+  }
+
+  @Test
+  void shouldValidatePinSuccessfullyJustBeforeExpiry() {
+    Person examinant = obtainOtpAndShiftCreationTime(LocalDateTime.now().minusMinutes(10).plusSeconds(30));
+
+    assertThatNoException().isThrownBy(
+        () -> stopPointWorkflowOtpService.validatePinCode(examinant, pincodeCaptor.getValue()));
+  }
+
+  @Test
+  void shouldValidatePinUnsuccessfullyJustAfterExpiry() {
+    Person examinant = obtainOtpAndShiftCreationTime(LocalDateTime.now().minusMinutes(10).minusSeconds(30));
+
+    assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class).isThrownBy(
+        () -> stopPointWorkflowOtpService.validatePinCode(examinant, pincodeCaptor.getValue()));
+  }
+
+  @Test
+  void shouldRejectPinCodeWithDeviatingCasingOrWhitespace() {
+    stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+    verify(notificationService).sendPinCodeMail(any(), anyString(), pincodeCaptor.capture());
+
+    Person examinant = stopPointWorkflowOtpService.getExaminantByMail(workflowInHearing.getId(), MAIL_ADDRESS);
+    String pinCode = pincodeCaptor.getValue();
+
+    assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class).isThrownBy(
+        () -> stopPointWorkflowOtpService.validatePinCode(examinant, pinCode.toUpperCase()));
+    assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class).isThrownBy(
+        () -> stopPointWorkflowOtpService.validatePinCode(examinant, " " + pinCode));
+    assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class).isThrownBy(
+        () -> stopPointWorkflowOtpService.validatePinCode(examinant, pinCode + " "));
+  }
+
+  @Test
+  void shouldNotLogPinCodeNorMailAddress() {
+    Logger serviceLogger = (Logger) LoggerFactory.getLogger(StopPointWorkflowOtpService.class);
+    Level previousLevel = serviceLogger.getLevel();
+    ListAppender<ILoggingEvent> logAppender = new ListAppender<>();
+    logAppender.start();
+    serviceLogger.setLevel(Level.TRACE);
+    serviceLogger.addAppender(logAppender);
+
+    try {
+      stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+      verify(notificationService).sendPinCodeMail(any(), anyString(), pincodeCaptor.capture());
+
+      Person examinant = stopPointWorkflowOtpService.getExaminantByMail(workflowInHearing.getId(), MAIL_ADDRESS);
+      stopPointWorkflowOtpService.validatePinCode(examinant, pincodeCaptor.getValue());
+
+      assertThat(logAppender.list).isNotEmpty();
+      assertThat(logAppender.list)
+          .extracting(ILoggingEvent::getFormattedMessage)
+          .noneMatch(message -> message.contains(pincodeCaptor.getValue()))
+          .noneMatch(message -> message.contains(MAIL_ADDRESS));
+    } finally {
+      serviceLogger.detachAppender(logAppender);
+      serviceLogger.setLevel(previousLevel);
+      logAppender.stop();
+    }
+  }
+
+  private Person obtainOtpAndShiftCreationTime(LocalDateTime creationTime) {
+    stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+    verify(notificationService).sendPinCodeMail(any(), anyString(), pincodeCaptor.capture());
+
+    Person examinant = stopPointWorkflowOtpService.getExaminantByMail(workflowInHearing.getId(), MAIL_ADDRESS);
+    Otp otp = otpRepository.findByPersonId(examinant.getId());
+
+    jdbcTemplate.update("update otp set creation_time = ? where id = ?", creationTime, otp.getId());
+    return examinant;
   }
 
   @Test
