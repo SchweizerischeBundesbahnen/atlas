@@ -35,10 +35,11 @@ This is the repository for business relevant services for ATLAS.
 - [Hotfix Build and Deployment](#hotfix-build-and-deployment)
   * [Correlation-Id](#correlation-id)
 - [Timeouts](#timeouts)
+- [Guidelines](#guidelines)
 - [Development](#development)
   * [Run locally](#run-locally)
+  * [MinIO](#minio)
   * [Code-Formatting](#code-formatting)
-  * [Utility Classes](#utility-classes)
 - [Troubleshooting](#troubleshooting)
 - [Links](#links)
 
@@ -92,6 +93,9 @@ Quick overview of the modules. There are more detailed `README`s available withi
 Module, which will be published to APIM and served on the SBB developer portal.
 
 The module combines the APIs from services into one composed API.
+
+See [API Management & IAM documentation](documentation/apim-iam.md) for details on registering, securing and consuming the
+APIs.
 
 ### Api Auth Gateway
 
@@ -220,8 +224,7 @@ The [opengrep](https://github.com/opengrep/opengrep) scan result is stored to th
 
 ## Monitoring and Logging
 
-* [Monitoring (Instana and Actuator)](documentation/Monitoring.md)
-* [Logging to Splunk](documentation/Logging.md)
+* [Observability (Instana, Actuator and Splunk)](documentation/observability.md)
 
 ## Hotfix Build and Deployment
 
@@ -232,7 +235,7 @@ The [opengrep](https://github.com/opengrep/opengrep) scan result is stored to th
 The Atlas services use [Micrometer](https://micrometer.io/) to add to the log a
 **Correlation-Id** which spreads between the services up to the snack bar in the fronted.
 
-We can use the **Correlation-Id** to search it in [Splunk](documentation/Logging.md) or [Instana](documentation/Monitoring.md).
+We can use the **Correlation-Id** to search it in [Splunk or Instana](documentation/observability.md).
 
 ## Timeouts
 
@@ -243,6 +246,12 @@ here: https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/applicatio
 
 API users experiencing timeouts when downloading a bigger json file should switch to the compressed (gzipped) version of the
 endpoint.
+
+## Guidelines
+
+* [Architecture Guidelines](documentation/architecture-guidelines.md)
+* [Coding Guidelines](documentation/coding-guidelines.md)
+* [Git Guardian](documentation/git-guardian.md)
 
 ## Development
 
@@ -272,6 +281,12 @@ Stop infrastructure container and remove volume (deletes persistent content):
 docker-compose down -v 
 ~~~
 
+### MinIO
+
+1. Check that __atlas-minio-1__ docker container is running, else execute `docker compose up -d minio-init`
+2. You can open __localhost:9001__ in a Browser (login with __minioadmin__ as username &
+   password) to use the MinIO web console.
+
 ### Code-Formatting
 
 Configuration for Prettier:
@@ -282,34 +297,9 @@ Configuration for `Actions on Save`:
 
 ![image](documentation/image/actions-on-save.png)
 
-### Utility Classes
-
-Utility/helper classes (stateless classes that only expose static members, e.g. `*Helper`/`*Util`/`*Utils`) must be
-annotated with Lombok's `@lombok.experimental.UtilityClass` instead of manually adding a `final` modifier and a private
-constructor. This keeps the boilerplate out of the code:
-
-~~~java
-
-@UtilityClass
-public class DateHelper {
-
-  public LocalDate min(LocalDate x, LocalDate y) {
-    return x.isBefore(y) ? x : y;
-  }
-
-}
-~~~
-
-`@UtilityClass` automatically:
-
-* makes the class `final`
-* generates a private, exception-throwing no-args constructor (so the class can't be instantiated or subclassed)
-* makes every field and method `static` (an explicit `static` modifier is not required, but may be kept if already
-  present for readability)
-
 ## Troubleshooting
 
-* [Sonarqube](documentation/Troubleshooting.md)
+* [Sonarqube](documentation/sonarqube.md)
 
 ## Links
 
