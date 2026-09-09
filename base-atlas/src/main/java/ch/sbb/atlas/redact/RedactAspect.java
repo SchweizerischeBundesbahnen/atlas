@@ -1,6 +1,6 @@
 package ch.sbb.atlas.redact;
 
-import ch.sbb.atlas.versioning.convert.ReflectionHelper;
+import ch.sbb.atlas.helper.ReflectionHelper;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

@@ -1,6 +1,6 @@
 package ch.sbb.atlas.imports.util;
 
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;

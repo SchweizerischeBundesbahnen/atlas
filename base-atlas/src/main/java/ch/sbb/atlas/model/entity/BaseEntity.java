@@ -1,7 +1,7 @@
 package ch.sbb.atlas.model.entity;
 
 import ch.sbb.atlas.service.UserService;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versionable.AtlasVersionableProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;

@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.module.geodata.entity;
 
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versionable.AtlasVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

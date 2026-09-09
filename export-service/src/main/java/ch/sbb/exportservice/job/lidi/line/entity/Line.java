@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import ch.sbb.exportservice.job.BaseEntity;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;

@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseEntity;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versionable.AtlasVersionableProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;

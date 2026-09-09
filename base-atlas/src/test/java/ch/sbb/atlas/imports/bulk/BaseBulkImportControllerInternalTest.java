@@ -11,8 +11,8 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -104,7 +104,12 @@ class BaseBulkImportControllerInternalTest {
     BiConsumer<String, BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateByUser = mock();
     Consumer<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> update = mock();
 
-    doThrow(new VersioningNoChangesException()).when(update).accept(any());
+    SimpleAtlasException exception = SimpleAtlasException.builder()
+        .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
+        .message("no changes")
+        .error("no changes")
+        .build();
+    doThrow(exception).when(update).accept(any());
 
     // When
     List<BulkImportItemExecutionResult> results = bulkImportController.executeBulkImport(containers,

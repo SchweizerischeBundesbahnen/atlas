@@ -2,7 +2,7 @@ package ch.sbb.atlas.imports.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

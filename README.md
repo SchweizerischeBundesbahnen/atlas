@@ -38,6 +38,7 @@ This is the repository for business relevant services for ATLAS.
 - [Development](#development)
   * [Run locally](#run-locally)
   * [Code-Formatting](#code-formatting)
+  * [Utility Classes](#utility-classes)
 - [Troubleshooting](#troubleshooting)
 - [Links](#links)
 
@@ -281,6 +282,31 @@ Configuration for `Actions on Save`:
 
 ![image](documentation/image/actions-on-save.png)
 
+### Utility Classes
+
+Utility/helper classes (stateless classes that only expose static members, e.g. `*Helper`/`*Util`/`*Utils`) must be
+annotated with Lombok's `@lombok.experimental.UtilityClass` instead of manually adding a `final` modifier and a private
+constructor. This keeps the boilerplate out of the code:
+
+~~~java
+
+@UtilityClass
+public class DateHelper {
+
+  public LocalDate min(LocalDate x, LocalDate y) {
+    return x.isBefore(y) ? x : y;
+  }
+
+}
+~~~
+
+`@UtilityClass` automatically:
+
+* makes the class `final`
+* generates a private, exception-throwing no-args constructor (so the class can't be instantiated or subclassed)
+* makes every field and method `static` (an explicit `static` modifier is not required, but may be kept if already
+  present for readability)
+
 ## Troubleshooting
 
 * [Sonarqube](documentation/Troubleshooting.md)
@@ -312,4 +338,3 @@ Configuration for `Actions on Save`:
   - **PROD**: https://api-management.prod.sbb-cloud.net
 - **Vulnerability Management (VMC)**: https://vmc.sbb.ch/de/reporting/mg/ADB3AE9A60E510ED/vulnerabilitylist
 - **GitHub**: https://github.com/SchweizerischeBundesbahnen/atlas
-

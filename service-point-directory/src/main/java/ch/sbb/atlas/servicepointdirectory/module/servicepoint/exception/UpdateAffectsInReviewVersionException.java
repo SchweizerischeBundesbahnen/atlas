@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;

@@ -7,6 +7,7 @@ version = "2.1546.0"
 
 dependencies {
     implementation(project(":base-atlas"))
+    implementation(project(":versioning"))
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

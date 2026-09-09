@@ -2,8 +2,8 @@ package ch.sbb.prm.directory.module.toilet.entity;
 
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versionable.AtlasVersionable;
+import ch.sbb.atlas.versionable.AtlasVersionableProperty;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;

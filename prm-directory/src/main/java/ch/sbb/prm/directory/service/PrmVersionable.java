@@ -2,7 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versionable.Versionable;
 import java.time.LocalDate;
 
 public interface PrmVersionable extends Versionable {
