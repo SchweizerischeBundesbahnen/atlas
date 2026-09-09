@@ -9,10 +9,9 @@
  */
 
 
-export interface ManualMailOverride { 
-    /**
-     * Manually maintained E-Mail address override of Azure mails
-     */
-    mail: string;
+export interface ServicePointGlobalIdUpdateCsvModel { 
+    sloid?: string;
+    number?: number;
+    globalId?: string;
 }
 

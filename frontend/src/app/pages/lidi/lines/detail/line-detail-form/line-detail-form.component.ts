@@ -51,6 +51,7 @@ export class LineDetailFormComponent {
         { value: 'IC' },
         { value: 'EC' },
         { value: 'EN' },
+        { value: 'ES' },
         { value: 'IR' },
         { value: 'RE' },
         { value: 'R' },

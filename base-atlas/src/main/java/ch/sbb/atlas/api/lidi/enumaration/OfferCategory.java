@@ -17,6 +17,7 @@ public enum OfferCategory {
   IC(MeanOfTransport.TRAIN),
   EC(MeanOfTransport.TRAIN),
   EN(MeanOfTransport.TRAIN),
+  ES(MeanOfTransport.TRAIN),
   IR(MeanOfTransport.TRAIN),
   RE(MeanOfTransport.TRAIN),
   R(MeanOfTransport.TRAIN),

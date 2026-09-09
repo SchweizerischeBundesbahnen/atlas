@@ -55,4 +55,25 @@ class LineBulkImportCreateTest {
     assertThat(result).usingRecursiveComparison().isEqualTo(expected);
   }
 
+  @Test
+  void shouldMapOfferCategoryEsFromCsvToCreateModel() {
+    BulkImportUpdateContainer<LineCreateCsvModel> container =
+        BulkImportUpdateContainer.<LineCreateCsvModel>builder()
+            .object(LineCreateCsvModel.builder()
+                .linienId("320")
+                .validFrom(LocalDate.of(2021, 4, 1))
+                .validTo(LocalDate.of(2099, 12, 31))
+                .description("Zürich - Amsterdam")
+                .number("NJ")
+                .lineType(LineType.ORDERLY)
+                .offerCategory(OfferCategory.ES)
+                .businessOrganisation("ch:1:sboid:100053")
+                .build())
+            .build();
+
+    LineVersionModelV2 result = LineBulkImportCreate.apply(container);
+
+    assertThat(result.getOfferCategory()).isEqualTo(OfferCategory.ES);
+  }
+
 }

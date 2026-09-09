@@ -14,7 +14,23 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.TRAIN);
     //then
-    assertThat(result).hasSize(19);
+    assertThat(result).hasSize(20);
+  }
+
+  @Test
+  void shouldOrderOfferCategoryEsDirectlyAfterEn() {
+    //when
+    List<OfferCategory> result = OfferCategory.from(MeanOfTransport.TRAIN);
+    //then
+    assertThat(result.indexOf(OfferCategory.ES)).isEqualTo(result.indexOf(OfferCategory.EN) + 1);
+  }
+
+  @Test
+  void shouldAssignEsToTrain() {
+    //when
+    MeanOfTransport result = OfferCategory.ES.getMeanOfTransport();
+    //then
+    assertThat(result).isEqualTo(MeanOfTransport.TRAIN);
   }
 
   @Test

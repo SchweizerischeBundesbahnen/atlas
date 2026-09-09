@@ -66,7 +66,7 @@ export class GlobalIdEditDialogComponent {
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const globalId = this.form.controls.globalId.value;
+      const globalId = this.form.controls.globalId.value!;
       this.servicePointService
         .updateGlobalId(this.data.servicePointNumber, { globalId })
         .pipe(

@@ -9,7 +9,7 @@
  */
 
 
-export type OfferCategory = 'EV' | 'IC' | 'EC' | 'EN' | 'IR' | 'RE' | 'R' | 'S' | 'SN' | 'PE' | 'EXT' | 'ATZ' | 'ICE' | 'TGV' | 'RJ' | 'TE2' | 'TER' | 'RB' | 'IRE' | 'T' | 'TN' | 'M' | 'CAX' | 'CAR' | 'EXB' | 'B' | 'BN' | 'RUB' | 'BP' | 'FUN' | 'PB' | 'GB' | 'SL' | 'ASC' | 'BAT' | 'FAE';
+export type OfferCategory = 'EV' | 'IC' | 'EC' | 'EN' | 'ES' | 'IR' | 'RE' | 'R' | 'S' | 'SN' | 'PE' | 'EXT' | 'ATZ' | 'ICE' | 'TGV' | 'RJ' | 'TE2' | 'TER' | 'RB' | 'IRE' | 'T' | 'TN' | 'M' | 'CAX' | 'CAR' | 'EXB' | 'B' | 'BN' | 'RUB' | 'BP' | 'FUN' | 'PB' | 'GB' | 'SL' | 'ASC' | 'BAT' | 'FAE';
 
 export const OfferCategory = {
 
@@ -20,6 +20,8 @@ export const OfferCategory = {
     Ec: 'EC' as OfferCategory,
 
     En: 'EN' as OfferCategory,
+
+    Es: 'ES' as OfferCategory,
 
     Ir: 'IR' as OfferCategory,
 

@@ -50,10 +50,6 @@ export interface ReadServicePointVersion {
      */
     designationOfficial: string;
     /**
-     * Global ID for linking the stop point to a national reference system. Relevant for Germany (Didok country codes 11, 80) and Austria (12, 81). Examples: de:05770:1282, at:42:9379
-     */
-    globalId?: string;
-    /**
      * Location abbreviation. Mainly used by the railways. Abbreviations may not be used as a code for identifying locations.
      */
     abbreviation?: string;
@@ -93,6 +89,10 @@ export interface ReadServicePointVersion {
     etagVersion?: number;
     number: ServicePointNumber;
     /**
+     * Global ID for linking the stop point to an international reference system. Examples: de:05770:1282, at:42:9379
+     */
+    globalId?: string;
+    /**
      * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/
      */
     sloid?: string;
@@ -114,11 +114,6 @@ export interface ReadServicePointVersion {
      * ServicePoint is OperatingPointKilometer
      */
     operatingPointKilometer?: boolean;
-    country: Country;
-    /**
-     * ServicePoint is StopPoint
-     */
-    stopPoint?: boolean;
     /**
      * ServicePoint is FareStop
      */
@@ -135,6 +130,11 @@ export interface ReadServicePointVersion {
      * ServicePoint has a Geolocation
      */
     hasGeolocation?: boolean;
+    /**
+     * ServicePoint is StopPoint
+     */
+    stopPoint?: boolean;
+    country: Country;
 }
 export namespace ReadServicePointVersion {
 }

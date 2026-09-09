@@ -9,10 +9,12 @@
  */
 
 
-export interface ManualMailOverride { 
-    /**
-     * Manually maintained E-Mail address override of Azure mails
-     */
-    mail: string;
+export interface SectorGroupCreateCsvModel { 
+    trafficPointSloid?: string;
+    validFrom?: Date;
+    validTo?: Date;
+    designation?: string;
+    length?: number;
+    sectorSloids?: Set<string>;
 }
 
