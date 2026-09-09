@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":base-atlas"))
     implementation(project(":user-administration-security"))
     implementation(project(":kafka"))
+    implementation(project(":pdf-sanitize"))
 
     implementation("org.postgresql:postgresql")
     annotationProcessor("org.hibernate.orm:hibernate-processor")
