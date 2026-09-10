@@ -8,9 +8,11 @@
  * Do not edit the class manually.
  */
 
-export interface GlobalIdUpdate {
+
+export interface GlobalIdUpdate { 
     /**
-     * Official Global-ID linking a foreign stop to its national reference system. Only writable for German (Didok country code 11, 80) and Austrian (12, 81) stops and must then start with 'de:' respectively 'at:'. May be empty. Examples: de:05770:1282, at:42:9379
+     * Official Global-ID linking a foreign stop to its national reference system. Only writable for German (Didok country code 11, 80) and Austrian (12, 81) stops and must then start with \'de:\' respectively \'at:\'. Examples: de:05770:1282, at:42:9379
      */
-    globalId?: string;
+    globalId: string;
 }
+

@@ -58,4 +58,32 @@ class LineCsvProcessorTest {
     LineCsvModel result = new LineCsvProcessor().process(line);
     assertThat(result).isEqualTo(expected);
   }
+
+  @Test
+  void shouldMapOfferCategoryEsToCsv() {
+    Line line = Line.builder()
+        .id(1L)
+        .slnid("ch:1:slnid:100000")
+        .linienId("100")
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .concessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION)
+        .swissLineNumber("r.01")
+        .description("Linie 1")
+        .number("1")
+        .offerCategory(OfferCategory.ES)
+        .businessOrganisation("ch:1:sboid:10000011")
+        .creator("creator")
+        .creationDate(LocalDateTime.of(2024, 2, 7, 20, 0))
+        .editor("editor")
+        .editionDate(LocalDateTime.of(2024, 2, 7, 20, 0))
+        .version(0)
+        .build();
+
+    LineCsvModel result = new LineCsvProcessor().process(line);
+
+    assertThat(result.getOfferCategory()).isEqualTo(OfferCategory.ES);
+  }
 }

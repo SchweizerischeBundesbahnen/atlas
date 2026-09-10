@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.module.line.controller;
 
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,6 +16,7 @@ import ch.sbb.atlas.api.lidi.LineVersionModelV2.Fields;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.module.line.LineTestData;
@@ -26,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @MockitoBean(types = SharedBusinessOrganisationService.class)
@@ -63,6 +66,47 @@ class LineControllerV2ApiTest extends BaseControllerApiTest {
   void shouldGetLineVersionsNotFound() throws Exception {
     mvc.perform(get("/v2/lines/versions/123"))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldCreateAndReadLineVersionWithOfferCategoryEs() throws Exception {
+    //given
+    LineVersionModelV2 lineVersionModel =
+        LineTestData.createLineVersionModelBuilder()
+            .offerCategory(OfferCategory.ES)
+            .build();
+
+    //when
+    mvc.perform(post("/v2/lines/versions")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(lineVersionModel)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.offerCategory").value(OfferCategory.ES.name()));
+
+    //then
+    LineVersion persisted = lineVersionRepository.findAll().getFirst();
+    mvc.perform(get("/v2/lines/versions/" + persisted.getSlnid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].offerCategory").value(OfferCategory.ES.name()));
+  }
+
+  @Test
+  void shouldRejectUnknownOfferCategory() throws Exception {
+    //given
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder()
+        .offerCategory(OfferCategory.IC)
+        .build();
+    String payload = mapper.writeValueAsString(lineVersionModel)
+        .replace("\"offerCategory\":\"IC\"", "\"offerCategory\":\"UNKNOWN_CATEGORY\"");
+
+    //when && then
+    mvc.perform(post("/v2/lines/versions")
+            .contentType(contentType)
+            .content(payload))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()))
+        .andExpect(jsonPath("$.message", containsString("UNKNOWN_CATEGORY")))
+        .andExpect(jsonPath("$.message", containsString(OfferCategory.class.getSimpleName())));
   }
 
   @Test
