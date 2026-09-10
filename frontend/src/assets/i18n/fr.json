@@ -1556,13 +1556,20 @@
       "SECTOR": "Secteur",
       "ON_DEMAND": "On Demand"
     },
-    "MAP_BO_FILTER": {
-      "TITLE": "Filtrer par organisation d'affaires",
-      "TOOLTIP": "Filtrer par organisation d'affaires",
-      "TOOLTIP_ACTIVE": "Filtré par {{count}} organisation(s) d'affaires – cliquer pour modifier",
-      "NO_SELECTION": "Aucune organisation d'affaires sélectionnée.",
-      "REMOVE": "Supprimer l'organisation d'affaires",
-      "RESET": "Réinitialiser"
+    "MAP_SERVICE_POINT_FILTER": {
+      "TITLE": "Filtrer les points de service",
+      "TOOLTIP": "Filtrer les points de service",
+      "TOOLTIP_ACTIVE": "Filtré selon {{count}} critère(s) – cliquer pour modifier",
+      "RESET": "Réinitialiser",
+      "BUSINESS_ORGANISATION": {
+        "LABEL": "Organisation d'affaires",
+        "NO_SELECTION": "Aucune organisation d'affaires sélectionnée.",
+        "REMOVE": "Supprimer l'organisation d'affaires"
+      },
+      "MEANS_OF_TRANSPORT": {
+        "LABEL": "Moyen de transport",
+        "NO_SELECTION": "Aucun moyen de transport sélectionné."
+      }
     },
     "BACK_TO_MAP": "Fermer",
     "ZOOM_IN_HINT": "Pour afficher les services, zoomez plus près.",

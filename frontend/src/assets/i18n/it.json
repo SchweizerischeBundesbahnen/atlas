@@ -1556,13 +1556,20 @@
       "SECTOR": "Settore",
       "ON_DEMAND": "On Demand"
     },
-    "MAP_BO_FILTER": {
-      "TITLE": "Filtra per organizzazione aziendale",
-      "TOOLTIP": "Filtra per organizzazione aziendale",
-      "TOOLTIP_ACTIVE": "Filtrato per {{count}} organizzazione/i aziendale/i – clicca per modificare",
-      "NO_SELECTION": "Nessuna organizzazione aziendale selezionata.",
-      "REMOVE": "Rimuovi l'organizzazione aziendale",
-      "RESET": "Ripristina"
+    "MAP_SERVICE_POINT_FILTER": {
+      "TITLE": "Filtrare i posti di servizio",
+      "TOOLTIP": "Filtrare i posti di servizio",
+      "TOOLTIP_ACTIVE": "Filtrato per {{count}} criterio/i – clicca per modificare",
+      "RESET": "Ripristina",
+      "BUSINESS_ORGANISATION": {
+        "LABEL": "Organizzazione aziendale",
+        "NO_SELECTION": "Nessuna organizzazione aziendale selezionata.",
+        "REMOVE": "Rimuovi l'organizzazione aziendale"
+      },
+      "MEANS_OF_TRANSPORT": {
+        "LABEL": "Mezzo di trasporto",
+        "NO_SELECTION": "Nessun mezzo di trasporto selezionato."
+      }
     },
     "BACK_TO_MAP": "Chiudere",
     "ZOOM_IN_HINT": "Ingrandire l'immagine per visualizzare i posti di servizi.",

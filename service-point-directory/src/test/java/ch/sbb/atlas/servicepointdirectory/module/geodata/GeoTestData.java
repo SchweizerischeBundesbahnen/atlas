@@ -50,6 +50,7 @@ public class GeoTestData {
         .swissMunicipalityName("Bern")
         .swissLocalityName("Bern")
         .businessOrganisation("ch:1:sboid:100626")
+        .meansOfTransport(",TRAIN,BUS,")
         .validFrom(LocalDate.of(2020, Month.JANUARY, 1))
         .validTo(LocalDate.of(2020, Month.DECEMBER, 31))
         .build();

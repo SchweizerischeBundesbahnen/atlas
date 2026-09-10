@@ -41,7 +41,8 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
       case
           when sp.operating_point_technical_timetable_type is not null then 'OPERATING_POINT_TECHNICAL'
           when sp.stop_point_type = 'ON_DEMAND' then 'ON_DEMAND'
-          when spvmot.means_of_transport is not null then
+          when exists (SELECT 1 FROM service_point_version_means_of_transport mot
+                        WHERE mot.service_point_version_id = sp.id) then
               (case
                 when sp.freight_service_point then 'STOP_POINT_AND_FREIGHT_SERVICE_POINT'
                 ELSE 'STOP_POINT'
@@ -49,10 +50,12 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
           when sp.freight_service_point then 'FREIGHT_SERVICE_POINT'
           else 'SERVICE_POINT'
       end
-      as service_point_type
+      as service_point_type,
+      (SELECT ',' || string_agg(DISTINCT mot.means_of_transport, ',' ORDER BY mot.means_of_transport) || ','
+         FROM service_point_version_means_of_transport mot
+        WHERE mot.service_point_version_id = sp.id) AS means_of_transport
       FROM service_point_version_geolocation geo
       JOIN service_point_version sp on sp.service_point_geolocation_id = geo.id 
-      LEFT JOIN service_point_version_means_of_transport spvmot on sp.id = spvmot.service_point_version_id
       where sp.status!='REVOKED'
       """;
   @Id
@@ -72,6 +75,7 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
   private String swissLocalityName;
   @Enumerated(EnumType.STRING)
   private ServicePointType servicePointType;
+  private String meansOfTransport;
   @NotNull
   private LocalDate validFrom;
   @NotNull

@@ -13,8 +13,8 @@ import { SERVICE_POINT_MIN_ZOOM } from './map-style';
 import { mock, mockDeep } from 'vitest-mock-extended';
 import { By } from '@angular/platform-browser';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { BusinessOrganisation } from '../../../api';
-import { MapBoFilterDialogComponent } from './map-bo-filter-dialog/map-bo-filter-dialog.component';
+import { BusinessOrganisation, MeanOfTransport } from '../../../api';
+import { MapServicePointFilterDialogComponent } from './map-service-point-filter-dialog/map-service-point-filter-dialog.component';
 
 describe('MapComponent', () => {
   let component: MapComponent;
@@ -46,11 +46,24 @@ describe('MapComponent', () => {
     (mapServiceSpy as unknown as { boFilterActive: () => boolean }).boFilterActive = () => active;
   }
 
+  function setMeansOfTransportFilter(meansOfTransport: MeanOfTransport[]) {
+    (mapServiceSpy as unknown as { meansOfTransportFilter: () => MeanOfTransport[] }).meansOfTransportFilter = () =>
+      meansOfTransport;
+  }
+
+  function setMeansOfTransportFilterActive(active: boolean) {
+    (mapServiceSpy as unknown as { meansOfTransportFilterActive: () => boolean }).meansOfTransportFilterActive = () =>
+      active;
+  }
+
   beforeEach(() => {
     dialogService.openDialogDataWithCustomResult.mockReset();
     mapServiceSpy.applyBoFilter.mockClear();
+    mapServiceSpy.applyMeansOfTransportFilter.mockClear();
     setBoFilter([]);
     setBoFilterActive(false);
+    setMeansOfTransportFilter([]);
+    setMeansOfTransportFilterActive(false);
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule, MapComponent],
@@ -128,46 +141,58 @@ describe('MapComponent', () => {
     });
   });
 
-  describe('bo filter button', () => {
-    function boFilterButton(): HTMLElement {
-      return fixture.debugElement.query(By.css('[data-cy="sepodi-map-bo-filter"]')).nativeElement as HTMLElement;
+  describe('filter button', () => {
+    const train = MeanOfTransport.Train;
+
+    function filterButton(): HTMLElement {
+      return fixture.debugElement.query(By.css('[data-cy="sepodi-map-service-point-filter"]'))
+        .nativeElement as HTMLElement;
     }
 
-    it('should open the bo filter dialog pre-filled with the currently applied filter', () => {
+    function filterIcon(): HTMLElement {
+      return filterButton().querySelector('[data-cy="filter-icon"]') as HTMLElement;
+    }
+
+    it('should open the filter dialog pre-filled with the currently applied bo and mot filters', () => {
       // Given
       setBoFilter([sbb]);
+      setMeansOfTransportFilter([train]);
       dialogService.openDialogDataWithCustomResult.mockReturnValue(of(undefined));
 
       // When
-      component.openBoFilterDialog();
+      component.openFilterDialog();
 
       // Then
       expect(dialogService.openDialogDataWithCustomResult).toHaveBeenCalledWith(
-        expect.objectContaining({ businessOrganisations: [sbb] }),
-        MapBoFilterDialogComponent
+        expect.objectContaining({ businessOrganisations: [sbb], meansOfTransport: [train] }),
+        MapServicePointFilterDialogComponent
       );
     });
 
-    it('should apply the selection returned by the dialog', () => {
+    it('should apply both filters returned by the dialog', () => {
       // Given
-      dialogService.openDialogDataWithCustomResult.mockReturnValue(of([sbb]));
+      dialogService.openDialogDataWithCustomResult.mockReturnValue(
+        of({ businessOrganisations: [sbb], meansOfTransport: [train] })
+      );
 
       // When
-      component.openBoFilterDialog();
+      component.openFilterDialog();
 
       // Then
       expect(mapServiceSpy.applyBoFilter).toHaveBeenCalledWith([sbb]);
+      expect(mapServiceSpy.applyMeansOfTransportFilter).toHaveBeenCalledWith([train]);
     });
 
-    it('should not touch the active filter when the dialog is cancelled', () => {
+    it('should not touch either active filter when the dialog is cancelled', () => {
       // Given
       dialogService.openDialogDataWithCustomResult.mockReturnValue(of(undefined));
 
       // When
-      component.openBoFilterDialog();
+      component.openFilterDialog();
 
       // Then
       expect(mapServiceSpy.applyBoFilter).not.toHaveBeenCalled();
+      expect(mapServiceSpy.applyMeansOfTransportFilter).not.toHaveBeenCalled();
     });
 
     it('should open the dialog when the filter button is clicked', () => {
@@ -175,54 +200,65 @@ describe('MapComponent', () => {
       dialogService.openDialogDataWithCustomResult.mockReturnValue(of(undefined));
 
       // When
-      boFilterButton().click();
+      filterButton().click();
 
       // Then
       expect(dialogService.openDialogDataWithCustomResult).toHaveBeenCalled();
     });
 
-    function boFilterIcon(): HTMLElement {
-      return boFilterButton().querySelector('[data-cy="bo-filter-icon"]') as HTMLElement;
-    }
-
     it('should show the outlined funnel icon when no filter is active', () => {
       // Given
       setBoFilterActive(false);
+      setMeansOfTransportFilterActive(false);
       fixture.detectChanges();
 
       // Then
-      expect(boFilterIcon().classList).toContain('bi-funnel');
-      expect(boFilterIcon().classList).not.toContain('bi-funnel-fill');
+      expect(filterIcon().classList).toContain('bi-funnel');
+      expect(filterIcon().classList).not.toContain('bi-funnel-fill');
     });
 
-    it('should show the filled funnel icon when a filter is active', () => {
+    it('should show the filled funnel icon when the bo filter is active', () => {
       // Given
       setBoFilterActive(true);
       setBoFilter([sbb]);
       fixture.detectChanges();
 
       // Then
-      expect(boFilterIcon().classList).toContain('bi-funnel-fill');
-      expect(boFilterIcon().classList).not.toContain('bi-funnel');
+      expect(filterIcon().classList).toContain('bi-funnel-fill');
+      expect(filterIcon().classList).not.toContain('bi-funnel');
     });
 
-    it('should not show a count badge when no filter is active', () => {
+    it('should show the filled funnel icon when the mot filter is active', () => {
       // Given
-      setBoFilterActive(false);
+      setMeansOfTransportFilterActive(true);
+      setMeansOfTransportFilter([train]);
       fixture.detectChanges();
 
       // Then
-      expect(boFilterButton().querySelector('[data-cy="bo-filter-count"]')).toBeFalsy();
+      expect(filterIcon().classList).toContain('bi-funnel-fill');
+      expect(filterIcon().classList).not.toContain('bi-funnel');
     });
 
-    it('should show the number of filtered business organisations as badge', () => {
+    it('should not show a count badge when neither filter is active', () => {
+      // Given
+      setBoFilterActive(false);
+      setMeansOfTransportFilterActive(false);
+      fixture.detectChanges();
+
+      // Then
+      expect(filterButton().querySelector('[data-cy="filter-count"]')).toBeFalsy();
+    });
+
+    it('should show the combined number of filtered business organisations and means of transport as badge', () => {
       // Given
       setBoFilterActive(true);
       setBoFilter([sbb, { sboid: 'ch:1:sboid:100002' } as BusinessOrganisation]);
+      setMeansOfTransportFilterActive(true);
+      setMeansOfTransportFilter([train]);
       fixture.detectChanges();
 
       // Then
-      expect(boFilterButton().querySelector('[data-cy="bo-filter-count"]')?.textContent?.trim()).toBe('2');
+      expect(filterButton().querySelector('[data-cy="filter-count"]')?.textContent?.trim()).toBe('3');
     });
 
     it('should expose the active filter state to screen readers', () => {
@@ -232,18 +268,19 @@ describe('MapComponent', () => {
       fixture.detectChanges();
 
       // Then
-      expect(boFilterButton().getAttribute('aria-pressed')).toBe('true');
-      expect(boFilterButton().getAttribute('aria-label')).toContain('SEPODI.MAP_BO_FILTER.TOOLTIP_ACTIVE');
+      expect(filterButton().getAttribute('aria-pressed')).toBe('true');
+      expect(filterButton().getAttribute('aria-label')).toContain('SEPODI.MAP_SERVICE_POINT_FILTER.TOOLTIP_ACTIVE');
     });
 
     it('should expose the inactive filter state to screen readers', () => {
       // Given
       setBoFilterActive(false);
+      setMeansOfTransportFilterActive(false);
       fixture.detectChanges();
 
       // Then
-      expect(boFilterButton().getAttribute('aria-pressed')).toBe('false');
-      expect(boFilterButton().getAttribute('aria-label')).toContain('SEPODI.MAP_BO_FILTER.TOOLTIP');
+      expect(filterButton().getAttribute('aria-pressed')).toBe('false');
+      expect(filterButton().getAttribute('aria-label')).toContain('SEPODI.MAP_SERVICE_POINT_FILTER.TOOLTIP');
     });
   });
 });

@@ -3,25 +3,34 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { form } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIconButton } from '@angular/material/button';
-import { BusinessOrganisation } from '../../../../api';
+import { BusinessOrganisation, MeanOfTransport } from '../../../../api';
 import { AtlasBoSelectComponent } from '../../../../core/form-components/atlas-bo-select/atlas-bo-select.component';
+import { AtlasMeansOfTransportPickerComponent } from '../../../../core/form-components/atlas-means-of-transport-picker/atlas-means-of-transport-picker.component';
 import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
 import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
 import { BusinessOrganisationLanguageService } from '../../../bodi/business-organisations/shared/business-organisation-language.service';
-import { MapBoFilterDialogData } from './map-bo-filter-dialog-data';
+import {
+  MapServicePointFilterDialogData,
+  MapServicePointFilterDialogResult,
+} from './map-service-point-filter-dialog-data';
 
 interface BoFilterSelectionForm {
   businessOrganisation: BusinessOrganisation | string | null;
 }
 
+interface MotFilterSelectionForm {
+  meansOfTransport: MeanOfTransport[];
+}
+
 @Component({
-  selector: 'atlas-map-bo-filter-dialog',
-  templateUrl: './map-bo-filter-dialog.component.html',
-  styleUrl: './map-bo-filter-dialog.component.scss',
+  selector: 'atlas-map-service-point-filter-dialog',
+  templateUrl: './map-service-point-filter-dialog.component.html',
+  styleUrl: './map-service-point-filter-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AtlasBoSelectComponent,
+    AtlasMeansOfTransportPickerComponent,
     DialogCloseComponent,
     DialogContentComponent,
     DialogFooterComponent,
@@ -29,16 +38,25 @@ interface BoFilterSelectionForm {
     TranslatePipe,
   ],
 })
-export class MapBoFilterDialogComponent {
-  private readonly data: MapBoFilterDialogData = inject(MAT_DIALOG_DATA);
+export class MapServicePointFilterDialogComponent {
+  private readonly data: MapServicePointFilterDialogData = inject(MAT_DIALOG_DATA);
   private readonly dialogRef =
-    inject<MatDialogRef<MapBoFilterDialogComponent, BusinessOrganisation[] | undefined>>(MatDialogRef);
+    inject<MatDialogRef<MapServicePointFilterDialogComponent, MapServicePointFilterDialogResult | undefined>>(
+      MatDialogRef
+    );
   private readonly businessOrganisationLanguageService = inject(BusinessOrganisationLanguageService);
 
   readonly selectedBusinessOrganisations = signal<BusinessOrganisation[]>([...(this.data.businessOrganisations ?? [])]);
 
   private readonly searchModel = signal<BoFilterSelectionForm>({ businessOrganisation: null });
   protected readonly searchForm = form(this.searchModel);
+
+  private readonly motSelectionModel = signal<MotFilterSelectionForm>({
+    meansOfTransport: [...(this.data.meansOfTransport ?? [])],
+  });
+  protected readonly filterForm = form(this.motSelectionModel);
+
+  readonly selectedMeansOfTransport = computed(() => this.filterForm.meansOfTransport().value());
 
   protected readonly selectionRows = computed(() => {
     const descriptionKey = this.businessOrganisationLanguageService.getCurrentLanguageDescription();
@@ -67,10 +85,14 @@ export class MapBoFilterDialogComponent {
   reset() {
     this.selectedBusinessOrganisations.set([]);
     this.resetSearchField();
+    this.motSelectionModel.set({ meansOfTransport: [] });
   }
 
   apply() {
-    this.dialogRef.close(this.selectedBusinessOrganisations());
+    this.dialogRef.close({
+      businessOrganisations: this.selectedBusinessOrganisations(),
+      meansOfTransport: this.selectedMeansOfTransport(),
+    });
   }
 
   cancel() {
