@@ -1,6 +1,5 @@
 import { defineConfig } from 'cypress';
 import cypress_failed_log from 'cypress-failed-log/src/failed';
-import cypress_high_resolution from 'cypress-high-resolution';
 import cypress_mochawesome_reporter from 'cypress-mochawesome-reporter/plugin';
 
 /**
@@ -20,15 +19,12 @@ const PUBLIC_CONFIG_KEYS = ['API_URL', 'API_URL_UNAUTHORIZED'] as const;
  * Locally the flag is a no-op because a real GPU is present.
  *
  * This only reaches a browser Cypress launches as its own process. Cypress runs Electron inside the
- * Cypress process itself, where Chromium switches can no longer be appended, which is why the suite
- * is pinned to Chrome (`--browser chrome` in the npm scripts).
+ * Cypress process itself, where Chromium switches can no longer be appended and `launchOptions.args`
+ * is ignored. The suite therefore runs on a real Chromium browser: the CI image provides `chromium`,
+ * which is what `npm run cypress:run` asks for. `cypress open` leaves the choice to Cypress' browser
+ * picker, so a developer without Chromium can simply pick the locally installed Chrome.
  */
 const SOFTWARE_WEBGL_ARG = '--enable-unsafe-swiftshader';
-
-type BrowserLaunchHandler = (
-  browser: Cypress.Browser,
-  launchOptions: Cypress.BeforeBrowserLaunchOptions
-) => Cypress.BeforeBrowserLaunchOptions | void | Promise<Cypress.BeforeBrowserLaunchOptions | void>;
 
 /**
  * Bridges the existing CYPRESS_ env-var and cypress.env.json hand-over into `expose`, so the
@@ -67,10 +63,6 @@ export default defineConfig({
     debug: true,
     saveJson: true,
   },
-  // cypress-high-resolution 2.x reads `resolution` from `expose`, no longer from `env`.
-  expose: {
-    resolution: 'high',
-  },
   e2e: {
     async setupNodeEvents(on, config) {
       on('task', {
@@ -81,30 +73,19 @@ export default defineConfig({
         },
       });
 
-      // Cypress accepts a single `before:browser:launch` handler and cypress-high-resolution
-      // registers one itself, so the handlers are collected and run from one registration.
-      const browserLaunchHandlers: BrowserLaunchHandler[] = [];
-      const collectingOn = ((event: string, handler: unknown) => {
-        if (event === 'before:browser:launch') {
-          browserLaunchHandlers.push(handler as BrowserLaunchHandler);
-          return undefined;
-        }
-        return (on as (event: string, handler: unknown) => unknown)(event, handler);
-      }) as typeof on;
+      cypress_mochawesome_reporter(on);
 
-      cypress_high_resolution(collectingOn, config);
-      cypress_mochawesome_reporter(collectingOn);
-
-      on('before:browser:launch', async (browser, launchOptions) => {
-        let options = launchOptions;
-        for (const handler of browserLaunchHandlers) {
-          options = (await handler(browser, options)) ?? options;
+      on('before:browser:launch', (browser, launchOptions) => {
+        // Electron ignores extra switches (it warns about them), Firefox does not know them at all.
+        if (browser.family === 'chromium' && browser.name !== 'electron') {
+          launchOptions.args.push(
+            SOFTWARE_WEBGL_ARG,
+            // Without this the window is 1280x720 and screenshots and video are downscaled.
+            `--window-size=${config.viewportWidth},${config.viewportHeight}`,
+            '--force-device-scale-factor=1'
+          );
         }
-        // Electron ignores the switch (it warns about it), Firefox does not know it at all.
-        if (browser.family === 'chromium' && browser.name !== 'electron' && !options.args.includes(SOFTWARE_WEBGL_ARG)) {
-          options.args.push(SOFTWARE_WEBGL_ARG);
-        }
-        return options;
+        return launchOptions;
       });
 
       config.expose = { ...config.expose, ...pickPublicConfig(config.env) };
