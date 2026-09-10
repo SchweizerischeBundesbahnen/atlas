@@ -1562,9 +1562,9 @@
       "TOOLTIP_ACTIVE": "Filtré selon {{count}} critère(s) – cliquer pour modifier",
       "RESET": "Réinitialiser",
       "BUSINESS_ORGANISATION": {
-        "LABEL": "Organisation d'affaires",
-        "NO_SELECTION": "Aucune organisation d'affaires sélectionnée.",
-        "REMOVE": "Supprimer l'organisation d'affaires"
+        "LABEL": "Organisation commerciale",
+        "NO_SELECTION": "Aucune organisation commerciale sélectionnée.",
+        "REMOVE": "Supprimer l'organisation commerciale"
       },
       "MEANS_OF_TRANSPORT": {
         "LABEL": "Moyen de transport",
