@@ -181,8 +181,17 @@ export class MapService {
         ...meansOfTransports.map((mean) => ['in', `,${mean},`, ['to-string', ['get', 'meansOfTransport']]]),
       ]);
     }
-    const filter = filters.length === 0 ? null : filters.length === 1 ? filters[0] : ['all', ...filters];
-    this.map.setFilter(MAP_SOURCE_NAME, filter as FilterSpecification | null);
+    if (filters.length === 0) {
+      this.map.setFilter(MAP_SOURCE_NAME, null);
+      return;
+    }
+
+    if (filters.length === 1) {
+      this.map.setFilter(MAP_SOURCE_NAME, filters[0] as FilterSpecification);
+      return;
+    }
+
+    this.map.setFilter(MAP_SOURCE_NAME, ['all', ...filters] as FilterSpecification);
   }
 
   switchToStyle(style: MapStyle) {
