@@ -29,7 +29,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     // Spring Security
-    implementation("org.springframework.security:spring-security-oauth2-authorization-server")
+    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
 
     // Spring Batch
     implementation("org.springframework.batch:spring-batch-integration")
