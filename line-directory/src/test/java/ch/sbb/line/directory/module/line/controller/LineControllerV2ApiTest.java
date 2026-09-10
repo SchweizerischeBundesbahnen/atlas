@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.module.line.controller;
 
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @MockitoBean(types = SharedBusinessOrganisationService.class)
@@ -91,7 +93,9 @@ class LineControllerV2ApiTest extends BaseControllerApiTest {
   @Test
   void shouldRejectUnknownOfferCategory() throws Exception {
     //given
-    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder().build();
+    LineVersionModelV2 lineVersionModel = LineTestData.createLineVersionModelBuilder()
+        .offerCategory(OfferCategory.IC)
+        .build();
     String payload = mapper.writeValueAsString(lineVersionModel)
         .replace("\"offerCategory\":\"IC\"", "\"offerCategory\":\"UNKNOWN_CATEGORY\"");
 
@@ -99,7 +103,10 @@ class LineControllerV2ApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v2/lines/versions")
             .contentType(contentType)
             .content(payload))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()))
+        .andExpect(jsonPath("$.message", containsString("UNKNOWN_CATEGORY")))
+        .andExpect(jsonPath("$.message", containsString(OfferCategory.class.getSimpleName())));
   }
 
   @Test
