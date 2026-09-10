@@ -1,7 +1,12 @@
 package ch.sbb.atlas.s3.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.s3.exception.FileException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 class FileServiceImplTest {
@@ -128,6 +134,93 @@ class FileServiceImplTest {
     }
     if (compressed.exists()){
       assertThat(compressed.delete()).isTrue();
+    }
+  }
+
+  @Test
+  void shouldClearDirWhenDirDoesNotExist() {
+    //given
+    fileService.setActiveProfile("dev");
+
+    //when
+    final boolean result = fileService.clearDir();
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldClearDirWhenDirContainsFiles() throws IOException {
+    //given
+    fileService.setActiveProfile(null);
+    final File dir = new File("." + SEPARATOR + "export" + SEPARATOR);
+    if (!dir.exists()) {
+      assertThat(dir.mkdirs()).isTrue();
+    }
+    final Path filePath = Paths.get(dir.getPath(), "toBeCleared.txt");
+    Files.deleteIfExists(filePath);
+    Files.createFile(filePath);
+
+    //when
+    final boolean result = fileService.clearDir();
+
+    //then
+    assertThat(result).isTrue();
+    assertThat(filePath).doesNotExist();
+
+    // teardown
+    if (dir.exists()) {
+      assertThat(dir.delete()).isTrue();
+    }
+  }
+
+  @Test
+  void shouldGetFileFromMultipart() throws IOException {
+    //given
+    fileService.setActiveProfile(null);
+    final File dir = new File("." + SEPARATOR + "export" + SEPARATOR);
+    if (!dir.exists()) {
+      assertThat(dir.mkdirs()).isTrue();
+    }
+    final MultipartFile multipartFile = mock(MultipartFile.class);
+    when(multipartFile.getOriginalFilename()).thenReturn("uploaded.csv");
+    when(multipartFile.getBytes()).thenReturn("Test Data".getBytes(StandardCharsets.UTF_8));
+
+    //when
+    final File result = fileService.getFileFromMultipart(multipartFile);
+
+    //then
+    assertThat(result).exists().hasName("uploaded.csv");
+    assertThat(Files.readString(result.toPath())).isEqualTo("Test Data");
+
+    // teardown
+    assertThat(result.delete()).isTrue();
+    assertThat(dir.delete()).isTrue();
+  }
+
+  @Test
+  void shouldThrowFileExceptionWhenMultipartFileCannotBeRead() throws IOException {
+    //given
+    fileService.setActiveProfile(null);
+    final File dir = new File("." + SEPARATOR + "export" + SEPARATOR);
+    if (!dir.exists()) {
+      assertThat(dir.mkdirs()).isTrue();
+    }
+    final MultipartFile multipartFile = mock(MultipartFile.class);
+    when(multipartFile.getOriginalFilename()).thenReturn("broken.csv");
+    doThrow(new IOException("boom")).when(multipartFile).getBytes();
+
+    //when + then
+    assertThatThrownBy(() -> fileService.getFileFromMultipart(multipartFile))
+        .isInstanceOf(FileException.class);
+
+    // teardown
+    final File brokenFile = Paths.get(dir.getPath(), "broken.csv").toFile();
+    if (brokenFile.exists()) {
+      assertThat(brokenFile.delete()).isTrue();
+    }
+    if (dir.exists()) {
+      assertThat(dir.delete()).isTrue();
     }
   }
 
