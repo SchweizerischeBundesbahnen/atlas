@@ -70,7 +70,7 @@
     "bootstrap": "5.3",
     "geotiff": "3.0.5",
     "jwt-decode": "4.0.0",
-    "maplibre-gl": "6.7.0",
+    "maplibre-gl": "6.8.0",
     "moment": "2.30",
     "proj4": "2.22.0",
     "rxjs": "7.8",
@@ -89,7 +89,7 @@
     "@playwright/test": "1.63.0",
     "@types/node": "25.9.5",
     "@vitest/coverage-v8": "4.1.11",
-    "angular-eslint": "22.3.0",
+    "angular-eslint": "22.5.0",
     "cypress": "16.0.0",
     "cypress-failed-log": "2.10",
     "cypress-mochawesome-reporter": "5.0.0",
@@ -101,7 +101,7 @@
     "ng-packagr": "22.1.1",
     "prettier": "3.9.6",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.69.0",
+    "typescript-eslint": "8.70.0",
     "vitest": "4.1.11",
     "vitest-mock-extended": "5.1.1"
   }
