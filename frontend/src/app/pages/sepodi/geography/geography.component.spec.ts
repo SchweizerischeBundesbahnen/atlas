@@ -121,4 +121,31 @@ describe('GeographyComponent', () => {
 
     expect(component.setHeightFromGeoData).toHaveBeenCalled();
   });
+
+  describe('map interaction mode', () => {
+    it('should enter coordinate selection mode as soon as a slowly initializing map reports readiness', () => {
+      component.geographyActive = true;
+      fixture.componentRef.setInput('editMode', true);
+      fixture.detectChanges();
+
+      expect(mapServiceSpy.enterCoordinateSelectionMode).not.toHaveBeenCalled();
+
+      mapServiceSpy.mapInitialized.next(true);
+
+      expect(mapServiceSpy.enterCoordinateSelectionMode).toHaveBeenCalledOnce();
+    });
+
+    it('should apply only the latest interaction mode when the map reports readiness', () => {
+      component.geographyActive = true;
+      fixture.componentRef.setInput('editMode', true);
+      fixture.detectChanges();
+      fixture.componentRef.setInput('editMode', false);
+      fixture.detectChanges();
+
+      mapServiceSpy.mapInitialized.next(true);
+
+      expect(mapServiceSpy.enterCoordinateSelectionMode).not.toHaveBeenCalled();
+      expect(mapServiceSpy.exitCoordinateSelectionMode).toHaveBeenCalledOnce();
+    });
+  });
 });

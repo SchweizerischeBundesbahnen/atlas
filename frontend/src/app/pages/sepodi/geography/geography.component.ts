@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   inject,
   Input,
   input,
@@ -17,7 +18,7 @@ import { CoordinateTransformationService } from './coordinate-transformation.ser
 import { debounceTime, merge, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MatRadioButton, MatRadioChange, MatRadioGroup } from '@angular/material/radio';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AtlasInfoIconComponent } from '@atlas/form';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
@@ -51,6 +52,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   private readonly mapService = inject(MapService);
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly locationGeoInternalService = inject(LocationGeoInternalService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
@@ -100,6 +102,9 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   private readonly formDestroy$ = new Subject<void>();
 
+  /** Cancels an interaction mode update that is still waiting for the map, so only the last one wins. */
+  private readonly mapInteractionModeSuperseded$ = new Subject<void>();
+
   constructor() {
     this.mapService.clickedGeographyCoordinates.pipe(takeUntilDestroyed()).subscribe((coordinatePairWGS84) => {
       this.onMapClick({
@@ -121,6 +126,8 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.mapService.exitCoordinateSelectionMode();
+    this.mapInteractionModeSuperseded$.next();
+    this.mapInteractionModeSuperseded$.unsubscribe();
     this.formDestroy$.next();
     this.formDestroy$.unsubscribe();
   }
@@ -210,14 +217,24 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   private updateMapInteractionMode() {
-    if (!this.mapService.mapInitialized.value) {
-      return;
-    }
-    if (this.editMode() && this.geographyActive) {
-      this.mapService.enterCoordinateSelectionMode();
-    } else {
-      this.mapService.exitCoordinateSelectionMode();
-    }
+    // The map reports readiness asynchronously, and a click is only handled once coordinate
+    // selection mode is entered. Waiting instead of giving up keeps the map usable on machines that
+    // render it slowly, e.g. a CI container without a GPU that falls back to a software renderer.
+    this.mapInteractionModeSuperseded$.next();
+    this.mapService.mapInitialized
+      .pipe(
+        filter((initialized) => initialized),
+        take(1),
+        takeUntil(this.mapInteractionModeSuperseded$),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        if (this.editMode() && this.geographyActive) {
+          this.mapService.enterCoordinateSelectionMode();
+        } else {
+          this.mapService.exitCoordinateSelectionMode();
+        }
+      });
   }
 
   public setHeightFromGeoData(coordinatePair: CoordinatePair, updateHeight: boolean) {
