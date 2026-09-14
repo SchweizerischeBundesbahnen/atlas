@@ -12,6 +12,7 @@ rootProject.name = "atlas"
 include(":auto-rest-doc")
 include(":kafka")
 include(":base-atlas")
+include(":atlas-s3")
 include(":pdf-sanitize")
 include(":versioning")
 include(":user-administration-security")

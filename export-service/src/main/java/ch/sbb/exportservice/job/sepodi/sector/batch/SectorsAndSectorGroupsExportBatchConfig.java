@@ -2,7 +2,7 @@ package ch.sbb.exportservice.job.sepodi.sector.batch;
 
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTORS_AND_SECTOR_GROUPS_CSV_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.sepodi.sector.entity.SectorAndSectorGroup;
 import ch.sbb.exportservice.job.sepodi.sector.model.SectorAndSectorGroupCsvModel;
 import ch.sbb.exportservice.job.sepodi.sector.processor.SectorsAndSectorGroupsCsvProcessor;

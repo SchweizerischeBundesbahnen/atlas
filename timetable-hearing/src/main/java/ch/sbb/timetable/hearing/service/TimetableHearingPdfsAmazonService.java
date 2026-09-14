@@ -1,7 +1,7 @@
 package ch.sbb.timetable.hearing.service;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.service.AmazonService;
 import java.io.File;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

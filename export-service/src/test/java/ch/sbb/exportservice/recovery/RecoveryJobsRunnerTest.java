@@ -14,7 +14,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.bodi.businessorganisation.service.ExportBusinessOrganisationJobService;
 import ch.sbb.exportservice.job.bodi.transportcompany.service.ExportTransportCompanyJobService;
 import ch.sbb.exportservice.job.lidi.line.service.ExportLineJobService;

@@ -2,7 +2,7 @@ package ch.sbb.timetable.hearing.service;
 
 import static java.util.Comparator.comparing;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingAnonymStatementCsvModel;
 import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingStatementCsvModel;

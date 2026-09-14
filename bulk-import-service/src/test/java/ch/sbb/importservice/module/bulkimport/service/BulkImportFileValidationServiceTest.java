@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.module.bulkimport.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.module.bulkimport.exception.FileHeaderValidationException;

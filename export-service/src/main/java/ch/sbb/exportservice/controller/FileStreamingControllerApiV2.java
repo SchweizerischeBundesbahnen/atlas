@@ -4,7 +4,7 @@ import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFile
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.amazon.service.StreamedFile;
+import ch.sbb.atlas.s3.service.StreamedFile;
 import ch.sbb.exportservice.exception.NotAllowedExportFileExceptionV2;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;

@@ -3,7 +3,7 @@ package ch.sbb.line.directory.module.subline.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.s3.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;

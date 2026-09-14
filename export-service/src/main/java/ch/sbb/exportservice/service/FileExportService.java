@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.StreamedFile;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.service.AmazonFileStreamingService;
+import ch.sbb.atlas.s3.service.AmazonService;
+import ch.sbb.atlas.s3.service.StreamedFile;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

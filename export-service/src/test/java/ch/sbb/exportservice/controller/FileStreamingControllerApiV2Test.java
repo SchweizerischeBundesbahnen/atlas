@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-import ch.sbb.atlas.amazon.service.ContentLength;
-import ch.sbb.atlas.amazon.service.StreamedFile;
+import ch.sbb.atlas.s3.service.ContentLength;
+import ch.sbb.atlas.s3.service.StreamedFile;
 import ch.sbb.exportservice.exception.NotAllowedExportFileExceptionV2;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;

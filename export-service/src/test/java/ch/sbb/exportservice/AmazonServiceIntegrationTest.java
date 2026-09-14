@@ -3,9 +3,9 @@ package ch.sbb.exportservice;
 import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.service.AmazonService;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

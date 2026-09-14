@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.prm.referencepoint.writer;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.prm.BasePrmCsvModel;
 import ch.sbb.exportservice.job.prm.referencepoint.model.ReferencePointVersionCsvModel;

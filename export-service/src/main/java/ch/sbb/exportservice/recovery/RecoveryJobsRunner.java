@@ -33,7 +33,7 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRANSPORT_
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TTFN_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TTFN_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.job.bodi.businessorganisation.service.ExportBusinessOrganisationJobService;
 import ch.sbb.exportservice.job.bodi.transportcompany.service.ExportTransportCompanyJobService;

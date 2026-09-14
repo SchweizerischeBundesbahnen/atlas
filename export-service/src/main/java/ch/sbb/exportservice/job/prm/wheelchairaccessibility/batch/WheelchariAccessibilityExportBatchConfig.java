@@ -2,7 +2,7 @@ package ch.sbb.exportservice.job.prm.wheelchairaccessibility.batch;
 
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_WHEELCHAIR_ACCESSIBILITY_CSV_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.prm.wheelchairaccessibility.service.WheelchairAccessibilityCalculationTasklet;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;

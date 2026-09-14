@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.loadingpoint.writer;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.sepodi.loadingpoint.model.LoadingPointVersionCsvModel;
 import ch.sbb.exportservice.job.sepodi.loadingpoint.model.LoadingPointVersionCsvModel.Fields;

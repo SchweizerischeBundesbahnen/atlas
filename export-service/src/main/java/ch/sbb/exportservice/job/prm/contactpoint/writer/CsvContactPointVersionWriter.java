@@ -15,7 +15,7 @@ import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersio
 import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.type;
 import static ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel.Fields.wheelchairAccess;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.prm.contactpoint.model.ContactPointVersionCsvModel;
 import org.springframework.stereotype.Component;

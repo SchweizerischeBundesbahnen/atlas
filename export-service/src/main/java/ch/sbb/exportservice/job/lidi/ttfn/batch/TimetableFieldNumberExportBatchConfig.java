@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.lidi.ttfn.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TTFN_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TTFN_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.exportservice.job.lidi.ttfn.entity.TimetableFieldNumber;
 import ch.sbb.exportservice.job.lidi.ttfn.model.TimetableFieldNumberCsvModel;

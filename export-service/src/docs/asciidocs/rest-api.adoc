@@ -36,6 +36,6 @@ morning.
 
 link:export-usage.html[*Export REST API Documentation*]
 
-include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
+include::../../../../base-atlas/documentation/data-consuming-rules/when_to_use_files_or_API.adoc[]
 
-include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+include::../../../../atlas-s3/documentation/Amazon_S3_Buckets_Users_Onboarding.adoc[]

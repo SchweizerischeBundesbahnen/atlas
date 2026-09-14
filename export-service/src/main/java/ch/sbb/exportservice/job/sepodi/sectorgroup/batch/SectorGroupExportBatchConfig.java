@@ -2,7 +2,7 @@ package ch.sbb.exportservice.job.sepodi.sectorgroup.batch;
 
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SECTOR_GROUP_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.entity.SectorGroupVersion;
 import ch.sbb.exportservice.job.sepodi.sectorgroup.processor.SectorGroupJsonProcessor;

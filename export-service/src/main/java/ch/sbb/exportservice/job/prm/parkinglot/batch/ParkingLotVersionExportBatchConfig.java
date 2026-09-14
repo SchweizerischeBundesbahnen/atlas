@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.prm.parkinglot.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PARKING_LOT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PARKING_LOT_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.exportservice.job.prm.parkinglot.entity.ParkingLotVersion;
 import ch.sbb.exportservice.job.prm.parkinglot.model.ParkingLotVersionCsvModel;

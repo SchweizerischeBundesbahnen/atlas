@@ -14,12 +14,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.ContentLength;
-import ch.sbb.atlas.amazon.service.StreamedFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.service.AmazonFileStreamingService;
+import ch.sbb.atlas.s3.service.AmazonService;
+import ch.sbb.atlas.s3.service.ContentLength;
+import ch.sbb.atlas.s3.service.StreamedFile;
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;

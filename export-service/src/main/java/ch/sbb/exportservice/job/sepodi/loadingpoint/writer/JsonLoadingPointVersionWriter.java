@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.loadingpoint.writer;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.exportservice.job.BaseJsonWriter;
 import org.springframework.stereotype.Component;

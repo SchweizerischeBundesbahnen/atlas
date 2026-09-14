@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.atlas.model.exception.FileNotFoundOnS3Exception;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import java.util.Collections;
 import org.apache.catalina.connector.ClientAbortException;
 import org.hibernate.StaleObjectStateException;
@@ -154,7 +154,7 @@ class AtlasExceptionHandlerTest {
   @Test
   void shouldHandleAtlasException() {
     // Given
-    AtlasException exception = new FileNotFoundOnS3Exception("file.txt");
+    AtlasException exception = new IdNotFoundException(1L);
 
     // When
     ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.atlasException(exception);

@@ -3,9 +3,9 @@ package ch.sbb.exportservice.service;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-import ch.sbb.atlas.amazon.service.AmazonBucket;
-import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
-import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.atlas.s3.service.AmazonFileStreamingService;
+import ch.sbb.atlas.s3.service.AmazonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

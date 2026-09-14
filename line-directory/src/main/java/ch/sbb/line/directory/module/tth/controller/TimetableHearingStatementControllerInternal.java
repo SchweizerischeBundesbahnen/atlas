@@ -2,7 +2,7 @@ package ch.sbb.line.directory.module.tth.controller;
 
 import static java.util.Comparator.comparing;
 
-import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.s3.exception.FileException;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;

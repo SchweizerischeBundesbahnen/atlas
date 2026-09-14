@@ -3,7 +3,7 @@ package ch.sbb.importservice.module.bulkimport.log;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.importservice.module.bulkimport.repository.BulkImportLogRepository;
 import ch.sbb.importservice.module.bulkimport.service.BulkImportS3BucketService;
 import java.io.File;

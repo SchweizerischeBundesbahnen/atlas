@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.lidi.subline.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SUBLINE_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SUBLINE_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.exportservice.job.lidi.subline.entity.Subline;
 import ch.sbb.exportservice.job.lidi.subline.model.SublineCsvModel;

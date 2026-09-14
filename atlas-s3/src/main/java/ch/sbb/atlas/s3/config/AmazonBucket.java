@@ -1,0 +1,21 @@
+package ch.sbb.atlas.s3.config;
+
+import java.util.Arrays;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum AmazonBucket {
+    EXPORT("export-files"),
+    HEARING_DOCUMENT("hearing-documents"),
+    BULK_IMPORT("bulk-import"),
+
+    ;
+
+    private final String property;
+
+    public static AmazonBucket fromProperty(String value) {
+        return Arrays.stream(values()).filter(i -> i.getProperty().equals(value)).findFirst().orElseThrow();
+    }
+}

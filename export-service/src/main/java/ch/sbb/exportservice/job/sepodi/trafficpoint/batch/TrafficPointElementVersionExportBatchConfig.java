@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.sepodi.trafficpoint.batch;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.entity.TrafficPointElementVersion;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.model.TrafficPointVersionCsvModel;
