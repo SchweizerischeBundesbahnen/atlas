@@ -10,7 +10,7 @@ export const MAP_STYLES: MapStyle[] = [
   { id: 'swisstopograu', label: 'SEPODI.MAP_STYLES.SWISSTOPO_GRAY' },
   { id: 'satellite_swiss', label: 'SEPODI.MAP_STYLES.SATELLITE_SWISS' },
   // { id: 'osm', label: 'SEPODI.MAP_STYLES.OPEN_STREET_MAP' },
-  // todo: will be enabled again after clarification about https://flow.sbb.ch/browse/ATLAS-3454
+  // todo: will be replaced by https://flow.sbb.ch/browse/ATLAS-3478
   { id: 'satellite', label: 'SEPODI.MAP_STYLES.SATELLITE' },
 ];
 
