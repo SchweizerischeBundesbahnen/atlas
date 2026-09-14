@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
   inject,
   Input,
   input,
@@ -52,7 +51,6 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   private readonly mapService = inject(MapService);
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly locationGeoInternalService = inject(LocationGeoInternalService);
-  private readonly destroyRef = inject(DestroyRef);
 
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
@@ -225,8 +223,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       .pipe(
         filter((initialized) => initialized),
         take(1),
-        takeUntil(this.mapInteractionModeSuperseded$),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntil(this.mapInteractionModeSuperseded$)
       )
       .subscribe(() => {
         if (this.editMode() && this.geographyActive) {

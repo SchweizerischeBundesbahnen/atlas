@@ -13,10 +13,19 @@ export const MAP_LAYER_NAME = 'service-points';
 export const MAP_TRAFFIC_POINT_LAYER_NAME = 'traffic_points';
 export const MAP_SECTOR_LAYER_NAME = 'sectors';
 
-const geoAdminRasterSource = (wmtsLayer: string): RasterSourceSpecification => ({
+/**
+ * Highest zoom level geo.admin.ch serves in EPSG:3857 per layer. Requesting a tile above it answers
+ * `400 Bad Request` and leaves the map white, so the level is declared and MapLibre scales up the
+ * last available tile instead.
+ */
+const SWISSTOPO_PIXELKARTE_MAX_ZOOM = 19;
+const SWISSTOPO_SWISSIMAGE_MAX_ZOOM = 20;
+
+const geoAdminRasterSource = (wmtsLayer: string, maxzoom: number): RasterSourceSpecification => ({
   type: 'raster',
   tiles: [`https://wmts.geo.admin.ch/1.0.0/${wmtsLayer}/default/current/3857/{z}/{x}/{y}.jpeg`],
   tileSize: 256,
+  maxzoom,
   attribution: '&copy; OpenStreetMap Contributors',
   bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
 });
@@ -90,9 +99,9 @@ const EMPTY_GEO_JSON_FEATURECOLLECTION_SOURCE: GeoJSONSourceSpecification = {
 export const MAP_STYLE_SPEC: StyleSpecification = {
   version: 8,
   sources: {
-    swisstopofarbe: geoAdminRasterSource('ch.swisstopo.pixelkarte-farbe'),
-    swisstopograu: geoAdminRasterSource('ch.swisstopo.pixelkarte-grau'),
-    satellite_swiss: geoAdminRasterSource('ch.swisstopo.swissimage-product'),
+    swisstopofarbe: geoAdminRasterSource('ch.swisstopo.pixelkarte-farbe', SWISSTOPO_PIXELKARTE_MAX_ZOOM),
+    swisstopograu: geoAdminRasterSource('ch.swisstopo.pixelkarte-grau', SWISSTOPO_PIXELKARTE_MAX_ZOOM),
+    satellite_swiss: geoAdminRasterSource('ch.swisstopo.swissimage-product', SWISSTOPO_SWISSIMAGE_MAX_ZOOM),
     osm: {
       type: 'raster',
       tiles: [
