@@ -47,6 +47,6 @@ class DecisionModelTest extends BaseValidatorTest {
         .organisation("Regierung")
         .personFunction("Cheffe")
         .examinantMail("uwe@berlin.com")
-        .pinCode("1246");
+        .pinCode("33d0988f-3e6b-4dc1-acd4-a929694712e8");
   }
 }

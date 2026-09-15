@@ -18,6 +18,8 @@ import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
 
+const OTP_UUID_V4_CANONICAL_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
 @Component({
   selector: 'atlas-sepodi-wf-decision-stepper',
   templateUrl: './decision-stepper.component.html',
@@ -56,7 +58,7 @@ export class DecisionStepperComponent {
   });
 
   readonly pin = this._formBuilder.group({
-    pin: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6), AtlasCharsetsValidator.numeric]],
+    pin: ['', [Validators.required, Validators.pattern(OTP_UUID_V4_CANONICAL_PATTERN)]],
   });
 
   readonly decision = DecisionFormGroupBuilder.buildFormGroup();

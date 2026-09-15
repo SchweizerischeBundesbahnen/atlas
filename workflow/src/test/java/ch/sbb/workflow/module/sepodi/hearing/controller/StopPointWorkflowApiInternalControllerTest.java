@@ -71,6 +71,7 @@ import org.springframework.transaction.annotation.Transactional;
 class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
   static final String MAIL_ADDRESS = "marek@hamsik.com";
+  static final String VOTE_PIN_CODE = "1f7c4e2a-9b3d-4a51-8c6e-2d0f5b7a9c31";
 
   @Autowired
   private StopPointWorkflowApiV1Controller controller;
@@ -563,7 +564,7 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
       person.setStopPointWorkflow(stopPointWorkflow);
       workflowRepository.save(stopPointWorkflow);
 
-      String pinCode = "123456";
+      String pinCode = "33d0988f-3e6b-4dc1-acd4-a929694712e8";
       otpRepository.save(Otp.builder()
           .person(person)
           .code(OtpHelper.hashPinCode(pinCode))
@@ -586,6 +587,19 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
           .andExpect(jsonPath("$.mail", is(MAIL_ADDRESS)))
           .andExpect(jsonPath("$.firstName", is("Marek")))
           .andExpect(jsonPath("$.lastName", is("Hamsik")));
+    }
+
+    @Test
+    void shouldRejectMalformedOtpFormatOnVerifyOtp() throws Exception {
+      OtpVerificationModel otpRequest = OtpVerificationModel.builder()
+          .pinCode("123456")
+          .examinantMail(MAIL_ADDRESS)
+          .build();
+
+      mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/verify-otp/1")
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(otpRequest)))
+          .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -614,7 +628,7 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
       person.setStopPointWorkflow(stopPointWorkflow);
       workflowRepository.save(stopPointWorkflow);
 
-      String pinCode = "123456";
+      String pinCode = "33d0988f-3e6b-4dc1-acd4-a929694712e8";
 
       OtpVerificationModel otpRequest = OtpVerificationModel.builder().pinCode(pinCode).examinantMail(MAIL_ADDRESS).build();
 
@@ -743,12 +757,12 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
       person.setStopPointWorkflow(workflow);
       workflowRepository.saveAndFlush(workflow);
 
-      Otp otp = Otp.builder().code(OtpHelper.hashPinCode("12345")).person(person).creationTime(LocalDateTime.now()).build();
+      Otp otp = Otp.builder().code(OtpHelper.hashPinCode(VOTE_PIN_CODE)).person(person).creationTime(LocalDateTime.now()).build();
       otpRepository.saveAndFlush(otp);
       decisionModel = DecisionModel.builder()
           .judgement(JudgementType.NO)
           .motivation("Perfetto")
-          .pinCode("12345")
+          .pinCode(VOTE_PIN_CODE)
           .examinantMail(MAIL_ADDRESS)
           .firstName("Marek")
           .lastName("Hamsik")
@@ -767,6 +781,25 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
     @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
     void shouldVoteForWorkflowAsUnauthorized() throws Exception {
       voteForWorkflow().andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldRejectMalformedOtpFormatOnVote() throws Exception {
+      DecisionModel malformedDecisionModel = DecisionModel.builder()
+          .judgement(JudgementType.NO)
+          .motivation("Perfetto")
+          .pinCode("12345")
+          .examinantMail(MAIL_ADDRESS)
+          .firstName("Marek")
+          .lastName("Hamsik")
+          .personFunction("Centrocampista")
+          .organisation("Napoli")
+          .build();
+
+      mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/vote/1/1")
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(malformedDecisionModel)))
+          .andExpect(status().isBadRequest());
     }
   }
 

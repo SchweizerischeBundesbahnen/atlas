@@ -9,8 +9,10 @@ import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.otp.entity.Otp;
 import ch.sbb.workflow.otp.helper.OtpHelper;
 import ch.sbb.workflow.otp.repository.OtpRepository;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowOtpService {
 
-  private static final int OTP_LIFESPAN_IN_MINUTES = 30;
+  private static final Duration OTP_LIFESPAN = Duration.ofMinutes(10);
 
   private final OtpRepository otpRepository;
   private final StopPointWorkflowService workflowService;
@@ -61,13 +63,15 @@ public class StopPointWorkflowOtpService {
   private boolean isPinCodeValid(Person person, String pinCode) {
     Otp otp = otpRepository.findByPersonId(person.getId());
     if (otp == null) {
-      log.info("Otp not found for workflow {}. Person: {}", person.getStopPointWorkflow().getId(), person.getMail());
+      log.info("Otp not found for workflow {}.", person.getStopPointWorkflow().getId());
       return false;
     }
-    boolean stillValid = ChronoUnit.MINUTES.between(otp.getCreationTime(), LocalDateTime.now()) <= OTP_LIFESPAN_IN_MINUTES;
-    log.info("Validating pin code for {}. OTP still valid: {}", person.getMail(), stillValid);
-    boolean codeMatches = otp.getCode().equals(OtpHelper.hashPinCode(pinCode));
-    log.info("Validating pin code for {}. Entered pinCode: {}. Code matches: {}", person.getMail(), pinCode, codeMatches);
+    boolean stillValid = LocalDateTime.now().isBefore(otp.getCreationTime().plus(OTP_LIFESPAN));
+    boolean codeMatches = MessageDigest.isEqual(
+        otp.getCode().getBytes(StandardCharsets.UTF_8),
+        OtpHelper.hashPinCode(pinCode).getBytes(StandardCharsets.UTF_8));
+    log.info("Validating otp for workflow {}. Still valid: {}. Code matches: {}",
+        person.getStopPointWorkflow().getId(), stillValid, codeMatches);
     return stillValid && codeMatches;
   }
 
