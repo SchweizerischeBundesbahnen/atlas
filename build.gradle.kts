@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.1570.0"
+version = "2.1571.0"
 
 // A subproject is considered a runnable Spring Boot service (rather than a shared library module)
 // when it applies the "buildlogic.docker-java" convention plugin, recognizable by its "prepareJavaDockerContext" task.
