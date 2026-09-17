@@ -47,6 +47,27 @@ public class StopPointWorkflowOtpService {
     return examinant;
   }
 
+  public void verifyExaminantPinCode(Long workflowId, Long personId, OtpVerificationModel verificationModel) {
+    Person examinant = getExaminantById(workflowId, personId);
+    validateExaminantMail(examinant, verificationModel.getExaminantMail());
+    validatePinCode(examinant, verificationModel.getPinCode());
+  }
+
+  public Person getExaminantById(Long workflowId, Long personId) {
+    return workflowService.findStopPointWorkflow(workflowId)
+        .getExaminants().stream()
+        .filter(examinant -> examinant.getId().equals(personId))
+        .findFirst().orElseThrow(StopPointWorkflowExaminantNotFoundException::new);
+  }
+
+  private void validateExaminantMail(Person examinant, String examinantMail) {
+    if (examinant.getMail() == null || !examinant.getMail().equalsIgnoreCase(examinantMail)) {
+      log.info("Examinant mail does not match examinant {} of workflow {}.", examinant.getId(),
+          examinant.getStopPointWorkflow().getId());
+      throw new StopPointWorkflowPinCodeInvalidException();
+    }
+  }
+
   public void validatePinCode(Person person, String pinCode) {
     if (!isPinCodeValid(person, pinCode)) {
       throw new StopPointWorkflowPinCodeInvalidException();

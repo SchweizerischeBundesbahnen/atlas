@@ -1,6 +1,7 @@
 package ch.sbb.workflow.module.sepodi.hearing.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -15,6 +16,7 @@ import ch.sbb.workflow.module.sepodi.hearing.enity.Decision;
 import ch.sbb.workflow.module.sepodi.hearing.enity.DecisionType;
 import ch.sbb.workflow.module.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
+import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowPinCodeInvalidException;
 import ch.sbb.workflow.module.sepodi.hearing.mail.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.DecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpRequestModel;
@@ -163,6 +165,86 @@ class StopPointWorkflowVotingUnauthorizedTest {
     // Mails are redacted for unauthorized user
     List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(StopPointClientPersonModel::getMail).toList();
     assertThat(examinantMails).containsExactlyInAnyOrder("m*****", "j*****");
+  }
+
+  @Test
+  void shouldNotAllowVotingForAnotherExaminantWithOwnMailAndOwnPinCode() {
+    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
+
+    DecisionModel decisionModel = DecisionModel.builder()
+        .judgement(JudgementType.YES)
+        .examinantMail(MAIL_ADDRESS)
+        .pinCode(pincodeCaptor.getValue())
+        .build();
+    Long workflowId = workflowInHearing.getId();
+    Long judithId = judith.getId();
+
+    assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class)
+        .isThrownBy(() -> controller.voteWorkflow(workflowId, judithId, decisionModel));
+    assertThat(decisionRepository.findDecisionByExaminantId(judithId)).isNull();
+  }
+
+  @Test
+  void shouldNotAllowVotingForAnotherExaminantWithForeignMailAndOwnPinCode() {
+    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
+
+    DecisionModel decisionModel = DecisionModel.builder()
+        .judgement(JudgementType.YES)
+        .examinantMail(judith.getMail())
+        .pinCode(pincodeCaptor.getValue())
+        .build();
+    Long workflowId = workflowInHearing.getId();
+    Long judithId = judith.getId();
+
+    assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class)
+        .isThrownBy(() -> controller.voteWorkflow(workflowId, judithId, decisionModel));
+    assertThat(decisionRepository.findDecisionByExaminantId(judithId)).isNull();
+  }
+
+  @Test
+  void shouldNotOverwriteForeignExaminantPersonalDataOnRejectedVote() {
+    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
+
+    DecisionModel decisionModel = DecisionModel.builder()
+        .judgement(JudgementType.YES)
+        .examinantMail(MAIL_ADDRESS)
+        .pinCode(pincodeCaptor.getValue())
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .organisation("Napoli")
+        .personFunction("Centrocampista")
+        .build();
+    Long workflowId = workflowInHearing.getId();
+    Long judithId = judith.getId();
+
+    assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class)
+        .isThrownBy(() -> controller.voteWorkflow(workflowId, judithId, decisionModel));
+
+    Person unchangedJudith = workflowRepository.findById(workflowId).orElseThrow()
+        .getExaminants().stream()
+        .filter(examinant -> examinant.getId().equals(judithId))
+        .findFirst().orElseThrow();
+    assertThat(unchangedJudith.getFirstName()).isEqualTo("Judith");
+    assertThat(unchangedJudith.getLastName()).isEqualTo("Bollhalder");
+    assertThat(unchangedJudith.getFunction()).isEqualTo("Fachstelle");
+  }
+
+  @Test
+  void shouldNotAllowVotingWithoutHavingObtainedAPinCode() {
+    DecisionModel decisionModel = DecisionModel.builder()
+        .judgement(JudgementType.YES)
+        .examinantMail(judith.getMail())
+        .pinCode("6ba7b810-9dad-41d1-80b4-00c04fd430c8")
+        .build();
+    Long workflowId = workflowInHearing.getId();
+    Long judithId = judith.getId();
+
+    assertThatExceptionOfType(StopPointWorkflowPinCodeInvalidException.class)
+        .isThrownBy(() -> controller.voteWorkflow(workflowId, judithId, decisionModel));
+    assertThat(decisionRepository.findDecisionByExaminantId(judithId)).isNull();
   }
 
 }

@@ -81,7 +81,7 @@ public class StopPointWorkflowApiInternalController implements StopPointWorkflow
 
   @Override
   public void voteWorkflow(Long id, Long personId, DecisionModel decisionModel) {
-    otpService.verifyExaminantPinCode(id, decisionModel);
+    otpService.verifyExaminantPinCode(id, personId, decisionModel);
 
     service.voteWorkFlow(id, personId, decisionModel);
     workflowTransitionService.progressWorkflowWithNewDecision(id);
