@@ -5,13 +5,13 @@ import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowExaminantNotFoundException;
 import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowPinCodeInvalidException;
 import ch.sbb.workflow.module.sepodi.hearing.mail.StopPointWorkflowNotificationService;
+import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpResponseModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.otp.entity.Otp;
 import ch.sbb.workflow.otp.helper.OtpHelper;
 import ch.sbb.workflow.otp.repository.OtpRepository;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,21 +24,33 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowOtpService {
 
-  private static final Duration OTP_LIFESPAN = Duration.ofMinutes(10);
-
   private final OtpRepository otpRepository;
   private final StopPointWorkflowService workflowService;
   private final StopPointWorkflowNotificationService notificationService;
 
-  public void obtainOtp(StopPointWorkflow stopPointWorkflow, String examinantMail) {
+  public OtpResponseModel obtainOtp(StopPointWorkflow stopPointWorkflow, String examinantMail) {
     workflowService.validateIsStopPointInHearing(stopPointWorkflow);
 
     Person examinant = getExaminantByMail(stopPointWorkflow.getId(), examinantMail);
 
+    Otp existingOtp = otpRepository.findByPersonId(examinant.getId());
+    if (existingOtp != null && existingOtp.isStillValid()) {
+      log.info("Otp for workflow {} is still valid. No new pin code mail sent.", stopPointWorkflow.getId());
+      return OtpResponseModel.builder()
+          .mailSent(false)
+          .expiresInSeconds(existingOtp.getExpiresInSeconds())
+          .build();
+    }
+
     String pinCode = OtpHelper.generatePinCode();
-    savePinCode(examinant, pinCode);
+    Otp otp = savePinCode(examinant, existingOtp, pinCode);
 
     notificationService.sendPinCodeMail(stopPointWorkflow, examinantMail, pinCode);
+
+    return OtpResponseModel.builder()
+        .mailSent(true)
+        .expiresInSeconds(otp.getExpiresInSeconds())
+        .build();
   }
 
   public Person verifyExaminantPinCode(Long id, OtpVerificationModel verificationModel) {
@@ -47,10 +59,11 @@ public class StopPointWorkflowOtpService {
     return examinant;
   }
 
-  public void verifyExaminantPinCode(Long workflowId, Long personId, OtpVerificationModel verificationModel) {
+  public Person verifyExaminantPinCode(Long workflowId, Long personId, OtpVerificationModel verificationModel) {
     Person examinant = getExaminantById(workflowId, personId);
     validateExaminantMail(examinant, verificationModel.getExaminantMail());
     validatePinCode(examinant, verificationModel.getPinCode());
+    return examinant;
   }
 
   public Person getExaminantById(Long workflowId, Long personId) {
@@ -65,6 +78,13 @@ public class StopPointWorkflowOtpService {
       log.info("Examinant mail does not match examinant {} of workflow {}.", examinant.getId(),
           examinant.getStopPointWorkflow().getId());
       throw new StopPointWorkflowPinCodeInvalidException();
+    }
+  }
+
+  public void invalidateOtp(Person examinant) {
+    Otp otp = otpRepository.findByPersonId(examinant.getId());
+    if (otp != null) {
+      otpRepository.delete(otp);
     }
   }
 
@@ -87,7 +107,7 @@ public class StopPointWorkflowOtpService {
       log.info("Otp not found for workflow {}.", person.getStopPointWorkflow().getId());
       return false;
     }
-    boolean stillValid = LocalDateTime.now().isBefore(otp.getCreationTime().plus(OTP_LIFESPAN));
+    boolean stillValid = otp.isStillValid();
     boolean codeMatches = MessageDigest.isEqual(
         otp.getCode().getBytes(StandardCharsets.UTF_8),
         OtpHelper.hashPinCode(pinCode).getBytes(StandardCharsets.UTF_8));
@@ -96,18 +116,17 @@ public class StopPointWorkflowOtpService {
     return stillValid && codeMatches;
   }
 
-  private void savePinCode(Person examinant, String pinCode) {
-    Otp existingOtp = otpRepository.findByPersonId(examinant.getId());
+  private Otp savePinCode(Person examinant, Otp existingOtp, String pinCode) {
     if (existingOtp == null) {
-      otpRepository.save(Otp.builder()
+      return otpRepository.save(Otp.builder()
           .person(examinant)
           .code(OtpHelper.hashPinCode(pinCode))
           .creationTime(LocalDateTime.now())
           .build());
-    } else {
-      existingOtp.setCode(OtpHelper.hashPinCode(pinCode));
-      existingOtp.setCreationTime(LocalDateTime.now());
     }
+    existingOtp.setCode(OtpHelper.hashPinCode(pinCode));
+    existingOtp.setCreationTime(LocalDateTime.now());
+    return existingOtp;
   }
 
 }

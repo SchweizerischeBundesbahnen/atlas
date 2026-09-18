@@ -11,6 +11,9 @@
 
 export interface OtpVerification { 
     examinantMail: string;
+    /**
+     * One-time code
+     */
     pinCode: string;
 }
 

@@ -833,6 +833,8 @@
       "CHECK_YOUR_SPAM": "Vérifiez votre dossier de courrier indésirable.",
       "CLICK_TO_RESEND_MAIL": "Cliquez sur le bouton suivant pour recevoir à nouveau l'e-mail.",
       "RESEND": "Envoyer à nouveau.",
+      "RESEND_POSSIBLE_AT": "Un nouveau code d'accès ne pourra être demandé qu'à partir de {{time}}.",
+      "OTP_STILL_VALID": "Un code d'accès a déjà été envoyé à votre adresse e-mail et il est encore valable. Veuillez utiliser ce code d'accès.",
       "DECISION_INFO": "Approuvez-vous le nouveau nom de la station ou refusez-vous la demande?",
       "SEND": "Envoyer",
       "ACCEPT": "Oui, je suis d'accord.",

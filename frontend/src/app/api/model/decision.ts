@@ -12,6 +12,9 @@ import { JudgementType } from './judgementType';
 
 export interface Decision { 
     examinantMail: string;
+    /**
+     * One-time code
+     */
     pinCode: string;
     judgement: JudgementType;
     /**

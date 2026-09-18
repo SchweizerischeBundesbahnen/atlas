@@ -8,6 +8,7 @@ import { AddExaminants } from '../../model/addExaminants';
 import { ReadDecision } from '../../model/readDecision';
 import { OverrideDecision } from '../../model/overrideDecision';
 import { OtpRequest } from '../../model/otpRequest';
+import { OtpResponse } from '../../model/otpResponse';
 import { StopPointPerson } from '../../model/stopPointPerson';
 import { OtpVerification } from '../../model/otpVerification';
 import { Decision } from '../../model/decision';
@@ -101,7 +102,7 @@ export class StopPointWorkflowService {
     );
   }
 
-  obtainOtp(id: number, otpRequest: OtpRequest): Observable<void> {
+  obtainOtp(id: number, otpRequest: OtpRequest): Observable<OtpResponse> {
     this.atlasApiService.validateParams({ id, otpRequest });
     return this.atlasApiService.post(
       `${this.STOP_POINT_WORKFLOW_INTERNAL}/obtain-otp/${encodeURIComponent(String(id))}`,

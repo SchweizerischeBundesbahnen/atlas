@@ -101,7 +101,7 @@ describe('DecisionStepperComponent', () => {
   describe('stepper', () => {
     function testObtainOtpStep() {
       component.mail.controls.mail.setValue('techsupport@atlas.ch');
-      spWfServiceSpy.obtainOtp.mockReturnValue(of('valid') as never);
+      spWfServiceSpy.obtainOtp.mockReturnValue(of({ mailSent: true, expiresInSeconds: 600 }) as never);
 
       component.completeObtainOtpStep();
 
@@ -245,7 +245,7 @@ describe('DecisionStepperComponent', () => {
 
   it('should resend mail', () => {
     component.mail.controls.mail.setValue('resend@sbb.ch');
-    spWfServiceSpy.obtainOtp.mockReturnValue(of('valid') as never);
+    spWfServiceSpy.obtainOtp.mockReturnValue(of({ mailSent: true, expiresInSeconds: 600 }) as never);
     component.isStepOneCompl$ = of(true);
     fixture.detectChanges();
     component.stepper?.next();
@@ -275,6 +275,30 @@ describe('DecisionStepperComponent', () => {
     });
     expect(component.loading).toBe(false);
     expect(component.stepper?.selected?.completed).toBe(false);
+  });
+
+  it('should block resending while the obtained otp is still valid', () => {
+    component.mail.controls.mail.setValue('techsupport@atlas.ch');
+    spWfServiceSpy.obtainOtp.mockReturnValue(of({ mailSent: true, expiresInSeconds: 600 }) as never);
+
+    component.completeObtainOtpStep();
+    fixture.detectChanges();
+
+    expect(component.mailSent).toBe(true);
+    expect(component.resendMailActive).toBe(false);
+    expect(component.newCodeAvailableAt).toBeDefined();
+  });
+
+  it('should continue to pin step and inform when no new mail was sent', () => {
+    component.mail.controls.mail.setValue('techsupport@atlas.ch');
+    spWfServiceSpy.obtainOtp.mockReturnValue(of({ mailSent: false, expiresInSeconds: 300 }) as never);
+
+    component.completeObtainOtpStep();
+    fixture.detectChanges();
+
+    expect(component.mailSent).toBe(false);
+    expect(component.resendMailActive).toBe(false);
+    expect(component.stepper?.selectedIndex).toEqual(1);
   });
 
   it('should cancel (close dialog immediately) on step 1', () => {

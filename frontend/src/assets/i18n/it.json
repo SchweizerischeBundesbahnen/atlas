@@ -833,6 +833,8 @@
       "CHECK_YOUR_SPAM": "Controllare la cartella spam.",
       "CLICK_TO_RESEND_MAIL": "Fare clic sul seguente pulsante per ricevere nuovamente l'e-mail.",
       "RESEND": "Ripeti l'invio",
+      "RESEND_POSSIBLE_AT": "Un nuovo codice di accesso potrà essere richiesto solo a partire dalle {{time}}.",
+      "OTP_STILL_VALID": "Un codice di accesso è già stato inviato al suo indirizzo e-mail ed è ancora valido. La preghiamo di utilizzare questo codice di accesso.",
       "DECISION_INFO": "Siete d'accordo o meno con il nome della nuova stazione?",
       "SEND": "Spedire",
       "ACCEPT": "Sì, sono d'accordo.",

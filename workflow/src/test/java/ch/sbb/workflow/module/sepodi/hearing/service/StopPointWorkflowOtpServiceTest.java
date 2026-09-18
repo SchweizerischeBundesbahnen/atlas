@@ -16,6 +16,7 @@ import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowExaminan
 import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowNotInHearingException;
 import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowPinCodeInvalidException;
 import ch.sbb.workflow.module.sepodi.hearing.mail.StopPointWorkflowNotificationService;
+import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpResponseModel;
 import ch.sbb.workflow.module.sepodi.hearing.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.otp.entity.Otp;
 import ch.sbb.workflow.otp.helper.OtpHelper;
@@ -112,14 +113,35 @@ class StopPointWorkflowOtpServiceTest {
 
   @Test
   void shouldObtainOtpCorrectly() {
-    stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+    OtpResponseModel response = stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
 
     verify(notificationService).sendPinCodeMail(any(), anyString(), pincodeCaptor.capture());
     assertThat(pincodeCaptor.getValue()).isNotNull();
+    assertThat(response.isMailSent()).isTrue();
+    assertThat(response.getExpiresInSeconds()).isPositive().isLessThanOrEqualTo(600);
   }
 
   @Test
-  void shouldReplaceObtainedOtpOnSecondRequest() {
+  void shouldNotSendNewMailWhileOtpIsStillValid() {
+    stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+
+    Otp otp = otpRepository.findByPersonId(workflowInHearing.getExaminants().iterator().next().getId());
+    String firstHashedPin = otp.getCode();
+    LocalDateTime firstCreationTime = otp.getCreationTime();
+
+    OtpResponseModel response = stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+
+    verify(notificationService, times(1)).sendPinCodeMail(any(), anyString(), anyString());
+    assertThat(response.isMailSent()).isFalse();
+    assertThat(response.getExpiresInSeconds()).isPositive().isLessThanOrEqualTo(600);
+
+    otp = otpRepository.findByPersonId(workflowInHearing.getExaminants().iterator().next().getId());
+    assertThat(otp.getCode()).isEqualTo(firstHashedPin);
+    assertThat(otp.getCreationTime()).isEqualTo(firstCreationTime);
+  }
+
+  @Test
+  void shouldReplaceObtainedOtpOnSecondRequestAfterExpiry() {
     // first pin request
     stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
 
@@ -127,10 +149,14 @@ class StopPointWorkflowOtpServiceTest {
     assertThat(otp.getCode()).isNotNull();
     String firstHashedPin = otp.getCode();
 
+    expireOtp(otp);
+
     // second pin request
-    stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
+    OtpResponseModel response = stopPointWorkflowOtpService.obtainOtp(workflowInHearing, MAIL_ADDRESS);
 
     verify(notificationService, times(2)).sendPinCodeMail(any(), anyString(), anyString());
+    assertThat(response.isMailSent()).isTrue();
+    assertThat(response.getExpiresInSeconds()).isPositive().isLessThanOrEqualTo(600);
 
     otp = otpRepository.findByPersonId(workflowInHearing.getExaminants().iterator().next().getId());
     assertThat(otp.getCode()).isNotNull();
@@ -224,6 +250,10 @@ class StopPointWorkflowOtpServiceTest {
       serviceLogger.setLevel(previousLevel);
       logAppender.stop();
     }
+  }
+
+  private void expireOtp(Otp otp) {
+    jdbcTemplate.update("update otp set creation_time = ? where id = ?", LocalDateTime.now().minusHours(1), otp.getId());
   }
 
   private Person obtainOtpAndShiftCreationTime(LocalDateTime creationTime) {

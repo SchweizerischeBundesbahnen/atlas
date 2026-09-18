@@ -187,6 +187,22 @@ class StopPointWorkflowVotingTest {
   }
 
   @Test
+  void shouldInvalidateOtpAfterVoting() {
+    stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(),
+        OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
+
+    StopPointClientPersonModel verifiedExaminant = stopPointWorkflowInternalController.verifyOtp(workflowInHearing.getId(),
+        OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
+
+    stopPointWorkflowInternalController.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
+        DecisionModel.builder().judgement(JudgementType.YES).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue())
+            .build());
+
+    assertThat(otpRepository.findByPersonId(verifiedExaminant.getId())).isNull();
+  }
+
+  @Test
   void shouldOverridePreviousVoteBySelfCorrectly() {
     // First Vote: NO
     stopPointWorkflowInternalController.obtainOtp(workflowInHearing.getId(),
