@@ -62,6 +62,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-security-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.testcontainers:testcontainers-postgresql")
+    testImplementation("org.testcontainers:testcontainers-minio")
     testImplementation(libs.mockito.inline)
     testImplementation(project(":base-atlas", "test"))
     testImplementation(project(":auto-rest-doc"))

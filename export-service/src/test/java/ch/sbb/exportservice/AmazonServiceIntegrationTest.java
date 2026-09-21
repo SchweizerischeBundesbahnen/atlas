@@ -19,6 +19,7 @@ import java.util.zip.ZipInputStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 
 @IntegrationTest
@@ -27,9 +28,17 @@ class AmazonServiceIntegrationTest {
   private static final String INTEGRATION_TEST_DIR = "integration-test";
   private static final String CSV_FILE = "csv-minimal-service_point-2024-07-10.csv";
   private static final String JSON_FILE = "json-minimal-service_point-2024-07-10.json";
+  private static final String LATEST_JSON_DIR = "v2/service-point/full";
+  private static final String LATEST_JSON_FILE_PREFIX = "full-swiss-service-point-";
 
   @Autowired
   private AmazonService amazonService;
+
+  @Value("${amazon.bucketConfigs.export-files.endpoint}")
+  private String s3Endpoint;
+
+  @Value("${amazon.bucketConfigs.export-files.bucketName}")
+  private String s3BucketName;
 
   @Test
   void shouldUploadAndDownloadCsvCorrectly() throws IOException {
@@ -37,8 +46,7 @@ class AmazonServiceIntegrationTest {
     File file = getMinimalServicePointCsvFile();
 
     URL url = amazonService.putFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
-    assertThat(url).hasToString(
-        "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE);
+    assertThat(url).hasToString(expectedUrl(INTEGRATION_TEST_DIR + "/" + CSV_FILE));
 
     // Download
     File downloadedFile = amazonService.pullFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE);
@@ -53,8 +61,7 @@ class AmazonServiceIntegrationTest {
     File file = getMinimalServicePointCsvFile();
 
     URL url = amazonService.putFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
-    assertThat(url).hasToString(
-        "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE);
+    assertThat(url).hasToString(expectedUrl(INTEGRATION_TEST_DIR + "/" + CSV_FILE));
 
     // Stream
     InputStreamResource stream = amazonService.pullFileAsStream(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE);
@@ -74,9 +81,7 @@ class AmazonServiceIntegrationTest {
       assertThat(zipInputStream.getNextEntry()).isNotNull();
     }
 
-    assertThat(url).hasToString(
-        "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE +
-            ".zip");
+    assertThat(url).hasToString(expectedUrl(INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip"));
   }
 
   @Test
@@ -94,17 +99,26 @@ class AmazonServiceIntegrationTest {
     try (GZIPInputStream gzipInputStream = new GZIPInputStream(inputStreamResource.getInputStream())) {
       assertThat(gzipInputStream.readAllBytes()).isNotNull();
     }
-    assertThat(url).hasToString(
-        "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
+    assertThat(url).hasToString(expectedUrl(INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz"));
   }
 
   @Test
-  void shouldFindLastJsonUploadCorrectly() {
-    String latestJsonKey = amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT,
-        "v2/service-point/full", "full-swiss-service-point-");
+  void shouldFindLastJsonUploadCorrectly() throws IOException {
+    //given
+    String fileName = LATEST_JSON_FILE_PREFIX + DATE_FORMATTER_BASE.format(LocalDate.now()) + ".json";
+    File file = getMinimalFileAsCopy(JSON_FILE, fileName);
+    amazonService.putGzipFile(AmazonBucket.EXPORT, file, LATEST_JSON_DIR);
 
-    String date = DATE_FORMATTER_BASE.format(LocalDate.now());
-    assertThat(latestJsonKey).isEqualTo("v2/service-point/full/full-swiss-service-point-" + date + ".json.gz");
+    //when
+    String latestJsonKey = amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, LATEST_JSON_DIR,
+        LATEST_JSON_FILE_PREFIX);
+
+    //then
+    assertThat(latestJsonKey).isEqualTo(LATEST_JSON_DIR + "/" + fileName + ".gz");
+  }
+
+  private String expectedUrl(String key) {
+    return s3Endpoint + "/" + s3BucketName + "/" + key;
   }
 
   private File getMinimalServicePointCsvFile() throws IOException {
@@ -116,11 +130,15 @@ class AmazonServiceIntegrationTest {
   }
 
   private File getMinimalFileAsCopy(String name) throws IOException {
-    try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("s3/" + name)) {
+    return getMinimalFileAsCopy(name, name);
+  }
+
+  private File getMinimalFileAsCopy(String resourceName, String targetName) throws IOException {
+    try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("s3/" + resourceName)) {
       if (!Files.exists(Paths.get(INTEGRATION_TEST_DIR))) {
         Files.createDirectory(Paths.get(INTEGRATION_TEST_DIR));
       }
-      File file = new File(INTEGRATION_TEST_DIR + "/" + name);
+      File file = new File(INTEGRATION_TEST_DIR + "/" + targetName);
       Files.copy(Objects.requireNonNull(inputStream), file.toPath());
       return file;
     }
@@ -128,11 +146,15 @@ class AmazonServiceIntegrationTest {
 
   @AfterEach
   void tearDown() throws IOException {
+    String latestJsonFileName = LATEST_JSON_FILE_PREFIX + DATE_FORMATTER_BASE.format(LocalDate.now()) + ".json";
+
     amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE);
     amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip");
     amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
+    amazonService.deleteFile(AmazonBucket.EXPORT, LATEST_JSON_DIR + "/" + latestJsonFileName + ".gz");
 
     Files.deleteIfExists(Paths.get(INTEGRATION_TEST_DIR, CSV_FILE));
     Files.deleteIfExists(Paths.get(INTEGRATION_TEST_DIR, JSON_FILE));
+    Files.deleteIfExists(Paths.get(INTEGRATION_TEST_DIR, latestJsonFileName));
   }
 }
