@@ -39,6 +39,9 @@
     >
       <form [formGroup]="pin">
         <p>{{ 'WORKFLOW.DECISION.PIN_INFO' | translate }}</p>
+        @if (!mailSent) {
+          <p class="color-primary-500">{{ 'WORKFLOW.DECISION.OTP_STILL_VALID' | translate }}</p>
+        }
         <atlas-text-field
           (keyup.enter)="completeVerifyPinStep()"
           [formGroup]="pin"
@@ -59,6 +62,14 @@
             >
               {{ 'WORKFLOW.DECISION.RESEND' | translate }}
             </button>
+            @if (!resendMailActive && newCodeAvailableAt) {
+              <p>
+                {{
+                  'WORKFLOW.DECISION.RESEND_POSSIBLE_AT'
+                    | translate: { time: newCodeAvailableAt | date: 'HH:mm' }
+                }}
+              </p>
+            }
           </li>
         </ul>
         <div class="d-flex justify-content-center">

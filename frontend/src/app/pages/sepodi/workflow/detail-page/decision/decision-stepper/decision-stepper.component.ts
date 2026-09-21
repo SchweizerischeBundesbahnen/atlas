@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MatStep, MatStepper, MatStepperIcon } from '@angular/material/stepper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { catchError, EMPTY, Observable, of, shareReplay, take } from 'rxjs';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
 import { StopPointPerson } from '../../../../../../api';
+import { OtpResponse } from '../../../../../../api/model/otpResponse';
 import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
 import { map } from 'rxjs/operators';
@@ -14,7 +15,7 @@ import { TextFieldComponent } from '../../../../../../core/form-components/text-
 import { MatButton } from '@angular/material/button';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
 import { LoadingSpinnerComponent } from '../../../../../../core/components/loading-spinner/loading-spinner.component';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StopPointWorkflowService } from '../../../../../../api/service/workflow/stop-point-workflow.service';
 
@@ -36,10 +37,11 @@ const OTP_UUID_V4_CANONICAL_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89
     DecisionFormComponent,
     LoadingSpinnerComponent,
     AsyncPipe,
+    DatePipe,
     TranslatePipe,
   ],
 })
-export class DecisionStepperComponent {
+export class DecisionStepperComponent implements OnDestroy {
   @ViewChild('stepper') readonly stepper?: MatStepper;
 
   private readonly _formBuilder = inject(FormBuilder);
@@ -69,7 +71,29 @@ export class DecisionStepperComponent {
   }
 
   resendMailActive = true;
+  mailSent = true;
+  newCodeAvailableAt?: Date;
+  private _resendTimeout?: ReturnType<typeof setTimeout>;
   private _verifiedExaminant?: StopPointPerson;
+
+  ngOnDestroy() {
+    clearTimeout(this._resendTimeout);
+  }
+
+  private _handleOtpResponse(response: OtpResponse) {
+    this.mailSent = response.mailSent ?? true;
+
+    const expiresInSeconds = response.expiresInSeconds ?? 0;
+    this.newCodeAvailableAt = new Date(Date.now() + expiresInSeconds * 1000);
+    this.resendMailActive = false;
+
+    clearTimeout(this._resendTimeout);
+    this._resendTimeout = setTimeout(() => {
+      this.resendMailActive = true;
+      this.newCodeAvailableAt = undefined;
+      this.cd.detectChanges();
+    }, expiresInSeconds * 1000);
+  }
 
   completeObtainOtpStep() {
     this.mail.markAllAsTouched();
@@ -80,7 +104,10 @@ export class DecisionStepperComponent {
           examinantMail: this.mail.controls.mail.value!,
         })
         .pipe(
-          map(() => true),
+          map((response) => {
+            this._handleOtpResponse(response);
+            return true;
+          }),
           catchError(() => {
             this._swapLoading();
             return EMPTY;
@@ -173,11 +200,8 @@ export class DecisionStepperComponent {
         examinantMail: this.mail.controls.mail.value!,
       })
       .pipe(
-        map(() => {
-          this.resendMailActive = false;
-          setTimeout(() => {
-            this.resendMailActive = true;
-          }, 10_000);
+        map((response) => {
+          this._handleOtpResponse(response);
           this._swapLoading();
           return false;
         }),

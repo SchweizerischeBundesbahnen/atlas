@@ -8,6 +8,7 @@ import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.DecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpRequestModel;
+import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpResponseModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.ReadDecisionModel;
@@ -66,7 +67,7 @@ public interface StopPointWorkflowApiInternal {
   @ResponseStatus(HttpStatus.ACCEPTED)
   @ApiResponses(value = {@ApiResponse(responseCode = "202")})
   @PostMapping(path = "/obtain-otp/{id}")
-  void obtainOtp(@PathVariable Long id, @RequestBody @Valid OtpRequestModel otpRequest);
+  OtpResponseModel obtainOtp(@PathVariable Long id, @RequestBody @Valid OtpRequestModel otpRequest);
 
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
   @PostMapping(path = "/verify-otp/{id}")

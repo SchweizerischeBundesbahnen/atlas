@@ -88,6 +88,7 @@ export * from './operatingPointTechnicalTimetableType';
 export * from './operatingPointTrafficPointType';
 export * from './operatingPointType';
 export * from './otpRequest';
+export * from './otpResponse';
 export * from './otpVerification';
 export * from './overrideDecision';
 export * from './pageableObject';

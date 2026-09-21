@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,8 @@ import lombok.experimental.SuperBuilder;
 @Entity(name = "otp")
 public class Otp {
 
+  public static final Duration OTP_LIFESPAN = Duration.ofMinutes(10);
+
   private static final String VERSION_SEQ = "otp_seq";
 
   @Id
@@ -45,5 +48,17 @@ public class Otp {
 
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime creationTime;
+
+  public LocalDateTime getExpirationTime() {
+    return creationTime.plus(OTP_LIFESPAN);
+  }
+
+  public boolean isStillValid() {
+    return LocalDateTime.now().isBefore(getExpirationTime());
+  }
+
+  public long getExpiresInSeconds() {
+    return Math.max(0, Duration.between(LocalDateTime.now(), getExpirationTime()).toSeconds());
+  }
 
 }

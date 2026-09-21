@@ -833,6 +833,8 @@
       "CHECK_YOUR_SPAM": "Prüfen Sie Ihren Spam-Ordner.",
       "CLICK_TO_RESEND_MAIL": "Klicken Sie auf den folgenden Button um die E-Mail erneut zu erhalten.",
       "RESEND": "Erneut senden",
+      "RESEND_POSSIBLE_AT": "Ein neuer Zugangscode kann erst ab {{time}} Uhr angefordert werden.",
+      "OTP_STILL_VALID": "Es wurde bereits ein Zugangscode an Ihre E-Mail-Adresse gesendet und dieser ist noch gültig. Bitte verwenden Sie diesen Zugangscode.",
       "DECISION_INFO": "Stimmen Sie dem neuen Stationsnamen zu oder lehnen Sie den Antrag ab?",
       "SEND": "Absenden",
       "ACCEPT": "Ja, ich stimme zu.",

@@ -10,6 +10,7 @@ import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.DecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpRequestModel;
+import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpResponseModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.ReadDecisionModel;
@@ -62,8 +63,8 @@ public class StopPointWorkflowApiInternalController implements StopPointWorkflow
   }
 
   @Override
-  public void obtainOtp(Long id, OtpRequestModel otpRequest) {
-    otpService.obtainOtp(service.findStopPointWorkflow(id), otpRequest.getExaminantMail());
+  public OtpResponseModel obtainOtp(Long id, OtpRequestModel otpRequest) {
+    return otpService.obtainOtp(service.findStopPointWorkflow(id), otpRequest.getExaminantMail());
   }
 
   @Override
@@ -81,10 +82,12 @@ public class StopPointWorkflowApiInternalController implements StopPointWorkflow
 
   @Override
   public void voteWorkflow(Long id, Long personId, DecisionModel decisionModel) {
-    otpService.verifyExaminantPinCode(id, personId, decisionModel);
+    Person examinant = otpService.verifyExaminantPinCode(id, personId, decisionModel);
 
     service.voteWorkFlow(id, personId, decisionModel);
     workflowTransitionService.progressWorkflowWithNewDecision(id);
+
+    otpService.invalidateOtp(examinant);
   }
 
   @Override

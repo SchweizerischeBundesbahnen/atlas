@@ -1,11 +1,13 @@
 package ch.sbb.workflow.module.sepodi.hearing.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -470,7 +472,10 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
 
     @Test
     void shouldGetOtpWorkflow() throws Exception {
-      getOtpWorkflow().andExpect(status().isAccepted());
+      getOtpWorkflow()
+          .andExpect(status().isAccepted())
+          .andExpect(jsonPath("$.mailSent", is(true)))
+          .andExpect(jsonPath("$.expiresInSeconds", greaterThan(0)));
 
       Otp otpResult = otpRepository.findAll().stream().filter(otp -> otp.getPerson().getId().equals(person.getId())).findFirst()
           .orElse(null);
@@ -505,12 +510,28 @@ class StopPointWorkflowApiInternalControllerTest extends BaseControllerApiTest {
       person.setStopPointWorkflow(workflow);
       workflowRepository.save(workflow);
 
+      return obtainOtp(stopPointWorkflow.getId());
+    }
+
+    private ResultActions obtainOtp(Long workflowId) throws Exception {
       OtpRequestModel otpRequest = OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build();
 
       //given
-      return mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/obtain-otp/" + stopPointWorkflow.getId())
+      return mvc.perform(post(StopPointWorkflowApiInternal.BASE_PATH + "/obtain-otp/" + workflowId)
           .contentType(contentType)
           .content(mapper.writeValueAsString(otpRequest)));
+    }
+
+    @Test
+    void shouldNotSendNewMailWhenOtpIsStillValid() throws Exception {
+      getOtpWorkflow().andExpect(status().isAccepted());
+
+      obtainOtp(person.getStopPointWorkflow().getId())
+          .andExpect(status().isAccepted())
+          .andExpect(jsonPath("$.mailSent", is(false)))
+          .andExpect(jsonPath("$.expiresInSeconds", greaterThan(0)));
+
+      verify(notificationService, times(1)).sendPinCodeMail(any(), anyString(), anyString());
     }
 
     @Test
