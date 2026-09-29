@@ -155,6 +155,23 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
     @Test
     @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldMaskClientCredentialAliasForUnauthorized() throws Exception {
+      mvc.perform(get("/v1/users/client-id/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("client-id"))
+          .andExpect(jsonPath("$.displayName").value("*****"));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.STANDARD)
+    void shouldNotMaskClientCredentialAliasForStandardUser() throws Exception {
+      mvc.perform(get("/v1/users/client-id/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.displayName").value("PostAuto"));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
     void shouldAllowDisplayNameQueryForUnauthorizedAndMaskResponse() throws Exception {
       mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/u123456/displayname"))
           .andExpect(status().isOk())

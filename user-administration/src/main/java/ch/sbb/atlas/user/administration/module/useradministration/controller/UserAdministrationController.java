@@ -11,6 +11,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.model.exception.SimpleAtlasException;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
 import ch.sbb.atlas.user.administration.module.clientcredential.mapper.ClientCredentialMapper;
@@ -124,6 +125,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   }
 
   @Override
+  @Redacted
   public UserDisplayNameModel getUserDisplayName(String userId) {
     Optional<UserDisplayNameModel> clientCredentialAlias = getClientCredentialAlias(userId);
     if (clientCredentialAlias.isPresent()) {
