@@ -146,11 +146,12 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     }
 
     @Test
-    void shouldGetUserDisplayNameNotExistingClientCredential() throws Exception {
+    void shouldFallBackToUserIdAsDisplayNameWhenNotResolvable() throws Exception {
       // when & then
       mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$.displayName").doesNotExist());
+          .andExpect(jsonPath("$.sbbUserId").value("ATLAS_SYSTEM_USER"))
+          .andExpect(jsonPath("$.displayName").value("ATLAS_SYSTEM_USER"));
     }
 
     @Test
@@ -159,6 +160,15 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
       mvc.perform(get("/v1/users/client-id/displayname"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.sbbUserId").value("client-id"))
+          .andExpect(jsonPath("$.displayName").value("*****"));
+    }
+
+    @Test
+    @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+    void shouldMaskUnresolvableDisplayNameForUnauthorized() throws Exception {
+      mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.sbbUserId").value("ATLAS_SYSTEM_USER"))
           .andExpect(jsonPath("$.displayName").value("*****"));
     }
 

@@ -15,7 +15,7 @@ export interface UserDisplayName {
      */
     sbbUserId?: string;
     /**
-     * User display name (azure)
+     * User display name (azure). Falls back to the requested user id if it can not be resolved.
      */
     displayName?: string;
 }

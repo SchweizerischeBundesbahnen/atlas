@@ -135,7 +135,11 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     UserModel userModel = graphApiService.resolveUsers(List.of(userId))
         .stream()
         .findFirst().orElseThrow(() -> displayUserNotFoundException(userId));
-    return UserDisplayNameModel.toModel(userModel);
+    UserDisplayNameModel displayNameModel = UserDisplayNameModel.toModel(userModel);
+    if (displayNameModel.getDisplayName() == null) {
+      return displayNameModel.toBuilder().displayName(userId).build();
+    }
+    return displayNameModel;
   }
 
   private Optional<UserDisplayNameModel> getClientCredentialAlias(String clientId) {

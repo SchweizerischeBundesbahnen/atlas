@@ -15,7 +15,8 @@ public class UserDisplayNameModel {
   private String sbbUserId;
 
   @Redacted
-  @Schema(description = "User display name (azure)", example = "Example User (IT-PTR-CEN2-YPT)")
+  @Schema(description = "User display name (azure). Falls back to the requested user id if it can not be resolved.",
+      example = "Example User (IT-PTR-CEN2-YPT)")
   private String displayName;
 
   public static UserDisplayNameModel toModel(UserModel userModel) {
