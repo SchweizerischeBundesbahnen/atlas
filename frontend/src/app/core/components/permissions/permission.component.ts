@@ -9,7 +9,7 @@ import { DialogService } from '../dialog/dialog.service';
 @Component({
   selector: 'atlas-permission',
   templateUrl: './permission.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./permission.component.scss'],
   imports: [ApplicationPermissionComponent, TranslatePipe, MatTabGroup, MatTab, MatTabLabel, MatTabContent],
 })
@@ -27,7 +27,7 @@ export class PermissionComponent implements OnInit {
   ngOnInit(): void {
     this.applicationTabs._handleClick = (_tab: MatTab, tabHeader: MatTabHeader, index: number) => {
       if (this.applicationTabs.selectedIndex != index) {
-        if (this.userPermissionProviderService.getCurrentForm()?.dirty) {
+        if (this.userPermissionProviderService.currentForm()?.().dirty()) {
           this.dialogService.confirmLeave().subscribe((result) => {
             if (result) {
               this.changeTab(tabHeader, index);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ClientCredential } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
@@ -12,14 +12,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { PermissionComponent } from '../../../../../core/components/permissions/permission.component';
 import { BackButtonDirective } from '../../../../../core/components/button/back-button/back-button.directive';
 import { UserPermissionGivenClientService } from './user-permission-given-client.service';
-import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/components/permissions/form/application-permission-form-group';
+import { ApplicationPermissionFormBuilder } from '../../../../../core/components/permissions/form/application-permission-form-group';
 import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
 import { ConvertUserPermissionToRecordHelper } from '../../../../../core/components/permissions/helper/convert-user-permission-to-record-helper';
 
 @Component({
   selector: 'atlas-client-credential-administration-edit',
   templateUrl: './user-administration-client-edit.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./user-administration-client-edit.component.scss'],
   imports: [
     ScrollToTopDirective,
@@ -41,9 +41,9 @@ export class UserAdministrationClientEditComponent implements OnInit {
 
   readonly client = input.required<ClientCredential>();
 
-  editMode = false;
-  saveEnabled = true;
-  record!: CreationEditionRecord;
+  readonly editMode = signal(false);
+  readonly saveEnabled = signal(true);
+  readonly record = signal<CreationEditionRecord>({});
 
   ngOnInit() {
     this.userPermissionGivenClientService.clientCredential = this.client();
@@ -51,23 +51,27 @@ export class UserAdministrationClientEditComponent implements OnInit {
   }
 
   saveClientCredential(): void {
-    this.saveEnabled = false;
-    this.formGroup.disable();
-
-    const permission = ApplicationPermissionFormGroupBuilder.formToModel(this.formGroup);
+    if (!this.saveEnabled() || !this.form().dirty()) {
+      return;
+    }
+    const permission = ApplicationPermissionFormBuilder.formToModel(this.form);
+    this.saveEnabled.set(false);
+    this.userPermissionGivenClientService.setEditable(false);
     this.clientCredentialAdministrationService
       .updateClientCredentialPermissions(this.client().clientCredentialId!, permission.application, permission)
       .subscribe({
         next: (clientCredential) => {
           this.userPermissionGivenClientService.clientCredential = clientCredential;
-          this.editMode = false;
-          this.userPermissionGivenClientService.loadFormGroup(
-            this.userPermissionGivenClientService.getCurrentForm()!.controls.application.value!
-          );
+          this.editMode.set(false);
+          this.userPermissionGivenClientService.loadForm(permission.application);
+          this.saveEnabled.set(true);
           this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
           this.convertUserPermissionToRecord();
         },
-        error: () => (this.saveEnabled = true),
+        error: () => {
+          this.saveEnabled.set(true);
+          this.userPermissionGivenClientService.setEditable(true);
+        },
       });
   }
 
@@ -77,27 +81,29 @@ export class UserAdministrationClientEditComponent implements OnInit {
     );
 
     if (permissionsFromUserModelAsArray.length > 0) {
-      this.record = ConvertUserPermissionToRecordHelper.convertUserPermissionToRecord(permissionsFromUserModelAsArray);
+      this.record.set(
+        ConvertUserPermissionToRecordHelper.convertUserPermissionToRecord(permissionsFromUserModelAsArray)
+      );
+    } else {
+      this.record.set({});
     }
   }
 
   toggleEdit() {
-    if (this.formGroup.disabled) {
-      this.formGroup.enable();
-      this.editMode = true;
+    if (this.form().disabled()) {
+      this.userPermissionGivenClientService.setEditable(true);
+      this.editMode.set(true);
     } else {
       this.dialogService.confirmLeave().subscribe((result) => {
         if (result) {
-          this.editMode = false;
-          this.userPermissionGivenClientService.loadFormGroup(
-            this.userPermissionGivenClientService.getCurrentForm()!.controls.application.value!
-          );
+          this.editMode.set(false);
+          this.userPermissionGivenClientService.loadForm(this.form().value().application);
         }
       });
     }
   }
 
-  get formGroup() {
-    return this.userPermissionGivenClientService.applicationPermissionFormGroup!;
+  get form() {
+    return this.userPermissionGivenClientService.currentForm()!;
   }
 }

@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import {
   ApplicationRole,
   ApplicationType,
@@ -7,9 +9,12 @@ import {
   PermissionRestrictionType,
   SwissCanton,
 } from '../../../../api';
-import { ApplicationPermissionFormGroupBuilder } from './application-permission-form-group';
+import { ApplicationPermissionFormBuilder } from './application-permission-form-group';
 
-describe('ApplicationPermissionFormGroupBuilder', () => {
+describe('ApplicationPermissionFormBuilder', () => {
+  const buildForm: typeof ApplicationPermissionFormBuilder.buildAndFillForm = (...args) =>
+    TestBed.runInInjectionContext(() => ApplicationPermissionFormBuilder.buildAndFillForm(...args));
+
   it('should build form for sepodi nova voter', () => {
     const existingPermission: Permission = {
       role: ApplicationRole.Writer,
@@ -38,12 +43,9 @@ describe('ApplicationPermissionFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-      ApplicationType.Sepodi,
-      existingPermission
-    );
+    const permissionForm = buildForm(ApplicationType.Sepodi, existingPermission);
 
-    const permission = ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
+    const permission = ApplicationPermissionFormBuilder.formToModel(permissionForm);
     expect(permission.role).toEqual(existingPermission.role);
     expect(permission.permissionRestrictions).toEqual(
       expect.arrayContaining(existingPermission.permissionRestrictions)
@@ -67,12 +69,9 @@ describe('ApplicationPermissionFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-      ApplicationType.Sepodi,
-      existingPermission
-    );
+    const permissionForm = buildForm(ApplicationType.Sepodi, existingPermission);
 
-    const permission = ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
+    const permission = ApplicationPermissionFormBuilder.formToModel(permissionForm);
     expect(permission).toEqual(existingPermission);
   });
 
@@ -88,12 +87,9 @@ describe('ApplicationPermissionFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-      ApplicationType.TimetableHearing,
-      existingPermission
-    );
+    const permissionForm = buildForm(ApplicationType.TimetableHearing, existingPermission);
 
-    const permission = ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
+    const permission = ApplicationPermissionFormBuilder.formToModel(permissionForm);
     expect(permission).toEqual(existingPermission);
   });
 
@@ -109,12 +105,44 @@ describe('ApplicationPermissionFormGroupBuilder', () => {
       ],
     };
 
-    const formGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-      ApplicationType.TimetableHearing,
-      existingPermission
-    );
+    const permissionForm = buildForm(ApplicationType.TimetableHearing, existingPermission);
 
-    const permission = ApplicationPermissionFormGroupBuilder.formToModel(formGroup);
+    const permission = ApplicationPermissionFormBuilder.formToModel(permissionForm);
     expect(permission).toEqual(existingPermission);
+  });
+
+  it('preserves values when disabled and strips restrictions that are not allowed by the selected role', () => {
+    const editable = signal(true);
+    const permissionForm = buildForm(
+      ApplicationType.Sepodi,
+      {
+        application: ApplicationType.Sepodi,
+        role: ApplicationRole.Writer,
+        permissionRestrictions: [
+          { type: PermissionRestrictionType.BusinessOrganisation, valueAsString: 'ch:1:sboid:10000' },
+          { type: PermissionRestrictionType.BulkImport, valueAsString: 'true' },
+        ],
+      },
+      editable
+    );
+    permissionForm.role().value.set(ApplicationRole.Reader);
+    editable.set(false);
+
+    expect(permissionForm().disabled()).toBe(true);
+    expect(permissionForm().value().permissions.sboidsRestrictions).toEqual(['ch:1:sboid:10000']);
+    expect(ApplicationPermissionFormBuilder.formToModel(permissionForm).permissionRestrictions).toEqual([
+      { type: PermissionRestrictionType.InfoPlusTerminationVote, valueAsString: 'false' },
+      { type: PermissionRestrictionType.NovaTerminationVote, valueAsString: 'false' },
+    ]);
+  });
+
+  it('throws rather than silently serializing an unsupported role', () => {
+    const permissionForm = buildForm(ApplicationType.Bodi, {
+      application: ApplicationType.Bodi,
+      role: ApplicationRole.Reader,
+      permissionRestrictions: [],
+    });
+    permissionForm.role().value.set(ApplicationRole.Writer);
+    expect(() => ApplicationPermissionFormBuilder.formToModel(permissionForm)).toThrow('Unsupported role');
   });
 });

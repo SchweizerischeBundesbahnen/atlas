@@ -1,12 +1,33 @@
-<atlas-form-search-select
-  (changeTrigger)="selectionChange.emit($event)"
-  (searchTrigger)="search($event)"
-  [controlName]="controlName()"
-  [formGroup]="form"
-  [items$]="userSearchResults$"
-  [bindValueInp]="bindValue()"
->
-  <ng-template #labelOptionTemplates let-item>
-    {{ item | userSelectFormat }}
-  </ng-template>
-</atlas-form-search-select>
+@if (field(); as userField) {
+  <ng-select
+    (change)="selectionChange.emit($event)"
+    [bindValue]="bindValue()"
+    [formField]="userField"
+    [items]="(searchResults() | async) ?? []"
+    [minTermLength]="2"
+    [typeahead]="searchTriggerSubject"
+    appearance="outline"
+    notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
+    typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
+  >
+    <ng-template let-item="item" ng-label-tmp>
+      {{ item | userSelectFormat }}
+    </ng-template>
+    <ng-template let-item="item" ng-option-tmp>
+      {{ item | userSelectFormat }}
+    </ng-template>
+  </ng-select>
+} @else {
+  <atlas-form-search-select
+    (changeTrigger)="selectionChange.emit($event)"
+    (searchTrigger)="search($event)"
+    [controlName]="controlName()"
+    [formGroup]="legacyForm"
+    [items$]="searchResults()"
+    [bindValueInp]="bindValue()"
+  >
+    <ng-template #labelOptionTemplates let-item>
+      {{ item | userSelectFormat }}
+    </ng-template>
+  </atlas-form-search-select>
+}

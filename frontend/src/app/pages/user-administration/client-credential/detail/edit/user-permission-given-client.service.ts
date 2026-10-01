@@ -1,36 +1,18 @@
-import { FormGroup } from '@angular/forms';
 import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
 import { Injectable } from '@angular/core';
-import { ApplicationType, ClientCredential, Permission } from '../../../../../api';
-import {
-  ApplicationPermission,
-  ApplicationPermissionFormGroupBuilder,
-} from '../../../../../core/components/permissions/form/application-permission-form-group';
+import { ApplicationType, ClientCredential } from '../../../../../api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserPermissionGivenClientService extends UserPermissionProviderService {
   clientCredential!: ClientCredential;
-  applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
 
   showAllSpecialPermissions(): boolean {
     return true;
   }
 
-  loadFormGroup(application: ApplicationType): void {
-    const permissions: Permission = super.getPermission(this.clientCredential.permissions!, application);
-
-    const applicationPermissionFormGroup = ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
-      application,
-      permissions
-    );
-    applicationPermissionFormGroup.disable();
-    this.applicationPermissionFormGroup = applicationPermissionFormGroup;
-    this.formChanged.next(this.applicationPermissionFormGroup);
-  }
-
-  getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
-    return this.applicationPermissionFormGroup;
+  loadForm(application: ApplicationType): void {
+    this.setPermissionForm(application, this.getPermission(this.clientCredential.permissions ?? [], application));
   }
 }

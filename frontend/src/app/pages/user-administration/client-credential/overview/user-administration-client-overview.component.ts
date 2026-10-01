@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { ClientCredential } from '../../../../api';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tableColumns } from './table-column-definition';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
@@ -11,12 +12,12 @@ import { ClientCredentialAdministrationService } from '../../../../api/service/u
 @Component({
   selector: 'atlas-client-credential-administration-overview',
   templateUrl: './user-administration-client-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TableComponent, RouterOutlet],
 })
-export class UserAdministrationClientOverviewComponent implements OnDestroy {
-  clientCredentials: ClientCredential[] = [];
-  totalCount = 0;
+export class UserAdministrationClientOverviewComponent {
+  readonly clientCredentials = signal<ClientCredential[]>([]);
+  readonly totalCount = signal(0);
 
   readonly tableColumns = tableColumns;
 
@@ -25,25 +26,24 @@ export class UserAdministrationClientOverviewComponent implements OnDestroy {
   private readonly clientCredentialAdministrationService = inject(ClientCredentialAdministrationService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   getOverview(pagination: TablePagination) {
+    this.credentialsSubscription?.unsubscribe();
     this.credentialsSubscription = this.clientCredentialAdministrationService
       .getClientCredentials(
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'clientCredentialId,asc')
       )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((clientContainer) => {
-        this.clientCredentials = clientContainer.objects!;
-        this.totalCount = clientContainer.totalCount!;
+        this.clientCredentials.set(clientContainer.objects!);
+        this.totalCount.set(clientContainer.totalCount!);
       });
   }
 
   edit(client: ClientCredential) {
     this.router.navigate([client.clientCredentialId], { relativeTo: this.route }).then();
-  }
-
-  ngOnDestroy() {
-    this.credentialsSubscription?.unsubscribe();
   }
 }

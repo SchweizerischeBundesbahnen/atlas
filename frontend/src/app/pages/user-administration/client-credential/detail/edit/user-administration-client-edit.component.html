@@ -21,20 +21,20 @@
 
   <atlas-detail-page-container>
     <atlas-detail-page-content>
-      <atlas-permission (applicationChanged)="editMode = false" />
+      <atlas-permission (applicationChanged)="editMode.set(false)" />
       <div class="mt-3">
-        <atlas-user-detail-info [record]="record!" />
+        <atlas-user-detail-info [record]="record()" />
       </div>
     </atlas-detail-page-content>
 
     <atlas-detail-footer>
-      @if (editMode) {
+      @if (editMode()) {
         <button (click)="toggleEdit()" class="atlas-primary-btn" data-cy="cancel">
           {{ 'COMMON.CANCEL' | translate }}
         </button>
         <button
           (click)="saveClientCredential()"
-          [disabled]="!formGroup.dirty"
+          [disabled]="!form().dirty() || !saveEnabled()"
           class="atlas-primary-btn ms-3"
           data-cy="save"
           type="submit"

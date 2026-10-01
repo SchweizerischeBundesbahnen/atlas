@@ -1,4 +1,4 @@
-@if (user) {
+@if (user(); as user) {
   <atlas-user-administration-user-edit [user]="user" />
 } @else {
   <atlas-user-administration-create />

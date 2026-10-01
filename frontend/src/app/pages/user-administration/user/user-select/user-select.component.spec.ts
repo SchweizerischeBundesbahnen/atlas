@@ -2,12 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { UserSelectComponent } from './user-select.component';
 import { firstValueFrom, of } from 'rxjs';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ApplicationType, Permission } from '../../../../api';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ApplicationType, Permission, User } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { form } from '@angular/forms/signals';
+import { By } from '@angular/platform-browser';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 @Component({
   selector: 'atlas-form-search-select',
@@ -35,6 +39,7 @@ describe('UserSelectComponent', () => {
     TestBed.configureTestingModule({
       imports: [UserSelectComponent],
       providers: [
+        translateServiceProvider,
         TranslatePipe,
         {
           provide: UserAdministrationService,
@@ -69,7 +74,7 @@ describe('UserSelectComponent', () => {
     fixture.componentRef.setInput('searchMode', 'default');
     fixture.detectChanges();
     expect(userAdministrationService.searchUsers).toHaveBeenCalledExactlyOnceWith('testQuery');
-    const val = await firstValueFrom(component.userSearchResults$);
+    const val = await firstValueFrom(component.searchResults());
     expect(val).toEqual([
       {
         sbbUserId: 'user1',
@@ -95,12 +100,38 @@ describe('UserSelectComponent', () => {
       'testQuery',
       ApplicationType.Sepodi
     );
-    const val = await firstValueFrom(component.userSearchResults$);
+    const val = await firstValueFrom(component.searchResults());
     expect(val).toEqual([
       {
         sbbUserId: 'user1',
         permissions: new Set<Permission>(),
       },
     ]);
+  });
+
+  it('binds a signal form field without requiring a reactive form group', () => {
+    const searchForm = TestBed.runInInjectionContext(() =>
+      form(signal<{ userSearch: User | null }>({ userSearch: null }))
+    );
+    component.form = undefined;
+    fixture.componentRef.setInput('field', searchForm.userSearch);
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.directive(NgSelectComponent))).not.toBeNull();
+    expect(searchForm.userSearch().value()).toBeNull();
+
+    const selectedUser: User = { sbbUserId: 'user1', permissions: new Set<Permission>() };
+    userAdministrationService.searchUsers.mockReturnValue(of([selectedUser]));
+    const selectionChange = vi.fn();
+    component.selectionChange.subscribe(selectionChange);
+    component.search('user1');
+    fixture.detectChanges();
+
+    const select = fixture.debugElement.query(By.directive(NgSelectComponent)).componentInstance as NgSelectComponent;
+    select.select(select.itemsList.items[0]);
+    fixture.detectChanges();
+
+    expect(selectionChange).toHaveBeenCalledWith(selectedUser);
+    expect(searchForm.userSearch().value()).toEqual(selectedUser);
   });
 });
