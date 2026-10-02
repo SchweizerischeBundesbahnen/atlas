@@ -130,4 +130,14 @@ describe('ApplicationPermissionComponent', () => {
     expect(component.form()?.permissions.sboidsRestrictions().value()).toEqual(['ch:1:sboid:10000']);
     expect((fixture.nativeElement as HTMLElement).querySelector('[role=alert]')).toBeTruthy();
   });
+
+  it('shows a lookup error when a requested organisation is absent from the response', async () => {
+    component.form()?.permissions.sboidsRestrictions().value.set(['ch:1:sboid:10000']);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.lookupError()).toBe(true);
+    expect(component.currentBusinessOrganisations()).toEqual([]);
+    expect(component.form()?.permissions.sboidsRestrictions().value()).toEqual(['ch:1:sboid:10000']);
+  });
 });

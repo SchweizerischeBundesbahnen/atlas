@@ -78,14 +78,14 @@ export class UserAdministrationClientCreateComponent {
   }
 
   cancelCreation(): void {
-    if (!this.form().touched()) {
-      this.back();
-    } else {
+    if (this.form().touched()) {
       this.dialogService.confirmLeave().subscribe((result) => {
         if (result) {
           this.back();
         }
       });
+    } else {
+      this.back();
     }
   }
 

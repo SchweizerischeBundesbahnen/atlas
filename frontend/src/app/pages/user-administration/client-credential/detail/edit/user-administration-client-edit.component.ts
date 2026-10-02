@@ -51,7 +51,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
   }
 
   saveClientCredential(): void {
-    if (!this.saveEnabled() || !this.form().dirty()) {
+    if (!this.saveEnabled() || !this.form?.().dirty()) {
       return;
     }
     const permission = ApplicationPermissionFormBuilder.formToModel(this.form);
@@ -90,13 +90,16 @@ export class UserAdministrationClientEditComponent implements OnInit {
   }
 
   toggleEdit() {
-    if (this.form().disabled()) {
+    if (this.form?.().disabled()) {
       this.userPermissionGivenClientService.setEditable(true);
       this.editMode.set(true);
     } else {
       this.dialogService.confirmLeave().subscribe((result) => {
         if (result) {
           this.editMode.set(false);
+          if (!this.form) {
+            throw new Error('Form must be defined when leaving edit mode');
+          }
           this.userPermissionGivenClientService.loadForm(this.form().value().application);
         }
       });
@@ -104,6 +107,6 @@ export class UserAdministrationClientEditComponent implements OnInit {
   }
 
   get form() {
-    return this.userPermissionGivenClientService.currentForm()!;
+    return this.userPermissionGivenClientService.currentForm();
   }
 }

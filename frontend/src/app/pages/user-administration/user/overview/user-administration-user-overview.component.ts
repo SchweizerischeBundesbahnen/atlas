@@ -196,7 +196,10 @@ export class UserAdministrationUserOverviewComponent {
     const selectedBo = this.boSearchForm.boSearch().value();
     const selectedSboid = typeof selectedBo === 'string' ? selectedBo : (selectedBo?.sboid ?? null);
     return {
-      permissionRestrictions: new Set<string>([selectedSboid!, ...this.selectedCantonOptions()]),
+      permissionRestrictions: new Set<string>([
+        ...(selectedSboid ? [selectedSboid] : []),
+        ...this.selectedCantonOptions(),
+      ]),
       type:
         this.selectedSearch() === 'FILTER'
           ? PermissionRestrictionType.BusinessOrganisation

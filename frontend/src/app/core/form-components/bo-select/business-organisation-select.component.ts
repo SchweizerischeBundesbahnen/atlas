@@ -25,6 +25,8 @@ import { AtlasFieldErrorComponent, AtlasLabelFieldComponent } from '@atlas/form'
 import { BoSelectionDisplayPipe } from '../../pipe/bo-selection-display.pipe';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 
+type BusinessOrganisationSelectValue = BusinessOrganisation | string | null;
+
 @Component({
   selector: 'atlas-bo-select',
   templateUrl: './business-organisation-select.component.html',
@@ -48,18 +50,18 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   readonly controlName = input('businessOrganisation');
   readonly formModus = input(true);
   readonly formGroup = input<FormGroup>();
-  readonly field = input<Field<BusinessOrganisation | string | null>>();
+  readonly field = input<Field<BusinessOrganisationSelectValue>>();
   readonly sboidsRestrictions = input<string[]>([]);
   readonly disabled = input(false);
 
-  readonly selectedBusinessOrganisationChanged = output<BusinessOrganisation | string | null>();
+  readonly selectedBusinessOrganisationChanged = output<BusinessOrganisationSelectValue>();
   readonly boSelectionChanged = output<BusinessOrganisation>();
 
   readonly businessOrganisations = signal<Observable<BusinessOrganisation[]>>(of([]));
   protected readonly searchTriggerSubject = new Subject<string>();
   private formSubscription?: Subscription;
-  private previousField?: Field<BusinessOrganisation | string | null>;
-  private previousValue: BusinessOrganisation | string | null = null;
+  private previousField?: Field<BusinessOrganisationSelectValue>;
+  private previousValue: BusinessOrganisationSelectValue = null;
 
   private readonly businessOrganisationService = inject(BusinessOrganisationService);
 
@@ -74,11 +76,11 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
       if (selectedField !== this.previousField) {
         this.previousField = selectedField;
         this.previousValue = value;
-      } else if (value !== this.previousValue) {
+      } else if (value === this.previousValue) {
+        return;
+      } else {
         this.previousValue = value;
         this.selectedBusinessOrganisationChanged.emit(value);
-      } else {
-        return;
       }
       if (typeof value === 'string') {
         this.searchBusinessOrganisation(value);
@@ -100,20 +102,23 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   }
 
   init() {
-    const boControl = this.legacyForm.get(this.controlName())!;
+    const boControl = this.legacyForm.get(this.controlName());
+    if (!boControl) {
+      throw new Error(`Business organisation select requires a form control with name ${this.controlName()}`);
+    }
     this.formSubscription = boControl.valueChanges.subscribe((change) => {
       this.selectedBusinessOrganisationChanged.emit(change);
       this.searchBusinessOrganisation(change);
     });
-
     this.searchBusinessOrganisation(boControl.value as string);
   }
 
   get legacyForm(): FormGroup {
-    if (!this.formGroup()) {
+    const formGroup = this.formGroup();
+    if (!formGroup) {
       throw new Error('Business organisation select requires a form or signal field');
     }
-    return this.formGroup()!;
+    return formGroup;
   }
 
   searchBusinessOrganisation(searchString: string) {

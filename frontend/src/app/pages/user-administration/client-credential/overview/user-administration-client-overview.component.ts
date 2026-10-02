@@ -8,6 +8,7 @@ import { TablePagination } from '../../../../core/components/table/table-paginat
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { ClientCredentialAdministrationService } from '../../../../api/service/user-administration/client-credential-administration.service';
+import { applyIfDefined } from '../../../../core/util/values';
 
 @Component({
   selector: 'atlas-client-credential-administration-overview',
@@ -38,8 +39,8 @@ export class UserAdministrationClientOverviewComponent {
       )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((clientContainer) => {
-        this.clientCredentials.set(clientContainer.objects!);
-        this.totalCount.set(clientContainer.totalCount!);
+        applyIfDefined(clientContainer.objects, this.clientCredentials.set);
+        applyIfDefined(clientContainer.totalCount, this.totalCount.set);
       });
   }
 

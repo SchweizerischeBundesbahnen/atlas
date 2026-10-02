@@ -301,7 +301,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
     expect(userAdministrationService.getUsers).toHaveBeenCalledExactlyOnceWith(
       0,
       10,
-      new Set([null]),
+      new Set([]),
       'CANTON',
       new Set([])
     );

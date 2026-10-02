@@ -15,6 +15,50 @@ describe('ApplicationPermissionFormBuilder', () => {
   const buildForm: typeof ApplicationPermissionFormBuilder.buildAndFillForm = (...args) =>
     TestBed.runInInjectionContext(() => ApplicationPermissionFormBuilder.buildAndFillForm(...args));
 
+  it('uses defaults when no model is supplied', () => {
+    const permissionForm = TestBed.runInInjectionContext(() => ApplicationPermissionFormBuilder.buildForm());
+
+    expect(permissionForm().value()).toEqual({
+      application: ApplicationType.Ttfn,
+      role: ApplicationRole.Reader,
+      permissions: {
+        sboidsRestrictions: [],
+        countryRestrictions: [],
+        cantonRestrictions: [],
+        bulkImportRestriction: false,
+        infoPlusTerminationVote: false,
+        novaTerminationVote: false,
+        transportCompanyDossierAnswer: false,
+      },
+    });
+  });
+
+  it('defaults omitted properties of a partial model and nested permissions', () => {
+    const permissionForm = TestBed.runInInjectionContext(() =>
+      ApplicationPermissionFormBuilder.buildForm({
+        role: ApplicationRole.Writer,
+        permissions: {
+          countryRestrictions: [Country.Switzerland],
+          bulkImportRestriction: true,
+        },
+      })
+    );
+
+    expect(permissionForm().value()).toEqual({
+      application: ApplicationType.Ttfn,
+      role: ApplicationRole.Writer,
+      permissions: {
+        sboidsRestrictions: [],
+        countryRestrictions: [Country.Switzerland],
+        cantonRestrictions: [],
+        bulkImportRestriction: true,
+        infoPlusTerminationVote: false,
+        novaTerminationVote: false,
+        transportCompanyDossierAnswer: false,
+      },
+    });
+  });
+
   it('should build form for sepodi nova voter', () => {
     const existingPermission: Permission = {
       role: ApplicationRole.Writer,

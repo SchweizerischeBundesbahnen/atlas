@@ -101,7 +101,7 @@ describe('UserAdministrationClientEditComponent', () => {
 
   it('should save permissions', () => {
     component.toggleEdit();
-    component.form.role().markAsDirty();
+    component.form?.role().markAsDirty();
     component.saveClientCredential();
     expect(clientCredentialAdministrationService.updateClientCredentialPermissions).toHaveBeenCalledTimes(1);
   });
@@ -109,13 +109,13 @@ describe('UserAdministrationClientEditComponent', () => {
   it('resets to a pristine read-only form after saving', () => {
     clientCredentialAdministrationService.updateClientCredentialPermissions.mockReturnValue(of(clientCredential));
     component.toggleEdit();
-    component.form.role().markAsDirty();
+    component.form?.role().markAsDirty();
 
     component.saveClientCredential();
 
     expect(component.editMode()).toBe(false);
-    expect(component.form().disabled()).toBe(true);
-    expect(component.form().dirty()).toBe(false);
+    expect(component.form?.().disabled()).toBe(true);
+    expect(component.form?.().dirty()).toBe(false);
     expect(notificationService.success).toHaveBeenCalledWith('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
   });
 
@@ -124,29 +124,29 @@ describe('UserAdministrationClientEditComponent', () => {
       throwError(() => new Error('Request failed'))
     );
     component.toggleEdit();
-    component.form.role().markAsDirty();
+    component.form?.role().markAsDirty();
 
     component.saveClientCredential();
 
     expect(component.saveEnabled()).toBe(true);
     expect(component.editMode()).toBe(true);
-    expect(component.form().disabled()).toBe(false);
-    expect(component.form().dirty()).toBe(true);
+    expect(component.form?.().disabled()).toBe(false);
+    expect(component.form?.().dirty()).toBe(true);
   });
 
   it('discards edits only after confirmation', () => {
     component.toggleEdit();
-    component.form.role().markAsDirty();
+    component.form?.role().markAsDirty();
     dialogService.confirmLeave.mockReturnValueOnce(of(false));
 
     component.toggleEdit();
     expect(component.editMode()).toBe(true);
-    expect(component.form().dirty()).toBe(true);
+    expect(component.form?.().dirty()).toBe(true);
 
     component.toggleEdit();
     expect(component.editMode()).toBe(false);
-    expect(component.form().dirty()).toBe(false);
-    expect(component.form().disabled()).toBe(true);
+    expect(component.form?.().dirty()).toBe(false);
+    expect(component.form?.().disabled()).toBe(true);
   });
 
   it('should toggleEdit', () => {

@@ -22,6 +22,7 @@ import { AtlasSpacerComponent } from '../../spacer/atlas-spacer.component';
 import { ApplicationPermissionConfig } from './application-permission.config';
 import { UserPermissionProviderService } from './user-permission-provider-service';
 import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
+import { ContainerBusinessOrganisation } from '../../../../api/model/containerBusinessOrganisation';
 
 @Component({
   selector: 'atlas-application-permission',
@@ -151,19 +152,21 @@ export class ApplicationPermissionComponent implements OnInit {
           ])
         )
       ).subscribe({
-        next: (results) => {
-          const organisations = results.map((result, index) =>
-            result.objects?.find((organisation) => organisation.sboid === sboids[index])
-          );
-          if (organisations.some((organisation) => !organisation)) {
-            this.lookupError.set(true);
-          }
-          this.currentBusinessOrganisations.set(organisations.filter((organisation) => !!organisation));
-        },
+        next: (results) => this.updateBusinessOrganisations(results, sboids),
         error: () => this.lookupError.set(true),
       });
       onCleanup(() => subscription.unsubscribe());
     });
+  }
+
+  private updateBusinessOrganisations(results: ContainerBusinessOrganisation[], sboids: string[]): void {
+    const organisations = results.map((result, index) =>
+      result.objects?.find((organisation) => organisation.sboid === sboids[index])
+    );
+    if (organisations.some((organisation) => !organisation)) {
+      this.lookupError.set(true);
+    }
+    this.currentBusinessOrganisations.set(organisations.filter((organisation) => !!organisation));
   }
 
   ngOnInit(): void {

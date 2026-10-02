@@ -27,6 +27,10 @@ export interface ApplicationPermission {
 
 export type ApplicationPermissionForm = FieldTree<ApplicationPermission>;
 
+type ApplicationPermissionInput = Partial<Omit<ApplicationPermission, 'permissions'>> & {
+  permissions?: Partial<ApplicationPermission['permissions']>;
+};
+
 export class ApplicationPermissionFormBuilder {
   static buildAndFillForm(
     application: ApplicationType,
@@ -35,7 +39,10 @@ export class ApplicationPermissionFormBuilder {
   ): ApplicationPermissionForm {
     const restrictions = permission.permissionRestrictions;
     const valuesOf = (type: PermissionRestrictionType) =>
-      restrictions.filter((restriction) => restriction.type === type).map((restriction) => restriction.valueAsString!);
+      restrictions
+        .filter((restriction) => restriction.type === type)
+        .map((restriction) => restriction.valueAsString)
+        .filter((restrictionValue) => restrictionValue !== undefined);
     const enabled = (type: PermissionRestrictionType) =>
       restrictions.some((restriction) => restriction.type === type && restriction.valueAsString === 'true');
 
@@ -58,21 +65,34 @@ export class ApplicationPermissionFormBuilder {
   }
 
   static buildForm(
-    model: ApplicationPermission = {
-      application: ApplicationType.Ttfn,
-      role: ApplicationRole.Reader,
+    {
+      application = ApplicationType.Ttfn,
+      role = ApplicationRole.Reader,
       permissions: {
-        sboidsRestrictions: [],
-        countryRestrictions: [],
-        cantonRestrictions: [],
-        bulkImportRestriction: false,
-        infoPlusTerminationVote: false,
-        novaTerminationVote: false,
-        transportCompanyDossierAnswer: false,
-      },
-    },
+        sboidsRestrictions = [],
+        countryRestrictions = [],
+        cantonRestrictions = [],
+        bulkImportRestriction = false,
+        infoPlusTerminationVote = false,
+        novaTerminationVote = false,
+        transportCompanyDossierAnswer = false,
+      } = {},
+    }: ApplicationPermissionInput = {},
     editable: Signal<boolean> = signal(true)
   ): ApplicationPermissionForm {
+    const model: ApplicationPermission = {
+      application,
+      role,
+      permissions: {
+        sboidsRestrictions,
+        countryRestrictions,
+        cantonRestrictions,
+        bulkImportRestriction,
+        infoPlusTerminationVote,
+        novaTerminationVote,
+        transportCompanyDossierAnswer,
+      },
+    };
     return form(signal(model), (path) => disabled(path, { when: () => !editable() }));
   }
 
