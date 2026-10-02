@@ -20,20 +20,27 @@ import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
 import ch.sbb.atlas.imports.model.terminate.SloidTerminateCsvModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.SloidNotValidException;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.module.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.module.servicepoint.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.exception.DesignationOperationalMaxDigitsException;
 import ch.sbb.atlas.servicepointdirectory.module.trafficpoint.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.user.administration.security.service.CountryAndBusinessOrganisationBasedUserAdministrationService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -372,6 +379,73 @@ class TrafficPointElementBulkImportServiceTest {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
         sloid).getFirst();
     assertThat(trafficPointElementVersion.getValidTo()).isNotNull().isEqualTo(validTo);
+  }
+
+  @Test
+  void shouldFailBulkUpdateWithThreeDigitsDesignationOperationalWithoutMeanOfTransportTrain() {
+    ThrowingCallable bulkUpdate = () -> trafficPointElementBulkImportService.updateTrafficPoint(
+        BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+            .object(TrafficPointUpdateCsvModel.builder()
+                .sloid(bernWylereggPlatform.getSloid())
+                .validFrom(bernWylereggPlatform.getValidFrom())
+                .validTo(bernWylereggPlatform.getValidTo())
+                .designationOperational("123")
+                .build())
+            .build());
+
+    assertThatExceptionOfType(DesignationOperationalMaxDigitsException.class).isThrownBy(bulkUpdate);
+  }
+
+  @Test
+  void shouldBulkUpdateWithThreeDigitsDesignationOperationalWhenAnyVersionHasMeanOfTransportTrain() {
+    servicePointVersionRepository.save(trainVersionOfBernWyleregg());
+
+    trafficPointElementBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+        .object(TrafficPointUpdateCsvModel.builder()
+            .sloid(bernWylereggPlatform.getSloid())
+            .validFrom(bernWylereggPlatform.getValidFrom())
+            .validTo(bernWylereggPlatform.getValidTo())
+            .designationOperational("123")
+            .build())
+        .build());
+
+    TrafficPointElementVersion trafficPointElementVersion =
+        trafficPointElementVersionRepository.findById(bernWylereggPlatform.getId()).orElseThrow();
+    assertThat(trafficPointElementVersion.getDesignationOperational()).isEqualTo("123");
+  }
+
+  @Test
+  void shouldBulkUpdateWithTwoDigitsDesignationOperationalWithoutMeanOfTransportTrain() {
+    trafficPointElementBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+        .object(TrafficPointUpdateCsvModel.builder()
+            .sloid(bernWylereggPlatform.getSloid())
+            .validFrom(bernWylereggPlatform.getValidFrom())
+            .validTo(bernWylereggPlatform.getValidTo())
+            .designationOperational("12")
+            .build())
+        .build());
+
+    TrafficPointElementVersion trafficPointElementVersion =
+        trafficPointElementVersionRepository.findById(bernWylereggPlatform.getId()).orElseThrow();
+    assertThat(trafficPointElementVersion.getDesignationOperational()).isEqualTo("12");
+  }
+
+  private ServicePointVersion trainVersionOfBernWyleregg() {
+    return ServicePointVersion.builder()
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(WYLEREGG_NUMBER))
+        .sloid("ch:1:sloid:89008")
+        .numberShort(89008)
+        .country(Country.SWITZERLAND)
+        .designationOfficial("Bern, Wyleregg")
+        .businessOrganisation("ch:1:sboid:100626")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .stopPointType(StopPointType.ORDERLY)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .build();
   }
 
 }

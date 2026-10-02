@@ -45,7 +45,9 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
   private String designation;
 
   @Schema(description = "Designation used in (operational) timetable planning. Only numeric values with 1 to 3 digits are "
-      + "allowed (0-999). The field is optional and may be left empty.", example = "42")
+      + "allowed (0-999). A maximum of 3 digits is only allowed if the service point has at least one version with means "
+      + "of transport TRAIN, otherwise a maximum of 2 digits is allowed. The field is optional and may be left empty.",
+      example = "42")
   @Pattern(regexp = AtlasCharacterSetsRegex.DESIGNATION_OPERATIONAL)
   private String designationOperational;
 

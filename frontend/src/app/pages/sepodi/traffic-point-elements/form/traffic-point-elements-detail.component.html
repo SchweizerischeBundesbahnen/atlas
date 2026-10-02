@@ -62,15 +62,16 @@
         <atlas-text-field
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '02, 10, 123 |', translate: false },
+            { label: designationOperationalExample, translate: false },
             {
               label: 'FORM.MAX_NUMBER_OF_NUMERAL',
               translate: true,
-              arg: { key: 'numberOfDigits', value: '3' },
+              arg: { key: 'numberOfDigits', value: designationOperationalMaxDigits.toString() },
             },
           ]"
           [formGroup]="form"
           [required]="false"
+          [maxLength]="designationOperationalMaxDigits"
           controlName="designationOperational"
           fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL"
         />

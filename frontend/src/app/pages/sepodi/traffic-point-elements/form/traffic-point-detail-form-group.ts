@@ -6,6 +6,10 @@ import { GeographyFormGroup, GeographyFormGroupBuilder } from '../../geography/g
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
+import {
+  DESIGNATION_OPERATIONAL_MAX_DIGITS_WITH_TRAIN,
+  designationOperationalMaxDigitsValidator,
+} from './designation-operational-validator';
 
 export interface TrafficPointElementDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -41,13 +45,22 @@ export class TrafficPointElementFormGroupBuilder {
     form.removeControl(controlName);
   }
 
-  static buildFormGroup(version?: ReadTrafficPointElementVersion): FormGroup<TrafficPointElementDetailFormGroup> {
+  static updateDesignationOperationalMaxDigits(form: FormGroup<TrafficPointElementDetailFormGroup>, maxDigits: number) {
+    const control = form.controls.designationOperational;
+    control.setValidators([AtlasCharsetsValidator.numeric, designationOperationalMaxDigitsValidator(maxDigits)]);
+    control.updateValueAndValidity();
+  }
+
+  static buildFormGroup(
+    version?: ReadTrafficPointElementVersion,
+    designationOperationalMaxDigits: number = DESIGNATION_OPERATIONAL_MAX_DIGITS_WITH_TRAIN
+  ): FormGroup<TrafficPointElementDetailFormGroup> {
     const formGroup = new FormGroup<TrafficPointElementDetailFormGroup>(
       {
         sloid: new FormControl(version?.sloid),
         designationOperational: new FormControl(version?.designationOperational, [
           AtlasCharsetsValidator.numeric,
-          Validators.maxLength(3),
+          designationOperationalMaxDigitsValidator(designationOperationalMaxDigits),
         ]),
         parentSloid: new FormControl(version?.parentSloid),
         length: new FormControl(version?.length, [AtlasCharsetsValidator.decimalWithDigits(10, 3), Validators.min(0)]),

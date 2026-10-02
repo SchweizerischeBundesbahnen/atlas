@@ -12,6 +12,7 @@ export interface TranslationParameter {
   allowedChars?: string;
   maxDecimalDigits?: string;
   maxFractionDigits?: string;
+  maxDigits?: number;
   numbersWithColons?: string;
   max?: string;
   min?: string;

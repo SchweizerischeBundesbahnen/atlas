@@ -72,6 +72,7 @@ public class TrafficPointElementService extends RevokeService<TrafficPointElemen
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
     trafficPointElementVersion.setStatus(Status.VALIDATED);
+    trafficPointElementValidationService.validateDesignationOperational(trafficPointElementVersion);
     if (trafficPointElementVersion.getSloid() != null) {
       trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
       locationService.claimSloid(LocationService.getSloidType(trafficPointElementVersion.getTrafficPointElementType()),
@@ -87,6 +88,7 @@ public class TrafficPointElementService extends RevokeService<TrafficPointElemen
 
   TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
     trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
+    trafficPointElementValidationService.validateDesignationOperational(trafficPointElementVersion);
     trafficPointElementVersion.setStatus(Status.VALIDATED);
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }

@@ -39,6 +39,10 @@ import { ServicePointService } from '../../../../api/service/sepodi/service-poin
 import { TrafficPointElementService } from '../../../../api/service/sepodi/traffic-point-element.service';
 import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
 import { RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
+import {
+  DESIGNATION_OPERATIONAL_MAX_DIGITS_WITH_TRAIN,
+  resolveDesignationOperationalMaxDigits,
+} from './designation-operational-validator';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -47,6 +51,9 @@ interface AreaOption {
 
 const NUMBER_COLONS_PLATFORM = 1;
 const NUMBER_COLONS_AREA = 0;
+
+const DESIGNATION_OPERATIONAL_EXAMPLE_WITH_TRAIN = '02, 10, 123 |';
+const DESIGNATION_OPERATIONAL_EXAMPLE_WITHOUT_TRAIN = '02, 10 |';
 
 @Component({
   selector: 'atlas-traffic-point-elements-detail',
@@ -98,6 +105,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, DetailFormCo
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
   numberColons!: number;
+  designationOperationalMaxDigits = DESIGNATION_OPERATIONAL_MAX_DIGITS_WITH_TRAIN;
+  designationOperationalExample = DESIGNATION_OPERATIONAL_EXAMPLE_WITH_TRAIN;
 
   readonly extractSloid = (option: AreaOption) => option.sloid;
   readonly displayExtractor = (option: AreaOption) => option.displayText;
@@ -239,6 +248,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, DetailFormCo
         'trafficPointElementGeolocation',
         GeographyFormGroupBuilder.buildFormGroup()
       );
+      this.applyDesignationOperationalMaxDigits();
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
@@ -256,6 +266,12 @@ export class TrafficPointElementsDetailComponent implements OnInit, DetailFormCo
     } else {
       this.servicePointService.getServicePointVersions(this.servicePointNumber).subscribe((servicePoint) => {
         this.servicePoint = servicePoint;
+        this.designationOperationalMaxDigits = resolveDesignationOperationalMaxDigits(servicePoint);
+        this.designationOperationalExample =
+          this.designationOperationalMaxDigits === DESIGNATION_OPERATIONAL_MAX_DIGITS_WITH_TRAIN
+            ? DESIGNATION_OPERATIONAL_EXAMPLE_WITH_TRAIN
+            : DESIGNATION_OPERATIONAL_EXAMPLE_WITHOUT_TRAIN;
+        this.applyDesignationOperationalMaxDigits();
         const versionToDisplay = VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
         this.servicePointSloid = versionToDisplay.sloid!;
         this.servicePointBusinessOrganisations = this.servicePoint.map((i) => {
@@ -278,9 +294,19 @@ export class TrafficPointElementsDetailComponent implements OnInit, DetailFormCo
     }
   }
 
+  private applyDesignationOperationalMaxDigits() {
+    TrafficPointElementFormGroupBuilder.updateDesignationOperationalMaxDigits(
+      this.form,
+      this.designationOperationalMaxDigits
+    );
+  }
+
   private initSelectedVersion() {
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.trafficPointVersions);
-    this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(
+      this.selectedVersion,
+      this.designationOperationalMaxDigits
+    );
     if (!this.isNew) {
       this.disableForm();
     }

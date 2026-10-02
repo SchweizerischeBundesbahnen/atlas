@@ -330,7 +330,8 @@
     "REQUIREDANDNOTUNKNOWN": "Ne peut pas être vide ou sans spécification.",
     "REQ_SELECTED_ERROR": "Nombre d’éléments à sélectionner: {{reqSelections}}",
     "SEPODIONDEMAND": "Le moyen de transport à la demande ne peut être sélectionné qu'en combinaison avec le type d'arrêt à la demande.",
-    "NO_ANONYMIZATION_DETECTED": "Aucune modification n’a été identifiée. Veuillez supprimer toutes les données personnelles du texte avant l’enregistrement."
+    "NO_ANONYMIZATION_DETECTED": "Aucune modification n’a été identifiée. Veuillez supprimer toutes les données personnelles du texte avant l’enregistrement.",
+    "DESIGNATION_OPERATIONAL_MAX_DIGITS": "Un maximum de {{maxDigits}} chiffres est autorisé. Trois chiffres ne sont admis que pour les arrêts desservis par le moyen de transport train."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
@@ -1455,7 +1456,8 @@
         "TITLE": "Validité ",
         "MESSAGE": "Attention, le service attribué est valable de {{validFrom}} à {{validTo}}. Veuillez adapter la validité en conséquence."
       },
-      "SLOIDS_NOT_EQUAL_ERROR": "Le sloid {{sloid}} de la bordure d'arrêt ne correspond pas au sloid {{requestSloid}} de la requête."
+      "SLOIDS_NOT_EQUAL_ERROR": "Le sloid {{sloid}} de la bordure d'arrêt ne correspond pas au sloid {{requestSloid}} de la requête.",
+      "DESIGNATION_OPERATIONAL_MAX_DIGITS_ERROR": "La désignation opérationnelle ne peut contenir que {{maxDigits}} chiffres au maximum pour les arrêts sans le moyen de transport train."
     },
     "BOARDING_AREAS": {
       "BOARDING_AREA": "Zone",

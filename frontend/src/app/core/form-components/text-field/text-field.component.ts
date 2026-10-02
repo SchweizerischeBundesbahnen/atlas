@@ -38,4 +38,5 @@ export class TextFieldComponent {
   customChildInputPrefixTemplate!: TemplateRef<any>;
   readonly formGroup = input.required<FormGroup>();
   readonly placeholder = input('');
+  readonly maxLength = input<number>();
 }

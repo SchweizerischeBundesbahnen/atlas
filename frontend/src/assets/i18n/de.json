@@ -330,7 +330,8 @@
     "REQUIREDANDNOTUNKNOWN": "Darf nicht leer oder unspezifiziert sein.",
     "REQ_SELECTED_ERROR": "Anzahl auszuwählender Elemente: {{reqSelections}}",
     "SEPODIONDEMAND": "Das Verkehrsmittel On Demand darf nur in Kombination mit dem Haltestellentyp On Demand selektioniert werden.",
-    "NO_ANONYMIZATION_DETECTED": "Es wurden keine Änderungen identifiziert. Bitte entfernen Sie vor dem Speichern alle personenbezogenen Daten aus dem Text."
+    "NO_ANONYMIZATION_DETECTED": "Es wurden keine Änderungen identifiziert. Bitte entfernen Sie vor dem Speichern alle personenbezogenen Daten aus dem Text.",
+    "DESIGNATION_OPERATIONAL_MAX_DIGITS": "Es sind maximal {{maxDigits}} Ziffern erlaubt. Drei Ziffern sind nur bei Haltestellen mit Verkehrsmittel Zug zulässig."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
@@ -1455,7 +1456,8 @@
         "TITLE": "Gültigkeit",
         "MESSAGE": "Achtung, die zugeordnete Dienststelle ist von {{validFrom}} bis {{validTo}} gültig. Bitte passen Sie die Gültigkeit entsprechend an."
       },
-      "SLOIDS_NOT_EQUAL_ERROR": "Die Sloid {{sloid}} der Haltekante stimmt nicht mit der Sloid {{requestSloid}} in der Anfrage überein."
+      "SLOIDS_NOT_EQUAL_ERROR": "Die Sloid {{sloid}} der Haltekante stimmt nicht mit der Sloid {{requestSloid}} in der Anfrage überein.",
+      "DESIGNATION_OPERATIONAL_MAX_DIGITS_ERROR": "Die betriebliche Bezeichnung darf für Haltestellen ohne Verkehrsmittel Zug maximal {{maxDigits}} Ziffern enthalten."
     },
     "BOARDING_AREAS": {
       "BOARDING_AREA": "Bereich",

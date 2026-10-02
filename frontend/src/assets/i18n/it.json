@@ -330,7 +330,8 @@
     "REQUIREDANDNOTUNKNOWN": "Non può essere vuoto o non specificato.",
     "REQ_SELECTED_ERROR": "Numero di elementi da selezionare: {{reqSelections}}",
     "SEPODIONDEMAND": "L'opzione di trasporto On Demand può essere selezionata solo in combinazione con il tipo di fermata On Demand.",
-    "NO_ANONYMIZATION_DETECTED": "Non sono state rilevate modifiche. Si prega di rimuovere tutti i dati personali dal testo prima del salvataggio."
+    "NO_ANONYMIZATION_DETECTED": "Non sono state rilevate modifiche. Si prega di rimuovere tutti i dati personali dal testo prima del salvataggio.",
+    "DESIGNATION_OPERATIONAL_MAX_DIGITS": "Sono ammesse al massimo {{maxDigits}} cifre. Tre cifre sono consentite solo per le fermate con il mezzo di trasporto treno."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
@@ -1455,7 +1456,8 @@
         "TITLE": "Validità ",
         "MESSAGE": "Attenzione, il posto di servizio assegnato è valido da {{validFrom}} a {{validTo}}. Si prega di regolare la validità di conseguenza."
       },
-      "SLOIDS_NOT_EQUAL_ERROR": "Lo sloid {{sloid}} del bordo di fermata non corrisponde allo sloid {{requestSloid}} della richiesta."
+      "SLOIDS_NOT_EQUAL_ERROR": "Lo sloid {{sloid}} del bordo di fermata non corrisponde allo sloid {{requestSloid}} della richiesta.",
+      "DESIGNATION_OPERATIONAL_MAX_DIGITS_ERROR": "La designazione operativa può contenere al massimo {{maxDigits}} cifre per le fermate senza il mezzo di trasporto treno."
     },
     "BOARDING_AREAS": {
       "BOARDING_AREA": "Zona",
