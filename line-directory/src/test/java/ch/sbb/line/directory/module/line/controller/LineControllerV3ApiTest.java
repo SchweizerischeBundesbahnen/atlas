@@ -249,6 +249,32 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].financing", is("WBV")));
   }
 
+  @Test
+  void shouldExposeCablewayAttributes() throws Exception {
+    //given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.cableway());
+
+    //when && then
+    mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.CABLEWAY_SLNID))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].cablewayNumber", is("3521")))
+        .andExpect(jsonPath("$[0].cablewayType", is("Pendelbahn")))
+        .andExpect(jsonPath("$[0].cablewayName", is("Luftseilbahn Wengen - Maennlichen")));
+  }
+
+  @Test
+  void shouldReturnNullCablewayAttributesForNonCablewayLine() throws Exception {
+    //given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+
+    //when && then
+    mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.PARENT_SLNID))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].cablewayNumber", is(nullValue())))
+        .andExpect(jsonPath("$[0].cablewayType", is(nullValue())))
+        .andExpect(jsonPath("$[0].cablewayName", is(nullValue())));
+  }
+
   private void saveThreeLineVersions() {
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().slnid("ch:1:slnid:3000001").build());
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().slnid("ch:1:slnid:3000002").build());

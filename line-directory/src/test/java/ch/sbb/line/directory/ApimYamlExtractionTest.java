@@ -73,6 +73,17 @@ class ApimYamlExtractionTest {
   }
 
   @Test
+  void shouldDeclareCablewayAttributesAsStringsOnLineVersionV3() throws Exception {
+    //when
+    String spec = readApiSpec();
+
+    //then
+    assertThat(spec).contains("cablewayNumber:")
+        .contains("cablewayType:")
+        .contains("cablewayName:");
+  }
+
+  @Test
   void shouldProvideDistinctOperationIdsForLineV3() throws Exception {
     //when
     String spec = readApiSpec();

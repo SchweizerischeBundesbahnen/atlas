@@ -60,6 +60,21 @@ class LineVersionV3RepositoryTest {
   }
 
   @Test
+  void shouldPersistCablewayAttributes() {
+    //given
+    LineVersionV3 cableway = LineVersionV3TestData.cableway();
+
+    //when
+    lineVersionV3Repository.saveAndFlush(cableway);
+    LineVersionV3 result = lineVersionV3Repository.findAll().getFirst();
+
+    //then
+    assertThat(result.getCablewayNumber()).isEqualTo("3521");
+    assertThat(result.getCablewayType()).isEqualTo("Pendelbahn");
+    assertThat(result.getCablewayName()).isEqualTo("Luftseilbahn Wengen - Maennlichen");
+  }
+
+  @Test
   void shouldRejectDuplicateSlnidAndValidFrom() {
     //given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder()

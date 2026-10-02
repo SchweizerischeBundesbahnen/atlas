@@ -90,6 +90,22 @@ public class LineVersionModelV3 extends BaseVersionModel {
       accessMode = AccessMode.READ_ONLY)
   private Financing financing;
 
+  @Schema(description = "Anlagennummer - only populated for cableway means of transport", accessMode = AccessMode.READ_ONLY,
+      example = "3521")
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  private String cablewayNumber;
+
+  @Schema(description = "Anlage-Typ - only populated for cableway means of transport", accessMode = AccessMode.READ_ONLY,
+      example = "Pendelbahn")
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  private String cablewayType;
+
+  @Schema(description = "Anlage-Name - only populated for cableway means of transport", accessMode = AccessMode.READ_ONLY,
+      example = "Luftseilbahn Wengen - Maennlichen")
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String cablewayName;
+
   @Schema(description = "Comment", accessMode = AccessMode.READ_ONLY, example = "Die Linie wird von einem Bus bedient.")
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)

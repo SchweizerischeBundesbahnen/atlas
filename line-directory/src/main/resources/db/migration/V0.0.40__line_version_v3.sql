@@ -4,6 +4,8 @@
 -- time from referenced_line_slnid (NULL -> LINE, NOT NULL -> SUBLINE).
 -- No foreign key on referenced_line_slnid by design: dangling references are tolerated
 -- and resolve to referencedLine = null.
+-- cableway_number / cableway_type / cableway_name (Anlagennummer, Anlage-Typ, Anlage-Name)
+-- carry values only for cableway means of transport; the restriction is not enforced yet.
 -----------------------------------------------------------------------------------------
 
 CREATE TABLE line_version_v3
@@ -23,6 +25,9 @@ CREATE TABLE line_version_v3
     comment               VARCHAR(1500),
     business_organisation VARCHAR(50)  NOT NULL,
     financing             VARCHAR(50),
+    cableway_number       VARCHAR(50),
+    cableway_type         VARCHAR(50),
+    cableway_name         VARCHAR(255),
     valid_from            DATE         NOT NULL,
     valid_to              DATE         NOT NULL,
     status                VARCHAR(50)  NOT NULL,

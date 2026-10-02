@@ -96,6 +96,15 @@ public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAs
   @Enumerated(EnumType.STRING)
   private Financing financing;
 
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  private String cablewayNumber;
+
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  private String cablewayType;
+
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  private String cablewayName;
+
   @ElementCollection(targetClass = LineMeanOfTransport.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "line_version_v3_means_of_transport",
       joinColumns = @JoinColumn(name = "line_version_v3_id"))

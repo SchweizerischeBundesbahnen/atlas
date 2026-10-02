@@ -13,7 +13,8 @@ public class LineVersionV3Mapper {
    * Maps a {@link LineVersionV3} row to its read model.
    *
    * <p>All top-level values are taken from the row itself. Values of the referenced line are exposed exclusively inside
-   * {@link ReferencedLineModelV3}; {@code meansOfTransport} and {@code financing} are never inherited from the parent.
+   * {@link ReferencedLineModelV3}; {@code meansOfTransport}, {@code financing} and the {@code cableway*} fields are never
+   * inherited from the parent.
    *
    * @param version the row to map, never {@code null}
    * @param parent  the resolved direct parent version, or {@code null} when the row is a LINE or the reference is unresolvable
@@ -34,6 +35,9 @@ public class LineVersionV3Mapper {
         .concessionType(version.getConcessionType())
         .offerCategory(version.getOfferCategory())
         .financing(version.getFinancing())
+        .cablewayNumber(version.getCablewayNumber())
+        .cablewayType(version.getCablewayType())
+        .cablewayName(version.getCablewayName())
         .comment(version.getComment())
         .referencedLine(toReferencedLine(parent))
         .validFrom(version.getValidFrom())

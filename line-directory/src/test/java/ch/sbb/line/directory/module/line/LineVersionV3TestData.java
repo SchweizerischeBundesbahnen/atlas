@@ -18,6 +18,7 @@ public class LineVersionV3TestData {
   public static final String PARENT_SLNID = "ch:1:slnid:1028629";
   public static final String CHILD_SLNID = "ch:1:slnid:1028629:4";
   public static final String UNKNOWN_SLNID = "ch:1:slnid:9999999";
+  public static final String CABLEWAY_SLNID = "ch:1:slnid:6000001";
 
   public static LineVersionV3Builder<?, ?> lineBuilder() {
     return LineVersionV3.builder()
@@ -57,6 +58,24 @@ public class LineVersionV3TestData {
 
   public static LineVersionV3 line() {
     return lineBuilder().build();
+  }
+
+  public static LineVersionV3Builder<?, ?> cablewayBuilder() {
+    return lineBuilder()
+        .slnid(CABLEWAY_SLNID)
+        .lineType(LineTypeV3.ORDERLY)
+        .number("LSMS")
+        .swissLineNumber("LSMS")
+        .shortNumber(null)
+        .description("Luftseilbahn Wengen - Maennlichen")
+        .meansOfTransport(Set.of(LineMeanOfTransport.AERIAL_TRAMWAY))
+        .cablewayNumber("3521")
+        .cablewayType("Pendelbahn")
+        .cablewayName("Luftseilbahn Wengen - Maennlichen");
+  }
+
+  public static LineVersionV3 cableway() {
+    return cablewayBuilder().build();
   }
 
   public static LineVersionV3 subline() {

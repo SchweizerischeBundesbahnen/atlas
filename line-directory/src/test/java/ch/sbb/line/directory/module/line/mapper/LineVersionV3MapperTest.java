@@ -154,4 +154,51 @@ class LineVersionV3MapperTest {
     assertThat(result.getSlnid()).isEqualTo(LineVersionV3TestData.PARENT_SLNID);
   }
 
+  @Test
+  void shouldMapCablewayAttributes() {
+    //given
+    LineVersionV3 cableway = LineVersionV3TestData.cableway();
+
+    //when
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(cableway, null);
+
+    //then
+    assertThat(result.getCablewayNumber()).isEqualTo("3521");
+    assertThat(result.getCablewayType()).isEqualTo("Pendelbahn");
+    assertThat(result.getCablewayName()).isEqualTo("Luftseilbahn Wengen - Maennlichen");
+  }
+
+  @Test
+  void shouldLeaveCablewayAttributesNullWhenNotSet() {
+    //given
+    LineVersionV3 line = LineVersionV3TestData.line();
+
+    //when
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(line, null);
+
+    //then
+    assertThat(result.getCablewayNumber()).isNull();
+    assertThat(result.getCablewayType()).isNull();
+    assertThat(result.getCablewayName()).isNull();
+  }
+
+  @Test
+  void shouldNotInheritCablewayAttributesFromParent() {
+    //given
+    LineVersionV3 subline = LineVersionV3TestData.sublineBuilder()
+        .cablewayNumber("9999")
+        .cablewayType("Gondelbahn")
+        .cablewayName("Sektion 2")
+        .build();
+    LineVersionV3 parent = LineVersionV3TestData.cableway();
+
+    //when
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(subline, parent);
+
+    //then
+    assertThat(result.getCablewayNumber()).isEqualTo("9999");
+    assertThat(result.getCablewayType()).isEqualTo("Gondelbahn");
+    assertThat(result.getCablewayName()).isEqualTo("Sektion 2");
+  }
+
 }
