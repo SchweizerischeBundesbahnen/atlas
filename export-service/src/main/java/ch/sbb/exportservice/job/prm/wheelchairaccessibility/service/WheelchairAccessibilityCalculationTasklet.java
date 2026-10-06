@@ -89,13 +89,8 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
   private List<WheelchairAccessibilityCsvModel> calculatePlatformAccessibilityAndMapToCsv(
       Entry<String, List<StopPointVersion>> stopPoint, Entry<String, List<PlatformVersion>> platform,
       List<RelationVersion> relationsOfStopPoint) {
-    List<RelationVersion> relationsOfPlatform =
-        relationsOfStopPoint.stream().filter(i -> platform.getKey().equals(i.getSloid())).toList();
-    AccessibilityRequest accessibilityRequest = AccessibilityRequest.builder()
-        .stopPoint(stopPoint.getValue())
-        .platform(platform.getValue())
-        .relations(relationsOfPlatform)
-        .build();
+    AccessibilityRequest accessibilityRequest = AccessibilityRequestFactory.forPlatform(stopPoint.getValue(),
+        platform.getKey(), platform.getValue(), relationsOfStopPoint);
 
     Accessibility accessibility = WheelchairAccessibility.calculatePlatform(accessibilityRequest,
         getAccessibilityFilter()).minify();
@@ -109,11 +104,8 @@ public class WheelchairAccessibilityCalculationTasklet implements Tasklet {
   private List<WheelchairAccessibilityCsvModel> calculateStopPointAccessibilityAndMapToCsv(
       Entry<String, List<StopPointVersion>> stopPoint, List<PlatformVersion> platformsOfStopPoint,
       List<RelationVersion> relationsOfStopPoint) {
-    AccessibilityRequest accessibilityRequest = AccessibilityRequest.builder()
-        .stopPoint(stopPoint.getValue())
-        .platform(platformsOfStopPoint)
-        .relations(relationsOfStopPoint)
-        .build();
+    AccessibilityRequest accessibilityRequest = AccessibilityRequestFactory.forStopPoint(stopPoint.getValue(),
+        platformsOfStopPoint, relationsOfStopPoint);
 
     Accessibility accessibility = WheelchairAccessibility.calculateStopPoint(accessibilityRequest,
         getAccessibilityFilter()).minify();

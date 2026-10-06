@@ -1,0 +1,18 @@
+package ch.sbb.exportservice.tasklet.upload;
+
+import ch.sbb.atlas.s3.config.AmazonBucket;
+import ch.sbb.exportservice.model.ExportFilePathV2;
+import java.io.IOException;
+
+public class UploadXmlFileTaskletV2 extends FileUploadTaskletV2 {
+
+  public UploadXmlFileTaskletV2(ExportFilePathV2 filePath) {
+    super(filePath);
+  }
+
+  @Override
+  protected void putFile() throws IOException {
+    amazonService.putZipFileCleanupBoth(AmazonBucket.EXPORT, file(), filePath.s3BucketDirPath());
+  }
+
+}

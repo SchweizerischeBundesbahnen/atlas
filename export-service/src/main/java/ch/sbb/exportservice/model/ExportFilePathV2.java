@@ -2,6 +2,7 @@ package ch.sbb.exportservice.model;
 
 import static ch.sbb.atlas.helper.DateHelper.DATE_FORMATTER_BASE;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import lombok.Builder;
@@ -11,6 +12,11 @@ import lombok.Getter;
 public final class ExportFilePathV2 implements Serializable {
 
   private static final String FILENAME_DELIMITER = "-";
+  public static final String XML_ZIP_EXTENSION = ".xml.zip";
+  public static final String JSON_GZ_EXTENSION = ".json.gz";
+
+  @Serial
+  private static final long serialVersionUID = -857098055542197423L;
 
   private final LocalDate actualDate;
   private String systemDir;
@@ -33,7 +39,11 @@ public final class ExportFilePathV2 implements Serializable {
   }
 
   public String fileToStream() {
-    return String.join("/", s3BucketDirPath(), fileName() + ".json.gz");
+    return String.join("/", s3BucketDirPath(), fileName() + JSON_GZ_EXTENSION);
+  }
+
+  public String xmlZipFileToStream() {
+    return String.join("/", s3BucketDirPath(), fileName() + XML_ZIP_EXTENSION);
   }
 
   /**

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Golden file for WP2/WP6/WP7 (ERSAD NeTEx export).
+  Source: Confluence page 3825765495 "ERSAD Export aus ATLAS", section
+  "Beispiel Tavannes (8500100)" (single-station example).
+
+  Adaptations applied vs. the Confluence draft, per plan section 0.2:
+  1. Removed <TotalCapacity>42</TotalCapacity> from <Parking> (numberOfPrmPlaces/capacity is not
+     available in ATLAS; only booleans are).
+  2. Renamed the ParkingArea id suffix from ":parking:1:prm" to ":parkingArea" (canonical suffix
+     from plan section 0.2) and removed its <TotalCapacity>2</TotalCapacity>; kept
+     <ParkingUserTypes>registeredDisabled</ParkingUserTypes> (the ParkingArea rule: written only
+     because prmPlacesAvailable == YES in this example).
+  3. Renamed SitePathLink ids from the draft's ad hoc ":path:ref1-quay3" / ":path:ref1-toilet" to
+     the canonical ":pathLink:1" / ":pathLink:2" suffix scheme (and their nested
+     AccessibilityAssessment ids accordingly).
+  4. No separate "prmTsiCompliantStation" element existed in the draft to remove; it is not
+     derivable from ATLAS data and is omitted entirely (listed as a known limitation).
+  5. Coordinates are already WGS84 decimal degrees in the source; no conversion needed for this
+     golden file's literal values (WP3/WP6 still route real data through CoordinateTransformer).
+  6. Markdown backslash-escapes ("STOP\_POINT" etc.) introduced by the Confluence-to-markdown
+     export were unescaped back to plain XML text/comments.
+
+  Structural note (not an adaptation, an open question for WP6): this example illustrates
+  AssistanceService/TicketingService/TicketingEquipment/StopPlaceEntrance structure using
+  invented example data, because real Tavannes ATLAS data has no Contact Point, Parking Lot,
+  Reference Point or Relation rows. See ersad/fixtures-tavannes.md for the fixture rows needed to
+  reproduce this file byte-for-byte.
+
+  WP6 adaptations (StAX writer is the element contract; plan section 0.2 wins over the draft):
+  7. Added xmlns:gml / xmlns:siri declarations to the root element (plan WP6 header).
+  8. Removed the StopPlace-level <StepFreeAccess> and the StopPlace AccessibilityAssessment
+     <Comment> (additionalInformation): the ERSAD model (ErsadStation) has no source for either.
+  9. Removed the <TicketingService> opening-hours fields (DayType/Timeband): ATLAS openingHours is
+     free text and cannot be mapped to structured validity conditions.
+  10. Removed <NumberOfMachines>: ATLAS has no ticket machine count (only a boolean).
+  11. Removed <entrances>/<StopPlaceEntrance>: reference points are not part of the ERSAD model;
+      they only appear as SitePathLink From/PlaceRef refs.
+  12. ParkingArea id changed from ":parkingArea" on the station sloid to
+      "<parkingSloid>:parkingArea" (section 0.2: suffix is appended to the entity's own sloid, and
+      the station-level id would collide when a station has several parkings).
+
+  WP7 adaptation (supersedes item 5 above):
+  13. <Longitude>/<Latitude> updated from the Confluence draft's literal WGS84 values
+      (7.20164538962 / 47.21984466031) to 7.20164539670 / 47.21984467076: the real ATLAS
+      station's position is stored as LV95 (east=2582049.83754, north=1229906.62316) and converted
+      to WGS84 via ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer, per plan section
+      0.2 ("always route coordinates through CoordinateTransformer"); the draft's literal WGS84
+      values do not exactly round-trip through that transformer (~9e-8 deg longitude, ~1e-8 deg
+      latitude drift). See ersad/README-golden.md.
+
+  Handoff plan §8 / schema-validity follow-up (this revision):
+  14. (§8.4) Quay AccessVehicleEquipment id suffix renamed ":boarding" -> ":access" everywhere.
+  15. (§8.3, known limitation, no longer exported) Removed StopPlace <VisualSignsAvailable>
+      (was sourced from visualInfo), Quay <TactileGuidingStrips> (was sourced from
+      contrastingAreas) and PathLink <VisualSignsAvailable> (was sourced from contrastingAreas).
+      PathLink TactileGuidanceAvailable (tactileVisualMarks) is kept, renamed to its real NeTEx
+      name (TactileGuidingStrips does not exist in the schema; see item 17).
+  16. (§8.2) The INFORMATION_DESK contact point (sloid :9999) is now exported as a
+      <TicketingService> LocalService in <localServices> (id = contact point sloid), not as
+      TicketingEquipment in placeEquipments; TICKET_COUNTER (sloid :1234) stays
+      <TicketingEquipment>. LocalService/TicketingService has no AccessibilityAssessment or
+      InductionLoops field in the XSD (netex_ifopt_localService_version.xsd), so the information
+      desk's accessibility data (if any existed for this fixture) cannot be represented and is
+      dropped; only <Name> has a real ATLAS source here.
+  17. (§8.1) Quay AccessVehicleEquipment rebuilt using real AccessVehicleEquipmentBoardingGroup
+      elements (netex_equipmentVehiclePassenger_version.xsd): <Hoist> (boardingDevice
+      LIFTS -> true, NO -> false, else omitted) then <Ramp> (RAMPS -> true, NO -> false, else
+      omitted), in that XSD order; written only if Hoist or Ramp is present. <RampAvailable> and
+      <BoardingHeightAdjustment> do not exist in NeTEx and are removed. Platform
+      levelAccessWheelchair now maps to the Quay AccessibilityAssessment limitation
+      <LevelAccessIntoVehicle> instead (same true/false/omit value mapping as before).
+
+  xmllint schema-validity fixes (NeTEx_publication.xsd, v2.0):
+  18. TicketingEquipment <HearingLoops> renamed to <InductionLoops> (TicketingEquipmentAccessibilityGroup);
+      AccessibilityAssessment is not allowed inside Equipment/PassengerEquipment types at all, so the
+      TicketingEquipment's own accessibility booleans are used instead: <InductionLoops>,
+      <AudioInterfaceAvailable>, <WheelchairSuitable> (XSD order), sourced from the same
+      hearingLoop/other-contact-point accessibility fields as before; any field without a direct
+      boolean equivalent in TicketingEquipmentAccessibilityGroup is dropped.
+  19. AccessibilityAssessment now always starts with mandatory <MobilityImpairedAccess>
+      (AccessibilityAssessmentGroup): the WheelchairAccess limitation's value when present,
+      "unknown" otherwise (flagged for business review). Within <AccessibilityLimitation> itself,
+      <WheelchairAccess> is mandatory first (MobilityLimitationGroup); PathLink has no ATLAS source
+      for it, so "unknown" is substituted there too whenever StepFreeAccess/TactileGuidanceAvailable
+      is written (same fallback convention, flagged for business review).
+  20. StopPlace child order corrected to the Site/SiteElement/StopPlace XSD group sequence:
+      Name, PrivateCode, Centroid, Url, PostalAddress, AccessibilityAssessment, placeEquipments,
+      localServices, TransportMode, StopPlaceType, quays, pathLinks (Url and AccessibilityAssessment
+      both belong to the generic Place/SiteElement groups, before the StopPlace-specific elements).
+  21. PostalAddress child order corrected to Town before PostCode (PostalAddressGroup), matching the
+      XSD sequence instead of the draft's PostCode/Town order.
+  22. SanitaryEquipment: AccessibilityAssessment now written before SanitaryFacilityList
+      (SanitaryEquipmentGroup order), not after.
+  23. AssistanceService fields reordered to Note (generic EquipmentGroup, "internal use by
+      OPERATOR" comment -> assistanceCondition) then AssistanceFacilityList then
+      AssistanceAvailability (AssistanceServiceGroup order); TicketingService then follows
+      AssistanceService within localServices per LocalServiceFrame ordering.
+  24. ParkingArea: <ParkingUserTypes> moved into its own nested <parkingProperties><ParkingProperties>
+      element (ParkingPropertiesGroup), which is where the XSD actually places it, instead of
+      directly under ParkingArea.
+  25. SitePathLink From/To <PlaceRef> no longer carry a version attribute: the referenced places
+      (reference points, quays, toilets) are not necessarily present as versioned entities in this
+      delivery, and a version="1" attribute triggers a NeTEx keyref constraint that then fails for
+      refs to places outside the delivery; omitting version avoids the keyref check per NeTEx
+      reference semantics.
+-->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:siri="http://www.siri.org.uk/siri" version="1.0">
+<PublicationTimestamp>2026-09-16T03:00:00+02:00</PublicationTimestamp>
+<ParticipantRef>ch:1:atlas</ParticipantRef>
+<Description>ERSAD Accessibility Export - Vollexport / Snapshot</Description>
+<dataObjects>
+<CompositeFrame id="ch:1:CompositeFrame:ERSAD:20260916" version="1">
+<frames>
+<SiteFrame id="ch:1:SiteFrame:ERSAD:20260916" version="1">
+<stopPlaces>
+<!-- ===== STATION ===== -->
+<StopPlace id="ch:1:sloid:100" version="1">
+<Name>Tavannes</Name>
+<PrivateCode type="didok">8500100</PrivateCode>
+<Centroid>
+<Location>
+<Longitude>7.20164539670</Longitude>
+<Latitude>47.21984467076</Latitude>
+</Location>
+</Centroid>
+<Url>https://www.sbb.ch/bahnhof/tavannes</Url>
+<PostalAddress id="ch:1:sloid:100:address" version="1">
+<AddressLine1>Rue de la Gare</AddressLine1>
+<Town>Tavannes</Town>
+<PostCode>2710</PostCode>
+</PostalAddress>
+<!-- accessibleStation / prmTsiCompliantStation / Signaletik -->
+<AccessibilityAssessment id="ch:1:sloid:100:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<AudibleSignalsAvailable>true</AudibleSignalsAvailable>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<placeEquipments>
+<!-- CONTACT_POINT TICKET_COUNTER (Ausstattungs-Sicht) -->
+<TicketingEquipment id="ch:1:sloid:100:1234" version="1">
+<TicketMachines>true</TicketMachines>
+<TicketOffice>true</TicketOffice>
+<InductionLoops>true</InductionLoops>
+<AudioInterfaceAvailable>true</AudioInterfaceAvailable>
+<WheelchairSuitable>true</WheelchairSuitable>
+</TicketingEquipment>
+<!-- ===== TOILET ===== -->
+<SanitaryEquipment id="ch:1:sloid:100:617340" version="1">
+<Name>Toilette</Name>
+<AccessibilityAssessment id="ch:1:sloid:100:617340:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<SanitaryFacilityList>toilet wheelchairAccessToilet</SanitaryFacilityList>
+</SanitaryEquipment>
+</placeEquipments>
+<!-- PRM-Hilfestellung / CONTACT_POINT INFORMATION_DESK (Service-Sicht) -->
+<localServices>
+<AssistanceService id="ch:1:sloid:100:assistance" version="1">
+<Note>Bedingungen Hilfestellung (assistanceCondition)</Note>
+<AssistanceFacilityList>boardingAssistance</AssistanceFacilityList>
+<AssistanceAvailability>availableIfBooked</AssistanceAvailability>
+</AssistanceService>
+<TicketingService id="ch:1:sloid:100:9999" version="1">
+<Name>Infoschalter</Name>
+</TicketingService>
+</localServices>
+<TransportMode>rail</TransportMode>
+<StopPlaceType>railStation</StopPlaceType>
+<!-- ===== PLATFORM ===== -->
+<quays>
+<Quay id="ch:1:sloid:100:0:3" version="1">
+<AccessibilityAssessment id="ch:1:sloid:100:0:3:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<LevelAccessIntoVehicle>false</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+<Comment>Hinweise zum Zugang (adviceAccessInfo)</Comment>
+</AccessibilityAssessment>
+<placeEquipments>
+<AccessVehicleEquipment id="ch:1:sloid:100:0:3:access" version="1">
+<Hoist>false</Hoist>
+<Ramp>false</Ramp>
+</AccessVehicleEquipment>
+</placeEquipments>
+<PublicCode>3</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:100:0:2" version="1">
+<AccessibilityAssessment id="ch:1:sloid:100:0:2:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>2</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:100:0:782050" version="1">
+<AccessibilityAssessment id="ch:1:sloid:100:0:782050:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+</Quay>
+<Quay id="ch:1:sloid:100:0:636655" version="1">
+<AccessibilityAssessment id="ch:1:sloid:100:0:636655:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+</Quay>
+</quays>
+</StopPlace>
+</stopPlaces>
+<!-- ===== PARKING_LOT ===== -->
+<parkings>
+<Parking id="ch:1:sloid:100:parking:1" version="1">
+<Name>Parkplatz Bahnhof</Name>
+<ParentSiteRef ref="ch:1:sloid:100" version="1"/>
+<parkingAreas>
+<ParkingArea id="ch:1:sloid:100:parking:1:parkingArea" version="1">
+<parkingProperties>
+<ParkingProperties id="ch:1:sloid:100:parking:1:parkingArea:parkingProperties" version="1">
+<ParkingUserTypes>registeredDisabled</ParkingUserTypes>
+</ParkingProperties>
+</parkingProperties>
+</ParkingArea>
+</parkingAreas>
+</Parking>
+</parkings>
+<!-- ===== RELATION: stufenfreier Zugang ab Referenzpunkt ===== -->
+<pathLinks>
+<SitePathLink id="ch:1:sloid:100:pathLink:1" version="1">
+<From><PlaceRef ref="ch:1:sloid:100:ref:1"/></From>
+<To><PlaceRef ref="ch:1:sloid:100:0:3"/></To>
+<AccessibilityAssessment id="ch:1:sloid:100:pathLink:1:aa" version="1">
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>unknown</WheelchairAccess>
+<StepFreeAccess>true</StepFreeAccess>
+<TactileGuidanceAvailable>true</TactileGuidanceAvailable>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+</SitePathLink>
+<SitePathLink id="ch:1:sloid:100:pathLink:2" version="1">
+<From><PlaceRef ref="ch:1:sloid:100:ref:1"/></From>
+<To><PlaceRef ref="ch:1:sloid:100:617340"/></To>
+<AccessibilityAssessment id="ch:1:sloid:100:pathLink:2:aa" version="1">
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>unknown</WheelchairAccess>
+<StepFreeAccess>true</StepFreeAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+</SitePathLink>
+</pathLinks>
+</SiteFrame>
+</frames>
+</CompositeFrame>
+</dataObjects>
+</PublicationDelivery>

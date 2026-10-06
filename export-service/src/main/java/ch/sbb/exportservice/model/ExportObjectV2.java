@@ -3,10 +3,8 @@ package ch.sbb.exportservice.model;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public enum ExportObjectV2 {
 
   BUSINESS_ORGANISATION(ExportTypes.DEFAULT, "business-organisation", "business-organisation-batch"),
@@ -28,12 +26,26 @@ public enum ExportObjectV2 {
   SECTOR(ExportTypes.DEFAULT, "sector", "sector-batch"),
   SECTOR_GROUP(ExportTypes.DEFAULT, "sector-group", "sector-group-batch"),
   SECTORS_AND_SECTOR_GROUPS(ExportTypes.DEFAULT, "sectors-and-sector-groups", "sectors-and-sector-groups-batch"),
+  ERSAD_NETEX(List.of(ExportTypeV2.ACTUAL), "ersad-netex", "ersad-netex-batch", List.of(ExportExtensionFileType.XML_EXTENSION)),
   WHEELCHAIR_ACCESSIBILITY(List.of(ExportTypeV2.ACTUAL), "wheelchair-accessibility", "wheelchair-accessibility-batch"),
   ;
 
   private final List<ExportTypeV2> supportedExportTypes;
   private final String name;
   private final String batchServiceName;
+  private final List<ExportExtensionFileType> supportedExtensionFileTypes;
+
+  ExportObjectV2(List<ExportTypeV2> supportedExportTypes, String name, String batchServiceName) {
+    this(supportedExportTypes, name, batchServiceName, List.of());
+  }
+
+  ExportObjectV2(List<ExportTypeV2> supportedExportTypes, String name, String batchServiceName,
+      List<ExportExtensionFileType> supportedExtensionFileTypes) {
+    this.supportedExportTypes = supportedExportTypes;
+    this.name = name;
+    this.batchServiceName = batchServiceName;
+    this.supportedExtensionFileTypes = supportedExtensionFileTypes;
+  }
 
   private static class ExportTypes {
 
@@ -56,6 +68,10 @@ public enum ExportObjectV2 {
 
   public boolean isSupportedExportType(ExportTypeV2 exportType) {
     return supportedExportTypes.contains(exportType);
+  }
+
+  public boolean isSupportedExtensionFileType(ExportExtensionFileType exportExtensionFileType) {
+    return supportedExtensionFileTypes.contains(exportExtensionFileType);
   }
 
   public static ExportObjectV2 getExportTypeForBatchServiceName(String batchServiceName) {

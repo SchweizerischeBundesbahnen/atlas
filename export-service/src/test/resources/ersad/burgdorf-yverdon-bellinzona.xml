@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Golden file for WP2/WP6/WP7 (ERSAD NeTEx export).
+  Source: Confluence page 3825765495 "ERSAD Export aus ATLAS", the three-station example
+  (Burgdorf 8508005, Yverdon-les-Bains 8504200, Bellinzona 8505213).
+
+  Adaptations applied vs. the Confluence draft, per plan section 0.2:
+  1. No Parking/ParkingArea/TotalCapacity elements exist in this example, so nothing to remove
+     there.
+  2. No separate "prmTsiCompliantStation" element existed in the draft; not derivable from ATLAS
+     data and omitted entirely (known limitation).
+  3. Coordinates are already WGS84 decimal degrees in the source; no conversion needed for this
+     golden file's literal values.
+  4. Markdown backslash-escapes ("STOP\_POINT", "NOT\_APPLICABLE" etc.) introduced by the
+     Confluence-to-markdown export were unescaped back to plain XML comment text.
+
+  This example has no Contact Point, Parking Lot, Reference Point or SitePathLink data (per the
+  spec: "fuer nicht in den beigelegten Beispiel-Exporten vorhandene ... werden bewusst keine Werte
+  erfunden"), so it does not exercise ErsadParking/ErsadContactPoint/ErsadPathLink at all -
+  see tavannes-8500100.xml for those.
+
+  WP6 adaptations (StAX writer is the element contract; plan section 0.2 wins over the draft):
+  5. Added xmlns:gml / xmlns:siri declarations to the root element (plan WP6 header).
+  6. Removed the Burgdorf toilet <Note> ("Im Lokal Spetaccolo ..."): the ERSAD toilet model has no
+     free-text info field.
+  7. Yverdon-les-Bains and Bellinzona (accessibility = PRE_REGISTRATION): StopPlace
+     MobilityImpairedAccess and WheelchairAccess changed from "true" to "partial" (section 0.2:
+     PRE_REGISTRATION maps to partial).
+
+  Handoff plan Section 8 / schema-validity follow-up (this revision):
+  8. (8.4) Quay AccessVehicleEquipment id suffix renamed ":boarding" -> ":access" everywhere.
+  9. (8.3, known limitation, no longer exported) Removed all Quay &lt;TactileGuidingStrips&gt;
+     (was sourced from platform contrastingAreas) and StopPlace &lt;VisualSignsAvailable&gt;
+     (was sourced from visualInfo) at every station.
+  10. (8.1) Quay AccessVehicleEquipment rebuilt using real AccessVehicleEquipmentBoardingGroup
+      elements (Hoist/Ramp; LIFTS maps to true Hoist, RAMPS maps to true Ramp, NO maps to false,
+      else omitted; written only if Hoist or Ramp is present): Burgdorf and Bellinzona quays all
+      have boardingDevice TO_BE_COMPLETED, so none write AccessVehicleEquipment anymore
+      (previously every quay wrote BoardingHeightAdjustment, which does not exist in NeTEx).
+      Yverdon quay :0:619346 (boardingDevice = RAMPS) now writes Ramp=true; the other Yverdon
+      quays (TO_BE_COMPLETED / NOT_APPLICABLE) write none. Platform levelAccessWheelchair now
+      maps to the Quay AccessibilityAssessment limitation LevelAccessIntoVehicle instead (same
+      true/false/omit mapping as the old WheelchairAccess-labelled platform boolean below).
+
+  xmllint schema-validity fixes (NeTEx_publication.xsd, v2.0):
+  11. AccessibilityAssessment now always starts with mandatory MobilityImpairedAccess
+      (AccessibilityAssessmentGroup): the WheelchairAccess limitation's value when present,
+      "unknown" otherwise (flagged for business review; not triggered in this file, every
+      AccessibilityAssessment here has a real WheelchairAccess/LevelAccessIntoVehicle-derived
+      value).
+  12. SanitaryEquipment: AccessibilityAssessment now written before SanitaryFacilityList
+      (SanitaryEquipmentGroup order), not after.
+  13. AssistanceService fields reordered to AssistanceFacilityList then AssistanceAvailability
+      (AssistanceServiceGroup order; no Note/assistanceCondition text exists for these two
+      stations, so Note is absent).
+  14. StopPlace child order corrected to the Site/SiteElement/StopPlace XSD group sequence:
+      Name, PrivateCode, Centroid, AccessibilityAssessment, placeEquipments, localServices,
+      TransportMode, StopPlaceType, quays (no Url/PostalAddress exist for these stations).
+-->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:siri="http://www.siri.org.uk/siri" version="1.0">
+<PublicationTimestamp>2026-09-16T03:00:00+02:00</PublicationTimestamp>
+<ParticipantRef>ch:1:atlas</ParticipantRef>
+<Description>ERSAD Accessibility Export - Vollexport / Snapshot</Description>
+<dataObjects>
+<CompositeFrame id="ch:1:CompositeFrame:ERSAD:20260916" version="1">
+<frames>
+<SiteFrame id="ch:1:SiteFrame:ERSAD:20260916" version="1">
+<stopPlaces>
+<!-- ==================== STATION 1: Burgdorf (8508005) ==================== -->
+<StopPlace id="ch:1:sloid:8005" version="1">
+<Name>Burgdorf</Name>
+<PrivateCode type="didok">8508005</PrivateCode>
+<Centroid>
+<Location>
+<Longitude>7.62169447355</Longitude>
+<Latitude>47.06070072639</Latitude>
+</Location>
+</Centroid>
+<!-- accessibility = NO_ACCESS (actual-date-wheelchair-accessibility, STOP_POINT) -->
+<AccessibilityAssessment id="ch:1:sloid:8005:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<AudibleSignalsAvailable>true</AudibleSignalsAvailable>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<!-- ===== TOILET ===== -->
+<placeEquipments>
+<SanitaryEquipment id="ch:1:sloid:8005:269286" version="1">
+<Name>Toilette</Name>
+<AccessibilityAssessment id="ch:1:sloid:8005:269286:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<SanitaryFacilityList>toilet wheelchairAccessToilet</SanitaryFacilityList>
+</SanitaryEquipment>
+</placeEquipments>
+<TransportMode>rail</TransportMode>
+<StopPlaceType>railStation</StopPlaceType>
+<!-- ===== PLATFORM (6 Haltekanten); boardingDevice = TO_BE_COMPLETED everywhere: no AccessVehicleEquipment ===== -->
+<quays>
+<Quay id="ch:1:sloid:8005:1:1" version="1">
+<AccessibilityAssessment id="ch:1:sloid:8005:1:1:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>1</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:8005:1:11" version="1">
+<AccessibilityAssessment id="ch:1:sloid:8005:1:11:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>11</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:8005:2:2" version="1">
+<AccessibilityAssessment id="ch:1:sloid:8005:2:2:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>2</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:8005:2:3" version="1">
+<AccessibilityAssessment id="ch:1:sloid:8005:2:3:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>3</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:8005:3:4" version="1">
+<AccessibilityAssessment id="ch:1:sloid:8005:3:4:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>4</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:8005:3:5" version="1">
+<AccessibilityAssessment id="ch:1:sloid:8005:3:5:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>5</PublicCode>
+</Quay>
+</quays>
+</StopPlace>
+<!-- ==================== STATION 2: Yverdon-les-Bains (8504200) ==================== -->
+<StopPlace id="ch:1:sloid:4200" version="1">
+<Name>Yverdon-les-Bains</Name>
+<PrivateCode type="didok">8504200</PrivateCode>
+<Centroid>
+<Location>
+<Longitude>6.64094400151</Longitude>
+<Latitude>46.78154518698</Latitude>
+</Location>
+</Centroid>
+<!-- accessibility = PRE_REGISTRATION (Zugang nur mit Voranmeldung) -->
+<AccessibilityAssessment id="ch:1:sloid:4200:aa" version="1">
+<MobilityImpairedAccess>partial</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>partial</WheelchairAccess>
+<AudibleSignalsAvailable>true</AudibleSignalsAvailable>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<!-- ===== TOILET ===== -->
+<placeEquipments>
+<SanitaryEquipment id="ch:1:sloid:4200:628513" version="1">
+<Name>Toilette</Name>
+<AccessibilityAssessment id="ch:1:sloid:4200:628513:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<SanitaryFacilityList>toilet wheelchairAccessToilet</SanitaryFacilityList>
+</SanitaryEquipment>
+</placeEquipments>
+<localServices>
+<AssistanceService id="ch:1:sloid:4200:assistance" version="1">
+<AssistanceFacilityList>boardingAssistance</AssistanceFacilityList>
+<AssistanceAvailability>availableIfBooked</AssistanceAvailability>
+</AssistanceService>
+</localServices>
+<TransportMode>rail</TransportMode>
+<StopPlaceType>railStation</StopPlaceType>
+<!-- ===== PLATFORM (6 Haltekanten) ===== -->
+<quays>
+<Quay id="ch:1:sloid:4200:1:1" version="1">
+<AccessibilityAssessment id="ch:1:sloid:4200:1:1:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+<Comment>Der Ein- / Ausstieg ist bei entsprechenden Fahrzeugen barrierefrei moeglich. Bitte beachten Sie die Information im Fahrplan und melden Sie sich noetigenfalls bis spaetestens 1 Stunde vor Abfahrt unter swisspass.ch/handicap oder beim Contact Center Handicap taeglich 5.00-24.00 Uhr, Telefon 0800 007 102.</Comment>
+</AccessibilityAssessment>
+<PublicCode>1</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:4200:2:2" version="1">
+<AccessibilityAssessment id="ch:1:sloid:4200:2:2:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>2</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:4200:2:3" version="1">
+<AccessibilityAssessment id="ch:1:sloid:4200:2:3:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>3</PublicCode>
+</Quay>
+<!-- boardingDevice = RAMPS -->
+<Quay id="ch:1:sloid:4200:0:619346" version="1">
+<AccessibilityAssessment id="ch:1:sloid:4200:0:619346:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<placeEquipments>
+<AccessVehicleEquipment id="ch:1:sloid:4200:0:619346:access" version="1">
+<Ramp>true</Ramp>
+</AccessVehicleEquipment>
+</placeEquipments>
+</Quay>
+<!-- boardingDevice = NOT_APPLICABLE: kein AccessVehicleEquipment -->
+<Quay id="ch:1:sloid:4200:0:534539" version="1">
+<AccessibilityAssessment id="ch:1:sloid:4200:0:534539:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+</Quay>
+<Quay id="ch:1:sloid:4200:0:814902" version="1">
+<AccessibilityAssessment id="ch:1:sloid:4200:0:814902:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+</Quay>
+</quays>
+</StopPlace>
+<!-- ==================== STATION 3: Bellinzona (8505213) ==================== -->
+<StopPlace id="ch:1:sloid:5213" version="1">
+<Name>Bellinzona</Name>
+<PrivateCode type="didok">8505213</PrivateCode>
+<Centroid>
+<Location>
+<Longitude>9.02951851227</Longitude>
+<Latitude>46.19543179221</Latitude>
+</Location>
+</Centroid>
+<!-- accessibility = PRE_REGISTRATION -->
+<AccessibilityAssessment id="ch:1:sloid:5213:aa" version="1">
+<MobilityImpairedAccess>partial</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>partial</WheelchairAccess>
+<AudibleSignalsAvailable>true</AudibleSignalsAvailable>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<!-- ===== TOILET ===== -->
+<placeEquipments>
+<SanitaryEquipment id="ch:1:sloid:5213:308649" version="1">
+<Name>Toilette</Name>
+<AccessibilityAssessment id="ch:1:sloid:5213:308649:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<SanitaryFacilityList>toilet wheelchairAccessToilet</SanitaryFacilityList>
+</SanitaryEquipment>
+</placeEquipments>
+<localServices>
+<AssistanceService id="ch:1:sloid:5213:assistance" version="1">
+<AssistanceFacilityList>boardingAssistance</AssistanceFacilityList>
+<AssistanceAvailability>availableIfBooked</AssistanceAvailability>
+</AssistanceService>
+</localServices>
+<TransportMode>rail</TransportMode>
+<StopPlaceType>railStation</StopPlaceType>
+<!-- ===== PLATFORM (5 Haltekanten); boardingDevice = TO_BE_COMPLETED everywhere: no AccessVehicleEquipment ===== -->
+<quays>
+<Quay id="ch:1:sloid:5213:1:1" version="1">
+<AccessibilityAssessment id="ch:1:sloid:5213:1:1:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>1</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:5213:2:2" version="1">
+<AccessibilityAssessment id="ch:1:sloid:5213:2:2:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>2</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:5213:2:3" version="1">
+<AccessibilityAssessment id="ch:1:sloid:5213:2:3:aa" version="1">
+<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>false</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>3</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:5213:3:4" version="1">
+<AccessibilityAssessment id="ch:1:sloid:5213:3:4:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>4</PublicCode>
+</Quay>
+<Quay id="ch:1:sloid:5213:3:6" version="1">
+<AccessibilityAssessment id="ch:1:sloid:5213:3:6:aa" version="1">
+<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<limitations>
+<AccessibilityLimitation>
+<WheelchairAccess>true</WheelchairAccess>
+<LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
+</AccessibilityLimitation>
+</limitations>
+</AccessibilityAssessment>
+<PublicCode>6</PublicCode>
+</Quay>
+</quays>
+</StopPlace>
+</stopPlaces>
+</SiteFrame>
+</frames>
+</CompositeFrame>
+</dataObjects>
+</PublicationDelivery>

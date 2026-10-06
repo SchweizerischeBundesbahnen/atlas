@@ -3,9 +3,12 @@ package ch.sbb.exportservice.controller;
 import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFileNameFromS3ObjectName;
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
+import ch.sbb.atlas.api.controller.ZipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.s3.service.StreamedFile;
+import ch.sbb.exportservice.exception.NotAllowedExportExtensionExceptionV2;
 import ch.sbb.exportservice.exception.NotAllowedExportFileExceptionV2;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Tag(name = "Export File Streaming V2")
 @RequestMapping("v2/export")
@@ -126,6 +130,95 @@ public class FileStreamingControllerApiV2 {
   private static void isExportSupported(ExportObjectV2 exportObject, ExportTypeV2 exportType) {
     if (!exportObject.isSupportedExportType(exportType)) {
       throw new NotAllowedExportFileExceptionV2(exportObject, exportType);
+    }
+  }
+
+  @GetMapping(value = "xml/{exportObject}/{exportType}", produces = MediaType.APPLICATION_XML_VALUE)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Returns the today generated file as Stream"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type or export extension", content = @Content(
+          schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
+  })
+  @NewSpan
+  @Async
+  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamExportXmlFile(
+      @PathVariable ExportObjectV2 exportObject,
+      @PathVariable ExportTypeV2 exportType) {
+    isExportSupported(exportObject, exportType);
+    isXmlExportSupported(exportObject);
+    StreamingResponseBody body = fileExportService.streamXmlFile(ExportFilePathV2.buildV2(exportObject, exportType));
+    return CompletableFuture.completedFuture(ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(body));
+  }
+
+  @GetMapping(value = "xml/latest/{exportObject}/{exportType}", produces = MediaType.APPLICATION_XML_VALUE)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Returns the latest generated file as Stream"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type or export extension", content = @Content(
+          schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
+  })
+  @NewSpan
+  @Async
+  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamLatestExportXmlFile(
+      @PathVariable ExportObjectV2 exportObject,
+      @PathVariable ExportTypeV2 exportType) {
+    isExportSupported(exportObject, exportType);
+    isXmlExportSupported(exportObject);
+    StreamingResponseBody body = fileExportService.streamLatestXmlFile(ExportFilePathV2.buildV2(exportObject, exportType));
+    return CompletableFuture.completedFuture(ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(body));
+  }
+
+  @GetMapping(value = "download-zip-xml/{exportObject}/{exportType}")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Returns the today generated file"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type or export extension", content = @Content(
+          schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
+  })
+  @NewSpan
+  @Async
+  public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportZipXmlFile(
+      @PathVariable ExportObjectV2 exportObject,
+      @PathVariable ExportTypeV2 exportType) {
+    isExportSupported(exportObject, exportType);
+    isXmlExportSupported(exportObject);
+    ExportFilePathV2 exportFilePath = ExportFilePathV2.buildV2(exportObject, exportType);
+    HttpHeaders headers = ZipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
+    StreamedFile body = fileExportService.streamGzipFile(exportFilePath.xmlZipFileToStream());
+    headers.setContentLength(body.contentLength().value());
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body.resource()));
+  }
+
+  @GetMapping(value = "download-zip-xml/latest/{exportObject}/{exportType}")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Returns the latest generated file"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type or export extension", content = @Content(
+          schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
+  })
+  @NewSpan
+  @Async
+  public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportZipXmlFile(
+      @PathVariable ExportObjectV2 exportObject,
+      @PathVariable ExportTypeV2 exportType) {
+    isExportSupported(exportObject, exportType);
+    isXmlExportSupported(exportObject);
+    String latestUploadedFileName = fileExportService.getLatestUploadedXmlZipFileName(
+        ExportFilePathV2.buildV2(exportObject, exportType));
+    HttpHeaders headers = ZipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
+    StreamedFile body = fileExportService.streamGzipFile(latestUploadedFileName);
+    headers.setContentLength(body.contentLength().value());
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body.resource()));
+  }
+
+  private static void isXmlExportSupported(ExportObjectV2 exportObject) {
+    if (!exportObject.isSupportedExtensionFileType(ExportExtensionFileType.XML_EXTENSION)) {
+      throw new NotAllowedExportExtensionExceptionV2(exportObject, ExportExtensionFileType.XML_EXTENSION);
     }
   }
 
