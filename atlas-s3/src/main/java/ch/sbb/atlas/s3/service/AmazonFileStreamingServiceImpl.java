@@ -4,8 +4,11 @@ import ch.sbb.atlas.s3.config.AmazonBucket;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RequiredArgsConstructor
 public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingService {
@@ -29,6 +32,20 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
     InputStreamResource resource = amazonService.pullFileAsStream(amazonBucket, fileToStream);
     ContentLength contentLength = amazonService.getObjectContentLength(amazonBucket, fileToStream);
     return new StreamedFile(resource, contentLength);
+  }
+
+  @Override
+  public StreamingResponseBody streamZipEntry(AmazonBucket amazonBucket, String fileToStream) {
+    InputStream s3Object = amazonService.pullS3Object(amazonBucket, fileToStream);
+    return outputStream -> {
+      try (InputStream inputStream = s3Object; ZipInputStream zipInputStream = new ZipInputStream(inputStream)) {
+        ZipEntry zipEntry = zipInputStream.getNextEntry();
+        if (zipEntry == null) {
+          throw new IllegalStateException("Zip file " + fileToStream + " does not contain any entry");
+        }
+        zipInputStream.transferTo(outputStream);
+      }
+    };
   }
 
 }

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.s3.config.AmazonBucket;
 import ch.sbb.atlas.s3.config.AmazonBucketClient;
 import ch.sbb.atlas.s3.config.AmazonConfigProps.AmazonBucketConfig;
+import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.s3.exception.FileNotFoundOnS3Exception;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -230,6 +231,46 @@ class AmazonServiceTest {
     String result = amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, filePrefix, filePath);
     //then
     assertThat(result).isNotNull().isEqualTo("path/file/file2.json");
+  }
+
+  @Test
+  void shouldGetLatestUploadedObjectWithGivenExtension() {
+    //given
+    String filePath = "path/file";
+    String filePrefix = "prefix";
+
+    Instant first = LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    Instant second = LocalDate.of(2020, Month.JANUARY, 2).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    ListObjectsV2Response listObjectsV2Result = mock(ListObjectsV2Response.class);
+    when(listObjectsV2Result.contents()).thenReturn(List.of(S3Object.builder()
+            .key("path/file/file1.xml.zip")
+            .lastModified(first)
+            .build(),
+        S3Object.builder()
+            .key("path/file/file2.xml.zip")
+            .lastModified(second)
+            .build()));
+    when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(listObjectsV2Result);
+
+    //when
+    String result = amazonService.getLatestUploadedObject(AmazonBucket.EXPORT, filePrefix, filePath, ".xml.zip");
+    //then
+    assertThat(result).isNotNull().isEqualTo("path/file/file2.xml.zip");
+  }
+
+  @Test
+  void shouldThrowFileNotFoundExceptionWhenNoUploadedObjectMatchesExtension() {
+    //given
+    String filePath = "path/file";
+    String filePrefix = "prefix";
+
+    ListObjectsV2Response listObjectsV2Result = mock(ListObjectsV2Response.class);
+    when(listObjectsV2Result.contents()).thenReturn(List.of());
+    when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(listObjectsV2Result);
+
+    //when & then
+    assertThatExceptionOfType(FileNotFoundException.class)
+        .isThrownBy(() -> amazonService.getLatestUploadedObject(AmazonBucket.EXPORT, filePrefix, filePath, ".xml.zip"));
   }
 
   @Test
