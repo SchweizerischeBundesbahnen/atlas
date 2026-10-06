@@ -1,11 +1,10 @@
 package ch.sbb.exportservice.job.prm.ersad.model;
 
-public final class Constants {
+public final class NetexConstants {
 
-  private Constants() {
+  private NetexConstants() {
   }
 
-  // XML element names
   public static final String STOP_PLACE = "StopPlace";
   public static final String NAME = "Name";
   public static final String PRIVATE_CODE = "PrivateCode";

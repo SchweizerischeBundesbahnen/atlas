@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.job.prm.ersad.netex;
 
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.FROM;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ID_SUFFIX_ACCESSIBILITY_ASSESSMENT;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ID_SUFFIX_PATH_LINK;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PLACE_REF;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.SITE_PATH_LINK;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.STEP_FREE_ACCESS;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.TACTILE_GUIDANCE_AVAILABLE;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.TO;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.FROM;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ACCESSIBILITY_ASSESSMENT;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_PATH_LINK;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PLACE_REF;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.SITE_PATH_LINK;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.STEP_FREE_ACCESS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.TACTILE_GUIDANCE_AVAILABLE;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.TO;
 
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadPathLink;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStation;

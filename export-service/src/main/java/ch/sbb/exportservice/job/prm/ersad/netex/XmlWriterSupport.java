@@ -1,18 +1,18 @@
 package ch.sbb.exportservice.job.prm.ersad.netex;
 
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ACCESSIBILITY_ASSESSMENT;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ACCESSIBILITY_LIMITATION;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ATTR_ID;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ATTR_REF;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ATTR_VERSION;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.COMMENT;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.LIMITATIONS;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.MOBILITY_IMPAIRED_ACCESS;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.NETEX_OBJECT_VERSION;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.UNKNOWN;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.WHEELCHAIR_ACCESS;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.XML_ENCODING;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.XML_VERSION;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ACCESSIBILITY_ASSESSMENT;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ACCESSIBILITY_LIMITATION;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ATTR_ID;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ATTR_REF;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ATTR_VERSION;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.COMMENT;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.LIMITATIONS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.MOBILITY_IMPAIRED_ACCESS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.NETEX_OBJECT_VERSION;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.UNKNOWN;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.WHEELCHAIR_ACCESS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.XML_ENCODING;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.XML_VERSION;
 
 import java.util.ArrayList;
 import java.util.List;

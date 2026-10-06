@@ -1,16 +1,16 @@
 package ch.sbb.exportservice.job.prm.ersad.netex;
 
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ID_SUFFIX_PARKING_AREA;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ID_SUFFIX_PARKING_PROPERTIES;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.NAME;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PARENT_SITE_REF;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PARKING;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PARKING_AREA;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PARKING_AREAS;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PARKING_PROPERTIES;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PARKING_PROPERTIES_CONTAINER;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PARKING_USER_TYPES;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PARKING_USER_TYPE_REGISTERED_DISABLED;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_PARKING_AREA;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_PARKING_PROPERTIES;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.NAME;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARENT_SITE_REF;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARKING;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARKING_AREA;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARKING_AREAS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARKING_PROPERTIES;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARKING_PROPERTIES_CONTAINER;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARKING_USER_TYPES;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARKING_USER_TYPE_REGISTERED_DISABLED;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadParking;

@@ -1,15 +1,15 @@
 package ch.sbb.exportservice.job.prm.ersad.netex;
 
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ACCESS_VEHICLE_EQUIPMENT;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.HOIST;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ID_SUFFIX_ACCESS;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.ID_SUFFIX_ACCESSIBILITY_ASSESSMENT;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.LEVEL_ACCESS_INTO_VEHICLE;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PLACE_EQUIPMENTS;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.PUBLIC_CODE;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.QUAY;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.RAMP;
-import static ch.sbb.exportservice.job.prm.ersad.model.Constants.WHEELCHAIR_ACCESS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ACCESS_VEHICLE_EQUIPMENT;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.HOIST;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ACCESS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ACCESSIBILITY_ASSESSMENT;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.LEVEL_ACCESS_INTO_VEHICLE;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PLACE_EQUIPMENTS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PUBLIC_CODE;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.QUAY;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.RAMP;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.WHEELCHAIR_ACCESS;
 
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadQuay;
 import ch.sbb.exportservice.job.prm.ersad.netex.XmlWriterSupport.Limitation;
