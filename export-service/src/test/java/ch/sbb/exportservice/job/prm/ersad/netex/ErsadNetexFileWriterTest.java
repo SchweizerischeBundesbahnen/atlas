@@ -240,7 +240,7 @@ class ErsadNetexFileWriterTest {
   }
 
   @Test
-  void shouldBeIdempotentOnClose() throws Exception {
+  void shouldBeIdempotentOnClose() {
     // Given
     Path file = tempDir.resolve("ersad.xml");
     ErsadNetexFileWriter writer = ErsadNetexFileWriter.open(file, ErsadGoldenFixtures.PUBLICATION_TIMESTAMP);
@@ -277,6 +277,7 @@ class ErsadNetexFileWriterTest {
 
   private static DocumentBuilder documentBuilder() throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
     factory.setNamespaceAware(true);
     factory.setIgnoringComments(true);
     return factory.newDocumentBuilder();
