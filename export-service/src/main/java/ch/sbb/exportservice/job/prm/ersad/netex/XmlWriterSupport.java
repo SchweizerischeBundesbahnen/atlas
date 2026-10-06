@@ -22,7 +22,7 @@ import javax.xml.stream.XMLStreamWriter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class XmlWriterSupport {
+public class XmlWriterSupport {
 
   static final String VERSION = NETEX_OBJECT_VERSION;
   private static final String INDENT = "  ";
@@ -30,15 +30,15 @@ class XmlWriterSupport {
   private final XMLStreamWriter writer;
   private int depth;
 
-  record Limitation(String name, Optional<String> value) {
+  public record Limitation(String name, Optional<String> value) {
 
   }
 
-  void startDocument() {
+  public void startDocument() {
     call(() -> writer.writeStartDocument(XML_ENCODING, XML_VERSION));
   }
 
-  void endDocument() {
+  public void endDocument() {
     call(() -> {
       writer.writeCharacters("\n");
       writer.writeEndDocument();
@@ -46,41 +46,41 @@ class XmlWriterSupport {
     });
   }
 
-  void close() {
+  public void close() {
     call(writer::close);
   }
 
-  void startElement(String name) {
+  public void startElement(String name) {
     indent();
     call(() -> writer.writeStartElement(name));
     depth++;
   }
 
-  void startElement(String name, String id) {
+  public void startElement(String name, String id) {
     startElement(name);
     attribute(ATTR_ID, id);
     attribute(ATTR_VERSION, VERSION);
   }
 
-  void attribute(String name, String value) {
+  public void attribute(String name, String value) {
     call(() -> writer.writeAttribute(name, value));
   }
 
-  void defaultNamespace(String namespaceUri) {
+  public void defaultNamespace(String namespaceUri) {
     call(() -> writer.writeDefaultNamespace(namespaceUri));
   }
 
-  void namespace(String prefix, String namespaceUri) {
+  public void namespace(String prefix, String namespaceUri) {
     call(() -> writer.writeNamespace(prefix, namespaceUri));
   }
 
-  void endElement() {
+  public void endElement() {
     depth--;
     indent();
     call(writer::writeEndElement);
   }
 
-  void element(String name, String text) {
+  public void element(String name, String text) {
     indent();
     call(() -> {
       writer.writeStartElement(name);
@@ -89,7 +89,7 @@ class XmlWriterSupport {
     });
   }
 
-  void element(String name, String attributeName, String attributeValue, String text) {
+  public void element(String name, String attributeName, String attributeValue, String text) {
     indent();
     call(() -> {
       writer.writeStartElement(name);
@@ -99,11 +99,11 @@ class XmlWriterSupport {
     });
   }
 
-  void optionalElement(String name, Optional<String> value) {
+  public void optionalElement(String name, Optional<String> value) {
     value.ifPresent(text -> element(name, text));
   }
 
-  void reference(String name, String ref) {
+  public void reference(String name, String ref) {
     indent();
     call(() -> {
       writer.writeEmptyElement(name);
@@ -112,7 +112,7 @@ class XmlWriterSupport {
     });
   }
 
-  void referenceWithoutVersion(String name, String ref) {
+  public void referenceWithoutVersion(String name, String ref) {
     indent();
     call(() -> {
       writer.writeEmptyElement(name);
@@ -120,7 +120,7 @@ class XmlWriterSupport {
     });
   }
 
-  void accessibilityAssessment(String id, List<Limitation> limitations, Optional<String> comment) {
+  public void accessibilityAssessment(String id, List<Limitation> limitations, Optional<String> comment) {
     List<Limitation> present = limitations.stream().filter(limitation -> limitation.value().isPresent()).toList();
     if (present.isEmpty() && comment.isEmpty()) {
       return;
@@ -154,7 +154,7 @@ class XmlWriterSupport {
     return withFallback;
   }
 
-  static boolean anyPresent(List<Optional<String>> values) {
+  public static boolean anyPresent(List<Optional<String>> values) {
     return values.stream().anyMatch(Optional::isPresent);
   }
 

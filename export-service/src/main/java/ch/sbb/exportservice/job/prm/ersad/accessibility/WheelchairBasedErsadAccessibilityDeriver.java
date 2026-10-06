@@ -23,7 +23,7 @@ public class WheelchairBasedErsadAccessibilityDeriver implements ErsadAccessibil
     return toNetex(WheelchairAccessibility.calculateStopPointOnDate(requestOnDate));
   }
 
-  static NetexTriState toNetex(WheelchairAccessibilityState state) {
+  public static NetexTriState toNetex(WheelchairAccessibilityState state) {
     return switch (state) {
       case AUTONOMY -> NetexTriState.TRUE;
       case RAMP_USE, PRE_REGISTRATION, SHUTTLE -> NetexTriState.PARTIAL;

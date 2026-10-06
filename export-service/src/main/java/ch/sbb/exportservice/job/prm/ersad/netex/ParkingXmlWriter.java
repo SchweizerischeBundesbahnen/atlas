@@ -18,11 +18,11 @@ import ch.sbb.exportservice.job.prm.ersad.model.ErsadStation;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class ParkingXmlWriter {
+public class ParkingXmlWriter {
 
   private final XmlWriterSupport xml;
 
-  void write(ErsadStation station, ErsadParking parking) {
+  public void write(ErsadStation station, ErsadParking parking) {
     xml.startElement(PARKING, parking.sloid());
     xml.optionalElement(NAME, NetexValueMapper.text(parking.designation()));
     xml.reference(PARENT_SITE_REF, station.sloid());

@@ -18,11 +18,11 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class QuayXmlWriter {
+public class QuayXmlWriter {
 
   private final XmlWriterSupport xml;
 
-  void write(ErsadQuay quay) {
+  public void write(ErsadQuay quay) {
     xml.startElement(QUAY, quay.sloid());
     xml.accessibilityAssessment(quay.sloid() + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT,
         List.of(

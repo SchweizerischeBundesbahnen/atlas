@@ -17,11 +17,11 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class PathLinkXmlWriter {
+public class PathLinkXmlWriter {
 
   private final XmlWriterSupport xml;
 
-  void write(ErsadStation station, ErsadPathLink pathLink, int index) {
+  public void write(ErsadStation station, ErsadPathLink pathLink, int index) {
     String id = station.sloid() + ID_SUFFIX_PATH_LINK + index;
     xml.startElement(SITE_PATH_LINK, id);
     xml.startElement(FROM);

@@ -51,17 +51,17 @@ import ch.sbb.exportservice.job.prm.ersad.netex.XmlWriterSupport.Limitation;
 import java.util.List;
 import java.util.Optional;
 
-class StopPlaceXmlWriter {
+public class StopPlaceXmlWriter {
 
   private final XmlWriterSupport xml;
   private final QuayXmlWriter quayWriter;
 
-  StopPlaceXmlWriter(XmlWriterSupport xml) {
+  public StopPlaceXmlWriter(XmlWriterSupport xml) {
     this.xml = xml;
     this.quayWriter = new QuayXmlWriter(xml);
   }
 
-  void write(ErsadStation station) {
+  public void write(ErsadStation station) {
     xml.startElement(STOP_PLACE, station.sloid());
     xml.optionalElement(NAME, NetexValueMapper.text(station.name()));
     if (station.number() != null) {
