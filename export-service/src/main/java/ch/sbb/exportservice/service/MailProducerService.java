@@ -1,28 +1,15 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.producer.BaseProducer;
-import ch.sbb.atlas.kafka.topic.KafkaKey;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import ch.sbb.atlas.api.mail.MailClientService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import tools.jackson.databind.ObjectMapper;
 
-@Slf4j
-@Component
-public class MailProducerService extends BaseProducer<MailNotification> {
+@Service
+public class MailProducerService extends MailClientService {
 
-  @Value("${kafka.atlas.mail.topic}")
-  @Getter
-  private String topic;
-
-  public MailProducerService(KafkaTemplate<String, Object> kafkaTemplate) {
-    super(kafkaTemplate);
+  public MailProducerService(MailFeignClient mailFeignClient, ObjectMapper objectMapper,
+      @Value("${atlas.client.gateway.url}") String gatewayUrl) {
+    super(mailFeignClient, objectMapper, gatewayUrl);
   }
-
-  public void produceMailNotification(MailNotification mailNotification) {
-    produceEvent(mailNotification, KafkaKey.MAIL.getValue());
-  }
-
 }

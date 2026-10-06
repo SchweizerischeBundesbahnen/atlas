@@ -222,7 +222,6 @@ services:
       '
       set -e
       echo "Creating topics.."
-      ./kafka-topics.sh --create --if-not-exists --topic atlas.mail --replication-factor=1 --partitions=1 --bootstrap-server kafka:9094
       ./kafka-topics.sh --create --if-not-exists --topic atlas.user.administration --replication-factor=1 --partitions=1 --bootstrap-server kafka:9094
       ./kafka-topics.sh --create --if-not-exists --topic atlas.business.organisation --replication-factor=1 --partitions=1 --bootstrap-server kafka:9094
       ./kafka-topics.sh --create --if-not-exists --topic atlas.transport.company --replication-factor=1 --partitions=1 --bootstrap-server kafka:9094

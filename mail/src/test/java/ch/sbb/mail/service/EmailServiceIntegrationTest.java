@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EmailServiceIntegrationTest {
@@ -34,6 +36,9 @@ class EmailServiceIntegrationTest {
 
   @Autowired
   private MailService mailService;
+
+  @MockitoBean
+  private JwtDecoder jwtDecoder;
 
   @Test
   void shouldSendSimpleMail() throws MessagingException, IOException {

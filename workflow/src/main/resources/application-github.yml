@@ -89,9 +89,6 @@ spring:
 
 kafka:
   atlas:
-    mail:
-      topic: atlas.mail
-      groupId: atlas.kafka.mail.groupId
     user:
       administration:
         topic: atlas.user.administration
