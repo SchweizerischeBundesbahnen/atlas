@@ -70,15 +70,32 @@ public final class ErsadNetexFileWriter implements AutoCloseable {
   }
 
   public static ErsadNetexFileWriter open(Path file, LocalDateTime publicationTimestamp) {
-    try (BufferedWriter output = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
+    BufferedWriter output = null;
+    try {
+      output = Files.newBufferedWriter(file, StandardCharsets.UTF_8);
       XmlWriterSupport xml = new XmlWriterSupport(XMLOutputFactory.newFactory().createXMLStreamWriter(output));
       ErsadNetexFileWriter writer = new ErsadNetexFileWriter(output, xml);
       writer.writeHeader(publicationTimestamp);
       return writer;
     } catch (IOException e) {
+      closeQuietly(output);
       throw new UncheckedIOException("Could not open ERSAD NeTEx file " + file, e);
-    } catch (XMLStreamException e) {
+    } catch (XMLStreamException | RuntimeException e) {
+      closeQuietly(output);
+      if (e instanceof RuntimeException runtimeException) {
+        throw runtimeException;
+      }
       throw new IllegalStateException("Could not create XML writer for " + file, e);
+    }
+  }
+
+  private static void closeQuietly(Writer output) {
+    if (output != null) {
+      try {
+        output.close();
+      } catch (IOException ignored) {
+        // best effort cleanup
+      }
     }
   }
 
