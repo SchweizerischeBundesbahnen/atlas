@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.job.prm.ersad.assembler;
 
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.exportservice.job.prm.contactpoint.entity.ContactPointVersion;
@@ -74,8 +75,7 @@ public class ErsadStationAssembler {
     CoordinatePair wgs84 = null;
     if (servicePoint.getServicePointGeolocation() != null
         && servicePoint.getServicePointGeolocation().getSpatialReference() != null) {
-      wgs84 = coordinateTransformer.transform(servicePoint.getServicePointGeolocation().asCoordinatePair(),
-          ch.sbb.atlas.api.servicepoint.SpatialReference.WGS84);
+      wgs84 = coordinateTransformer.transform(servicePoint.getServicePointGeolocation().asCoordinatePair(), SpatialReference.WGS84);
     }
 
     return Optional.of(new ErsadStation(
