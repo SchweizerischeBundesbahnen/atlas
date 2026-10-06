@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.module.line.search;
 
-import ch.sbb.atlas.api.lidi.enumaration.LineObjectType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

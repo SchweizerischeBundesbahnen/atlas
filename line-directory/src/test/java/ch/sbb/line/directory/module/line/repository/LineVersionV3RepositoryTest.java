@@ -3,7 +3,7 @@ package ch.sbb.line.directory.module.line.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import ch.sbb.atlas.api.lidi.enumaration.LineMeanOfTransport;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;

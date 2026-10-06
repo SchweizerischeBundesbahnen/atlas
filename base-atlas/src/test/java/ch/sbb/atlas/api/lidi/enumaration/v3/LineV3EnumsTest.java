@@ -1,7 +1,10 @@
-package ch.sbb.atlas.api.lidi.enumaration;
+package ch.sbb.atlas.api.lidi.enumaration.v3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.TtfnMeanOfTransport;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +17,8 @@ import org.junit.jupiter.api.Test;
  */
 class LineV3EnumsTest {
 
-  private static final Path ENUM_SOURCE_DIR = Path.of("src", "main", "java", "ch", "sbb", "atlas", "api", "lidi", "enumaration");
+  private static final Path ENUM_SOURCE_DIR = Path.of("src", "main", "java", "ch", "sbb", "atlas", "api", "lidi", "enumaration",
+      "v3");
 
   @Test
   void shouldHaveExactlyTwelveLineMeansOfTransport() {
@@ -47,14 +51,14 @@ class LineV3EnumsTest {
 
   @Test
   void shouldHaveExactlySixConcessionTypesV3() {
-    assertThat(ConcessionTypeV3.values()).hasSize(6)
+    assertThat(ConcessionType.values()).hasSize(6)
         .containsExactly(
-            ConcessionTypeV3.FEDERAL_ZONE_CONCESSION,
-            ConcessionTypeV3.CANTONALLY_APPROVED_LINE,
-            ConcessionTypeV3.RIGHT_FREE_LINE,
-            ConcessionTypeV3.FEDERALLY_LICENSED_LINE,
-            ConcessionTypeV3.FEDERALLY_APPROVED_LINE,
-            ConcessionTypeV3.STATE_TREATY);
+            ConcessionType.FEDERAL_ZONE_CONCESSION,
+            ConcessionType.CANTONALLY_APPROVED_LINE,
+            ConcessionType.RIGHT_FREE_LINE,
+            ConcessionType.FEDERALLY_LICENSED_LINE,
+            ConcessionType.FEDERALLY_APPROVED_LINE,
+            ConcessionType.STATE_TREATY);
   }
 
   @Test
@@ -69,7 +73,7 @@ class LineV3EnumsTest {
         "LINE_ABROAD");
 
     //when
-    List<String> actualLiterals = Arrays.stream(ConcessionTypeV3.values()).map(Enum::name).toList();
+    List<String> actualLiterals = Arrays.stream(ConcessionType.values()).map(Enum::name).toList();
 
     //then
     assertThat(actualLiterals).isNotEmpty();
@@ -93,16 +97,16 @@ class LineV3EnumsTest {
   @Test
   void shouldHaveExactlySevenLineTypesV3WithoutArea() {
     //then
-    assertThat(LineTypeV3.values()).hasSize(7)
+    assertThat(LineType.values()).hasSize(7)
         .containsExactly(
-            LineTypeV3.ORDERLY,
-            LineTypeV3.DISPOSITION,
-            LineTypeV3.TEMPORARY,
-            LineTypeV3.OPERATIONAL,
-            LineTypeV3.TECHNICAL,
-            LineTypeV3.CONCESSION,
-            LineTypeV3.ZONE);
-    assertThat(Arrays.stream(LineTypeV3.values()).map(Enum::name)).doesNotContain("AREA");
+            LineType.ORDERLY,
+            LineType.DISPOSITION,
+            LineType.TEMPORARY,
+            LineType.OPERATIONAL,
+            LineType.TECHNICAL,
+            LineType.CONCESSION,
+            LineType.ZONE);
+    assertThat(Arrays.stream(LineType.values()).map(Enum::name)).doesNotContain("AREA");
   }
 
   @Test

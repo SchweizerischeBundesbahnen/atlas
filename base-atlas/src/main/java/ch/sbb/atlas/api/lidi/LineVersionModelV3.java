@@ -2,11 +2,11 @@ package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.lidi.enumaration.ConcessionTypeV3;
-import ch.sbb.atlas.api.lidi.enumaration.Financing;
-import ch.sbb.atlas.api.lidi.enumaration.LineMeanOfTransport;
-import ch.sbb.atlas.api.lidi.enumaration.LineObjectType;
-import ch.sbb.atlas.api.lidi.enumaration.LineTypeV3;
+import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -69,7 +69,7 @@ public class LineVersionModelV3 extends BaseVersionModel {
   private String linienId;
 
   @Schema(description = "LineType", accessMode = AccessMode.READ_ONLY)
-  private LineTypeV3 lineType;
+  private LineType lineType;
 
   @Schema(description = "BusinessOrganisation SBOID", accessMode = AccessMode.READ_ONLY, example = "ch:1:sboid:1100048")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
@@ -81,7 +81,7 @@ public class LineVersionModelV3 extends BaseVersionModel {
   private Set<LineMeanOfTransport> meansOfTransport;
 
   @Schema(description = "ConcessionType", accessMode = AccessMode.READ_ONLY)
-  private ConcessionTypeV3 concessionType;
+  private ConcessionType concessionType;
 
   @Schema(description = "OfferCategory", accessMode = AccessMode.READ_ONLY)
   private OfferCategory offerCategory;

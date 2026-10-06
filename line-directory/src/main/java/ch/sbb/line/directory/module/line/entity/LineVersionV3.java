@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.module.line.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.lidi.enumaration.ConcessionTypeV3;
-import ch.sbb.atlas.api.lidi.enumaration.Financing;
-import ch.sbb.atlas.api.lidi.enumaration.LineMeanOfTransport;
-import ch.sbb.atlas.api.lidi.enumaration.LineTypeV3;
+import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.entity.BaseVersion;
@@ -59,10 +59,10 @@ public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAs
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private LineTypeV3 lineType;
+  private LineType lineType;
 
   @Enumerated(EnumType.STRING)
-  private ConcessionTypeV3 concessionType;
+  private ConcessionType concessionType;
 
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String number;

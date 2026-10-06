@@ -3,10 +3,10 @@ package ch.sbb.line.directory.module.line.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.LineVersionModelV3;
-import ch.sbb.atlas.api.lidi.enumaration.ConcessionTypeV3;
-import ch.sbb.atlas.api.lidi.enumaration.Financing;
-import ch.sbb.atlas.api.lidi.enumaration.LineMeanOfTransport;
-import ch.sbb.atlas.api.lidi.enumaration.LineObjectType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import java.util.Set;
@@ -112,7 +112,7 @@ class LineVersionV3MapperTest {
     assertThat(result.getReferencedLine().getNumber()).isEqualTo("90.583");
     assertThat(result.getReferencedLine().getLineNumber()).isEqualTo("90.583");
     assertThat(result.getReferencedLine().getSwissLineNumber()).isEqualTo("90.583");
-    assertThat(result.getReferencedLine().getConcessionType()).isEqualTo(ConcessionTypeV3.CANTONALLY_APPROVED_LINE);
+    assertThat(result.getReferencedLine().getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
   }
 
   @Test
@@ -139,8 +139,8 @@ class LineVersionV3MapperTest {
     LineVersionV3 line = LineVersionV3TestData.lineBuilder()
         .id(29227L)
         .version(3)
-        .creator("e522918")
-        .editor("e522918")
+        .creator("e123456")
+        .editor("e123456")
         .build();
 
     //when
@@ -149,8 +149,8 @@ class LineVersionV3MapperTest {
     //then
     assertThat(result.getId()).isEqualTo(29227L);
     assertThat(result.getEtagVersion()).isEqualTo(3);
-    assertThat(result.getCreator()).isEqualTo("e522918");
-    assertThat(result.getEditor()).isEqualTo("e522918");
+    assertThat(result.getCreator()).isEqualTo("e123456");
+    assertThat(result.getEditor()).isEqualTo("e123456");
     assertThat(result.getSlnid()).isEqualTo(LineVersionV3TestData.PARENT_SLNID);
   }
 

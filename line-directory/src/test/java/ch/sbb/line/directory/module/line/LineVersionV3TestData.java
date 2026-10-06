@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.module.line;
 
-import ch.sbb.atlas.api.lidi.enumaration.ConcessionTypeV3;
-import ch.sbb.atlas.api.lidi.enumaration.Financing;
-import ch.sbb.atlas.api.lidi.enumaration.LineMeanOfTransport;
-import ch.sbb.atlas.api.lidi.enumaration.LineTypeV3;
+import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
@@ -24,8 +24,8 @@ public class LineVersionV3TestData {
     return LineVersionV3.builder()
         .status(Status.VALIDATED)
         .slnid(PARENT_SLNID)
-        .lineType(LineTypeV3.ORDERLY)
-        .concessionType(ConcessionTypeV3.CANTONALLY_APPROVED_LINE)
+        .lineType(LineType.ORDERLY)
+        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
         .number("90.583")
         .swissLineNumber("90.583")
         .shortNumber("583")
@@ -44,7 +44,7 @@ public class LineVersionV3TestData {
         .status(Status.VALIDATED)
         .slnid(CHILD_SLNID)
         .referencedLineSlnid(PARENT_SLNID)
-        .lineType(LineTypeV3.TECHNICAL)
+        .lineType(LineType.TECHNICAL)
         .description("Savognin - Cre digl Lai")
         .longName("Savognin, posta - Cre digl Lai")
         .linienId("583d")
@@ -63,7 +63,7 @@ public class LineVersionV3TestData {
   public static LineVersionV3Builder<?, ?> cablewayBuilder() {
     return lineBuilder()
         .slnid(CABLEWAY_SLNID)
-        .lineType(LineTypeV3.ORDERLY)
+        .lineType(LineType.ORDERLY)
         .number("LSMS")
         .swissLineNumber("LSMS")
         .shortNumber(null)
