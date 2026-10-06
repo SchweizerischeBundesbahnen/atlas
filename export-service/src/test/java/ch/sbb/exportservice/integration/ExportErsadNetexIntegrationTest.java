@@ -26,7 +26,6 @@ import java.time.ZoneId;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
@@ -112,7 +111,7 @@ class ExportErsadNetexIntegrationTest extends BasePrmSqlIntegrationTest {
   }
 
   private String runJobAndCaptureUploadedFileContent() throws Exception {
-    ArgumentCaptor<File> fileArgumentCaptor = ArgumentCaptor.forClass(File.class);
+    var fileArgumentCaptor = org.mockito.ArgumentCaptor.forClass(File.class);
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(
         URI.create("https://sbb.ch").toURL());
     when(deleteErsadNetexXmlFileTasklet.execute(any(), any())).thenReturn(null);

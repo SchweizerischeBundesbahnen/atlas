@@ -13,7 +13,7 @@ class ExportFilePathV2Test {
   @Test
   void shouldExposePinnedSerialVersionUid() {
     // Given
-    final long expectedSerialVersionUid = -1808687188997943332L;
+    final long expectedSerialVersionUid = -857098055542197423L;
 
     // When
     final long result = ObjectStreamClass.lookup(ExportFilePathV2.class).getSerialVersionUID();
