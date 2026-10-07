@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.listener;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.exportservice.service.MailNotificationService;
 import ch.sbb.exportservice.service.MailProducerService;
 import jakarta.validation.constraints.NotNull;

@@ -5,13 +5,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.workflow.mail.MailProducerService;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationDecisionModel;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -48,12 +49,18 @@ class TerminationStopPointNotificationServiceTest {
         .status(TerminationWorkflowStatus.STARTED)
         .build();
     //when
+    MailNotification infoPlusNotification = MailNotification.builder().to(List.of("info-plus@example.com")).build();
+    MailNotification applicantNotification = MailNotification.builder().to(List.of("a@b.com")).build();
     when(builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(any())).thenReturn(
-        MailNotification.builder().build());
+        infoPlusNotification);
+    when(builderNotificationService.buildStartTerminationNotificationMailForApplicant(any())).thenReturn(
+        applicantNotification);
     notificationService.sendStartTerminationNotificationToInfoPlusAndBo(terminationStopPointWorkflow);
 
     verify(builderNotificationService).buildStartTerminationNotificationMailForInfoPlus(terminationStopPointWorkflow);
-    verify(mailProducerService, times(2)).produceMailNotification(any());
+    verify(builderNotificationService).buildStartTerminationNotificationMailForApplicant(terminationStopPointWorkflow);
+    verify(mailProducerService).produceMailNotification(infoPlusNotification);
+    verify(mailProducerService).produceMailNotification(applicantNotification);
   }
 
   @Test

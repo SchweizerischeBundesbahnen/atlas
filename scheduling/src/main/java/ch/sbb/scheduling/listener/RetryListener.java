@@ -1,6 +1,6 @@
 package ch.sbb.scheduling.listener;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.scheduling.service.MailNotificationService;
 import ch.sbb.scheduling.service.MailProducerService;
 import lombok.RequiredArgsConstructor;

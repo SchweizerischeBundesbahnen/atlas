@@ -1,6 +1,6 @@
 package ch.sbb.importservice.module.geo.listener;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.importservice.config.mail.MailProducerService;
 import ch.sbb.importservice.module.geo.entity.GeoUpdateProcessItem;
 import ch.sbb.importservice.module.geo.repository.GeoUpdateProcessItemRepository;

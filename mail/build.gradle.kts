@@ -22,7 +22,6 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 
     // Project dependencies
-    implementation(project(":kafka"))
     implementation(project(":base-atlas")){
         exclude("org.hibernate.orm","hibernate-processor")
         exclude("org.springframework.boot","spring-boot-starter-data-jpa")

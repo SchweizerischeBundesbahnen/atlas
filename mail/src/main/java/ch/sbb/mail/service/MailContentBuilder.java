@@ -2,7 +2,7 @@ package ch.sbb.mail.service;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

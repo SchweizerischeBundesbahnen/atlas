@@ -2,8 +2,8 @@ package ch.sbb.timetable.hearing.mail;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailType;
 import ch.sbb.timetable.hearing.client.UserAdministrationAdminClient;
 import ch.sbb.timetable.hearing.entity.Dossier;
 import java.time.format.DateTimeFormatter;

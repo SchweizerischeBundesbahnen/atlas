@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.timetable.hearing.client.UserAdministrationAdminClient;
 import ch.sbb.timetable.hearing.entity.Dossier;
 import ch.sbb.timetable.hearing.entity.DossierQuestion;

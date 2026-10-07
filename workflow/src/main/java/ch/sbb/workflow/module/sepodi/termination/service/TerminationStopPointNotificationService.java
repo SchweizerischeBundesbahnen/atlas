@@ -1,6 +1,6 @@
 package ch.sbb.workflow.module.sepodi.termination.service;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.workflow.mail.MailProducerService;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationAbortModel;
@@ -17,11 +17,13 @@ public class TerminationStopPointNotificationService {
   private final TerminationStopPointWorkflowBuilderNotificationService builderNotificationService;
 
   public void sendStartTerminationNotificationToInfoPlusAndBo(TerminationStopPointWorkflow workflow) {
-    MailNotification notification = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(workflow);
-    mailProducerService.produceMailNotification(notification);
+    MailNotification infoPlusNotification =
+        builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(workflow);
+    mailProducerService.produceMailNotification(infoPlusNotification);
 
-    notification.setTo(List.of(workflow.getApplicantMail()));
-    mailProducerService.produceMailNotification(notification);
+    MailNotification applicantNotification =
+        builderNotificationService.buildStartTerminationNotificationMailForApplicant(workflow);
+    mailProducerService.produceMailNotification(applicantNotification);
   }
 
   public void sendTariffStopNotApprovedNotificationToBo(TerminationStopPointWorkflow workflow,

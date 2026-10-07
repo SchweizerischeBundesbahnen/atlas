@@ -1,17 +1,17 @@
 package ch.sbb.workflow.module.sepodi.hearing.service;
 
-import static ch.sbb.atlas.kafka.model.mail.MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
 import java.time.LocalDate;
