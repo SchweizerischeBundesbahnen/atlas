@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.module.line;
 
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3.LineVersionV3Builder;

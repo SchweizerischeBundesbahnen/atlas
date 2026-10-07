@@ -1,13 +1,14 @@
 package ch.sbb.line.directory.module.line.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.entity.BaseVersion;
+import ch.sbb.atlas.versionable.Versionable;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -41,7 +42,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "line_version_v3")
-public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAssociated {
+public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAssociated, Versionable {
 
   private static final String VERSION_SEQ = "line_version_v3_seq";
 

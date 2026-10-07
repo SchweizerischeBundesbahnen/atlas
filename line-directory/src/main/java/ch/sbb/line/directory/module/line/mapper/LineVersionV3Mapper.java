@@ -9,16 +9,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class LineVersionV3Mapper {
 
-  /**
-   * Maps a {@link LineVersionV3} row to its read model.
-   *
-   * <p>All top-level values are taken from the row itself. Values of the referenced line are exposed exclusively inside
-   * {@link ReferencedLineModelV3}; {@code meansOfTransport}, {@code financing} and the {@code cableway*} fields are never
-   * inherited from the parent.
-   *
-   * @param version the row to map, never {@code null}
-   * @param parent  the resolved direct parent version, or {@code null} when the row is a LINE or the reference is unresolvable
-   */
   public static LineVersionModelV3 toModel(LineVersionV3 version, LineVersionV3 parent) {
     return LineVersionModelV3.builder()
         .id(version.getId())
@@ -51,17 +41,10 @@ public class LineVersionV3Mapper {
         .build();
   }
 
-  /**
-   * Derives the {@link LineObjectType} discriminator from the presence of a referenced line.
-   */
   public static LineObjectType resolveType(LineVersionV3 version) {
     return version.getReferencedLineSlnid() == null ? LineObjectType.LINE : LineObjectType.SUBLINE;
   }
 
-  /**
-   * Builds the nested reference. Nesting depth is structurally capped at 1: {@link ReferencedLineModelV3} carries no further
-   * reference, so a parent that is itself a SUBLINE never contributes its own parent.
-   */
   private static ReferencedLineModelV3 toReferencedLine(LineVersionV3 parent) {
     if (parent == null) {
       return null;

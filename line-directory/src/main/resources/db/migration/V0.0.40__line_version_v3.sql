@@ -45,6 +45,17 @@ ALTER TABLE line_version_v3 ADD CONSTRAINT line_v3_slnid_unique UNIQUE (slnid, v
 CREATE INDEX idx_line_version_v3_referenced_line_slnid
     ON line_version_v3 (referenced_line_slnid);
 
+CREATE INDEX idx_line_version_v3_valid_from_to
+    ON line_version_v3 (valid_from, valid_to);
+CREATE INDEX idx_line_version_v3_business_organisation
+    ON line_version_v3 (business_organisation);
+CREATE INDEX idx_line_version_v3_swiss_line_number
+    ON line_version_v3 (swiss_line_number);
+CREATE INDEX idx_line_version_v3_status
+    ON line_version_v3 (status, valid_from, valid_to);
+CREATE INDEX idx_line_version_v3_line_type
+    ON line_version_v3 (line_type, valid_from, valid_to);
+
 -----------------------------------------------------------------------------------------
 -- Line V3 - MeansOfTransport - Verkehrsmittel
 -- Mirrors service_point_version_means_of_transport.
@@ -56,8 +67,9 @@ CREATE TABLE line_version_v3_means_of_transport
     means_of_transport VARCHAR(50) NOT NULL
 );
 
+ALTER TABLE line_version_v3_means_of_transport
+    ADD CONSTRAINT pk_line_version_v3_means_of_transport
+        PRIMARY KEY (line_version_v3_id, means_of_transport);
+
 ALTER TABLE line_version_v3_means_of_transport ADD CONSTRAINT fk_means_of_transport_line_version_v3
     FOREIGN KEY (line_version_v3_id) REFERENCES line_version_v3 (id);
-
-CREATE INDEX idx_line_version_v3_means_of_transport_line_version_v3_id
-    ON line_version_v3_means_of_transport (line_version_v3_id);

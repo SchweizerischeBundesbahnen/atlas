@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.module.line.service;
 
 import ch.sbb.atlas.api.lidi.LineVersionModelV3;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import ch.sbb.line.directory.module.line.mapper.LineVersionV3Mapper;
 import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
@@ -18,10 +19,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Read-only service for the Linienmodell 3.0 contract. Resolves the direct parent of SUBLINE rows in a single batched query per
- * result set.
- */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -46,10 +43,6 @@ public class LineVersionV3Service {
         .toList();
   }
 
-  /**
-   * Loads every referenced parent of the given result set with one query, so parent resolution never degrades into a per-row
-   * lookup. Applies no status filter: a REVOKED parent still resolves.
-   */
   private Map<String, List<LineVersionV3>> loadParents(List<LineVersionV3> versions) {
     Set<String> referencedSlnids = versions.stream()
         .map(LineVersionV3::getReferencedLineSlnid)
@@ -70,17 +63,13 @@ public class LineVersionV3Service {
     return selectParentVersion(parentsBySlnid.get(referencedLineSlnid), version.getValidFrom());
   }
 
-  /**
-   * Picks the parent version whose validity covers the child's {@code validFrom}. Falls back to the newest parent version when no
-   * validity overlaps, and yields {@code null} when the reference is unresolvable.
-   */
   private static LineVersionV3 selectParentVersion(List<LineVersionV3> parentVersions, LocalDate childValidFrom) {
     if (parentVersions == null || parentVersions.isEmpty()) {
       return null;
     }
     return parentVersions.stream()
         .sorted(Comparator.comparing(LineVersionV3::getValidFrom))
-        .filter(parent -> !parent.getValidFrom().isAfter(childValidFrom) && !parent.getValidTo().isBefore(childValidFrom))
+        .filter(parent -> DateRange.fromVersionable(parent).contains(childValidFrom))
         .findFirst()
         .orElseGet(() -> parentVersions.stream()
             .max(Comparator.comparing(LineVersionV3::getValidFrom))

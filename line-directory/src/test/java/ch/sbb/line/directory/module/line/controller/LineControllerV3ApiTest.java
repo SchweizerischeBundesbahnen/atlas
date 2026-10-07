@@ -12,6 +12,8 @@ import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
 import java.time.LocalDate;
@@ -273,6 +275,42 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].cablewayNumber", is(nullValue())))
         .andExpect(jsonPath("$[0].cablewayType", is(nullValue())))
         .andExpect(jsonPath("$[0].cablewayName", is(nullValue())));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetLineVersionsAsUnauthorized() throws Exception {
+    //given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+
+    //when && then
+    mvc.perform(get(VERSIONS_URL))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldGetLineVersionsBySlnidAsUnauthorized() throws Exception {
+    //given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+
+    //when && then
+    mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.PARENT_SLNID))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD)
+  void shouldGetLineVersionsAsStandardUser() throws Exception {
+    //given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+
+    //when && then
+    mvc.perform(get(VERSIONS_URL))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   private void saveThreeLineVersions() {
