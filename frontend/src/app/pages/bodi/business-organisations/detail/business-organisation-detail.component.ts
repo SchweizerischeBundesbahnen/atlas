@@ -22,7 +22,9 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { UserDetailInfoComponent } from '../../../../core/components/user-edit-info/user-detail-info.component';
 import { Revokable, RevokeButton } from '../../../../core/form-components/revoke-button/revoke-button';
 import { AtlasLabelFieldComponent, AtlasSelectComponent, AtlasTextFieldComponent } from '@atlas/form';
-import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import {
+  TransportCompanyRelationInternalService
+} from '../../../../api/service/bodi/transport-company-relation-internal.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableComponent } from '../../../../core/components/table/table.component';
@@ -33,10 +35,8 @@ import { apply, disabled, form, Schema, schema } from '@angular/forms/signals';
 import { FormValidators } from '../../../../core/validation/form-validators.service';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { DetailDialogHelperService } from '../../../../core/detail/detail-dialog-helper.service';
-import {
-  BusinessOrganisationDetailForm,
-  BusinessOrganisationDetailFormModel,
-} from './business-organisation-detail-form-group';
+import { BusinessOrganisationDetailForm, BusinessOrganisationDetailFormModel, } from './business-organisation-detail-form-group';
+import { SloidContainerComponent } from '../../../../core/sloid-container/sloid-container.component';
 
 type TransportCompanyRelationTableEntry = {
   abbreviation?: string;
@@ -67,6 +67,7 @@ type TransportCompanyRelationTableEntry = {
     RevokeButton,
     AtlasLabelFieldComponent,
     TableComponent,
+    SloidContainerComponent,
   ],
 })
 export class BusinessOrganisationDetailComponent implements Revokable, OnInit, DetailFormComponent {
