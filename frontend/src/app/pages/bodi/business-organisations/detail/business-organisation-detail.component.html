@@ -1,6 +1,26 @@
 <atlas-detail-page-container atlasScrollToTop>
+  @if (!isNew) {
+    <div class="font-bold-4xl detail-title mb-3">
+      {{ selectedVersion[this.displayedAbbreviation()] }} -
+      {{ selectedVersion.organisationNumber }}
+    </div>
+    <div class="font-xl mb-2">
+    <span data-cy="total-range">
+      <atlas-date-range-text [dateRange]="maxValidity" />
+    </span>
+    </div>
+    <div class="d-flex flex-row col-6 mb-5">
+      <div class="d-flex flex-row">
+        <atlas-sloid-container [label]="'BODI.BUSINESS_ORGANISATION.SBOID'" [sloid]="selectedVersion.sboid!" />
+      </div>
+      <div class="d-flex flex-row ms-5">
+        <atlas-sloid-container [label]="'BODI.BUSINESS_ORGANISATION.SAID'" [sloid]="selectedVersion.said!" />
+      </div>
+    </div>
+  }
+
   <atlas-detail-page-content>
-    <div class="detail-wrapper mt-5">
+    <div>
       @if (isNew) {
         <h1 class="font-bold-4xl mb-5">
           {{ 'BODI.BUSINESS_ORGANISATION.NEW' | translate }}
@@ -10,18 +30,6 @@
           {{ 'BODI.BUSINESS_ORGANISATION.NEW_INFORMATION' | translate }}
         </h2>
       } @else {
-        <div class="font-bold-4xl detail-title mb-3">
-          {{ selectedVersion[this.displayedAbbreviation()] }} -
-          {{ selectedVersion.organisationNumber }}
-        </div>
-        <div class="font-bold-xl mb-2">
-          <span data-cy="detail-subheading-id">{{ selectedVersion.sboid }}</span>
-          <span data-cy="total-range">
-            -
-            <atlas-date-range-text [dateRange]="maxValidity" />
-          </span>
-        </div>
-
         <div class="col-12 d-flex mt-3">
           <div class="d-flex flex-column col-6 pe-3">
             @if (showVersionSwitch) {
