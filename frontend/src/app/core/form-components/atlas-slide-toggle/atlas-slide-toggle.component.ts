@@ -4,16 +4,11 @@ import {
   computed,
   effect,
   input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
   output,
   signal,
-  SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Field } from '@angular/forms/signals';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'atlas-slide-toggle',
@@ -21,7 +16,7 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./atlas-slide-toggle.component.scss'],
 })
-export class AtlasSlideToggleComponent implements OnInit, OnChanges, OnDestroy {
+export class AtlasSlideToggleComponent {
   readonly toggle = input(false);
   readonly disabled = input(false);
   readonly slideTrackNeutral = input(false);
@@ -34,7 +29,6 @@ export class AtlasSlideToggleComponent implements OnInit, OnChanges, OnDestroy {
 
   protected readonly currentToggle = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || (this.field()?.().disabled() ?? false));
-  private formSubscription?: Subscription;
 
   constructor() {
     effect(() => {
@@ -43,26 +37,23 @@ export class AtlasSlideToggleComponent implements OnInit, OnChanges, OnDestroy {
         this.currentToggle.set(field().value());
       }
     });
-  }
 
-  ngOnInit() {
-    this.formSubscription?.unsubscribe();
-    if (!this.field()) {
-      this.currentToggle.set(this.toggle());
-    }
-    if (this.formControl) {
-      this.currentToggle.set(this.formControl.value);
-      this.formSubscription = this.formControl.valueChanges.subscribe((newValue) => this.currentToggle.set(newValue));
-    }
-  }
+    effect(() => {
+      const toggle = this.toggle();
+      if (!this.field()) {
+        this.currentToggle.set(toggle);
+      }
+    });
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.toggle) {
-      this.currentToggle.set(this.toggle());
-    }
-    if (changes.formGroup || changes.controlName) {
-      this.ngOnInit();
-    }
+    effect((onCleanup) => {
+      const control = this.formControl;
+      if (!control) {
+        return;
+      }
+      this.currentToggle.set(control.value);
+      const subscription = control.valueChanges.subscribe((newValue) => this.currentToggle.set(newValue));
+      onCleanup(() => subscription.unsubscribe());
+    });
   }
 
   handleToggleClick(): void {
@@ -91,9 +82,5 @@ export class AtlasSlideToggleComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       return undefined;
     }
-  }
-
-  ngOnDestroy(): void {
-    this.formSubscription?.unsubscribe();
   }
 }
