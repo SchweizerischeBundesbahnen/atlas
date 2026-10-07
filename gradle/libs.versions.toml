@@ -37,7 +37,7 @@ poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "5.5.1" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
 tika-core = { group = "org.apache.tika", name = "tika-core", version = "4.1.0" }
 greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version = "2.1.14" }
-s3mock-testcontainers = { group = "com.adobe.testing", name = "s3mock-testcontainers", version = "4.11.0" }
+s3mock-testcontainers = { group = "com.adobe.testing", name = "s3mock-testcontainers", version = "5.2.3" }
 microsoft-graph = { group = "com.microsoft.graph", name = "microsoft-graph", version = "6.70.0" }
 azure-identity = { group = "com.azure", name = "azure-identity", version = "1.18.6" }
 
