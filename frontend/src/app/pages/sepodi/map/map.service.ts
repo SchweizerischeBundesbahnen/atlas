@@ -387,17 +387,15 @@ export class MapService {
     this.popup.setLngLat(coordinates).setHTML(htmlContentBuilder(event.features)).addTo(this.map);
 
     // Reconsider this when zoneless
+    const popupElement = this.popup.getElement();
+    const keepPopupOpen = () => {
+      this.keepPopup = true;
+    };
     this.popup.on('close', () => {
-      this.popup.getElement()?.removeAllListeners?.('click');
+      popupElement?.removeEventListener('click', keepPopupOpen);
       this.keepPopup = false;
     });
-    this.popup.getElement()?.addEventListener(
-      'click',
-      () => {
-        this.keepPopup = true;
-      },
-      { once: true }
-    );
+    popupElement?.addEventListener('click', keepPopupOpen, { once: true });
   }
 
   buildServicePointPopupInformation(features: MapGeoJSONFeature[]) {
