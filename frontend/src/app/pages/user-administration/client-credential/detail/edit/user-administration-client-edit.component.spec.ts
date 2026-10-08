@@ -6,13 +6,14 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import { ApplicationRole, ApplicationType, ClientCredential, PermissionRestrictionType } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
 import { UserPermissionGivenClientService } from './user-permission-given-client.service';
 import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('UserAdministrationClientEditComponent', () => {
   let component: UserAdministrationClientEditComponent;
@@ -23,6 +24,7 @@ describe('UserAdministrationClientEditComponent', () => {
   >;
   let notificationService: Mocked<Pick<NotificationService, 'success'>>;
   let dialogService: Mocked<Pick<DialogService, 'confirmLeave'>>;
+  let clientCredential: ClientCredential;
 
   beforeEach(() => {
     clientCredentialAdministrationService = {
@@ -37,6 +39,7 @@ describe('UserAdministrationClientEditComponent', () => {
     TestBed.configureTestingModule({
       imports: [UserAdministrationClientEditComponent],
       providers: [
+        provideZonelessChangeDetection(),
         TranslatePipe,
         {
           provide: UserPermissionGivenClientService,
@@ -69,7 +72,7 @@ describe('UserAdministrationClientEditComponent', () => {
 
     fixture = TestBed.createComponent(UserAdministrationClientEditComponent);
     component = fixture.componentInstance;
-    const clientCredential: ClientCredential = {
+    clientCredential = {
       clientCredentialId: 'clientCredentialId',
       permissions: new Set([
         {
@@ -88,27 +91,71 @@ describe('UserAdministrationClientEditComponent', () => {
       comment: 'comment',
     };
     fixture.componentRef.setInput('client', clientCredential);
-    component.record = {};
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.record.editionDate).toBe('');
+    expect(component.record().editionDate).toBe('');
   });
 
   it('should save permissions', () => {
+    component.toggleEdit();
+    component.form?.role().markAsDirty();
     component.saveClientCredential();
     expect(clientCredentialAdministrationService.updateClientCredentialPermissions).toHaveBeenCalledTimes(1);
   });
 
+  it('resets to a pristine read-only form after saving', () => {
+    clientCredentialAdministrationService.updateClientCredentialPermissions.mockReturnValue(of(clientCredential));
+    component.toggleEdit();
+    component.form?.role().markAsDirty();
+
+    component.saveClientCredential();
+
+    expect(component.editMode()).toBe(false);
+    expect(component.form?.().disabled()).toBe(true);
+    expect(component.form?.().dirty()).toBe(false);
+    expect(notificationService.success).toHaveBeenCalledWith('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
+  });
+
+  it('restores editing after a failed save', () => {
+    clientCredentialAdministrationService.updateClientCredentialPermissions.mockReturnValue(
+      throwError(() => new Error('Request failed'))
+    );
+    component.toggleEdit();
+    component.form?.role().markAsDirty();
+
+    component.saveClientCredential();
+
+    expect(component.saveEnabled()).toBe(true);
+    expect(component.editMode()).toBe(true);
+    expect(component.form?.().disabled()).toBe(false);
+    expect(component.form?.().dirty()).toBe(true);
+  });
+
+  it('discards edits only after confirmation', () => {
+    component.toggleEdit();
+    component.form?.role().markAsDirty();
+    dialogService.confirmLeave.mockReturnValueOnce(of(false));
+
+    component.toggleEdit();
+    expect(component.editMode()).toBe(true);
+    expect(component.form?.().dirty()).toBe(true);
+
+    component.toggleEdit();
+    expect(component.editMode()).toBe(false);
+    expect(component.form?.().dirty()).toBe(false);
+    expect(component.form?.().disabled()).toBe(true);
+  });
+
   it('should toggleEdit', () => {
-    expect(component.editMode).toBe(false);
+    expect(component.editMode()).toBe(false);
 
     component.toggleEdit();
-    expect(component.editMode).toBe(true);
+    expect(component.editMode()).toBe(true);
 
     component.toggleEdit();
-    expect(component.editMode).toBe(false);
+    expect(component.editMode()).toBe(false);
   });
 });

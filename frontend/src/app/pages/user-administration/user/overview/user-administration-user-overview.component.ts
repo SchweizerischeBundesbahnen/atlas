@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { finalize, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { form } from '@angular/forms/signals';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
+import { ApplicationType, BusinessOrganisation, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
 import { tableColumns } from './table-column-definition';
 import { SearchType, SearchTypes } from './search-type';
 import { Cantons } from '../../../../core/cantons/Cantons';
@@ -23,13 +25,11 @@ import { HttpErrorResponse } from '@angular/common/http';
   selector: 'atlas-user-administration-overview',
   templateUrl: './user-administration-user-overview.component.html',
   styleUrls: ['./user-administration-user-overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TableComponent,
     MatLabel,
     MatRadioGroup,
-    ReactiveFormsModule,
-    FormsModule,
     UserSelectComponent,
     BusinessOrganisationSelectComponent,
     SelectComponent,
@@ -39,14 +39,14 @@ import { HttpErrorResponse } from '@angular/common/http';
   ],
 })
 export class UserAdministrationUserOverviewComponent {
-  userPageResult: { users: User[]; totalCount: number } = {
+  readonly userPageResult = signal<{ users: User[]; totalCount: number }>({
     users: [],
     totalCount: 0,
-  };
-  selectedSearch: SearchType = 'USER';
+  });
+  readonly selectedSearch = signal<SearchType>('USER');
   readonly searchOptions = SearchTypes;
 
-  selectedApplicationOptions: ApplicationType[] = [];
+  readonly selectedApplicationOptions = signal<ApplicationType[]>([]);
   readonly applicationBoOptions: ApplicationType[] = [
     ApplicationType.Ttfn,
     ApplicationType.Lidi,
@@ -56,16 +56,12 @@ export class UserAdministrationUserOverviewComponent {
   ];
   readonly applicationCantonOptions: ApplicationType[] = [ApplicationType.TimetableHearing];
   readonly cantonOptions: SwissCanton[] = Object.values(SwissCanton);
-  selectedCantonOptions: SwissCanton[] = [];
+  readonly selectedCantonOptions = signal<SwissCanton[]>([]);
 
-  readonly userSearchCtrlName = 'userSearch';
-  readonly userSearchForm: FormGroup = new FormGroup({
-    [this.userSearchCtrlName]: new FormControl<string | null>(null),
-  });
-  readonly boSearchCtrlName = 'boSearch';
-  readonly boForm: FormGroup = new FormGroup({
-    [this.boSearchCtrlName]: new FormControl<string | null>(null),
-  });
+  readonly userSearchModel = signal<{ userSearch: User | null }>({ userSearch: null });
+  readonly userSearchForm = form(this.userSearchModel);
+  readonly boSearchModel = signal<{ boSearch: BusinessOrganisation | string | null }>({ boSearch: null });
+  readonly boSearchForm = form(this.boSearchModel);
   readonly tableColumns = tableColumns;
 
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
@@ -75,20 +71,21 @@ export class UserAdministrationUserOverviewComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly tableService = inject(TableService);
   private readonly notificationService = inject(NotificationService);
+  private readonly destroyRef = inject(DestroyRef);
+  private usersSubscription?: Subscription;
 
-  copyingEmails = false;
+  readonly copyingEmails = signal(false);
 
-  get hasFilterCriteria(): boolean {
-    return (
-      this.selectedApplicationOptions.length > 0 ||
-      this.selectedCantonOptions.length > 0 ||
-      !!this.boForm.get(this.boSearchCtrlName)?.value
-    );
-  }
+  readonly hasFilterCriteria = computed(
+    () =>
+      this.selectedApplicationOptions().length > 0 ||
+      this.selectedCantonOptions().length > 0 ||
+      !!this.boSearchForm.boSearch().value()
+  );
 
   reloadTableWithCurrentSettings(): void {
-    if (this.selectedSearch === 'USER') {
-      this.onUserFilterChanged(this.userSearchForm.get(this.userSearchCtrlName)?.value, this.tableService.pageIndex);
+    if (this.selectedSearch() === 'USER') {
+      this.onUserFilterChanged(this.userSearchForm.userSearch().value(), this.tableService.pageIndex);
     } else {
       this.filterChanged(this.tableService.pageIndex);
     }
@@ -103,97 +100,108 @@ export class UserAdministrationUserOverviewComponent {
   }
 
   loadUsers(pagination: TablePagination): void {
-    this.userSearchForm.reset();
-    this.boForm.reset();
-    this.selectedApplicationOptions = [];
-    this.userAdministrationService
+    this.usersSubscription?.unsubscribe();
+    this.userSearchForm.userSearch().value.set(null);
+    this.boSearchForm.boSearch().value.set(null);
+    this.selectedApplicationOptions.set([]);
+    this.selectedCantonOptions.set([]);
+    this.usersSubscription = this.userAdministrationService
       .getUsers(pagination.page, pagination.size)
-      .pipe(
-        tap((result) => {
-          this.userPageResult = {
-            users: result.objects!,
-            totalCount: result.totalCount!,
-          };
-          this.tableService.pageIndex = pagination.page;
-          this.tableService.pageSize = pagination.size;
-        })
-      )
-      .subscribe();
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        this.userPageResult.set({
+          users: result.objects!,
+          totalCount: result.totalCount!,
+        });
+        this.tableService.pageIndex = pagination.page;
+        this.tableService.pageSize = pagination.size;
+      });
   }
 
-  onUserFilterChanged(selectedUser: User, pageIndex = 0): void {
+  onUserFilterChanged(selectedUser: User | null | undefined, pageIndex = 0): void {
     if (!selectedUser) {
       this.loadUsers({ page: pageIndex, size: this.tableService.pageSize });
     } else if (!selectedUser.sbbUserId) {
-      this.userPageResult = { users: [], totalCount: 0 };
+      this.usersSubscription?.unsubscribe();
+      this.userPageResult.set({ users: [], totalCount: 0 });
       this.tableService.pageIndex = 0;
     } else {
-      this.userAdministrationService.getUser(selectedUser.sbbUserId).subscribe((user) => {
-        if (Array.from(user.permissions).length > 0) {
-          this.userPageResult = { users: [user], totalCount: 1 };
+      this.usersSubscription?.unsubscribe();
+      this.usersSubscription = this.userAdministrationService
+        .getUser(selectedUser.sbbUserId)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((user) => {
+          const hasPermissions = Array.from(user.permissions).length > 0;
+          this.userPageResult.set({
+            users: hasPermissions ? [user] : [],
+            totalCount: hasPermissions ? 1 : 0,
+          });
           this.tableService.pageIndex = 0;
-        } else {
-          this.userPageResult = { users: [], totalCount: 0 };
-          this.tableService.pageIndex = 0;
-        }
-      });
+        });
     }
   }
 
   filterChanged(pageIndex = 0): void {
     const { permissionRestrictions, type } = this.currentFilter();
-    this.userAdministrationService
+    this.usersSubscription?.unsubscribe();
+    this.usersSubscription = this.userAdministrationService
       .getUsers(
         pageIndex,
         this.tableService.pageSize,
         permissionRestrictions,
         type,
-        new Set<ApplicationType>(this.selectedApplicationOptions)
+        new Set<ApplicationType>(this.selectedApplicationOptions())
       )
-      .pipe(
-        tap((result) => {
-          this.userPageResult = {
-            users: result.objects!,
-            totalCount: result.totalCount!,
-          };
-          this.tableService.pageIndex = pageIndex;
-        })
-      )
-      .subscribe();
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        this.userPageResult.set({
+          users: result.objects!,
+          totalCount: result.totalCount!,
+        });
+        this.tableService.pageIndex = pageIndex;
+      });
   }
 
   copyFilteredEmails(): void {
     const { permissionRestrictions, type } = this.currentFilter();
-    this.copyingEmails = true;
+    this.copyingEmails.set(true);
     this.userAdministrationService
-      .getUserEmails(permissionRestrictions, type, new Set<ApplicationType>(this.selectedApplicationOptions))
-      .pipe(finalize(() => (this.copyingEmails = false)))
+      .getUserEmails(permissionRestrictions, type, new Set<ApplicationType>(this.selectedApplicationOptions()))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.copyingEmails.set(false))
+      )
       .subscribe({
         next: (emails) => this.copyEmailsToClipboard(emails),
         error: (error: HttpErrorResponse) => this.notificationService.error(error),
       });
   }
 
-  selectedSearchChanged(): void {
+  selectedSearchChanged(search: SearchType): void {
+    this.selectedSearch.set(search);
     this.loadUsers({ page: 0, size: 10 });
   }
 
   readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
 
   applicationChanged(applicationTypes: ApplicationType[]) {
-    this.selectedApplicationOptions = applicationTypes;
+    this.selectedApplicationOptions.set(applicationTypes);
   }
 
   cantonChanged(cantons: SwissCanton[]) {
-    this.selectedCantonOptions = cantons;
+    this.selectedCantonOptions.set(cantons);
   }
 
   private currentFilter(): { permissionRestrictions: Set<string>; type: PermissionRestrictionType } {
-    const selectedSboid = this.boForm.get(this.boSearchCtrlName)?.value;
+    const selectedBo = this.boSearchForm.boSearch().value();
+    const selectedSboid = typeof selectedBo === 'string' ? selectedBo : (selectedBo?.sboid ?? null);
     return {
-      permissionRestrictions: new Set<string>([selectedSboid, ...this.selectedCantonOptions]),
+      permissionRestrictions: new Set<string>([
+        ...(selectedSboid ? [selectedSboid] : []),
+        ...this.selectedCantonOptions(),
+      ]),
       type:
-        this.selectedSearch === 'FILTER'
+        this.selectedSearch() === 'FILTER'
           ? PermissionRestrictionType.BusinessOrganisation
           : PermissionRestrictionType.Canton,
     };

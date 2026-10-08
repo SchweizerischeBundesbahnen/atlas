@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, OnInit, signal } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -7,39 +7,36 @@ import {
   PermissionRestrictionType,
   SwissCanton,
 } from '../../../../api';
-import { ControlContainer, FormControl, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { ApplicationPermission, PermissionRestriction } from '../form/application-permission-form-group';
+import { form } from '@angular/forms/signals';
 import { AtlasSlideToggleComponent } from '../../../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-import { BusinessOrganisationSelectComponent } from '../../../form-components/bo-select/business-organisation-select.component';
+import { AtlasBoSelectComponent } from '../../../form-components/atlas-bo-select/atlas-bo-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SelectComponent } from '../../../form-components/select/select.component';
+import { AtlasSelectComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { Countries } from '../../../country/Countries';
 import { Cantons } from '../../../cantons/Cantons';
 import { TableColumn } from '../../table/table-column';
 import { BusinessOrganisationLanguageService } from '../../../../pages/bodi/business-organisations/shared/business-organisation-language.service';
-import { firstValueFrom } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { RelationComponent } from '../../relation/relation.component';
 import { AtlasSpacerComponent } from '../../spacer/atlas-spacer.component';
-import { ApplicationConfig, ApplicationPermissionConfig, RoleConfig } from './application-permission.config';
+import { ApplicationPermissionConfig } from './application-permission.config';
 import { UserPermissionProviderService } from './user-permission-provider-service';
 import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
-import { AtlasLabelFieldComponent } from '@atlas/form';
+import { ContainerBusinessOrganisation } from '../../../../api/model/containerBusinessOrganisation';
 
 @Component({
   selector: 'atlas-application-permission',
   templateUrl: './application-permission.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./application-permission.component.scss'],
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   imports: [
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
-    BusinessOrganisationSelectComponent,
+    AtlasBoSelectComponent,
     TranslatePipe,
-    SelectComponent,
+    AtlasSelectComponent,
     RelationComponent,
     AtlasSpacerComponent,
-    ReactiveFormsModule,
   ],
 })
 export class ApplicationPermissionComponent implements OnInit {
@@ -48,28 +45,35 @@ export class ApplicationPermissionComponent implements OnInit {
   private readonly userPermissionProviderService = inject(UserPermissionProviderService);
 
   readonly application = input.required<ApplicationType>();
+  readonly form = computed(() => {
+    const currentForm = this.userPermissionProviderService.currentForm();
+    return currentForm?.().value().application === this.application() ? currentForm : undefined;
+  });
+  readonly availableRoles = computed(() => ApplicationPermissionConfig.getRoles(this.application()));
+  readonly currentRole = computed(() => this.form()?.role().value() ?? ApplicationRole.Reader);
+  readonly currentRoleConfig = computed(() => {
+    const roleConfig = ApplicationPermissionConfig.getByRole(this.application(), this.currentRole());
+    if (!roleConfig) {
+      throw new Error(`Unsupported role ${this.currentRole()} for application ${this.application()}`);
+    }
+    return roleConfig;
+  });
+  readonly showAllSpecialPermissions = this.userPermissionProviderService.showAllSpecialPermissions();
+  readonly currentBusinessOrganisations = signal<BusinessOrganisation[]>([]);
+  readonly selectedBusinessOrganisationIndex = signal(-1);
+  readonly lookupError = signal(false);
 
-  availableRoles: ApplicationRole[] = [];
-  applicationConfig: ApplicationConfig = ApplicationPermissionConfig.get(ApplicationType.Ttfn);
-  form!: FormGroup<ApplicationPermission>;
-  permissionsForm!: FormGroup<PermissionRestriction>;
-  currentRole!: ApplicationRole;
-  currentRoleConfig!: RoleConfig;
-  showAllSpecialPermissions = false;
-  currentBusinessOrganisations: BusinessOrganisation[] = [];
-  selectedBusinessOrganisationIndex = -1;
-
-  readonly ApplicationType = ApplicationType;
   readonly getCountryEnum = Countries.getCountryEnum;
   readonly SWISS_COUNTRIES_PREFIX_LABEL = 'TTH.COUNTRY.';
   readonly COUNTRIES = this.filterAndSortCountries();
   readonly SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
   readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
   readonly SWISS_CANTONS = Object.values(SwissCanton);
-  readonly boFormCtrlName = 'businessOrganisation';
-  readonly businessOrganisationForm: FormGroup = new FormGroup({
-    [this.boFormCtrlName]: new FormControl<BusinessOrganisation | null>(null),
-  });
+  readonly businessOrganisationForm = form(
+    signal<{ businessOrganisation: BusinessOrganisation | string | null }>({
+      businessOrganisation: null,
+    })
+  );
   readonly tableColumnDef: TableColumn<BusinessOrganisation>[] = [
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
@@ -93,160 +97,141 @@ export class ApplicationPermissionComponent implements OnInit {
     },
   ];
 
-  ngOnInit(): void {
-    this.userPermissionProviderService.loadFormGroup(this.application());
-    this.initializeView();
-    this.userPermissionProviderService.formChanged.subscribe(() => {
-      this.initializeView();
+  readonly showBusinessOrganisationRestriction = computed(() =>
+    this.hasRestriction(PermissionRestrictionType.BusinessOrganisation)
+  );
+  readonly showCountryRestriction = computed(() => this.hasRestriction(PermissionRestrictionType.Country));
+  readonly showCantonRestriction = computed(() => this.hasRestriction(PermissionRestrictionType.Canton));
+  readonly showBulkImport = computed(() =>
+    this.hasSpecialPermission(
+      PermissionRestrictionType.BulkImport,
+      this.form()?.permissions.bulkImportRestriction().value()
+    )
+  );
+  readonly showInfoPlusTerminationVote = computed(() =>
+    this.hasSpecialPermission(
+      PermissionRestrictionType.InfoPlusTerminationVote,
+      this.form()?.permissions.infoPlusTerminationVote().value()
+    )
+  );
+  readonly showNovaTerminationVote = computed(() =>
+    this.hasSpecialPermission(
+      PermissionRestrictionType.NovaTerminationVote,
+      this.form()?.permissions.novaTerminationVote().value()
+    )
+  );
+  readonly showTransportCompanyDossierAnswer = computed(() =>
+    this.hasSpecialPermission(
+      PermissionRestrictionType.TransportCompanyDossierAnswer,
+      this.form()?.permissions.transportCompanyDossierAnswer().value()
+    )
+  );
+  readonly showSpecialPermissions = computed(
+    () =>
+      this.showBulkImport() ||
+      this.showInfoPlusTerminationVote() ||
+      this.showNovaTerminationVote() ||
+      this.showTransportCompanyDossierAnswer()
+  );
+
+  constructor() {
+    effect((onCleanup) => {
+      const permissionForm = this.form();
+      const sboids = permissionForm?.permissions.sboidsRestrictions().value() ?? [];
+      this.currentBusinessOrganisations.set([]);
+      this.selectedBusinessOrganisationIndex.set(-1);
+      this.lookupError.set(false);
+      if (sboids.length === 0) {
+        return;
+      }
+
+      const subscription = forkJoin(
+        sboids.map((sboid) =>
+          this.businessOrganisationService.getAllBusinessOrganisations(undefined, [sboid], undefined, undefined, 0, 1, [
+            'sboid,ASC',
+          ])
+        )
+      ).subscribe({
+        next: (results) => this.updateBusinessOrganisations(results, sboids),
+        error: () => this.lookupError.set(true),
+      });
+      onCleanup(() => subscription.unsubscribe());
     });
   }
 
+  private updateBusinessOrganisations(results: ContainerBusinessOrganisation[], sboids: string[]): void {
+    const organisations = results.map((result, index) =>
+      result.objects?.find((organisation) => organisation.sboid === sboids[index])
+    );
+    if (organisations.some((organisation) => !organisation)) {
+      this.lookupError.set(true);
+    }
+    this.currentBusinessOrganisations.set(organisations.filter((organisation) => !!organisation));
+  }
+
+  ngOnInit(): void {
+    this.userPermissionProviderService.loadForm(this.application());
+  }
+
   private filterAndSortCountries(): Country[] {
-    const sortedCountryArray: Country[] = [];
-    sortedCountryArray.push(
+    const sortedCountryArray: Country[] = [
       Country.Switzerland,
       Country.GermanyBus,
       Country.AustriaBus,
       Country.ItalyBus,
-      Country.FranceBus
-    );
+      Country.FranceBus,
+    ];
     const filteredCountries = Countries.filteredCountries();
     filteredCountries.sort(Countries.compareFn);
     return sortedCountryArray.concat(filteredCountries);
   }
 
-  private initializeView(): void {
-    this.form = this.userPermissionProviderService.getCurrentForm()!;
-    this.permissionsForm = this.form.controls.permissions;
-
-    this.availableRoles = ApplicationPermissionConfig.getRoles(this.form.controls.application.value!);
-    this.applicationConfig = ApplicationPermissionConfig.get(this.form.controls.application.value!);
-    this.showAllSpecialPermissions = this.userPermissionProviderService.showAllSpecialPermissions();
-
-    this.onRoleChanged(this.form.controls.role.value ? [this.form.controls.role.value] : []);
-
-    this.permissionsForm.controls.sboidsRestrictions?.value?.forEach((sboid) => {
-      this.currentBusinessOrganisations = [];
-      this.addBusinessOrganisationToCurrentTable(sboid);
-    });
-  }
-
   removeBusinessOrganisation(): void {
-    const sboidToRemove = this.currentBusinessOrganisations[this.selectedBusinessOrganisationIndex].sboid!;
-
-    const sboids = this.form.controls.permissions.controls.sboidsRestrictions!;
-    const indexToRemove = sboids.value!.indexOf(sboidToRemove);
-    sboids.value!.splice(indexToRemove, 1);
-    sboids.markAsDirty();
-
-    this.currentBusinessOrganisations = this.currentBusinessOrganisations.filter(
-      (_, index) => index !== this.selectedBusinessOrganisationIndex
+    const sboid = this.currentBusinessOrganisations()[this.selectedBusinessOrganisationIndex()]?.sboid;
+    const field = this.form()?.permissions.sboidsRestrictions();
+    if (!sboid || !field) {
+      return;
+    }
+    field.value.set(field.value().filter((value) => value !== sboid));
+    field.markAsDirty();
+    this.currentBusinessOrganisations.update((organisations) =>
+      organisations.filter((organisation) => organisation.sboid !== sboid)
     );
-
-    this.selectedBusinessOrganisationIndex = -1;
+    this.selectedBusinessOrganisationIndex.set(-1);
   }
 
   addBusinessOrganisation(): void {
-    const sboid = this.businessOrganisationForm.get(this.boFormCtrlName)?.value;
-    if (sboid) {
-      this.addBusinessOrganisationToCurrentTable(sboid);
-
-      const sboids = this.form.controls.permissions.controls.sboidsRestrictions!;
-      const updatedSboids = sboids.value!;
-      updatedSboids.push(sboid);
-      sboids.setValue(updatedSboids);
-      sboids.markAsDirty();
-      this.businessOrganisationForm.reset();
+    const selection = this.businessOrganisationForm.businessOrganisation().value();
+    const sboid = typeof selection === 'string' ? selection : selection?.sboid;
+    const field = this.form()?.permissions.sboidsRestrictions();
+    if (!sboid || !field || field.value().includes(sboid)) {
+      return;
     }
+    field.value.set([...field.value(), sboid]);
+    field.markAsDirty();
+    this.businessOrganisationForm().reset({ businessOrganisation: null });
   }
 
-  private addBusinessOrganisationToCurrentTable(sboid: string) {
-    firstValueFrom(
-      this.businessOrganisationService.getAllBusinessOrganisations(undefined, [sboid], undefined, undefined, 0, 1, [
-        'sboid,ASC',
-      ])
-    ).then((result) => {
-      this.currentBusinessOrganisations = [...this.currentBusinessOrganisations, result.objects![0]];
-    });
-  }
-
-  onRoleChanged(applicationRoles: ApplicationRole[]) {
-    this.currentRole = applicationRoles[0] ?? 'READER';
-    const availableConfig = this.applicationConfig.roles.find((i) => i.role === this.currentRole);
-    if (!availableConfig) {
-      throw new Error('Available Config not found for ' + applicationRoles);
-    }
-    this.currentRoleConfig = availableConfig;
-  }
-
-  get showBusinessOrganisationRestriction() {
-    return this.currentRoleConfig.permissions.restrictions.includes(PermissionRestrictionType.BusinessOrganisation);
-  }
-
-  get showCountryRestriction() {
-    return this.currentRoleConfig.permissions.restrictions.includes(PermissionRestrictionType.Country);
-  }
-
-  get showCantonRestriction() {
-    return this.currentRoleConfig.permissions.restrictions.includes(PermissionRestrictionType.Canton);
-  }
-
-  get showBulkImport() {
-    return (
-      this.currentRoleConfig.permissions.specialPermissions.includes(PermissionRestrictionType.BulkImport) &&
-      (this.showAllSpecialPermissions || this.permissionsForm.controls.bulkImportRestriction?.value)
-    );
-  }
-
-  get showInfoPlusTerminationVote() {
-    return (
-      this.currentRoleConfig.permissions.specialPermissions.includes(
-        PermissionRestrictionType.InfoPlusTerminationVote
-      ) &&
-      (this.showAllSpecialPermissions || this.permissionsForm.controls.infoPlusTerminationVote?.value)
-    );
-  }
-
-  get showNovaTerminationVote() {
-    return (
-      this.currentRoleConfig.permissions.specialPermissions.includes(PermissionRestrictionType.NovaTerminationVote) &&
-      (this.showAllSpecialPermissions || this.permissionsForm.controls.novaTerminationVote?.value)
-    );
-  }
-
-  get showTransportCompanyDossierAnswer() {
-    return (
-      this.currentRoleConfig.permissions.specialPermissions.includes(
-        PermissionRestrictionType.TransportCompanyDossierAnswer
-      ) &&
-      (this.showAllSpecialPermissions || this.permissionsForm.controls.transportCompanyDossierAnswer?.value)
-    );
-  }
-
-  get showSpecialPermissions() {
-    return (
-      this.currentRoleConfig.permissions.specialPermissions.length > 0 &&
-      (this.showAllSpecialPermissions ||
-        this.showBulkImport ||
-        this.showNovaTerminationVote ||
-        this.showInfoPlusTerminationVote ||
-        this.showTransportCompanyDossierAnswer)
-    );
-  }
-
-  onNovaToggle(value: boolean) {
+  onNovaToggle(value: boolean): void {
     if (value) {
-      this.form.controls.permissions.controls.infoPlusTerminationVote?.setValue(false);
+      this.form()?.permissions.infoPlusTerminationVote().value.set(false);
     }
   }
 
-  onInfoPlusToggle(value: boolean) {
+  onInfoPlusToggle(value: boolean): void {
     if (value) {
-      this.form.controls.permissions.controls.novaTerminationVote?.setValue(false);
+      this.form()?.permissions.novaTerminationVote().value.set(false);
     }
   }
 
-  onTransportCompanyDossierToggle(value: boolean) {
-    this.form.controls.permissions.controls.transportCompanyDossierAnswer?.setValue(value);
+  private hasRestriction(type: PermissionRestrictionType): boolean {
+    return this.currentRoleConfig().permissions.restrictions.includes(type);
+  }
+
+  private hasSpecialPermission(type: PermissionRestrictionType, selected: boolean | undefined): boolean {
+    return (
+      this.currentRoleConfig().permissions.specialPermissions.includes(type) &&
+      (this.showAllSpecialPermissions || !!selected)
+    );
   }
 }

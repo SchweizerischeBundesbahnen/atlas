@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { User } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { form } from '@angular/forms/signals';
+import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
@@ -17,7 +19,7 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
 @Component({
   selector: 'atlas-user-administration-create',
   templateUrl: './user-administration-user-create.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,
@@ -35,41 +37,54 @@ export class UserAdministrationUserCreateComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dialogService = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
+  private selectedUserSubscription?: Subscription;
 
-  readonly userSearchForm: FormGroup = new FormGroup({
-    userSearch: new FormControl<string | null>(null),
-  });
+  readonly userSearchModel = signal<{ userSearch: User | null }>({ userSearch: null });
+  readonly userSearchForm = form(this.userSearchModel);
 
-  selectedUser?: User;
-  userHasAlreadyPermissions = false;
-  selectedUserHasNoUserId = false;
-  saveEnabled = true;
+  readonly selectedUser = signal<User | undefined>(undefined);
+  readonly userHasAlreadyPermissions = signal(false);
+  readonly selectedUserHasNoUserId = signal(false);
+  readonly saveEnabled = signal(true);
 
   selectUser(user: User | undefined): void {
-    this.selectedUserHasNoUserId = false;
+    this.selectedUserSubscription?.unsubscribe();
+    this.selectedUser.set(undefined);
+    this.userHasAlreadyPermissions.set(false);
+    this.selectedUserHasNoUserId.set(false);
     if (!user?.sbbUserId) {
-      this.userHasAlreadyPermissions = false;
-      this.selectedUser = undefined;
       if (user) {
-        this.selectedUserHasNoUserId = true;
+        this.selectedUserHasNoUserId.set(true);
       }
       return;
     }
-    this.userService.getUser(user.sbbUserId).subscribe((user) => {
-      this.selectedUser = user;
-      this.userHasAlreadyPermissions = Array.from(user.permissions).length > 0;
-    });
+    this.selectedUserSubscription = this.userService
+      .getUser(user.sbbUserId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((selectedUser) => {
+        this.selectedUser.set(selectedUser);
+        this.selectedUserHasNoUserId.set(!selectedUser.userId);
+        this.userHasAlreadyPermissions.set(selectedUser.permissions.size > 0);
+      });
   }
 
   createUser(): void {
-    this.saveEnabled = false;
-    this.userService.createUserPermission({ sbbUserId: this.selectedUser!.userId! }).subscribe({
+    const selectedUser = this.selectedUser();
+    if (!selectedUser?.userId) {
+      throw new Error('A user ID is required to create a permission');
+    }
+    if (this.userHasAlreadyPermissions() || !this.saveEnabled()) {
+      return;
+    }
+    this.saveEnabled.set(false);
+    this.userService.createUserPermission({ sbbUserId: selectedUser.userId }).subscribe({
       next: () => {
         this.router
-          .navigate([Pages.USER_ADMINISTRATION.path, Pages.USERS.path, this.selectedUser!.userId!])
+          .navigate([Pages.USER_ADMINISTRATION.path, Pages.USERS.path, selectedUser.userId])
           .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
       },
-      error: () => (this.saveEnabled = true),
+      error: () => this.saveEnabled.set(true),
     });
   }
 

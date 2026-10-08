@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
 import { UserAdministrationUserEditComponent } from './user-administration-user-edit.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ApplicationRole, ApplicationType, Permission, User, UserDisplayName } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
@@ -21,7 +21,7 @@ describe('UserAdministrationUserEditComponent', () => {
   let fixture: ComponentFixture<UserAdministrationUserEditComponent>;
 
   let userAdministrationService: Mocked<Pick<UserAdministrationService, 'updateUserPermission' | 'getUserDisplayName'>>;
-  let notificationService: Mocked<Pick<NotificationService, 'success'>>;
+  let notificationService: Mocked<Pick<NotificationService, 'success' | 'error'>>;
   let dialogService: ReturnType<typeof mock<DialogService>>;
 
   beforeEach(() => {
@@ -36,6 +36,7 @@ describe('UserAdministrationUserEditComponent', () => {
     userAdministrationService.getUserDisplayName.mockReturnValue(of(userDisplayName));
     notificationService = {
       success: vi.fn(),
+      error: vi.fn(),
     };
     dialogService = mock<DialogService>();
     TestBed.configureTestingModule({
@@ -105,9 +106,8 @@ describe('UserAdministrationUserEditComponent', () => {
 
     const givenUserService = TestBed.inject(UserPermissionGivenUserService);
     givenUserService.user = user;
-    givenUserService.loadFormGroup(ApplicationType.Ttfn);
+    givenUserService.loadForm(ApplicationType.Ttfn);
 
-    component.userRecord = {};
     fixture.detectChanges();
   });
 
@@ -134,17 +134,19 @@ describe('UserAdministrationUserEditComponent', () => {
         permissionRestrictions: [],
       }
     );
-    expect(component.editMode).toBe(false);
+    expect(component.editMode()).toBe(false);
     expect(notificationService.success).toHaveBeenCalledExactlyOnceWith('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
 
     userAdministrationService.updateUserPermission.mockReturnValue(
-      new Observable<User>((subscriber) => subscriber.error('error'))
+      new Observable<User>((subscriber) => subscriber.error(new Error('error')))
     );
     component.saveUser();
+    expect(notificationService.error).toHaveBeenCalledWith(expect.any(Error));
+    expect(TestBed.inject(UserPermissionGivenUserService).editable()).toBe(true);
   });
 
   it('shows first creation and last edition', () => {
-    component.editMode = true;
+    component.editMode.set(true);
     const user: User = {
       sbbUserId: 'yb56789',
       permissions: new Set<Permission>([
@@ -173,30 +175,49 @@ describe('UserAdministrationUserEditComponent', () => {
     fixture.detectChanges();
     component.ngOnInit();
 
-    expect(component.userRecord).toBeTruthy();
-    expect(component.userRecord!.creationDate).toBe('2020-01-01');
-    expect(component.userRecord!.creator).toBe('me');
-    expect(component.userRecord!.editionDate).toBe('2020-01-06');
-    expect(component.userRecord!.editor).toBe('sumotherdude');
+    expect(component.userRecord()).toBeTruthy();
+    expect(component.userRecord().creationDate).toBe('2020-01-01');
+    expect(component.userRecord().creator).toBe('me');
+    expect(component.userRecord().editionDate).toBe('2020-01-06');
+    expect(component.userRecord().editor).toBe('sumotherdude');
   });
 
   it('should toggleEdit', () => {
-    expect(component.editMode).toBe(false);
+    expect(component.editMode()).toBe(false);
 
     component.toggleEdit();
-    expect(component.editMode).toBe(true);
+    expect(component.editMode()).toBe(true);
 
     component.toggleEdit();
-    expect(component.editMode).toBe(false);
+    expect(component.editMode()).toBe(false);
+  });
+
+  it('keeps dirty edits when cancellation is declined and resets them when confirmed', () => {
+    component.toggleEdit();
+    component.formGroup.role().value.set(ApplicationRole.Writer);
+    component.formGroup.role().markAsDirty();
+    dialogService.confirmLeave.mockReturnValueOnce(of(false)).mockReturnValueOnce(of(true));
+
+    component.toggleEdit();
+    expect(component.editMode()).toBe(true);
+    expect(component.formGroup.role().value()).toBe(ApplicationRole.Writer);
+
+    component.toggleEdit();
+    expect(component.editMode()).toBe(false);
+    expect(component.formGroup.role().value()).toBe(ApplicationRole.Reader);
+    expect(component.formGroup().dirty()).toBe(false);
   });
 
   it('should display the original mail row below the e-mail row when an override is active', () => {
-    const givenUserService = TestBed.inject(UserPermissionGivenUserService);
-    givenUserService.user = { ...givenUserService.user, mail: 'manual@sbb.ch', originalMail: 'azure@sbb.ch' };
+    fixture.componentRef.setInput('user', {
+      ...component.user(),
+      mail: 'manual@sbb.ch',
+      originalMail: 'azure@sbb.ch',
+    });
     fixture.detectChanges();
 
-    expect(component.displayUser.mail).toBe('manual@sbb.ch');
-    expect(component.displayUser.originalMail).toBe('azure@sbb.ch');
+    expect(component.displayUser().mail).toBe('manual@sbb.ch');
+    expect(component.displayUser().originalMail).toBe('azure@sbb.ch');
     const compiled = fixture.nativeElement as HTMLElement;
     const emailRowIndex = Array.from(compiled.querySelectorAll('.d-inline-flex')).findIndex((el) =>
       el.textContent?.includes('PROFILE.EMAIL')
@@ -209,11 +230,14 @@ describe('UserAdministrationUserEditComponent', () => {
   });
 
   it('should hide the original mail row when no override exists', () => {
-    const givenUserService = TestBed.inject(UserPermissionGivenUserService);
-    givenUserService.user = { ...givenUserService.user, mail: 'azure@sbb.ch', originalMail: 'azure@sbb.ch' };
+    fixture.componentRef.setInput('user', {
+      ...component.user(),
+      mail: 'azure@sbb.ch',
+      originalMail: 'azure@sbb.ch',
+    });
     fixture.detectChanges();
 
-    expect(component.displayUser.mail).toBe(component.displayUser.originalMail);
+    expect(component.displayUser().mail).toBe(component.displayUser().originalMail);
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('[data-cy="original-mail-value"]')).toBeNull();
   });
@@ -230,7 +254,11 @@ describe('UserAdministrationUserEditComponent', () => {
     component.editManualMail();
 
     expect(dialogService.openDialogDataWithCustomResult).toHaveBeenCalledOnce();
-    expect(component.displayUser).toEqual(updatedUser);
+    expect(component.displayUser()).toEqual(updatedUser);
+    fixture.detectChanges();
+    expect(
+      (fixture.nativeElement as HTMLElement).querySelector('[data-cy="original-mail-value"]')?.textContent
+    ).toContain('azure@sbb.ch');
   });
 
   it('should not reload the user when the dialog is cancelled', () => {
@@ -240,6 +268,27 @@ describe('UserAdministrationUserEditComponent', () => {
 
     component.editManualMail();
 
-    expect(component.displayUser).toEqual(originalUser);
+    expect(component.displayUser()).toEqual(originalUser);
+  });
+
+  it('renders an asynchronous save response without manually marking for check', () => {
+    const response = new Subject<User>();
+    userAdministrationService.updateUserPermission.mockReturnValue(response);
+    component.toggleEdit();
+    component.saveUser();
+    fixture.detectChanges();
+
+    response.next({
+      ...component.user(),
+      mail: 'updated@sbb.ch',
+      originalMail: 'original@sbb.ch',
+    });
+    fixture.detectChanges();
+
+    expect(component.editMode()).toBe(false);
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('updated@sbb.ch');
+    expect(
+      (fixture.nativeElement as HTMLElement).querySelector('[data-cy="original-mail-value"]')?.textContent
+    ).toContain('original@sbb.ch');
   });
 });

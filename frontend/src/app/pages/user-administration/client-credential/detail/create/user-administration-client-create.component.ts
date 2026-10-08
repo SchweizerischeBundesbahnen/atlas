@@ -1,32 +1,30 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ClientCredentialCreateFormGroup } from './create-form-group';
-import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
-import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { form } from '@angular/forms/signals';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
-import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
+import { AtlasTextFieldComponent } from '@atlas/form';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
 import { ClientCredentialCreate } from '../../../../../api/model/clientCredentialCreate';
+import { FormValidators } from '../../../../../core/validation/form-validators.service';
+
+type ClientCredentialCreateFormModel = Required<ClientCredentialCreate>;
 
 @Component({
   selector: 'atlas-client-credential-administration-create',
   templateUrl: './user-administration-client-create.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,
     DetailPageContentComponent,
-    TextFieldComponent,
-    ReactiveFormsModule,
+    AtlasTextFieldComponent,
     DetailFooterComponent,
     TranslatePipe,
   ],
@@ -38,56 +36,56 @@ export class UserAdministrationClientCreateComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dialogService = inject(DialogService);
+  private readonly formValidators = inject(FormValidators);
 
-  saveEnabled = true;
+  readonly saveEnabled = signal(true);
 
-  form = new FormGroup<ClientCredentialCreateFormGroup>({
-    clientCredentialId: new FormControl('', [
-      Validators.required,
-      AtlasCharsetsValidator.iso88591,
-      AtlasFieldLengthValidator.length_50,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    alias: new FormControl('', [
-      Validators.required,
-      AtlasCharsetsValidator.iso88591,
-      AtlasFieldLengthValidator.length_100,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    comment: new FormControl('', [
-      AtlasCharsetsValidator.iso88591,
-      AtlasFieldLengthValidator.length_100,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
+  readonly formModel = signal<ClientCredentialCreateFormModel>({
+    clientCredentialId: '',
+    alias: '',
+    comment: '',
+  });
+  readonly form = form(this.formModel, (path) => {
+    this.formValidators.required(path.clientCredentialId);
+    this.formValidators.iso88591(path.clientCredentialId);
+    this.formValidators.maxLength(path.clientCredentialId, 50);
+    this.formValidators.blankOrEmptySpaceSurrounding(path.clientCredentialId);
+
+    this.formValidators.required(path.alias);
+    this.formValidators.iso88591(path.alias);
+    this.formValidators.maxLength(path.alias, 100);
+    this.formValidators.blankOrEmptySpaceSurrounding(path.alias);
+
+    this.formValidators.iso88591(path.comment);
+    this.formValidators.maxLength(path.comment, 100);
+    this.formValidators.blankOrEmptySpaceSurrounding(path.comment);
   });
 
   create(): void {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      this.saveEnabled = false;
-      const permission = {
-        ...this.form.value,
-      } as ClientCredentialCreate;
+    this.form().markAsTouched();
+    if (this.form().valid() && this.saveEnabled()) {
+      this.saveEnabled.set(false);
+      const permission = { ...this.formModel() };
       this.clientCredentialAdministrationService.createClientCredential(permission).subscribe({
         next: () => {
           this.router
             .navigate([Pages.USER_ADMINISTRATION.path, Pages.CLIENTS.path, permission.clientCredentialId])
             .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
         },
-        error: () => (this.saveEnabled = true),
+        error: () => this.saveEnabled.set(true),
       });
     }
   }
 
   cancelCreation(): void {
-    if (this.form.untouched) {
-      this.back();
-    } else {
+    if (this.form().touched()) {
       this.dialogService.confirmLeave().subscribe((result) => {
         if (result) {
           this.back();
         }
       });
+    } else {
+      this.back();
     }
   }
 

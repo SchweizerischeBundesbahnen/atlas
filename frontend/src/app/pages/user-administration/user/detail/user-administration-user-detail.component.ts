@@ -1,17 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { User } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 import { UserAdministrationUserCreateComponent } from './create/user-administration-user-create.component';
 import { UserAdministrationUserEditComponent } from './edit/user-administration-user-edit.component';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { FormGroup } from '@angular/forms';
 import { UserPermissionGivenUserService } from './edit/user-permission-given-user.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'atlas-user-administration',
   templateUrl: './user-administration-user-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UserAdministrationUserEditComponent, UserAdministrationUserCreateComponent],
   providers: [TranslatePipe],
 })
@@ -19,15 +18,13 @@ export class UserAdministrationUserDetailComponent implements OnInit, DetailForm
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly userPermissionGivenUserService = inject(UserPermissionGivenUserService);
 
-  user?: User;
+  readonly user = signal<User | undefined>(undefined);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data) => {
-      this.user = data.user;
+      this.user.set(data.user);
     });
   }
 
-  get form(): FormGroup | undefined {
-    return this.userPermissionGivenUserService.applicationPermissionFormGroup;
-  }
+  readonly dirty = computed(() => this.userPermissionGivenUserService.currentForm()?.().dirty() ?? false);
 }

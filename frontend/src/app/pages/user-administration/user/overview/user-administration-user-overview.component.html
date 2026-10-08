@@ -6,12 +6,12 @@
   [pageSizeOptions]="[5, 10, 20]"
   [sortingDisabled]="true"
   [tableColumns]="tableColumns"
-  [tableData]="userPageResult.users"
-  [totalCount]="userPageResult.totalCount"
+  [tableData]="userPageResult().users"
+  [totalCount]="userPageResult().totalCount"
 >
   <div class="d-flex flex-column mb-1">
     <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_FOR' | translate }} </mat-label>
-    <mat-radio-group (change)="selectedSearchChanged()" [(ngModel)]="selectedSearch">
+    <mat-radio-group (change)="selectedSearchChanged($event.value)" [value]="selectedSearch()">
       @for (option of searchOptions; track option) {
         <mat-radio-button [value]="option.value" class="pe-2">
           {{ option.translationKey | translate }}
@@ -21,17 +21,16 @@
   </div>
 
   <div class="col-12 search-section-height">
-    @if (selectedSearch === 'USER') {
+    @if (selectedSearch() === 'USER') {
       <div class="mb-1">
         <mat-label class="font-bold-lg">{{ 'USER_ADMIN.TABLE_HEADER' | translate }} </mat-label>
       </div>
-      <atlas-user-select (selectionChange)="onUserFilterChanged($event)" [form]="userSearchForm" />
-    } @else if (selectedSearch === 'FILTER') {
+      <atlas-user-select (selectionChange)="onUserFilterChanged($event)" [field]="userSearchForm.userSearch" />
+    } @else if (selectedSearch() === 'FILTER') {
       <div class="d-flex flex-row">
         <atlas-bo-select
           (boSelectionChanged)="filterChanged()"
-          [controlName]="boSearchCtrlName"
-          [formGroup]="boForm"
+          [field]="boSearchForm.boSearch"
           [formModus]="false"
           class="col-5 pe-1"
         />
@@ -39,7 +38,7 @@
         <div class="d-flex flex-column col-5 ps-3">
           <atlas-select
             (selectChanged)="applicationChanged($event.value); filterChanged()"
-            [value]="selectedApplicationOptions"
+            [value]="selectedApplicationOptions()"
             label="USER_ADMIN.APPLICATIONS"
             [additionalLabelspace]="0"
             optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
@@ -51,7 +50,7 @@
         <div class="d-flex flex-column col-2 ps-3 justify-content-end">
           <button
             class="atlas-primary-btn"
-            [disabled]="copyingEmails || userPageResult.totalCount === 0 || !hasFilterCriteria"
+            [disabled]="copyingEmails() || userPageResult().totalCount === 0 || !hasFilterCriteria()"
             (click)="copyFilteredEmails()"
           >
             {{ 'USER_ADMIN.COPY_EMAILS' | translate }}
@@ -63,7 +62,7 @@
         <div class="d-flex flex-column col-5 ps-1">
           <atlas-select
             (selectChanged)="cantonChanged($event.value); filterChanged()"
-            [value]="selectedCantonOptions"
+            [value]="selectedCantonOptions()"
             label="COMMON.CANTONS"
             [additionalLabelspace]="0"
             [optionTranslateLabelPrefix]="SWISS_CANTONS_PREFIX_LABEL"
@@ -76,7 +75,7 @@
         <div class="d-flex flex-column col-5 ps-3">
           <atlas-select
             (selectChanged)="applicationChanged($event.value); filterChanged()"
-            [value]="selectedApplicationOptions"
+            [value]="selectedApplicationOptions()"
             label="USER_ADMIN.APPLICATIONS"
             [additionalLabelspace]="0"
             optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
@@ -88,7 +87,7 @@
         <div class="d-flex flex-column col-2 ps-3 justify-content-end">
           <button
             class="atlas-primary-btn"
-            [disabled]="copyingEmails || userPageResult.totalCount === 0 || !hasFilterCriteria"
+            [disabled]="copyingEmails() || userPageResult().totalCount === 0 || !hasFilterCriteria()"
             (click)="copyFilteredEmails()"
           >
             {{ 'USER_ADMIN.COPY_EMAILS' | translate }}

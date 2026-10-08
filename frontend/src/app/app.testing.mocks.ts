@@ -29,10 +29,6 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { Mocked, vi } from 'vitest';
 import { PageEvent } from '@angular/material/paginator';
 import { UserPermissionProviderService } from './core/components/permissions/application-permission/user-permission-provider-service';
-import {
-  ApplicationPermission,
-  ApplicationPermissionFormGroupBuilder,
-} from './core/components/permissions/form/application-permission-form-group';
 
 @Component({
   selector: 'atlas-switch-version',
@@ -297,19 +293,11 @@ export const translateServiceProvider = provideTranslateService({
 });
 
 export class MockUserPermissionProviderService extends UserPermissionProviderService {
-  applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
-
-  getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
-    return this.applicationPermissionFormGroup;
-  }
-
   showAllSpecialPermissions(): boolean {
     return false;
   }
 
-  loadFormGroup(): void {
-    const formGroup = ApplicationPermissionFormGroupBuilder.buildFormGroup();
-    formGroup.controls.application.setValue(ApplicationType.Ttfn);
-    this.applicationPermissionFormGroup = formGroup;
+  loadForm(application: ApplicationType): void {
+    this.setPermissionForm(application, { application, role: ApplicationRole.Reader, permissionRestrictions: [] });
   }
 }

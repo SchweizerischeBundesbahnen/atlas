@@ -9,6 +9,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { translateServiceProvider } from '../../../../app.testing.mocks';
+import { UserPermissionGivenUserService } from './edit/user-permission-given-user.service';
+import { ApplicationType } from '../../../../api';
 
 @Component({
   selector: 'atlas-user-administration-create',
@@ -54,5 +56,16 @@ describe('UserAdministrationUserDetailComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('exposes Signal Forms dirty state to the leave guard', () => {
+    const provider = TestBed.inject(UserPermissionGivenUserService);
+    provider.user = { sbbUserId: 'u1', permissions: new Set() };
+    provider.loadForm(ApplicationType.Ttfn);
+    expect(component.dirty()).toBe(false);
+
+    provider.setEditable(true);
+    provider.currentForm()?.role().markAsDirty();
+    expect(component.dirty()).toBe(true);
   });
 });

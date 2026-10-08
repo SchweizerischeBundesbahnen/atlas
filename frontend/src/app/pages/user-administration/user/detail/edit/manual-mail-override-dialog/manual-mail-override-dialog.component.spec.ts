@@ -6,7 +6,7 @@ import {
 } from './manual-mail-override-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { Permission, User } from '../../../../../../api';
 import { UserAdministrationService } from '../../../../../../api/service/user-administration/user-administration.service';
@@ -29,8 +29,9 @@ const userAdministrationService: Mocked<Pick<UserAdministrationService, 'updateM
   deleteManualMail: vi.fn(),
 };
 
-const notificationService: Mocked<Pick<NotificationService, 'success'>> = {
+const notificationService: Mocked<Pick<NotificationService, 'success' | 'error'>> = {
   success: vi.fn(),
+  error: vi.fn(),
 };
 
 const dialogService: Mocked<Pick<DialogService, 'openDialogDataWithConfirmationResult'>> = {
@@ -69,7 +70,7 @@ describe('ManualMailOverrideDialogComponent', () => {
       user: userWithManualMail,
     });
 
-    expect(fixture.componentInstance.form.controls.manualMailOverride.value).toBe('manual@sbb.ch');
+    expect(fixture.componentInstance.form.manualMailOverride().value()).toBe('manual@sbb.ch');
     expect(fixture.componentInstance.originalMail).toBe('azure@sbb.ch');
   });
 
@@ -80,9 +81,25 @@ describe('ManualMailOverrideDialogComponent', () => {
       user: userWithManualMail,
     });
 
-    fixture.componentInstance.form.controls.manualMailOverride.setValue('not-an-email');
+    fixture.componentInstance.form.manualMailOverride().value.set('not-an-email');
 
-    expect(fixture.componentInstance.form.invalid).toBe(true);
+    expect(fixture.componentInstance.form().valid()).toBe(false);
+  });
+
+  it('accepts emails with longer top-level domains and enforces the maximum length', () => {
+    const fixture = createComponent({
+      title: 'USER_ADMIN.MANUAL_MAIL_DIALOG.TITLE',
+      message: 'USER_ADMIN.MANUAL_MAIL_DIALOG.HINT',
+      user: userWithManualMail,
+    });
+    const mailField = fixture.componentInstance.form.manualMailOverride();
+
+    mailField.value.set('user@example.technology');
+    expect(fixture.componentInstance.form().valid()).toBe(true);
+    mailField.value.set(`${'a'.repeat(90)}@example.ch`);
+    expect(mailField.errors().some((error) => error.kind === 'maxlength')).toBe(true);
+    mailField.value.set('user@example.ch');
+    expect(fixture.componentInstance.form().valid()).toBe(true);
   });
 
   it('should hide the delete button when no manual mail is set', () => {
@@ -123,7 +140,7 @@ describe('ManualMailOverrideDialogComponent', () => {
       user: userWithManualMail,
     });
 
-    fixture.componentInstance.form.controls.manualMailOverride.setValue('updated@sbb.ch');
+    fixture.componentInstance.form.manualMailOverride().value.set('updated@sbb.ch');
     fixture.componentInstance.confirm();
 
     expect(userAdministrationService.updateManualMail).toHaveBeenCalledExactlyOnceWith('u123456', 'updated@sbb.ch');
@@ -145,7 +162,8 @@ describe('ManualMailOverrideDialogComponent', () => {
       user: userWithManualMail,
     });
 
-    fixture.componentInstance.form.controls.manualMailOverride.setValue('');
+    fixture.componentInstance.form.manualMailOverride().value.set('');
+    expect(fixture.componentInstance.form().valid()).toBe(true);
     fixture.componentInstance.confirm();
 
     expect(userAdministrationService.deleteManualMail).toHaveBeenCalledExactlyOnceWith('u123456');
@@ -204,5 +222,25 @@ describe('ManualMailOverrideDialogComponent', () => {
     expect(dialogRefSpy.close).toHaveBeenCalledOnce();
     expect(userAdministrationService.updateManualMail).not.toHaveBeenCalled();
     expect(userAdministrationService.deleteManualMail).not.toHaveBeenCalled();
+  });
+
+  it('disables the form while saving and restores it after a failed request', () => {
+    const request = new Subject<User>();
+    userAdministrationService.updateManualMail.mockReturnValue(request);
+    const fixture = createComponent({
+      title: 'USER_ADMIN.MANUAL_MAIL_DIALOG.TITLE',
+      message: 'USER_ADMIN.MANUAL_MAIL_DIALOG.HINT',
+      user: userWithManualMail,
+    });
+    const component = fixture.componentInstance;
+
+    component.confirm();
+    expect(component.pending()).toBe(true);
+    expect(component.form.manualMailOverride().disabled()).toBe(true);
+    request.error(new Error('Update failed'));
+
+    expect(component.pending()).toBe(false);
+    expect(component.form.manualMailOverride().disabled()).toBe(false);
+    expect(notificationService.error).toHaveBeenCalledOnce();
   });
 });

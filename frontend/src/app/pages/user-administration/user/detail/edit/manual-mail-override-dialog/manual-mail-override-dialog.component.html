@@ -18,8 +18,8 @@
 
   <div class="mt-2">
     <atlas-text-field
-      [formGroup]="form"
-      controlName="manualMailOverride"
+      [field]="form.manualMailOverride"
+      fieldName="manualMailOverride"
       data-cy="manual-mail-input"
       fieldLabel="USER_ADMIN.MANUAL_MAIL"
       placeholder="USER_ADMIN.MANUAL_MAIL"
@@ -37,6 +37,7 @@
       <atlas-button
         buttonType="delete"
         (buttonClicked)="delete()"
+        [disabled]="pending()"
         class="me-3"
         data-cy="dialog-delete-button"
         buttonText="COMMON.DELETE"
@@ -45,7 +46,7 @@
     <atlas-button
       buttonType="confirm"
       (buttonClicked)="confirm()"
-      [disabled]="form.invalid"
+      [disabled]="!form().valid() || pending()"
       data-cy="dialog-confirm-button"
       buttonText="COMMON.SAVE"
   /></mat-dialog-actions>

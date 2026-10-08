@@ -1,8 +1,8 @@
-<button type="button" class="slide-btn" (click)="handleToggleClick()" [disabled]="disabled()">
+<button type="button" class="slide-btn" (click)="handleToggleClick()" [disabled]="isDisabled()">
   <div
     [class.slide-track-on]="currentToggle()"
     [class.slide-track-off]="!currentToggle()"
-    [class.slide-disabled]="disabled()"
+    [class.slide-disabled]="isDisabled()"
     [class.slide-track-neutral]="slideTrackNeutral()"
   >
     <div class="slide-toggle"></div>

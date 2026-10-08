@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'atlas-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AtlasButtonComponent,
     MatTabNav,
@@ -21,7 +21,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class UserAdministrationOverviewComponent {
-  TABS = [
+  readonly TABS = [
     {
       link: Pages.USERS.path,
       title: 'USER_ADMIN.TABS.USER',

@@ -11,15 +11,15 @@
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-6 pe-3">
           <atlas-text-field
-            [formGroup]="form"
-            controlName="clientCredentialId"
+            [field]="form.clientCredentialId"
+            fieldName="clientCredentialId"
             fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.CLIENT_ID"
           />
         </div>
         <div class="d-flex flex-column col-6 pe-3">
           <atlas-text-field
-            [formGroup]="form"
-            controlName="alias"
+            [field]="form.alias"
+            fieldName="alias"
             fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.ALIAS"
             infoIconTitle="USER_ADMIN.CLIENT_CREDENTIAL.ALIAS_INFO"
           />
@@ -28,8 +28,8 @@
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-12 pe-3">
           <atlas-text-field
-            [formGroup]="form"
-            controlName="comment"
+            [field]="form.comment"
+            fieldName="comment"
             fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.COMMENT"
           />
         </div>
@@ -40,7 +40,13 @@
       <button (click)="cancelCreation()" class="atlas-primary-btn" data-cy="cancel">
         {{ 'COMMON.CANCEL' | translate }}
       </button>
-      <button (click)="create()" class="atlas-primary-btn ms-3" data-cy="save" type="submit">
+      <button
+        (click)="create()"
+        [disabled]="!saveEnabled()"
+        class="atlas-primary-btn ms-3"
+        data-cy="save"
+        type="submit"
+      >
         {{ 'COMMON.SAVE' | translate }}
       </button>
     </atlas-detail-footer>

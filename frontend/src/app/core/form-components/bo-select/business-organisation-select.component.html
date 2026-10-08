@@ -1,12 +1,4 @@
-<atlas-form-search-select
-  (changeTrigger)="boSelectionChanged.emit($event)"
-  (searchTrigger)="searchBusinessOrganisation($event)"
-  [bindValueInp]="valueExtraction()"
-  [controlName]="controlName()"
-  [formGroup]="formGroup()"
-  [items$]="businessOrganisations"
-  [disabled]="disabled()"
->
+<ng-template #selectLabel>
   <div class="d-flex flex-column">
     <atlas-label-field
       fieldLabel="BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION"
@@ -40,9 +32,51 @@
       "
     />
   </div>
-  <ng-template #labelOptionTemplates let-item>
-    <div class="text-truncate" [title]="item | boSelectionDisplay">
-      {{ item | boSelectionDisplay }}
-    </div>
-  </ng-template>
-</atlas-form-search-select>
+</ng-template>
+
+<ng-template #selectionLabel let-item>
+  <div class="text-truncate" [title]="item | boSelectionDisplay">
+    {{ item | boSelectionDisplay }}
+  </div>
+</ng-template>
+
+@if (field(); as boField) {
+  <div>
+    <ng-container *ngTemplateOutlet="selectLabel" />
+    <ng-select
+      (change)="boSelectionChanged.emit($event)"
+      [bindValue]="valueExtraction()"
+      [formField]="boField"
+      [items]="(businessOrganisations() | async) ?? []"
+      [minTermLength]="2"
+      [readonly]="disabled()"
+      [typeahead]="searchTriggerSubject"
+      appearance="outline"
+      notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
+      typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
+    >
+      <ng-template let-item="item" ng-label-tmp>
+        <ng-container *ngTemplateOutlet="selectionLabel; context: { $implicit: item }" />
+      </ng-template>
+      <ng-template let-item="item" ng-option-tmp>
+        <ng-container *ngTemplateOutlet="selectionLabel; context: { $implicit: item }" />
+      </ng-template>
+    </ng-select>
+    <atlas-field-error [field]="boField" />
+  </div>
+} @else {
+  <atlas-form-search-select
+    (changeTrigger)="boSelectionChanged.emit($event)"
+    (searchTrigger)="searchBusinessOrganisation($event)"
+    [bindValueInp]="valueExtraction()"
+    [controlName]="controlName()"
+    [formGroup]="legacyForm"
+    [items$]="businessOrganisations()"
+    [disabled]="disabled()"
+  >
+    <ng-container *ngTemplateOutlet="selectLabel" />
+    <ng-template #labelOptionTemplates let-item>
+      <ng-container *ngTemplateOutlet="selectionLabel; context: { $implicit: item }" />
+    </ng-template>
+  </atlas-form-search-select>
+}

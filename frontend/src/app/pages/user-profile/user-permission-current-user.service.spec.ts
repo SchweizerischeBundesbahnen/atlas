@@ -39,8 +39,9 @@ describe('UserPermissionCurrentUserService', () => {
   });
 
   it('should load formgroup from user permissions', () => {
-    userPermissionCurrentUserService.loadFormGroup(ApplicationType.Ttfn);
-    const currentForm = userPermissionCurrentUserService.getCurrentForm();
-    expect(currentForm?.controls.application.value).toBe(ApplicationType.Ttfn);
+    userPermissionCurrentUserService.loadForm(ApplicationType.Ttfn);
+    const currentForm = userPermissionCurrentUserService.currentForm();
+    expect(currentForm?.application().value()).toBe(ApplicationType.Ttfn);
+    expect(currentForm?.().disabled()).toBe(true);
   });
 });

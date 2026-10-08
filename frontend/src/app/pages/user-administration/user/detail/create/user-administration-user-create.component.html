@@ -11,14 +11,14 @@
         <mat-label class="font-regular-sm">{{ 'FORM.FOR_EXAMPLE' | translate }} u123456 </mat-label>
       </div>
       <div style="margin-bottom: 15rem">
-        <atlas-user-select (selectionChange)="selectUser($event)" [form]="userSearchForm" />
+        <atlas-user-select (selectionChange)="selectUser($event)" [field]="userSearchForm.userSearch" />
 
-        @if (userHasAlreadyPermissions) {
+        @if (userHasAlreadyPermissions()) {
           <p class="color-error">
             {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
           </p>
         }
-        @if (selectedUserHasNoUserId) {
+        @if (selectedUserHasNoUserId()) {
           <p class="color-error">
             {{ 'USER_ADMIN.SELECTED_USER_HAS_NO_USER_ID' | translate }}
           </p>
@@ -28,7 +28,7 @@
 
     <atlas-detail-footer>
       <button
-        (click)="cancelCreation((selectedUser ?? false) && !userHasAlreadyPermissions)"
+        (click)="cancelCreation(!!selectedUser() && !userHasAlreadyPermissions())"
         class="atlas-primary-btn"
         data-cy="cancel"
       >
@@ -36,7 +36,7 @@
       </button>
       <button
         (click)="createUser()"
-        [disabled]="!selectedUser || userHasAlreadyPermissions || !saveEnabled"
+        [disabled]="!selectedUser() || selectedUserHasNoUserId() || userHasAlreadyPermissions() || !saveEnabled()"
         class="atlas-primary-btn ms-3"
         data-cy="save"
         type="submit"

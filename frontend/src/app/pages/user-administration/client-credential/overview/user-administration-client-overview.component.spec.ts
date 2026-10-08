@@ -7,6 +7,8 @@ import { ClientCredentialAdministrationService } from '../../../../api/service/u
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { MockTableComponent } from '../../../../app.testing.mocks';
 import { beforeEach, describe, expect, it, vi, type Mocked } from 'vitest';
+import { By } from '@angular/platform-browser';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('UserAdministrationClientOverviewComponent', () => {
   let component: UserAdministrationClientOverviewComponent;
@@ -18,12 +20,17 @@ describe('UserAdministrationClientOverviewComponent', () => {
 
   beforeEach(() => {
     clientCredentialAdministrationService = {
-      getClientCredentials: vi.fn().mockReturnValue(of()),
+      getClientCredentials: vi
+        .fn()
+        .mockReturnValue(
+          of({ objects: [{ clientCredentialId: '134123-123123', alias: 'öV-info.ch' }], totalCount: 1 })
+        ),
     };
 
     TestBed.configureTestingModule({
       imports: [UserAdministrationClientOverviewComponent],
       providers: [
+        provideZonelessChangeDetection(),
         {
           provide: ClientCredentialAdministrationService,
           useValue: clientCredentialAdministrationService,
@@ -43,8 +50,8 @@ describe('UserAdministrationClientOverviewComponent', () => {
 
   it('should getOverview', () => {
     //given
-    component.clientCredentials = [{ clientCredentialId: '134123-123123', alias: 'öV-info.ch' }];
-    component.totalCount = 1;
+    component.clientCredentials.set([]);
+    component.totalCount.set(0);
 
     //when
     component.getOverview({
@@ -56,8 +63,34 @@ describe('UserAdministrationClientOverviewComponent', () => {
     expect(clientCredentialAdministrationService.getClientCredentials).toHaveBeenCalledWith(0, 10, [
       'clientCredentialId,asc',
     ]);
-    expect(component.clientCredentials.length).toEqual(1);
-    expect(component.clientCredentials[0].alias).toEqual('öV-info.ch');
-    expect(component.totalCount).toEqual(1);
+    expect(component.clientCredentials().length).toEqual(1);
+    expect(component.clientCredentials()[0].alias).toEqual('öV-info.ch');
+    expect(component.totalCount()).toEqual(1);
+    fixture.detectChanges();
+    const table = fixture.debugElement.query(By.directive(MockTableComponent)).componentInstance as MockTableComponent<{
+      alias?: string;
+    }>;
+    expect(table.tableData()[0].alias).toBe('öV-info.ch');
+    expect(table.totalCount()).toBe(1);
+  });
+
+  it('shows the latest response when pagination changes before a request finishes', () => {
+    const firstPage = new Subject<ReturnType<typeof result>>();
+    const secondPage = new Subject<ReturnType<typeof result>>();
+    clientCredentialAdministrationService.getClientCredentials
+      .mockReturnValueOnce(firstPage)
+      .mockReturnValueOnce(secondPage);
+
+    component.getOverview({ page: 0, size: 5 });
+    component.getOverview({ page: 1, size: 5 });
+    firstPage.next(result('old'));
+    secondPage.next(result('new'));
+
+    expect(component.clientCredentials()[0].alias).toBe('new');
+    expect(component.totalCount()).toBe(1);
   });
 });
+
+function result(alias = 'alias') {
+  return { objects: [{ clientCredentialId: 'id', alias }], totalCount: 1 };
+}
