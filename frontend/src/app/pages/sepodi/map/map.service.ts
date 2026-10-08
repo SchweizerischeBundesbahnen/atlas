@@ -211,7 +211,7 @@ export class MapService {
   initMapEvents() {
     this.map.once('style.load', () => {
       this.initStoredMapBehaviour();
-      this.deselectServicePoint();
+      this.displayCurrentCoordinates();
 
       this.map.on('click', MAP_SOURCE_NAME, (e) => this.onClick(e));
       this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
