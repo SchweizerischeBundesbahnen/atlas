@@ -3,7 +3,6 @@ package ch.sbb.exportservice.job.prm.ersad.model;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.LevelAccessWheelchairAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 
 public record ErsadQuay(
     String sloid,
@@ -14,6 +13,6 @@ public record ErsadQuay(
     LevelAccessWheelchairAttributeType levelAccessWheelchair,
     Double superelevation,
     BooleanOptionalAttributeType shuttle,
-    VehicleAccessAttributeType vehicleAccess) {
+    Integer version) {
 
 }

@@ -23,14 +23,14 @@ public class PathLinkXmlWriter {
 
   public void write(ErsadStation station, ErsadPathLink pathLink, int index) {
     String id = station.sloid() + ID_SUFFIX_PATH_LINK + index;
-    xml.startElement(SITE_PATH_LINK, id);
+    xml.startElement(SITE_PATH_LINK, id, pathLink.version());
     xml.startElement(FROM);
     xml.referenceWithoutVersion(PLACE_REF, pathLink.referencePointSloid());
     xml.endElement();
     xml.startElement(TO);
     xml.referenceWithoutVersion(PLACE_REF, pathLink.targetSloid());
     xml.endElement();
-    xml.accessibilityAssessment(id + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT,
+    xml.accessibilityAssessment(id + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT, pathLink.version(),
         List.of(
             new Limitation(STEP_FREE_ACCESS, NetexValueMapper.limitation(pathLink.stepFreeAccess())),
             new Limitation(TACTILE_GUIDANCE_AVAILABLE, NetexValueMapper.limitation(pathLink.tactileVisualMarks()))),

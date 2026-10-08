@@ -8,7 +8,7 @@ import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ATTR_VERSI
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.COMMENT;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.LIMITATIONS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.MOBILITY_IMPAIRED_ACCESS;
-import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.NETEX_OBJECT_VERSION;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.NETEX_FRAME_VERSION;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.UNKNOWN;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.WHEELCHAIR_ACCESS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.XML_ENCODING;
@@ -24,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class XmlWriterSupport {
 
-  static final String VERSION = NETEX_OBJECT_VERSION;
   private static final String INDENT = "  ";
 
   private final XMLStreamWriter writer;
@@ -57,9 +56,13 @@ public class XmlWriterSupport {
   }
 
   public void startElement(String name, String id) {
+    startElement(name, id, NETEX_FRAME_VERSION);
+  }
+
+  public void startElement(String name, String id, Integer version) {
     startElement(name);
     attribute(ATTR_ID, id);
-    attribute(ATTR_VERSION, VERSION);
+    attribute(ATTR_VERSION, String.valueOf(version));
   }
 
   public void attribute(String name, String value) {
@@ -103,12 +106,12 @@ public class XmlWriterSupport {
     value.ifPresent(text -> element(name, text));
   }
 
-  public void reference(String name, String ref) {
+  public void reference(String name, String ref, Integer version) {
     indent();
     call(() -> {
       writer.writeEmptyElement(name);
       writer.writeAttribute(ATTR_REF, ref);
-      writer.writeAttribute(ATTR_VERSION, VERSION);
+      writer.writeAttribute(ATTR_VERSION, String.valueOf(version));
     });
   }
 
@@ -120,7 +123,8 @@ public class XmlWriterSupport {
     });
   }
 
-  public void accessibilityAssessment(String id, List<Limitation> limitations, Optional<String> comment) {
+  public void accessibilityAssessment(String id, Integer version, List<Limitation> limitations,
+      Optional<String> comment) {
     List<Limitation> present = limitations.stream().filter(limitation -> limitation.value().isPresent()).toList();
     if (present.isEmpty() && comment.isEmpty()) {
       return;
@@ -134,7 +138,7 @@ public class XmlWriterSupport {
         .anyMatch(limitation -> limitation.name().equals(WHEELCHAIR_ACCESS))
         ? present
         : withLeadingUnknownWheelchairAccess(present);
-    startElement(ACCESSIBILITY_ASSESSMENT, id);
+    startElement(ACCESSIBILITY_ASSESSMENT, id, version);
     element(MOBILITY_IMPAIRED_ACCESS, mobilityImpairedAccess);
     if (!limitationsWithWheelchairAccess.isEmpty()) {
       startElement(LIMITATIONS);

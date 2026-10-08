@@ -122,7 +122,7 @@ class ErsadNetexFileWriterTest {
     // Given
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = new ErsadStation(tavannes.sloid(), tavannes.number(), tavannes.name(), null, null, null,
-        null, List.of(), null, null, null, List.of(), List.of(), List.of(), List.of(), List.of());
+        null, List.of(), null, null, null, List.of(), List.of(), List.of(), List.of(), List.of(), 1);
 
     // When
     Document document = parse(write(List.of(station)));
@@ -155,11 +155,11 @@ class ErsadNetexFileWriterTest {
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = withParkings(tavannes, List.of(
         new ErsadParking("ch:1:sloid:100:parking:1", "Mit PRM", BooleanOptionalAttributeType.YES,
-            BooleanOptionalAttributeType.YES),
+            BooleanOptionalAttributeType.YES, 1),
         new ErsadParking("ch:1:sloid:100:parking:2", "Ohne PRM", BooleanOptionalAttributeType.YES,
-            BooleanOptionalAttributeType.NO),
+            BooleanOptionalAttributeType.NO, 1),
         new ErsadParking("ch:1:sloid:100:parking:3", "Unbekannt", BooleanOptionalAttributeType.YES,
-            BooleanOptionalAttributeType.TO_BE_COMPLETED)));
+            BooleanOptionalAttributeType.TO_BE_COMPLETED, 1)));
 
     // When
     Document document = parse(write(List.of(station)));
@@ -193,7 +193,7 @@ class ErsadNetexFileWriterTest {
     ErsadStation station = new ErsadStation(tavannes.sloid(), tavannes.number(), name, tavannes.longitude(),
         tavannes.latitude(), tavannes.address(), tavannes.url(), tavannes.meansOfTransport(),
         tavannes.accessibleStation(), tavannes.assistance(), tavannes.equipment(), tavannes.quays(),
-        tavannes.contactPoints(), tavannes.toilets(), tavannes.parkings(), tavannes.pathLinks());
+        tavannes.contactPoints(), tavannes.toilets(), tavannes.parkings(), tavannes.pathLinks(), tavannes.version());
 
     // When
     Path file = write(List.of(station));
@@ -210,7 +210,7 @@ class ErsadNetexFileWriterTest {
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = new ErsadStation(tavannes.sloid(), tavannes.number(), tavannes.name(), 7.2,
         47.219844660314567, null, null, tavannes.meansOfTransport(), null, null, null, List.of(), List.of(), List.of(),
-        List.of(), List.of());
+        List.of(), List.of(), 1);
 
     // When
     Document document = parse(write(List.of(station)));
@@ -226,7 +226,7 @@ class ErsadNetexFileWriterTest {
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = new ErsadStation(tavannes.sloid(), tavannes.number(), tavannes.name(), null, null, null,
         null, List.of("BUS", "TRAIN"), NetexTriState.UNKNOWN, null, null, List.of(), List.of(), List.of(), List.of(),
-        List.of());
+        List.of(), 1);
 
     // When
     Document document = parse(write(List.of(station)));
@@ -266,13 +266,13 @@ class ErsadNetexFileWriterTest {
   private static ErsadStation withEquipment(ErsadStation s, ErsadStationEquipment equipment) {
     return new ErsadStation(s.sloid(), s.number(), s.name(), s.longitude(), s.latitude(), s.address(), s.url(),
         s.meansOfTransport(), null, s.assistance(), equipment, s.quays(), s.contactPoints(), s.toilets(),
-        s.parkings(), s.pathLinks());
+        s.parkings(), s.pathLinks(), s.version());
   }
 
   private static ErsadStation withParkings(ErsadStation s, List<ErsadParking> parkings) {
     return new ErsadStation(s.sloid(), s.number(), s.name(), s.longitude(), s.latitude(), s.address(), s.url(),
         s.meansOfTransport(), s.accessibleStation(), s.assistance(), s.equipment(), s.quays(), s.contactPoints(),
-        s.toilets(), parkings, s.pathLinks());
+        s.toilets(), parkings, s.pathLinks(), s.version());
   }
 
   private static DocumentBuilder documentBuilder() throws Exception {

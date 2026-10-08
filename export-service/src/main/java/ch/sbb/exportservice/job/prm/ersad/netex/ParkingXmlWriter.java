@@ -23,14 +23,15 @@ public class ParkingXmlWriter {
   private final XmlWriterSupport xml;
 
   public void write(ErsadStation station, ErsadParking parking) {
-    xml.startElement(PARKING, parking.sloid());
+    xml.startElement(PARKING, parking.sloid(), parking.version());
     xml.optionalElement(NAME, NetexValueMapper.text(parking.designation()));
-    xml.reference(PARENT_SITE_REF, station.sloid());
+    xml.reference(PARENT_SITE_REF, station.sloid(), station.version());
     if (parking.prmPlacesAvailable() == BooleanOptionalAttributeType.YES) {
       xml.startElement(PARKING_AREAS);
-      xml.startElement(PARKING_AREA, parking.sloid() + ID_SUFFIX_PARKING_AREA);
+      xml.startElement(PARKING_AREA, parking.sloid() + ID_SUFFIX_PARKING_AREA, parking.version());
       xml.startElement(PARKING_PROPERTIES_CONTAINER);
-      xml.startElement(PARKING_PROPERTIES, parking.sloid() + ID_SUFFIX_PARKING_AREA + ID_SUFFIX_PARKING_PROPERTIES);
+      xml.startElement(PARKING_PROPERTIES, parking.sloid() + ID_SUFFIX_PARKING_AREA + ID_SUFFIX_PARKING_PROPERTIES,
+          parking.version());
       xml.element(PARKING_USER_TYPES, PARKING_USER_TYPE_REGISTERED_DISABLED);
       xml.endElement();
       xml.endElement();

@@ -11,6 +11,7 @@ public record ErsadPathLink(
     ReferencePointElementType targetType,
     StepFreeAccessAttributeType stepFreeAccess,
     TactileVisualAttributeType tactileVisualMarks,
-    StandardAttributeType contrastingAreas) {
+    StandardAttributeType contrastingAreas,
+    Integer version) {
 
 }

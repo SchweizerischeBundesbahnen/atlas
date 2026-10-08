@@ -6,6 +6,7 @@ public record ErsadParking(
     String sloid,
     String designation,
     BooleanOptionalAttributeType placesAvailable,
-    BooleanOptionalAttributeType prmPlacesAvailable) {
+    BooleanOptionalAttributeType prmPlacesAvailable,
+    Integer version) {
 
 }

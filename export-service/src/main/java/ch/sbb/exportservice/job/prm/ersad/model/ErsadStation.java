@@ -21,7 +21,8 @@ public record ErsadStation(
     List<ErsadContactPoint> contactPoints,
     List<ErsadToilet> toilets,
     List<ErsadParking> parkings,
-    List<ErsadPathLink> pathLinks) {
+    List<ErsadPathLink> pathLinks,
+    Integer version) {
 
   public ErsadStation {
     meansOfTransport = meansOfTransport == null ? List.of() : List.copyOf(meansOfTransport);

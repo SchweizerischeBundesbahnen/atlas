@@ -9,6 +9,7 @@ public record ErsadContactPoint(
     String designation,
     String openingHours,
     StandardAttributeType wheelchairAccess,
-    StandardAttributeType inductionLoop) {
+    StandardAttributeType inductionLoop,
+    Integer version) {
 
 }

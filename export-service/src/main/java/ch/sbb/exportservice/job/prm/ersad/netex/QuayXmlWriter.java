@@ -23,10 +23,9 @@ public class QuayXmlWriter {
   private final XmlWriterSupport xml;
 
   public void write(ErsadQuay quay) {
-    xml.startElement(QUAY, quay.sloid());
-    xml.accessibilityAssessment(quay.sloid() + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT,
+    xml.startElement(QUAY, quay.sloid(), quay.version());
+    xml.accessibilityAssessment(quay.sloid() + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT, quay.version(),
         List.of(
-            new Limitation(WHEELCHAIR_ACCESS, NetexValueMapper.limitation(quay.vehicleAccess())),
             new Limitation(LEVEL_ACCESS_INTO_VEHICLE, NetexValueMapper.limitation(quay.levelAccessWheelchair()))),
         NetexValueMapper.text(quay.adviceAccessInfo()));
     writeAccessVehicleEquipment(quay);
@@ -41,7 +40,7 @@ public class QuayXmlWriter {
       return;
     }
     xml.startElement(PLACE_EQUIPMENTS);
-    xml.startElement(ACCESS_VEHICLE_EQUIPMENT, quay.sloid() + ID_SUFFIX_ACCESS);
+    xml.startElement(ACCESS_VEHICLE_EQUIPMENT, quay.sloid() + ID_SUFFIX_ACCESS, quay.version());
     xml.optionalElement(HOIST, hoist);
     xml.optionalElement(RAMP, ramp);
     xml.endElement();

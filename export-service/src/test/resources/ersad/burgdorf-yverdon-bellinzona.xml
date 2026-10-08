@@ -107,10 +107,10 @@
 <quays>
 <Quay id="ch:1:sloid:8005:1:1" version="1">
 <AccessibilityAssessment id="ch:1:sloid:8005:1:1:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -119,10 +119,10 @@
 </Quay>
 <Quay id="ch:1:sloid:8005:1:11" version="1">
 <AccessibilityAssessment id="ch:1:sloid:8005:1:11:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -131,10 +131,10 @@
 </Quay>
 <Quay id="ch:1:sloid:8005:2:2" version="1">
 <AccessibilityAssessment id="ch:1:sloid:8005:2:2:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -143,10 +143,10 @@
 </Quay>
 <Quay id="ch:1:sloid:8005:2:3" version="1">
 <AccessibilityAssessment id="ch:1:sloid:8005:2:3:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -155,10 +155,10 @@
 </Quay>
 <Quay id="ch:1:sloid:8005:3:4" version="1">
 <AccessibilityAssessment id="ch:1:sloid:8005:3:4:aa" version="1">
-<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>false</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -167,10 +167,10 @@
 </Quay>
 <Quay id="ch:1:sloid:8005:3:5" version="1">
 <AccessibilityAssessment id="ch:1:sloid:8005:3:5:aa" version="1">
-<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>false</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -226,10 +226,10 @@
 <quays>
 <Quay id="ch:1:sloid:4200:1:1" version="1">
 <AccessibilityAssessment id="ch:1:sloid:4200:1:1:aa" version="1">
-<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>false</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -239,10 +239,10 @@
 </Quay>
 <Quay id="ch:1:sloid:4200:2:2" version="1">
 <AccessibilityAssessment id="ch:1:sloid:4200:2:2:aa" version="1">
-<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>false</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -251,10 +251,10 @@
 </Quay>
 <Quay id="ch:1:sloid:4200:2:3" version="1">
 <AccessibilityAssessment id="ch:1:sloid:4200:2:3:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -263,14 +263,6 @@
 </Quay>
 <!-- boardingDevice = RAMPS -->
 <Quay id="ch:1:sloid:4200:0:619346" version="1">
-<AccessibilityAssessment id="ch:1:sloid:4200:0:619346:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
-<limitations>
-<AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
-</AccessibilityLimitation>
-</limitations>
-</AccessibilityAssessment>
 <placeEquipments>
 <AccessVehicleEquipment id="ch:1:sloid:4200:0:619346:access" version="1">
 <Ramp>true</Ramp>
@@ -279,24 +271,8 @@
 </Quay>
 <!-- boardingDevice = NOT_APPLICABLE: kein AccessVehicleEquipment -->
 <Quay id="ch:1:sloid:4200:0:534539" version="1">
-<AccessibilityAssessment id="ch:1:sloid:4200:0:534539:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
-<limitations>
-<AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
-</AccessibilityLimitation>
-</limitations>
-</AccessibilityAssessment>
 </Quay>
 <Quay id="ch:1:sloid:4200:0:814902" version="1">
-<AccessibilityAssessment id="ch:1:sloid:4200:0:814902:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
-<limitations>
-<AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
-</AccessibilityLimitation>
-</limitations>
-</AccessibilityAssessment>
 </Quay>
 </quays>
 </StopPlace>
@@ -347,10 +323,10 @@
 <quays>
 <Quay id="ch:1:sloid:5213:1:1" version="1">
 <AccessibilityAssessment id="ch:1:sloid:5213:1:1:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -359,10 +335,10 @@
 </Quay>
 <Quay id="ch:1:sloid:5213:2:2" version="1">
 <AccessibilityAssessment id="ch:1:sloid:5213:2:2:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -371,10 +347,10 @@
 </Quay>
 <Quay id="ch:1:sloid:5213:2:3" version="1">
 <AccessibilityAssessment id="ch:1:sloid:5213:2:3:aa" version="1">
-<MobilityImpairedAccess>false</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>false</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -383,10 +359,10 @@
 </Quay>
 <Quay id="ch:1:sloid:5213:3:4" version="1">
 <AccessibilityAssessment id="ch:1:sloid:5213:3:4:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>
@@ -395,10 +371,10 @@
 </Quay>
 <Quay id="ch:1:sloid:5213:3:6" version="1">
 <AccessibilityAssessment id="ch:1:sloid:5213:3:6:aa" version="1">
-<MobilityImpairedAccess>true</MobilityImpairedAccess>
+<MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
 <AccessibilityLimitation>
-<WheelchairAccess>true</WheelchairAccess>
+<WheelchairAccess>unknown</WheelchairAccess>
 <LevelAccessIntoVehicle>true</LevelAccessIntoVehicle>
 </AccessibilityLimitation>
 </limitations>

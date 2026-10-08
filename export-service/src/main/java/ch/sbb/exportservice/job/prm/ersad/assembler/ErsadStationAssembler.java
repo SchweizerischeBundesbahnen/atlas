@@ -86,6 +86,9 @@ public class ErsadStationAssembler {
     List<RelationVersion> relations = relationsByParentSloid.getOrDefault(sloid, List.of());
     CoordinatePair wgs84 = toWgs84(servicePoint);
 
+    List<ErsadContactPoint> contactPoints = mapSorted(contactPointsByParentSloid.getOrDefault(sloid, List.of()),
+        ContactPointVersion::getSloid,
+        ErsadStationAssembler::toContactPoint);
     return Optional.of(new ErsadStation(
         sloid,
         stopPoint.getNumber().getNumber(),
@@ -100,13 +103,13 @@ public class ErsadStationAssembler {
         toEquipment(stopPoint),
         mapSorted(platforms, PlatformVersion::getSloid,
             platform -> toQuay(platform, trafficPointDesignations.get(platform.getSloid()))),
-        mapSorted(contactPointsByParentSloid.getOrDefault(sloid, List.of()), ContactPointVersion::getSloid,
-            ErsadStationAssembler::toContactPoint),
+        contactPoints,
         mapSorted(toiletsByParentSloid.getOrDefault(sloid, List.of()), ToiletVersion::getSloid,
             ErsadStationAssembler::toToilet),
         mapSorted(parkingLotsByParentSloid.getOrDefault(sloid, List.of()), ParkingLotVersion::getSloid,
             ErsadStationAssembler::toParking),
-        mapSorted(relations, RelationVersion::getSloid, ErsadStationAssembler::toPathLink)));
+        mapSorted(relations, RelationVersion::getSloid, ErsadStationAssembler::toPathLink),
+        stopPoint.getVersion()));
   }
 
   private CoordinatePair toWgs84(ServicePointVersion servicePoint) {
@@ -151,7 +154,7 @@ public class ErsadStationAssembler {
         platform.getLevelAccessWheelchair(),
         platform.getSuperelevation(),
         platform.getShuttle(),
-        platform.getVehicleAccess());
+        platform.getVersion());
   }
 
   private static ErsadContactPoint toContactPoint(ContactPointVersion contactPoint) {
@@ -161,16 +164,17 @@ public class ErsadStationAssembler {
         contactPoint.getDesignation(),
         contactPoint.getOpeningHours(),
         contactPoint.getWheelchairAccess(),
-        contactPoint.getInductionLoop());
+        contactPoint.getInductionLoop(),
+        contactPoint.getVersion());
   }
 
   private static ErsadToilet toToilet(ToiletVersion toilet) {
-    return new ErsadToilet(toilet.getSloid(), toilet.getDesignation(), toilet.getWheelchairToilet());
+    return new ErsadToilet(toilet.getSloid(), toilet.getDesignation(), toilet.getWheelchairToilet(), toilet.getVersion());
   }
 
   private static ErsadParking toParking(ParkingLotVersion parking) {
     return new ErsadParking(parking.getSloid(), parking.getDesignation(), parking.getPlacesAvailable(),
-        parking.getPrmPlacesAvailable());
+        parking.getPrmPlacesAvailable(), parking.getVersion());
   }
 
   private static ErsadPathLink toPathLink(RelationVersion relation) {
@@ -180,6 +184,7 @@ public class ErsadStationAssembler {
         relation.getReferencePointElementType(),
         relation.getStepFreeAccess(),
         relation.getTactileVisualMarks(),
-        relation.getContrastingAreas());
+        relation.getContrastingAreas(),
+        relation.getVersion());
   }
 }

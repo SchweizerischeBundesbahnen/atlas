@@ -231,6 +231,7 @@ class ErsadStationAssemblerTest {
         .stepFreeAccess(StepFreeAccessAttributeType.YES)
         .tactileVisualMarks(TactileVisualAttributeType.YES)
         .contrastingAreas(StandardAttributeType.YES)
+        .version(7)
         .build();
     when(accessibilityDeriver.derive(any(), any(), any(), any())).thenReturn(NetexTriState.TRUE);
 
@@ -250,7 +251,7 @@ class ErsadStationAssemblerTest {
     assertThat(stations).singleElement()
         .satisfies(station -> assertThat(station.pathLinks()).containsExactly(
             new ErsadPathLink("ch:1:sloid:8500100:ref:1", "ch:1:sloid:8500100:pathLink:1", ReferencePointElementType.TOILET,
-                StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES)));
+                StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES, 7)));
   }
 
   private StopPointVersion stopPoint(String sloid, int number) {

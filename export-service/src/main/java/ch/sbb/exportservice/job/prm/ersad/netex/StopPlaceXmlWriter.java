@@ -62,7 +62,7 @@ public class StopPlaceXmlWriter {
   }
 
   public void write(ErsadStation station) {
-    xml.startElement(STOP_PLACE, station.sloid());
+    xml.startElement(STOP_PLACE, station.sloid(), station.version());
     xml.optionalElement(NAME, NetexValueMapper.text(station.name()));
     if (station.number() != null) {
       xml.element(PRIVATE_CODE, ATTR_TYPE, DIDOK, String.valueOf(station.number()));
@@ -110,7 +110,7 @@ public class StopPlaceXmlWriter {
     if (!XmlWriterSupport.anyPresent(List.of(street, zipCode, city))) {
       return;
     }
-    xml.startElement(POSTAL_ADDRESS, station.sloid() + ID_SUFFIX_ADDRESS);
+    xml.startElement(POSTAL_ADDRESS, station.sloid() + ID_SUFFIX_ADDRESS, station.version());
     xml.optionalElement(ADDRESS_LINE_1, street);
     xml.optionalElement(TOWN, city);
     xml.optionalElement(POST_CODE, zipCode);
@@ -120,7 +120,7 @@ public class StopPlaceXmlWriter {
   private void writeAccessibilityAssessment(ErsadStation station) {
     ErsadStationEquipment equipment = station.equipment();
     Optional<String> accessible = NetexValueMapper.triState(station.accessibleStation());
-    xml.accessibilityAssessment(station.sloid() + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT,
+    xml.accessibilityAssessment(station.sloid() + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT, station.version(),
         List.of(
             new Limitation(WHEELCHAIR_ACCESS, accessible),
             new Limitation(AUDIBLE_SIGNALS_AVAILABLE,
@@ -142,7 +142,7 @@ public class StopPlaceXmlWriter {
     }
     xml.startElement(LOCAL_SERVICES);
     if (hasAssistanceService) {
-      xml.startElement(ASSISTANCE_SERVICE, station.sloid() + ID_SUFFIX_ASSISTANCE);
+      xml.startElement(ASSISTANCE_SERVICE, station.sloid() + ID_SUFFIX_ASSISTANCE, station.version());
       xml.optionalElement(NOTE, note);
       xml.optionalElement(ASSISTANCE_FACILITY_LIST, facilityList);
       xml.optionalElement(ASSISTANCE_AVAILABILITY, availability);
@@ -153,7 +153,7 @@ public class StopPlaceXmlWriter {
   }
 
   private void writeTicketingService(ErsadContactPoint contactPoint) {
-    xml.startElement(TICKETING_SERVICE, contactPoint.sloid());
+    xml.startElement(TICKETING_SERVICE, contactPoint.sloid(), contactPoint.version());
     xml.optionalElement(NAME, NetexValueMapper.text(contactPoint.designation()));
     xml.endElement();
   }
@@ -171,7 +171,7 @@ public class StopPlaceXmlWriter {
 
   private void writeTicketingEquipment(ErsadStation station, ErsadContactPoint contactPoint) {
     ErsadStationEquipment equipment = station.equipment();
-    xml.startElement(TICKETING_EQUIPMENT, contactPoint.sloid());
+    xml.startElement(TICKETING_EQUIPMENT, contactPoint.sloid(), contactPoint.version());
     xml.optionalElement(TICKET_MACHINES,
         equipment == null ? Optional.empty() : NetexValueMapper.limitation(equipment.ticketMachine()));
     xml.optionalElement(TICKET_OFFICE, NetexValueMapper.ticketOffice(contactPoint.type()));
@@ -183,9 +183,9 @@ public class StopPlaceXmlWriter {
   }
 
   private void writeSanitaryEquipment(ErsadToilet toilet) {
-    xml.startElement(SANITARY_EQUIPMENT, toilet.sloid());
+    xml.startElement(SANITARY_EQUIPMENT, toilet.sloid(), toilet.version());
     xml.optionalElement(NAME, NetexValueMapper.text(toilet.designation()));
-    xml.accessibilityAssessment(toilet.sloid() + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT,
+    xml.accessibilityAssessment(toilet.sloid() + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT, toilet.version(),
         List.of(new Limitation(WHEELCHAIR_ACCESS, NetexValueMapper.limitation(toilet.wheelchairToilet()))),
         Optional.empty());
     xml.optionalElement(SANITARY_FACILITY_LIST, NetexValueMapper.sanitaryFacilityList(toilet.wheelchairToilet()));
