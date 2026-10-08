@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.lidi.LineVersionModelV3;
+import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
@@ -94,60 +95,78 @@ class LineVersionV3ServiceTest {
   }
 
   @Test
-  void shouldSelectParentVersionOverlappingChildValidFrom() {
+  void shouldSelectParentVersionValidToday() {
     //given
     LineVersionV3 child = LineVersionV3TestData.sublineBuilder()
-        .validFrom(LocalDate.of(2026, 5, 7))
-        .validTo(LocalDate.of(2026, 12, 31))
+        .validFrom(LocalDate.now().plusYears(4))
+        .validTo(LocalDate.now().plusYears(5))
         .build();
-    LineVersionV3 oldParent = LineVersionV3TestData.lineBuilder()
-        .number("old")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2025, 12, 31))
-        .build();
-    LineVersionV3 matchingParent = LineVersionV3TestData.lineBuilder()
-        .number("matching")
-        .validFrom(LocalDate.of(2026, 1, 1))
-        .validTo(LocalDate.of(2026, 12, 31))
-        .build();
-    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(LineVersionV3TestData.CHILD_SLNID))
-        .thenReturn(List.of(child));
-    when(lineVersionV3Repository.findAllBySlnidIn(anySet())).thenReturn(List.of(oldParent, matchingParent));
+    LineVersionV3 pastParent = parent("past", LocalDate.now().minusYears(5), LocalDate.now().minusYears(1));
+    LineVersionV3 currentParent = parent("current", LocalDate.now().minusDays(1), LocalDate.now().plusDays(1));
+    LineVersionV3 futureParent = parent("future", LocalDate.now().plusYears(1), LocalDate.now().plusYears(2));
+    mockChildWithParents(child, List.of(pastParent, currentParent, futureParent));
 
     //when
     List<LineVersionModelV3> result = lineVersionV3Service.findBySlnid(LineVersionV3TestData.CHILD_SLNID);
 
     //then
     assertThat(result).hasSize(1);
-    assertThat(result.getFirst().getReferencedLine().getNumber()).isEqualTo("matching");
+    assertThat(result.getFirst().getReferencedLine().getNumber()).isEqualTo("current");
   }
 
   @Test
-  void shouldFallBackToNewestParentWhenNoValidityOverlaps() {
+  void shouldFallBackToNextFutureParentWhenNoneIsValidToday() {
     //given
-    LineVersionV3 child = LineVersionV3TestData.sublineBuilder()
-        .validFrom(LocalDate.of(2030, 1, 1))
-        .validTo(LocalDate.of(2030, 12, 31))
-        .build();
-    LineVersionV3 olderParent = LineVersionV3TestData.lineBuilder()
-        .number("older")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .build();
-    LineVersionV3 newestParent = LineVersionV3TestData.lineBuilder()
-        .number("newest")
-        .validFrom(LocalDate.of(2021, 1, 1))
-        .validTo(LocalDate.of(2021, 12, 31))
-        .build();
-    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(LineVersionV3TestData.CHILD_SLNID))
-        .thenReturn(List.of(child));
-    when(lineVersionV3Repository.findAllBySlnidIn(anySet())).thenReturn(List.of(olderParent, newestParent));
+    LineVersionV3 child = LineVersionV3TestData.subline();
+    LineVersionV3 pastParent = parent("past", LocalDate.now().minusYears(5), LocalDate.now().minusYears(1));
+    LineVersionV3 nextParent = parent("next", LocalDate.now().plusYears(1), LocalDate.now().plusYears(2));
+    LineVersionV3 laterParent = parent("later", LocalDate.now().plusYears(3), LocalDate.now().plusYears(4));
+    mockChildWithParents(child, List.of(laterParent, pastParent, nextParent));
 
     //when
     List<LineVersionModelV3> result = lineVersionV3Service.findBySlnid(LineVersionV3TestData.CHILD_SLNID);
 
     //then
-    assertThat(result.getFirst().getReferencedLine().getNumber()).isEqualTo("newest");
+    assertThat(result.getFirst().getReferencedLine().getNumber()).isEqualTo("next");
+  }
+
+  @Test
+  void shouldFallBackToLatestParentWhenAllAreInThePast() {
+    //given
+    LineVersionV3 child = LineVersionV3TestData.subline();
+    LineVersionV3 olderParent = parent("older", LocalDate.now().minusYears(9), LocalDate.now().minusYears(8));
+    LineVersionV3 latestParent = parent("latest", LocalDate.now().minusYears(3), LocalDate.now().minusYears(2));
+    mockChildWithParents(child, List.of(latestParent, olderParent));
+
+    //when
+    List<LineVersionModelV3> result = lineVersionV3Service.findBySlnid(LineVersionV3TestData.CHILD_SLNID);
+
+    //then
+    assertThat(result.getFirst().getReferencedLine().getNumber()).isEqualTo("latest");
+  }
+
+  @Test
+  void shouldInheritConcessionTypeOfThePrioritizedParentVersion() {
+    //given
+    LineVersionV3 child = LineVersionV3TestData.subline();
+    LineVersionV3 pastParent = LineVersionV3TestData.lineBuilder()
+        .concessionType(ConcessionType.STATE_TREATY)
+        .validFrom(LocalDate.now().minusYears(5))
+        .validTo(LocalDate.now().minusYears(1))
+        .build();
+    LineVersionV3 currentParent = LineVersionV3TestData.lineBuilder()
+        .concessionType(ConcessionType.FEDERALLY_LICENSED_LINE)
+        .validFrom(LocalDate.now().minusDays(1))
+        .validTo(LocalDate.now().plusDays(1))
+        .build();
+    mockChildWithParents(child, List.of(pastParent, currentParent));
+
+    //when
+    List<LineVersionModelV3> result = lineVersionV3Service.findBySlnid(LineVersionV3TestData.CHILD_SLNID);
+
+    //then
+    assertThat(result.getFirst().getConcessionType()).isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
+    assertThat(result.getFirst().getReferencedLine()).hasOnlyFields("number", "lineNumber", "swissLineNumber", "lineSlnid");
   }
 
   @Test
@@ -181,6 +200,15 @@ class LineVersionV3ServiceTest {
     //then
     assertThat(result.getFirst().getType()).isEqualTo(LineObjectType.SUBLINE);
     assertThat(result.getFirst().getReferencedLine()).isNull();
+  }
+
+  private static LineVersionV3 parent(String number, LocalDate validFrom, LocalDate validTo) {
+    return LineVersionV3TestData.lineBuilder().number(number).validFrom(validFrom).validTo(validTo).build();
+  }
+
+  private void mockChildWithParents(LineVersionV3 child, List<LineVersionV3> parents) {
+    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(LineVersionV3TestData.CHILD_SLNID)).thenReturn(List.of(child));
+    when(lineVersionV3Repository.findAllBySlnidIn(anySet())).thenReturn(parents);
   }
 
   private static LineVersionV3SearchRestrictions searchRestrictions(Pageable pageable) {

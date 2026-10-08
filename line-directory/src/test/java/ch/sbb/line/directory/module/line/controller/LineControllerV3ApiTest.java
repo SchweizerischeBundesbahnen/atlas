@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
@@ -219,6 +220,20 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].referencedLine.lineSlnid", is(LineVersionV3TestData.PARENT_SLNID)))
         .andExpect(jsonPath("$[0].referencedLine.swissLineNumber", is("90.583")));
+  }
+
+  @Test
+  void shouldExposeConcessionTypeOfReferencedLineAtTopLevel() throws Exception {
+    //given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.subline());
+
+    //when && then
+    mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.CHILD_SLNID))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].concessionType", is(ConcessionType.CANTONALLY_APPROVED_LINE.name())))
+        .andExpect(jsonPath("$[0].referencedLine.concessionType").doesNotExist())
+        .andExpect(jsonPath("$[0].referencedLine.lineConcessionType").doesNotExist());
   }
 
   @Test

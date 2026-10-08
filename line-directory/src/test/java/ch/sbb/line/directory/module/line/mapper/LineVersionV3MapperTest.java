@@ -7,10 +7,14 @@ import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.EnumSource.Mode;
 
 class LineVersionV3MapperTest {
 
@@ -98,7 +102,6 @@ class LineVersionV3MapperTest {
     LineVersionV3 subline = LineVersionV3TestData.sublineBuilder()
         .number(null)
         .swissLineNumber(null)
-        .concessionType(null)
         .build();
     LineVersionV3 parent = LineVersionV3TestData.line();
 
@@ -108,11 +111,77 @@ class LineVersionV3MapperTest {
     //then
     assertThat(result.getNumber()).isNull();
     assertThat(result.getSwissLineNumber()).isNull();
-    assertThat(result.getConcessionType()).isNull();
     assertThat(result.getReferencedLine().getNumber()).isEqualTo("90.583");
     assertThat(result.getReferencedLine().getLineNumber()).isEqualTo("90.583");
     assertThat(result.getReferencedLine().getSwissLineNumber()).isEqualTo("90.583");
-    assertThat(result.getReferencedLine().getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
+  }
+
+  @Test
+  void shouldInheritConcessionTypeFromReferencedLineWhenSublineHoldsNoTransportRight() {
+    //given
+    LineVersionV3 subline = LineVersionV3TestData.subline();
+    LineVersionV3 parent = LineVersionV3TestData.line();
+
+    //when
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(subline, parent);
+
+    //then
+    assertThat(subline.getLineType()).isEqualTo(LineType.TECHNICAL);
+    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = LineType.class, names = {"ORDERLY", "ZONE"})
+  void shouldKeepOwnConcessionTypeWhenSublineHoldsATransportRight(LineType lineType) {
+    //given
+    LineVersionV3 subline = LineVersionV3TestData.sublineBuilder()
+        .lineType(lineType)
+        .concessionType(ConcessionType.STATE_TREATY)
+        .build();
+    LineVersionV3 parent = LineVersionV3TestData.line();
+
+    //when
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(subline, parent);
+
+    //then
+    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.STATE_TREATY);
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = LineType.class, names = {"ORDERLY", "ZONE"}, mode = Mode.EXCLUDE)
+  void shouldOverrideOwnConcessionTypeWithTheOneOfTheReferencedLine(LineType lineType) {
+    //given
+    LineVersionV3 subline = LineVersionV3TestData.sublineBuilder()
+        .lineType(lineType)
+        .concessionType(ConcessionType.STATE_TREATY)
+        .build();
+    LineVersionV3 parent = LineVersionV3TestData.line();
+
+    //when
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(subline, parent);
+
+    //then
+    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
+  }
+
+  @Test
+  void shouldKeepConcessionTypeNullableWhenNeitherSideHoldsOne() {
+    //given
+    LineVersionV3 subline = LineVersionV3TestData.subline();
+    LineVersionV3 parent = LineVersionV3TestData.lineBuilder().concessionType(null).build();
+
+    //when && then
+    assertThat(LineVersionV3Mapper.toModel(subline, parent).getConcessionType()).isNull();
+    assertThat(LineVersionV3Mapper.toModel(subline, null).getConcessionType()).isNull();
+  }
+
+  @Test
+  void shouldNotExposeConcessionTypeInsideReferencedLine() {
+    //when
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(LineVersionV3TestData.subline(), LineVersionV3TestData.line());
+
+    //then
+    assertThat(result.getReferencedLine()).hasOnlyFields("number", "lineNumber", "swissLineNumber", "lineSlnid");
   }
 
   @Test
@@ -129,8 +198,7 @@ class LineVersionV3MapperTest {
 
     //then
     assertThat(result.getReferencedLine().getLineSlnid()).isEqualTo(LineVersionV3TestData.CHILD_SLNID);
-    assertThat(result.getReferencedLine()).hasNoNullFieldsOrPropertiesExcept("number", "lineNumber", "swissLineNumber",
-        "concessionType");
+    assertThat(result.getReferencedLine()).hasNoNullFieldsOrPropertiesExcept("number", "lineNumber", "swissLineNumber");
   }
 
   @Test

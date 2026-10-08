@@ -2,12 +2,17 @@ package ch.sbb.line.directory.module.line.mapper;
 
 import ch.sbb.atlas.api.lidi.LineVersionModelV3;
 import ch.sbb.atlas.api.lidi.ReferencedLineModelV3;
+import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class LineVersionV3Mapper {
+
+  private static final Set<LineType> OWN_CONCESSION_TYPES = Set.of(LineType.ORDERLY, LineType.ZONE);
 
   public static LineVersionModelV3 toModel(LineVersionV3 version, LineVersionV3 parent) {
     return LineVersionModelV3.builder()
@@ -22,7 +27,7 @@ public class LineVersionV3Mapper {
         .lineType(version.getLineType())
         .businessOrganisation(version.getBusinessOrganisation())
         .meansOfTransport(version.getMeansOfTransport())
-        .concessionType(version.getConcessionType())
+        .concessionType(resolveConcessionType(version, parent))
         .offerCategory(version.getOfferCategory())
         .financing(version.getFinancing())
         .cablewayNumber(version.getCablewayNumber())
@@ -45,6 +50,13 @@ public class LineVersionV3Mapper {
     return version.getReferencedLineSlnid() == null ? LineObjectType.LINE : LineObjectType.SUBLINE;
   }
 
+  private static ConcessionType resolveConcessionType(LineVersionV3 version, LineVersionV3 parent) {
+    if (parent == null || OWN_CONCESSION_TYPES.contains(version.getLineType())) {
+      return version.getConcessionType();
+    }
+    return parent.getConcessionType();
+  }
+
   private static ReferencedLineModelV3 toReferencedLine(LineVersionV3 parent) {
     if (parent == null) {
       return null;
@@ -54,7 +66,6 @@ public class LineVersionV3Mapper {
         .lineNumber(parent.getNumber())
         .swissLineNumber(parent.getSwissLineNumber())
         .lineSlnid(parent.getSlnid())
-        .concessionType(parent.getConcessionType())
         .build();
   }
 

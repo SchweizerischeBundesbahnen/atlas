@@ -1,12 +1,11 @@
 package ch.sbb.line.directory.module.line.service;
 
 import ch.sbb.atlas.api.lidi.LineVersionModelV3;
-import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import ch.sbb.line.directory.module.line.mapper.LineVersionV3Mapper;
 import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
 import ch.sbb.line.directory.module.line.search.LineVersionV3SearchRestrictions;
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -60,20 +59,16 @@ public class LineVersionV3Service {
     if (referencedLineSlnid == null) {
       return null;
     }
-    return selectParentVersion(parentsBySlnid.get(referencedLineSlnid), version.getValidFrom());
+    return selectParentVersion(parentsBySlnid.get(referencedLineSlnid));
   }
 
-  private static LineVersionV3 selectParentVersion(List<LineVersionV3> parentVersions, LocalDate childValidFrom) {
+  private static LineVersionV3 selectParentVersion(List<LineVersionV3> parentVersions) {
     if (parentVersions == null || parentVersions.isEmpty()) {
       return null;
     }
-    return parentVersions.stream()
+    return OverviewDisplayBuilder.getPrioritizedVersion(parentVersions.stream()
         .sorted(Comparator.comparing(LineVersionV3::getValidFrom))
-        .filter(parent -> DateRange.fromVersionable(parent).contains(childValidFrom))
-        .findFirst()
-        .orElseGet(() -> parentVersions.stream()
-            .max(Comparator.comparing(LineVersionV3::getValidFrom))
-            .orElse(null));
+        .toList());
   }
 
 }
