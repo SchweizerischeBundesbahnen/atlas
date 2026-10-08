@@ -27,7 +27,7 @@
             "coverage": true,
             "coverageReporters": ["text", "lcov"],
             "coverageInclude": [
-              "frontend/components/form/src/lib/**/*.ts"
+              "components/form/src/lib/**/*.ts"
             ]
           }
         },
@@ -159,7 +159,7 @@
             "coverage": true,
             "coverageReporters": ["text", "lcov"],
             "coverageInclude": [
-              "frontend/src/**/*.ts"
+              "src/**/*.ts"
             ]
           }
         },
