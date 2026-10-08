@@ -88,7 +88,6 @@ public class TrafficPointElementService extends RevokeService<TrafficPointElemen
 
   TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
     trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
-    trafficPointElementValidationService.validateDesignationOperational(trafficPointElementVersion);
     trafficPointElementVersion.setStatus(Status.VALIDATED);
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
@@ -107,6 +106,8 @@ public class TrafficPointElementService extends RevokeService<TrafficPointElemen
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
+
+    trafficPointElementValidationService.validateDesignationOperational(editedVersion);
 
     editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
     editedVersion.setSloid(currentVersion.getSloid());
