@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -396,6 +397,54 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
     // The message must be deserializable back into an ErrorResponse (getMessage() must not throw).
     ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
     assertThat(errorResponse.getDetails().first().getMessage()).isEqualTo("must match \"\\d{1,3}\"");
+  }
+
+  @Test
+  void shouldFailOnCreateWithThreeDigitsDesignationOperationalWithoutMeanOfTransportTrain() throws Exception {
+    repository.deleteAll();
+    doReturn(false).when(crossValidationService).hasAnyVersionMeanOfTransportTrain(any());
+    CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    platformToCreate.setDesignationOperational("123");
+
+    mvc.perform(post("/v1/traffic-point-elements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(platformToCreate)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details[0].field", is("designationOperational")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code",
+            is("SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL_MAX_DIGITS_ERROR")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("maxDigits")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("2")));
+  }
+
+  @Test
+  void shouldCreateTrafficPointElementWithThreeDigitsDesignationOperationalWithMeanOfTransportTrain() throws Exception {
+    repository.deleteAll();
+    doReturn(true).when(crossValidationService).hasAnyVersionMeanOfTransportTrain(any());
+    CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    platformToCreate.setDesignationOperational("123");
+
+    mvc.perform(post("/v1/traffic-point-elements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(platformToCreate)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.designationOperational, is("123")));
+  }
+
+  @Test
+  void shouldCreateTrafficPointElementWithTwoDigitsDesignationOperationalWithoutMeanOfTransportTrain() throws Exception {
+    repository.deleteAll();
+    doReturn(false).when(crossValidationService).hasAnyVersionMeanOfTransportTrain(any());
+    CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    platformToCreate.setDesignationOperational("12");
+
+    mvc.perform(post("/v1/traffic-point-elements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(platformToCreate)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.designationOperational, is("12")));
   }
 
   @Test

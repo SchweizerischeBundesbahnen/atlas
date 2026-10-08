@@ -29,7 +29,7 @@ import { AuthService } from '../../../../core/auth/auth.service';
 import { SloidComponent } from '../../../../core/form-components/sloid/sloid.component';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
-import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
+import { BERN, BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import {
   BERN_WYLEREGG_TRAFFIC_POINTS,
   BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER,
@@ -42,6 +42,7 @@ import { ServicePointService } from '../../../../api/service/sepodi/service-poin
 import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
 import { TrafficPointElementService } from '../../../../api/service/sepodi/traffic-point-element.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ReadServicePointVersion, ReadTrafficPointElementVersion } from '../../../../api';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateModule } from '../../../../core/module/date.module';
@@ -238,6 +239,103 @@ describe('TrafficPointElementsDetailComponent', () => {
       component.revoke();
 
       expect(trafficPointInternalService.revokeTrafficPoint).toHaveBeenCalled();
+    });
+  });
+
+  describe('designationOperational digit limit', () => {
+    function createComponent(
+      servicePointVersions: ReadServicePointVersion[],
+      trafficPoint: ReadTrafficPointElementVersion[]
+    ) {
+      routerSpy = {
+        navigate: vi.fn().mockReturnValue(Promise.resolve(true)),
+        events: of(null),
+      };
+      servicePointService = {
+        getServicePointVersions: vi.fn().mockReturnValue(of(servicePointVersions)),
+      };
+
+      const activatedRouteMock = {
+        parent: {
+          snapshot: {
+            params: {
+              servicePointNumber: 8589008,
+            },
+          },
+          data: of({ trafficPoint, isTrafficPointArea: false }),
+        },
+      };
+      setupTestBed(activatedRouteMock);
+      fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    }
+
+    function trafficPointWithDesignationOperational(designationOperational: string) {
+      return [{ ...BERN_WYLEREGG_TRAFFIC_POINTS[0], designationOperational }];
+    }
+
+    function designationOperationalInput(): HTMLInputElement {
+      return fixture.nativeElement.querySelector('input[data-cy="designationOperational"]');
+    }
+
+    it('should allow 3 digits when a service point version has mean of transport TRAIN', () => {
+      createComponent(BERN, trafficPointWithDesignationOperational('123'));
+
+      expect(component.designationOperationalMaxDigits).toBe(3);
+      expect(component.designationOperationalExample).toBe('02, 10, 123 |');
+      expect(designationOperationalInput().getAttribute('maxlength')).toBe('3');
+
+      component.toggleEdit();
+      expect(component.form.controls.designationOperational.valid).toBe(true);
+    });
+
+    it('should allow only 2 digits when no service point version has mean of transport TRAIN', () => {
+      createComponent([BERN_WYLEREGG], trafficPointWithDesignationOperational('12'));
+
+      expect(component.designationOperationalMaxDigits).toBe(2);
+      expect(component.designationOperationalExample).toBe('02, 10 |');
+      expect(designationOperationalInput().getAttribute('maxlength')).toBe('2');
+
+      component.toggleEdit();
+      expect(component.form.controls.designationOperational.valid).toBe(true);
+    });
+
+    it('should keep a legacy 3 digit value visible, flag it invalid and block saving', () => {
+      createComponent([BERN_WYLEREGG], trafficPointWithDesignationOperational('123'));
+
+      component.toggleEdit();
+
+      expect(component.form.controls.designationOperational.value).toBe('123');
+      expect(component.form.controls.designationOperational.valid).toBe(false);
+      expect(component.form.controls.designationOperational.errors).toEqual({
+        designation_operational_max_digits: { maxDigits: 2 },
+      });
+
+      component.save();
+
+      expect(trafficPointService.updateTrafficPoint).not.toHaveBeenCalled();
+    });
+
+    it('should allow saving a legacy value after correction', () => {
+      createComponent([BERN_WYLEREGG], trafficPointWithDesignationOperational('123'));
+
+      component.toggleEdit();
+      component.form.controls.designationOperational.setValue('12');
+
+      expect(component.form.controls.designationOperational.valid).toBe(true);
+
+      component.save();
+
+      expect(trafficPointService.updateTrafficPoint).toHaveBeenCalled();
+    });
+
+    it('should not validate an empty value', () => {
+      createComponent([BERN_WYLEREGG], trafficPointWithDesignationOperational(''));
+
+      component.toggleEdit();
+
+      expect(component.form.controls.designationOperational.valid).toBe(true);
     });
   });
 

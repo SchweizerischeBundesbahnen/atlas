@@ -16,6 +16,7 @@
         type="text"
         placeholder="{{ placeholder() | translate }}"
         [attr.data-cy]="controlName()"
+        [attr.maxlength]="maxLength()"
         atlasEmptyToNull
       />
       <ng-container #customChildInputPostfixTemplate *ngTemplateOutlet="customChildInputPostfixTemplate" />

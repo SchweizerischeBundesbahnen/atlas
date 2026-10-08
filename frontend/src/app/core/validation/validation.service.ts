@@ -20,6 +20,7 @@ export class ValidationService {
             allowedChars: controlErrors[keyError]['allowedCharacters'],
             maxDecimalDigits: controlErrors[keyError]['maxDecimalDigits'],
             maxFractionDigits: controlErrors[keyError]['maxFractionDigits'],
+            maxDigits: controlErrors[keyError]['maxDigits'],
             numbersWithColons: controlErrors[keyError]['sid4ptWithColons'],
             max: controlErrors[keyError]['max'],
             min: controlErrors[keyError]['min'],

@@ -115,4 +115,17 @@ describe('ValidationService', () => {
     expect(control2.errors).toEqual({ whitespaces: true });
     expect(control3.errors).toBe(null);
   });
+
+  it('should add designationOperational max digits error with maxDigits parameter', () => {
+    //given
+    const error = {
+      designation_operational_max_digits: { maxDigits: 2 },
+    };
+    //when
+    const result = service.getValidation(error);
+    //then
+    expect(result.length).toBe(1);
+    expect(result[0].error).toBe('VALIDATION.DESIGNATION_OPERATIONAL_MAX_DIGITS');
+    expect(result[0].params?.maxDigits).toBe(2);
+  });
 });
