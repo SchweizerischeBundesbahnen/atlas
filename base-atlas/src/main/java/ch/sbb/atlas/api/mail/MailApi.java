@@ -4,12 +4,17 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 public interface MailApi {
 
+  String MAIL_REQUEST_ID_HEADER = "Mail-Request-Id";
+
   @PostMapping("/internal/mail")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  void produceMailNotification(@Valid @RequestBody MailNotification mailNotification);
+  void sendMailRequest(
+      @RequestHeader(MAIL_REQUEST_ID_HEADER) String mailReqId,
+      @Valid @RequestBody MailNotification mailNotification);
 
 }

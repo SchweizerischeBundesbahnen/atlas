@@ -4,17 +4,25 @@ import ch.sbb.atlas.api.mail.MailApi;
 import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.mail.service.MailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class MailController implements MailApi {
 
   private final MailService mailService;
 
   @Override
-  public void produceMailNotification(MailNotification mailNotification) {
-    mailService.sendEmailWithHtmlTemplate(mailNotification);
+  public void sendMailRequest(String mailReqId, MailNotification mailNotification) {
+    try {
+      mailService.sendEmailWithHtmlTemplate(mailNotification);
+      log.info("mailReqId={}, status=MAIL_SEND_SUCCEEDED", mailReqId);
+    } catch (RuntimeException exception) {
+      log.error("mailReqId={}, status=MAIL_SEND_FAILED", mailReqId, exception);
+      throw exception;
+    }
   }
 
 }

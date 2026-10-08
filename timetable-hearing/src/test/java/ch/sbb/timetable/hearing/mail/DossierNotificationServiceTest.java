@@ -31,7 +31,7 @@ class DossierNotificationServiceTest {
       .build();
 
   @Mock
-  private MailProducerService mailProducerService;
+  private MailClient mailClient;
 
   @Mock
   private UserAdministrationAdminClient userAdministrationAdminClient;
@@ -43,7 +43,7 @@ class DossierNotificationServiceTest {
   void shouldNotifyBoAboutNewQuestion() {
     dossierNotificationService.notifyBoAboutNewQuestion(DOSSIER);
 
-    verify(mailProducerService).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
   @Test
@@ -57,7 +57,7 @@ class DossierNotificationServiceTest {
     dossierNotificationService.notifyCantonAboutNewAnswer(DOSSIER);
 
     // Then
-    verify(mailProducerService).produceMailNotification(mailNotificationCaptor.capture());
+    verify(mailClient).sendMailRequest(mailNotificationCaptor.capture());
     assertThat(mailNotificationCaptor.getValue().getTo()).containsExactly("user@canton.ch");
   }
 
@@ -72,7 +72,7 @@ class DossierNotificationServiceTest {
     dossierNotificationService.notifyCantonAboutNewAnswer(DOSSIER);
 
     // Then
-    verify(mailProducerService).produceMailNotification(mailNotificationCaptor.capture());
+    verify(mailClient).sendMailRequest(mailNotificationCaptor.capture());
     assertThat(mailNotificationCaptor.getValue().getTo()).containsExactly("override@canton.ch");
   }
 }

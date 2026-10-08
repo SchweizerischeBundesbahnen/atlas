@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.mail.MailNotification;
-import ch.sbb.workflow.mail.MailProducerService;
+import ch.sbb.workflow.mail.MailClient;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.module.sepodi.termination.model.TerminationAbortModel;
@@ -26,12 +26,12 @@ class TerminationStopPointNotificationServiceTest {
   private TerminationStopPointWorkflowBuilderNotificationService builderNotificationService;
 
   @Mock
-  private MailProducerService mailProducerService;
+  private MailClient mailClient;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    notificationService = new TerminationStopPointNotificationService(mailProducerService, builderNotificationService);
+    notificationService = new TerminationStopPointNotificationService(mailClient, builderNotificationService);
   }
 
   @Test
@@ -59,8 +59,8 @@ class TerminationStopPointNotificationServiceTest {
 
     verify(builderNotificationService).buildStartTerminationNotificationMailForInfoPlus(terminationStopPointWorkflow);
     verify(builderNotificationService).buildStartTerminationNotificationMailForApplicant(terminationStopPointWorkflow);
-    verify(mailProducerService).produceMailNotification(infoPlusNotification);
-    verify(mailProducerService).produceMailNotification(applicantNotification);
+    verify(mailClient).sendMailRequest(infoPlusNotification);
+    verify(mailClient).sendMailRequest(applicantNotification);
   }
 
   @Test
@@ -82,7 +82,7 @@ class TerminationStopPointNotificationServiceTest {
         TerminationDecisionModel.builder().motivation("Not approved").build());
 
     verify(builderNotificationService).buildTariffStopNotApprovedNotification(terminationStopPointWorkflow, "Not approved");
-    verify(mailProducerService).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
   @Test
@@ -104,7 +104,7 @@ class TerminationStopPointNotificationServiceTest {
     notificationService.sendTariffStopApprovedNotificationToNova(terminationStopPointWorkflow);
 
     verify(builderNotificationService).buildTariffStopApprovedNotification(terminationStopPointWorkflow);
-    verify(mailProducerService, times(1)).produceMailNotification(any());
+    verify(mailClient, times(1)).sendMailRequest(any());
   }
 
   @Test
@@ -129,7 +129,7 @@ class TerminationStopPointNotificationServiceTest {
 
     verify(builderNotificationService).buildAbortNotificationForBoAndInfoPlus(terminationStopPointWorkflow, abortModel);
 
-    verify(mailProducerService).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
   @Test
@@ -153,7 +153,7 @@ class TerminationStopPointNotificationServiceTest {
     notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationStopPointWorkflow, abortModel);
 
     verify(builderNotificationService).buildAbortNotificationForBoInfoPlusAndNova(terminationStopPointWorkflow, abortModel);
-    verify(mailProducerService).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
 }

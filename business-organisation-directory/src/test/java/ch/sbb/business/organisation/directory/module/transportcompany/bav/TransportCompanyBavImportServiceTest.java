@@ -76,7 +76,7 @@ class TransportCompanyBavImportServiceTest {
 
     // Then
     verify(transportCompanyRepository).saveAll(anyList());
-    verify(mailClient).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
   @Test

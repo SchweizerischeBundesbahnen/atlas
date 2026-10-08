@@ -8,7 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.importservice.config.mail.MailProducerService;
+import ch.sbb.importservice.config.mail.MailClient;
 import ch.sbb.importservice.module.geo.client.ServicePointClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
@@ -38,7 +38,7 @@ class GeoLocationUpdateJobIntegrationTest {
   private ServicePointClient servicePointClient;
 
   @MockitoBean
-  private MailProducerService mailProducerService;
+  private MailClient mailClient;
 
   @Test
   void shouldExecuteUpdateGeoLocationJob() throws Exception {
@@ -54,7 +54,7 @@ class GeoLocationUpdateJobIntegrationTest {
     assertThat(actualJobInstance.getJobName()).isEqualTo(UPDATE_SERVICE_POINT_GEO_JOB);
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
 
-    verify(mailProducerService, times(1)).produceMailNotification(any());
+    verify(mailClient, times(1)).sendMailRequest(any());
   }
 
 }

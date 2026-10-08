@@ -79,7 +79,7 @@ public class TransportCompanyBavImportService {
               .map(TransportCompany::getNumber)
               .toList());
 
-      mailClient.produceMailNotification(MailNotification.builder()
+      mailClient.sendMailRequest(MailNotification.builder()
           .to(relationsReportAddresses)
           .templateProperties(buildProperties(
               transportCompaniesWithInvalidRelations))

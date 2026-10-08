@@ -1,8 +1,8 @@
 package ch.sbb.atlas.api.mail;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadFactory;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.task.TaskExecutor;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
@@ -10,56 +10,51 @@ import tools.jackson.databind.ObjectMapper;
 public class MailClientService {
 
   private static final String MAIL_PATH = "/mail/internal/mail";
-  private static final ThreadFactory MAIL_THREAD_FACTORY = Thread.ofVirtual()
-      .name("mail-client-", 0)
-      .factory();
-  private static final Executor MAIL_EXECUTOR = task -> MAIL_THREAD_FACTORY.newThread(task).start();
 
   private final MailApi mailApi;
   private final ObjectMapper objectMapper;
   private final String gatewayUrl;
-  private final Executor mailExecutor;
+  private final TaskExecutor mailTaskExecutor;
 
-  public MailClientService(MailApi mailApi, ObjectMapper objectMapper, String gatewayUrl) {
-    this(mailApi, objectMapper, gatewayUrl, MAIL_EXECUTOR);
-  }
-
-  MailClientService(MailApi mailApi, ObjectMapper objectMapper, String gatewayUrl, Executor mailExecutor) {
+  public MailClientService(MailApi mailApi, ObjectMapper objectMapper, String gatewayUrl,
+      TaskExecutor mailTaskExecutor) {
     this.mailApi = mailApi;
     this.objectMapper = objectMapper;
     this.gatewayUrl = gatewayUrl;
-    this.mailExecutor = mailExecutor;
+    this.mailTaskExecutor = mailTaskExecutor;
   }
 
-  public void produceMailNotification(MailNotification mailNotification) {
-    log.info("Dispatching asynchronous mail request with subject {} to {}",
-        mailNotification.getSubject(), mailNotification.getTo());
+  public void sendMailRequest(MailNotification mailNotification) {
+    String mailReqId = UUID.randomUUID().toString();
+    log.info("mailReqId={}, status=MAIL_REQ_STARTED, subject={}, to={}",
+        mailReqId, mailNotification.getSubject(), mailNotification.getTo());
     try {
-      mailExecutor.execute(() -> send(mailNotification));
+      mailTaskExecutor.execute(() -> send(mailReqId, mailNotification));
     } catch (RuntimeException exception) {
-      logFailure(mailNotification, exception);
+      logFailure(mailReqId, mailNotification, exception);
     }
   }
 
-  private void send(MailNotification mailNotification) {
+  private void send(String mailReqId, MailNotification mailNotification) {
     try {
-      mailApi.produceMailNotification(mailNotification);
+      mailApi.sendMailRequest(mailReqId, mailNotification);
     } catch (RuntimeException exception) {
-      logFailure(mailNotification, exception);
+      logFailure(mailReqId, mailNotification, exception);
     }
   }
 
-  private void logFailure(MailNotification mailNotification, RuntimeException exception) {
-    log.error("Mail service request failed; the business operation will continue. Retry manually with:\n{}",
-        createCurlCommand(mailNotification), exception);
+  private void logFailure(String mailReqId, MailNotification mailNotification, RuntimeException exception) {
+    log.error("mailReqId={}, Mail service request failed; the business operation will continue. Retry manually with:\n{}",
+        mailReqId, createCurlCommand(mailReqId, mailNotification), exception);
   }
 
-  String createCurlCommand(MailNotification mailNotification) {
+  String createCurlCommand(String mailReqId, MailNotification mailNotification) {
     try {
       String payload = objectMapper.writeValueAsString(mailNotification);
       return "curl --fail-with-body --request POST "
           + shellQuote(gatewayUrl + MAIL_PATH)
           + " --header 'Authorization: ******'"
+          + " --header " + shellQuote(MailApi.MAIL_REQUEST_ID_HEADER + ": " + mailReqId)
           + " --header 'Content-Type: application/json'"
           + " --data-raw " + shellQuote(payload);
     } catch (JacksonException exception) {

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.mail.MailNotification;
-import ch.sbb.workflow.mail.MailProducerService;
+import ch.sbb.workflow.mail.MailClient;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.module.sepodi.hearing.service.StopPointWorkflowBuilderNotificationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 class StopPointWorkflowNotificationServiceTest {
 
   @Mock
-  private MailProducerService mailProducerService;
+  private MailClient mailClient;
 
   @Mock
   private StopPointWorkflowBuilderNotificationService builderNotificationService;
@@ -29,7 +29,7 @@ class StopPointWorkflowNotificationServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    stopPointWorkflowNotificationService = new StopPointWorkflowNotificationService(mailProducerService,
+    stopPointWorkflowNotificationService = new StopPointWorkflowNotificationService(mailClient,
         builderNotificationService);
 
     when(builderNotificationService.buildPinCodeMail(any(), anyString(), anyString())).thenReturn(
@@ -41,7 +41,7 @@ class StopPointWorkflowNotificationServiceTest {
     stopPointWorkflowNotificationService.sendPinCodeMail(new StopPointWorkflow(), "to@here.ch", "45646");
 
     verify(builderNotificationService).buildPinCodeMail(any(), eq("to@here.ch"), eq("45646"));
-    verify(mailProducerService).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
   @Test
@@ -49,7 +49,7 @@ class StopPointWorkflowNotificationServiceTest {
     stopPointWorkflowNotificationService.sendApprovedStopPointWorkflowMail(new StopPointWorkflow());
 
     verify(builderNotificationService).buildWorkflowApprovedMail(any());
-    verify(mailProducerService).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
   @Test
@@ -57,7 +57,7 @@ class StopPointWorkflowNotificationServiceTest {
     stopPointWorkflowNotificationService.sendCanceledStopPointWorkflowMail(new StopPointWorkflow(), "cancel it");
 
     verify(builderNotificationService).buildWorkflowCanceledMail(any(), eq("cancel it"));
-    verify(mailProducerService).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
   @Test
@@ -66,7 +66,7 @@ class StopPointWorkflowNotificationServiceTest {
 
     verify(builderNotificationService).buildWorkflowRestartedMail(any(), any());
     verify(builderNotificationService).buildWorkflowRestartedCCMail(any(), any());
-    verify(mailProducerService, times(2)).produceMailNotification(any());
+    verify(mailClient, times(2)).sendMailRequest(any());
   }
 
 }

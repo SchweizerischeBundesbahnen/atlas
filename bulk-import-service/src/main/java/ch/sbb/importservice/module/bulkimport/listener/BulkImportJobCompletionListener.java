@@ -6,7 +6,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_ID_
 import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.atlas.api.mail.MailType;
-import ch.sbb.importservice.config.mail.MailProducerService;
+import ch.sbb.importservice.config.mail.MailClient;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
 import ch.sbb.importservice.module.bulkimport.log.BulkImportLogService;
 import ch.sbb.importservice.module.bulkimport.log.LogFile;
@@ -33,7 +33,7 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
   private final BulkImportLogService bulkImportLogService;
   private final BulkImportS3BucketService s3BucketService;
   private final BulkImportRepository bulkImportRepository;
-  private final MailProducerService mailProducerService;
+  private final MailClient mailClient;
   private final BulkImporterMailService bulkImporterMailService;
 
   @Value("${spring.profiles.active:local}")
@@ -80,7 +80,7 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
             )
         ))
         .build();
-    mailProducerService.produceMailNotification(mailNotification);
+    mailClient.sendMailRequest(mailNotification);
   }
 
 }

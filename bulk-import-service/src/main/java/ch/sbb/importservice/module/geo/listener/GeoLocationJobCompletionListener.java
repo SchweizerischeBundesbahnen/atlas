@@ -1,7 +1,7 @@
 package ch.sbb.importservice.module.geo.listener;
 
 import ch.sbb.atlas.api.mail.MailNotification;
-import ch.sbb.importservice.config.mail.MailProducerService;
+import ch.sbb.importservice.config.mail.MailClient;
 import ch.sbb.importservice.module.geo.entity.GeoUpdateProcessItem;
 import ch.sbb.importservice.module.geo.repository.GeoUpdateProcessItemRepository;
 import ch.sbb.importservice.module.geo.service.GeoLocationMailNotificationService;
@@ -21,7 +21,7 @@ public class GeoLocationJobCompletionListener implements JobExecutionListener {
 
   private final GeoLocationMailNotificationService geoLocationMailNotificationService;
   private final GeoUpdateProcessItemRepository geoUpdateProcessItemRepository;
-  private final MailProducerService mailProducerService;
+  private final MailClient mailClient;
 
   @Override
   public void beforeJob(JobExecution jobExecution) {
@@ -47,7 +47,7 @@ public class GeoLocationJobCompletionListener implements JobExecutionListener {
   private void sendUnsuccessfullyNotification(StepExecution stepExecution) {
     String jobName = getJobName(stepExecution);
     MailNotification mailNotification = geoLocationMailNotificationService.buildMailErrorNotification(jobName, stepExecution);
-    mailProducerService.produceMailNotification(mailNotification);
+    mailClient.sendMailRequest(mailNotification);
   }
 
   private void sendSuccessfullyNotification(StepExecution stepExecution) {
@@ -58,7 +58,7 @@ public class GeoLocationJobCompletionListener implements JobExecutionListener {
     MailNotification mailNotification = geoLocationMailNotificationService.buildMailSuccessNotification(jobName,
         allImportProcessedItem,
         stepExecution);
-    mailProducerService.produceMailNotification(mailNotification);
+    mailClient.sendMailRequest(mailNotification);
   }
 
   private String getJobName(StepExecution stepExecution) {

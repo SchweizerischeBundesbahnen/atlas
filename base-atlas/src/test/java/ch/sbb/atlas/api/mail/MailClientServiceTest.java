@@ -2,6 +2,8 @@ package ch.sbb.atlas.api.mail;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -34,13 +36,13 @@ class MailClientServiceTest {
         dispatchedRequest::set
     );
 
-    service.produceMailNotification(notification);
+    service.sendMailRequest(notification);
 
     verifyNoInteractions(mailApi);
 
     dispatchedRequest.get().run();
 
-    verify(mailApi).produceMailNotification(notification);
+    verify(mailApi).sendMailRequest(anyString(), eq(notification));
   }
 
   @Test
@@ -52,7 +54,7 @@ class MailClientServiceTest {
         .content("Content")
         .build();
     RuntimeException failure = new RuntimeException("Mail service unavailable");
-    doThrow(failure).when(mailApi).produceMailNotification(notification);
+    doThrow(failure).when(mailApi).sendMailRequest(anyString(), eq(notification));
 
     MailClientService service = new MailClientService(
         mailApi,
@@ -69,20 +71,23 @@ class MailClientServiceTest {
 
     try {
       assertThatNoException()
-          .isThrownBy(() -> service.produceMailNotification(notification));
+          .isThrownBy(() -> service.sendMailRequest(notification));
 
       assertThat(logAppender.list)
           .extracting(ILoggingEvent::getFormattedMessage)
           .first()
-          .isEqualTo("Dispatching asynchronous mail request with subject Today's report to [receiver@example.com]");
+          .asString()
+          .matches("mailReqId=[0-9a-f-]{36}, status=MAIL_REQ_STARTED, "
+              + "subject=Today's report, to=\\[receiver@example.com\\]");
       assertThat(logAppender.list)
           .extracting(ILoggingEvent::getFormattedMessage)
           .anySatisfy(message -> assertThat(message)
-              .startsWith("Mail service request failed; the business operation will continue."));
+              .contains("Mail service request failed; the business operation will continue."));
 
-      assertThat(service.createCurlCommand(notification))
+      assertThat(service.createCurlCommand("mail-request-id", notification))
           .contains("curl --fail-with-body --request POST 'http://localhost:8888/mail/internal/mail'")
           .contains("Authorization: ******")
+          .contains("--header 'Mail-Request-Id: mail-request-id'")
           .contains("\"subject\":\"Today'\"'\"'s report\"");
     } finally {
       logger.detachAppender(logAppender);

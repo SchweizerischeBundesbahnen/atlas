@@ -25,7 +25,7 @@ public class DossierNotificationService {
   @Value("${mail.workflow.stop-point.from}")
   protected String from;
 
-  private final MailProducerService mailProducerService;
+  private final MailClient mailClient;
   private final UserAdministrationAdminClient userAdministrationAdminClient;
 
   public void notifyBoAboutNewQuestion(Dossier dossier) {
@@ -35,7 +35,7 @@ public class DossierNotificationService {
         .mailType(MailType.TTH_DOSSIER_NEW_QUESTION_NOTIFICATION)
         .templateProperties(buildMailProperties(dossier))
         .build();
-    mailProducerService.produceMailNotification(mailNotification);
+    mailClient.sendMailRequest(mailNotification);
   }
 
   public void notifyCantonAboutNewAnswer(Dossier dossier) {
@@ -47,7 +47,7 @@ public class DossierNotificationService {
         .mailType(MailType.TTH_DOSSIER_NEW_ANSWER_NOTIFICATION)
         .templateProperties(buildMailProperties(dossier))
         .build();
-    mailProducerService.produceMailNotification(mailNotification);
+    mailClient.sendMailRequest(mailNotification);
   }
 
   public List<Map<String, Object>> buildMailProperties(Dossier dossier) {
