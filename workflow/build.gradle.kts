@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.1601.0"
+version = "2.1602.0"
 
 description = "Atlas Workflow Service"
 
