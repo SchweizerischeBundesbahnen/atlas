@@ -136,75 +136,6 @@ class FileStreamingControllerApiV2IntegrationTest extends BaseControllerApiTest 
   }
 
   @Test
-  void shouldGetErsadNetexXmlSuccessfully() throws Exception {
-    //given
-    String xmlContent = "<PublicationDelivery></PublicationDelivery>";
-    StreamingResponseBody streamingResponseBody =
-        outputStream -> outputStream.write(xmlContent.getBytes(StandardCharsets.UTF_8));
-    doReturn(streamingResponseBody).when(amazonFileStreamingService)
-        .streamZipEntry(eq(AmazonBucket.EXPORT), anyString());
-
-    //when & then
-    MvcResult mvcResult = mvc.perform(get("/v2/export/xml/ERSAD_NETEX/ACTUAL")
-            .contentType(contentType)
-            .accept(MediaType.APPLICATION_XML))
-        .andExpect(request().asyncStarted())
-        .andReturn();
-
-    mvc.perform(asyncDispatch(mvcResult))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_XML))
-        .andExpect(content().string(xmlContent));
-  }
-
-  @Test
-  void shouldGetLatestErsadNetexXmlSuccessfully() throws Exception {
-    //given
-    when(amazonService.getLatestUploadedObject(eq(AmazonBucket.EXPORT), anyString(), anyString(), anyString()))
-        .thenReturn("actual-date-ersad-netex-2025-01-01.xml.zip");
-    String xmlContent = "<PublicationDelivery></PublicationDelivery>";
-    StreamingResponseBody streamingResponseBody =
-        outputStream -> outputStream.write(xmlContent.getBytes(StandardCharsets.UTF_8));
-    doReturn(streamingResponseBody).when(amazonFileStreamingService)
-        .streamZipEntry(eq(AmazonBucket.EXPORT), anyString());
-
-    //when & then
-    MvcResult mvcResult = mvc.perform(get("/v2/export/xml/latest/ERSAD_NETEX/ACTUAL")
-            .contentType(contentType)
-            .accept(MediaType.APPLICATION_XML))
-        .andExpect(request().asyncStarted())
-        .andReturn();
-
-    mvc.perform(asyncDispatch(mvcResult))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_XML))
-        .andExpect(content().string(xmlContent));
-  }
-
-  @Test
-  void shouldDownloadErsadNetexZipXmlSuccessfully() throws Exception {
-    //given
-    byte[] data = "zip-bytes".getBytes(StandardCharsets.UTF_8);
-    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), ContentLength.of(data.length));
-    doReturn(streamedFile).when(amazonFileStreamingService)
-        .streamFile(eq(AmazonBucket.EXPORT), anyString());
-
-    //when & then
-    MvcResult mvcResult = mvc.perform(get("/v2/export/download-zip-xml/ERSAD_NETEX/ACTUAL")
-            .contentType(contentType))
-        .andExpect(request().asyncStarted())
-        .andReturn();
-
-    mvc.perform(asyncDispatch(mvcResult))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType("application/zip"))
-        .andExpect(header().longValue(HttpHeaders.CONTENT_LENGTH, data.length))
-        .andExpect(header().doesNotExist(HttpHeaders.TRANSFER_ENCODING))
-        .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, containsString(".xml.zip")))
-        .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
-  }
-
-  @Test
   void shouldDownloadLatestErsadNetexZipXmlSuccessfully() throws Exception {
     //given
     when(amazonService.getLatestUploadedObject(eq(AmazonBucket.EXPORT), anyString(), anyString(), anyString()))
@@ -215,7 +146,7 @@ class FileStreamingControllerApiV2IntegrationTest extends BaseControllerApiTest 
         .streamFile(eq(AmazonBucket.EXPORT), anyString());
 
     //when & then
-    MvcResult mvcResult = mvc.perform(get("/v2/export/download-zip-xml/latest/ERSAD_NETEX/ACTUAL")
+    MvcResult mvcResult = mvc.perform(get("/v2/export/download-zip-xml/latest/ersad-netex")
             .contentType(contentType))
         .andExpect(request().asyncStarted())
         .andReturn();
@@ -227,17 +158,5 @@ class FileStreamingControllerApiV2IntegrationTest extends BaseControllerApiTest 
         .andExpect(header().doesNotExist(HttpHeaders.TRANSFER_ENCODING))
         .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, containsString(".xml.zip")))
         .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
-  }
-
-  @Test
-  void shouldRejectXmlEndpointsForExportObjectWithoutXmlSupport() throws Exception {
-    //when & then
-    MvcResult mvcResult = mvc.perform(get("/v2/export/xml/SERVICE_POINT/WORLD_FULL")
-            .contentType(contentType))
-        .andExpect(request().asyncStarted())
-        .andReturn();
-
-    mvc.perform(asyncDispatch(mvcResult))
-        .andExpect(status().isBadRequest());
   }
 }
