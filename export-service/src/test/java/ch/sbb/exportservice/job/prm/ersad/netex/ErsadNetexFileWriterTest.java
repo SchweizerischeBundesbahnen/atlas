@@ -258,7 +258,6 @@ class ErsadNetexFileWriterTest {
     try (ErsadNetexFileWriter writer = ErsadNetexFileWriter.open(file, ErsadGoldenFixtures.PUBLICATION_TIMESTAMP)) {
       writer.writeStopPlaces(stations.stream());
       writer.writeParkings(stations.stream());
-      writer.writePathLinks(stations.stream());
     }
     return file;
   }

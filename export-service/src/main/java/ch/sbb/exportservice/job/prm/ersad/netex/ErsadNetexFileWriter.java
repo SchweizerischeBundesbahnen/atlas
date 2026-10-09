@@ -12,7 +12,6 @@ import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.GML_NAMESP
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.NETEX_NAMESPACE;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARKINGS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PARTICIPANT_REF;
-import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PATH_LINKS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PUBLICATION_DELIVERY;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PUBLICATION_DESCRIPTION;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PUBLICATION_TIMESTAMP;
@@ -48,14 +47,13 @@ public final class ErsadNetexFileWriter implements AutoCloseable {
   private static final DateTimeFormatter FRAME_DATE_FORMAT = DateTimeFormatter.ofPattern(FRAME_DATE_FORMAT_PATTERN);
 
   private enum Phase {
-    STOP_PLACES, PARKINGS, PATH_LINKS
+    STOP_PLACES, PARKINGS
   }
 
   private final Writer output;
   private final XmlWriterSupport xml;
   private final StopPlaceXmlWriter stopPlaceWriter;
   private final ParkingXmlWriter parkingWriter;
-  private final PathLinkXmlWriter pathLinkWriter;
 
   private Phase phase = Phase.STOP_PLACES;
   private boolean containerOpen;
@@ -66,7 +64,6 @@ public final class ErsadNetexFileWriter implements AutoCloseable {
     this.xml = xml;
     this.stopPlaceWriter = new StopPlaceXmlWriter(xml);
     this.parkingWriter = new ParkingXmlWriter(xml);
-    this.pathLinkWriter = new PathLinkXmlWriter(xml);
   }
 
   public static ErsadNetexFileWriter open(Path file, LocalDateTime publicationTimestamp) {
@@ -113,17 +110,6 @@ public final class ErsadNetexFileWriter implements AutoCloseable {
       openContainer(PARKINGS);
       parkingWriter.write(station, parking);
     }));
-  }
-
-  public void writePathLinks(Stream<ErsadStation> stations) {
-    enterPhase(Phase.PATH_LINKS);
-    stations.forEach(station -> {
-      int index = 1;
-      for (var pathLink : station.pathLinks()) {
-        openContainer(PATH_LINKS);
-        pathLinkWriter.write(station, pathLink, index++);
-      }
-    });
   }
 
   @Override

@@ -73,7 +73,6 @@ public class ErsadNetexGenerationTasklet implements Tasklet {
     try (ErsadNetexFileWriter writer = ErsadNetexFileWriter.open(file, LocalDateTime.now(clock))) {
       writer.writeStopPlaces(stations.stream());
       writer.writeParkings(stations.stream());
-      writer.writePathLinks(stations.stream());
     }
 
     return RepeatStatus.FINISHED;

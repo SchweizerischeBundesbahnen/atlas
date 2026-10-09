@@ -223,24 +223,6 @@
 </AccessibilityAssessment>
 </Quay>
 </quays>
-</StopPlace>
-</stopPlaces>
-<!-- ===== PARKING_LOT ===== -->
-<parkings>
-<Parking id="ch:1:sloid:100:parking:1" version="1">
-<Name>Parkplatz Bahnhof</Name>
-<ParentSiteRef ref="ch:1:sloid:100" version="1"/>
-<parkingAreas>
-<ParkingArea id="ch:1:sloid:100:parking:1:parkingArea" version="1">
-<parkingProperties>
-<ParkingProperties id="ch:1:sloid:100:parking:1:parkingArea:parkingProperties" version="1">
-<ParkingUserTypes>registeredDisabled</ParkingUserTypes>
-</ParkingProperties>
-</parkingProperties>
-</ParkingArea>
-</parkingAreas>
-</Parking>
-</parkings>
 <!-- ===== RELATION: stufenfreier Zugang ab Referenzpunkt ===== -->
 <pathLinks>
 <SitePathLink id="ch:1:sloid:100:pathLink:1" version="1">
@@ -271,6 +253,24 @@
 </AccessibilityAssessment>
 </SitePathLink>
 </pathLinks>
+</StopPlace>
+</stopPlaces>
+<!-- ===== PARKING_LOT ===== -->
+<parkings>
+<Parking id="ch:1:sloid:100:parking:1" version="1">
+<Name>Parkplatz Bahnhof</Name>
+<ParentSiteRef ref="ch:1:sloid:100" version="1"/>
+<parkingAreas>
+<ParkingArea id="ch:1:sloid:100:parking:1:parkingArea" version="1">
+<parkingProperties>
+<ParkingProperties id="ch:1:sloid:100:parking:1:parkingArea:parkingProperties" version="1">
+<ParkingUserTypes>registeredDisabled</ParkingUserTypes>
+</ParkingProperties>
+</parkingProperties>
+</ParkingArea>
+</parkingAreas>
+</Parking>
+</parkings>
 </SiteFrame>
 </frames>
 </CompositeFrame>

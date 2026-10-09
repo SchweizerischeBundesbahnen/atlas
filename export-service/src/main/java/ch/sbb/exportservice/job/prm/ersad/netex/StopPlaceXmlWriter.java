@@ -23,6 +23,7 @@ import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.NOTE;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PLACE_EQUIPMENTS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.POSTAL_ADDRESS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.POST_CODE;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PATH_LINKS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PRIVATE_CODE;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.QUAYS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.RAIL_STATION;
@@ -55,10 +56,12 @@ public class StopPlaceXmlWriter {
 
   private final XmlWriterSupport xml;
   private final QuayXmlWriter quayWriter;
+  private final PathLinkXmlWriter pathLinkWriter;
 
   public StopPlaceXmlWriter(XmlWriterSupport xml) {
     this.xml = xml;
     this.quayWriter = new QuayXmlWriter(xml);
+    this.pathLinkWriter = new PathLinkXmlWriter(xml);
   }
 
   public void write(ErsadStation station) {
@@ -81,6 +84,19 @@ public class StopPlaceXmlWriter {
       xml.startElement(QUAYS);
       station.quays().forEach(quayWriter::write);
       xml.endElement();
+    }
+    writePathLinks(station);
+    xml.endElement();
+  }
+
+  private void writePathLinks(ErsadStation station) {
+    if (station.pathLinks().isEmpty()) {
+      return;
+    }
+    xml.startElement(PATH_LINKS);
+    int index = 1;
+    for (var pathLink : station.pathLinks()) {
+      pathLinkWriter.write(station, pathLink, index++);
     }
     xml.endElement();
   }
