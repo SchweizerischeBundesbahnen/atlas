@@ -109,7 +109,7 @@ public class ErsadStationAssembler {
         mapSorted(parkingLotsByParentSloid.getOrDefault(sloid, List.of()), ParkingLotVersion::getSloid,
             ErsadStationAssembler::toParking),
         mapSorted(relations, RelationVersion::getSloid, ErsadStationAssembler::toPathLink),
-        stopPoint.getVersion()));
+        displayVersion(stopPoint.getVersion())));
   }
 
   private CoordinatePair toWgs84(ServicePointVersion servicePoint) {
@@ -154,7 +154,7 @@ public class ErsadStationAssembler {
         platform.getLevelAccessWheelchair(),
         platform.getSuperelevation(),
         platform.getShuttle(),
-        platform.getVersion());
+        displayVersion(platform.getVersion()));
   }
 
   private static ErsadContactPoint toContactPoint(ContactPointVersion contactPoint) {
@@ -165,16 +165,16 @@ public class ErsadStationAssembler {
         contactPoint.getOpeningHours(),
         contactPoint.getWheelchairAccess(),
         contactPoint.getInductionLoop(),
-        contactPoint.getVersion());
+        displayVersion(contactPoint.getVersion()));
   }
 
   private static ErsadToilet toToilet(ToiletVersion toilet) {
-    return new ErsadToilet(toilet.getSloid(), toilet.getDesignation(), toilet.getWheelchairToilet(), toilet.getVersion());
+    return new ErsadToilet(toilet.getSloid(), toilet.getDesignation(), toilet.getWheelchairToilet(), displayVersion(toilet.getVersion()));
   }
 
   private static ErsadParking toParking(ParkingLotVersion parking) {
     return new ErsadParking(parking.getSloid(), parking.getDesignation(), parking.getPlacesAvailable(),
-        parking.getPrmPlacesAvailable(), parking.getVersion());
+        parking.getPrmPlacesAvailable(), displayVersion(parking.getVersion()));
   }
 
   private static ErsadPathLink toPathLink(RelationVersion relation) {
@@ -185,6 +185,11 @@ public class ErsadStationAssembler {
         relation.getStepFreeAccess(),
         relation.getTactileVisualMarks(),
         relation.getContrastingAreas(),
-        relation.getVersion());
+        displayVersion(relation.getVersion()));
+  }
+
+  /** Entity versions are 0-based in the database but shown to users starting at 1. */
+  private static Integer displayVersion(Integer version) {
+    return version + 1;
   }
 }

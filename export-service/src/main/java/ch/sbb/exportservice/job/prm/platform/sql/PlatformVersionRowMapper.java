@@ -25,6 +25,7 @@ public class PlatformVersionRowMapper implements RowMapper<PlatformVersion> {
     PlatformVersionBuilder<?, ?> builder = PlatformVersion.builder();
     builder.id(rs.getLong("id"));
     builder.sloid(rs.getString("sloid"));
+    builder.version(rs.getInt("version"));
     builder.parentServicePointSloid(rs.getString("parent_service_point_sloid"));
     builder.parentNumberServicePoint(
         ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));

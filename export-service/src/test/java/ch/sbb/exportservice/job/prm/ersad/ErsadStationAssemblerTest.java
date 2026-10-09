@@ -165,6 +165,7 @@ class ErsadStationAssemblerTest {
     ServicePointVersion servicePoint = servicePoint("ch:1:sloid:8500100", "Tavannes", 2596624.4, 1222062.1);
     PlatformVersion platform = PlatformVersion.builder()
         .sloid("ch:1:sloid:8500100:0:3")
+        .version(0)
         .parentServicePointSloid("ch:1:sloid:8500100")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .adviceAccessInfo("Access info")
@@ -251,12 +252,13 @@ class ErsadStationAssemblerTest {
     assertThat(stations).singleElement()
         .satisfies(station -> assertThat(station.pathLinks()).containsExactly(
             new ErsadPathLink("ch:1:sloid:8500100:ref:1", "ch:1:sloid:8500100:pathLink:1", ReferencePointElementType.TOILET,
-                StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES, 7)));
+                StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES, 8)));
   }
 
   private StopPointVersion stopPoint(String sloid, int number) {
     return StopPointVersion.builder()
         .sloid(sloid)
+        .version(0)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(number))
         .address("Rue de la Gare")
         .zipCode("2710")
