@@ -50,6 +50,7 @@ public final class NetexConstants {
   public static final String PLACE_REF = "PlaceRef";
   public static final String STEP_FREE_ACCESS = "StepFreeAccess";
   public static final String TACTILE_GUIDANCE_AVAILABLE = "TactileGuidanceAvailable";
+  public static final String TACTILE_WARNING_STRIP_CONTRAST = "TactileWarningStripContrast";
   public static final String PARKING = "Parking";
   public static final String PARKING_AREA = "ParkingArea";
   public static final String PARKING_PROPERTIES = "ParkingProperties";

@@ -7,6 +7,7 @@ import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PLACE_REF;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.SITE_PATH_LINK;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.STEP_FREE_ACCESS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.TACTILE_GUIDANCE_AVAILABLE;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.TACTILE_WARNING_STRIP_CONTRAST;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.TO;
 
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadPathLink;
@@ -30,6 +31,7 @@ public class PathLinkXmlWriter {
     xml.startElement(TO);
     xml.referenceWithoutVersion(PLACE_REF, pathLink.targetSloid());
     xml.endElement();
+    xml.optionalElement(TACTILE_WARNING_STRIP_CONTRAST, NetexValueMapper.booleanFlag(pathLink.contrastingAreas()));
     xml.accessibilityAssessment(id + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT, pathLink.version(),
         List.of(
             new Limitation(STEP_FREE_ACCESS, NetexValueMapper.limitation(pathLink.stepFreeAccess())),

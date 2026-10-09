@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadParking;
+import ch.sbb.exportservice.job.prm.ersad.model.ErsadPathLink;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStation;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStationEquipment;
 import ch.sbb.exportservice.job.prm.ersad.model.NetexTriState;
@@ -260,6 +262,32 @@ class ErsadNetexFileWriterTest {
       writer.writeParkings(stations.stream());
     }
     return file;
+  }
+
+  @Test
+  void shouldWriteTactileWarningStripContrastOnSitePathLinkFromContrastingAreas() throws Exception {
+    // Given
+    ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
+    ErsadStation station = withPathLinks(tavannes, List.of(
+        new ErsadPathLink("ref:1", "to:1", ReferencePointElementType.PLATFORM, null, null, StandardAttributeType.YES, 1),
+        new ErsadPathLink("ref:1", "to:2", ReferencePointElementType.PLATFORM, null, null, StandardAttributeType.NO, 1),
+        new ErsadPathLink("ref:1", "to:3", ReferencePointElementType.PLATFORM, null, null,
+            StandardAttributeType.TO_BE_COMPLETED, 1)));
+
+    // When
+    String xml = Files.readString(write(List.of(station)), StandardCharsets.UTF_8).replaceAll(">\\s+<", "><");
+
+    // Then
+    assertThat(xml)
+        .contains("<To><PlaceRef ref=\"to:1\"/></To><TactileWarningStripContrast>true</TactileWarningStripContrast>")
+        .contains("<To><PlaceRef ref=\"to:2\"/></To><TactileWarningStripContrast>false</TactileWarningStripContrast>");
+    assertThat(xml.split("<TactileWarningStripContrast>", -1)).hasSize(3);
+  }
+
+  private static ErsadStation withPathLinks(ErsadStation s, List<ErsadPathLink> pathLinks) {
+    return new ErsadStation(s.sloid(), s.number(), s.name(), s.longitude(), s.latitude(), s.address(), s.url(),
+        s.meansOfTransport(), s.accessibleStation(), s.assistance(), s.equipment(), s.quays(), s.contactPoints(),
+        s.toilets(), s.parkings(), pathLinks, s.version());
   }
 
   private static ErsadStation withEquipment(ErsadStation s, ErsadStationEquipment equipment) {
