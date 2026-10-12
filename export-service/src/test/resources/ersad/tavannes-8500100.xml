@@ -231,7 +231,6 @@
 <SitePathLink id="ch:1:sloid:100:pathLink:1" version="1">
 <From><PlaceRef ref="ch:1:sloid:100:ref:1"/></From>
 <To><PlaceRef ref="ch:1:sloid:100:0:3"/></To>
-<TactileWarningStripContrast>true</TactileWarningStripContrast>
 <AccessibilityAssessment id="ch:1:sloid:100:pathLink:1:aa" version="1">
 <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
 <limitations>
@@ -242,6 +241,7 @@
 </AccessibilityLimitation>
 </limitations>
 </AccessibilityAssessment>
+<TactileWarningStripContrast>true</TactileWarningStripContrast>
 </SitePathLink>
 <SitePathLink id="ch:1:sloid:100:pathLink:2" version="1">
 <From><PlaceRef ref="ch:1:sloid:100:ref:1"/></From>

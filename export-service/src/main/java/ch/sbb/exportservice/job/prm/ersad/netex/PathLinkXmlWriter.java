@@ -31,12 +31,12 @@ public class PathLinkXmlWriter {
     xml.startElement(TO);
     xml.referenceWithoutVersion(PLACE_REF, pathLink.targetSloid());
     xml.endElement();
-    xml.optionalElement(TACTILE_WARNING_STRIP_CONTRAST, NetexValueMapper.booleanFlag(pathLink.contrastingAreas()));
     xml.accessibilityAssessment(id + ID_SUFFIX_ACCESSIBILITY_ASSESSMENT, pathLink.version(),
         List.of(
             new Limitation(STEP_FREE_ACCESS, NetexValueMapper.limitation(pathLink.stepFreeAccess())),
             new Limitation(TACTILE_GUIDANCE_AVAILABLE, NetexValueMapper.limitation(pathLink.tactileVisualMarks()))),
         Optional.empty());
+    xml.optionalElement(TACTILE_WARNING_STRIP_CONTRAST, NetexValueMapper.booleanFlag(pathLink.contrastingAreas()));
     xml.endElement();
   }
 }
