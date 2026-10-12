@@ -1,4 +1,4 @@
-package ch.sbb.timetable.hearing.config;
+package ch.sbb.timetable.hearing.configuration;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

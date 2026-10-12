@@ -1,4 +1,4 @@
-package ch.sbb.timetable.hearing.config;
+package ch.sbb.timetable.hearing.configuration;
 
 import ch.sbb.atlas.oauth.client.OAuthClientConfig;
 import org.springframework.context.annotation.Configuration;
