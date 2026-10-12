@@ -23,6 +23,8 @@ import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.exportservice.job.prm.ersad.accessibility.ErsadAccessibilityDeriver;
 import ch.sbb.exportservice.job.prm.ersad.assembler.ErsadStationAssembler;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadPathLink;
+import ch.sbb.exportservice.job.prm.ersad.model.ErsadReferencePoint;
+import ch.sbb.exportservice.job.prm.referencepoint.entity.ReferencePointVersion;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStation;
 import ch.sbb.exportservice.job.prm.ersad.model.NetexTriState;
 import ch.sbb.exportservice.job.prm.platform.entity.PlatformVersion;
@@ -253,6 +255,33 @@ class ErsadStationAssemblerTest {
         .satisfies(station -> assertThat(station.pathLinks()).containsExactly(
             new ErsadPathLink("ch:1:sloid:8500100:ref:1", "ch:1:sloid:8500100:pathLink:1", ReferencePointElementType.TOILET,
                 StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES, 8)));
+  }
+
+  @Test
+  void shouldMapReferencePointsWithDisplayVersion() {
+    // Given
+    StopPointVersion stopPoint = stopPoint("ch:1:sloid:8500100", 8500100);
+    ServicePointVersion servicePoint = servicePoint("ch:1:sloid:8500100", "Tavannes", 2596624.4, 1222062.1);
+    ReferencePointVersion referencePoint = ReferencePointVersion.builder()
+        .sloid("ch:1:sloid:8500100:ref:1")
+        .parentServicePointSloid("ch:1:sloid:8500100")
+        .designation("Haupteingang")
+        .version(2)
+        .build();
+    when(accessibilityDeriver.derive(any(), any(), any(), any())).thenReturn(NetexTriState.TRUE);
+
+    // When
+    List<ErsadStation> stations = assembler.assembleStations(
+        Map.of(stopPoint.getSloid(), stopPoint),
+        Map.of(servicePoint.getSloid(), servicePoint),
+        Map.of(), Map.of(), Map.of(), Map.of(), Map.of(), Map.of(),
+        Map.of("ch:1:sloid:8500100", List.of(referencePoint)),
+        LocalDate.now());
+
+    // Then
+    assertThat(stations).singleElement()
+        .satisfies(station -> assertThat(station.referencePoints()).containsExactly(
+            new ErsadReferencePoint("ch:1:sloid:8500100:ref:1", "Haupteingang", 3)));
   }
 
   private StopPointVersion stopPoint(String sloid, int number) {

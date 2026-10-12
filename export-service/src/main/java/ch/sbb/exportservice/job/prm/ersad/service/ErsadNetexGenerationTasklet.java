@@ -9,6 +9,7 @@ import ch.sbb.exportservice.job.prm.ersad.reader.ErsadPrmReader;
 import ch.sbb.exportservice.job.prm.ersad.reader.ErsadServicePointReader;
 import ch.sbb.exportservice.job.prm.parkinglot.entity.ParkingLotVersion;
 import ch.sbb.exportservice.job.prm.platform.entity.PlatformVersion;
+import ch.sbb.exportservice.job.prm.referencepoint.entity.ReferencePointVersion;
 import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion;
 import ch.sbb.exportservice.job.prm.stoppoint.entity.StopPointVersion;
 import ch.sbb.exportservice.job.prm.toilet.entity.ToiletVersion;
@@ -63,10 +64,11 @@ public class ErsadNetexGenerationTasklet implements Tasklet {
     Map<String, List<ToiletVersion>> toiletsByParentSloid = ersadPrmReader.readToilets(stopPointSloids);
     Map<String, List<RelationVersion>> relationsByParentSloid = ersadPrmReader.readRelations(stopPointSloids);
     Map<String, List<ParkingLotVersion>> parkingLotsByParentSloid = ersadPrmReader.readParkingLots(stopPointSloids);
+    Map<String, List<ReferencePointVersion>> referencePointsByParentSloid = ersadPrmReader.readReferencePoints(stopPointSloids);
 
     List<ErsadStation> stations = ersadStationAssembler.assembleStations(
         stopPointsBySloid, servicePointsBySloid, platformsByParentSloid, trafficPointDesignations,
-        contactPointsByParentSloid, toiletsByParentSloid, relationsByParentSloid, parkingLotsByParentSloid, exportDate);
+        contactPointsByParentSloid, toiletsByParentSloid, relationsByParentSloid, parkingLotsByParentSloid, referencePointsByParentSloid, exportDate);
     log.info("Assembled {} ERSAD stations for NeTEx export", stations.size());
 
     Path file = Path.of(exportFilePath());

@@ -22,7 +22,16 @@ public record ErsadStation(
     List<ErsadToilet> toilets,
     List<ErsadParking> parkings,
     List<ErsadPathLink> pathLinks,
-    Integer version) {
+    Integer version,
+    List<ErsadReferencePoint> referencePoints) {
+
+  public ErsadStation(String sloid, Integer number, String name, Double longitude, Double latitude, ErsadAddress address,
+      String url, List<String> meansOfTransport, NetexTriState accessibleStation, ErsadAssistance assistance,
+      ErsadStationEquipment equipment, List<ErsadQuay> quays, List<ErsadContactPoint> contactPoints,
+      List<ErsadToilet> toilets, List<ErsadParking> parkings, List<ErsadPathLink> pathLinks, Integer version) {
+    this(sloid, number, name, longitude, latitude, address, url, meansOfTransport, accessibleStation, assistance,
+        equipment, quays, contactPoints, toilets, parkings, pathLinks, version, List.of());
+  }
 
   public ErsadStation {
     meansOfTransport = meansOfTransport == null ? List.of() : List.copyOf(meansOfTransport);
@@ -31,6 +40,7 @@ public record ErsadStation(
     toilets = toilets == null ? List.of() : List.copyOf(toilets);
     parkings = parkings == null ? List.of() : List.copyOf(parkings);
     pathLinks = pathLinks == null ? List.of() : List.copyOf(pathLinks);
+    referencePoints = referencePoints == null ? List.of() : List.copyOf(referencePoints);
   }
 
   public boolean isTrainStation() {

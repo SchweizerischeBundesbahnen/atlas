@@ -18,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -28,6 +30,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -151,6 +154,44 @@ class ErsadNetexFileWriterTest {
 
     // Then
     assertThat(xml).contains("<TicketingEquipment id=\"ch:1:sloid:100:1234\" version=\"1\"><TicketOffice>true</TicketOffice>");
+  }
+
+  @Test
+  void shouldResolveEveryRefAttributeToAnElementWithMatchingId() throws Exception {
+    // Given
+    ErsadStation station = ErsadGoldenFixtures.tavannes();
+
+    // When
+    Document document = parse(write(List.of(station)));
+
+    // Then
+    Set<String> ids = new HashSet<>();
+    List<String> refs = new ArrayList<>();
+    NodeList elements = document.getElementsByTagName("*");
+    for (int i = 0; i < elements.getLength(); i++) {
+      Element element = (Element) elements.item(i);
+      if (element.hasAttribute("id")) {
+        ids.add(element.getAttribute("id"));
+      }
+      if (element.hasAttribute("ref")) {
+        refs.add(element.getAttribute("ref"));
+      }
+    }
+    assertThat(refs).isNotEmpty();
+    assertThat(ids).containsAll(refs);
+  }
+
+  @Test
+  void shouldWriteReferencePointAsStopPlaceEntranceWithNameAndVersion() throws Exception {
+    // Given
+    ErsadStation station = ErsadGoldenFixtures.tavannes();
+
+    // When
+    String xml = Files.readString(write(List.of(station)), StandardCharsets.UTF_8).replaceAll(">\\s+<", "><");
+
+    // Then
+    assertThat(xml).contains("<entrances><StopPlaceEntrance id=\"ch:1:sloid:100:ref:1\" version=\"1\">"
+        + "<Name>Haupteingang</Name></StopPlaceEntrance></entrances>");
   }
 
   @Test

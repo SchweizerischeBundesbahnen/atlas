@@ -12,6 +12,8 @@ import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.CENTROID;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.DIDOK;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ACCESSIBILITY_ASSESSMENT;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ADDRESS;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ENTRANCES;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.STOP_PLACE_ENTRANCE;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ASSISTANCE;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_TICKETING;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.INDUCTION_LOOPS;
@@ -46,6 +48,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadAddress;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadAssistance;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadContactPoint;
+import ch.sbb.exportservice.job.prm.ersad.model.ErsadReferencePoint;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStation;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStationEquipment;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadToilet;
@@ -75,6 +78,7 @@ public class StopPlaceXmlWriter {
     xml.optionalElement(URL, NetexValueMapper.text(station.url()));
     writePostalAddress(station);
     writeAccessibilityAssessment(station);
+    writeEntrances(station);
     writePlaceEquipments(station);
     writeLocalServices(station);
     xml.optionalElement(TRANSPORT_MODE, transportMode(station));
@@ -87,6 +91,19 @@ public class StopPlaceXmlWriter {
       xml.endElement();
     }
     writePathLinks(station);
+    xml.endElement();
+  }
+
+  private void writeEntrances(ErsadStation station) {
+    if (station.referencePoints().isEmpty()) {
+      return;
+    }
+    xml.startElement(ENTRANCES);
+    for (ErsadReferencePoint referencePoint : station.referencePoints()) {
+      xml.startElement(STOP_PLACE_ENTRANCE, referencePoint.sloid(), referencePoint.version());
+      xml.optionalElement(NAME, NetexValueMapper.text(referencePoint.designation()));
+      xml.endElement();
+    }
     xml.endElement();
   }
 

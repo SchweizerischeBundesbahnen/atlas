@@ -34,8 +34,8 @@
   9. Removed the <TicketingService> opening-hours fields (DayType/Timeband): ATLAS openingHours is
      free text and cannot be mapped to structured validity conditions.
   10. Removed <NumberOfMachines>: ATLAS has no ticket machine count (only a boolean).
-  11. Removed <entrances>/<StopPlaceEntrance>: reference points are not part of the ERSAD model;
-      they only appear as SitePathLink From/PlaceRef refs.
+  11. Reference points are exported as <entrances>/<StopPlaceEntrance> (id = reference point sloid,
+      Name = designation) so every SitePathLink From/PlaceRef resolves to an element with that id.
   12. ParkingArea id changed from ":parkingArea" on the station sloid to
       "<parkingSloid>:parkingArea" (section 0.2: suffix is appended to the entity's own sloid, and
       the station-level id would collide when a station has several parkings).
@@ -140,6 +140,12 @@
 </AccessibilityLimitation>
 </limitations>
 </AccessibilityAssessment>
+<!-- ===== REFERENCE_POINT ===== -->
+<entrances>
+<StopPlaceEntrance id="ch:1:sloid:100:ref:1" version="1">
+<Name>Haupteingang</Name>
+</StopPlaceEntrance>
+</entrances>
 <placeEquipments>
 <!-- CONTACT_POINT TICKET_COUNTER (Ausstattungs-Sicht) -->
 <!-- STOP_POINT ticketMachine (independent of any ticket counter) -->

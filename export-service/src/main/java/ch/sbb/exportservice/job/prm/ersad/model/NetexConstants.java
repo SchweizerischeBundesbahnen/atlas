@@ -22,6 +22,8 @@ public final class NetexConstants {
   public static final String MOBILITY_IMPAIRED_ACCESS = "MobilityImpairedAccess";
   public static final String TRANSPORT_MODE = "TransportMode";
   public static final String STOP_PLACE_TYPE = "StopPlaceType";
+  public static final String ENTRANCES = "entrances";
+  public static final String STOP_PLACE_ENTRANCE = "StopPlaceEntrance";
   public static final String TICKETING_EQUIPMENT = "TicketingEquipment";
   public static final String SANITARY_EQUIPMENT = "SanitaryEquipment";
   public static final String TICKET_MACHINES = "TicketMachines";

@@ -17,6 +17,7 @@ import ch.sbb.exportservice.job.prm.ersad.model.ErsadContactPoint;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadParking;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadPathLink;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadQuay;
+import ch.sbb.exportservice.job.prm.ersad.model.ErsadReferencePoint;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStation;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStationEquipment;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadToilet;
@@ -72,7 +73,8 @@ class ErsadGoldenFixtures {
             new ErsadPathLink(sloid + ":ref:1", sloid + ":617340", ReferencePointElementType.TOILET,
                 StepFreeAccessAttributeType.YES, TactileVisualAttributeType.TO_BE_COMPLETED,
                 StandardAttributeType.TO_BE_COMPLETED, 1)),
-        1);
+        1,
+        List.of(new ErsadReferencePoint(sloid + ":ref:1", "Haupteingang", 1)));
   }
 
   static List<ErsadStation> burgdorfYverdonBellinzona() {

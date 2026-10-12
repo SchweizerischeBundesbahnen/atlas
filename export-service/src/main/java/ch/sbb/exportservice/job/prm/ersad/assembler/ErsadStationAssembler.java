@@ -11,11 +11,13 @@ import ch.sbb.exportservice.job.prm.ersad.model.ErsadContactPoint;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadParking;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadPathLink;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadQuay;
+import ch.sbb.exportservice.job.prm.ersad.model.ErsadReferencePoint;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStation;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadStationEquipment;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadToilet;
 import ch.sbb.exportservice.job.prm.parkinglot.entity.ParkingLotVersion;
 import ch.sbb.exportservice.job.prm.platform.entity.PlatformVersion;
+import ch.sbb.exportservice.job.prm.referencepoint.entity.ReferencePointVersion;
 import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion;
 import ch.sbb.exportservice.job.prm.stoppoint.entity.StopPointVersion;
 import ch.sbb.exportservice.job.prm.toilet.entity.ToiletVersion;
@@ -48,6 +50,22 @@ public class ErsadStationAssembler {
       Map<String, List<RelationVersion>> relationsByParentSloid,
       Map<String, List<ParkingLotVersion>> parkingLotsByParentSloid,
       LocalDate exportDate) {
+    return assembleStations(stopPointsBySloid, servicePointsBySloid, platformsByParentSloid, trafficPointDesignations,
+        contactPointsByParentSloid, toiletsByParentSloid, relationsByParentSloid, parkingLotsByParentSloid, Map.of(),
+        exportDate);
+  }
+
+  public List<ErsadStation> assembleStations(
+      Map<String, StopPointVersion> stopPointsBySloid,
+      Map<String, ServicePointVersion> servicePointsBySloid,
+      Map<String, List<PlatformVersion>> platformsByParentSloid,
+      Map<String, String> trafficPointDesignations,
+      Map<String, List<ContactPointVersion>> contactPointsByParentSloid,
+      Map<String, List<ToiletVersion>> toiletsByParentSloid,
+      Map<String, List<RelationVersion>> relationsByParentSloid,
+      Map<String, List<ParkingLotVersion>> parkingLotsByParentSloid,
+      Map<String, List<ReferencePointVersion>> referencePointsByParentSloid,
+      LocalDate exportDate) {
     return stopPointsBySloid.values().stream()
         .map(stopPoint -> toErsadStation(
             stopPoint,
@@ -58,6 +76,7 @@ public class ErsadStationAssembler {
             toiletsByParentSloid,
             relationsByParentSloid,
             parkingLotsByParentSloid,
+            referencePointsByParentSloid,
             exportDate
             )
         )
@@ -74,6 +93,7 @@ public class ErsadStationAssembler {
       Map<String, List<ToiletVersion>> toiletsByParentSloid,
       Map<String, List<RelationVersion>> relationsByParentSloid,
       Map<String, List<ParkingLotVersion>> parkingLotsByParentSloid,
+      Map<String, List<ReferencePointVersion>> referencePointsByParentSloid,
       LocalDate exportDate) {
     ServicePointVersion servicePoint = servicePointsBySloid.get(stopPoint.getSloid());
     if (servicePoint == null) {
@@ -109,7 +129,9 @@ public class ErsadStationAssembler {
         mapSorted(parkingLotsByParentSloid.getOrDefault(sloid, List.of()), ParkingLotVersion::getSloid,
             ErsadStationAssembler::toParking),
         mapSorted(relations, RelationVersion::getSloid, ErsadStationAssembler::toPathLink),
-        displayVersion(stopPoint.getVersion())));
+        displayVersion(stopPoint.getVersion()),
+        mapSorted(referencePointsByParentSloid.getOrDefault(sloid, List.of()), ReferencePointVersion::getSloid,
+            ErsadStationAssembler::toReferencePoint)));
   }
 
   private CoordinatePair toWgs84(ServicePointVersion servicePoint) {
@@ -175,6 +197,13 @@ public class ErsadStationAssembler {
   private static ErsadParking toParking(ParkingLotVersion parking) {
     return new ErsadParking(parking.getSloid(), parking.getDesignation(), parking.getPlacesAvailable(),
         parking.getPrmPlacesAvailable(), displayVersion(parking.getVersion()));
+  }
+
+  private static ErsadReferencePoint toReferencePoint(ReferencePointVersion referencePoint) {
+    return new ErsadReferencePoint(
+        referencePoint.getSloid(),
+        referencePoint.getDesignation(),
+        displayVersion(referencePoint.getVersion()));
   }
 
   private static ErsadPathLink toPathLink(RelationVersion relation) {
