@@ -6,6 +6,7 @@
   "branchPrefix": "feature/renovate/",
   "dependencyDashboard": false,
   "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict",
   "enabledManagers": [
     "npm",
     "dockerfile",
