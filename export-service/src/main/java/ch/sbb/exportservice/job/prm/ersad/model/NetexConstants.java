@@ -127,6 +127,7 @@ public final class NetexConstants {
   public static final String ID_SUFFIX_ADDRESS = ":address";
   public static final String ID_SUFFIX_ACCESSIBILITY_ASSESSMENT = ":aa";
   public static final String ID_SUFFIX_ASSISTANCE = ":assistance";
+  public static final String ID_SUFFIX_TICKETING = ":ticketing";
   public static final String ID_SUFFIX_ACCESS = ":access";
   public static final String ID_SUFFIX_PARKING_AREA = ":parkingArea";
   public static final String ID_SUFFIX_PARKING_PROPERTIES = ":parkingProperties";

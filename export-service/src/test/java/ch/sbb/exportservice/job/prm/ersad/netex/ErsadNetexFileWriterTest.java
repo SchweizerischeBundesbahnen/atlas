@@ -120,6 +120,40 @@ class ErsadNetexFileWriterTest {
   }
 
   @Test
+  void shouldWriteStationLevelTicketMachinesFromStopPointWithoutTicketCounter() throws Exception {
+    // Given
+    ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
+    ErsadStation station = withEquipment(tavannes, new ErsadStationEquipment(
+        StandardAttributeType.TO_BE_COMPLETED, StandardAttributeType.TO_BE_COMPLETED,
+        StandardAttributeType.TO_BE_COMPLETED, BooleanOptionalAttributeType.YES,
+        StandardAttributeType.TO_BE_COMPLETED, StandardAttributeType.TO_BE_COMPLETED));
+    ErsadStation withoutContactPoints = new ErsadStation(station.sloid(), station.number(), station.name(),
+        station.longitude(), station.latitude(), station.address(), station.url(), station.meansOfTransport(),
+        station.accessibleStation(), station.assistance(), station.equipment(), station.quays(), List.of(),
+        List.of(), station.parkings(), station.pathLinks(), station.version());
+
+    // When
+    String xml = Files.readString(write(List.of(withoutContactPoints)), StandardCharsets.UTF_8)
+        .replaceAll(">\\s+<", "><");
+
+    // Then
+    assertThat(xml).contains("<TicketingEquipment id=\"" + station.sloid() + ":ticketing\" version=\""
+        + station.version() + "\"><TicketMachines>true</TicketMachines></TicketingEquipment>");
+  }
+
+  @Test
+  void shouldNotWriteTicketMachinesOnTicketCounterTicketingEquipment() throws Exception {
+    // Given
+    ErsadStation station = ErsadGoldenFixtures.tavannes();
+
+    // When
+    String xml = Files.readString(write(List.of(station)), StandardCharsets.UTF_8).replaceAll(">\\s+<", "><");
+
+    // Then
+    assertThat(xml).contains("<TicketingEquipment id=\"ch:1:sloid:100:1234\" version=\"1\"><TicketOffice>true</TicketOffice>");
+  }
+
+  @Test
   void shouldOmitWholeAccessibilityAssessmentWhenAllValuesMissing() throws Exception {
     // Given
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();

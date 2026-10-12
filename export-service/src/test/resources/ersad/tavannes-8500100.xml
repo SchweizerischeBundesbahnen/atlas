@@ -142,8 +142,11 @@
 </AccessibilityAssessment>
 <placeEquipments>
 <!-- CONTACT_POINT TICKET_COUNTER (Ausstattungs-Sicht) -->
-<TicketingEquipment id="ch:1:sloid:100:1234" version="1">
+<!-- STOP_POINT ticketMachine (independent of any ticket counter) -->
+<TicketingEquipment id="ch:1:sloid:100:ticketing" version="1">
 <TicketMachines>true</TicketMachines>
+</TicketingEquipment>
+<TicketingEquipment id="ch:1:sloid:100:1234" version="1">
 <TicketOffice>true</TicketOffice>
 <InductionLoops>true</InductionLoops>
 <AudioInterfaceAvailable>true</AudioInterfaceAvailable>

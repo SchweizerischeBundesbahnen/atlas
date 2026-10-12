@@ -13,6 +13,7 @@ import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.DIDOK;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ACCESSIBILITY_ASSESSMENT;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ADDRESS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_ASSISTANCE;
+import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.ID_SUFFIX_TICKETING;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.INDUCTION_LOOPS;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.LATITUDE;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.LOCAL_SERVICES;
@@ -176,10 +177,18 @@ public class StopPlaceXmlWriter {
 
   private void writePlaceEquipments(ErsadStation station) {
     List<ErsadContactPoint> ticketCounters = station.ticketCounters();
-    if (ticketCounters.isEmpty() && station.toilets().isEmpty()) {
+    ErsadStationEquipment equipment = station.equipment();
+    Optional<String> ticketMachines = equipment == null
+        ? Optional.empty() : NetexValueMapper.limitation(equipment.ticketMachine());
+    if (ticketMachines.isEmpty() && ticketCounters.isEmpty() && station.toilets().isEmpty()) {
       return;
     }
     xml.startElement(PLACE_EQUIPMENTS);
+    if (ticketMachines.isPresent()) {
+      xml.startElement(TICKETING_EQUIPMENT, station.sloid() + ID_SUFFIX_TICKETING, station.version());
+      xml.optionalElement(TICKET_MACHINES, ticketMachines);
+      xml.endElement();
+    }
     ticketCounters.forEach(contactPoint -> writeTicketingEquipment(station, contactPoint));
     station.toilets().forEach(this::writeSanitaryEquipment);
     xml.endElement();
@@ -188,8 +197,6 @@ public class StopPlaceXmlWriter {
   private void writeTicketingEquipment(ErsadStation station, ErsadContactPoint contactPoint) {
     ErsadStationEquipment equipment = station.equipment();
     xml.startElement(TICKETING_EQUIPMENT, contactPoint.sloid(), contactPoint.version());
-    xml.optionalElement(TICKET_MACHINES,
-        equipment == null ? Optional.empty() : NetexValueMapper.limitation(equipment.ticketMachine()));
     xml.optionalElement(TICKET_OFFICE, NetexValueMapper.ticketOffice(contactPoint.type()));
     xml.optionalElement(INDUCTION_LOOPS, NetexValueMapper.booleanFlag(contactPoint.inductionLoop()));
     xml.optionalElement(AUDIO_INTERFACE_AVAILABLE,
