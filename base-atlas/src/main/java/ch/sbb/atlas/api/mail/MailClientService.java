@@ -1,28 +1,22 @@
 package ch.sbb.atlas.api.mail;
 
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.task.TaskExecutor;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
+@RequiredArgsConstructor
 public class MailClientService {
 
-  private static final String MAIL_PATH = "/mail/internal/mail";
+  private static final String MAIL_PATH = "/mail/internal/send";
 
-  private final MailApi mailApi;
+  private final MailApiInternal mailApi;
   private final ObjectMapper objectMapper;
   private final String gatewayUrl;
   private final TaskExecutor mailTaskExecutor;
-
-  public MailClientService(MailApi mailApi, ObjectMapper objectMapper, String gatewayUrl,
-      TaskExecutor mailTaskExecutor) {
-    this.mailApi = mailApi;
-    this.objectMapper = objectMapper;
-    this.gatewayUrl = gatewayUrl;
-    this.mailTaskExecutor = mailTaskExecutor;
-  }
 
   public void sendMailRequest(MailNotification mailNotification) {
     String mailReqId = UUID.randomUUID().toString();
@@ -54,7 +48,7 @@ public class MailClientService {
       return "curl --fail-with-body --request POST "
           + shellQuote(gatewayUrl + MAIL_PATH)
           + " --header 'Authorization: ******'"
-          + " --header " + shellQuote(MailApi.MAIL_REQUEST_ID_HEADER + ": " + mailReqId)
+          + " --header " + shellQuote(MailApiInternal.MAIL_REQUEST_ID_HEADER + ": " + mailReqId)
           + " --header 'Content-Type: application/json'"
           + " --data-raw " + shellQuote(payload);
     } catch (JacksonException exception) {

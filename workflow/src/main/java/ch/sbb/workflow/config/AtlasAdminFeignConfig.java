@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Configuration;
 public class AtlasAdminFeignConfig extends OAuthClientConfig {
 
   public AtlasAdminFeignConfig() {
-    super("atlasAdmin");
+    super("service-to-service");
   }
 }

@@ -96,10 +96,10 @@ spring:
           issuer-uri: http://localhost:8666/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
       client:
         provider:
-          atlasAdmin:
+          service-to-service:
             issuer-uri: http://localhost:8666/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
         registration:
-          atlasAdmin:
+          service-to-service:
             authorization-grant-type: client_credentials
             client-id: ${SCHEDULING_CLIENT_ID}
             client-secret: ${SCHEDULING_CLIENT_SECRET}

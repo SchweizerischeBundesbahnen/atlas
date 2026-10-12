@@ -1,11 +1,11 @@
 package ch.sbb.scheduling.service;
 
-import ch.sbb.atlas.api.mail.MailOAuthClientConfig;
+import ch.sbb.atlas.oauth.client.OAuthClientConfig;
 
-public class MailFeignConfig extends MailOAuthClientConfig {
+public class MailFeignConfig extends OAuthClientConfig {
 
   public MailFeignConfig() {
-    super("azure");
+    super("service-to-service");
   }
 
 }

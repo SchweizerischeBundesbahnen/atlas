@@ -23,7 +23,7 @@ class MailClientServiceTest {
 
   @Test
   void shouldDispatchAsynchronously() {
-    MailApi mailApi = mock(MailApi.class);
+    MailApiInternal mailApi = mock(MailApiInternal.class);
     MailNotification notification = MailNotification.builder()
         .to(List.of("first@example.com"))
         .subject("Report")
@@ -47,7 +47,7 @@ class MailClientServiceTest {
 
   @Test
   void shouldLogRequestAndErrorResponseAndSuppressFailure() {
-    MailApi mailApi = mock(MailApi.class);
+    MailApiInternal mailApi = mock(MailApiInternal.class);
     MailNotification notification = MailNotification.builder()
         .to(List.of("receiver@example.com"))
         .subject("Today's report")
@@ -85,7 +85,7 @@ class MailClientServiceTest {
               .contains("Mail service request failed; the business operation will continue."));
 
       assertThat(service.createCurlCommand("mail-request-id", notification))
-          .contains("curl --fail-with-body --request POST 'http://localhost:8888/mail/internal/mail'")
+          .contains("curl --fail-with-body --request POST 'http://localhost:8888/mail/internal/send'")
           .contains("Authorization: ******")
           .contains("--header 'Mail-Request-Id: mail-request-id'")
           .contains("\"subject\":\"Today'\"'\"'s report\"");
