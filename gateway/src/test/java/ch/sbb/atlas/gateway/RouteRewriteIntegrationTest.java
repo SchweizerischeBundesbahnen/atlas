@@ -11,13 +11,11 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -78,134 +76,45 @@ class RouteRewriteIntegrationTest {
     assertThat(recordedRequest.getPath()).isEqualTo("/v1/lines");
   }
 
-  @Nested
-  @TestPropertySource(properties = "gateway.tthModuleReroute=true")
-  class TthModuleRerouteEnabled {
+  @Test
+  void shouldRouteLegacyTthV2PathToTimetableHearingService() throws InterruptedException {
+    timetableHearingMockServer.enqueue(new MockResponse().setResponseCode(200));
 
-    @Test
-    void shouldRerouteTthCutoverToTimetableHearingService() throws InterruptedException {
-      lineDirectoryMockServer.enqueue(new MockResponse().setResponseCode(200));
-      timetableHearingMockServer.enqueue(new MockResponse().setResponseCode(200));
+    webClient.get().uri("/line-directory/v2/timetable-hearing/statements/external").exchange().expectStatus().isOk();
 
-      webClient.get().uri("/line-directory/v1/timetable-hearing/hearings").exchange().expectStatus().isOk();
+    RecordedRequest timetableHearingRequest = timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
+        TimeUnit.MILLISECONDS);
+    assertThat(timetableHearingRequest).isNotNull();
+    assertThat(timetableHearingRequest.getPath()).isEqualTo("/v2/timetable-hearing/statements/external");
 
-      RecordedRequest timetableHearingRequest = timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(timetableHearingRequest).isNotNull();
-      assertThat(timetableHearingRequest.getPath()).isEqualTo("/v1/timetable-hearing/hearings");
-
-      RecordedRequest lineDirectoryRequest = lineDirectoryMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(lineDirectoryRequest).isNull();
-    }
-
-    @Test
-    void shouldRouteToNewTimetableHearingService() throws InterruptedException {
-      lineDirectoryMockServer.enqueue(new MockResponse().setResponseCode(200));
-      timetableHearingMockServer.enqueue(new MockResponse().setResponseCode(200));
-
-      webClient.get().uri("/timetable-hearing/internal/migrate-from-lidi").exchange().expectStatus().isOk();
-
-      RecordedRequest timetableHearingRequest = timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(timetableHearingRequest).isNotNull();
-      assertThat(timetableHearingRequest.getPath()).isEqualTo("/internal/migrate-from-lidi");
-
-      RecordedRequest lineDirectoryRequest = lineDirectoryMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(lineDirectoryRequest).isNull();
-    }
-
-    @Test
-    void shouldRerouteDossierBasePathToTimetableHearingService() throws InterruptedException {
-      timetableHearingMockServer.enqueue(new MockResponse().setResponseCode(200));
-
-      webClient.get().uri("/workflow/internal/tth/dossier?page=0").exchange().expectStatus().isOk();
-
-      RecordedRequest timetableHearingRequest = timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(timetableHearingRequest).isNotNull();
-      assertThat(timetableHearingRequest.getPath()).isEqualTo("/internal/tth/dossier?page=0");
-
-      assertThat(workflowMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)).isNull();
-    }
-
-    @Test
-    void shouldRerouteDossierSubPathToTimetableHearingService() throws InterruptedException {
-      timetableHearingMockServer.enqueue(new MockResponse().setResponseCode(200));
-
-      webClient.post().uri("/workflow/internal/tth/dossier/5/send-to-bo").exchange().expectStatus().isOk();
-
-      RecordedRequest timetableHearingRequest = timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(timetableHearingRequest).isNotNull();
-      assertThat(timetableHearingRequest.getMethod()).isEqualTo("POST");
-      assertThat(timetableHearingRequest.getPath()).isEqualTo("/internal/tth/dossier/5/send-to-bo");
-
-      assertThat(workflowMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)).isNull();
-    }
-
-    @Test
-    void shouldRerouteTthYearToTimetableHearingService() throws InterruptedException {
-      timetableHearingMockServer.enqueue(new MockResponse().setResponseCode(200));
-
-      webClient.post().uri("/workflow/internal/tth/year/2025/close").exchange().expectStatus().isOk();
-
-      RecordedRequest timetableHearingRequest = timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(timetableHearingRequest).isNotNull();
-      assertThat(timetableHearingRequest.getPath()).isEqualTo("/internal/timetable-hearing/years/2025/close");
-
-      assertThat(workflowMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)).isNull();
-    }
-
-    @Test
-    void shouldStillRouteOtherWorkflowPathsToWorkflowService() throws InterruptedException {
-      workflowMockServer.enqueue(new MockResponse().setResponseCode(200));
-
-      webClient.get().uri("/workflow/internal/workflows/5").exchange().expectStatus().isOk();
-
-      RecordedRequest workflowRequest = workflowMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-      assertThat(workflowRequest).isNotNull();
-      assertThat(workflowRequest.getPath()).isEqualTo("/internal/workflows/5");
-
-      assertThat(timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)).isNull();
-    }
+    assertThat(lineDirectoryMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)).isNull();
   }
 
-  @Nested
-  @TestPropertySource(properties = "gateway.tthModuleReroute=false")
-  class TthModuleRerouteDisabled {
+  @Test
+  void shouldRouteInternalTimetableHearingPathToLineDirectory() throws InterruptedException {
+    lineDirectoryMockServer.enqueue(new MockResponse().setResponseCode(200));
 
-    @Test
-    void shouldNotRerouteTimetableHearingWhenTthModuleRerouteDisabled() throws InterruptedException {
-      lineDirectoryMockServer.enqueue(new MockResponse().setResponseCode(200));
-      timetableHearingMockServer.enqueue(new MockResponse().setResponseCode(200));
+    webClient.get().uri("/line-directory/internal/timetable-hearing/hearings").exchange().expectStatus().isOk();
 
-      webClient.get().uri("/line-directory/v1/timetable-hearing/hearings").exchange().expectStatus().isOk();
+    RecordedRequest lineDirectoryRequest = lineDirectoryMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
+        TimeUnit.MILLISECONDS);
+    assertThat(lineDirectoryRequest).isNotNull();
+    assertThat(lineDirectoryRequest.getPath()).isEqualTo("/internal/timetable-hearing/hearings");
 
-      RecordedRequest lineDirectoryRequest = lineDirectoryMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(lineDirectoryRequest).isNotNull();
-      assertThat(lineDirectoryRequest.getPath()).isEqualTo("/v1/timetable-hearing/hearings");
+    assertThat(timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)).isNull();
+  }
 
-      RecordedRequest timetableHearingRequest = timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS,
-          TimeUnit.MILLISECONDS);
-      assertThat(timetableHearingRequest).isNull();
-    }
+  @Test
+  void shouldRouteWorkflowTthPathToWorkflow() throws InterruptedException {
+    workflowMockServer.enqueue(new MockResponse().setResponseCode(200));
 
-    @Test
-    void shouldNotRerouteDossierWhenTthModuleRerouteDisabled() throws InterruptedException {
-      workflowMockServer.enqueue(new MockResponse().setResponseCode(200));
+    webClient.get().uri("/workflow/internal/tth/dossier/5").exchange().expectStatus().isOk();
 
-      webClient.get().uri("/workflow/internal/tth/dossier/5").exchange().expectStatus().isOk();
+    RecordedRequest workflowRequest = workflowMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+    assertThat(workflowRequest).isNotNull();
+    assertThat(workflowRequest.getPath()).isEqualTo("/internal/tth/dossier/5");
 
-      RecordedRequest workflowRequest = workflowMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-      assertThat(workflowRequest).isNotNull();
-      assertThat(workflowRequest.getPath()).isEqualTo("/internal/tth/dossier/5");
-
-      assertThat(timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)).isNull();
-    }
+    assertThat(timetableHearingMockServer.takeRequest(BACKEND_REQUEST_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)).isNull();
   }
 }
 
