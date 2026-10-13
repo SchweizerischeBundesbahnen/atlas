@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../api/service/tth/dossier-internal.service';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';

@@ -7,7 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { of } from 'rxjs';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
-import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { FormatPipe } from '../../../../../core/components/table/pipe/format.pipe';
 import { Component, input, model } from '@angular/core';
 import { StatementSelectComponent } from '../statement-select.component';

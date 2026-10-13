@@ -3,7 +3,7 @@ import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
 import { TranslatePipe } from '@ngx-translate/core';
 import { OpenCantonDossierInMailService } from './open-canton-dossier-in-mail.service';
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
-import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { of } from 'rxjs';

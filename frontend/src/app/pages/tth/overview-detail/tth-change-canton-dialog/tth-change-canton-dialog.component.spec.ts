@@ -11,7 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { of } from 'rxjs';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/tth/timetable-hearing-statement-internal.service';
 
 const statement: TimetableHearingStatementV2 = {
   id: 1,

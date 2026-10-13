@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
-import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/tth/timetable-hearing-year-internal.service';
 import { HearingStatus, TimetableHearingYear } from '../../../api';
 import { Cantons } from '../../../core/cantons/Cantons';
 import { TthUtils } from '../util/tth-utils';

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimetableHearingStatementV2 } from '../../../../api';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Router } from '@angular/router';

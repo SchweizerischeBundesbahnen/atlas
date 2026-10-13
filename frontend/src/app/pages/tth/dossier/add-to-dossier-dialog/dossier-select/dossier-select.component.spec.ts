@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { DossierSelectComponent } from './dossier-select.component';
 import { firstValueFrom, of } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../../api/service/tth/dossier-internal.service';
 import { ContainerTthDossier } from '../../../../../api/model/containerTthDossier';
 import { SwissCanton } from '../../../../../api';
 import { DossierStatus } from '../../../../../api/model/dossierStatus';

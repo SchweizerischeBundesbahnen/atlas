@@ -9,7 +9,7 @@ import { HearingStatus } from '../../../../api';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { DossierStatus } from '../../../../api/model/dossierStatus';
 import { TthDossier } from '../../../../api/model/tthDossier';
-import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../api/service/tth/dossier-internal.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 
 @Component({

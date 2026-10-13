@@ -5,7 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { DossierSelectComponent } from './dossier-select/dossier-select.component';
 import { TthDossier } from '../../../../api/model/tthDossier';
-import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../api/service/tth/dossier-internal.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DOSSIER_EDITABLE_STATES } from '../detail/canton-dossier-detail/canton-dossier-detail.component';
 import { DialogData } from '../../../../core/components/dialog/dialog.data';

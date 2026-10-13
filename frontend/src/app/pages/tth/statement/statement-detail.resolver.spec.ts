@@ -4,7 +4,7 @@ import { HearingStatus, SwissCanton, TimetableHearingStatementV2 } from '../../.
 import { StatementDetailResolver } from './statement-detail.resolver';
 import { AppTestingModule } from '../../../app.testing.module';
 import { firstValueFrom, of } from 'rxjs';
-import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { describe, expect, it, beforeEach, vi, type Mocked } from 'vitest';
 
 const statement: TimetableHearingStatementV2 = {

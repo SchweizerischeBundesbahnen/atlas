@@ -15,7 +15,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NewHearingYearValidator } from './new-hearing-year-validator';
 import { TthUtils } from '../util/tth-utils';
-import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/tth/timetable-hearing-year-internal.service';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';

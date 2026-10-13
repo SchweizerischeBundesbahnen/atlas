@@ -7,7 +7,7 @@ import { TransportCompanySelectComponent } from '../../../../core/form-component
 import { FormGroup } from '@angular/forms';
 import { StatementDetailFormGroup } from '../statement-detail/statement-detail-form-group';
 import { TimetableFieldNumber, TimetableHearingStatementV2, TransportCompany } from '../../../../api';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/tth/timetable-hearing-statement-internal.service';
 
 @Component({
   selector: 'atlas-statement-data',

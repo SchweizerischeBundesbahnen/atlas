@@ -4,7 +4,7 @@ import { StatementSelectComponent } from './statement-select.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { FormatPipe } from '../../../../core/components/table/pipe/format.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { mock } from 'vitest-mock-extended';

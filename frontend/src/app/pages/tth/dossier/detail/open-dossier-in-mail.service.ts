@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { forkJoin, Observable } from 'rxjs';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { map } from 'rxjs/operators';
 
 export interface DossierMailData {

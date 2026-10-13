@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
-import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../api/service/tth/dossier-internal.service';
 
 const statement: TimetableHearingStatementV2 = {
   id: 456,

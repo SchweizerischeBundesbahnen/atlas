@@ -3,7 +3,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { SearchSelectComponent } from '../../../../../core/form-components/search-select/search-select.component';
 import { TthDossier } from '../../../../../api/model/tthDossier';
-import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../../api/service/tth/dossier-internal.service';
 import { map } from 'rxjs/operators';
 import { DossierSelectFormatPipe } from './dossier-select-format.pipe';
 import { SwissCanton } from '../../../../../api';

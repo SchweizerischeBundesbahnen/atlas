@@ -13,7 +13,7 @@ import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spac
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
 import { AtlasDateIconComponent, AtlasInfoIconComponent, AtlasLabelFieldComponent } from '@atlas/form';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/tth/timetable-hearing-year-internal.service';
 
 const mockTimetableHearingYearsService: Mocked<Pick<TimetableHearingYearInternalService, 'getHearingYears'>> = {
   getHearingYears: vi.fn(),

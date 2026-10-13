@@ -7,7 +7,7 @@ import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atla
 import { TimetableHearingStatementV2, TransportCompany } from '../../../../../api';
 import { TablePagination } from '../../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../../core/util/arrays';
-import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { TableService } from '../../../../../core/components/table/table.service';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';

@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { of, Subject } from 'rxjs';
-import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/tth/timetable-hearing-year-internal.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { TthUtils } from '../util/tth-utils';
