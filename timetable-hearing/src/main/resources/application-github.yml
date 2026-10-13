@@ -7,16 +7,6 @@ spring:
     username: user
     password: pwd
     driver-class-name: org.postgresql.Driver
-    lidi:
-      url: jdbc:postgresql://localhost:5433/line-directory?currentSchema=line_directory
-      username: user
-      password: pwd
-      driver-class-name: org.postgresql.Driver
-    workflow:
-      url: jdbc:postgresql://localhost:5438/workflow
-      username: user
-      password: pwd
-      driver-class-name: org.postgresql.Driver
   application:
     name: timetable-hearing
   jpa:

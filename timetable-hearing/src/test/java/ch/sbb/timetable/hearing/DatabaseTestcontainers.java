@@ -11,18 +11,14 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 @Component
 class DatabaseTestcontainers implements BeanFactoryPostProcessor {
 
-  static PostgreSQLContainer lidiDbContainer = PostgreSQLTestContainer.create();
-  static PostgreSQLContainer workflowDbContainer = PostgreSQLTestContainer.create();
   static PostgreSQLContainer tthDbContainer = PostgreSQLTestContainer.create();
 
   static {
-    Startables.deepStart(lidiDbContainer, workflowDbContainer, tthDbContainer).join();
+    Startables.deepStart(tthDbContainer).join();
   }
 
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
     PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource", tthDbContainer);
-    PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource.lidi", lidiDbContainer);
-    PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource.workflow", workflowDbContainer);
   }
 }
