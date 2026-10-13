@@ -27,11 +27,9 @@ import ch.sbb.timetable.hearing.model.TimetableHearingStatementSearchRestriction
 import ch.sbb.timetable.hearing.redact.StatementRedacted;
 import ch.sbb.timetable.hearing.repository.TimetableHearingStatementRepository;
 import ch.sbb.timetable.hearing.repository.TimetableHearingYearRepository;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -108,7 +106,7 @@ public class TimetableHearingStatementService {
   public TimetableHearingStatementModelV2 createHearingStatementV2(TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
     TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV2.toEntity(statement);
-    return TimetableHearingStatementMapperV2.toModel(createHearingStatement(statementToCreate, documents));
+    return timetableHearingStatementMapperV2.toModel(createHearingStatement(statementToCreate, documents));
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
@@ -222,31 +220,18 @@ public class TimetableHearingStatementService {
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
     timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(
-        timetableHearingStatementInDb.getTransportCompaniesCommaSeparated());
+        TimetableHearingStatementMapperV2.getTransportCompaniesCommaSeparated(
+            timetableHearingStatementModel.getResponsibleTransportCompanies()));
 
     return timetableHearingStatementInDb;
   }
 
   private void updateResponsibleTransportCompanies(TimetableHearingStatementModelV2 timetableHearingStatementModel,
       TimetableHearingStatement timetableHearingStatementInDb) {
-    Set<Long> desiredTransportCompanies = timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
-        TimetableHearingStatementResponsibleTransportCompanyModel::getId).collect(Collectors.toSet());
-    Set<Long> currentTransportCompanies = timetableHearingStatementInDb.getResponsibleTransportCompanies().stream()
-        .map(SharedTransportCompany::getId).collect(Collectors.toSet());
-
-    Set<SharedTransportCompany> transportCompaniesToRemove = new HashSet<>();
-    timetableHearingStatementInDb.getResponsibleTransportCompanies().forEach(responsibleTransportCompany -> {
-      if (!desiredTransportCompanies.contains(responsibleTransportCompany.getId())) {
-        transportCompaniesToRemove.add(responsibleTransportCompany);
-      }
-    });
-    timetableHearingStatementInDb.getResponsibleTransportCompanies().removeAll(transportCompaniesToRemove);
-    timetableHearingStatementModel.getResponsibleTransportCompanies().forEach(responsibleTransportCompany -> {
-      if (!currentTransportCompanies.contains(responsibleTransportCompany.getId())) {
-        timetableHearingStatementInDb.getResponsibleTransportCompanies()
-            .add(responsibleTransportCompanyMapper.toEntity(responsibleTransportCompany));
-      }
-    });
+    Set<Long> responsibleTransportCompanyIds = timetableHearingStatementModel.getResponsibleTransportCompanies().stream()
+        .map(TimetableHearingStatementResponsibleTransportCompanyModel::getId)
+        .collect(Collectors.toSet());
+    timetableHearingStatementInDb.setResponsibleTransportCompanyIds(responsibleTransportCompanyIds);
   }
 
   private void checkThatTimetableHearingYearExists(Long timetableYear) {
@@ -287,7 +272,7 @@ public class TimetableHearingStatementService {
   public List<TimetableHearingAnonymStatementCsvModel> getStatementsByIdAnonymized(List<Long> ids) {
     return timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
             getTimetableHearingStatementsByIds(ids).stream()
-                .map(TimetableHearingStatementMapperV2::toModel)
+                .map(timetableHearingStatementMapperV2::toModel)
                 .toList())
         .stream()
         .map(TimetableHearingAnonymStatementCsvModel::fromModelAnonymized)

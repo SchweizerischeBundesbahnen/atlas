@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.bodi.TransportCompanyModel;
+import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.line.ttfn.TimetableFieldNumberApiV1Client;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberApiInternal;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
@@ -15,7 +17,6 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -30,7 +31,6 @@ import ch.sbb.timetable.hearing.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.timetable.hearing.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.timetable.hearing.repository.TimetableHearingStatementRepository;
 import ch.sbb.timetable.hearing.repository.TimetableHearingYearRepository;
-import ch.sbb.timetable.hearing.shared.transportcompany.repository.SharedTransportCompanyRepository;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -57,26 +57,26 @@ class TimetableHearingStatementServiceTest {
   @MockitoBean
   private TimetableFieldNumberApiInternal timetableFieldNumberApiInternal;
 
+  @MockitoBean
+  private TransportCompanyClient transportCompanyClient;
+
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
   private final TimetableHearingStatementService timetableHearingStatementService;
   private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
-  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   @Autowired
   TimetableHearingStatementServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearService timetableHearingYearService,
       TimetableHearingStatementRepository timetableHearingStatementRepository,
       TimetableHearingStatementService timetableHearingStatementService,
-      TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2,
-      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
+      TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearService = timetableHearingYearService;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
     this.timetableHearingStatementService = timetableHearingStatementService;
     this.timetableHearingStatementMapperV2 = timetableHearingStatementMapperV2;
-    this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
   }
 
   private static TimetableHearingYear getTimetableHearingYear() {
@@ -102,7 +102,6 @@ class TimetableHearingStatementServiceTest {
   void tearDown() {
     timetableHearingStatementRepository.deleteAll();
     timetableHearingYearRepository.deleteAll();
-    sharedTransportCompanyRepository.deleteAll();
   }
 
   @Test
@@ -569,14 +568,16 @@ class TimetableHearingStatementServiceTest {
 
   @Test
   void shouldFindStatementByTransportCompany() {
-    sharedTransportCompanyRepository.save(SharedTransportCompanyModel.builder()
+    TransportCompanyModel sbb = TransportCompanyModel.builder()
         .id(4L)
         .abbreviation("SBB")
-        .businessRegisterName("Schweizerische Bundesbahnen").build());
-    sharedTransportCompanyRepository.save(SharedTransportCompanyModel.builder()
+        .businessRegisterName("Schweizerische Bundesbahnen").build();
+    TransportCompanyModel bls = TransportCompanyModel.builder()
         .id(5L)
         .abbreviation("BLS")
-        .businessRegisterName("Basel Land Stationen ? :D").build());
+        .businessRegisterName("Basel Land Stationen ? :D").build();
+    when(transportCompanyClient.getTransportCompany(4L)).thenReturn(sbb);
+    when(transportCompanyClient.getTransportCompany(5L)).thenReturn(bls);
     timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
         .timetableYear(YEAR)

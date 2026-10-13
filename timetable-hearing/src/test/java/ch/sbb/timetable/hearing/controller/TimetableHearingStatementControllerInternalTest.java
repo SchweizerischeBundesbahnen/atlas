@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.model.exception.BadRequestException;
+import ch.sbb.timetable.hearing.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.timetable.hearing.service.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.timetable.hearing.service.TimetableFieldNumberResolverService;
 import ch.sbb.timetable.hearing.service.TimetableHearingStatementAlternationService;
@@ -42,6 +43,9 @@ class TimetableHearingStatementControllerInternalTest {
   @Mock
   private TimetableHearingStatementAlternationService timetableHearingStatementAlternationService;
 
+  @Mock
+  private TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
+
   private TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal;
 
   @BeforeEach
@@ -50,7 +54,8 @@ class TimetableHearingStatementControllerInternalTest {
     timetableHearingStatementControllerInternal = new TimetableHearingStatementControllerInternal(
         timetableHearingStatementService,
         timetableHearingStatementAlternationService, timetableHearingYearService, timetableFieldNumberResolverService,
-        responsibleTransportCompaniesResolverService, timetableHearingStatementExportService);
+        responsibleTransportCompaniesResolverService, timetableHearingStatementExportService,
+        timetableHearingStatementMapperV2);
   }
 
   @Test

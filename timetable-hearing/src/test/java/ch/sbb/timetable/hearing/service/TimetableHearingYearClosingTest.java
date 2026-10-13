@@ -1,7 +1,10 @@
 package ch.sbb.timetable.hearing.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.bodi.TransportCompanyModel;
+import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
@@ -9,14 +12,12 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.timetable.hearing.controller.TimetableHearingStatementControllerInternal;
 import ch.sbb.timetable.hearing.controller.TimetableHearingYearControllerInternal;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.timetable.hearing.repository.TimetableHearingStatementRepository;
 import ch.sbb.timetable.hearing.repository.TimetableHearingYearRepository;
-import ch.sbb.timetable.hearing.shared.transportcompany.repository.SharedTransportCompanyRepository;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class TimetableHearingYearClosingTest {
@@ -36,37 +38,35 @@ class TimetableHearingYearClosingTest {
   private final TimetableHearingYearControllerInternal timetableHearingYearController;
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
   private final TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal;
-  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
+
+  @MockitoBean
+  private TransportCompanyClient transportCompanyClient;
 
   @Autowired
   TimetableHearingYearClosingTest(
       TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearControllerInternal timetableHearingYearController,
       TimetableHearingStatementRepository timetableHearingStatementRepository,
-      TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal,
-      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
+      TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearController = timetableHearingYearController;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
     this.timetableHearingStatementControllerInternal = timetableHearingStatementControllerInternal;
-    this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
   }
 
   @AfterEach
   void tearDown() {
     timetableHearingStatementRepository.deleteAll();
     timetableHearingYearRepository.deleteAll();
-    sharedTransportCompanyRepository.deleteAll();
   }
 
   @Test
-  void shouldCloseTimetableHearingNotDeletingSharedTransportCompany() {
-    // given TransportCompany
-    sharedTransportCompanyRepository.save(SharedTransportCompanyModel.builder()
+  void shouldCloseTimetableHearingNotDeletingResponsibleTransportCompanyRelation() {
+    TransportCompanyModel transportCompany = TransportCompanyModel.builder()
         .id(TRANSPORT_COMPANY_ID)
         .abbreviation("SBB")
-        .businessRegisterName("Schweizerische Bundesbahnen").build());
-    sharedTransportCompanyRepository.flush();
+        .businessRegisterName("Schweizerische Bundesbahnen").build();
+    when(transportCompanyClient.getTransportCompany(TRANSPORT_COMPANY_ID)).thenReturn(transportCompany);
 
     // given Year
     timetableHearingYearController.createHearingYear(TimetableHearingYearModel.builder()
@@ -133,7 +133,7 @@ class TimetableHearingYearClosingTest {
         secondStatement.getId());
     assertThat(secondStatementAfterClose).isPresent();
 
-    // TransportCompanies still here
-    assertThat(sharedTransportCompanyRepository.count()).isEqualTo(1);
+    assertThat(secondStatementAfterClose.orElseThrow().getResponsibleTransportCompanyIds())
+        .containsExactly(TRANSPORT_COMPANY_ID);
   }
 }

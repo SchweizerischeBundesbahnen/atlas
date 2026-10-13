@@ -3,12 +3,9 @@ package ch.sbb.timetable.hearing.configuration;
 import ch.sbb.atlas.s3.service.FileService;
 import ch.sbb.atlas.s3.service.FileServiceImpl;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
-import ch.sbb.atlas.transport.company.SharedTransportCompanyConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
-@Import({SharedTransportCompanyConfig.class})
 @Configuration
 public class AtlasConfig {
 
