@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.module.tth.controller;
+package ch.sbb.line.directory.module.timetableyear.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;

@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.module.tth.controller;
+package ch.sbb.line.directory.module.timetableyear.controller;
 
 import ch.sbb.atlas.api.lidi.TimetableYearChangeApiInternal;
 import ch.sbb.atlas.model.FutureTimetableHelper;

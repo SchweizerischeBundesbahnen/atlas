@@ -61,10 +61,6 @@ kafka:
       organisation:
         topic: atlas.business.organisation
         groupId: atlas.kafka.lidi.business.organisation.groupId
-    transport:
-      company:
-        topic: atlas.transport.company
-        groupId: atlas.kafka.lidi.transport.company.groupId
 auth:
   audience:
     service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
@@ -103,12 +99,6 @@ amazon:
   region: local
   bucketConfigs:
     export-files:
-      accessKey: NSVCQSGo2klxYXInNuob
-      secretKey: jiiCYSlwdHBkrSg8J4Htqm7Ej8ydlprZGgYFwELc
-      endpoint: "http://localhost:9000"
-      forcePathStyle: true
-      objectExpirationDays:
-    hearing-documents:
       accessKey: NSVCQSGo2klxYXInNuob
       secretKey: jiiCYSlwdHBkrSg8J4Htqm7Ej8ydlprZGgYFwELc
       endpoint: "http://localhost:9000"
