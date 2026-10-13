@@ -109,6 +109,23 @@ class AmazonFileStreamingServiceTest {
         .isThrownBy(() -> streamingResponseBody.writeTo(outputStream));
   }
 
+  @Test
+  void shouldThrowIllegalStateExceptionWhenZipEntryExceedsMaxUncompressedSize() throws IOException {
+    // Given
+    byte[] zipBytes = zip("file.xml", "0123456789".getBytes(StandardCharsets.UTF_8));
+    when(amazonService.pullS3Object(any(), any())).thenReturn(new ByteArrayInputStream(zipBytes));
+    AmazonFileStreamingService limited = new AmazonFileStreamingServiceImpl(amazonService, fileService, 5);
+
+    // When
+    StreamingResponseBody streamingResponseBody = limited.streamZipEntry(AmazonBucket.EXPORT, "file.xml.zip");
+
+    // Then
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    assertThatExceptionOfType(IllegalStateException.class)
+        .isThrownBy(() -> streamingResponseBody.writeTo(outputStream))
+        .withMessageContaining("maximum uncompressed size");
+  }
+
   private byte[] zip(String entryName, byte[] content) throws IOException {
     try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
