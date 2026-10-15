@@ -1,10 +1,14 @@
 package ch.sbb.line.directory.module.line.controller;
 
+import ch.sbb.atlas.api.lidi.CreateLineVersionModelV3;
 import ch.sbb.atlas.api.lidi.LineApiV3;
 import ch.sbb.atlas.api.lidi.LineVersionModelV3;
 import ch.sbb.atlas.api.lidi.LineVersionV3RequestParams;
+import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV3;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.module.line.entity.LineVersionV3;
+import ch.sbb.line.directory.module.line.mapper.LineVersionV3Mapper;
 import ch.sbb.line.directory.module.line.search.LineVersionV3SearchRestrictions;
 import ch.sbb.line.directory.module.line.service.LineVersionV3Service;
 import java.util.List;
@@ -40,6 +44,21 @@ public class LineControllerV3 implements LineApiV3 {
       throw new SlnidNotFoundException(slnid);
     }
     return versions;
+  }
+
+  @Override
+  public LineVersionModelV3 createLineVersionV3(CreateLineVersionModelV3 newVersion) {
+    LineVersionV3 createdVersion = lineVersionV3Service.create(LineVersionV3Mapper.toEntity(newVersion));
+    return lineVersionV3Service.toModels(List.of(createdVersion)).getFirst();
+  }
+
+  @Override
+  public List<LineVersionModelV3> updateLineVersionV3(Long id, UpdateLineVersionModelV3 newVersion) {
+    LineVersionV3 versionToUpdate = lineVersionV3Service.getLineVersionById(id);
+    List<LineVersionV3> updatedVersions = lineVersionV3Service.update(versionToUpdate,
+        LineVersionV3Mapper.toEntityFromUpdate(newVersion, versionToUpdate),
+        lineVersionV3Service.findLineVersions(versionToUpdate.getSlnid()));
+    return lineVersionV3Service.toModels(updatedVersions);
   }
 
 }

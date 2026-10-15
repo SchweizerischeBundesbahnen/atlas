@@ -19,6 +19,7 @@ public class LineVersionV3TestData {
   public static final String CHILD_SLNID = "ch:1:slnid:1028629:4";
   public static final String UNKNOWN_SLNID = "ch:1:slnid:9999999";
   public static final String CABLEWAY_SLNID = "ch:1:slnid:6000001";
+  public static final String CONCESSION_MEMBER_SLNID = "ch:1:slnid:1028630";
 
   public static LineVersionV3Builder<?, ?> lineBuilder() {
     return LineVersionV3.builder()
@@ -80,6 +81,15 @@ public class LineVersionV3TestData {
 
   public static LineVersionV3 subline() {
     return sublineBuilder().build();
+  }
+
+  public static LineVersionV3Builder<?, ?> concessionMemberBuilder() {
+    return sublineBuilder()
+        .slnid(CONCESSION_MEMBER_SLNID)
+        .lineType(LineType.CONCESSION)
+        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
+        .swissLineNumber("90.583.1")
+        .offerCategory(null);
   }
 
 }

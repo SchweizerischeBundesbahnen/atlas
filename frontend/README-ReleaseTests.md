@@ -51,6 +51,8 @@ Hint: The transportCompany export-test only consist of 1 downloadGZip()-call, be
 
 These are standard CRU(D)-tests. To create a subline a line is needed.
 
+`LineV3CRU.cy.ts` covers the V3 write API (`/line-directory/v3/lines/versions`): create LINE → read → update → create CONCESSION member (SUBLINE, `referencedLineSlnid`, own `concessionType`) → read → update. V3 has no delete/revoke endpoint yet (ATLAS-3574), so the spec uses a unique `swissLineNumber` per run and does not clean up.
+
 ### Person-with-reduced-mobility API-Tests
 
 PRM comes in 2 flavors: complete and reduced. Most of the PRM-stop-points are reduced, but the train stations use the complete settings. For both (complete and reduced), the api-tests do one create-update-read cycle per object (incl. platform, toilet etc.).
