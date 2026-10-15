@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import ch.sbb.business.organisation.directory.client.MailClient;
-import ch.sbb.business.organisation.directory.distributor.TransportCompanyDistributor;
 import ch.sbb.business.organisation.directory.module.transportcompany.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.module.transportcompany.repository.TransportCompanyRepository;
 import ch.sbb.business.organisation.directory.module.transportcompany.service.TransportCompanyCsvModel;
@@ -34,8 +33,6 @@ class TransportCompanyBavImportServiceTest {
   @Mock
   private TransportCompanyClient transportCompanyClient;
   @Mock
-  private TransportCompanyDistributor transportCompanyDistributor;
-  @Mock
   private MailClient mailClient;
 
   private TransportCompanyBavImportService transportCompanyBavImportService;
@@ -44,7 +41,7 @@ class TransportCompanyBavImportServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     transportCompanyBavImportService = new TransportCompanyBavImportService(transportCompanyClient,
-        transportCompanyRepository, transportCompanyDistributor, mailClient);
+        transportCompanyRepository, mailClient);
   }
 
   @Test

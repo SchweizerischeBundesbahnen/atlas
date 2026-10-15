@@ -10,7 +10,6 @@ import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.transport.company.SharedTransportCompanyConfig;
 import ch.sbb.atlas.user.administration.security.entity.Permission;
 import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import java.util.List;
@@ -25,8 +24,6 @@ class UserAdministrationLoaderTest {
 
   @MockitoBean
   private SharedBusinessOrganisationConfig sharedBusinessOrganisationConfig;
-  @MockitoBean
-  private SharedTransportCompanyConfig sharedTransportCompanyConfig;
 
   private final PermissionRepository permissionRepository;
   private final UserAdministrationLoader userAdministrationLoader;
