@@ -11,6 +11,19 @@ import { TimetableHearingStatementAlternating } from '../../model/timetableHeari
 import { TransportCompany } from '../../model/transportCompany';
 import { TimetableHearingStatementDataProtection } from '../../model/timetableHearingStatementDataProtection';
 
+type AlternatingStatementParams = [
+  id: number,
+  timetableHearingYear?: number,
+  canton?: SwissCanton,
+  searchCriterias?: Array<string>,
+  statusRestrictions?: Array<StatementStatus>,
+  ttfnid?: string,
+  transportCompanies?: Array<number>,
+  page?: number,
+  size?: number,
+  sort?: Array<string>,
+];
+
 @Injectable({
   providedIn: 'root',
 })
@@ -84,58 +97,12 @@ export class TimetableHearingStatementInternalService {
     return this.atlasApiService.get(`${this.STATEMENTS}/${encodeURIComponent(String(id))}`);
   }
 
-  public getPreviousStatement(
-    id: number,
-    timetableHearingYear?: number,
-    canton?: SwissCanton,
-    searchCriterias?: Array<string>,
-    statusRestrictions?: Array<StatementStatus>,
-    ttfnid?: string,
-    transportCompanies?: Array<number>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>
-  ): Observable<TimetableHearingStatementAlternating> {
-    this.atlasApiService.validateParams({ id });
-    const httpParams = this.atlasApiService.paramsOf({
-      timetableHearingYear,
-      canton,
-      searchCriterias,
-      statusRestrictions,
-      ttfnid,
-      transportCompanies,
-      page,
-      size,
-      sort,
-    });
-    return this.atlasApiService.get(`${this.STATEMENTS}/${encodeURIComponent(String(id))}/previous`, httpParams);
+  public getPreviousStatement(...params: AlternatingStatementParams): Observable<TimetableHearingStatementAlternating> {
+    return this.getAlternatingStatement('previous', ...params);
   }
 
-  public getNextStatement(
-    id: number,
-    timetableHearingYear?: number,
-    canton?: SwissCanton,
-    searchCriterias?: Array<string>,
-    statusRestrictions?: Array<StatementStatus>,
-    ttfnid?: string,
-    transportCompanies?: Array<number>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>
-  ): Observable<TimetableHearingStatementAlternating> {
-    this.atlasApiService.validateParams({ id });
-    const httpParams = this.atlasApiService.paramsOf({
-      timetableHearingYear,
-      canton,
-      searchCriterias,
-      statusRestrictions,
-      ttfnid,
-      transportCompanies,
-      page,
-      size,
-      sort,
-    });
-    return this.atlasApiService.get(`${this.STATEMENTS}/${encodeURIComponent(String(id))}/next`, httpParams);
+  public getNextStatement(...params: AlternatingStatementParams): Observable<TimetableHearingStatementAlternating> {
+    return this.getAlternatingStatement('next', ...params);
   }
 
   public getStatementDocument(id: number, filename: string): Observable<Blob> {
@@ -178,5 +145,35 @@ export class TimetableHearingStatementInternalService {
   public checkDataProtection(dataProtection: TimetableHearingStatementDataProtection): Observable<void> {
     this.atlasApiService.validateParams({ dataProtection });
     return this.atlasApiService.post(`${this.STATEMENTS}/check-data-protection`, dataProtection);
+  }
+
+  private getAlternatingStatement(
+    direction: 'previous' | 'next',
+    ...[
+      id,
+      timetableHearingYear,
+      canton,
+      searchCriterias,
+      statusRestrictions,
+      ttfnid,
+      transportCompanies,
+      page,
+      size,
+      sort,
+    ]: AlternatingStatementParams
+  ): Observable<TimetableHearingStatementAlternating> {
+    this.atlasApiService.validateParams({ id });
+    const httpParams = this.atlasApiService.paramsOf({
+      timetableHearingYear,
+      canton,
+      searchCriterias,
+      statusRestrictions,
+      ttfnid,
+      transportCompanies,
+      page,
+      size,
+      sort,
+    });
+    return this.atlasApiService.get(`${this.STATEMENTS}/${encodeURIComponent(String(id))}/${direction}`, httpParams);
   }
 }
