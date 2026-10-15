@@ -29,6 +29,7 @@ public class MailService {
       log.info("Mail with subject {} sent to {}, mail={} ", mailNotification.getSubject(), mailNotification.getTo(), mailNotification);
     } catch (MailException e) {
       log.error("Mail {} not sent.", mailNotification, e);
+      throw new MailSendException(e.getLocalizedMessage(), e);
     }
   }
 
@@ -43,7 +44,7 @@ public class MailService {
       log.info("Simple Mail with subject {} sent to {}", mailNotification.getSubject(), mailNotification.getTo());
     } catch (MailException e) {
       log.error("Simple Mail {} not sent.", mailNotification, e);
-      throw new MailSendException(e.getLocalizedMessage());
+      throw new MailSendException(e.getLocalizedMessage(), e);
     }
   }
 
