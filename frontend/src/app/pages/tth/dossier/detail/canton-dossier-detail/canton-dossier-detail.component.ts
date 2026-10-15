@@ -20,13 +20,13 @@ import {
   DetailWithCancelEdit,
 } from '../../../../../core/detail/detail-dialog-helper.service';
 import { ValidationService } from '../../../../../core/validation/validation.service';
-import { DossierInternalService } from '../../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../../api/service/tth/dossier-internal.service';
 import { catchError, EMPTY, forkJoin, mergeMap, of } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { toNumberArrayStrict } from '../../../../../core/util/arrays';
 import { StatementSelectComponent } from '../../statement-select/statement-select.component';
 import { SwissCanton } from '../../../../../api';
-import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { UserSelectComponent } from '../../../../user-administration/user/user-select/user-select.component';
 import { Cantons } from '../../../../../core/cantons/Cantons';

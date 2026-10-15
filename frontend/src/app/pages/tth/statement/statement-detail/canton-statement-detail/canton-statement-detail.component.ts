@@ -45,7 +45,7 @@ import { AtlasLabelFieldComponent } from '@atlas/form';
 import { FileComponent } from '../../../../../core/components/file-upload/file/file.component';
 import { FileUploadComponent } from '../../../../../core/components/file-upload/file-upload.component';
 import { StatementDetailBaseComponent } from '../statement-detail-base.component';
-import { TimetableHearingYearInternalService } from '../../../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { TimetableHearingYearInternalService } from '../../../../../api/service/tth/timetable-hearing-year-internal.service';
 import { DialogData } from '../../../../../core/components/dialog/dialog.data';
 import { StatementDialogComponent } from '../../statement-dialog/statement.dialog.component';
 import { StatementDataProtectionCheckDialogComponent } from './data-protection-check/statement-data-protection-check.dialog.component';

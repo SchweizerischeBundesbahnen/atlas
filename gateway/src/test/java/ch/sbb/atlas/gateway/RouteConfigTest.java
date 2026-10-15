@@ -35,7 +35,7 @@ class RouteConfigTest {
     GatewayConfig gatewayConfig = new GatewayConfig();
     String key = "timetable-field-number";
     String value = "http://timetable-field-number-backend:8080";
-    gatewayConfig.setRoutes(Map.of(key, value));
+    gatewayConfig.setRoutes(Map.of(key, value, "timetable-hearing", "http://timetable-hearing-backend:8080"));
 
     // When
     RouteLocator routeLocator = routeConfig.routes(
@@ -43,16 +43,16 @@ class RouteConfigTest {
 
     // Then
     List<Route> routes = routeLocator.getRoutes().collectList().block();
-    assertThat(routes).isNotNull().hasSize(1);
-    assertThat(routes.getFirst().getId()).isEqualTo(key);
-    assertThat(routes.getFirst().getUri()).hasToString(value);
+    assertThat(routes).isNotNull().extracting(Route::getId)
+        .containsExactlyInAnyOrder("tth-legacy-v2", key, "timetable-hearing");
+    Route applicationRoute = routes.stream().filter(route -> route.getId().equals(key)).findFirst().orElseThrow();
+    assertThat(applicationRoute.getUri()).hasToString(value);
   }
 
   @Test
-  void shouldConfigureTthCutoverRoutesWhenRerouteIsEnabled() {
+  void shouldConfigureLegacyTthV2RouteBeforeApplicationRoutes() {
     // Given
     GatewayConfig gatewayConfig = new GatewayConfig();
-    gatewayConfig.setTthModuleReroute(true);
     gatewayConfig.setRoutes(Map.of("timetable-hearing", "http://timetable-hearing-backend:8080"));
 
     // When
@@ -62,7 +62,8 @@ class RouteConfigTest {
     // Then
     List<Route> routes = routeLocator.getRoutes().collectList().block();
     assertThat(routes).isNotNull().extracting(Route::getId)
-        .containsExactly("tth-cutover", "tth-year-cutover", "tth-dossier-cutover", "timetable-hearing");
+        .containsExactly("tth-legacy-v2", "timetable-hearing");
+    assertThat(routes.getFirst().getUri()).hasToString("http://timetable-hearing-backend:8080");
   }
 
   private ConfigurableApplicationContext createMockGatewayContext() {

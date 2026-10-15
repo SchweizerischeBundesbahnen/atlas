@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { inject } from '@angular/core';
 import { HearingStatus, TimetableHearingStatementV2 } from '../../../../api';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';

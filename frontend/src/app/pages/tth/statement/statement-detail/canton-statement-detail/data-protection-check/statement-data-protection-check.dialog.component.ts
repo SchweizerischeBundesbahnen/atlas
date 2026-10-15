@@ -17,7 +17,7 @@ import { AtlasButtonComponent } from '../../../../../../core/components/button/a
 import { NgTemplateOutlet } from '@angular/common';
 import { FileComponent } from '../../../../../../core/components/file-upload/file/file.component';
 import { FileDownloadService } from '../../../../../../core/components/file-upload/file/file-download.service';
-import { TimetableHearingStatementInternalService } from '../../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
 import { NotificationService } from '../../../../../../core/notification/notification.service';

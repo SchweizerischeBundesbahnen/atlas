@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, convertToParamMap, Router, RouterStateSnapshot 
 import { DossierDetailResolver, dossierResolver } from './dossier-detail-resolver.service';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { TthDossier } from '../../../../api/model/tthDossier';
-import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../api/service/tth/dossier-internal.service';
 import { HearingStatus, SwissCanton } from '../../../../api';
 
 const dossier: TthDossier = {

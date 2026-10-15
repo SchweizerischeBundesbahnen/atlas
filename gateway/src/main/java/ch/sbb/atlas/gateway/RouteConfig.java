@@ -1,11 +1,13 @@
 package ch.sbb.atlas.gateway;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder.Builder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 
 @Slf4j
 @Configuration
@@ -16,27 +18,12 @@ public class RouteConfig {
       GatewayRequestLogging gatewayRequestLogging) {
     Builder routeBuilder = routeLocatorBuilder.routes();
 
-    if (gatewayConfig.isTthModuleReroute()) {
-      log.info("TTH Module (new) Reroute is enabled");
-      String timetableHearingUri = gatewayConfig.getRoutes().get("timetable-hearing");
-      routeBuilder.route("tth-cutover",
-          p -> p.predicate(exchange -> {
-                String requestPath = exchange.getRequest().getURI().getRawPath();
-                return requestPath.startsWith("/line-directory") && requestPath.contains("/timetable-hearing/");
-              })
-              .filters(f -> f.rewritePath("/line-directory/(?<path>.*)", "/$\\{path}").filter(gatewayRequestLogging))
-              .uri(timetableHearingUri));
-      routeBuilder.route("tth-year-cutover",
-          p -> p.path("/workflow/internal/tth/year/**")
-              .filters(f -> f.rewritePath("/workflow/internal/tth/year/(?<path>.*)",
-                      "/internal/timetable-hearing/years/$\\{path}")
-                  .filter(gatewayRequestLogging))
-              .uri(timetableHearingUri));
-      routeBuilder.route("tth-dossier-cutover",
-          p -> p.path("/workflow/internal/tth/dossier", "/workflow/internal/tth/dossier/**")
-              .filters(f -> f.rewritePath("/workflow/(?<path>.*)", "/$\\{path}").filter(gatewayRequestLogging))
-              .uri(timetableHearingUri));
-    }
+    routeBuilder.route("tth-legacy-v2",
+        p -> p.path("/line-directory/v2/timetable-hearing/**")
+            .filters(f -> f.rewritePath("/line-directory/(?<path>.*)", "/$\\{path}")
+                .filter(legacyTthV2LoggingFilter())
+                .filter(gatewayRequestLogging))
+            .uri(gatewayConfig.getRoutes().get("timetable-hearing")));
 
     gatewayConfig.getRoutes().forEach((application, uri) ->
         routeBuilder
@@ -47,6 +34,15 @@ public class RouteConfig {
                 .uri(uri)
             ));
     return routeBuilder.build();
+  }
+
+  private GatewayFilter legacyTthV2LoggingFilter() {
+    return (exchange, chain) -> {
+      ServerHttpRequest request = exchange.getRequest();
+      String clientId = HeaderUtil.getClientCredentialId(request.getHeaders());
+      log.warn("Legacy TTH V2 path used: path=[{} {}] for clientId={}", request.getMethod(), request.getPath(), clientId);
+      return chain.filter(exchange);
+    };
   }
 
 }

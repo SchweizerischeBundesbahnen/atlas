@@ -6,7 +6,7 @@ import { AppTestingModule } from '../../../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
 import { SwissCanton, TimetableHearingStatementV2 } from '../../../../../api';
-import { TimetableHearingStatementInternalService } from '../../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { of } from 'rxjs';
 
 const translatePipeSpy: Mocked<Pick<TranslatePipe, 'transform'>> = {

@@ -28,8 +28,8 @@ import { TableService } from '../../../core/components/table/table.service';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { TthTableFilterSettingsService } from '../tth-table-filter-settings.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
-import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
-import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/tth/timetable-hearing-statement-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/tth/timetable-hearing-year-internal.service';
 import { NgOptimizedImage } from '@angular/common';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
@@ -41,7 +41,6 @@ import { DialogData } from '../../../core/components/dialog/dialog.data';
 import { TthExportAnonymizationChoiceDialogComponent } from './tth-export-anonymization-choice-dialog/tth-export-anonymization-choice-dialog.component';
 import { StatementOverviewMenuComponent } from './statement-overview-menu/statement-overview-menu.component';
 import { TableFilterBoolean } from '../../../core/components/table-filter/config/table-filter-boolean';
-import { TthYearInternalService } from '../../../api/service/workflow/tth-year-internal.service';
 import { ChangeCantonData } from './tth-change-canton-dialog/model/change-canton-data';
 import { TthChangeCantonDialogComponent } from './tth-change-canton-dialog/tth-change-canton-dialog.component';
 import { StatusChangeData } from './tth-change-status-dialog/model/status-change-data';
@@ -71,7 +70,6 @@ export class OverviewDetailComponent extends StatementTableHandler {
   private readonly router = inject(Router);
   private readonly timetableHearingStatementsService = inject(TimetableHearingStatementInternalService);
   private readonly timetableHearingYearsService = inject(TimetableHearingYearInternalService);
-  private readonly tthYearInternalService = inject(TthYearInternalService);
   private readonly overviewToTabService = inject(OverviewToTabShareDataService);
   private readonly dialogService = inject(DialogService);
   private readonly tableService = inject(TableService);
@@ -327,13 +325,15 @@ export class OverviewDetailComponent extends StatementTableHandler {
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.tthYearInternalService.startTimetableHearingYear(this.timetableYear().timetableYear).subscribe(() => {
-            this.router
-              .navigate(['..', Pages.TTH_ACTIVE.path, Pages.TTH_STATEMENTS.path], {
-                relativeTo: this.route.parent,
-              })
-              .then();
-          });
+          this.timetableHearingYearsService
+            .startTimetableHearingYear(this.timetableYear().timetableYear)
+            .subscribe(() => {
+              this.router
+                .navigate(['..', Pages.TTH_ACTIVE.path, Pages.TTH_STATEMENTS.path], {
+                  relativeTo: this.route.parent,
+                })
+                .then();
+            });
         }
       });
   }

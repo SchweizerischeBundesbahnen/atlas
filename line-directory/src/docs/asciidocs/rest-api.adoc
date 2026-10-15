@@ -13,4 +13,3 @@ Below are the links to the REST API Documentations:
 * link:line.html[*Line REST API Documentation*]
 * link:subline.html[*Subline REST API Documentation*]
 * link:timetable-field-number.html[*Timetable field number REST API Documentation*]
-* link:timetable-hearing-statement.html[*Timetable hearing statement REST API Documentation*]

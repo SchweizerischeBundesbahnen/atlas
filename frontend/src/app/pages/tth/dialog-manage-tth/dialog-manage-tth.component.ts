@@ -3,12 +3,11 @@ import { TimetableHearingYear } from '../../../api';
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/tth/timetable-hearing-year-internal.service';
 import { NgTemplateOutlet } from '@angular/common';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TthYearInternalService } from '../../../api/service/workflow/tth-year-internal.service';
 
 @Component({
   selector: 'atlas-dialog-manage-tth',
@@ -20,7 +19,6 @@ import { TthYearInternalService } from '../../../api/service/workflow/tth-year-i
 export class DialogManageTthComponent implements OnInit {
   private readonly year: number = inject(MAT_DIALOG_DATA);
   private readonly timetableHearingYearsService = inject(TimetableHearingYearInternalService);
-  private readonly tthYearInternalService = inject(TthYearInternalService);
   private readonly notificationService = inject(NotificationService);
   private readonly dialogRef = inject(MatDialogRef<DialogManageTthComponent, boolean>);
 
@@ -105,7 +103,7 @@ export class DialogManageTthComponent implements OnInit {
 
   handleCloseViewTthCloseClick(): void {
     this.actionButtonsDisabled = true;
-    this.tthYearInternalService
+    this.timetableHearingYearsService
       .closeTimetableHearingYear(this.year)
       .pipe(take(1))
       .subscribe({

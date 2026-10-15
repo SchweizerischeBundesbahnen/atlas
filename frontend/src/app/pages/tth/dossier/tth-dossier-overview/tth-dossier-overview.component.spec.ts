@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 import { TthDossierOverviewComponent } from './tth-dossier-overview.component';
-import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../api/service/tth/dossier-internal.service';
 import { TableService } from '../../../../core/components/table/table.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OverviewToTabShareDataService } from '../../overview-tab/service/overview-to-tab-share-data.service';

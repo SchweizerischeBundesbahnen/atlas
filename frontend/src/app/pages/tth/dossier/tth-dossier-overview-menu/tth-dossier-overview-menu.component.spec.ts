@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, type Mocked, vi } from 'vitest';
 
 import { TthDossierOverviewMenuComponent } from './tth-dossier-overview-menu.component';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../api/service/tth/dossier-internal.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';

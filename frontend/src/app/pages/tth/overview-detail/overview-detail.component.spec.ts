@@ -28,12 +28,11 @@ import { SelectComponent } from '../../../core/form-components/select/select.com
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AtlasLabelFieldComponent } from '@atlas/form';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
-import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
-import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/tth/timetable-hearing-statement-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/tth/timetable-hearing-year-internal.service';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { MatDialog } from '@angular/material/dialog';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
-import { TthYearInternalService } from '../../../api/service/workflow/tth-year-internal.service';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { TthChangeStatusDialogComponent } from './tth-change-status-dialog/tth-change-status-dialog.component';
 
@@ -51,8 +50,11 @@ class MockAppTthOverviewTabHeadingComponent {
   readonly noPlannedTimetableHearingYearFound = input.required<boolean>();
 }
 
-const mockTimetableHearingYearsService: Mocked<Pick<TimetableHearingYearInternalService, 'getHearingYears'>> = {
+const mockTimetableHearingYearsService: Mocked<
+  Pick<TimetableHearingYearInternalService, 'getHearingYears' | 'startTimetableHearingYear'>
+> = {
   getHearingYears: vi.fn(),
+  startTimetableHearingYear: vi.fn(),
 };
 const mockTimetableHearingStatementsService: Mocked<Pick<TimetableHearingStatementInternalService, 'getStatements'>> = {
   getStatements: vi.fn(),
@@ -110,10 +112,6 @@ const containerTimetableHearingStatement: ContainerTimetableHearingStatementV2 =
   totalCount: 2,
 };
 
-const mockTthYearWfServiceSpy: Mocked<Pick<TthYearInternalService, 'startTimetableHearingYear'>> = {
-  startTimetableHearingYear: vi.fn(),
-};
-
 function baseTestConfiguration() {
   mockTimetableHearingStatementsService.getStatements.mockReturnValue(of(containerTimetableHearingStatement));
 
@@ -144,10 +142,6 @@ function baseTestConfiguration() {
       {
         provide: TimetableHearingYearInternalService,
         useValue: mockTimetableHearingYearsService,
-      },
-      {
-        provide: TthYearInternalService,
-        useValue: mockTthYearWfServiceSpy,
       },
       OverviewToTabShareDataService,
       { provide: TranslatePipe },
@@ -559,12 +553,12 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     });
 
     it('should startTimetableHearingYear', () => {
-      mockTthYearWfServiceSpy.startTimetableHearingYear.mockReturnValue(of(hearingYear2000));
+      mockTimetableHearingYearsService.startTimetableHearingYear.mockReturnValue(of(hearingYear2000));
 
       component.startTimetableHearing();
 
-      expect(mockTthYearWfServiceSpy.startTimetableHearingYear).toHaveBeenCalledTimes(1);
-      expect(mockTthYearWfServiceSpy.startTimetableHearingYear).toHaveBeenCalledWith(2000);
+      expect(mockTimetableHearingYearsService.startTimetableHearingYear).toHaveBeenCalledTimes(1);
+      expect(mockTimetableHearingYearsService.startTimetableHearingYear).toHaveBeenCalledWith(2000);
     });
   });
 

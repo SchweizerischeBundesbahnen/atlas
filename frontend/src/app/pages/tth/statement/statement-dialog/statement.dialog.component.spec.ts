@@ -11,7 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { of } from 'rxjs';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/tth/timetable-hearing-statement-internal.service';
 
 const mockTimetableHearingStatementsService: Mocked<
   Pick<TimetableHearingStatementInternalService, 'updateHearingStatement'>

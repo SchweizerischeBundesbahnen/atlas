@@ -16,7 +16,7 @@ import {
   TimetableHearingStatementResponsibleTransportCompany,
   TransportCompany,
 } from '../../../../api';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/tth/timetable-hearing-statement-internal.service';
 import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 

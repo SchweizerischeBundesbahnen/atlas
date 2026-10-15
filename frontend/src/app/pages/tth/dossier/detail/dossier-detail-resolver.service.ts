@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
-import { DossierInternalService } from '../../../../api/service/workflow/dossier-internal.service';
+import { DossierInternalService } from '../../../../api/service/tth/dossier-internal.service';
 import { TthDossier } from '../../../../api/model/tthDossier';
 
 @Injectable({ providedIn: 'root' })
