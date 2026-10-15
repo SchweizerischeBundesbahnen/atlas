@@ -199,7 +199,7 @@ class ErsadNetexFileWriterTest {
     // Given
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = new ErsadStation(tavannes.sloid(), tavannes.number(), tavannes.name(), null, null, null,
-        null, List.of(), null, null, null, List.of(), List.of(), List.of(), List.of(), List.of(), 1);
+        null, List.of(), null, null, null, List.of(), List.of(), List.of(), List.of(), List.of(), "1");
 
     // When
     Document document = parse(write(List.of(station)));
@@ -232,11 +232,11 @@ class ErsadNetexFileWriterTest {
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = withParkings(tavannes, List.of(
         new ErsadParking("ch:1:sloid:100:parking:1", "Mit PRM", BooleanOptionalAttributeType.YES,
-            BooleanOptionalAttributeType.YES, 1),
+            BooleanOptionalAttributeType.YES, "1"),
         new ErsadParking("ch:1:sloid:100:parking:2", "Ohne PRM", BooleanOptionalAttributeType.YES,
-            BooleanOptionalAttributeType.NO, 1),
+            BooleanOptionalAttributeType.NO, "1"),
         new ErsadParking("ch:1:sloid:100:parking:3", "Unbekannt", BooleanOptionalAttributeType.YES,
-            BooleanOptionalAttributeType.TO_BE_COMPLETED, 1)));
+            BooleanOptionalAttributeType.TO_BE_COMPLETED, "1")));
 
     // When
     Document document = parse(write(List.of(station)));
@@ -287,7 +287,7 @@ class ErsadNetexFileWriterTest {
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = new ErsadStation(tavannes.sloid(), tavannes.number(), tavannes.name(), 7.2,
         47.219844660314567, null, null, tavannes.meansOfTransport(), null, null, null, List.of(), List.of(), List.of(),
-        List.of(), List.of(), 1);
+        List.of(), List.of(), "1");
 
     // When
     Document document = parse(write(List.of(station)));
@@ -303,7 +303,7 @@ class ErsadNetexFileWriterTest {
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = new ErsadStation(tavannes.sloid(), tavannes.number(), tavannes.name(), null, null, null,
         null, List.of("BUS", "TRAIN"), NetexTriState.UNKNOWN, null, null, List.of(), List.of(), List.of(), List.of(),
-        List.of(), 1);
+        List.of(), "1");
 
     // When
     Document document = parse(write(List.of(station)));
@@ -344,10 +344,10 @@ class ErsadNetexFileWriterTest {
     // Given
     ErsadStation tavannes = ErsadGoldenFixtures.tavannes();
     ErsadStation station = withPathLinks(tavannes, List.of(
-        new ErsadPathLink("ref:1", "to:1", ReferencePointElementType.PLATFORM, null, null, StandardAttributeType.YES, 1),
-        new ErsadPathLink("ref:1", "to:2", ReferencePointElementType.PLATFORM, null, null, StandardAttributeType.NO, 1),
+        new ErsadPathLink("ref:1", "to:1", ReferencePointElementType.PLATFORM, null, null, StandardAttributeType.YES, "1"),
+        new ErsadPathLink("ref:1", "to:2", ReferencePointElementType.PLATFORM, null, null, StandardAttributeType.NO, "1"),
         new ErsadPathLink("ref:1", "to:3", ReferencePointElementType.PLATFORM, null, null,
-            StandardAttributeType.TO_BE_COMPLETED, 1)));
+            StandardAttributeType.TO_BE_COMPLETED, "1")));
 
     // When
     String xml = Files.readString(write(List.of(station)), StandardCharsets.UTF_8).replaceAll(">\\s+<", "><");

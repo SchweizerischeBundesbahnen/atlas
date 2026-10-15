@@ -136,6 +136,6 @@ public final class NetexConstants {
   public static final String ID_SUFFIX_PATH_LINK = ":pathLink:";
 
   // Numeric
-  public static final Integer NETEX_FRAME_VERSION = 1;
+  public static final String NETEX_FRAME_VERSION = "1";
   public static final int COORDINATE_SCALE = 11;
 }

@@ -15,18 +15,18 @@ class ErsadModelTest {
   void shouldExposeImmutableQuayList() {
     // Given
     List<ErsadQuay> mutableQuays = new ArrayList<>();
-    mutableQuays.add(new ErsadQuay("ch:1:sloid:100:0:3", "3", null, null, null, null, null, null, 1));
+    mutableQuays.add(new ErsadQuay("ch:1:sloid:100:0:3", "3", null, null, null, null, null, null, "1"));
     ErsadStation station = new ErsadStation(
         "ch:1:sloid:100", 8500100, "Tavannes", 7.20164538962, 47.21984466031,
         null, null, null, null, null, null,
-        mutableQuays, null, null, null, null, 1);
+        mutableQuays, null, null, null, null, "1");
 
     // When
-    mutableQuays.add(new ErsadQuay("ch:1:sloid:100:0:4", "4", null, null, null, null, null, null, 1));
+    mutableQuays.add(new ErsadQuay("ch:1:sloid:100:0:4", "4", null, null, null, null, null, null, "1"));
 
     // Then
     assertThat(station.quays()).hasSize(1);
-    ErsadQuay ersadQuay = new ErsadQuay("x", "x", null, null, null, null, null, null, 1);
+    ErsadQuay ersadQuay = new ErsadQuay("x", "x", null, null, null, null, null, null, "1");
     assertThatThrownBy(() -> station.quays().add(ersadQuay))
         .isInstanceOf(UnsupportedOperationException.class);
   }
@@ -38,7 +38,7 @@ class ErsadModelTest {
     ErsadStation station = new ErsadStation(
         "ch:1:sloid:100", 8500100, "Tavannes", 7.20164538962, 47.21984466031,
         null, null, null, null, null, null,
-        null, null, null, null, null, 1);
+        null, null, null, null, null, "1");
 
     // Then
     assertThat(station.meansOfTransport()).isEmpty();
@@ -58,7 +58,7 @@ class ErsadModelTest {
     ErsadStation station = new ErsadStation(
         "ch:1:sloid:100", 8500100, "Tavannes", 7.20164538962, 47.21984466031,
         address, "https://www.sbb.ch", List.of("TRAIN"), NetexTriState.TRUE,
-        null, null, List.of(), List.of(), List.of(), List.of(), List.of(), 1);
+        null, null, List.of(), List.of(), List.of(), List.of(), List.of(), "1");
 
     // Then
     assertThat(station.sloid()).isEqualTo("ch:1:sloid:100");
@@ -138,11 +138,11 @@ class ErsadModelTest {
     return new ErsadStation(
         "ch:1:sloid:100", 8500100, "Tavannes", null, null,
         null, null, meansOfTransport, null, null, null,
-        null, contactPoints, null, null, null, 1);
+        null, contactPoints, null, null, null, "1");
   }
 
   private static ErsadContactPoint contactPoint(String sloid, ContactPointType type) {
-    return new ErsadContactPoint(sloid, type, null, null, null, null, 1);
+    return new ErsadContactPoint(sloid, type, null, null, null, null, "1");
   }
 
   private static ErsadAssistance assistance(StandardAttributeType availability) {

@@ -3,6 +3,7 @@ package ch.sbb.exportservice.job.prm.ersad.assembler;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
+import ch.sbb.exportservice.job.BaseEntity;
 import ch.sbb.exportservice.job.prm.contactpoint.entity.ContactPointVersion;
 import ch.sbb.exportservice.job.prm.ersad.accessibility.ErsadAccessibilityDeriver;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadAddress;
@@ -23,6 +24,8 @@ import ch.sbb.exportservice.job.prm.stoppoint.entity.StopPointVersion;
 import ch.sbb.exportservice.job.prm.toilet.entity.ToiletVersion;
 import ch.sbb.exportservice.job.sepodi.servicepoint.entity.ServicePointVersion;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -129,7 +132,7 @@ public class ErsadStationAssembler {
         mapSorted(parkingLotsByParentSloid.getOrDefault(sloid, List.of()), ParkingLotVersion::getSloid,
             ErsadStationAssembler::toParking),
         mapSorted(relations, RelationVersion::getSloid, ErsadStationAssembler::toPathLink),
-        displayVersion(stopPoint.getVersion()),
+        netexVersion(stopPoint),
         mapSorted(referencePointsByParentSloid.getOrDefault(sloid, List.of()), ReferencePointVersion::getSloid,
             ErsadStationAssembler::toReferencePoint)));
   }
@@ -176,7 +179,7 @@ public class ErsadStationAssembler {
         platform.getLevelAccessWheelchair(),
         platform.getSuperelevation(),
         platform.getShuttle(),
-        displayVersion(platform.getVersion()));
+        netexVersion(platform));
   }
 
   private static ErsadContactPoint toContactPoint(ContactPointVersion contactPoint) {
@@ -187,23 +190,23 @@ public class ErsadStationAssembler {
         contactPoint.getOpeningHours(),
         contactPoint.getWheelchairAccess(),
         contactPoint.getInductionLoop(),
-        displayVersion(contactPoint.getVersion()));
+        netexVersion(contactPoint));
   }
 
   private static ErsadToilet toToilet(ToiletVersion toilet) {
-    return new ErsadToilet(toilet.getSloid(), toilet.getDesignation(), toilet.getWheelchairToilet(), displayVersion(toilet.getVersion()));
+    return new ErsadToilet(toilet.getSloid(), toilet.getDesignation(), toilet.getWheelchairToilet(), netexVersion(toilet));
   }
 
   private static ErsadParking toParking(ParkingLotVersion parking) {
     return new ErsadParking(parking.getSloid(), parking.getDesignation(), parking.getPlacesAvailable(),
-        parking.getPrmPlacesAvailable(), displayVersion(parking.getVersion()));
+        parking.getPrmPlacesAvailable(), netexVersion(parking));
   }
 
   private static ErsadReferencePoint toReferencePoint(ReferencePointVersion referencePoint) {
     return new ErsadReferencePoint(
         referencePoint.getSloid(),
         referencePoint.getDesignation(),
-        displayVersion(referencePoint.getVersion()));
+        netexVersion(referencePoint));
   }
 
   private static ErsadPathLink toPathLink(RelationVersion relation) {
@@ -214,11 +217,11 @@ public class ErsadStationAssembler {
         relation.getStepFreeAccess(),
         relation.getTactileVisualMarks(),
         relation.getContrastingAreas(),
-        displayVersion(relation.getVersion()));
+        netexVersion(relation));
   }
 
-  /** Entity versions are 0-based in the database but shown to users starting at 1. */
-  private static Integer displayVersion(Integer version) {
-    return version + 1;
+  /** The NeTEx version is the modification date, which strictly increases with every change of the entity. */
+  private static String netexVersion(BaseEntity entity) {
+    return entity.getEditionDate().truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
   }
 }
