@@ -22,13 +22,13 @@ public record ErsadStation(
     List<ErsadToilet> toilets,
     List<ErsadParking> parkings,
     List<ErsadPathLink> pathLinks,
-    Integer version,
+    String version,
     List<ErsadReferencePoint> referencePoints) {
 
   public ErsadStation(String sloid, Integer number, String name, Double longitude, Double latitude, ErsadAddress address,
       String url, List<String> meansOfTransport, NetexTriState accessibleStation, ErsadAssistance assistance,
       ErsadStationEquipment equipment, List<ErsadQuay> quays, List<ErsadContactPoint> contactPoints,
-      List<ErsadToilet> toilets, List<ErsadParking> parkings, List<ErsadPathLink> pathLinks, Integer version) {
+      List<ErsadToilet> toilets, List<ErsadParking> parkings, List<ErsadPathLink> pathLinks, String version) {
     this(sloid, number, name, longitude, latitude, address, url, meansOfTransport, accessibleStation, assistance,
         equipment, quays, contactPoints, toilets, parkings, pathLinks, version, List.of());
   }

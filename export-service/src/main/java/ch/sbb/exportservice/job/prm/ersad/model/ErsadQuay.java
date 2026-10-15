@@ -13,6 +13,6 @@ public record ErsadQuay(
     LevelAccessWheelchairAttributeType levelAccessWheelchair,
     Double superelevation,
     BooleanOptionalAttributeType shuttle,
-    Integer version) {
+    String version) {
 
 }

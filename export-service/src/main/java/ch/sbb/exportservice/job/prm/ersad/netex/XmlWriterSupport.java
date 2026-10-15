@@ -59,10 +59,10 @@ public class XmlWriterSupport {
     startElement(name, id, NETEX_FRAME_VERSION);
   }
 
-  public void startElement(String name, String id, Integer version) {
+  public void startElement(String name, String id, String version) {
     startElement(name);
     attribute(ATTR_ID, id);
-    attribute(ATTR_VERSION, String.valueOf(version));
+    attribute(ATTR_VERSION, version);
   }
 
   public void attribute(String name, String value) {
@@ -106,12 +106,12 @@ public class XmlWriterSupport {
     value.ifPresent(text -> element(name, text));
   }
 
-  public void reference(String name, String ref, Integer version) {
+  public void reference(String name, String ref, String version) {
     indent();
     call(() -> {
       writer.writeEmptyElement(name);
       writer.writeAttribute(ATTR_REF, ref);
-      writer.writeAttribute(ATTR_VERSION, String.valueOf(version));
+      writer.writeAttribute(ATTR_VERSION, version);
     });
   }
 
@@ -123,7 +123,7 @@ public class XmlWriterSupport {
     });
   }
 
-  public void accessibilityAssessment(String id, Integer version, List<Limitation> limitations,
+  public void accessibilityAssessment(String id, String version, List<Limitation> limitations,
       Optional<String> comment) {
     List<Limitation> present = limitations.stream().filter(limitation -> limitation.value().isPresent()).toList();
     if (present.isEmpty() && comment.isEmpty()) {

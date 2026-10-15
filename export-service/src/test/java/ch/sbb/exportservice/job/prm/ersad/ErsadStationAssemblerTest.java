@@ -33,6 +33,7 @@ import ch.sbb.exportservice.job.prm.stoppoint.entity.StopPointVersion;
 import ch.sbb.exportservice.job.sepodi.servicepoint.entity.ServicePointGeolocation;
 import ch.sbb.exportservice.job.sepodi.servicepoint.entity.ServicePointVersion;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 import java.util.Map;
@@ -168,6 +169,7 @@ class ErsadStationAssemblerTest {
     PlatformVersion platform = PlatformVersion.builder()
         .sloid("ch:1:sloid:8500100:0:3")
         .version(0)
+        .editionDate(LocalDateTime.of(2024, 5, 17, 13, 45, 12, 987_000_000))
         .parentServicePointSloid("ch:1:sloid:8500100")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .adviceAccessInfo("Access info")
@@ -193,8 +195,13 @@ class ErsadStationAssemblerTest {
 
     // Then
     assertThat(stations).singleElement()
-        .satisfies(station -> assertThat(station.quays()).singleElement()
-            .satisfies(quay -> assertThat(quay.designation()).isEqualTo("3")));
+        .satisfies(station -> {
+          assertThat(station.version()).isEqualTo("2024-03-04T05:06:07");
+          assertThat(station.quays()).singleElement().satisfies(quay -> {
+            assertThat(quay.designation()).isEqualTo("3");
+            assertThat(quay.version()).isEqualTo("2024-05-17T13:45:12");
+          });
+        });
   }
 
   @Test
@@ -235,6 +242,7 @@ class ErsadStationAssemblerTest {
         .tactileVisualMarks(TactileVisualAttributeType.YES)
         .contrastingAreas(StandardAttributeType.YES)
         .version(7)
+        .editionDate(LocalDateTime.of(2023, 1, 2, 3, 4, 5))
         .build();
     when(accessibilityDeriver.derive(any(), any(), any(), any())).thenReturn(NetexTriState.TRUE);
 
@@ -254,11 +262,11 @@ class ErsadStationAssemblerTest {
     assertThat(stations).singleElement()
         .satisfies(station -> assertThat(station.pathLinks()).containsExactly(
             new ErsadPathLink("ch:1:sloid:8500100:ref:1", "ch:1:sloid:8500100:pathLink:1", ReferencePointElementType.TOILET,
-                StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES, 8)));
+                StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES, "2023-01-02T03:04:05")));
   }
 
   @Test
-  void shouldMapReferencePointsWithDisplayVersion() {
+  void shouldMapReferencePointsWithEditionDateAsVersion() {
     // Given
     StopPointVersion stopPoint = stopPoint("ch:1:sloid:8500100", 8500100);
     ServicePointVersion servicePoint = servicePoint("ch:1:sloid:8500100", "Tavannes", 2596624.4, 1222062.1);
@@ -267,6 +275,7 @@ class ErsadStationAssemblerTest {
         .parentServicePointSloid("ch:1:sloid:8500100")
         .designation("Haupteingang")
         .version(2)
+        .editionDate(LocalDateTime.of(2022, 12, 31, 23, 59, 59))
         .build();
     when(accessibilityDeriver.derive(any(), any(), any(), any())).thenReturn(NetexTriState.TRUE);
 
@@ -281,13 +290,14 @@ class ErsadStationAssemblerTest {
     // Then
     assertThat(stations).singleElement()
         .satisfies(station -> assertThat(station.referencePoints()).containsExactly(
-            new ErsadReferencePoint("ch:1:sloid:8500100:ref:1", "Haupteingang", 3)));
+            new ErsadReferencePoint("ch:1:sloid:8500100:ref:1", "Haupteingang", "2022-12-31T23:59:59")));
   }
 
   private StopPointVersion stopPoint(String sloid, int number) {
     return StopPointVersion.builder()
         .sloid(sloid)
         .version(0)
+        .editionDate(LocalDateTime.of(2024, 3, 4, 5, 6, 7))
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(number))
         .address("Rue de la Gare")
         .zipCode("2710")

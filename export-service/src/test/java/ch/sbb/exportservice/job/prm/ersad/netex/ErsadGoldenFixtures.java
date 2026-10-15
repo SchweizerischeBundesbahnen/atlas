@@ -52,28 +52,28 @@ class ErsadGoldenFixtures {
         List.of(
             new ErsadQuay(sloid + ":0:3", "3", BoardingDeviceAttributeType.NO,
                 "Hinweise zum Zugang (adviceAccessInfo)", YES, LevelAccessWheelchairAttributeType.NO, null,
-                BooleanOptionalAttributeType.TO_BE_COMPLETED, 1),
+                BooleanOptionalAttributeType.TO_BE_COMPLETED, "1"),
             new ErsadQuay(sloid + ":0:2", "2", BoardingDeviceAttributeType.TO_BE_COMPLETED, null,
-                BooleanOptionalAttributeType.NO, LevelAccessWheelchairAttributeType.TO_BE_COMPLETED, null, null, 1),
+                BooleanOptionalAttributeType.NO, LevelAccessWheelchairAttributeType.TO_BE_COMPLETED, null, null, "1"),
             new ErsadQuay(sloid + ":0:782050", null, BoardingDeviceAttributeType.NOT_APPLICABLE, null,
-                BooleanOptionalAttributeType.TO_BE_COMPLETED, LevelAccessWheelchairAttributeType.YES, null, null, 1),
+                BooleanOptionalAttributeType.TO_BE_COMPLETED, LevelAccessWheelchairAttributeType.YES, null, null, "1"),
             new ErsadQuay(sloid + ":0:636655", null, BoardingDeviceAttributeType.NOT_APPLICABLE, null,
-                BooleanOptionalAttributeType.TO_BE_COMPLETED, LevelAccessWheelchairAttributeType.YES, null, null, 1)),
+                BooleanOptionalAttributeType.TO_BE_COMPLETED, LevelAccessWheelchairAttributeType.YES, null, null, "1")),
         List.of(
             new ErsadContactPoint(sloid + ":1234", ContactPointType.TICKET_COUNTER, "Billettschalter",
-                "Mo-Fr 07:00-18:30", StandardAttributeType.YES, StandardAttributeType.YES, 1),
+                "Mo-Fr 07:00-18:30", StandardAttributeType.YES, StandardAttributeType.YES, "1"),
             new ErsadContactPoint(sloid + ":9999", ContactPointType.INFORMATION_DESK, "Infoschalter",
-                "Mo-Fr 08:00-17:00", StandardAttributeType.YES, StandardAttributeType.YES, 1)),
-        List.of(new ErsadToilet(sloid + ":617340", "Toilette", StandardAttributeType.YES, 1)),
-        List.of(new ErsadParking(sloid + ":parking:1", "Parkplatz Bahnhof", YES, YES, 1)),
+                "Mo-Fr 08:00-17:00", StandardAttributeType.YES, StandardAttributeType.YES, "1")),
+        List.of(new ErsadToilet(sloid + ":617340", "Toilette", StandardAttributeType.YES, "1")),
+        List.of(new ErsadParking(sloid + ":parking:1", "Parkplatz Bahnhof", YES, YES, "1")),
         List.of(
             new ErsadPathLink(sloid + ":ref:1", sloid + ":0:3", ReferencePointElementType.PLATFORM,
-                StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES, 1),
+                StepFreeAccessAttributeType.YES, TactileVisualAttributeType.YES, StandardAttributeType.YES, "1"),
             new ErsadPathLink(sloid + ":ref:1", sloid + ":617340", ReferencePointElementType.TOILET,
                 StepFreeAccessAttributeType.YES, TactileVisualAttributeType.TO_BE_COMPLETED,
-                StandardAttributeType.TO_BE_COMPLETED, 1)),
-        1,
-        List.of(new ErsadReferencePoint(sloid + ":ref:1", "Haupteingang", 1)));
+                StandardAttributeType.TO_BE_COMPLETED, "1")),
+        "1",
+        List.of(new ErsadReferencePoint(sloid + ":ref:1", "Haupteingang", "1")));
   }
 
   static List<ErsadStation> burgdorfYverdonBellinzona() {
@@ -102,7 +102,7 @@ class ErsadGoldenFixtures {
             heightQuay(sloid + ":2:2", "2", null),
             heightQuay(sloid + ":2:3", "3", null),
             new ErsadQuay(sloid + ":0:619346", null, BoardingDeviceAttributeType.RAMPS, null, YES,
-                LevelAccessWheelchairAttributeType.TO_BE_COMPLETED, null, null, 1),
+                LevelAccessWheelchairAttributeType.TO_BE_COMPLETED, null, null, "1"),
             notApplicableQuay(sloid + ":0:534539"),
             notApplicableQuay(sloid + ":0:814902")));
   }
@@ -129,20 +129,20 @@ class ErsadGoldenFixtures {
             StandardAttributeType.TO_BE_COMPLETED),
         quays,
         List.of(),
-        List.of(new ErsadToilet(sloid + ":" + toiletSuffix, "Toilette", StandardAttributeType.YES, 1)),
+        List.of(new ErsadToilet(sloid + ":" + toiletSuffix, "Toilette", StandardAttributeType.YES, "1")),
         List.of(),
         List.of(),
-        1);
+        "1");
   }
 
   private static ErsadQuay heightQuay(String sloid, String designation, String advice) {
     return new ErsadQuay(sloid, designation, BoardingDeviceAttributeType.TO_BE_COMPLETED, advice, YES,
         LevelAccessWheelchairAttributeType.YES, 0.55, BooleanOptionalAttributeType.NO,
-        1);
+        "1");
   }
 
   private static ErsadQuay notApplicableQuay(String sloid) {
     return new ErsadQuay(sloid, null, BoardingDeviceAttributeType.NOT_APPLICABLE, null,
-        BooleanOptionalAttributeType.NO, LevelAccessWheelchairAttributeType.NOT_APPLICABLE, null, null, 1);
+        BooleanOptionalAttributeType.NO, LevelAccessWheelchairAttributeType.NOT_APPLICABLE, null, null, "1");
   }
 }
