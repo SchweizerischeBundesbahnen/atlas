@@ -8,6 +8,7 @@ import ch.sbb.exportservice.model.ExportFilePathV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Service
 @RequiredArgsConstructor
@@ -33,9 +34,25 @@ public class FileExportService {
     return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileName);
   }
 
+  public StreamingResponseBody streamXmlFile(final ExportFilePathV2 exportFilePathV2) {
+    logStreamingStart(exportFilePathV2.xmlZipFileToStream());
+    return amazonFileStreamingService.streamZipEntry(AmazonBucket.EXPORT, exportFilePathV2.xmlZipFileToStream());
+  }
+
+  public StreamingResponseBody streamLatestXmlFile(final ExportFilePathV2 exportFilePathV2) {
+    final String latestUploadedFileName = getLatestUploadedXmlZipFileName(exportFilePathV2);
+    logStreamingStart(latestUploadedFileName);
+    return amazonFileStreamingService.streamZipEntry(AmazonBucket.EXPORT, latestUploadedFileName);
+  }
+
   public String getLatestUploadedFileName(final ExportFilePathV2 exportFilePathV2) {
     return amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, exportFilePathV2.s3BucketDirPath(),
         exportFilePathV2.getPrefix());
+  }
+
+  public String getLatestUploadedXmlZipFileName(final ExportFilePathV2 exportFilePathV2) {
+    return amazonService.getLatestUploadedObject(AmazonBucket.EXPORT, exportFilePathV2.s3BucketDirPath(),
+        exportFilePathV2.getPrefix(), ExportFilePathV2.XML_ZIP_EXTENSION);
   }
 
   private static void logStreamingStart(final String fileName) {

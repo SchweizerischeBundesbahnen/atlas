@@ -126,4 +126,23 @@ class FileStreamingControllerApiV2Test {
         () -> fileStreamingController.streamExportJsonFile(ExportObjectV2.LINE, ExportTypeV2.SWISS_ACTUAL));
   }
 
+  @Test
+  void shouldStreamLatestExportZipXmlFile() throws ExecutionException, InterruptedException {
+    // Given
+    InputStreamResource resource = new InputStreamResource(InputStream.nullInputStream());
+    when(fileExportService.streamGzipFile(any(String.class))).thenReturn(new StreamedFile(resource, ContentLength.of(42L)));
+    when(fileExportService.getLatestUploadedXmlZipFileName(any(ExportFilePathV2.class))).thenReturn(
+        "/test-ersad-netex.xml.zip");
+
+    // When
+    CompletableFuture<ResponseEntity<InputStreamResource>> response = fileStreamingController.streamLatestExportZipXmlFile();
+
+    // Then
+    assertThat(response.get().getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(response.get().getBody()).isEqualTo(resource);
+    assertThat(Objects.requireNonNull(response.get().getHeaders().getContentType())).hasToString("application/zip");
+    assertThat(response.get().getHeaders().getContentLength()).isEqualTo(42L);
+    assertThat(response.get().getHeaders().getFirst("Content-Disposition")).contains(".xml.zip");
+  }
+
 }

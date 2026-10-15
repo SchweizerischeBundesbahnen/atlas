@@ -7,13 +7,16 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
+import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -54,6 +57,33 @@ class BatchExecutionContextSerializerConfigTest {
     assertThat(result.get(FILE_PATH_KEY)).isInstanceOf(ExportFilePathV2.class);
     assertThat(((ExportFilePathV2) result.get(FILE_PATH_KEY)).fileName())
         .isEqualTo("actual-date-service-point-2025-01-01");
+    assertThat(((ExportFilePathV2) result.get(FILE_PATH_KEY)).fileToStream())
+        .isEqualTo("v2/service-point/actual-date/actual-date-service-point-2025-01-01.json.gz");
+    assertThat(((ExportFilePathV2) result.get(FILE_PATH_KEY)).xmlZipFileToStream())
+        .isEqualTo("v2/service-point/actual-date/actual-date-service-point-2025-01-01.xml.zip");
+    assertThat(((ExportFilePathV2) result.get(FILE_PATH_KEY)).s3BucketDirPath())
+        .isEqualTo("v2/service-point/actual-date");
+  }
+
+  @Test
+  void shouldDeserializeMasterSerializedExportFilePathFixtureWithAtlasSerializer() throws IOException {
+    // Given
+    final byte[] executionContext = readFixture("ch/sbb/exportservice/model/export-file-path-v2-master-execution-context.base64");
+
+    // When
+    final Map<String, Object> result = serializer.deserialize(new ByteArrayInputStream(executionContext));
+
+    // Then
+    assertThat(result).containsOnlyKeys(FILE_PATH_KEY);
+    assertThat(result.get(FILE_PATH_KEY)).isInstanceOf(ExportFilePathV2.class);
+    assertThat(((ExportFilePathV2) result.get(FILE_PATH_KEY)).fileName())
+        .isEqualTo("actual-date-service-point-2025-01-01");
+    assertThat(((ExportFilePathV2) result.get(FILE_PATH_KEY)).fileToStream())
+        .isEqualTo("v2/service-point/actual-date/actual-date-service-point-2025-01-01.json.gz");
+    assertThat(((ExportFilePathV2) result.get(FILE_PATH_KEY)).xmlZipFileToStream())
+        .isEqualTo("v2/service-point/actual-date/actual-date-service-point-2025-01-01.xml.zip");
+    assertThat(((ExportFilePathV2) result.get(FILE_PATH_KEY)).s3BucketDirPath())
+        .isEqualTo("v2/service-point/actual-date");
   }
 
   @Test
@@ -117,8 +147,22 @@ class BatchExecutionContextSerializerConfigTest {
 
   private ExportFilePathV2 exportFilePath() {
     return ExportFilePathV2.getV2Builder(ExportObjectV2.SERVICE_POINT, ExportTypeV2.ACTUAL)
-        .actualDate(LocalDate.of(2025, 1, 1))
+        .actualDate(LocalDate.of(2025, Month.JANUARY, 1))
+        .systemDir("")
+        .extension(ExportExtensionFileType.XML_EXTENSION.getExtension())
         .build();
+  }
+
+  private byte[] readFixture(String resourceName) throws IOException {
+    // Given
+    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName)) {
+      if (inputStream == null) {
+        throw new IOException("Missing test fixture: " + resourceName);
+      }
+
+      // When
+      return inputStream.readAllBytes();
+    }
   }
 
   private byte[] serialize(Map<String, Object> executionContext) throws IOException {
@@ -129,8 +173,9 @@ class BatchExecutionContextSerializerConfigTest {
   }
 
   private Throwable catchDeserialization(ExecutionContextSerializer usedSerializer, byte[] executionContext) {
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(executionContext);
     return assertThatExceptionOfType(IllegalArgumentException.class)
-        .isThrownBy(() -> usedSerializer.deserialize(new ByteArrayInputStream(executionContext)))
+        .isThrownBy(() -> usedSerializer.deserialize(inputStream))
         .actual();
   }
 

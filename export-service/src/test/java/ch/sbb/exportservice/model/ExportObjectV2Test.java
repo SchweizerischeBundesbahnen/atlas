@@ -13,6 +13,7 @@ class ExportObjectV2Test {
   @ParameterizedTest
   @EnumSource(value = ExportObjectV2.class, names = {"SERVICE_POINT", "TRAFFIC_POINT", "LOADING_POINT"})
   void shouldSupportSwissAndWorldTimetableYearsVariantsForSwissWorldObjects(ExportObjectV2 exportObject) {
+    // Given
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FULL)).isTrue();
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_ACTUAL)).isTrue();
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_TIMETABLE_YEARS)).isTrue();
@@ -23,6 +24,7 @@ class ExportObjectV2Test {
 
   @Test
   void shouldContainExactSwissAndWorld() {
+    // Given
     Set<ExportTypeV2> exportTypes = Set.of(
         ExportTypeV2.SWISS_FULL,
         ExportTypeV2.SWISS_ACTUAL,
@@ -35,6 +37,9 @@ class ExportObjectV2Test {
     ExportObjectV2 servicePoint = ExportObjectV2.SERVICE_POINT;
     Set<ExportTypeV2> actualExportTypes = Set.copyOf(servicePoint.getSupportedExportTypes());
 
+    // When
+
+    // Then
     assertThat(actualExportTypes)
         .hasSize(6)
         .isEqualTo(exportTypes);
@@ -42,7 +47,12 @@ class ExportObjectV2Test {
 
   @Test
   void shouldNotAllowTimetableYearsForServicePoint() {
+    // Given
     ExportObjectV2 exportObject = ExportObjectV2.SERVICE_POINT;
+
+    // When
+
+    // Then
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.TIMETABLE_YEARS))
         .isFalse();
   }
@@ -54,15 +64,21 @@ class ExportObjectV2Test {
       "SERVICE_POINT",
       "TRANSPORT_COMPANY",
       "RECORDING_OBLIGATION",
+      "ERSAD_NETEX",
       "WHEELCHAIR_ACCESSIBILITY",
   }, mode = Mode.EXCLUDE)
   void shouldSupportExactlyDefaultTypesForDefaultObjects(ExportObjectV2 exportObject) {
+    // Given
     Set<ExportTypeV2> expectedDefault = Set.of(
         ExportTypeV2.FULL,
         ExportTypeV2.ACTUAL,
         ExportTypeV2.TIMETABLE_YEARS
     );
     Set<ExportTypeV2> actual = Set.copyOf(exportObject.getSupportedExportTypes());
+
+    // When
+
+    // Then
     assertThat(actual).isEqualTo(expectedDefault);
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.SWISS_FULL)).isFalse();
     assertThat(exportObject.isSupportedExportType(ExportTypeV2.WORLD_FULL)).isFalse();
@@ -70,6 +86,11 @@ class ExportObjectV2Test {
 
   @Test
   void shouldSupportOnlyFullForSingleTypeObjects() {
+    // Given
+
+    // When
+
+    // Then
     assertThat(ExportObjectV2.RECORDING_OBLIGATION.getSupportedExportTypes()).containsExactly(ExportTypeV2.FULL);
     assertThat(ExportObjectV2.RECORDING_OBLIGATION.isSupportedExportType(ExportTypeV2.FULL)).isTrue();
     assertThat(ExportObjectV2.RECORDING_OBLIGATION.isSupportedExportType(ExportTypeV2.ACTUAL)).isFalse();
@@ -81,6 +102,11 @@ class ExportObjectV2Test {
 
   @Test
   void shouldResolveExportObjectByBatchServiceName() {
+    // Given
+
+    // When
+
+    // Then
     assertThat(ExportObjectV2.getExportTypeForBatchServiceName("business-organisation-batch")).isEqualTo(
         ExportObjectV2.BUSINESS_ORGANISATION);
     assertThat(ExportObjectV2.getExportTypeForBatchServiceName("contact-point-batch")).isEqualTo(ExportObjectV2.CONTACT_POINT);
@@ -105,5 +131,6 @@ class ExportObjectV2Test {
     assertThat(ExportObjectV2.getExportTypeForBatchServiceName("sector-group-batch")).isEqualTo(ExportObjectV2.SECTOR_GROUP);
     assertThat(ExportObjectV2.getExportTypeForBatchServiceName("sectors-and-sector-groups-batch")).isEqualTo(
         ExportObjectV2.SECTORS_AND_SECTOR_GROUPS);
+    assertThat(ExportObjectV2.getExportTypeForBatchServiceName("ersad-netex-batch")).isEqualTo(ExportObjectV2.ERSAD_NETEX);
   }
 }

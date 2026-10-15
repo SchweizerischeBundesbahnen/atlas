@@ -3,6 +3,7 @@ package ch.sbb.exportservice.controller;
 import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFileNameFromS3ObjectName;
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
+import ch.sbb.atlas.api.controller.ZipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.s3.service.StreamedFile;
 import ch.sbb.exportservice.exception.NotAllowedExportFileExceptionV2;
@@ -127,6 +128,25 @@ public class FileStreamingControllerApiV2 {
     if (!exportObject.isSupportedExportType(exportType)) {
       throw new NotAllowedExportFileExceptionV2(exportObject, exportType);
     }
+  }
+
+  @GetMapping(value = "download-zip-xml/latest/ersad-netex")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Returns the latest generated file"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type or export extension", content = @Content(
+          schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
+  })
+  @NewSpan
+  @Async
+  public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportZipXmlFile() {
+    String latestUploadedFileName = fileExportService.getLatestUploadedXmlZipFileName(
+        ExportFilePathV2.buildV2(ExportObjectV2.ERSAD_NETEX, ExportTypeV2.ACTUAL));
+    HttpHeaders headers = ZipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
+    StreamedFile body = fileExportService.streamGzipFile(latestUploadedFileName);
+    headers.setContentLength(body.contentLength().value());
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body.resource()));
   }
 
 }

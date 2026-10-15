@@ -27,4 +27,6 @@ public interface AmazonService {
 
   String getLatestJsonUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix);
 
+  String getLatestUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix, String fileExtension);
+
 }

@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -21,6 +22,7 @@ import ch.sbb.atlas.s3.service.AmazonService;
 import ch.sbb.atlas.s3.service.ContentLength;
 import ch.sbb.atlas.s3.service.StreamedFile;
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -129,6 +131,31 @@ class FileStreamingControllerApiV2IntegrationTest extends BaseControllerApiTest 
         .andExpect(content().contentType("application/gzip"))
         .andExpect(header().longValue(HttpHeaders.CONTENT_LENGTH, data.length))
         .andExpect(header().doesNotExist(HttpHeaders.TRANSFER_ENCODING))
+        .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
+  }
+
+  @Test
+  void shouldDownloadLatestErsadNetexZipXmlSuccessfully() throws Exception {
+    //given
+    when(amazonService.getLatestUploadedObject(eq(AmazonBucket.EXPORT), anyString(), anyString(), anyString()))
+        .thenReturn("actual-date-ersad-netex-2025-01-01.xml.zip");
+    byte[] data = "zip-bytes".getBytes(StandardCharsets.UTF_8);
+    StreamedFile streamedFile = new StreamedFile(new InputStreamResource(new ByteArrayInputStream(data)), ContentLength.of(data.length));
+    doReturn(streamedFile).when(amazonFileStreamingService)
+        .streamFile(eq(AmazonBucket.EXPORT), anyString());
+
+    //when & then
+    MvcResult mvcResult = mvc.perform(get("/v2/export/download-zip-xml/latest/ersad-netex")
+            .contentType(contentType))
+        .andExpect(request().asyncStarted())
+        .andReturn();
+
+    mvc.perform(asyncDispatch(mvcResult))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType("application/zip"))
+        .andExpect(header().longValue(HttpHeaders.CONTENT_LENGTH, data.length))
+        .andExpect(header().doesNotExist(HttpHeaders.TRANSFER_ENCODING))
+        .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, containsString(".xml.zip")))
         .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
   }
 }

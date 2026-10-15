@@ -140,18 +140,23 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public String getLatestJsonUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix) {
+    return getLatestUploadedObject(bucket, pathPrefix, fileTypePrefix, JSON_FILE_EXTENSION);
+  }
+
+  @Override
+  public String getLatestUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix, String fileExtension) {
     List<S3Object> s3Objects = getClient(bucket).listObjectsV2(ListObjectsV2Request.builder()
         .bucket(getAmazonBucketConfig(bucket).getBucketName())
         .prefix(pathPrefix).build()).contents();
     List<String> fileNameList = s3Objects.stream()
-        .filter(s3Object -> s3Object.key().contains(fileTypePrefix) && s3Object.key().contains(JSON_FILE_EXTENSION))
+        .filter(s3Object -> s3Object.key().contains(fileTypePrefix) && s3Object.key().contains(fileExtension))
         .sorted(Comparator.comparing(S3Object::lastModified).reversed())
         .map(S3Object::key)
         .toList();
     if (!fileNameList.isEmpty() && fileNameList.getFirst() != null) {
       return fileNameList.getFirst();
     }
-    throw new FileNotFoundException("%s/%s<latest date>%s".formatted(pathPrefix, fileTypePrefix, JSON_FILE_EXTENSION));
+    throw new FileNotFoundException("%s/%s<latest date>%s".formatted(pathPrefix, fileTypePrefix, fileExtension));
   }
 
   private URL putFileToBucket(AmazonBucket bucket, File file, String dir) {
