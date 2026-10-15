@@ -22,9 +22,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 
-    // Libraries
-    implementation(libs.swagger.core)
-
     // Project dependencies
     implementation(project(":kafka"))
     implementation(project(":base-atlas")){

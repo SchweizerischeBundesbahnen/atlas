@@ -27,7 +27,6 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.UPDATE_GEOLOCATION_ERROR_NO
 import static ch.sbb.atlas.kafka.model.mail.MailType.UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION;
 
 import ch.sbb.atlas.kafka.model.mail.MailType;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.EnumMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -35,7 +34,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-@Schema(enumAsRef = true)
 public enum MailTemplateConfig {
 
   ATLAS_STANDARD_TEMPLATE("atlas-basic-html-template", null, null, true, true, false),

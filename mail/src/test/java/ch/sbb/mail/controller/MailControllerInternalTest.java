@@ -9,29 +9,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.mail.MailApiInternal;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
-import ch.sbb.mail.config.SecurityConfig;
 import ch.sbb.mail.service.MailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(MailControllerInternal.class)
-@Import(SecurityConfig.class)
+@SpringBootTest
+@EnableAutoConfiguration
+@AutoConfigureMockMvc
 class MailControllerInternalTest {
 
-  @Autowired
-  private MockMvc mockMvc;
-
+  private final MockMvc mockMvc;
+  
   @MockitoBean
   private MailService mailService;
 
-  @MockitoBean
-  private JwtDecoder jwtDecoder;
+  @Autowired
+  MailControllerInternalTest(MockMvc mockMvc) {
+    this.mockMvc = mockMvc;
+  }
 
   @Test
   @WithMockJwtAuthentication
