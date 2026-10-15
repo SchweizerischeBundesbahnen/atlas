@@ -10,7 +10,6 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadAddress;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadAssistance;
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadContactPoint;

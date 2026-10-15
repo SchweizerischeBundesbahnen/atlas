@@ -9,7 +9,6 @@ import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PLACE_EQUI
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.PUBLIC_CODE;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.QUAY;
 import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.RAMP;
-import static ch.sbb.exportservice.job.prm.ersad.model.NetexConstants.WHEELCHAIR_ACCESS;
 
 import ch.sbb.exportservice.job.prm.ersad.model.ErsadQuay;
 import ch.sbb.exportservice.job.prm.ersad.netex.XmlWriterSupport.Limitation;
