@@ -35,7 +35,7 @@ public class MailService {
 
   public void sendSimpleMail(MailNotification mailNotification) {
     SimpleMailMessage mailMessage = new SimpleMailMessage();
-    mailMessage.setTo(mailNotification.toAsArray());
+    mailMessage.setTo(mailNotification.getTo().toArray(String[]::new));
     mailMessage.setFrom(getSender(mailNotification));
     mailMessage.setSubject(mailNotification.getSubject());
     mailMessage.setText(mailNotification.getContent());

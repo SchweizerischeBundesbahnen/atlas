@@ -2,62 +2,40 @@ package ch.sbb.atlas.api.mail;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import java.io.Serial;
-import java.io.Serializable;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.ArrayUtils;
 
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class MailNotification implements Serializable {
+public class MailNotification {
 
-  @Serial
-  private static final long serialVersionUID = 1;
-
+  @Email
   private String from;
 
-  private List<@Email @NotEmpty String> to;
+  @NotEmpty
+  private List<@Email @NotBlank String> to;
 
-  private List<@Email @NotEmpty String> cc;
+  private List<@Email @NotBlank String> cc;
 
-  private List<@Email @NotEmpty String> bcc;
+  private List<@Email @NotBlank String> bcc;
 
   private String subject;
 
   private String content;
 
-  private transient List<Map<String, Object>> templateProperties;
+  private List<Map<String, Object>> templateProperties;
 
+  @NotNull
   private MailType mailType;
-
-  public String[] toAsArray() {
-    if (to == null) {
-      return ArrayUtils.EMPTY_STRING_ARRAY;
-    }
-    return to.toArray(String[]::new);
-  }
-
-  public String[] ccAsArray() {
-    if (cc == null) {
-      return ArrayUtils.EMPTY_STRING_ARRAY;
-    }
-    return cc.toArray(String[]::new);
-  }
-
-  public String[] bccAsArray() {
-    if (bcc == null) {
-      return ArrayUtils.EMPTY_STRING_ARRAY;
-    }
-    return bcc.toArray(String[]::new);
-  }
 
 }
