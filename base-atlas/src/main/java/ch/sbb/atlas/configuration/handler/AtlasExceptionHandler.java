@@ -21,6 +21,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -105,7 +106,11 @@ public class AtlasExceptionHandler {
     throw new UnsupportedOperationException();
   }
 
-  @ExceptionHandler(value = {HttpMessageNotReadableException.class, MissingServletRequestPartException.class})
+  @ExceptionHandler(value = {
+      HttpMessageNotReadableException.class,
+      MissingRequestHeaderException.class,
+      MissingServletRequestPartException.class
+  })
   public ResponseEntity<ErrorResponse> handleBadRequestExceptionsException(Exception exception) {
     return ResponseEntity.badRequest()
         .body(ErrorResponse.builder()

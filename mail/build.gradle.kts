@@ -28,6 +28,9 @@ dependencies {
         exclude("org.hibernate.orm","hibernate-processor")
         exclude("org.springframework.boot","spring-boot-starter-data-jpa")
     }
+    // Only needed because of the atlas exception handler
+    runtimeOnly("org.hibernate.orm:hibernate-core")
+    runtimeOnly("org.springframework.data:spring-data-commons")
 
     // Test dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test")

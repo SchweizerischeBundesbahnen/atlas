@@ -1,6 +1,7 @@
 package ch.sbb.mail.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,6 +19,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 @SpringBootTest
 @EnableAutoConfiguration
@@ -39,6 +41,18 @@ class MailControllerInternalTest {
   void shouldSendMailForAdmin() throws Exception {
     mockMvc.perform(mailRequest())
         .andExpect(status().isNoContent());
+
+    verify(mailService).sendEmailWithHtmlTemplate(any());
+  }
+
+  @Test
+  @WithMockJwtAuthentication
+  void shouldReturnInternalServerErrorWhenSendingMailFails() throws Exception {
+    doThrow(new RuntimeException("Mail sending failed"))
+        .when(mailService).sendEmailWithHtmlTemplate(any());
+
+    mockMvc.perform(mailRequest())
+        .andExpect(status().isInternalServerError());
 
     verify(mailService).sendEmailWithHtmlTemplate(any());
   }
@@ -89,7 +103,7 @@ class MailControllerInternalTest {
     verifyNoInteractions(mailService);
   }
 
-  private static org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder mailRequest() {
+  private static MockHttpServletRequestBuilder mailRequest() {
     return post("/internal/send")
         .header(MailApiInternal.MAIL_REQUEST_ID_HEADER, "mail-request-id")
         .contentType(MediaType.APPLICATION_JSON)
