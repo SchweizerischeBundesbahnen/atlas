@@ -4,7 +4,6 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.task.TaskExecutor;
-import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
@@ -38,27 +37,8 @@ public class MailClientService {
   }
 
   private void logFailure(String mailReqId, MailNotification mailNotification, RuntimeException exception) {
-    log.error("mailReqId={}, Mail service request failed; the business operation will continue. Retry manually with:\n{}",
-        mailReqId, createCurlCommand(mailReqId, mailNotification), exception);
-  }
-
-  String createCurlCommand(String mailReqId, MailNotification mailNotification) {
-    try {
-      String payload = objectMapper.writeValueAsString(mailNotification);
-      return "curl --fail-with-body --request POST "
-          + shellQuote(gatewayUrl + MAIL_PATH)
-          + " --header 'Authorization: ******'"
-          + " --header " + shellQuote(MailApiInternal.MAIL_REQUEST_ID_HEADER + ": " + mailReqId)
-          + " --header 'Content-Type: application/json'"
-          + " --data-raw " + shellQuote(payload);
-    } catch (JacksonException exception) {
-      log.error("Unable to serialize failed mail request for manual retry. Mail payload: {}", mailNotification, exception);
-      return "Unable to create curl command; see the mail payload in the preceding log entry.";
-    }
-  }
-
-  private String shellQuote(String value) {
-    return "'" + value.replace("'", "'\"'\"'") + "'";
+    log.error("mailReqId={}, Mail service request failed; the business operation will continue. subject={}, to={}",
+        mailReqId, mailNotification.getSubject(), mailNotification.getTo(), exception);
   }
 
 }

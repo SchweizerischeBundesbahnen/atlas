@@ -1,6 +1,5 @@
 package ch.sbb.atlas.api.mail;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;

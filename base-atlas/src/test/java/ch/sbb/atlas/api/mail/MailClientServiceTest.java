@@ -82,13 +82,9 @@ class MailClientServiceTest {
       assertThat(logAppender.list)
           .extracting(ILoggingEvent::getFormattedMessage)
           .anySatisfy(message -> assertThat(message)
-              .contains("Mail service request failed; the business operation will continue."));
-
-      assertThat(service.createCurlCommand("mail-request-id", notification))
-          .contains("curl --fail-with-body --request POST 'http://localhost:8888/mail/internal/send'")
-          .contains("Authorization: ******")
-          .contains("--header 'Mail-Request-Id: mail-request-id'")
-          .contains("\"subject\":\"Today'\"'\"'s report\"");
+              .contains("Mail service request failed; the business operation will continue.")
+              .contains("subject=Today's report")
+              .contains("to=[receiver@example.com]"));
     } finally {
       logger.detachAppender(logAppender);
       logger.setLevel(previousLevel);
