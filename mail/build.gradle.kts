@@ -14,26 +14,29 @@ dependencies {
     // Spring Boot Starters
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-kafka")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 
-    // Libraries
-    implementation(libs.swagger.core)
-
     // Project dependencies
     implementation(project(":kafka"))
     implementation(project(":base-atlas")){
         exclude("org.hibernate.orm","hibernate-processor")
         exclude("org.springframework.boot","spring-boot-starter-data-jpa")
-        exclude("org.springframework.boot","spring-boot-starter-security")
-        exclude("org.springframework.boot","spring-boot-starter-security-oauth2-resource-server")
     }
+    // Only needed because of the atlas exception handler
+    runtimeOnly("org.hibernate.orm:hibernate-core")
+    runtimeOnly("org.springframework.data:spring-data-commons")
 
     // Test dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-security-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation(project(":base-atlas", "test"))
     testImplementation(libs.greenmail.junit5)
 }
 
