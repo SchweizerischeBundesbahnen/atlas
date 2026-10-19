@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class OAuthFeignConfig extends OAuthClientConfig {
 
   public OAuthFeignConfig() {
-    super("azure");
+    super("service-to-service");
   }
 
 }

@@ -1,8 +1,8 @@
 package ch.sbb.scheduling.listener;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.scheduling.service.MailNotificationService;
-import ch.sbb.scheduling.service.MailProducerService;
+import ch.sbb.scheduling.service.MailClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.RetryCallback;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 class AtlasRetryListener implements RetryListener {
 
-  private final MailProducerService service;
+  private final MailClient service;
 
   private final MailNotificationService mailNotificationService;
 
@@ -28,7 +28,7 @@ class AtlasRetryListener implements RetryListener {
       log.error("Unable to recover job {} from  Exception", jobName, throwable);
       log.error("Sending Mail notification...");
       MailNotification mailNotification = mailNotificationService.buildMailNotification(getJobName(callback), throwable);
-      service.produceMailNotification(mailNotification);
+      service.sendMailRequest(mailNotification);
     }
   }
 

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.scheduling.service.MailNotificationService;
-import ch.sbb.scheduling.service.MailProducerService;
+import ch.sbb.scheduling.service.MailClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +20,7 @@ import org.springframework.retry.RetryContext;
 class AtlasRetryListenerTest {
 
   @Mock
-  private MailProducerService service;
+  private MailClient service;
 
   @Mock
   private MailNotificationService mailNotificationService;
@@ -47,7 +47,7 @@ class AtlasRetryListenerTest {
 
     //then
     verify(mailNotificationService).buildMailNotification(any(), any());
-    verify(service).produceMailNotification(any());
+    verify(service).sendMailRequest(any());
     verify(retryListener).close(retryContext, callback, throwable);
   }
 
@@ -61,7 +61,7 @@ class AtlasRetryListenerTest {
 
     //then
     verify(mailNotificationService, never()).buildMailNotification(any(), any());
-    verify(service, never()).produceMailNotification(any());
+    verify(service, never()).sendMailRequest(any());
     verify(retryListener).onError(retryContext, callback, throwable);
   }
 

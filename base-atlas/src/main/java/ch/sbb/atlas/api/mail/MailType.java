@@ -1,4 +1,4 @@
-package ch.sbb.atlas.kafka.model.mail;
+package ch.sbb.atlas.api.mail;
 
 import lombok.Getter;
 

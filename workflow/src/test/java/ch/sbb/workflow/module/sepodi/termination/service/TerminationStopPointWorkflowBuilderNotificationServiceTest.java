@@ -1,14 +1,14 @@
 package ch.sbb.workflow.module.sepodi.termination.service;
 
-import static ch.sbb.atlas.kafka.model.mail.MailType.ABORT_TERMINATION_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_APPROVED_NOTIFICATION;
-import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_NOT_APPROVED_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.ABORT_TERMINATION_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.TARIFF_STOP_APPROVED_NOTIFICATION;
+import static ch.sbb.atlas.api.mail.MailType.TARIFF_STOP_NOT_APPROVED_NOTIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.workflow.module.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationDecision;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationDecisionPerson;
@@ -58,14 +58,19 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .build();
     when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email(mail).build());
     //when
-    MailNotification result = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(
+    MailNotification infoPlusNotification = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(
+        terminationStopPointWorkflow);
+    MailNotification applicantNotification = builderNotificationService.buildStartTerminationNotificationMailForApplicant(
         terminationStopPointWorkflow);
     //then
-    assertThat(result).isNotNull();
-    assertThat(result.getMailType()).isEqualTo(START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.START_TERMINATION_WORKFLOW_SUBJECT);
-    assertThat(result.getTo()).hasSize(1).contains(mail);
-    assertThat(result.getCc()).isNull();
+    assertThat(infoPlusNotification).isNotNull();
+    assertThat(infoPlusNotification.getMailType()).isEqualTo(START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION);
+    assertThat(infoPlusNotification.getSubject()).isEqualTo(TerminationWorkflowSubject.START_TERMINATION_WORKFLOW_SUBJECT);
+    assertThat(infoPlusNotification.getTo()).containsExactly(mail);
+    assertThat(infoPlusNotification.getCc()).isNull();
+
+    assertThat(applicantNotification).isNotSameAs(infoPlusNotification);
+    assertThat(applicantNotification.getTo()).containsExactly(terminationStopPointWorkflow.getApplicantMail());
   }
 
   @Test

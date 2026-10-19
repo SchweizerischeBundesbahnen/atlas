@@ -3,8 +3,8 @@ package ch.sbb.importservice.module.geo.service;
 import static ch.sbb.importservice.module.geo.job.ServicePointGeoLocationUpdateConfig.GEO_LOCATION_VERSIONS_KEY;
 
 import ch.sbb.atlas.imports.ItemProcessResponseStatus;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailType;
 import ch.sbb.importservice.module.geo.entity.GeoUpdateProcessItem;
 import java.time.Duration;
 import java.util.ArrayList;

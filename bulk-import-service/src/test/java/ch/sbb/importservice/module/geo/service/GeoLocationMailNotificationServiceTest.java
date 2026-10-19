@@ -2,8 +2,8 @@ package ch.sbb.importservice.module.geo.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailType;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

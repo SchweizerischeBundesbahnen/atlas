@@ -1,8 +1,8 @@
 package ch.sbb.workflow.module.sepodi.hearing.service;
 
 import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.mail.BaseNotificationService;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;

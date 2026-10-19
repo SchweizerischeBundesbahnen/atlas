@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.listener;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.exportservice.service.MailNotificationService;
-import ch.sbb.exportservice.service.MailProducerService;
+import ch.sbb.exportservice.service.MailClient;
 import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class JobCompletionListener implements JobExecutionListener {
 
   private final MailNotificationService mailNotificationService;
-  private final MailProducerService mailProducerService;
+  private final MailClient mailClient;
 
   @Override
   public void beforeJob(@NotNull JobExecution jobExecution) {
@@ -39,7 +39,7 @@ public class JobCompletionListener implements JobExecutionListener {
   private void sendUnsuccessfulNotification(StepExecution stepExecution) {
     String jobName = getJobName(stepExecution);
     MailNotification mailNotification = mailNotificationService.buildMailErrorNotification(jobName, stepExecution);
-    mailProducerService.produceMailNotification(mailNotification);
+    mailClient.sendMailRequest(mailNotification);
   }
 
   private String getJobName(StepExecution stepExecution) {

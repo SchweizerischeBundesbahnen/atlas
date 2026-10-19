@@ -2,8 +2,8 @@ package ch.sbb.timetable.hearing.mail;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailType;
 import ch.sbb.timetable.hearing.client.UserAdministrationAdminClient;
 import ch.sbb.timetable.hearing.entity.Dossier;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +25,7 @@ public class DossierNotificationService {
   @Value("${mail.workflow.stop-point.from}")
   protected String from;
 
-  private final MailProducerService mailProducerService;
+  private final MailClient mailClient;
   private final UserAdministrationAdminClient userAdministrationAdminClient;
 
   public void notifyBoAboutNewQuestion(Dossier dossier) {
@@ -35,7 +35,7 @@ public class DossierNotificationService {
         .mailType(MailType.TTH_DOSSIER_NEW_QUESTION_NOTIFICATION)
         .templateProperties(buildMailProperties(dossier))
         .build();
-    mailProducerService.produceMailNotification(mailNotification);
+    mailClient.sendMailRequest(mailNotification);
   }
 
   public void notifyCantonAboutNewAnswer(Dossier dossier) {
@@ -47,7 +47,7 @@ public class DossierNotificationService {
         .mailType(MailType.TTH_DOSSIER_NEW_ANSWER_NOTIFICATION)
         .templateProperties(buildMailProperties(dossier))
         .build();
-    mailProducerService.produceMailNotification(mailNotification);
+    mailClient.sendMailRequest(mailNotification);
   }
 
   public List<Map<String, Object>> buildMailProperties(Dossier dossier) {

@@ -2,7 +2,7 @@ package ch.sbb.mail.service;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -42,8 +42,8 @@ public class MailContentBuilder {
         mailNotification.getMailType());
     messageHelper.setFrom(getFrom(mailTemplateConfig, mailNotification));
     messageHelper.setTo(getTo(mailTemplateConfig, mailNotification));
-    messageHelper.setCc(mailNotification.ccAsArray());
-    messageHelper.setBcc(mailNotification.bccAsArray());
+    messageHelper.setCc(toArray(mailNotification.getCc()));
+    messageHelper.setBcc(toArray(mailNotification.getBcc()));
     messageHelper.setSubject(getSubject(mailTemplateConfig, mailNotification));
     String htmlContent = getHtmlContent(mailTemplateConfig, mailNotification);
     messageHelper.setText(htmlContent, true);
@@ -56,9 +56,13 @@ public class MailContentBuilder {
       throw new IllegalArgumentException("No receiver defined! You have to provide at least one receiver");
     }
     if (mailNotification.getTo() != null && !mailNotification.getTo().isEmpty()) {
-      return mailNotification.toAsArray();
+      return toArray(mailNotification.getTo());
     }
     return mailTemplateConfig.getTo();
+  }
+
+  private static String[] toArray(List<String> recipients) {
+    return recipients == null ? new String[0] : recipients.toArray(String[]::new);
   }
 
   String getFrom(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification) {

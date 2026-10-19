@@ -41,7 +41,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType;
   @Test
   void shouldThrowIllegalStateExceptionWhenAuthenticationFailed() {
     //given
-    when(clientRegistration.getRegistrationId()).thenReturn("azure");
+    when(clientRegistration.getRegistrationId()).thenReturn("service-to-service");
 
     //when
     assertThrows(IllegalStateException.class,

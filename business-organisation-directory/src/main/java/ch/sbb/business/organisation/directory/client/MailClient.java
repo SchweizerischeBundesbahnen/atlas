@@ -1,29 +1,18 @@
 package ch.sbb.business.organisation.directory.client;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.producer.BaseProducer;
-import ch.sbb.atlas.kafka.topic.KafkaKey;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
+import ch.sbb.atlas.api.mail.MailClientService;
+import ch.sbb.atlas.api.mail.MailTaskExecutorConfig;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.stereotype.Service;
 
-@Slf4j
-@Component
-public class MailClient extends BaseProducer<MailNotification> {
+@Service
+@Import(MailTaskExecutorConfig.class)
+public class MailClient extends MailClientService {
 
-  @Value("${kafka.atlas.mail.topic}")
-  @Getter
-  private String topic;
-
-  public MailClient(KafkaTemplate<String, Object> kafkaTemplate) {
-    super(kafkaTemplate);
+  public MailClient(MailFeignClient mailFeignClient,
+      @Qualifier(MailTaskExecutorConfig.MAIL_TASK_EXECUTOR) TaskExecutor mailTaskExecutor) {
+    super(mailFeignClient, mailTaskExecutor);
   }
-
-  public void produceMailNotification(MailNotification mailNotification) {
-
-    produceEvent(mailNotification, KafkaKey.MAIL.getValue());
-  }
-
 }

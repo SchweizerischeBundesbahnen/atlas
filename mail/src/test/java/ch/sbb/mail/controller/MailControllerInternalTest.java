@@ -103,6 +103,35 @@ class MailControllerInternalTest {
     verifyNoInteractions(mailService);
   }
 
+  @Test
+  @WithMockJwtAuthentication
+  void shouldRejectInvalidMailNotification() throws Exception {
+    mockMvc.perform(post("/internal/send")
+            .header(MailApiInternal.MAIL_REQUEST_ID_HEADER, "mail-request-id")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                  "to": ["invalid-email"],
+                  "mailType": "ATLAS_STANDARD"
+                }
+                """))
+        .andExpect(status().isBadRequest());
+
+    verifyNoInteractions(mailService);
+  }
+
+  @Test
+  @WithMockJwtAuthentication
+  void shouldRejectMailNotificationWithoutRequiredFields() throws Exception {
+    mockMvc.perform(post("/internal/send")
+            .header(MailApiInternal.MAIL_REQUEST_ID_HEADER, "mail-request-id")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{}"))
+        .andExpect(status().isBadRequest());
+
+    verifyNoInteractions(mailService);
+  }
+
   private static MockHttpServletRequestBuilder mailRequest() {
     return post("/internal/send")
         .header(MailApiInternal.MAIL_REQUEST_ID_HEADER, "mail-request-id")
@@ -115,7 +144,8 @@ class MailControllerInternalTest {
         {
           "to": ["receiver@example.com"],
           "subject": "Subject",
-          "content": "Content"
+          "content": "Content",
+          "mailType": "ATLAS_STANDARD"
         }
         """;
   }

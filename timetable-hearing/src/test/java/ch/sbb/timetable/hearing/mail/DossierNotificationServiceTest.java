@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.timetable.hearing.client.UserAdministrationAdminClient;
 import ch.sbb.timetable.hearing.entity.Dossier;
 import ch.sbb.timetable.hearing.entity.DossierQuestion;
@@ -31,7 +31,7 @@ class DossierNotificationServiceTest {
       .build();
 
   @Mock
-  private MailProducerService mailProducerService;
+  private MailClient mailClient;
 
   @Mock
   private UserAdministrationAdminClient userAdministrationAdminClient;
@@ -43,7 +43,7 @@ class DossierNotificationServiceTest {
   void shouldNotifyBoAboutNewQuestion() {
     dossierNotificationService.notifyBoAboutNewQuestion(DOSSIER);
 
-    verify(mailProducerService).produceMailNotification(any());
+    verify(mailClient).sendMailRequest(any());
   }
 
   @Test
@@ -57,7 +57,7 @@ class DossierNotificationServiceTest {
     dossierNotificationService.notifyCantonAboutNewAnswer(DOSSIER);
 
     // Then
-    verify(mailProducerService).produceMailNotification(mailNotificationCaptor.capture());
+    verify(mailClient).sendMailRequest(mailNotificationCaptor.capture());
     assertThat(mailNotificationCaptor.getValue().getTo()).containsExactly("user@canton.ch");
   }
 
@@ -72,7 +72,7 @@ class DossierNotificationServiceTest {
     dossierNotificationService.notifyCantonAboutNewAnswer(DOSSIER);
 
     // Then
-    verify(mailProducerService).produceMailNotification(mailNotificationCaptor.capture());
+    verify(mailClient).sendMailRequest(mailNotificationCaptor.capture());
     assertThat(mailNotificationCaptor.getValue().getTo()).containsExactly("override@canton.ch");
   }
 }

@@ -58,3 +58,4 @@ gateway:
     prm-directory: http://localhost:8093
     location: http://localhost:8094
     timetable-hearing: http://localhost:8095
+    mail: http://localhost:8084

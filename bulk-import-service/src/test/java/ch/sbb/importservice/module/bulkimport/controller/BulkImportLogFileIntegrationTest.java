@@ -20,13 +20,13 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.s3.config.AmazonBucket;
 import ch.sbb.atlas.s3.service.AmazonService;
-import ch.sbb.importservice.config.mail.MailProducerService;
+import ch.sbb.importservice.config.mail.MailClient;
 import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
 import ch.sbb.importservice.module.bulkimport.log.BulkImportLogService;
@@ -79,7 +79,7 @@ class BulkImportLogFileIntegrationTest {
   private UserAdministrationClient userAdministrationClient;
 
   @MockitoBean
-  private MailProducerService mailProducerService;
+  private MailClient mailClient;
 
   @MockitoSpyBean
   private BulkImportLogService bulkImportLogService;
@@ -142,7 +142,7 @@ class BulkImportLogFileIntegrationTest {
     LogFile expected = objectMapper.readValue(expectedLogFile, LogFile.class);
 
     assertThat(writtenLogFile).isEqualTo(expected);
-    verify(mailProducerService).produceMailNotification(MailNotification.builder()
+    verify(mailClient).sendMailRequest(MailNotification.builder()
         .to(List.of("test@atlas.ch"))
         .cc(List.of("test-cc@atlas.ch"))
         .subject("Import Result " + bulkImport.getId())

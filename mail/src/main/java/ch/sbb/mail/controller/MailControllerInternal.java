@@ -1,7 +1,7 @@
 package ch.sbb.mail.controller;
 
 import ch.sbb.atlas.api.mail.MailApiInternal;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailNotification;
 import ch.sbb.mail.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

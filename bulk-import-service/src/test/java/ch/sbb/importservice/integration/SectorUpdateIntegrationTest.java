@@ -22,7 +22,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.s3.config.AmazonBucket;
 import ch.sbb.atlas.s3.service.AmazonService;
-import ch.sbb.importservice.config.mail.MailProducerService;
+import ch.sbb.importservice.config.mail.MailClient;
 import ch.sbb.importservice.module.bulkimport.client.SectorBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.controller.BulkImportController;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
@@ -66,7 +66,7 @@ class SectorUpdateIntegrationTest {
   private UserAdministrationClient userAdministrationClient;
 
   @MockitoBean
-  private MailProducerService mailProducerService;
+  private MailClient mailClient;
 
   @MockitoSpyBean
   private BulkImportLogService bulkImportLogService;

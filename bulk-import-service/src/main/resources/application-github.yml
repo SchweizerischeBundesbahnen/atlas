@@ -51,10 +51,10 @@ spring:
           issuer-uri: http://localhost:8666/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
       client:
         provider:
-          azure:
+          service-to-service:
             issuer-uri: http://localhost:8666/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
         registration:
-          azure:
+          service-to-service:
             authorization-grant-type: client_credentials
             client-id: ${SCHEDULING_CLIENT_ID}
             client-secret: ${SCHEDULING_CLIENT_SECRET}
@@ -91,9 +91,6 @@ kafka:
       administration:
         topic: atlas.user.administration
         groupId: atlas.kafka.lidi.user.administration.groupId
-    mail:
-      topic: atlas.mail
-      groupId: atlas.kafka.mail.groupId
 auth:
   audience:
     service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc

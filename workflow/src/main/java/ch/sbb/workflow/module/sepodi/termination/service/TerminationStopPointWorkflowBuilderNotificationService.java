@@ -3,8 +3,8 @@ package ch.sbb.workflow.module.sepodi.termination.service;
 import static ch.sbb.workflow.module.sepodi.termination.service.TerminationWorkflowSubject.STOP_POINT_TERMINATION_CONFIRMED_SUBJECT;
 
 import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.mail.MailNotification;
+import ch.sbb.atlas.api.mail.MailType;
 import ch.sbb.workflow.mail.BaseNotificationService;
 import ch.sbb.workflow.module.sepodi.termination.TerminationWorkflowHelper;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;
@@ -26,11 +26,23 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
   private final TerminationExaminants terminationExaminants;
 
   public MailNotification buildStartTerminationNotificationMailForInfoPlus(TerminationStopPointWorkflow workflow) {
+    return buildStartTerminationNotificationMail(
+        workflow,
+        List.of(terminationExaminants.getInfoPlus().getEmail())
+    );
+  }
+
+  public MailNotification buildStartTerminationNotificationMailForApplicant(TerminationStopPointWorkflow workflow) {
+    return buildStartTerminationNotificationMail(workflow, List.of(workflow.getApplicantMail()));
+  }
+
+  private MailNotification buildStartTerminationNotificationMail(TerminationStopPointWorkflow workflow,
+      List<String> recipients) {
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION)
         .subject(TerminationWorkflowSubject.START_TERMINATION_WORKFLOW_SUBJECT)
-        .to(List.of(terminationExaminants.getInfoPlus().getEmail()))
+        .to(recipients)
         .templateProperties(buildMailProperties(workflow, TerminationWorkflowSubject.START_TERMINATION_WORKFLOW_SUBJECT))
         .build();
   }
