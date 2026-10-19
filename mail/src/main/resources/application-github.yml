@@ -43,10 +43,6 @@ auth:
   audience:
     service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
 
-auth:
-  audience:
-    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
-
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
