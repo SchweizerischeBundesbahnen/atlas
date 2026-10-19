@@ -4,21 +4,42 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.task.TaskExecutor;
-import tools.jackson.databind.ObjectMapper;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Slf4j
 @RequiredArgsConstructor
 public class MailClientService {
 
-  private static final String MAIL_PATH = "/mail/internal/send";
-
   private final MailApiInternal mailApi;
-  private final ObjectMapper objectMapper;
-  private final String gatewayUrl;
   private final TaskExecutor mailTaskExecutor;
 
   public void sendMailRequest(MailNotification mailNotification) {
     String mailReqId = UUID.randomUUID().toString();
+    if (TransactionSynchronizationManager.isActualTransactionActive()) {
+      scheduleAfterCommit(mailReqId, mailNotification);
+      return;
+    }
+    dispatch(mailReqId, mailNotification);
+  }
+
+  private void scheduleAfterCommit(String mailReqId, MailNotification mailNotification) {
+    if (!TransactionSynchronizationManager.isSynchronizationActive()) {
+      // Splunk alert(s) could be dependent on this log message
+      log.error("mailReqId={}, Mail request not scheduled because transaction synchronization is not active. "
+              + "The business operation will continue. subject={}, to={}",
+          mailReqId, mailNotification.getSubject(), mailNotification.getTo());
+      return;
+    }
+    TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+      @Override
+      public void afterCommit() {
+        dispatch(mailReqId, mailNotification);
+      }
+    });
+  }
+
+  private void dispatch(String mailReqId, MailNotification mailNotification) {
     log.info("mailReqId={}, status=MAIL_REQ_STARTED, subject={}, to={}",
         mailReqId, mailNotification.getSubject(), mailNotification.getTo());
     try {

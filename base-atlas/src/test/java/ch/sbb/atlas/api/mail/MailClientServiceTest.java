@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
-import tools.jackson.databind.json.JsonMapper;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 class MailClientServiceTest {
 
@@ -31,8 +32,6 @@ class MailClientServiceTest {
     AtomicReference<Runnable> dispatchedRequest = new AtomicReference<>();
     MailClientService service = new MailClientService(
         mailApi,
-        JsonMapper.builder().build(),
-        "http://localhost:8888",
         dispatchedRequest::set
     );
 
@@ -43,6 +42,66 @@ class MailClientServiceTest {
     dispatchedRequest.get().run();
 
     verify(mailApi).sendMailRequest(anyString(), eq(notification));
+  }
+
+  @Test
+  void shouldDispatchOnlyAfterTransactionCommit() {
+    MailApiInternal mailApi = mock(MailApiInternal.class);
+    MailNotification notification = MailNotification.builder()
+        .to(List.of("first@example.com"))
+        .subject("Report")
+        .build();
+    AtomicReference<Runnable> dispatchedRequest = new AtomicReference<>();
+    MailClientService service = new MailClientService(
+        mailApi,
+        dispatchedRequest::set
+    );
+
+    TransactionSynchronizationManager.setActualTransactionActive(true);
+    TransactionSynchronizationManager.initSynchronization();
+    try {
+      service.sendMailRequest(notification);
+
+      assertThat(dispatchedRequest).hasNullValue();
+
+      TransactionSynchronizationManager.getSynchronizations().get(0).afterCommit();
+
+      assertThat(dispatchedRequest).doesNotHaveNullValue();
+      dispatchedRequest.get().run();
+      verify(mailApi).sendMailRequest(anyString(), eq(notification));
+    } finally {
+      TransactionSynchronizationManager.clearSynchronization();
+      TransactionSynchronizationManager.setActualTransactionActive(false);
+    }
+  }
+
+  @Test
+  void shouldNotDispatchAfterTransactionRollback() {
+    MailApiInternal mailApi = mock(MailApiInternal.class);
+    MailNotification notification = MailNotification.builder()
+        .to(List.of("first@example.com"))
+        .subject("Report")
+        .build();
+    AtomicReference<Runnable> dispatchedRequest = new AtomicReference<>();
+    MailClientService service = new MailClientService(
+        mailApi,
+        dispatchedRequest::set
+    );
+
+    TransactionSynchronizationManager.setActualTransactionActive(true);
+    TransactionSynchronizationManager.initSynchronization();
+    try {
+      service.sendMailRequest(notification);
+
+      TransactionSynchronizationManager.getSynchronizations().get(0)
+          .afterCompletion(TransactionSynchronization.STATUS_ROLLED_BACK);
+
+      assertThat(dispatchedRequest).hasNullValue();
+      verifyNoInteractions(mailApi);
+    } finally {
+      TransactionSynchronizationManager.clearSynchronization();
+      TransactionSynchronizationManager.setActualTransactionActive(false);
+    }
   }
 
   @Test
@@ -58,8 +117,6 @@ class MailClientServiceTest {
 
     MailClientService service = new MailClientService(
         mailApi,
-        JsonMapper.builder().build(),
-        "http://localhost:8888",
         Runnable::run
     );
     Logger logger = (Logger) LoggerFactory.getLogger(MailClientService.class);
