@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.client.TokenPassingFeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(name = "transportCompanyClient", url = "${atlas.client.gateway.url}", path = "business-organisation-directory",
-    configuration = TokenPassingFeignClientConfig.class)
+    configuration = {TokenPassingFeignClientConfig.class, TransportCompanyFeignConfig.class})
 public interface TransportCompanyClient extends TransportCompanyApiInternal {
 
 }

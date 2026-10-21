@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.bodi;
 
 import ch.sbb.atlas.annotation.AdminOnly;
+import ch.sbb.atlas.annotation.RetryableFeignRequest;
 import ch.sbb.atlas.annotation.UnauthorizedAllowed;
 import ch.sbb.atlas.annotation.UnauthorizedAllowed.FurtherLimitations;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,10 +22,12 @@ public interface TransportCompanyApiInternal {
   void loadTransportCompaniesFromBav();
 
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
+  @RetryableFeignRequest
   @GetMapping(BASE_PATH + "/bySboid")
   List<TransportCompanyModel> getTransportCompaniesBySboid(@Parameter @RequestParam String sboid);
 
   @UnauthorizedAllowed(limitations = FurtherLimitations.NONE)
+  @RetryableFeignRequest
   @GetMapping(BASE_PATH + "/{id}")
   TransportCompanyModel getTransportCompany(@PathVariable Long id);
 
