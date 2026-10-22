@@ -13,12 +13,14 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingStatementsModel;
 import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingAnonymStatementCsvModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.atlas.pdf.sanitize.PdfCdr;
 import ch.sbb.timetable.hearing.entity.StatementDocument;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
+import ch.sbb.timetable.hearing.exception.ResponsibleTransportCompanyNotFoundException;
 import ch.sbb.timetable.hearing.exception.StatementPartOfDossierException;
 import ch.sbb.timetable.hearing.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.timetable.hearing.mapper.StatementSenderMapperV2;
@@ -27,6 +29,7 @@ import ch.sbb.timetable.hearing.model.TimetableHearingStatementSearchRestriction
 import ch.sbb.timetable.hearing.redact.StatementRedacted;
 import ch.sbb.timetable.hearing.repository.TimetableHearingStatementRepository;
 import ch.sbb.timetable.hearing.repository.TimetableHearingYearRepository;
+import feign.FeignException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +89,7 @@ public class TimetableHearingStatementService {
     }
   }
 
-  public TimetableHearingStatement createHearingStatement(TimetableHearingStatement statementToCreate,
+  private TimetableHearingStatement createHearingStatement(TimetableHearingStatement statementToCreate,
       List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
     checkThatTimetableFieldNumberExists(statementToCreate);
@@ -105,13 +108,16 @@ public class TimetableHearingStatementService {
 
   public TimetableHearingStatementModelV2 createHearingStatementV2(TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
+    List<TimetableHearingStatementResponsibleTransportCompanyModel> transportCompanies =
+        resolveResponsibleTransportCompanies(statement);
+    statement.setResponsibleTransportCompanies(transportCompanies);
     TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV2.toEntity(statement);
-    return timetableHearingStatementMapperV2.toModel(createHearingStatement(statementToCreate, documents));
+    return timetableHearingStatementMapperV2.toModel(createHearingStatement(statementToCreate, documents), transportCompanies);
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING, #existingStatement)")
-  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement existingStatement,
+  public TimetableHearingStatementModelV2 updateHearingStatement(TimetableHearingStatement existingStatement,
       TimetableHearingStatementModelV2 timetableHearingStatementModel, List<MultipartFile> documents) {
     checkThatStatementIsNotPartOfDossier(existingStatement);
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
@@ -119,6 +125,10 @@ public class TimetableHearingStatementService {
     TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.findById(
             timetableHearingStatementModel.getId())
         .orElseThrow(() -> new IdNotFoundException(timetableHearingStatementModel.getId()));
+
+    List<TimetableHearingStatementResponsibleTransportCompanyModel> transportCompanies =
+        resolveResponsibleTransportCompanies(timetableHearingStatementModel);
+    timetableHearingStatementModel.setResponsibleTransportCompanies(transportCompanies);
 
     updateStatementDocuments(timetableHearingStatementModel, timetableHearingStatementInDb);
 
@@ -140,10 +150,29 @@ public class TimetableHearingStatementService {
     }
     checkThatTimetableFieldNumberExists(updatedObject);
 
-    TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.save(updatedObject);
+    TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.saveAndFlush(updatedObject);
     pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
 
-    return timetableHearingStatement;
+    return timetableHearingStatementMapperV2.toModel(timetableHearingStatement, transportCompanies);
+  }
+
+  private List<TimetableHearingStatementResponsibleTransportCompanyModel> resolveResponsibleTransportCompanies(
+      TimetableHearingStatementModelV2 statement) {
+    if (statement.getResponsibleTransportCompanies().stream()
+        .anyMatch(company -> company == null || company.getId() == null)) {
+      throw new BadRequestException("Responsible transport companies must have an ID");
+    }
+    return statement.getResponsibleTransportCompanies().stream()
+        .map(TimetableHearingStatementResponsibleTransportCompanyModel::getId)
+        .distinct()
+        .map(id -> {
+          try {
+            return responsibleTransportCompanyMapper.toModel(id);
+          } catch (FeignException.NotFound exception) {
+            throw new ResponsibleTransportCompanyNotFoundException(id);
+          }
+        })
+        .toList();
   }
 
   private void updateStatementDocuments(TimetableHearingStatementModelV2 timetableHearingStatementModel,

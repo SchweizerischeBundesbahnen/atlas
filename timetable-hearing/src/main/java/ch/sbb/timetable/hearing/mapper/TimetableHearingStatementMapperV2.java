@@ -58,6 +58,11 @@ public class TimetableHearingStatementMapperV2 {
   }
 
   public TimetableHearingStatementModelV2 toModel(TimetableHearingStatement statement) {
+    return toModel(statement, getResponsibleTransportCompanies(statement));
+  }
+
+  public TimetableHearingStatementModelV2 toModel(TimetableHearingStatement statement,
+      List<TimetableHearingStatementResponsibleTransportCompanyModel> responsibleTransportCompanies) {
     return TimetableHearingStatementModelV2.builder()
         .id(statement.getId())
         .statementStatus(statement.getStatementStatus())
@@ -65,7 +70,7 @@ public class TimetableHearingStatementMapperV2 {
         .ttfnid(statement.getTtfnid())
         .swissCanton(statement.getSwissCanton())
         .stopPlace(statement.getStopPlace())
-        .responsibleTransportCompanies(getResponsibleTransportCompanies(statement))
+        .responsibleTransportCompanies(responsibleTransportCompanies)
         .responsibleTransportCompaniesDisplay(statement.getResponsibleTransportCompaniesDisplay())
         .statementSender(StatementSenderMapperV2.toModel(statement.getStatementSender()))
         .statement(statement.getStatement())

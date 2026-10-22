@@ -151,10 +151,10 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
     }
     TimetableHearingStatement existingStatement = timetableHearingStatementService.getTimetableHearingStatementsById(id);
     statement.setId(id);
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement,
+    TimetableHearingStatementModelV2 hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement,
         statement, documents);
     return timetableFieldNumberResolverService
-        .resolveAdditionalVersionInfo(List.of(timetableHearingStatementMapperV2.toModel(hearingStatement)))
+        .resolveAdditionalVersionInfo(List.of(hearingStatement))
         .getFirst();
   }
 
