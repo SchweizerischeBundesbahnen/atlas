@@ -8,6 +8,17 @@ import org.junit.jupiter.api.Test;
 class NotFoundExceptionTest {
 
   @Test
+  void shouldPreserveCauseAndErrorResponse() {
+    IllegalStateException cause = new IllegalStateException("Upstream entity not found");
+
+    NotFoundException exception = new NotFoundException("id", "123", cause);
+
+    assertThat(exception).hasCause(cause);
+    assertThat(exception.getErrorResponse()).usingRecursiveComparison()
+        .isEqualTo(new NotFoundException.IdNotFoundException(123L).getErrorResponse());
+  }
+
+  @Test
   void shouldGetNotFoundException() {
     //given
 

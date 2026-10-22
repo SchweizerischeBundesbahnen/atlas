@@ -45,6 +45,8 @@ class TransportCompanyRetryer implements Retryer {
   }
 
   @Override
+  // Feign requires clone() to create a fresh retry budget for each request, not copy the current state.
+  @SuppressWarnings({"java:S2975", "java:S1182"})
   public Retryer clone() {
     return new TransportCompanyRetryer();
   }

@@ -14,13 +14,13 @@ import ch.sbb.atlas.api.timetable.hearing.model.BatchUpdateTimetableHearingState
 import ch.sbb.atlas.api.timetable.hearing.model.TimetableHearingAnonymStatementCsvModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.BadRequestException;
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SimpleAtlasException;
 import ch.sbb.atlas.pdf.sanitize.PdfCdr;
 import ch.sbb.timetable.hearing.entity.StatementDocument;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
-import ch.sbb.timetable.hearing.exception.ResponsibleTransportCompanyNotFoundException;
 import ch.sbb.timetable.hearing.exception.StatementPartOfDossierException;
 import ch.sbb.timetable.hearing.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.timetable.hearing.mapper.StatementSenderMapperV2;
@@ -169,7 +169,7 @@ public class TimetableHearingStatementService {
           try {
             return responsibleTransportCompanyMapper.toModel(id);
           } catch (FeignException.NotFound exception) {
-            throw new ResponsibleTransportCompanyNotFoundException(id);
+            throw new NotFoundException("responsibleTransportCompanies.id", String.valueOf(id), exception);
           }
         })
         .toList();

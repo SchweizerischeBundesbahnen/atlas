@@ -30,7 +30,6 @@ import ch.sbb.timetable.hearing.entity.StatementDocument;
 import ch.sbb.timetable.hearing.entity.StatementSender;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.timetable.hearing.entity.TimetableHearingYear;
-import ch.sbb.timetable.hearing.exception.ResponsibleTransportCompanyNotFoundException;
 import ch.sbb.timetable.hearing.exception.StatementPartOfDossierException;
 import ch.sbb.timetable.hearing.helper.PdfFiles;
 import ch.sbb.timetable.hearing.mapper.TimetableHearingStatementMapperV2;
@@ -250,9 +249,9 @@ class TimetableHearingStatementServiceTest {
         TimetableHearingStatementResponsibleTransportCompanyModel.builder().id(99L).build()));
     FeignException failure = transportCompanyFailure(status);
     when(transportCompanyClient.getTransportCompany(99L)).thenThrow(failure);
+    List<MultipartFile> documents = List.of(PdfFiles.MULTIPART_FILES.getFirst());
 
-    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(
-        statement, List.of(PdfFiles.MULTIPART_FILES.getFirst())))
+    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(statement, documents))
         .satisfies(exception -> assertTransportCompanyFailure(exception, failure));
 
     assertThat(timetableHearingStatementRepository.count()).isZero();
@@ -274,8 +273,9 @@ class TimetableHearingStatementServiceTest {
     clearInvocations(pdfsUploadAmazonService);
     FeignException failure = transportCompanyFailure(status);
     when(transportCompanyClient.getTransportCompany(99L)).thenThrow(failure);
+    List<MultipartFile> documents = List.of();
 
-    assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(existingStatement, statement, List.of()))
+    assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(existingStatement, statement, documents))
         .satisfies(exception -> assertTransportCompanyFailure(exception, failure));
 
     TimetableHearingStatement persisted = timetableHearingStatementService.getTimetableHearingStatementsById(statement.getId());
@@ -292,8 +292,9 @@ class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModelV2 statement = buildTimetableHearingStatementModelV2();
     statement.setResponsibleTransportCompanies(List.of(
         TimetableHearingStatementResponsibleTransportCompanyModel.builder().build()));
+    List<MultipartFile> documents = List.of();
 
-    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(statement, List.of()))
+    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(statement, documents))
         .isInstanceOf(BadRequestException.class);
 
     assertThat(timetableHearingStatementRepository.count()).isZero();
@@ -305,8 +306,9 @@ class TimetableHearingStatementServiceTest {
     timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 statement = buildTimetableHearingStatementModelV2();
     statement.setResponsibleTransportCompanies(Collections.singletonList(null));
+    List<MultipartFile> documents = List.of();
 
-    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(statement, List.of()))
+    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(statement, documents))
         .isInstanceOf(BadRequestException.class);
 
     assertThat(timetableHearingStatementRepository.count()).isZero();
@@ -324,10 +326,12 @@ class TimetableHearingStatementServiceTest {
 
   private static void assertTransportCompanyFailure(Throwable exception, FeignException failure) {
     if (failure.status() == 404) {
-      assertThat(exception).isInstanceOf(ResponsibleTransportCompanyNotFoundException.class);
-      ResponsibleTransportCompanyNotFoundException notFound = (ResponsibleTransportCompanyNotFoundException) exception;
-      assertThat(notFound.getErrorResponse().getDetails()).singleElement()
-          .satisfies(detail -> assertThat(detail.getField()).isEqualTo("responsibleTransportCompanies.id"));
+      assertThat(exception).hasCause(failure)
+          .isInstanceOfSatisfying(NotFoundException.class, notFound -> {
+            assertThat(notFound.getErrorResponse().getStatus()).isEqualTo(404);
+            assertThat(notFound.getErrorResponse().getDetails()).singleElement()
+                .satisfies(detail -> assertThat(detail.getField()).isEqualTo("responsibleTransportCompanies.id"));
+          });
     } else {
       assertThat(exception).isSameAs(failure);
     }

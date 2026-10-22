@@ -8,13 +8,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public abstract class NotFoundException extends AtlasException {
+public class NotFoundException extends AtlasException {
 
   private static final String CODE = "ERROR.ENTITY_NOT_FOUND";
   private static final String ERROR = "Not found";
 
   private final String field;
   private final String value;
+
+  public NotFoundException(String field, String value, Throwable cause) {
+    this(field, value);
+    initCause(cause);
+  }
 
   @Override
   public ErrorResponse getErrorResponse() {

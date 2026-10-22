@@ -5,6 +5,7 @@ import feign.Request;
 import feign.Response;
 import feign.RetryableException;
 import feign.codec.ErrorDecoder;
+import org.springframework.http.HttpStatus;
 
 class TransportCompanyRetryErrorDecoder implements ErrorDecoder {
 
@@ -18,7 +19,7 @@ class TransportCompanyRetryErrorDecoder implements ErrorDecoder {
     }
 
     Exception exception = defaultDecoder.decode(methodKey, response);
-    if (exception instanceof RetryableException || response.status() == 429) {
+    if (exception instanceof RetryableException || response.status() == HttpStatus.TOO_MANY_REQUESTS.value()) {
       return exception;
     }
     return new RetryableException(
@@ -32,7 +33,10 @@ class TransportCompanyRetryErrorDecoder implements ErrorDecoder {
   }
 
   private boolean isRetryable(int status) {
-    return status == 429 || status == 502 || status == 503 || status == 504;
+    return status == HttpStatus.TOO_MANY_REQUESTS.value()
+        || status == HttpStatus.BAD_GATEWAY.value()
+        || status == HttpStatus.SERVICE_UNAVAILABLE.value()
+        || status == HttpStatus.GATEWAY_TIMEOUT.value();
   }
 
 }
