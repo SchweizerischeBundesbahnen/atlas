@@ -69,6 +69,17 @@ class LineApiV3Test {
     assertThat(responses.get("409")).contains("members outside of the new line validity");
   }
 
+  @Test
+  void shouldDocumentSupervisorOnlyFotCommentAsForbiddenWhenWritingLineVersion() throws Exception {
+    // Given
+    Method create = LineApiV3.class.getMethod("createLineVersionV3", CreateLineVersionModelV3.class);
+    Method update = LineApiV3.class.getMethod("updateLineVersionV3", Long.class, UpdateLineVersionModelV3.class);
+
+    // When / Then
+    assertThat(documentedResponses(create).get("403")).contains("fotComment", "Supervisor");
+    assertThat(documentedResponses(update).get("403")).contains("fotComment", "non-Supervisor");
+  }
+
   private static Map<String, String> documentedResponses(Method method) {
     return Arrays.stream(method.getAnnotation(ApiResponses.class).value())
         .collect(Collectors.toMap(ApiResponse::responseCode, ApiResponse::description));

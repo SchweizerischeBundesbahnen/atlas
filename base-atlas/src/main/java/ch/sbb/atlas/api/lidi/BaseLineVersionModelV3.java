@@ -100,6 +100,12 @@ public abstract class BaseLineVersionModelV3 implements DatesValidator {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 
+  @Schema(description = "Comment of the Federal Office of Transport (BAV) - only a Supervisor may set or change it. Blank "
+      + "values are stored as null", example = "Kommentar des BAV zur Linie.")
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String fotComment;
+
   @Schema(description = "Valid from")
   @NotNull
   private LocalDate validFrom;

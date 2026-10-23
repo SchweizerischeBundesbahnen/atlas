@@ -3,6 +3,7 @@ package ch.sbb.line.directory.module.line.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
@@ -10,6 +11,7 @@ import ch.sbb.line.directory.module.line.LineTestData;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
+import jakarta.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -88,6 +90,43 @@ class LineVersionV3RepositoryTest {
     assertThat(result.getCablewayNumber()).isEqualTo("3521");
     assertThat(result.getCablewayType()).isEqualTo("Pendelbahn");
     assertThat(result.getCablewayName()).isEqualTo("Luftseilbahn Wengen - Maennlichen");
+  }
+
+  @Test
+  void shouldPersistFotCommentOfExactlyMaxLengthIndependentOfComment() {
+    //given
+    String fotComment = "b".repeat(AtlasFieldLengths.LENGTH_1500);
+
+    //when
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().comment("TU comment").fotComment(fotComment).build());
+    LineVersionV3 result = lineVersionV3Repository.findAll().getFirst();
+
+    //then
+    assertThat(result.getFotComment()).hasSize(AtlasFieldLengths.LENGTH_1500).isEqualTo(fotComment);
+    assertThat(result.getComment()).isEqualTo("TU comment");
+  }
+
+  @Test
+  void shouldRejectFotCommentExceedingMaxLength() {
+    //given
+    LineVersionV3 line = LineVersionV3TestData.lineBuilder().fotComment("b".repeat(AtlasFieldLengths.LENGTH_1500 + 1)).build();
+
+    //when && then
+    assertThatExceptionOfType(ConstraintViolationException.class)
+        .isThrownBy(() -> lineVersionV3Repository.saveAndFlush(line));
+    assertThat(lineVersionV3Repository.count()).isZero();
+  }
+
+  @Test
+  void shouldRejectFotCommentExceedingMaxLengthWithoutChangingExistingRows() {
+    //given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    LineVersionV3 subline = LineVersionV3TestData.sublineBuilder().fotComment("b".repeat(AtlasFieldLengths.LENGTH_1500 + 1)).build();
+
+    //when && then
+    assertThatExceptionOfType(ConstraintViolationException.class)
+        .isThrownBy(() -> lineVersionV3Repository.saveAndFlush(subline));
+    assertThat(lineVersionV3Repository.count()).isEqualTo(1);
   }
 
   @Test

@@ -58,8 +58,8 @@ public interface LineApiV3 {
           + "number, swissLineNumber, offerCategory or concessionType, cableway fields provided without a cableway mean of "
           + "transport or concession type / swiss line number rules "
           + "violated", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "403", description = "No permission to create this line or financing / cableway fields "
-          + "were provided without the SUPERVISOR role", content = @Content(schema =
+      @ApiResponse(responseCode = "403", description = "No permission to create this line, financing / cableway fields "
+          + "were provided without the SUPERVISOR role or the fotComment was set by a non-Supervisor", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "404", description = "Referenced line not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class))),
@@ -81,8 +81,9 @@ public interface LineApiV3 {
           + "cableway fields provided without a cableway mean of transport "
           + "or concession type / swiss line number rules violated", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "403", description = "No permission to update this line, the line is REVOKED or "
-          + "financing / cableway fields were changed without the SUPERVISOR role", content =
+      @ApiResponse(responseCode = "403", description = "No permission to update this line, the line is REVOKED, "
+          + "financing / cableway fields were changed without the SUPERVISOR role or the fotComment is changed by a "
+          + "non-Supervisor", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "404", description = "Line version not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class))),

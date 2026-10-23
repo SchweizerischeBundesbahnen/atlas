@@ -19,8 +19,10 @@ import ch.sbb.atlas.api.lidi.LineVersionModelV3;
 import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.exception.RevokedException;
@@ -38,6 +40,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
@@ -47,6 +53,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 
 class LineVersionV3ServiceTest {
 
@@ -65,6 +72,9 @@ class LineVersionV3ServiceTest {
   @Mock
   private LineV3ShorteningService lineV3ShorteningService;
 
+  @Mock
+  private BusinessOrganisationBasedUserAdministrationService userAdministrationService;
+
   private LineVersionV3Service lineVersionV3Service;
 
   private AutoCloseable mocks;
@@ -73,7 +83,7 @@ class LineVersionV3ServiceTest {
   void setUp() {
     mocks = MockitoAnnotations.openMocks(this);
     lineVersionV3Service = new LineVersionV3Service(lineVersionV3Repository, versionableService,
-        lineVersionV3ValidationService, lineV3ShorteningService);
+        lineVersionV3ValidationService, lineV3ShorteningService, userAdministrationService);
   }
 
   @AfterEach
@@ -483,6 +493,132 @@ class LineVersionV3ServiceTest {
     verify(lineV3ShorteningService, never()).checkAndPrepareToShortMembers(any(), any());
     verify(lineVersionV3Repository).incrementVersion(LineVersionV3TestData.PARENT_SLNID);
     verify(lineVersionV3Repository, never()).incrementVersion(LineVersionV3TestData.CHILD_SLNID);
+  }
+
+  @ParameterizedTest
+  @CsvSource(value = {"A,B", "A,NULL", "NULL,B"}, nullValues = "NULL")
+  void shouldRejectChangedFotCommentOnUpdateWhenNotSupervisor(String storedFotComment, String sentFotComment) {
+    // Given
+    LineVersionV3 current = LineVersionV3TestData.lineBuilder().id(1L).version(0).fotComment(storedFotComment).build();
+    LineVersionV3 edited = LineVersionV3TestData.lineBuilder().fotComment(sentFotComment).version(0).build();
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
+
+    // When / Then
+    assertThatThrownBy(() -> lineVersionV3Service.update(current, edited, List.of(current)))
+        .isInstanceOf(AccessDeniedException.class)
+        .hasMessage("Only a Supervisor is allowed to change the field fotComment.");
+    verifyNothingWrittenOrValidated();
+  }
+
+  @ParameterizedTest
+  @CsvSource(value = {"A,B", "A,NULL", "NULL,B"}, nullValues = "NULL")
+  void shouldAllowChangedFotCommentOnUpdateWhenSupervisor(String storedFotComment, String sentFotComment) {
+    // Given
+    LineVersionV3 current = LineVersionV3TestData.lineBuilder().id(1L).version(0).fotComment(storedFotComment).build();
+    LineVersionV3 edited = LineVersionV3TestData.lineBuilder().fotComment(sentFotComment).version(0).build();
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+
+    // When
+    lineVersionV3Service.update(current, edited, List.of(current));
+
+    // Then
+    verify(lineVersionV3ValidationService).validateUpdate(current, edited);
+    verify(versionableService).applyVersioning(eq(LineVersionV3.class), anyList(), any(), any());
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"A"})
+  @NullSource
+  void shouldNotAskForSupervisorWhenFotCommentIsUnchangedOnUpdate(String fotComment) {
+    // Given
+    LineVersionV3 current = LineVersionV3TestData.lineBuilder().id(1L).version(0).fotComment(fotComment).build();
+    LineVersionV3 edited = LineVersionV3TestData.lineBuilder().description("changed").fotComment(fotComment).version(0).build();
+
+    // When
+    lineVersionV3Service.update(current, edited, List.of(current));
+
+    // Then
+    verify(userAdministrationService, never()).isAtLeastSupervisor(any());
+    verify(versionableService).applyVersioning(eq(LineVersionV3.class), anyList(), any(), any());
+  }
+
+  @Test
+  void shouldCheckFotCommentBeforeAnyValidationOrVersioningOnUpdate() {
+    // Given
+    LineVersionV3 current = LineVersionV3TestData.lineBuilder().id(1L).version(0).status(Status.REVOKED).fotComment("A").build();
+    LineVersionV3 edited = LineVersionV3TestData.lineBuilder().fotComment("B").version(0).build();
+    doThrow(new RevokedException(current.getSlnid())).when(lineVersionV3ValidationService).validateNotRevoked(current);
+
+    // When / Then
+    assertThatThrownBy(() -> lineVersionV3Service.update(current, edited, List.of(current)))
+        .isInstanceOf(AccessDeniedException.class);
+    verifyNothingWrittenOrValidated();
+  }
+
+  @Test
+  void shouldRejectFotCommentOnCreateWhenNotSupervisor() {
+    // Given
+    LineVersionV3 newLine = newLine().fotComment("B").build();
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
+
+    // When / Then
+    assertThatThrownBy(() -> lineVersionV3Service.create(newLine)).isInstanceOf(AccessDeniedException.class);
+    verifyNothingWrittenOrValidated();
+  }
+
+  @Test
+  void shouldAllowFotCommentOnCreateWhenSupervisor() {
+    // Given
+    LineVersionV3 newLine = newLine().fotComment("B").build();
+    mockSaveGeneratingSlnid();
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+
+    // When
+    LineVersionV3 result = lineVersionV3Service.create(newLine);
+
+    // Then
+    assertThat(result.getFotComment()).isEqualTo("B");
+    verify(lineVersionV3Repository).saveAndFlush(newLine);
+  }
+
+  @Test
+  void shouldNotAskForSupervisorWhenCreatingWithoutFotComment() {
+    // Given
+    mockSaveGeneratingSlnid();
+
+    // When
+    lineVersionV3Service.create(newLine().build());
+
+    // Then
+    verify(userAdministrationService, never()).isAtLeastSupervisor(any());
+  }
+
+  @Test
+  void shouldNotShortenMembersWhenFotCommentChangedWithShortenedValidityOnUpdate() {
+    // Given
+    LineVersionV3 current = LineVersionV3TestData.lineBuilder().id(1L).version(0).fotComment("A").build();
+    LineVersionV3 edited = LineVersionV3TestData.lineBuilder().fotComment("B").validTo(LocalDate.of(2030, 12, 31)).version(0)
+        .build();
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    when(lineV3ShorteningService.isOnlyValidityChanged(current, edited)).thenReturn(false);
+    when(lineV3ShorteningService.isShortening(current, edited)).thenReturn(true);
+
+    // When
+    lineVersionV3Service.update(current, edited, List.of(current));
+
+    // Then
+    verify(lineV3ShorteningService, never()).checkAndPrepareToShortMembers(any(), any());
+    verify(lineVersionV3Repository).incrementVersion(LineVersionV3TestData.PARENT_SLNID);
+    verify(lineVersionV3Repository, never()).incrementVersion(LineVersionV3TestData.CHILD_SLNID);
+  }
+
+  private void verifyNothingWrittenOrValidated() {
+    verify(lineVersionV3ValidationService, never()).validateNotRevoked(any());
+    verify(lineVersionV3ValidationService, never()).validateUpdate(any(), any());
+    verify(lineVersionV3ValidationService, never()).validatePreconditionBusinessRules(any());
+    verify(lineVersionV3Repository, never()).incrementVersion(anyString());
+    verify(lineVersionV3Repository, never()).saveAndFlush(any());
+    verify(versionableService, never()).applyVersioning(any(), anyList(), any(), any());
   }
 
   @Test

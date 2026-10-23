@@ -105,6 +105,10 @@ public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAs
   @AtlasVersionableProperty
   private String comment;
 
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  @AtlasVersionableProperty
+  private String fotComment;
+
   @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty

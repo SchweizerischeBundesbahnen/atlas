@@ -31,6 +31,7 @@ public class LineVersionV3Mapper {
         .cablewayType(version.getCablewayType())
         .cablewayName(version.getCablewayName())
         .comment(version.getComment())
+        .fotComment(version.getFotComment())
         .referencedLine(toReferencedLine(parent))
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
@@ -61,6 +62,7 @@ public class LineVersionV3Mapper {
         .cablewayType(model.getCablewayType())
         .cablewayName(model.getCablewayName())
         .comment(model.getComment())
+        .fotComment(normalizeBlank(model.getFotComment()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .build();
@@ -86,6 +88,7 @@ public class LineVersionV3Mapper {
         .cablewayType(model.getCablewayType())
         .cablewayName(model.getCablewayName())
         .comment(model.getComment())
+        .fotComment(normalizeBlank(model.getFotComment()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .version(model.getEtagVersion())
@@ -94,6 +97,13 @@ public class LineVersionV3Mapper {
 
   public static LineObjectType resolveType(LineVersionV3 version) {
     return version.getReferencedLineSlnid() == null ? LineObjectType.LINE : LineObjectType.SUBLINE;
+  }
+
+  /**
+   * {@code null}, empty and whitespace-only values are stored as {@code null}; any other value is kept as sent (no trim).
+   */
+  private static String normalizeBlank(String value) {
+    return value == null || value.isBlank() ? null : value;
   }
 
   /**
