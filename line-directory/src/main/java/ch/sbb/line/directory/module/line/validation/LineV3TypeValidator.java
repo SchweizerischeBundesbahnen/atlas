@@ -12,7 +12,7 @@ import ch.sbb.line.directory.module.line.exception.LineV3TypeNotAllowedException
 import ch.sbb.line.directory.module.line.exception.LineV3TypeOrderlyException;
 import ch.sbb.line.directory.module.line.exception.ReferencedLineHasParentException;
 import ch.sbb.line.directory.module.line.exception.ReferencedLineRevokedException;
-import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
+import ch.sbb.line.directory.module.line.service.LineVersionV3ReadService;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class LineV3TypeValidator {
     ALLOWED_MEMBER_TYPES.put(LineType.OPERATIONAL, Set.of(LineType.OPERATIONAL));
   }
 
-  private final LineVersionV3Repository lineVersionV3Repository;
+  private final LineVersionV3ReadService lineVersionV3ReadService;
 
   public void validateLineType(LineVersionV3 line) {
     if (!ALLOWED_LINE_TYPES.contains(line.getLineType())) {
@@ -62,14 +62,14 @@ public class LineV3TypeValidator {
     if (version.getLineType() != LineType.ORDERLY && version.getLineType() != LineType.CONCESSION) {
       return;
     }
-    List<LineVersionV3> overlaps = lineVersionV3Repository.findSwissLineNumberOverlaps(version);
+    List<LineVersionV3> overlaps = lineVersionV3ReadService.findSwissLineNumberOverlaps(version);
     if (!overlaps.isEmpty()) {
       throw new LineV3ConflictException(version, overlaps);
     }
   }
 
   private void validateReferencedLine(LineVersionV3 member) {
-    List<LineVersionV3> referencedLineVersions = lineVersionV3Repository.findAllBySlnidOrderByValidFrom(
+    List<LineVersionV3> referencedLineVersions = lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(
         member.getReferencedLineSlnid());
     if (referencedLineVersions.isEmpty()) {
       throw new SlnidNotFoundException(member.getReferencedLineSlnid());

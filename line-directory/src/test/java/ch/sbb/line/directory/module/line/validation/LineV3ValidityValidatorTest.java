@@ -14,7 +14,7 @@ import ch.sbb.line.directory.module.line.exception.LineV3MemberValidityException
 import ch.sbb.line.directory.module.line.exception.LineV3MembersOutsideValidityException;
 import ch.sbb.line.directory.module.line.exception.OrderlyLineValidityException;
 import ch.sbb.line.directory.module.line.exception.TemporaryLineValidationException;
-import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
+import ch.sbb.line.directory.module.line.service.LineVersionV3ReadService;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,17 +30,17 @@ import org.mockito.quality.Strictness;
 class LineV3ValidityValidatorTest {
 
   @Mock
-  private LineVersionV3Repository lineVersionV3Repository;
+  private LineVersionV3ReadService lineVersionV3ReadService;
 
   private LineV3ValidityValidator validityValidator;
 
   @BeforeEach
   void setUp() {
-    validityValidator = new LineV3ValidityValidator(lineVersionV3Repository);
+    validityValidator = new LineV3ValidityValidator(lineVersionV3ReadService);
   }
 
   private void givenParent(LineVersionV3... parentVersions) {
-    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(PARENT_SLNID)).thenReturn(List.of(parentVersions));
+    when(lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(PARENT_SLNID)).thenReturn(List.of(parentVersions));
   }
 
   @Test
@@ -151,7 +151,7 @@ class LineV3ValidityValidatorTest {
   @Test
   void shouldRejectMemberAfterVersioningWhenParentDoesNotExist() {
     // Given
-    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(PARENT_SLNID)).thenReturn(List.of());
+    when(lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(PARENT_SLNID)).thenReturn(List.of());
     LineVersionV3 member = LineVersionV3TestData.subline();
 
     // When & Then
@@ -162,7 +162,7 @@ class LineV3ValidityValidatorTest {
   @Test
   void shouldAcceptMembersWithinParentOverallValidity() {
     // Given
-    when(lineVersionV3Repository.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of(
+    when(lineVersionV3ReadService.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of(
         LineVersionV3TestData.sublineBuilder().validFrom(LocalDate.of(2026, 1, 1)).validTo(LocalDate.of(2026, 6, 30)).build(),
         LineVersionV3TestData.sublineBuilder().validFrom(LocalDate.of(2026, 7, 1)).validTo(LocalDate.of(2026, 12, 31))
             .build()));
@@ -177,7 +177,7 @@ class LineV3ValidityValidatorTest {
   @Test
   void shouldAcceptParentWithoutMembers() {
     // Given
-    when(lineVersionV3Repository.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of());
+    when(lineVersionV3ReadService.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of());
     List<LineVersionV3> parentVersions = List.of(LineVersionV3TestData.line());
 
     // When & Then
@@ -187,7 +187,7 @@ class LineV3ValidityValidatorTest {
   @Test
   void shouldRejectParentWhenMemberEndsAfterParentValidity() {
     // Given
-    when(lineVersionV3Repository.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of(
+    when(lineVersionV3ReadService.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of(
         LineVersionV3TestData.sublineBuilder().validFrom(LocalDate.of(2026, 1, 1)).validTo(LocalDate.of(2026, 12, 31))
             .build()));
     List<LineVersionV3> parentVersions = List.of(
@@ -202,7 +202,7 @@ class LineV3ValidityValidatorTest {
   @Test
   void shouldRejectParentWhenMemberStartsBeforeParentValidity() {
     // Given
-    when(lineVersionV3Repository.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of(
+    when(lineVersionV3ReadService.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of(
         LineVersionV3TestData.sublineBuilder().validFrom(LocalDate.of(2026, 1, 1)).validTo(LocalDate.of(2026, 12, 31))
             .build()));
     List<LineVersionV3> parentVersions = List.of(
@@ -217,7 +217,7 @@ class LineV3ValidityValidatorTest {
   @Test
   void shouldListEveryMemberOutsideParentValidityOnce() {
     // Given
-    when(lineVersionV3Repository.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of(
+    when(lineVersionV3ReadService.findAllByReferencedLineSlnid(PARENT_SLNID)).thenReturn(List.of(
         LineVersionV3TestData.sublineBuilder().validFrom(LocalDate.of(2026, 1, 1)).validTo(LocalDate.of(2026, 6, 30)).build(),
         LineVersionV3TestData.sublineBuilder().validFrom(LocalDate.of(2026, 7, 1)).validTo(LocalDate.of(2026, 12, 31)).build(),
         LineVersionV3TestData.concessionMemberBuilder().validFrom(LocalDate.of(2026, 1, 1)).validTo(LocalDate.of(2026, 12, 31))

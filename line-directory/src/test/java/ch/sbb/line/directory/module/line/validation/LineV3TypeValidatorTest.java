@@ -19,7 +19,7 @@ import ch.sbb.line.directory.module.line.exception.LineV3TypeNotAllowedException
 import ch.sbb.line.directory.module.line.exception.LineV3TypeOrderlyException;
 import ch.sbb.line.directory.module.line.exception.ReferencedLineHasParentException;
 import ch.sbb.line.directory.module.line.exception.ReferencedLineRevokedException;
-import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
+import ch.sbb.line.directory.module.line.service.LineVersionV3ReadService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,17 +37,17 @@ import org.mockito.quality.Strictness;
 class LineV3TypeValidatorTest {
 
   @Mock
-  private LineVersionV3Repository lineVersionV3Repository;
+  private LineVersionV3ReadService lineVersionV3ReadService;
 
   private LineV3TypeValidator typeValidator;
 
   @BeforeEach
   void setUp() {
-    typeValidator = new LineV3TypeValidator(lineVersionV3Repository);
+    typeValidator = new LineV3TypeValidator(lineVersionV3ReadService);
   }
 
   private void givenParent(LineVersionV3... parentVersions) {
-    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(PARENT_SLNID)).thenReturn(List.of(parentVersions));
+    when(lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(PARENT_SLNID)).thenReturn(List.of(parentVersions));
   }
 
   @Test
@@ -133,7 +133,7 @@ class LineV3TypeValidatorTest {
   @Test
   void shouldRejectMemberWhenParentDoesNotExist() {
     // Given
-    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(PARENT_SLNID)).thenReturn(List.of());
+    when(lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(PARENT_SLNID)).thenReturn(List.of());
     LineVersionV3 member = LineVersionV3TestData.subline();
 
     // When & Then
@@ -252,7 +252,7 @@ class LineV3TypeValidatorTest {
     // Given
     LineVersionV3 line = LineVersionV3TestData.line();
     LineVersionV3 other = LineVersionV3TestData.lineBuilder().slnid("ch:1:slnid:1999999").build();
-    when(lineVersionV3Repository.findSwissLineNumberOverlaps(line)).thenReturn(List.of(other));
+    when(lineVersionV3ReadService.findSwissLineNumberOverlaps(line)).thenReturn(List.of(other));
 
     // When & Then
     assertThatThrownBy(() -> typeValidator.validateSwissLineNumberUniqueness(line))
@@ -264,7 +264,7 @@ class LineV3TypeValidatorTest {
     // Given
     LineVersionV3 member = LineVersionV3TestData.concessionMemberBuilder().build();
     LineVersionV3 other = LineVersionV3TestData.lineBuilder().slnid("ch:1:slnid:1999999").swissLineNumber("90.583.1").build();
-    when(lineVersionV3Repository.findSwissLineNumberOverlaps(member)).thenReturn(List.of(other));
+    when(lineVersionV3ReadService.findSwissLineNumberOverlaps(member)).thenReturn(List.of(other));
 
     // When & Then
     assertThatThrownBy(() -> typeValidator.validateSwissLineNumberUniqueness(member))
@@ -276,7 +276,7 @@ class LineV3TypeValidatorTest {
     // Given
     LineVersionV3 line = LineVersionV3TestData.lineBuilder().lineType(LineType.TEMPORARY).concessionType(null)
         .swissLineNumber(null).build();
-    when(lineVersionV3Repository.findSwissLineNumberOverlaps(any())).thenReturn(List.of(line));
+    when(lineVersionV3ReadService.findSwissLineNumberOverlaps(any())).thenReturn(List.of(line));
 
     // When & Then
     assertThatCode(() -> typeValidator.validateSwissLineNumberUniqueness(line)).doesNotThrowAnyException();

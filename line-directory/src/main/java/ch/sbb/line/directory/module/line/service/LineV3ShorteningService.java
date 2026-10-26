@@ -2,7 +2,6 @@ package ch.sbb.line.directory.module.line.service;
 
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
-import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +37,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LineV3ShorteningService {
 
-  private final LineVersionV3Repository lineVersionV3Repository;
+  private final LineVersionV3ReadService lineVersionV3ReadService;
 
   public AffectedLineV3Members checkAffectedMembers(LineVersionV3 lineVersion, LineVersionV3 editedVersion) {
     List<String> allowedMembers = new ArrayList<>();
@@ -84,7 +83,7 @@ public class LineV3ShorteningService {
   }
 
   public Map<String, List<LineVersionV3>> getAllMembersByParentSlnid(String parentSlnid) {
-    return lineVersionV3Repository.findAllByReferencedLineSlnid(parentSlnid).stream()
+    return lineVersionV3ReadService.findAllByReferencedLineSlnid(parentSlnid).stream()
         .collect(Collectors.groupingBy(LineVersionV3::getSlnid, LinkedHashMap::new, Collectors.toList()));
   }
 
@@ -107,7 +106,7 @@ public class LineV3ShorteningService {
     LineVersionV3 editedVersion = data.editedVersion();
     for (List<LineVersionV3> memberVersions : data.memberVersions().values()) {
       String memberSlnid = memberVersions.getFirst().getSlnid();
-      VersionRange range = getOldestAndLatestVersion(memberSlnid);
+      VersionRange range = VersionRange.of(memberVersions);
       if (isMemberValidityAffectedByUpdatedParent(editedVersion.getValidFrom(), editedVersion.getValidTo(), range)) {
         if (shorteningAllowedRule.isAllowed(editedVersion, range, memberVersions.size())) {
           data.allowedMembers().add(memberSlnid);
@@ -274,7 +273,7 @@ public class LineV3ShorteningService {
   }
 
   private List<LineVersionV3> findAllVersionsBySlnid(String slnid) {
-    return lineVersionV3Repository.findAllBySlnidOrderByValidFrom(slnid);
+    return lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(slnid);
   }
 
   private static LineVersionV3 cloneVersion(LineVersionV3 version) {

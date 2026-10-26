@@ -7,7 +7,7 @@ import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
-import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
+import ch.sbb.line.directory.module.line.service.LineVersionV3ReadService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,14 +23,14 @@ class LineV3ShorteningServiceTest {
   private static final String PARENT = "mainline";
 
   @Mock
-  private LineVersionV3Repository lineVersionV3Repository;
+  private LineVersionV3ReadService lineVersionV3ReadService;
 
   private LineV3ShorteningService lineV3ShorteningService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineV3ShorteningService = new LineV3ShorteningService(lineVersionV3Repository);
+    lineV3ShorteningService = new LineV3ShorteningService(lineVersionV3ReadService);
   }
 
   @Test
@@ -382,7 +382,7 @@ class LineV3ShorteningServiceTest {
 
     stubParentVersions(lineVersion);
     stubMembers(ownMember);
-    when(lineVersionV3Repository.findAllByReferencedLineSlnid("otherline")).thenReturn(new ArrayList<>(List.of(foreignMember)));
+    when(lineVersionV3ReadService.findAllByReferencedLineSlnid("otherline")).thenReturn(new ArrayList<>(List.of(foreignMember)));
     stubMemberVersions("12345", ownMember);
     stubMemberVersions("9999", foreignMember);
 
@@ -534,15 +534,15 @@ class LineV3ShorteningServiceTest {
   }
 
   private void stubParentVersions(LineVersionV3... versions) {
-    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(PARENT)).thenReturn(new ArrayList<>(List.of(versions)));
+    when(lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(PARENT)).thenReturn(new ArrayList<>(List.of(versions)));
   }
 
   private void stubMembers(LineVersionV3... versions) {
-    when(lineVersionV3Repository.findAllByReferencedLineSlnid(PARENT)).thenReturn(new ArrayList<>(List.of(versions)));
+    when(lineVersionV3ReadService.findAllByReferencedLineSlnid(PARENT)).thenReturn(new ArrayList<>(List.of(versions)));
   }
 
   private void stubMemberVersions(String slnid, LineVersionV3... versions) {
-    when(lineVersionV3Repository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(new ArrayList<>(List.of(versions)));
+    when(lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(new ArrayList<>(List.of(versions)));
   }
 
   private static LineVersionV3 parent(Long id, LocalDate validFrom, LocalDate validTo, String description) {

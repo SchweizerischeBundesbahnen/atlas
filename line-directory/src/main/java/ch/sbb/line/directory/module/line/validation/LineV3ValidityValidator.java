@@ -8,7 +8,7 @@ import ch.sbb.line.directory.module.line.exception.LineV3MemberValidityException
 import ch.sbb.line.directory.module.line.exception.LineV3MembersOutsideValidityException;
 import ch.sbb.line.directory.module.line.exception.OrderlyLineValidityException;
 import ch.sbb.line.directory.module.line.exception.TemporaryLineValidationException;
-import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
+import ch.sbb.line.directory.module.line.service.LineVersionV3ReadService;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -22,7 +22,7 @@ public class LineV3ValidityValidator {
   private static final int TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS = 14;
   private static final int ORDERLY_LINE_MIN_VALIDITY_IN_DAYS = 15;
 
-  private final LineVersionV3Repository lineVersionV3Repository;
+  private final LineVersionV3ReadService lineVersionV3ReadService;
 
   public void validateLineTypeDurationLimits(List<LineVersionV3> lineVersions) {
     LineType lineType = lineVersions.getFirst().getLineType();
@@ -39,7 +39,7 @@ public class LineV3ValidityValidator {
 
   public void validateMemberWithinReferencedLineValidity(List<LineVersionV3> memberVersions) {
     String referencedLineSlnid = memberVersions.getFirst().getReferencedLineSlnid();
-    List<LineVersionV3> referencedLineVersions = lineVersionV3Repository.findAllBySlnidOrderByValidFrom(referencedLineSlnid);
+    List<LineVersionV3> referencedLineVersions = lineVersionV3ReadService.findAllBySlnidOrderByValidFrom(referencedLineSlnid);
     if (referencedLineVersions.isEmpty()) {
       throw new SlnidNotFoundException(referencedLineSlnid);
     }
@@ -54,7 +54,7 @@ public class LineV3ValidityValidator {
   public void validateMembersWithinLineValidity(List<LineVersionV3> lineVersions) {
     String lineSlnid = lineVersions.getFirst().getSlnid();
     DateRange lineRange = totalValidity(lineVersions);
-    List<String> memberSlnidsOutside = lineVersionV3Repository.findAllByReferencedLineSlnid(lineSlnid).stream()
+    List<String> memberSlnidsOutside = lineVersionV3ReadService.findAllByReferencedLineSlnid(lineSlnid).stream()
         .filter(member -> !DateRange.fromVersionable(member).isDateRangeContainedIn(lineRange))
         .map(LineVersionV3::getSlnid)
         .distinct()
