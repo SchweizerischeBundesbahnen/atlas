@@ -55,7 +55,6 @@ public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAs
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_500)
   @BusinessIdGeneration(valueGenerator = SlnidGenerator.class)
   @Column(updatable = false)

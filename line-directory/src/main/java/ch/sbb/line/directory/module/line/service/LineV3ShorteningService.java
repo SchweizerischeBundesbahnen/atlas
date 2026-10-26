@@ -16,8 +16,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- * V3 port of {@link ch.sbb.line.directory.module.subline.service.SublineShorteningService}: shortening a line (only validity
- * changed) shortens its members (rows with {@code referencedLineSlnid == line slnid}) as far as allowed.
+ * Shortens the members of a line when the line itself is shortened.
+ *
+ * A member must only be valid within the validity of the line it references (ATLAS-1372). Because that validity is
+ * editable, shortening a line can leave its members hanging outside of it. Instead of making the user fix every member by
+ * hand, members that can absorb the cut are shortened together with the line.
+ *
+ * Only a pure validity change triggers this; editing any business field in the same request disables it.
+ *
+ * A member can absorb the cut only if the new date still falls inside the member version that would be trimmed, because
+ * deleting whole member versions is not supported. If a line has several versions, only its oldest may move validFrom and
+ * only its latest may move validTo. If a single line version moves both dates, a member with several versions is only
+ * shortened when both sides are possible.
+ *
+ * {@link #checkAffectedMembers} reports which members can and cannot be shortened. {@link #checkAndPrepareToShortMembers}
+ * returns detached before/after pairs for the normal versioning update; nothing is persisted here. Members that cannot be
+ * shortened stay untouched and let the update fail in
+ * {@link ch.sbb.line.directory.module.line.validation.LineV3ValidityValidator#validateMembersWithinLineValidity}.
  */
 @RequiredArgsConstructor
 @Service
@@ -206,8 +221,8 @@ public class LineV3ShorteningService {
   }
 
   /**
-   * Compares all business fields a client can edit. Immutable fields ({@code slnid}, {@code referencedLineSlnid},
-   * {@code lineType}) are ignored, as V2 ignores {@code lineType}.
+   * Compares all business fields a client can edit. The immutable fields {@code slnid}, {@code referencedLineSlnid} and
+   * {@code lineType} are ignored because they can never differ.
    */
   private static boolean areNonValidityFieldsEqual(LineVersionV3 current, LineVersionV3 edited) {
     return Objects.equals(edited.getSwissLineNumber(), current.getSwissLineNumber())
