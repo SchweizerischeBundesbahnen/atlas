@@ -51,7 +51,7 @@ Hint: The transportCompany export-test only consist of 1 downloadGZip()-call, be
 
 These are standard CRU(D)-tests. To create a subline a line is needed.
 
-`LineV3CRU.cy.ts` covers the V3 write API (`/line-directory/v3/lines/versions`): create LINE → read → update → create CONCESSION member (SUBLINE, `referencedLineSlnid`, own `concessionType`) → read → update. V3 has no delete/revoke endpoint yet (ATLAS-3574), so the spec uses a unique `swissLineNumber` per run and does not clean up.
+`LineV3CRU.cy.ts` covers the V3 write API (`/line-directory/v3/lines/versions`): create LINE → read → update → create CONCESSION member (SUBLINE, `referencedLineSlnid`, own `concessionType`) → read → update.
 
 ### Person-with-reduced-mobility API-Tests
 

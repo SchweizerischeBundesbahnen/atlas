@@ -257,7 +257,7 @@ class LineVersionV3ServiceTest {
     InOrder inOrder = inOrder(lineVersionV3ValidationService, lineVersionV3Repository);
     inOrder.verify(lineVersionV3ValidationService).validatePreconditionBusinessRules(newLine);
     inOrder.verify(lineVersionV3Repository).saveAndFlush(newLine);
-    inOrder.verify(lineVersionV3ValidationService).validateLineAfterVersioningBusinessRule(savedVersions);
+    inOrder.verify(lineVersionV3ValidationService).validateValidityConstraints(savedVersions);
   }
 
   @Test
@@ -341,7 +341,7 @@ class LineVersionV3ServiceTest {
     inOrder.verify(lineVersionV3Repository).incrementVersion(LineVersionV3TestData.PARENT_SLNID);
     inOrder.verify(versionableService).doNotAllowGaps(versionedObjects);
     inOrder.verify(versionableService).applyVersioning(eq(LineVersionV3.class), eq(versionedObjects), any(), any());
-    inOrder.verify(lineVersionV3ValidationService).validateLineAfterVersioningBusinessRule(versionsAfterVersioning);
+    inOrder.verify(lineVersionV3ValidationService).validateValidityConstraints(versionsAfterVersioning);
     assertThat(result).isEqualTo(versionsAfterVersioning);
   }
 

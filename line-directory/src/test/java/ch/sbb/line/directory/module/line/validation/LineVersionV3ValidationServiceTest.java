@@ -427,7 +427,7 @@ class LineVersionV3ValidationServiceTest {
     LineVersionV3 second = temporaryLine(LocalDate.of(2026, 1, 11), LocalDate.of(2026, 1, 15));
 
     // When & Then
-    assertThatThrownBy(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(first, second)))
+    assertThatThrownBy(() -> validationService.validateValidityConstraints(List.of(first, second)))
         .isInstanceOf(TemporaryLineValidationException.class);
   }
 
@@ -438,7 +438,7 @@ class LineVersionV3ValidationServiceTest {
     LineVersionV3 second = temporaryLine(LocalDate.of(2026, 1, 11), LocalDate.of(2026, 1, 14));
 
     // When & Then
-    assertThatCode(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(first, second)))
+    assertThatCode(() -> validationService.validateValidityConstraints(List.of(first, second)))
         .doesNotThrowAnyException();
   }
 
@@ -449,7 +449,7 @@ class LineVersionV3ValidationServiceTest {
         .validTo(LocalDate.of(2026, 1, 14)).build();
 
     // When & Then
-    assertThatThrownBy(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(line)))
+    assertThatThrownBy(() -> validationService.validateValidityConstraints(List.of(line)))
         .isInstanceOf(OrderlyLineValidityException.class);
   }
 
@@ -462,7 +462,7 @@ class LineVersionV3ValidationServiceTest {
         .validTo(LocalDate.of(2026, 1, 15)).build();
 
     // When & Then
-    assertThatCode(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(first, second)))
+    assertThatCode(() -> validationService.validateValidityConstraints(List.of(first, second)))
         .doesNotThrowAnyException();
   }
 
@@ -473,7 +473,7 @@ class LineVersionV3ValidationServiceTest {
     LineVersionV3 member = memberOfType(LineType.TEMPORARY);
 
     // When & Then
-    assertThatCode(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(member)))
+    assertThatCode(() -> validationService.validateValidityConstraints(List.of(member)))
         .doesNotThrowAnyException();
   }
 
@@ -487,7 +487,7 @@ class LineVersionV3ValidationServiceTest {
         .validTo(LocalDate.of(2026, 12, 31)).build();
 
     // When & Then
-    assertThatCode(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(member)))
+    assertThatCode(() -> validationService.validateValidityConstraints(List.of(member)))
         .doesNotThrowAnyException();
   }
 
@@ -498,7 +498,7 @@ class LineVersionV3ValidationServiceTest {
     LineVersionV3 member = LineVersionV3TestData.sublineBuilder().validFrom(LocalDate.of(2025, 12, 31)).build();
 
     // When & Then
-    assertThatThrownBy(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(member)))
+    assertThatThrownBy(() -> validationService.validateValidityConstraints(List.of(member)))
         .isInstanceOf(LineV3MemberValidityException.class);
   }
 
@@ -509,7 +509,7 @@ class LineVersionV3ValidationServiceTest {
     LineVersionV3 member = LineVersionV3TestData.sublineBuilder().validTo(LocalDate.of(2027, 1, 1)).build();
 
     // When & Then
-    assertThatThrownBy(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(member)))
+    assertThatThrownBy(() -> validationService.validateValidityConstraints(List.of(member)))
         .isInstanceOf(LineV3MemberValidityException.class);
   }
 
@@ -522,7 +522,7 @@ class LineVersionV3ValidationServiceTest {
         .validTo(LocalDate.of(2027, 6, 30)).build();
 
     // When & Then
-    assertThatThrownBy(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(inside, outside)))
+    assertThatThrownBy(() -> validationService.validateValidityConstraints(List.of(inside, outside)))
         .isInstanceOf(LineV3MemberValidityException.class);
   }
 
@@ -533,7 +533,7 @@ class LineVersionV3ValidationServiceTest {
     LineVersionV3 member = LineVersionV3TestData.subline();
 
     // When & Then
-    assertThatThrownBy(() -> validationService.validateLineAfterVersioningBusinessRule(List.of(member)))
+    assertThatThrownBy(() -> validationService.validateValidityConstraints(List.of(member)))
         .isInstanceOf(SlnidNotFoundException.class);
   }
 

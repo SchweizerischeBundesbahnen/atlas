@@ -267,19 +267,6 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateWhenIdIsSet() throws Exception {
-    // Given
-    CreateLineVersionModelV3 model = orderlyLineModel("90.100").id(5L).build();
-
-    // When
-    ResultActions result = create(model);
-
-    // Then
-    result.andExpect(status().isBadRequest());
-    assertThat(lineVersionV3Repository.findAll()).isEmpty();
-  }
-
-  @Test
   void shouldNotCreateWithoutDescription() throws Exception {
     // Given
     CreateLineVersionModelV3 model = orderlyLineModel("90.100").description(null).build();
@@ -524,6 +511,36 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
     // Then
     result.andExpect(status().isForbidden());
     assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getDescription()).isEqualTo("Val-Surses-Bus");
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotUpdateAsUnauthorizedClient() throws Exception {
+    // Given
+    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    UpdateLineVersionModelV3 model = updateModelOf(saved).description("Updated description").build();
+
+    // When
+    ResultActions result = update(saved.getId(), model);
+
+    // Then
+    result.andExpect(status().isForbidden());
+    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getDescription()).isEqualTo("Val-Surses-Bus");
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.UNAUTHORIZED)
+  void shouldNotCreateMemberAsUnauthorizedClient() throws Exception {
+    // Given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    CreateLineVersionModelV3 model = memberModel(LineType.TECHNICAL).build();
+
+    // When
+    ResultActions result = create(model);
+
+    // Then
+    result.andExpect(status().isForbidden());
+    assertThat(lineVersionV3Repository.findAll()).hasSize(1);
   }
 
   @Test

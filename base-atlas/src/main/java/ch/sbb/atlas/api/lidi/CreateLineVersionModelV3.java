@@ -32,10 +32,6 @@ public class CreateLineVersionModelV3 extends BaseLineVersionModelV3 {
   private String referencedLineSlnid;
 
   @Schema(hidden = true)
-  @Null(message = "id " + READ_ONLY_MESSAGE)
-  private Long id;
-
-  @Schema(hidden = true)
   @Null(message = "slnid " + READ_ONLY_MESSAGE)
   private String slnid;
 

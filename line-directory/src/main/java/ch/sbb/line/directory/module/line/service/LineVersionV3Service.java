@@ -58,7 +58,7 @@ public class LineVersionV3Service {
       + ".kafka.model.user.admin.ApplicationType).LIDI)")
   public LineVersionV3 create(LineVersionV3 newVersion) {
     LineVersionV3 savedVersion = save(newVersion);
-    lineVersionV3ValidationService.validateLineAfterVersioningBusinessRule(findLineVersions(savedVersion.getSlnid()));
+    lineVersionV3ValidationService.validateValidityConstraints(findLineVersions(savedVersion.getSlnid()));
     return savedVersion;
   }
 
@@ -113,7 +113,7 @@ public class LineVersionV3Service {
     versionableService.applyVersioning(LineVersionV3.class, versionedObjects, this::save, this::deleteById);
 
     List<LineVersionV3> versionsAfterVersioning = findLineVersions(currentVersion.getSlnid());
-    lineVersionV3ValidationService.validateLineAfterVersioningBusinessRule(versionsAfterVersioning);
+    lineVersionV3ValidationService.validateValidityConstraints(versionsAfterVersioning);
     return versionsAfterVersioning;
   }
 

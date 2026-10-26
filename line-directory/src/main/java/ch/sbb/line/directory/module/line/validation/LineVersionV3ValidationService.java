@@ -11,10 +11,10 @@ import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3.Fields;
 import ch.sbb.line.directory.module.line.exception.LineV3ConflictException;
 import ch.sbb.line.directory.module.line.exception.LineV3FieldNotUpdatableException;
-import ch.sbb.line.directory.module.line.exception.LineV3MemberValidityException;
-import ch.sbb.line.directory.module.line.exception.LineV3MembersOutsideValidityException;
 import ch.sbb.line.directory.module.line.exception.LineV3MemberConcessionException;
 import ch.sbb.line.directory.module.line.exception.LineV3MemberTypeMismatchException;
+import ch.sbb.line.directory.module.line.exception.LineV3MemberValidityException;
+import ch.sbb.line.directory.module.line.exception.LineV3MembersOutsideValidityException;
 import ch.sbb.line.directory.module.line.exception.LineV3TypeNotAllowedException;
 import ch.sbb.line.directory.module.line.exception.LineV3TypeOrderlyException;
 import ch.sbb.line.directory.module.line.exception.OrderlyLineValidityException;
@@ -67,15 +67,11 @@ public class LineVersionV3ValidationService {
     sharedBusinessOrganisationService.validateSboidExists(version.getBusinessOrganisation());
   }
 
-  /**
-   * @param allVersionsOfSlnid all saved versions of one slnid ordered by validFrom
-   */
-  public void validateLineAfterVersioningBusinessRule(List<LineVersionV3> allVersionsOfSlnid) {
-    if (isMember(allVersionsOfSlnid.getFirst())) {
-      validateMemberValidityWithinReferencedLine(allVersionsOfSlnid);
+  public void validateValidityConstraints(List<LineVersionV3> versionsOfSlnid) {
+    if (isMember(versionsOfSlnid.getFirst())) {
+      validateMemberValidityWithinReferencedLine(versionsOfSlnid);
     } else {
-      validateTemporaryLinesDuration(allVersionsOfSlnid);
-      validateOrderlyLinesDuration(allVersionsOfSlnid);
+      validateTotalValidityDuration(versionsOfSlnid);
     }
   }
 
@@ -152,12 +148,18 @@ public class LineVersionV3ValidationService {
     }
   }
 
-  private void validateMemberConcessionRules(LineVersionV3 member) {
-    boolean concession = member.getLineType() == LineType.CONCESSION;
-    if (concession ^ member.getConcessionType() != null) {
+  private static void validateMemberConcessionRules(LineVersionV3 member) {
+    boolean concessionMember = member.getLineType() == LineType.CONCESSION;
+
+    boolean concessionTypeMissing = concessionMember && member.getConcessionType() == null;
+    boolean concessionTypeNotAllowed = !concessionMember && member.getConcessionType() != null;
+    if (concessionTypeMissing || concessionTypeNotAllowed) {
       throw LineV3MemberConcessionException.concessionType();
     }
-    if (concession ^ member.getSwissLineNumber() != null) {
+
+    boolean swissLineNumberMissing = concessionMember && member.getSwissLineNumber() == null;
+    boolean swissLineNumberNotAllowed = !concessionMember && member.getSwissLineNumber() != null;
+    if (swissLineNumberMissing || swissLineNumberNotAllowed) {
       throw LineV3MemberConcessionException.swissLineNumber();
     }
   }
@@ -185,21 +187,16 @@ public class LineVersionV3ValidationService {
     }
   }
 
-  private void validateTemporaryLinesDuration(List<LineVersionV3> savedLine) {
-    if (savedLine.getFirst().getLineType() == LineType.TEMPORARY) {
-      DateRange totalRange = totalValidity(savedLine);
-      if (totalRange.getValidityInDays() > TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS) {
-        throw new TemporaryLineValidationException(totalRange.getFrom(), totalRange.getTo());
-      }
-    }
-  }
+  private static void validateTotalValidityDuration(List<LineVersionV3> versionsOfSlnid) {
+    LineType lineType = versionsOfSlnid.getFirst().getLineType();
+    DateRange totalRange = totalValidity(versionsOfSlnid);
+    long validityInDays = totalRange.getValidityInDays();
 
-  private void validateOrderlyLinesDuration(List<LineVersionV3> savedLine) {
-    if (savedLine.getFirst().getLineType() == LineType.ORDERLY) {
-      DateRange totalRange = totalValidity(savedLine);
-      if (totalRange.getValidityInDays() < ORDERLY_LINE_MIN_VALIDITY_IN_DAYS) {
-        throw new OrderlyLineValidityException(totalRange.getFrom(), totalRange.getTo());
-      }
+    if (lineType == LineType.TEMPORARY && validityInDays > TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS) {
+      throw new TemporaryLineValidationException(totalRange.getFrom(), totalRange.getTo());
+    }
+    if (lineType == LineType.ORDERLY && validityInDays < ORDERLY_LINE_MIN_VALIDITY_IN_DAYS) {
+      throw new OrderlyLineValidityException(totalRange.getFrom(), totalRange.getTo());
     }
   }
 

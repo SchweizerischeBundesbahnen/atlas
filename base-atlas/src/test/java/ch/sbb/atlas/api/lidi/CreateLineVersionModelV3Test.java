@@ -91,11 +91,11 @@ class CreateLineVersionModelV3Test extends BaseValidatorTest {
   }
 
   @Test
-  void shouldRejectIdSlnidStatusAndEtagVersion() {
+  void shouldRejectSlnidStatusAndEtagVersion() {
     // Given
-    CreateLineVersionModelV3 model = valid().id(1L).slnid("ch:1:slnid:1").etagVersion(0).build();
+    CreateLineVersionModelV3 model = valid().slnid("ch:1:slnid:1").etagVersion(0).build();
 
     // When / Then
-    assertThat(properties(model)).containsExactlyInAnyOrder("id", "slnid", "etagVersion");
+    assertThat(properties(model)).containsExactlyInAnyOrder("slnid", "etagVersion");
   }
 }
