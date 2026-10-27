@@ -18,6 +18,7 @@
 --   SUBLINE   nesting depth 2 -> only the direct parent is exposed
 --   Seilbahn  cableway_number / cableway_type / cableway_name
 --   Status    DRAFT / IN_REVIEW / VALIDATED / REVOKED for the status filter
+--   SUBLINE   CONCESSION with own swiss_line_number (overlap check) + member ordering
 -----------------------------------------------------------------------------------------
 
 DELETE FROM line_version_v3_means_of_transport WHERE line_version_v3_id BETWEEN 900000 AND 900999;
@@ -228,6 +229,42 @@ VALUES (900080, 'ch:1:slnid:9000080', NULL, 'ORDERLY', 'RIGHT_FREE_LINE', 'S9', 
 INSERT INTO line_version_v3_means_of_transport (line_version_v3_id, means_of_transport)
 VALUES (900080, 'TRAIN'),
        (900081, 'TRAIN');
+
+-----------------------------------------------------------------------------------------
+-- 10) LINE with CONCESSION / TECHNICAL members (ATLAS-3578, write repository queries)
+--     900091/900092 CONCESSION member with own swiss_line_number, two versions
+--     900093        TECHNICAL member, starts before the CONCESSION member (ordering)
+-----------------------------------------------------------------------------------------
+INSERT INTO line_version_v3 (id, slnid, referenced_line_slnid, line_type, concession_type, number, swiss_line_number,
+                             short_number, offer_category, long_name, description, linien_id, comment,
+                             business_organisation, financing, cableway_number, cableway_type, cableway_name,
+                             valid_from, valid_to, status, creation_date, creator, edition_date, editor, version)
+VALUES (900090, 'ch:1:slnid:9000090', NULL, 'ORDERLY', 'FEDERALLY_LICENSED_LINE', 'K', 'b1.K', '90', 'B',
+        NULL, 'Linie mit Konzessionsteillinie', NULL, NULL,
+        'ch:1:sboid:100001', 'RPV', NULL, NULL, NULL,
+        DATE '2023-01-01', DATE '2099-12-31', 'VALIDATED',
+        NOW(), 'testdata', NOW(), 'testdata', 0),
+       (900091, 'ch:1:slnid:9000091', 'ch:1:slnid:9000090', 'CONCESSION', 'CANTONALLY_APPROVED_LINE', NULL, 'b1.K1',
+        NULL, NULL, NULL, 'Konzessionsteillinie', NULL, 'Version 1',
+        'ch:1:sboid:100001', 'RPV', NULL, NULL, NULL,
+        DATE '2024-01-01', DATE '2024-12-31', 'VALIDATED',
+        NOW(), 'testdata', NOW(), 'testdata', 0),
+       (900092, 'ch:1:slnid:9000091', 'ch:1:slnid:9000090', 'CONCESSION', 'CANTONALLY_APPROVED_LINE', NULL, 'b1.K1',
+        NULL, NULL, NULL, 'Konzessionsteillinie', NULL, 'Version 2',
+        'ch:1:sboid:100001', 'RPV', NULL, NULL, NULL,
+        DATE '2025-01-01', DATE '2099-12-31', 'VALIDATED',
+        NOW(), 'testdata', NOW(), 'testdata', 0),
+       (900093, 'ch:1:slnid:9000093', 'ch:1:slnid:9000090', 'TECHNICAL', NULL, NULL, NULL,
+        NULL, NULL, NULL, 'Technische Teillinie', NULL, NULL,
+        'ch:1:sboid:100001', NULL, NULL, NULL, NULL,
+        DATE '2023-06-01', DATE '2099-12-31', 'VALIDATED',
+        NOW(), 'testdata', NOW(), 'testdata', 0);
+
+INSERT INTO line_version_v3_means_of_transport (line_version_v3_id, means_of_transport)
+VALUES (900090, 'BUS'),
+       (900091, 'BUS'),
+       (900092, 'BUS'),
+       (900093, 'BUS');
 
 -----------------------------------------------------------------------------------------
 -- Verification
