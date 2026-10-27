@@ -3,11 +3,14 @@ package ch.sbb.line.directory.module.line.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
+import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
+import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
-import ch.sbb.line.directory.module.line.service.LineVersionV3ReadService;
+import ch.sbb.line.directory.module.line.entity.LineVersionV3.LineVersionV3Builder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -512,6 +515,57 @@ class LineV3ShorteningServiceTest {
 
     // Then
     assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldNotDetectBusinessChangeWhenAllFieldsAreIdentical() {
+    // Given
+    LineVersionV3 current = allBusinessFieldsSet().build();
+    LineVersionV3 edited = allBusinessFieldsSet().build();
+
+    // When
+    boolean result = LineV3ShorteningService.areNonValidityFieldsEqual(current, edited);
+
+    // Then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldDetectBusinessChangeWhenOneFieldDiffers() {
+    // Given
+    LineVersionV3 current = allBusinessFieldsSet().build();
+    LineVersionV3 edited = allBusinessFieldsSet().longName("otherLongName").build();
+
+    // When
+    boolean result = LineV3ShorteningService.areNonValidityFieldsEqual(current, edited);
+
+    // Then
+    assertThat(result).isFalse();
+  }
+
+  private static LineVersionV3Builder<?, ?> allBusinessFieldsSet() {
+    return LineVersionV3.builder()
+        .id(1000L)
+        .slnid(PARENT)
+        .referencedLineSlnid("parentSlnid")
+        .lineType(LineType.ORDERLY)
+        .concessionType(ConcessionType.RIGHT_FREE_LINE)
+        .number("number")
+        .swissLineNumber("swissLineNumber")
+        .shortNumber("shortNumber")
+        .offerCategory(OfferCategory.IC)
+        .longName("longName")
+        .description("description")
+        .linienId("linienId")
+        .comment("comment")
+        .businessOrganisation("businessOrganisation")
+        .financing(Financing.RPV)
+        .cablewayNumber("cablewayNumber")
+        .cablewayType("cablewayType")
+        .cablewayName("cablewayName")
+        .meansOfTransport(Set.of(LineMeanOfTransport.BUS))
+        .validFrom(date(2000, 1, 1))
+        .validTo(date(2010, 12, 31));
   }
 
   private static void assertShortening(LineV3MemberShortening shortening, String description, LocalDate currentFrom,

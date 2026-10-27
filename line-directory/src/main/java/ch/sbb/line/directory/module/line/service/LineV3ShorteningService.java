@@ -220,29 +220,28 @@ public class LineV3ShorteningService {
   }
 
   /**
-   * Compares all business fields a client can edit. The immutable fields {@code slnid}, {@code referencedLineSlnid} and
-   * {@code lineType} are ignored because they can never differ.
+   * Compares two versions by {@link LineVersionV3#equals(Object)} after blanking out everything that must not count as
+   * a business change, so a newly added field of the entity is covered automatically.
    */
-  private static boolean areNonValidityFieldsEqual(LineVersionV3 current, LineVersionV3 edited) {
-    return Objects.equals(edited.getSwissLineNumber(), current.getSwissLineNumber())
-        && Objects.equals(edited.getBusinessOrganisation(), current.getBusinessOrganisation())
-        && Objects.equals(edited.getComment(), current.getComment())
-        && Objects.equals(edited.getConcessionType(), current.getConcessionType())
-        && Objects.equals(edited.getOfferCategory(), current.getOfferCategory())
-        && Objects.equals(edited.getShortNumber(), current.getShortNumber())
-        && Objects.equals(edited.getDescription(), current.getDescription())
-        && Objects.equals(edited.getLongName(), current.getLongName())
-        && Objects.equals(edited.getNumber(), current.getNumber())
-        && Objects.equals(edited.getLinienId(), current.getLinienId())
-        && Objects.equals(edited.getFinancing(), current.getFinancing())
-        && Objects.equals(edited.getCablewayNumber(), current.getCablewayNumber())
-        && Objects.equals(edited.getCablewayType(), current.getCablewayType())
-        && Objects.equals(edited.getCablewayName(), current.getCablewayName())
-        && Objects.equals(nullToEmpty(edited.getMeansOfTransport()), nullToEmpty(current.getMeansOfTransport()));
+  static boolean areNonValidityFieldsEqual(LineVersionV3 current, LineVersionV3 edited) {
+    return businessContentOf(current).equals(businessContentOf(edited));
   }
 
-  private static <T> Set<T> nullToEmpty(Set<T> set) {
-    return set == null ? Set.of() : new HashSet<>(set);
+  /**
+   * Blanks out the validity itself, the technical key and the fields that {@code LineVersionV3Service#updateVersion}
+   * copies from the current version only after this comparison has run. An empty and a missing means of transport set
+   * are treated as equal.
+   */
+  private static LineVersionV3 businessContentOf(LineVersionV3 version) {
+    return version.toBuilder()
+        .id(null)
+        .slnid(null)
+        .referencedLineSlnid(null)
+        .lineType(null)
+        .validFrom(null)
+        .validTo(null)
+        .meansOfTransport(version.getMeansOfTransport() == null ? Set.of() : new HashSet<>(version.getMeansOfTransport()))
+        .build();
   }
 
   private static boolean isValidFromChanged(LineVersionV3 current, LineVersionV3 edited) {
