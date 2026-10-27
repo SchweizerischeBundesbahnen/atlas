@@ -19,6 +19,20 @@ class NotFoundExceptionTest {
   }
 
   @Test
+  void shouldNotInvokeOverriddenInitCauseDuringConstruction() {
+    IllegalStateException cause = new IllegalStateException("Upstream entity not found");
+
+    NotFoundException exception = new NotFoundException("id", "123", cause) {
+      @Override
+      public synchronized Throwable initCause(Throwable cause) {
+        throw new AssertionError("initCause must not be called during construction");
+      }
+    };
+
+    assertThat(exception).hasCause(cause);
+  }
+
+  @Test
   void shouldGetNotFoundException() {
     //given
 

@@ -5,6 +5,13 @@ import java.io.Serializable;
 
 public abstract class AtlasException extends RuntimeException implements Serializable {
 
+  protected AtlasException() {
+  }
+
+  protected AtlasException(Throwable cause) {
+    super(cause);
+  }
+
   public abstract ErrorResponse getErrorResponse();
 
   @Override

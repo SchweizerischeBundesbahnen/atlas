@@ -17,8 +17,9 @@ public class NotFoundException extends AtlasException {
   private final String value;
 
   public NotFoundException(String field, String value, Throwable cause) {
-    this(field, value);
-    initCause(cause);
+    super(cause);
+    this.field = field;
+    this.value = value;
   }
 
   @Override
