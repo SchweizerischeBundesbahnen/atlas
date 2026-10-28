@@ -33,8 +33,6 @@ import ch.sbb.timetable.hearing.exception.ForbiddenDueToHearingYearSettingsExcep
 import ch.sbb.timetable.hearing.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.timetable.hearing.repository.TimetableHearingStatementRepository;
 import ch.sbb.timetable.hearing.repository.TimetableHearingYearRepository;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
-import ch.sbb.timetable.hearing.shared.transportcompany.repository.SharedTransportCompanyRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -64,7 +62,6 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearControllerInternal timetableHearingYearController;
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
-  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   @MockitoBean
   private TransportCompanyClient transportCompanyClient;
@@ -79,12 +76,10 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
   TimetableHearingStatementControllerV2ApiTest(
       TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearControllerInternal timetableHearingYearController,
-      TimetableHearingStatementRepository timetableHearingStatementRepository,
-      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
+      TimetableHearingStatementRepository timetableHearingStatementRepository) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearController = timetableHearingYearController;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
-    this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
   }
 
   @BeforeEach
@@ -98,18 +93,9 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
         .businessRegisterName("Schweizerische Bundesbahnen SBB")
         .build();
     when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
+    when(transportCompanyClient.getTransportCompany(1L)).thenReturn(transportCompanyModel);
 
-    SharedTransportCompany sharedTransportCompany = SharedTransportCompany.builder()
-        .id(1L)
-        .number("#0001")
-        .description("SBB description")
-        .abbreviation("SBB")
-        .businessRegisterName("Schweizerische Bundesbahnen SBB")
-        .businessRegisterNumber("SBB register number")
-        .build();
-    sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany);
-
-    SharedTransportCompany sharedTransportCompany1 = SharedTransportCompany.builder()
+    TransportCompanyModel transportCompanyModel1 = TransportCompanyModel.builder()
         .id(2L)
         .number("#0002")
         .description("BLS description")
@@ -117,7 +103,7 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
         .businessRegisterName("Berner Land Seilbahnen")
         .businessRegisterNumber("BLS register number")
         .build();
-    sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany1);
+    when(transportCompanyClient.getTransportCompany(2L)).thenReturn(transportCompanyModel1);
 
     TimetableFieldNumberModel timetableFieldNumber = TimetableFieldNumberModel.builder()
         .number("1.1")
@@ -145,7 +131,6 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
   void tearDown() {
     timetableHearingYearRepository.deleteAll();
     timetableHearingStatementRepository.deleteAll();
-    sharedTransportCompanyRepository.deleteAll();
   }
 
   @Nested

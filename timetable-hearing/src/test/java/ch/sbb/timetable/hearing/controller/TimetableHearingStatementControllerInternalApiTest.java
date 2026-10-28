@@ -62,8 +62,6 @@ import ch.sbb.timetable.hearing.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.timetable.hearing.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.timetable.hearing.repository.TimetableHearingStatementRepository;
 import ch.sbb.timetable.hearing.repository.TimetableHearingYearRepository;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
-import ch.sbb.timetable.hearing.shared.transportcompany.repository.SharedTransportCompanyRepository;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -110,10 +108,10 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   private TimetableHearingStatementRepository timetableHearingStatementRepository;
 
   @Autowired
-  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
+  private PermissionRepository permissionRepository;
 
   @Autowired
-  private PermissionRepository permissionRepository;
+  private TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   @MockitoBean
   private TransportCompanyClient transportCompanyClient;
@@ -121,8 +119,8 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   @MockitoBean
   private UserAdministrationClient userAdministrationClient;
 
-  private SharedTransportCompany sharedTransportCompany;
-  private SharedTransportCompany sharedTransportCompany1;
+  private TransportCompanyModel transportCompany;
+  private TransportCompanyModel transportCompany1;
 
   @BeforeEach
   void setUp() {
@@ -136,25 +134,16 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .statementEditable(true)
         .build());
 
-    TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
+    transportCompany = TransportCompanyModel.builder()
         .id(1L)
         .number("#0001")
         .abbreviation("SBB")
         .businessRegisterName("Schweizerische Bundesbahnen SBB")
         .build();
-    when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
+    when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompany));
+    when(transportCompanyClient.getTransportCompany(1L)).thenReturn(transportCompany);
 
-    sharedTransportCompany = SharedTransportCompany.builder()
-        .id(1L)
-        .number("#0001")
-        .description("SBB description")
-        .abbreviation("SBB")
-        .businessRegisterName("Schweizerische Bundesbahnen SBB")
-        .businessRegisterNumber("SBB register number")
-        .build();
-    sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany);
-
-    sharedTransportCompany1 = SharedTransportCompany.builder()
+    transportCompany1 = TransportCompanyModel.builder()
         .id(2L)
         .number("#0002")
         .description("BLS description")
@@ -162,7 +151,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
         .businessRegisterName("Berner Land Seilbahnen")
         .businessRegisterNumber("BLS register number")
         .build();
-    sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany1);
+    when(transportCompanyClient.getTransportCompany(2L)).thenReturn(transportCompany1);
 
     TimetableFieldNumberVersionModel timetableFieldNumberVersion = TimetableFieldNumberVersionModel.builder()
         .number("1.1")
@@ -192,7 +181,6 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   void tearDown() {
     timetableHearingYearRepository.deleteAll();
     timetableHearingStatementRepository.deleteAll();
-    sharedTransportCompanyRepository.deleteAll();
     permissionRepository.deleteAll();
   }
 
@@ -1029,12 +1017,12 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
               .statementSender(StatementSender.builder()
                   .emails(List.of("fabienne.mueller@sbb.ch"))
                   .build())
-              .responsibleTransportCompanies(Collections.emptySet())
+              .responsibleTransportCompanyIds(Collections.emptySet())
               .documents(Collections.emptySet())
               .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
               .build());
 
-      TimetableHearingStatementModelV2 statement = TimetableHearingStatementMapperV2.toModel(existingStatement);
+      TimetableHearingStatementModelV2 statement = timetableHearingStatementMapperV2.toModel(existingStatement);
       statement.setStatementStatus(StatementStatus.JUNK);
 
       MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
@@ -1057,12 +1045,12 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
               .statementSender(StatementSender.builder()
                   .emails(List.of("fabienne.mueller@sbb.ch"))
                   .build())
-              .responsibleTransportCompanies(Collections.emptySet())
+              .responsibleTransportCompanyIds(Collections.emptySet())
               .documents(Collections.emptySet())
               .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
               .build());
 
-      TimetableHearingStatementModelV2 statement = TimetableHearingStatementMapperV2.toModel(existingStatement);
+      TimetableHearingStatementModelV2 statement = timetableHearingStatementMapperV2.toModel(existingStatement);
       statement.setStatementStatus(StatementStatus.JUNK);
 
       MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
@@ -1105,7 +1093,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
     @Test
     void shouldCreateTwoStatementsWithTheSameCompanyAndThenUpdateOneStatementWithAnotherCompany() throws Exception {
       TimetableHearingStatementResponsibleTransportCompanyModel thsrtcm =
-          ResponsibleTransportCompanyMapper.toModel(sharedTransportCompany);
+          ResponsibleTransportCompanyMapper.toResponsibleTransportCompany(transportCompany);
       TimetableHearingStatementSenderModelV2 statementSenderModelV2 = TimetableHearingStatementSenderModelV2.builder()
           .firstName("Fabienne")
           .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -1115,7 +1103,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
               .timetableYear(YEAR)
               .swissCanton(SwissCanton.BERN)
               .statementSender(statementSenderModelV2)
-              .responsibleTransportCompaniesDisplay(sharedTransportCompany.getAbbreviation())
+              .responsibleTransportCompaniesDisplay(transportCompany.getAbbreviation())
               .responsibleTransportCompanies(List.of(thsrtcm))
               .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
               .build(),
@@ -1125,7 +1113,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
               .timetableYear(YEAR)
               .swissCanton(SwissCanton.BERN)
               .statementSender(statementSenderModelV2)
-              .responsibleTransportCompaniesDisplay(sharedTransportCompany.getAbbreviation())
+              .responsibleTransportCompaniesDisplay(transportCompany.getAbbreviation())
               .responsibleTransportCompanies(List.of(thsrtcm))
               .statement("Ich hätte gerne mehrere Verbindungen am Abend1.")
               .build(),
@@ -1134,7 +1122,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
       statementSenderModelV2.setFirstName("Fabienne2");
       statement.setStatementSender(statementSenderModelV2);
       TimetableHearingStatementResponsibleTransportCompanyModel thsrtcm1 =
-          ResponsibleTransportCompanyMapper.toModel(sharedTransportCompany1);
+          ResponsibleTransportCompanyMapper.toResponsibleTransportCompany(transportCompany1);
       statement.setResponsibleTransportCompanies(List.of(thsrtcm1));
 
       MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
@@ -1311,7 +1299,7 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
       mvc.perform(get("/internal/timetable-hearing/statements/responsible-transport-companies/" + TTFNID + "/" + YEAR))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$", hasSize(1)))
-          .andExpect(jsonPath("$[0].id", is(sharedTransportCompany.getId().intValue())));
+          .andExpect(jsonPath("$[0].id", is(transportCompany.getId().intValue())));
     }
 
     @Test

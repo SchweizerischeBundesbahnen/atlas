@@ -13,7 +13,6 @@ import ch.sbb.atlas.user.administration.security.service.CantonBasedUserAdminist
 import ch.sbb.timetable.hearing.entity.StatementDocument;
 import ch.sbb.timetable.hearing.entity.StatementSender;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -217,12 +216,7 @@ class StatementRedactAspectTest {
         .ttfnid("ch:1:ttfnid:1235234")
         .swissCanton(SwissCanton.BERN)
         .stopPlace("Erste Haltestelle ... weisst ja")
-        .responsibleTransportCompanies(Set.of(SharedTransportCompany.builder()
-            .id(1L)
-            .number("#0001")
-            .abbreviation("SBB")
-            .businessRegisterName("Schweizerische Bundesbahnen")
-            .build()))
+        .responsibleTransportCompanyIds(Set.of(1L))
         .statementSender(StatementSender.builder()
             .firstName("Mike")
             .lastName("von Bike")
@@ -249,12 +243,7 @@ class StatementRedactAspectTest {
         .ttfnid("ch:1:ttfnid:1235234")
         .swissCanton(SwissCanton.BERN)
         .stopPlace("Erste Haltestelle ... weisst ja")
-        .responsibleTransportCompanies(Set.of(SharedTransportCompany.builder()
-            .id(1L)
-            .number("#0001")
-            .abbreviation("SBB")
-            .businessRegisterName("Schweizerische Bundesbahnen")
-            .build()))
+        .responsibleTransportCompanyIds(Set.of(1L))
         .statementSender(StatementSender.builder()
             .firstName("*****")
             .lastName("*****")

@@ -9,7 +9,6 @@ import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
-import ch.sbb.atlas.transport.company.SharedTransportCompanyConfig;
 import ch.sbb.atlas.user.administration.security.entity.Permission;
 import ch.sbb.atlas.user.administration.security.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
@@ -26,8 +25,6 @@ class UserPermissionHolderTest {
 
   @MockitoBean
   private SharedBusinessOrganisationConfig sharedBusinessOrganisationConfig;
-  @MockitoBean
-  private SharedTransportCompanyConfig sharedTransportCompanyConfig;
 
   private final UserPermissionHolder userPermissionHolder;
   private final PermissionRepository permissionRepository;

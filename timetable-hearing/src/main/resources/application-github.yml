@@ -68,10 +68,6 @@ kafka:
       administration:
         topic: atlas.user.administration
         groupId: atlas.kafka.tth.user.administration.groupId
-    transport:
-      company:
-        topic: atlas.transport.company
-        groupId: atlas.kafka.tth.transport.company.groupId
 
 mail:
   workflow:

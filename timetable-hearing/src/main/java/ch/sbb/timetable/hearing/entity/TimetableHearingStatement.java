@@ -9,8 +9,10 @@ import ch.sbb.atlas.api.workflow.tth.dossier.StatementDossierLinked;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.redact.Redacted;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,13 +21,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -75,11 +75,11 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String stopPlace;
 
-  @OneToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "timetable_hearing_statement_responsible_transport_companies",
-      joinColumns = {@JoinColumn(name = "timetable_hearing_statement_id")},
-      inverseJoinColumns = {@JoinColumn(name = "transport_company_id")})
-  private Set<SharedTransportCompany> responsibleTransportCompanies;
+  @ElementCollection(targetClass = Long.class, fetch = FetchType.EAGER)
+  @CollectionTable(name = "timetable_hearing_statement_responsible_transport_companies",
+      joinColumns = @JoinColumn(name = "timetable_hearing_statement_id"))
+  @Column(name = "transport_company_id")
+  private Set<Long> responsibleTransportCompanyIds;
 
   private String responsibleTransportCompaniesDisplay;
 
@@ -142,16 +142,6 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
 
   public boolean checkIfStatementDocumentExists(String documentFilename) {
     return documents.stream().anyMatch(document -> Objects.equals(documentFilename, document.getFileName()));
-  }
-
-  public String getTransportCompaniesCommaSeparated() {
-    List<String> sorted = getResponsibleTransportCompanies()
-        .stream()
-        .map(SharedTransportCompany::getAbbreviation)
-        .filter(Objects::nonNull)
-        .sorted()
-        .toList();
-    return String.join(", ", sorted);
   }
 
   public boolean isPartOfDossier() {

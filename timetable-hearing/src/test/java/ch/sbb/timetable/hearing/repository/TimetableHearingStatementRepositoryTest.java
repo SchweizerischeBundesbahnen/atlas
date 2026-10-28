@@ -10,8 +10,6 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.timetable.hearing.entity.StatementDocument;
 import ch.sbb.timetable.hearing.entity.StatementSender;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
-import ch.sbb.timetable.hearing.shared.transportcompany.repository.SharedTransportCompanyRepository;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -24,14 +22,10 @@ import org.springframework.transaction.TransactionSystemException;
 class TimetableHearingStatementRepositoryTest {
 
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
-  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   @Autowired
-  TimetableHearingStatementRepositoryTest(
-      TimetableHearingStatementRepository timetableHearingStatementRepository,
-      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
+  TimetableHearingStatementRepositoryTest(TimetableHearingStatementRepository timetableHearingStatementRepository) {
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
-    this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
   }
 
   private static TimetableHearingStatement getMinimalTimetableHearingStatement() {
@@ -49,18 +43,10 @@ class TimetableHearingStatementRepositoryTest {
   @AfterEach
   void tearDown() {
     timetableHearingStatementRepository.deleteAll();
-    sharedTransportCompanyRepository.deleteAll();
   }
 
   @Test
   void shouldCreateNewHearingStatement() {
-    sharedTransportCompanyRepository.save(SharedTransportCompany.builder()
-        .id(1L)
-        .number("#0001")
-        .abbreviation("SBB")
-        .businessRegisterName("Schweizerische Bundesbahnen SBB")
-        .build());
-
     TimetableHearingStatement statement = TimetableHearingStatement.builder()
         .timetableYear(2023L)
         .statementStatus(StatementStatus.RECEIVED)
@@ -97,17 +83,12 @@ class TimetableHearingStatementRepositoryTest {
             .fileName("doc3")
             .fileSize(3454L)
             .build()));
-    statement.setResponsibleTransportCompanies(Set.of(SharedTransportCompany.builder()
-        .id(1L)
-        .number("#0001")
-        .abbreviation("SBB")
-        .businessRegisterName("Schweizerische Bundesbahnen")
-        .build()));
+    statement.setResponsibleTransportCompanyIds(Set.of(1L));
 
     TimetableHearingStatement savedStatement = timetableHearingStatementRepository.save(statement);
 
     assertThat(savedStatement.getId()).isNotNull();
-    assertThat(savedStatement.getResponsibleTransportCompanies()).hasSize(1);
+    assertThat(savedStatement.getResponsibleTransportCompanyIds()).hasSize(1);
     assertThat(savedStatement.getDocuments()).hasSize(3);
   }
 

@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.BaseValidatorTest;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement.TimetableHearingStatementBuilder;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
 import jakarta.validation.ConstraintViolation;
 import java.util.List;
 import java.util.Set;
@@ -21,12 +20,7 @@ class TimetableHearingStatementTest extends BaseValidatorTest {
         .ttfnid("ch:1:ttfnid:1235234")
         .swissCanton(SwissCanton.BERN)
         .stopPlace("Erste Haltestelle ... weisst ja")
-        .responsibleTransportCompanies(Set.of(SharedTransportCompany.builder()
-            .id(1L)
-            .number("#0001")
-            .abbreviation("SBB")
-            .businessRegisterName("Schweizerische Bundesbahnen")
-            .build()))
+        .responsibleTransportCompanyIds(Set.of(1L))
         .statementSender(StatementSender.builder()
             .firstName("Mike")
             .lastName("von Bike")

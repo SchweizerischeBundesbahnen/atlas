@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersionSharingDataAccessor;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.s3.config.AmazonConfigProps.AmazonBucketConfig;
-import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +17,6 @@ class AmazonAtlasConfigIntegrationTest {
 
   @MockitoBean
   private BusinessOrganisationVersionSharingDataAccessor businessOrganisationVersionSharingDataAccessor;
-
-  @MockitoBean
-  private TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
   @Value("${S3_DATA_EXPORT_ACCESS_KEY}")
   private String accessKey;

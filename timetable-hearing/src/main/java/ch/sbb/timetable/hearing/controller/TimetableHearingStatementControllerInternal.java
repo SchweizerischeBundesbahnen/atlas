@@ -54,6 +54,7 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
   private final TimetableHearingStatementExportService timetableHearingStatementExportService;
+  private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   @Override
   public Container<TimetableHearingStatementModelV2> getStatements(Pageable pageable,
@@ -63,7 +64,7 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
             .pageable(pageable)
             .statementRequestParams(statementRequestParams).build());
     List<TimetableHearingStatementModelV2> enrichedModels = timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
-        hearingStatements.stream().map(TimetableHearingStatementMapperV2::toModel).toList());
+        hearingStatements.stream().map(timetableHearingStatementMapperV2::toModel).toList());
     return Container.<TimetableHearingStatementModelV2>builder()
         .objects(enrichedModels)
         .totalCount(hearingStatements.getTotalElements())
@@ -97,7 +98,7 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
 
   @Override
   public TimetableHearingStatementModelV2 getStatement(Long id) {
-    TimetableHearingStatementModelV2 model = TimetableHearingStatementMapperV2.toModel(
+    TimetableHearingStatementModelV2 model = timetableHearingStatementMapperV2.toModel(
         timetableHearingStatementService.getTimetableHearingStatementById(id));
     return timetableFieldNumberResolverService.resolveAdditionalVersionInfo(List.of(model)).getFirst();
   }
@@ -150,10 +151,10 @@ public class TimetableHearingStatementControllerInternal implements TimetableHea
     }
     TimetableHearingStatement existingStatement = timetableHearingStatementService.getTimetableHearingStatementsById(id);
     statement.setId(id);
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement,
+    TimetableHearingStatementModelV2 hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement,
         statement, documents);
     return timetableFieldNumberResolverService
-        .resolveAdditionalVersionInfo(List.of(TimetableHearingStatementMapperV2.toModel(hearingStatement)))
+        .resolveAdditionalVersionInfo(List.of(hearingStatement))
         .getFirst();
   }
 

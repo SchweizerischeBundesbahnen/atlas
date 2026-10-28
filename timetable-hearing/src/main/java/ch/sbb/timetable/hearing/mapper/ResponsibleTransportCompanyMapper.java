@@ -1,9 +1,8 @@
 package ch.sbb.timetable.hearing.mapper;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
+import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany;
-import ch.sbb.timetable.hearing.shared.transportcompany.repository.SharedTransportCompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,19 +10,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ResponsibleTransportCompanyMapper {
 
-  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
+  private final TransportCompanyClient transportCompanyClient;
 
-  public static TimetableHearingStatementResponsibleTransportCompanyModel toModel(SharedTransportCompany transportCompany) {
-    return TimetableHearingStatementResponsibleTransportCompanyModel.builder()
-        .id(transportCompany.getId())
-        .number(transportCompany.getNumber())
-        .abbreviation(transportCompany.getAbbreviation())
-        .businessRegisterName(transportCompany.getBusinessRegisterName())
-        .build();
-  }
-
-  public SharedTransportCompany toEntity(TimetableHearingStatementResponsibleTransportCompanyModel transportCompanyModel) {
-    return sharedTransportCompanyRepository.findById(transportCompanyModel.getId()).orElseThrow();
+  public TimetableHearingStatementResponsibleTransportCompanyModel toModel(Long transportCompanyId) {
+    return toResponsibleTransportCompany(transportCompanyClient.getTransportCompany(transportCompanyId));
   }
 
   public static TimetableHearingStatementResponsibleTransportCompanyModel toResponsibleTransportCompany(

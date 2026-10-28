@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-@Import({SharedBusinessOrganisationConfig.class})
+@Import(SharedBusinessOrganisationConfig.class)
 @Configuration
 public class AtlasConfig {
 

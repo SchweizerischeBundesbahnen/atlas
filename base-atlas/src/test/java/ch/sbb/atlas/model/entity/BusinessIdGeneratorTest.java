@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersionSharingDataAccessor;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -15,9 +14,6 @@ class BusinessIdGeneratorTest {
 
   @MockitoBean
   private BusinessOrganisationVersionSharingDataAccessor businessOrganisationVersionSharingDataAccessor;
-
-  @MockitoBean
-  private TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
   private final DummyRepository repository;
 

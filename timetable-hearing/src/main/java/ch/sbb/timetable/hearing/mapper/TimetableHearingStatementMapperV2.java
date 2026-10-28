@@ -4,7 +4,9 @@ import ch.sbb.atlas.api.timetable.hearing.ExternalTimetableHearingStatementCreat
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -35,11 +37,12 @@ public class TimetableHearingStatementMapperV2 {
         .oldSwissCanton(statementModel.getOldSwissCanton())
         .version(statementModel.getEtagVersion())
         .build();
-    timetableHearingStatement.setResponsibleTransportCompanies(
+    timetableHearingStatement.setResponsibleTransportCompanyIds(
         statementModel.getResponsibleTransportCompanies().stream()
-            .map(responsibleTransportCompanyMapper::toEntity)
+            .map(TimetableHearingStatementResponsibleTransportCompanyModel::getId)
             .collect(Collectors.toSet()));
-    timetableHearingStatement.setResponsibleTransportCompaniesDisplay(timetableHearingStatement.getTransportCompaniesCommaSeparated());
+    timetableHearingStatement.setResponsibleTransportCompaniesDisplay(
+        getTransportCompaniesCommaSeparated(statementModel.getResponsibleTransportCompanies()));
     return timetableHearingStatement;
   }
 
@@ -54,7 +57,12 @@ public class TimetableHearingStatementMapperV2 {
         .build();
   }
 
-  public static TimetableHearingStatementModelV2 toModel(TimetableHearingStatement statement) {
+  public TimetableHearingStatementModelV2 toModel(TimetableHearingStatement statement) {
+    return toModel(statement, getResponsibleTransportCompanies(statement));
+  }
+
+  public TimetableHearingStatementModelV2 toModel(TimetableHearingStatement statement,
+      List<TimetableHearingStatementResponsibleTransportCompanyModel> responsibleTransportCompanies) {
     return TimetableHearingStatementModelV2.builder()
         .id(statement.getId())
         .statementStatus(statement.getStatementStatus())
@@ -62,7 +70,7 @@ public class TimetableHearingStatementMapperV2 {
         .ttfnid(statement.getTtfnid())
         .swissCanton(statement.getSwissCanton())
         .stopPlace(statement.getStopPlace())
-        .responsibleTransportCompanies(getResponsibleTransportCompanies(statement))
+        .responsibleTransportCompanies(responsibleTransportCompanies)
         .responsibleTransportCompaniesDisplay(statement.getResponsibleTransportCompaniesDisplay())
         .statementSender(StatementSenderMapperV2.toModel(statement.getStatementSender()))
         .statement(statement.getStatement())
@@ -84,9 +92,18 @@ public class TimetableHearingStatementMapperV2 {
         .build();
   }
 
-  private static List<TimetableHearingStatementResponsibleTransportCompanyModel> getResponsibleTransportCompanies(
+  private List<TimetableHearingStatementResponsibleTransportCompanyModel> getResponsibleTransportCompanies(
       TimetableHearingStatement statement) {
-    return statement.getResponsibleTransportCompanies().stream().map(ResponsibleTransportCompanyMapper::toModel).toList();
+    return statement.getResponsibleTransportCompanyIds().stream().map(responsibleTransportCompanyMapper::toModel).toList();
+  }
+
+  public static String getTransportCompaniesCommaSeparated(
+      Collection<TimetableHearingStatementResponsibleTransportCompanyModel> transportCompanies) {
+    return transportCompanies.stream()
+        .map(TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation)
+        .filter(Objects::nonNull)
+        .sorted()
+        .collect(Collectors.joining(", "));
   }
 
 }

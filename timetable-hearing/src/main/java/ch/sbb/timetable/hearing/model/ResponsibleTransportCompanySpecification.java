@@ -2,7 +2,6 @@ package ch.sbb.timetable.hearing.model;
 
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.timetable.hearing.entity.TimetableHearingStatement_;
-import ch.sbb.timetable.hearing.shared.transportcompany.entity.SharedTransportCompany_;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -30,8 +29,7 @@ public class ResponsibleTransportCompanySpecification implements Specification<T
     List<Predicate> predicates = new ArrayList<>();
     for (Long searchParam : transportCompanyIds) {
       predicates.add(
-          criteriaBuilder.equal(root.join(TimetableHearingStatement_.responsibleTransportCompanies)
-              .get(SharedTransportCompany_.id), searchParam));
+          criteriaBuilder.equal(root.join(TimetableHearingStatement_.responsibleTransportCompanyIds), searchParam));
     }
 
     return criteriaBuilder.and(predicates.toArray(Predicate[]::new));

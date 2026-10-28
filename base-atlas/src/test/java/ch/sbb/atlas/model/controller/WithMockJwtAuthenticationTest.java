@@ -9,7 +9,6 @@ import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockAccountType;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockUser;
 import ch.sbb.atlas.service.UserService;
-import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -19,9 +18,6 @@ class WithMockJwtAuthenticationTest {
 
   @MockitoBean
   private BusinessOrganisationVersionSharingDataAccessor businessOrganisationVersionSharingDataAccessor;
-
-  @MockitoBean
-  private TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
   @Test
   void shouldBeAdminPerDefaultInIntegrationTests() {

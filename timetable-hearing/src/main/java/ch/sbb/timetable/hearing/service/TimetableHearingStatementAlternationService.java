@@ -28,6 +28,7 @@ public class TimetableHearingStatementAlternationService {
   private static final IntUnaryOperator PREVIOUS = i -> i - 1;
 
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
+  private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   public TimetableHearingStatementAlternatingModel getPreviousStatement(Long id, Pageable pageable,
       TimetableHearingStatementRequestParams statementRequestParams) {
@@ -71,7 +72,7 @@ public class TimetableHearingStatementAlternationService {
         pageable.getSort());
 
     return TimetableHearingStatementAlternatingModel.builder()
-        .timetableHearingStatement(TimetableHearingStatementMapperV2.toModel(alternation))
+        .timetableHearingStatement(timetableHearingStatementMapperV2.toModel(alternation))
         .pageable(resultPageable)
         .build();
   }
@@ -84,7 +85,7 @@ public class TimetableHearingStatementAlternationService {
 
   private TimetableHearingStatementModelV2 getStatementNotInTableFallback(Long id,
       List<TimetableHearingStatement> hearingStatements) {
-    return TimetableHearingStatementMapperV2.toModel(
+    return timetableHearingStatementMapperV2.toModel(
         hearingStatements.stream().filter(i -> i.getId() >= id).findFirst().orElse(hearingStatements.getLast()));
   }
 }
