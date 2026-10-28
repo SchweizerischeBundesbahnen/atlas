@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.1624.0"
+version = "2.1625.0"
 
 dependencies {
     // Spring Boot Starters
