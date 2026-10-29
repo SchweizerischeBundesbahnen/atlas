@@ -54,9 +54,11 @@ public interface LineApiV3 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
       @ApiResponse(responseCode = "400", description = "Validation error, e.g. line type not allowed, member type not "
-          + "allowed for the referenced line type or concession type / swiss line number rules violated", content =
-      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "403", description = "No permission to create this line", content = @Content(schema =
+          + "allowed for the referenced line type, mandatory number / offerCategory missing on a line, a subline provides "
+          + "number, swissLineNumber, offerCategory or concessionType or concession type / swiss line number rules "
+          + "violated", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "403", description = "No permission to create this line or financing / cableway fields "
+          + "were provided without the SUPERVISOR role", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "404", description = "Referenced line not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class))),
@@ -73,9 +75,12 @@ public interface LineApiV3 {
   @Operation(operationId = "updateLineVersionV3")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "400", description = "Validation error, immutable field sent or concession type / swiss "
-          + "line number rules violated", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "403", description = "No permission to update this line or the line is REVOKED", content =
+      @ApiResponse(responseCode = "400", description = "Validation error, immutable field sent, mandatory number / "
+          + "offerCategory missing on a line, a subline provides number, swissLineNumber, offerCategory or concessionType "
+          + "or concession type / swiss line number rules violated", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "403", description = "No permission to update this line, the line is REVOKED or "
+          + "financing / cableway fields were changed without the SUPERVISOR role", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "404", description = "Line version not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class))),

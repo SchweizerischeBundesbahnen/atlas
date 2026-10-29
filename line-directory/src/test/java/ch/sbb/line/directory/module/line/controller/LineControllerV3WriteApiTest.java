@@ -2,6 +2,7 @@ package ch.sbb.line.directory.module.line.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -108,10 +109,7 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   void shouldCreateConcessionMemberWithResolvedReferencedLine() throws Exception {
     // Given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
-    CreateLineVersionModelV3 model = memberModel(LineType.CONCESSION)
-        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
-        .swissLineNumber("90.583.7")
-        .build();
+    CreateLineVersionModelV3 model = memberModel(LineType.CONCESSION).build();
 
     // When
     ResultActions result = create(model);
@@ -120,31 +118,48 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
     result.andExpect(status().isCreated())
         .andExpect(jsonPath("$.type", is(LineObjectType.SUBLINE.name())))
         .andExpect(jsonPath("$.referencedLine.lineSlnid", is(LineVersionV3TestData.PARENT_SLNID)))
-        .andExpect(jsonPath("$.swissLineNumber", is("90.583.7")));
+        .andExpect(jsonPath("$.referencedLine.swissLineNumber", is("90.583")))
+        .andExpect(jsonPath("$.swissLineNumber", is(nullValue())));
     LineVersionV3 member = findMember();
     assertThat(member.getLineType()).isEqualTo(LineType.CONCESSION);
-    assertThat(member.getSwissLineNumber()).isEqualTo("90.583.7");
+    assertThat(member.getSwissLineNumber()).isNull();
   }
 
   @Test
-  void shouldIgnoreParentResolvedFieldsOnMember() throws Exception {
+  void shouldRejectParentResolvedFieldsOnMember() throws Exception {
     // Given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
     CreateLineVersionModelV3 model = memberModel(LineType.TECHNICAL)
         .number("L9")
-        .shortNumber("9")
+        .swissLineNumber("90.583.9")
         .offerCategory(OfferCategory.IC)
+        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
         .build();
 
     // When
     ResultActions result = create(model);
 
     // Then
-    result.andExpect(status().isCreated());
-    LineVersionV3 member = findMember();
-    assertThat(member.getNumber()).isNull();
-    assertThat(member.getShortNumber()).isNull();
-    assertThat(member.getOfferCategory()).isNull();
+    result.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details[*].field", containsInAnyOrder("number", "swissLineNumber", "offerCategory",
+            "concessionType")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.SUBLINE.ERROR.FIELD_NOT_ALLOWED")));
+    assertThat(lineVersionV3Repository.findAll()).hasSize(1);
+  }
+
+  @Test
+  void shouldRejectLineWithoutMandatoryNumberAndOfferCategory() throws Exception {
+    // Given
+    CreateLineVersionModelV3 model = orderlyLineModel("90.100").number(null).offerCategory(null).build();
+
+    // When
+    ResultActions result = create(model);
+
+    // Then
+    result.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details[*].field", containsInAnyOrder("number", "offerCategory")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.LINE.ERROR.MANDATORY.FIELD")));
+    assertThat(lineVersionV3Repository.findAll()).isEmpty();
   }
 
   @Test
@@ -544,47 +559,30 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldReturnOwnConcessionTypeOfConcessionMemberWhenCreating() throws Exception {
+  void shouldExposeParentResolvedFieldsOfConcessionMemberOnlyInsideReferencedLineWhenReading() throws Exception {
     // Given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder()
         .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE).build());
-    CreateLineVersionModelV3 model = memberModel(LineType.CONCESSION)
-        .concessionType(ConcessionType.FEDERALLY_LICENSED_LINE)
-        .swissLineNumber("90.583.7")
-        .build();
-
-    // When
-    ResultActions result = create(model);
-
-    // Then
-    result.andExpect(status().isCreated())
-        .andExpect(jsonPath("$.concessionType", is(ConcessionType.FEDERALLY_LICENSED_LINE.name())));
-    assertThat(findMember().getConcessionType()).isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
-  }
-
-  @Test
-  void shouldReturnOwnConcessionTypeOfConcessionMemberWhenReading() throws Exception {
-    // Given
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder()
-        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE).build());
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.concessionMemberBuilder()
-        .concessionType(ConcessionType.FEDERALLY_LICENSED_LINE).build());
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.concessionMemberBuilder().build());
 
     // When
     ResultActions result = mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.CONCESSION_MEMBER_SLNID));
 
     // Then
     result.andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].concessionType", is(ConcessionType.FEDERALLY_LICENSED_LINE.name())));
+        .andExpect(jsonPath("$[0].concessionType", is(nullValue())))
+        .andExpect(jsonPath("$[0].offerCategory", is(nullValue())))
+        .andExpect(jsonPath("$[0].referencedLine.concessionType", is(ConcessionType.CANTONALLY_APPROVED_LINE.name())))
+        .andExpect(jsonPath("$[0].referencedLine.offerCategory", is(OfferCategory.B.name())))
+        .andExpect(jsonPath("$[0].referencedLine.number", is("90.583")));
   }
 
   @Test
-  void shouldKeepOwnConcessionTypeOfConcessionMemberOnGetPutRoundTrip() throws Exception {
+  void shouldKeepConcessionMemberUnchangedOnGetPutRoundTrip() throws Exception {
     // Given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder()
         .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE).build());
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.concessionMemberBuilder()
-        .concessionType(ConcessionType.FEDERALLY_LICENSED_LINE).build());
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.concessionMemberBuilder().build());
     ObjectNode readVersion = readFirstVersion(LineVersionV3TestData.CONCESSION_MEMBER_SLNID);
 
     // When
@@ -592,11 +590,12 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
 
     // Then
     result.andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].concessionType", is(ConcessionType.FEDERALLY_LICENSED_LINE.name())));
+        .andExpect(jsonPath("$[0].concessionType", is(nullValue())))
+        .andExpect(jsonPath("$[0].referencedLine.concessionType", is(ConcessionType.CANTONALLY_APPROVED_LINE.name())));
     LineVersionV3 member = lineVersionV3Repository.findAllBySlnidOrderByValidFrom(
         LineVersionV3TestData.CONCESSION_MEMBER_SLNID).getFirst();
     assertThat(member.getDescription()).isEqualTo("Updated description");
-    assertThat(member.getConcessionType()).isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
+    assertThat(member.getConcessionType()).isNull();
   }
 
   @Test
@@ -612,7 +611,8 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
     // Then
     result.andExpect(status().isOk())
         .andExpect(jsonPath("$[0].description", is("Updated description")))
-        .andExpect(jsonPath("$[0].concessionType", is(ConcessionType.CANTONALLY_APPROVED_LINE.name())));
+        .andExpect(jsonPath("$[0].concessionType", is(nullValue())))
+        .andExpect(jsonPath("$[0].referencedLine.concessionType", is(ConcessionType.CANTONALLY_APPROVED_LINE.name())));
     LineVersionV3 member = lineVersionV3Repository.findAllBySlnidOrderByValidFrom(LineVersionV3TestData.CHILD_SLNID)
         .getFirst();
     assertThat(member.getDescription()).isEqualTo("Updated description");
@@ -657,6 +657,7 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
         .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
         .swissLineNumber(swissLineNumber)
         .number("L1")
+        .offerCategory(OfferCategory.B)
         .description("New orderly line")
         .businessOrganisation(SBOID)
         .meansOfTransport(Set.of(LineMeanOfTransport.BUS))
@@ -681,7 +682,6 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
         .description(version.getDescription())
         .longName(version.getLongName())
         .number(version.getNumber())
-        .shortNumber(version.getShortNumber())
         .offerCategory(version.getOfferCategory())
         .swissLineNumber(version.getSwissLineNumber())
         .concessionType(version.getConcessionType())

@@ -6,14 +6,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
+import ch.sbb.line.directory.module.line.entity.LineVersionV3.Fields;
 import ch.sbb.line.directory.module.line.exception.LineV3ConflictException;
-import ch.sbb.line.directory.module.line.exception.LineV3MemberConcessionException;
+import ch.sbb.line.directory.module.line.exception.LineV3MandatoryFieldException;
+import ch.sbb.line.directory.module.line.exception.LineV3MemberFieldNotAllowedException;
 import ch.sbb.line.directory.module.line.exception.LineV3MemberTypeMismatchException;
 import ch.sbb.line.directory.module.line.exception.LineV3TypeNotAllowedException;
 import ch.sbb.line.directory.module.line.exception.LineV3TypeOrderlyException;
@@ -21,6 +24,7 @@ import ch.sbb.line.directory.module.line.exception.ReferencedLineHasParentExcept
 import ch.sbb.line.directory.module.line.exception.ReferencedLineRevokedException;
 import ch.sbb.line.directory.module.line.service.LineVersionV3ReadService;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -193,58 +197,120 @@ class LineV3TypeValidatorTest {
   }
 
   @Test
-  void shouldRejectConcessionMemberWithoutConcessionType() {
+  void shouldRejectMemberWithNumber() {
     // Given
     givenParent(LineVersionV3TestData.line());
-    LineVersionV3 member = LineVersionV3TestData.concessionMemberBuilder().concessionType(null).build();
+    LineVersionV3 member = LineVersionV3TestData.sublineBuilder().number("90.583").build();
 
     // When & Then
     assertThatThrownBy(() -> typeValidator.validateMemberType(member))
-        .isInstanceOf(LineV3MemberConcessionException.class);
+        .isInstanceOf(LineV3MemberFieldNotAllowedException.class)
+        .extracting(exception -> ((LineV3MemberFieldNotAllowedException) exception).getFields())
+        .isEqualTo(Set.of(Fields.number));
   }
 
   @Test
-  void shouldRejectConcessionMemberWithoutSwissLineNumber() {
+  void shouldRejectMemberWithOfferCategory() {
     // Given
     givenParent(LineVersionV3TestData.line());
-    LineVersionV3 member = LineVersionV3TestData.concessionMemberBuilder().swissLineNumber(null).build();
+    LineVersionV3 member = LineVersionV3TestData.sublineBuilder().offerCategory(OfferCategory.B).build();
 
     // When & Then
     assertThatThrownBy(() -> typeValidator.validateMemberType(member))
-        .isInstanceOf(LineV3MemberConcessionException.class);
+        .isInstanceOf(LineV3MemberFieldNotAllowedException.class)
+        .extracting(exception -> ((LineV3MemberFieldNotAllowedException) exception).getFields())
+        .isEqualTo(Set.of(Fields.offerCategory));
   }
 
   @Test
-  void shouldRejectTechnicalMemberWithConcessionType() {
+  void shouldRejectMemberWithConcessionType() {
     // Given
     givenParent(LineVersionV3TestData.line());
-    LineVersionV3 member = LineVersionV3TestData.sublineBuilder().concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
-        .build();
+    LineVersionV3 member = LineVersionV3TestData.concessionMemberBuilder()
+        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE).build();
 
     // When & Then
     assertThatThrownBy(() -> typeValidator.validateMemberType(member))
-        .isInstanceOf(LineV3MemberConcessionException.class);
+        .isInstanceOf(LineV3MemberFieldNotAllowedException.class)
+        .extracting(exception -> ((LineV3MemberFieldNotAllowedException) exception).getFields())
+        .isEqualTo(Set.of(Fields.concessionType));
   }
 
   @Test
-  void shouldRejectTechnicalMemberWithSwissLineNumber() {
+  void shouldRejectMemberWithSwissLineNumber() {
     // Given
     givenParent(LineVersionV3TestData.line());
     LineVersionV3 member = LineVersionV3TestData.sublineBuilder().swissLineNumber("90.583.2").build();
 
     // When & Then
     assertThatThrownBy(() -> typeValidator.validateMemberType(member))
-        .isInstanceOf(LineV3MemberConcessionException.class);
+        .isInstanceOf(LineV3MemberFieldNotAllowedException.class)
+        .extracting(exception -> ((LineV3MemberFieldNotAllowedException) exception).getFields())
+        .isEqualTo(Set.of(Fields.swissLineNumber));
   }
 
   @Test
-  void shouldAcceptConcessionMemberWithConcessionTypeAndSwissLineNumber() {
+  void shouldReportAllForbiddenFieldsOfAMemberAtOnce() {
+    // Given
+    givenParent(LineVersionV3TestData.line());
+    LineVersionV3 member = LineVersionV3TestData.sublineBuilder()
+        .number("90.583")
+        .swissLineNumber("90.583.2")
+        .offerCategory(OfferCategory.B)
+        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
+        .build();
+
+    // When & Then
+    assertThatThrownBy(() -> typeValidator.validateMemberType(member))
+        .isInstanceOf(LineV3MemberFieldNotAllowedException.class)
+        .extracting(exception -> ((LineV3MemberFieldNotAllowedException) exception).getFields())
+        .isEqualTo(Set.of(Fields.number, Fields.swissLineNumber, Fields.offerCategory, Fields.concessionType));
+  }
+
+  @Test
+  void shouldAcceptConcessionMemberWithoutParentResolvedFields() {
     // Given
     givenParent(LineVersionV3TestData.line());
     LineVersionV3 member = LineVersionV3TestData.concessionMemberBuilder().build();
 
     // When & Then
     assertThatCode(() -> typeValidator.validateMemberType(member)).doesNotThrowAnyException();
+  }
+
+  @Test
+  void shouldRejectLineWithoutNumber() {
+    // Given
+    LineVersionV3 line = LineVersionV3TestData.lineBuilder().number(" ").build();
+
+    // When & Then
+    assertThatThrownBy(() -> typeValidator.validateLineType(line))
+        .isInstanceOf(LineV3MandatoryFieldException.class)
+        .extracting(exception -> ((LineV3MandatoryFieldException) exception).getFields())
+        .isEqualTo(Set.of(Fields.number));
+  }
+
+  @Test
+  void shouldRejectLineWithoutOfferCategory() {
+    // Given
+    LineVersionV3 line = LineVersionV3TestData.lineBuilder().offerCategory(null).build();
+
+    // When & Then
+    assertThatThrownBy(() -> typeValidator.validateLineType(line))
+        .isInstanceOf(LineV3MandatoryFieldException.class)
+        .extracting(exception -> ((LineV3MandatoryFieldException) exception).getFields())
+        .isEqualTo(Set.of(Fields.offerCategory));
+  }
+
+  @Test
+  void shouldReportAllMissingMandatoryLineFieldsAtOnce() {
+    // Given
+    LineVersionV3 line = LineVersionV3TestData.lineBuilder().number(null).offerCategory(null).build();
+
+    // When & Then
+    assertThatThrownBy(() -> typeValidator.validateLineType(line))
+        .isInstanceOf(LineV3MandatoryFieldException.class)
+        .extracting(exception -> ((LineV3MandatoryFieldException) exception).getFields())
+        .isEqualTo(Set.of(Fields.number, Fields.offerCategory));
   }
 
   @Test
@@ -260,15 +326,13 @@ class LineV3TypeValidatorTest {
   }
 
   @Test
-  void shouldRejectConcessionMemberWhenSwissLineNumberOverlapsWithOtherSlnid() {
+  void shouldNotCheckSwissLineNumberOverlapForMember() {
     // Given
     LineVersionV3 member = LineVersionV3TestData.concessionMemberBuilder().build();
-    LineVersionV3 other = LineVersionV3TestData.lineBuilder().slnid("ch:1:slnid:1999999").swissLineNumber("90.583.1").build();
-    when(lineVersionV3ReadService.findSwissLineNumberOverlaps(member)).thenReturn(List.of(other));
+    when(lineVersionV3ReadService.findSwissLineNumberOverlaps(any())).thenReturn(List.of(LineVersionV3TestData.line()));
 
     // When & Then
-    assertThatThrownBy(() -> typeValidator.validateSwissLineNumberUniqueness(member))
-        .isInstanceOf(LineV3ConflictException.class);
+    assertThatCode(() -> typeValidator.validateSwissLineNumberUniqueness(member)).doesNotThrowAnyException();
   }
 
   @Test
@@ -291,11 +355,7 @@ class LineV3TypeValidatorTest {
   }
 
   private static LineVersionV3 memberOfType(LineType memberType) {
-    var builder = LineVersionV3TestData.sublineBuilder().lineType(memberType);
-    if (memberType == LineType.CONCESSION) {
-      builder.concessionType(ConcessionType.CANTONALLY_APPROVED_LINE).swissLineNumber("90.583.1");
-    }
-    return builder.build();
+    return LineVersionV3TestData.sublineBuilder().lineType(memberType).build();
   }
 
 }

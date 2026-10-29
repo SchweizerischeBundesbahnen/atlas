@@ -2,19 +2,14 @@ package ch.sbb.line.directory.module.line.mapper;
 
 import ch.sbb.atlas.api.lidi.CreateLineVersionModelV3;
 import ch.sbb.atlas.api.lidi.LineVersionModelV3;
-import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV3;
 import ch.sbb.atlas.api.lidi.ReferencedLineModelV3;
-import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
+import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV3;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
-import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
-import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class LineVersionV3Mapper {
-
-  private static final Set<LineType> OWN_CONCESSION_TYPES = Set.of(LineType.ORDERLY, LineType.ZONE, LineType.CONCESSION);
 
   public static LineVersionModelV3 toModel(LineVersionV3 version, LineVersionV3 parent) {
     return LineVersionModelV3.builder()
@@ -29,7 +24,7 @@ public class LineVersionV3Mapper {
         .lineType(version.getLineType())
         .businessOrganisation(version.getBusinessOrganisation())
         .meansOfTransport(version.getMeansOfTransport())
-        .concessionType(resolveConcessionType(version, parent))
+        .concessionType(version.getConcessionType())
         .offerCategory(version.getOfferCategory())
         .financing(version.getFinancing())
         .cablewayNumber(version.getCablewayNumber())
@@ -49,14 +44,12 @@ public class LineVersionV3Mapper {
   }
 
   public static LineVersionV3 toEntity(CreateLineVersionModelV3 model) {
-    boolean member = model.getReferencedLineSlnid() != null;
     return LineVersionV3.builder()
         .referencedLineSlnid(model.getReferencedLineSlnid())
         .lineType(model.getLineType())
-        .concessionType(ownConcessionType(member, model.getLineType(), model.getConcessionType()))
-        .number(member ? null : model.getNumber())
-        .shortNumber(member ? null : model.getShortNumber())
-        .offerCategory(member ? null : model.getOfferCategory())
+        .concessionType(model.getConcessionType())
+        .number(model.getNumber())
+        .offerCategory(model.getOfferCategory())
         .description(model.getDescription())
         .longName(model.getLongName())
         .swissLineNumber(model.getSwissLineNumber())
@@ -74,16 +67,14 @@ public class LineVersionV3Mapper {
   }
 
   public static LineVersionV3 toEntityFromUpdate(UpdateLineVersionModelV3 model, LineVersionV3 current) {
-    boolean member = current.getReferencedLineSlnid() != null;
     return LineVersionV3.builder()
         .id(current.getId())
         .slnid(current.getSlnid())
         .referencedLineSlnid(current.getReferencedLineSlnid())
         .lineType(current.getLineType())
-        .concessionType(ownConcessionType(member, current.getLineType(), model.getConcessionType()))
-        .number(member ? null : model.getNumber())
-        .shortNumber(member ? null : model.getShortNumber())
-        .offerCategory(member ? null : model.getOfferCategory())
+        .concessionType(model.getConcessionType())
+        .number(model.getNumber())
+        .offerCategory(model.getOfferCategory())
         .description(model.getDescription())
         .longName(model.getLongName())
         .swissLineNumber(model.getSwissLineNumber())
@@ -106,20 +97,9 @@ public class LineVersionV3Mapper {
   }
 
   /**
-   * Non-CONCESSION members inherit the concessionType of the referenced line in the read model; a value sent back by the
-   * client is therefore ignored (analogous to the parent-resolved fields, D-7).
+   * Members never carry number, swissLineNumber, offerCategory and concessionType themselves; those values are read from the
+   * referenced line and exposed here.
    */
-  private static ConcessionType ownConcessionType(boolean member, LineType lineType, ConcessionType concessionType) {
-    return member && lineType != LineType.CONCESSION ? null : concessionType;
-  }
-
-  private static ConcessionType resolveConcessionType(LineVersionV3 version, LineVersionV3 parent) {
-    if (parent == null || OWN_CONCESSION_TYPES.contains(version.getLineType())) {
-      return version.getConcessionType();
-    }
-    return parent.getConcessionType();
-  }
-
   private static ReferencedLineModelV3 toReferencedLine(LineVersionV3 parent) {
     if (parent == null) {
       return null;
@@ -128,6 +108,8 @@ public class LineVersionV3Mapper {
         .number(parent.getNumber())
         .lineNumber(parent.getNumber())
         .swissLineNumber(parent.getSwissLineNumber())
+        .offerCategory(parent.getOfferCategory())
+        .concessionType(parent.getConcessionType())
         .lineSlnid(parent.getSlnid())
         .build();
   }

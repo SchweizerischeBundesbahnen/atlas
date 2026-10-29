@@ -5,8 +5,10 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
+import ch.sbb.line.directory.module.line.entity.LineVersionV3.Fields;
 import ch.sbb.line.directory.module.line.exception.LineV3ConflictException;
-import ch.sbb.line.directory.module.line.exception.LineV3MemberConcessionException;
+import ch.sbb.line.directory.module.line.exception.LineV3MandatoryFieldException;
+import ch.sbb.line.directory.module.line.exception.LineV3MemberFieldNotAllowedException;
 import ch.sbb.line.directory.module.line.exception.LineV3MemberTypeMismatchException;
 import ch.sbb.line.directory.module.line.exception.LineV3TypeNotAllowedException;
 import ch.sbb.line.directory.module.line.exception.LineV3TypeOrderlyException;
@@ -17,7 +19,9 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,6 +45,8 @@ public class LineV3TypeValidator {
     if (!ALLOWED_LINE_TYPES.contains(line.getLineType())) {
       throw new LineV3TypeNotAllowedException(line.getLineType());
     }
+    validateMandatoryLineFields(line);
+
     boolean isOrderly = line.getLineType() == LineType.ORDERLY;
     boolean isBothSet = line.getConcessionType() != null && line.getSwissLineNumber() != null;
     boolean isNoneSet = line.getConcessionType() == null && line.getSwissLineNumber() == null;
@@ -55,11 +61,11 @@ public class LineV3TypeValidator {
 
   public void validateMemberType(LineVersionV3 member) {
     validateReferencedLine(member);
-    validateMemberConcessionFields(member);
+    validateMemberFieldsNotSet(member);
   }
 
   public void validateSwissLineNumberUniqueness(LineVersionV3 version) {
-    if (version.getLineType() != LineType.ORDERLY && version.getLineType() != LineType.CONCESSION) {
+    if (version.getReferencedLineSlnid() != null || version.getLineType() != LineType.ORDERLY) {
       return;
     }
     List<LineVersionV3> overlaps = lineVersionV3ReadService.findSwissLineNumberOverlaps(version);
@@ -87,19 +93,35 @@ public class LineV3TypeValidator {
     }
   }
 
-  private static void validateMemberConcessionFields(LineVersionV3 member) {
-    boolean isConcessionMember = member.getLineType() == LineType.CONCESSION;
-
-    boolean isConcessionTypeMissing = isConcessionMember && member.getConcessionType() == null;
-    boolean isConcessionTypeNotAllowed = !isConcessionMember && member.getConcessionType() != null;
-    if (isConcessionTypeMissing || isConcessionTypeNotAllowed) {
-      throw LineV3MemberConcessionException.concessionType();
+  private static void validateMandatoryLineFields(LineVersionV3 line) {
+    Set<String> missingFields = new TreeSet<>();
+    if (StringUtils.isBlank(line.getNumber())) {
+      missingFields.add(Fields.number);
     }
+    if (line.getOfferCategory() == null) {
+      missingFields.add(Fields.offerCategory);
+    }
+    if (!missingFields.isEmpty()) {
+      throw new LineV3MandatoryFieldException(missingFields);
+    }
+  }
 
-    boolean isSwissLineNumberMissing = isConcessionMember && member.getSwissLineNumber() == null;
-    boolean isSwissLineNumberNotAllowed = !isConcessionMember && member.getSwissLineNumber() != null;
-    if (isSwissLineNumberMissing || isSwissLineNumberNotAllowed) {
-      throw LineV3MemberConcessionException.swissLineNumber();
+  private static void validateMemberFieldsNotSet(LineVersionV3 member) {
+    Set<String> forbiddenFields = new TreeSet<>();
+    if (member.getNumber() != null) {
+      forbiddenFields.add(Fields.number);
+    }
+    if (member.getSwissLineNumber() != null) {
+      forbiddenFields.add(Fields.swissLineNumber);
+    }
+    if (member.getOfferCategory() != null) {
+      forbiddenFields.add(Fields.offerCategory);
+    }
+    if (member.getConcessionType() != null) {
+      forbiddenFields.add(Fields.concessionType);
+    }
+    if (!forbiddenFields.isEmpty()) {
+      throw new LineV3MemberFieldNotAllowedException(forbiddenFields);
     }
   }
 

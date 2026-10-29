@@ -172,7 +172,7 @@ class LineVersionV3ServiceTest {
   }
 
   @Test
-  void shouldInheritConcessionTypeOfThePrioritizedParentVersion() {
+  void shouldResolveReferencedLineFromThePrioritizedParentVersion() {
     //given
     LineVersionV3 child = LineVersionV3TestData.subline();
     LineVersionV3 pastParent = LineVersionV3TestData.lineBuilder()
@@ -191,8 +191,11 @@ class LineVersionV3ServiceTest {
     List<LineVersionModelV3> result = lineVersionV3Service.findBySlnid(LineVersionV3TestData.CHILD_SLNID);
 
     //then
-    assertThat(result.getFirst().getConcessionType()).isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
-    assertThat(result.getFirst().getReferencedLine()).hasOnlyFields("number", "lineNumber", "swissLineNumber", "lineSlnid");
+    assertThat(result.getFirst().getConcessionType()).isNull();
+    assertThat(result.getFirst().getReferencedLine().getConcessionType())
+        .isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
+    assertThat(result.getFirst().getReferencedLine()).hasOnlyFields("number", "lineNumber", "swissLineNumber", "lineSlnid",
+        "offerCategory", "concessionType");
   }
 
   @Test
@@ -278,7 +281,6 @@ class LineVersionV3ServiceTest {
     LineVersionV3 newMember = LineVersionV3TestData.sublineBuilder()
         .slnid(null)
         .number(null)
-        .shortNumber(null)
         .offerCategory(null)
         .build();
     mockSaveGeneratingSlnid();
@@ -290,9 +292,9 @@ class LineVersionV3ServiceTest {
     ArgumentCaptor<LineVersionV3> captor = ArgumentCaptor.captor();
     verify(lineVersionV3Repository).saveAndFlush(captor.capture());
     assertThat(captor.getValue())
-        .extracting(LineVersionV3::getReferencedLineSlnid, LineVersionV3::getNumber, LineVersionV3::getShortNumber,
-            LineVersionV3::getOfferCategory)
-        .containsExactly(LineVersionV3TestData.PARENT_SLNID, null, null, null);
+        .extracting(LineVersionV3::getReferencedLineSlnid, LineVersionV3::getNumber, LineVersionV3::getSwissLineNumber,
+            LineVersionV3::getOfferCategory, LineVersionV3::getConcessionType)
+        .containsExactly(LineVersionV3TestData.PARENT_SLNID, null, null, null, null);
   }
 
   @Test

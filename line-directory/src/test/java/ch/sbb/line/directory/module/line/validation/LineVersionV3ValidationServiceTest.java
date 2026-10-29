@@ -30,6 +30,9 @@ class LineVersionV3ValidationServiceTest {
   private LineV3UpdateValidator updateValidator;
 
   @Mock
+  private LineV3SupervisorFieldValidator supervisorFieldValidator;
+
+  @Mock
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @InjectMocks
@@ -137,7 +140,7 @@ class LineVersionV3ValidationServiceTest {
   }
 
   @Test
-  void shouldApplyConcessionFieldRuleOnUpdate() {
+  void shouldApplyConcessionFieldAndSupervisorFieldRulesOnUpdate() {
     // Given
     LineVersionV3 current = LineVersionV3TestData.line();
     LineVersionV3 edited = current.toBuilder().description("changed").build();
@@ -147,7 +150,21 @@ class LineVersionV3ValidationServiceTest {
 
     // Then
     verify(updateValidator).validateConcessionFieldsUpdatable(current, edited);
+    verify(supervisorFieldValidator).validateUpdate(current, edited);
     verifyNoInteractions(typeValidator, validityValidator);
+  }
+
+  @Test
+  void shouldApplySupervisorFieldRuleOnCreate() {
+    // Given
+    LineVersionV3 line = LineVersionV3TestData.line();
+
+    // When
+    validationService.validateSupervisorOnlyFieldsOnCreate(line);
+
+    // Then
+    verify(supervisorFieldValidator).validateCreate(line);
+    verifyNoInteractions(typeValidator, validityValidator, updateValidator);
   }
 
 }

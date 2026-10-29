@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.module.line.entity;
 
+import ch.sbb.atlas.annotation.SupervisorOnly;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
@@ -84,10 +85,6 @@ public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAs
   @AtlasVersionableProperty
   private String swissLineNumber;
 
-  @Size(max = AtlasFieldLengths.LENGTH_10)
-  @AtlasVersionableProperty
-  private String shortNumber;
-
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private OfferCategory offerCategory;
@@ -114,18 +111,22 @@ public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAs
   @AtlasVersionableProperty
   private String businessOrganisation;
 
+  @SupervisorOnly
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private Financing financing;
 
+  @SupervisorOnly
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String cablewayNumber;
 
+  @SupervisorOnly
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String cablewayType;
 
+  @SupervisorOnly
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String cablewayName;

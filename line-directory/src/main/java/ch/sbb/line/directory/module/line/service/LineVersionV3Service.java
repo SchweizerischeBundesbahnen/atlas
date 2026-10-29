@@ -57,6 +57,7 @@ public class LineVersionV3Service {
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#newVersion, T(ch.sbb.atlas"
       + ".kafka.model.user.admin.ApplicationType).LIDI)")
   public LineVersionV3 create(LineVersionV3 newVersion) {
+    lineVersionV3ValidationService.validateSupervisorOnlyFieldsOnCreate(newVersion);
     LineVersionV3 savedVersion = save(newVersion);
     lineVersionV3ValidationService.validateValidityConstraints(findLineVersions(savedVersion.getSlnid()));
     return savedVersion;
