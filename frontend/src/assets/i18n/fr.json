@@ -1545,7 +1545,7 @@
     "MAP_STYLES": {
       "SWISSTOPO": "Swisstopo coloré (Suisse)",
       "SWISSTOPO_GRAY": "Swisstopo BN (Suisse)",
-      "OPEN_STREET_MAP": "Openstreetmap (mondial)",
+      "BASE_MAP": "Carte de base (mondial)",
       "SATELLITE": "Satellite (mondial)",
       "SATELLITE_SWISS": "Satellite (Suisse)"
     },

@@ -102,14 +102,13 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
     swisstopofarbe: geoAdminRasterSource('ch.swisstopo.pixelkarte-farbe', SWISSTOPO_PIXELKARTE_MAX_ZOOM),
     swisstopograu: geoAdminRasterSource('ch.swisstopo.pixelkarte-grau', SWISSTOPO_PIXELKARTE_MAX_ZOOM),
     satellite_swiss: geoAdminRasterSource('ch.swisstopo.swissimage-product', SWISSTOPO_SWISSIMAGE_MAX_ZOOM),
-    osm: {
+    base: {
       type: 'raster',
       tiles: [
-        `https://journey-maps-tiles.geocdn.sbb.ch/styles/journey_maps_bright_v1/{z}/{x}/{y}.webp?api_key=${environment.journeyMapsApiKey}`,
+        `https://journey-maps-tiles.geocdn.sbb.ch/styles/sbbmaps_bright_nopoi/{z}/{x}/{y}.webp?api_key=${environment.journeyMapsApiKey}`,
       ],
       tileSize: 256,
-      attribution:
-        '<a href="https://www.sbb.ch/" target="_blank">&copy; SBB/CFF/FFS</a> <a href="https://www.geops.com/" target="_blank">&copy; geOps Tiles</a> <a href="https://www.openstreetmap.org/about/" target="_blank">&copy; OpenStreetMap</a>',
+      attribution: '<a href="https://www.sbb.ch/" target="_blank">&copy; SBB/CFF/FFS</a>',
     },
     satellite: {
       type: 'raster',
@@ -153,9 +152,9 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       },
     },
     {
-      id: 'osm',
+      id: 'base',
       type: 'raster',
-      source: 'osm',
+      source: 'base',
       paint: {
         'raster-opacity': 0.8,
       },
