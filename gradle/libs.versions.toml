@@ -3,12 +3,12 @@ okhttpVersion = "5.5.1"
 proj4jVersion = "1.4.3"
 shedlockVersion = "7.10.1"
 protobufVersion = "4.36.2"
-springCloudDependenciesVersion = "2025.1.3"
+springCloudDependenciesVersion = "2025.1.4"
 
 [libraries]
 # Java Convention Dependencies
-openapi-starter-common = { group = "org.springdoc", name = "springdoc-openapi-starter-common", version = "3.1.1" }
-springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.1" }
+openapi-starter-common = { group = "org.springdoc", name = "springdoc-openapi-starter-common", version = "3.2.0" }
+springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.2.0" }
 spring-cloud-dependencies = { group = "org.springframework.cloud", name = "spring-cloud-dependencies", version.ref = "springCloudDependenciesVersion" }
 
 # Geo Data Libs
@@ -30,21 +30,21 @@ protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version
 
 # Other
 swagger-core = { group = "io.swagger.core.v3", name = "swagger-core", version = "2.2.55" }
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.57.2" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version = "2.57.3" }
 jaxb-api = { group = "javax.xml.bind", name = "jaxb-api", version = "2.4.0-b180830.0359" }
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.8" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version = "6.0.0" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
-tika-core = { group = "org.apache.tika", name = "tika-core", version = "4.1.0" }
-greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version = "2.1.14" }
+tika-core = { group = "org.apache.tika", name = "tika-core", version = "4.2.0" }
+greenmail-junit5 = { group = "com.icegreen", name = "greenmail-junit5", version = "2.1.15" }
 s3mock-testcontainers = { group = "com.adobe.testing", name = "s3mock-testcontainers", version = "5.2.3" }
-microsoft-graph = { group = "com.microsoft.graph", name = "microsoft-graph", version = "6.71.0" }
+microsoft-graph = { group = "com.microsoft.graph", name = "microsoft-graph", version = "6.72.0" }
 azure-identity = { group = "com.azure", name = "azure-identity", version = "1.18.7" }
 
 # Gradle Plugin Dependencies
 asciidoctor-gradle-plugin = { group = "org.asciidoctor.jvm.convert", name = "org.asciidoctor.jvm.convert.gradle.plugin", version = "4.0.5" }
 spring-dependency-management-gradle-plugin = { group = "io.spring.dependency-management", name = "io.spring.dependency-management.gradle.plugin", version = "1.1.7" }
-spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "4.1.1" }
+spring-gradle-plugin = { group = "org.springframework.boot", name = "org.springframework.boot.gradle.plugin", version = "4.1.2" }
 
 
 [bundles]
