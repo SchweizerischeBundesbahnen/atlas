@@ -53,6 +53,14 @@
       "enabled": false
     },
     {
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "minimumReleaseAge": null
+    },
+    {
       "groupName": "DOCKER Dependencies",
       "matchManagers": [
         "dockerfile"
