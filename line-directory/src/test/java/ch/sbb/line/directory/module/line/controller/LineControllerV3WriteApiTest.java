@@ -164,6 +164,75 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldCreateCablewayLineWithMeanOfTransportCableRailway() throws Exception {
+    // Given
+    CreateLineVersionModelV3 model = orderlyLineModel("90.100")
+        .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
+        .cablewayNumber("3521")
+        .cablewayType("Pendelbahn")
+        .cablewayName("Luftseilbahn Wengen - Maennlichen")
+        .build();
+
+    // When
+    ResultActions result = create(model);
+
+    // Then
+    result.andExpect(status().isCreated())
+        .andExpect(jsonPath("$.cablewayNumber", is("3521")));
+    assertThat(lineVersionV3Repository.findAll().getFirst().getCablewayType()).isEqualTo("Pendelbahn");
+  }
+
+  @Test
+  void shouldNotCreateCablewayFieldsWithoutMeanOfTransportCableRailway() throws Exception {
+    // Given
+    CreateLineVersionModelV3 model = orderlyLineModel("90.100")
+        .meansOfTransport(Set.of(LineMeanOfTransport.BUS))
+        .cablewayNumber("3521")
+        .cablewayType("Pendelbahn")
+        .cablewayName("Luftseilbahn Wengen - Maennlichen")
+        .build();
+
+    // When
+    ResultActions result = create(model);
+
+    // Then
+    result.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details[*].field", containsInAnyOrder("cablewayNumber", "cablewayType", "cablewayName")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.LINE.ERROR.CABLEWAY.FIELD_NOT_ALLOWED")));
+    assertThat(lineVersionV3Repository.findAll()).isEmpty();
+  }
+
+  @Test
+  void shouldNotCreateMemberWithCablewayFieldsWithoutMeanOfTransportCableRailway() throws Exception {
+    // Given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    CreateLineVersionModelV3 model = memberModel(LineType.TECHNICAL).cablewayName("Sektion 2").build();
+
+    // When
+    ResultActions result = create(model);
+
+    // Then
+    result.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details[*].field", containsInAnyOrder("cablewayName")));
+    assertThat(lineVersionV3Repository.findAll()).hasSize(1);
+  }
+
+  @Test
+  void shouldNotUpdateMeanOfTransportAwayFromCableRailwayWhileKeepingCablewayFields() throws Exception {
+    // Given
+    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.cableway());
+    UpdateLineVersionModelV3 model = updateModelOf(saved).meansOfTransport(Set.of(LineMeanOfTransport.BUS)).build();
+
+    // When
+    ResultActions result = update(saved.getId(), model);
+
+    // Then
+    result.andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.LINE.ERROR.CABLEWAY.FIELD_NOT_ALLOWED")));
+    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getCablewayNumber()).isEqualTo("3521");
+  }
+
+  @Test
   void shouldNotCreateMemberWhenParentNotFound() throws Exception {
     // Given
     CreateLineVersionModelV3 model = memberModel(LineType.TECHNICAL)
@@ -690,6 +759,9 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
         .businessOrganisation(version.getBusinessOrganisation())
         .meansOfTransport(version.getMeansOfTransport())
         .financing(version.getFinancing())
+        .cablewayNumber(version.getCablewayNumber())
+        .cablewayType(version.getCablewayType())
+        .cablewayName(version.getCablewayName())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo());
   }

@@ -33,6 +33,9 @@ class LineVersionV3ValidationServiceTest {
   private LineV3FieldPermissionValidator fieldPermissionValidator;
 
   @Mock
+  private LineV3CablewayValidator cablewayValidator;
+
+  @Mock
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @InjectMocks
@@ -49,6 +52,7 @@ class LineVersionV3ValidationServiceTest {
     // Then
     verify(typeValidator).validateLineType(line);
     verify(typeValidator).validateSwissLineNumberUniqueness(line);
+    verify(cablewayValidator).validateCablewayFields(line);
     verify(sharedBusinessOrganisationService).validateSboidExists(line.getBusinessOrganisation());
   }
 
@@ -63,6 +67,7 @@ class LineVersionV3ValidationServiceTest {
     // Then
     verify(typeValidator).validateMemberType(member);
     verify(typeValidator).validateSwissLineNumberUniqueness(member);
+    verify(cablewayValidator).validateCablewayFields(member);
     verify(sharedBusinessOrganisationService).validateSboidExists(member.getBusinessOrganisation());
   }
 

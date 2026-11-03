@@ -66,7 +66,7 @@ public class LineVersionV3TestData {
         .number("LSMS")
         .swissLineNumber("LSMS")
         .description("Luftseilbahn Wengen - Maennlichen")
-        .meansOfTransport(Set.of(LineMeanOfTransport.AERIAL_TRAMWAY))
+        .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
         .cablewayNumber("3521")
         .cablewayType("Pendelbahn")
         .cablewayName("Luftseilbahn Wengen - Maennlichen");

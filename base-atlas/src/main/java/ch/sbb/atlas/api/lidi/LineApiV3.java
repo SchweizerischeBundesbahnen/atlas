@@ -55,7 +55,8 @@ public interface LineApiV3 {
       @ApiResponse(responseCode = "201"),
       @ApiResponse(responseCode = "400", description = "Validation error, e.g. line type not allowed, member type not "
           + "allowed for the referenced line type, mandatory number / offerCategory missing on a line, a subline provides "
-          + "number, swissLineNumber, offerCategory or concessionType or concession type / swiss line number rules "
+          + "number, swissLineNumber, offerCategory or concessionType, cableway fields provided without mean of transport "
+          + "CABLE_RAILWAY or concession type / swiss line number rules "
           + "violated", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "403", description = "No permission to create this line or financing / cableway fields "
           + "were provided without the SUPERVISOR role", content = @Content(schema =
@@ -76,7 +77,8 @@ public interface LineApiV3 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "400", description = "Validation error, immutable field sent, mandatory number / "
-          + "offerCategory missing on a line, a subline provides number, swissLineNumber, offerCategory or concessionType "
+          + "offerCategory missing on a line, a subline provides number, swissLineNumber, offerCategory or concessionType, "
+          + "cableway fields provided without mean of transport CABLE_RAILWAY "
           + "or concession type / swiss line number rules violated", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "403", description = "No permission to update this line, the line is REVOKED or "

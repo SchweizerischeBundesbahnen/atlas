@@ -14,6 +14,7 @@ public class LineVersionV3ValidationService {
   private final LineV3ValidityValidator validityValidator;
   private final LineV3UpdateValidator updateValidator;
   private final LineV3FieldPermissionValidator fieldPermissionValidator;
+  private final LineV3CablewayValidator cablewayValidator;
   private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   public void validatePreconditionBusinessRules(LineVersionV3 version) {
@@ -23,6 +24,7 @@ public class LineVersionV3ValidationService {
       typeValidator.validateLineType(version);
     }
     typeValidator.validateSwissLineNumberUniqueness(version);
+    cablewayValidator.validateCablewayFields(version);
     sharedBusinessOrganisationService.validateSboidExists(version.getBusinessOrganisation());
   }
 
