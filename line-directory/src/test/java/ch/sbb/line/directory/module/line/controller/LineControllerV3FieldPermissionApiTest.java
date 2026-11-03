@@ -3,12 +3,12 @@ package ch.sbb.line.directory.module.line.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.lidi.CreateLineVersionModelV3;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV3;
@@ -41,7 +41,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @MockitoBean(types = SharedBusinessOrganisationService.class)
 class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
-  private static final String VERSIONS_URL = "/v3/lines/versions";
+  private static final String VERSIONS_URL = "/v3/lines/internal/versions";
   private static final String SBOID = "ch:1:sboid:1100048";
 
   private final LineVersionV3Repository lineVersionV3Repository;

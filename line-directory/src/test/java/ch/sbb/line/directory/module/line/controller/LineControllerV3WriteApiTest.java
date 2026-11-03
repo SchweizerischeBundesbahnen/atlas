@@ -43,7 +43,8 @@ import tools.jackson.databind.node.ObjectNode;
 @MockitoBean(types = SharedBusinessOrganisationService.class)
 class LineControllerV3WriteApiTest extends BaseControllerApiTest {
 
-  private static final String VERSIONS_URL = "/v3/lines/versions";
+  private static final String VERSIONS_URL = "/v3/lines/internal/versions";
+  private static final String READ_VERSIONS_URL = "/v3/lines/versions";
   private static final String SBOID = "ch:1:sboid:1100048";
   private static final String SLNID_PATTERN = "ch:1:slnid:\\d+";
   private static final List<String> READ_ONLY_FIELDS = List.of("id", "slnid", "type", "lineType", "referencedLine", "status",
@@ -566,7 +567,7 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.concessionMemberBuilder().build());
 
     // When
-    ResultActions result = mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.CONCESSION_MEMBER_SLNID));
+    ResultActions result = mvc.perform(get(READ_VERSIONS_URL + "/" + LineVersionV3TestData.CONCESSION_MEMBER_SLNID));
 
     // Then
     result.andExpect(status().isOk())
@@ -635,7 +636,7 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   }
 
   private ObjectNode readFirstVersion(String slnid) throws Exception {
-    String json = mvc.perform(get(VERSIONS_URL + "/" + slnid))
+    String json = mvc.perform(get(READ_VERSIONS_URL + "/" + slnid))
         .andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
     return (ObjectNode) mapper.readTree(json).get(0);

@@ -48,7 +48,7 @@ public interface LineApiV3 {
   List<LineVersionModelV3> getLineVersionsV3(@PathVariable String slnid);
 
   @AuthorizedOnly
-  @PostMapping("versions")
+  @PostMapping("internal/versions")
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(operationId = "createLineVersionV3")
   @ApiResponses(value = {
@@ -71,7 +71,7 @@ public interface LineApiV3 {
   LineVersionModelV3 createLineVersionV3(@RequestBody @Valid CreateLineVersionModelV3 newVersion);
 
   @AuthorizedOnly
-  @PutMapping("versions/{id}")
+  @PutMapping("internal/versions/{id}")
   @Operation(operationId = "updateLineVersionV3")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
