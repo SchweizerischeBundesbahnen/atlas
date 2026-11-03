@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.module.line.entity;
 
-import ch.sbb.atlas.annotation.SupervisorOnly;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
@@ -13,6 +12,8 @@ import ch.sbb.atlas.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.versionable.AtlasVersionable;
 import ch.sbb.atlas.versionable.AtlasVersionableProperty;
 import ch.sbb.atlas.versionable.Versionable;
+import ch.sbb.line.directory.module.line.security.FieldPermission;
+import ch.sbb.line.directory.module.line.security.LineV3FieldPermission;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -111,22 +112,22 @@ public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAs
   @AtlasVersionableProperty
   private String businessOrganisation;
 
-  @SupervisorOnly
+  @FieldPermission(LineV3FieldPermission.FINANCING)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private Financing financing;
 
-  @SupervisorOnly
+  @FieldPermission(LineV3FieldPermission.CABLEWAY)
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String cablewayNumber;
 
-  @SupervisorOnly
+  @FieldPermission(LineV3FieldPermission.CABLEWAY)
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String cablewayType;
 
-  @SupervisorOnly
+  @FieldPermission(LineV3FieldPermission.CABLEWAY)
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String cablewayName;

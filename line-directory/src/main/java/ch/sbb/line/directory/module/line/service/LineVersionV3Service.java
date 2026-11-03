@@ -57,7 +57,7 @@ public class LineVersionV3Service {
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#newVersion, T(ch.sbb.atlas"
       + ".kafka.model.user.admin.ApplicationType).LIDI)")
   public LineVersionV3 create(LineVersionV3 newVersion) {
-    lineVersionV3ValidationService.validateSupervisorOnlyFieldsOnCreate(newVersion);
+    lineVersionV3ValidationService.validateFieldPermissionsOnCreate(newVersion);
     LineVersionV3 savedVersion = save(newVersion);
     lineVersionV3ValidationService.validateValidityConstraints(findLineVersions(savedVersion.getSlnid()));
     return savedVersion;
@@ -68,7 +68,8 @@ public class LineVersionV3Service {
    */
   @Transactional
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, "
-      + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+      + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI) "
+      + "or @lineV3FieldPermissionService.mayWriteRestrictedFieldsOnly(#editedVersion, #currentVersions)")
   public List<LineVersionV3> update(LineVersionV3 currentVersion, LineVersionV3 editedVersion,
       List<LineVersionV3> currentVersions) {
     lineVersionV3ValidationService.validateNotRevoked(currentVersion);

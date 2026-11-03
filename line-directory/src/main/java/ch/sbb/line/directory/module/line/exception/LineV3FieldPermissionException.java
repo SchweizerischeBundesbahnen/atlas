@@ -13,14 +13,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 /**
- * Financing and the cableway fields may only be set or changed by users with at least the SUPERVISOR role.
+ * Fields annotated with {@link ch.sbb.line.directory.module.line.security.FieldPermission} require a dedicated write
+ * permission the current user does not hold.
  */
 @RequiredArgsConstructor
 @Getter
-public class LineV3SupervisorOnlyFieldException extends AtlasException {
+public class LineV3FieldPermissionException extends AtlasException {
 
-  private static final String ERROR_CODE = "LIDI.LINE.ERROR.SUPERVISOR_ONLY_FIELD";
-  private static final String ERROR = "Field may only be changed by a supervisor";
+  private static final String ERROR_CODE = "LIDI.LINE.ERROR.FIELD_PERMISSION";
+  private static final String ERROR = "Field requires a dedicated write permission";
 
   private final Set<String> fields;
 
@@ -38,7 +39,7 @@ public class LineV3SupervisorOnlyFieldException extends AtlasException {
     return fields.stream()
         .map(field -> Detail.builder()
             .field(field)
-            .message("Field {0} may only be set or changed by users with at least the SUPERVISOR role")
+            .message("Field {0} requires a dedicated write permission")
             .displayInfo(builder()
                 .code(ERROR_CODE)
                 .with("field", field)

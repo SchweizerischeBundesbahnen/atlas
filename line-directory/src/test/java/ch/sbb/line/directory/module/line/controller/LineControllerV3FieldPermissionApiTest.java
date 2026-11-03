@@ -34,11 +34,12 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 /**
- * Covers the SUPERVISOR-only fields end to end. The user administration service is mocked to simulate a writer who holds the
- * write permission on the business organisation but not the SUPERVISOR role.
+ * Covers the fields restricted by a {@link ch.sbb.line.directory.module.line.security.FieldPermission} end to end. The user
+ * administration service is mocked to simulate the different combinations of write permission on the business organisation and
+ * field permission.
  */
 @MockitoBean(types = SharedBusinessOrganisationService.class)
-class LineControllerV3SupervisorFieldApiTest extends BaseControllerApiTest {
+class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
   private static final String VERSIONS_URL = "/v3/lines/versions";
   private static final String SBOID = "ch:1:sboid:1100048";
@@ -49,7 +50,7 @@ class LineControllerV3SupervisorFieldApiTest extends BaseControllerApiTest {
   private BusinessOrganisationBasedUserAdministrationService userAdministrationService;
 
   @Autowired
-  LineControllerV3SupervisorFieldApiTest(LineVersionV3Repository lineVersionV3Repository) {
+  LineControllerV3FieldPermissionApiTest(LineVersionV3Repository lineVersionV3Repository) {
     this.lineVersionV3Repository = lineVersionV3Repository;
   }
 
@@ -66,7 +67,7 @@ class LineControllerV3SupervisorFieldApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateLineWithSupervisorOnlyFieldsAsWriter() throws Exception {
+  void shouldNotCreateLineWithRestrictedFieldsAsWriter() throws Exception {
     // Given
     CreateLineVersionModelV3 model = lineModel().financing(Financing.RPV).cablewayNumber("3521").build();
 
@@ -76,12 +77,12 @@ class LineControllerV3SupervisorFieldApiTest extends BaseControllerApiTest {
     // Then
     result.andExpect(status().isForbidden())
         .andExpect(jsonPath("$.details[*].field", containsInAnyOrder("financing", "cablewayNumber")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.LINE.ERROR.SUPERVISOR_ONLY_FIELD")));
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.LINE.ERROR.FIELD_PERMISSION")));
     assertThat(lineVersionV3Repository.findAll()).isEmpty();
   }
 
   @Test
-  void shouldCreateLineWithoutSupervisorOnlyFieldsAsWriter() throws Exception {
+  void shouldCreateLineWithoutRestrictedFieldsAsWriter() throws Exception {
     // Given
     CreateLineVersionModelV3 model = lineModel().build();
 
@@ -94,7 +95,7 @@ class LineControllerV3SupervisorFieldApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotUpdateSupervisorOnlyFieldAsWriter() throws Exception {
+  void shouldNotUpdateRestrictedFieldAsWriter() throws Exception {
     // Given
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
     UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
@@ -110,7 +111,7 @@ class LineControllerV3SupervisorFieldApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldUpdateOtherFieldsWhileResendingTheUnchangedSupervisorOnlyFieldsAsWriter() throws Exception {
+  void shouldUpdateOtherFieldsWhileResendingTheUnchangedRestrictedFieldsAsWriter() throws Exception {
     // Given
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
     UpdateLineVersionModelV3 model = updateModelOf(saved).description("Updated description").build();
@@ -124,6 +125,45 @@ class LineControllerV3SupervisorFieldApiTest extends BaseControllerApiTest {
         .isEqualTo("Updated description");
   }
 
+  @Test
+  void shouldDenyUpdateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
+    // Given
+    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(false);
+    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
+
+    // When & Then
+    update(saved.getId(), model).andExpect(status().isForbidden());
+  }
+
+  @Test
+  void shouldAllowRestrictedFieldOnlyUpdateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
+    // Given
+    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(false);
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
+
+    // When
+    ResultActions result = update(saved.getId(), model);
+
+    // Then
+    result.andExpect(status().isOk());
+    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getFinancing()).isEqualTo(Financing.RPV);
+  }
+
+  @Test
+  void shouldDenyUpdateWithoutWritePermissionOnBusinessOrganisationWhenAnUnrestrictedFieldChanged() throws Exception {
+    // Given
+    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(false);
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    UpdateLineVersionModelV3 model = updateModelOf(saved).description("Updated description").build();
+
+    // When & Then
+    update(saved.getId(), model).andExpect(status().isForbidden());
+  }
+
   private CreateLineVersionModelV3.CreateLineVersionModelV3Builder<?, ?> lineModel() {
     return CreateLineVersionModelV3.builder()
         .lineType(LineType.ORDERLY)
@@ -131,7 +171,7 @@ class LineControllerV3SupervisorFieldApiTest extends BaseControllerApiTest {
         .number("L1")
         .offerCategory(OfferCategory.B)
         .swissLineNumber("90.100")
-        .description("Supervisor field test")
+        .description("Field permission test")
         .businessOrganisation(SBOID)
         .meansOfTransport(Set.of(LineMeanOfTransport.TRAIN))
         .validFrom(LocalDate.of(2026, 1, 1))

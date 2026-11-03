@@ -13,7 +13,7 @@ public class LineVersionV3ValidationService {
   private final LineV3TypeValidator typeValidator;
   private final LineV3ValidityValidator validityValidator;
   private final LineV3UpdateValidator updateValidator;
-  private final LineV3SupervisorFieldValidator supervisorFieldValidator;
+  private final LineV3FieldPermissionValidator fieldPermissionValidator;
   private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   public void validatePreconditionBusinessRules(LineVersionV3 version) {
@@ -44,11 +44,11 @@ public class LineVersionV3ValidationService {
 
   public void validateUpdate(LineVersionV3 current, LineVersionV3 edited) {
     updateValidator.validateConcessionFieldsUpdatable(current, edited);
-    supervisorFieldValidator.validateUpdate(current, edited);
+    fieldPermissionValidator.validateUpdate(current, edited);
   }
 
-  public void validateSupervisorOnlyFieldsOnCreate(LineVersionV3 newVersion) {
-    supervisorFieldValidator.validateCreate(newVersion);
+  public void validateFieldPermissionsOnCreate(LineVersionV3 newVersion) {
+    fieldPermissionValidator.validateCreate(newVersion);
   }
 
   private static boolean isMember(LineVersionV3 version) {
