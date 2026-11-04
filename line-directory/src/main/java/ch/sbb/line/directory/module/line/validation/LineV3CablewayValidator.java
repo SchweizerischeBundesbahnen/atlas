@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * The cableway fields (Anlagennummer, Anlage-Typ, Anlage-Name) describe a Seilbahn installation. They may only be set if the
- * version carries {@link LineMeanOfTransport#CABLE_RAILWAY}. Applies to lines and members alike, since meansOfTransport is
- * never inherited from the referenced line.
+ * version carries at least one Seilbahn mean of transport. Applies to lines and members alike, since meansOfTransport is never
+ * inherited from the referenced line.
  */
 @Service
 public class LineV3CablewayValidator {
+
+  private static final Set<LineMeanOfTransport> CABLEWAY_MEANS_OF_TRANSPORT = Set.of(LineMeanOfTransport.CABLE_RAILWAY,
+      LineMeanOfTransport.AERIAL_TRAMWAY, LineMeanOfTransport.GONDOLA_LIFT, LineMeanOfTransport.CHAIRLIFT);
 
   public void validateCablewayFields(LineVersionV3 version) {
     if (hasCablewayMeanOfTransport(version)) {
@@ -38,7 +41,7 @@ public class LineV3CablewayValidator {
 
   private static boolean hasCablewayMeanOfTransport(LineVersionV3 version) {
     Set<LineMeanOfTransport> meansOfTransport = version.getMeansOfTransport();
-    return meansOfTransport != null && meansOfTransport.contains(LineMeanOfTransport.CABLE_RAILWAY);
+    return meansOfTransport != null && meansOfTransport.stream().anyMatch(CABLEWAY_MEANS_OF_TRANSPORT::contains);
   }
 
 }

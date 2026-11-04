@@ -113,7 +113,6 @@ class LineVersionV3MapperTest {
     assertThat(result.getNumber()).isNull();
     assertThat(result.getSwissLineNumber()).isNull();
     assertThat(result.getReferencedLine().getNumber()).isEqualTo("90.583");
-    assertThat(result.getReferencedLine().getLineNumber()).isEqualTo("90.583");
     assertThat(result.getReferencedLine().getSwissLineNumber()).isEqualTo("90.583");
   }
 
@@ -167,8 +166,8 @@ class LineVersionV3MapperTest {
     LineVersionModelV3 result = LineVersionV3Mapper.toModel(LineVersionV3TestData.subline(), LineVersionV3TestData.line());
 
     //then
-    assertThat(result.getReferencedLine()).hasOnlyFields("number", "lineNumber", "swissLineNumber", "offerCategory",
-        "concessionType", "lineSlnid");
+    assertThat(result.getReferencedLine()).hasOnlyFields("number", "swissLineNumber", "offerCategory", "concessionType",
+        "lineSlnid");
   }
 
   @Test
@@ -185,8 +184,8 @@ class LineVersionV3MapperTest {
 
     //then
     assertThat(result.getReferencedLine().getLineSlnid()).isEqualTo(LineVersionV3TestData.CHILD_SLNID);
-    assertThat(result.getReferencedLine()).hasNoNullFieldsOrPropertiesExcept("number", "lineNumber", "swissLineNumber",
-        "offerCategory", "concessionType");
+    assertThat(result.getReferencedLine()).hasNoNullFieldsOrPropertiesExcept("number", "swissLineNumber", "offerCategory",
+        "concessionType");
   }
 
   @Test

@@ -76,18 +76,21 @@ public abstract class BaseLineVersionModelV3 implements DatesValidator {
       + "users with at least SUPERVISOR role")
   private Financing financing;
 
-  @Schema(description = "Anlagennummer - only allowed if meansOfTransport contains CABLE_RAILWAY. May only be set or "
-      + "changed by users with at least SUPERVISOR role", example = "3521")
+  @Schema(description = "Anlagennummer - only allowed if meansOfTransport contains a cableway mean of transport "
+      + "(CABLE_RAILWAY, AERIAL_TRAMWAY, GONDOLA_LIFT, CHAIRLIFT). May only be set or changed by users with at least "
+      + "SUPERVISOR role", example = "3521")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String cablewayNumber;
 
-  @Schema(description = "Anlage-Typ - only allowed if meansOfTransport contains CABLE_RAILWAY. May only be set or changed "
-      + "by users with at least SUPERVISOR role", example = "Pendelbahn")
+  @Schema(description = "Anlage-Typ - only allowed if meansOfTransport contains a cableway mean of transport "
+      + "(CABLE_RAILWAY, AERIAL_TRAMWAY, GONDOLA_LIFT, CHAIRLIFT). May only be set or changed by users with at least "
+      + "SUPERVISOR role", example = "Pendelbahn")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String cablewayType;
 
-  @Schema(description = "Anlage-Name - only allowed if meansOfTransport contains CABLE_RAILWAY. May only be set or changed "
-      + "by users with at least SUPERVISOR role", example = "Luftseilbahn Wengen - Maennlichen")
+  @Schema(description = "Anlage-Name - only allowed if meansOfTransport contains a cableway mean of transport "
+      + "(CABLE_RAILWAY, AERIAL_TRAMWAY, GONDOLA_LIFT, CHAIRLIFT). May only be set or changed by users with at least "
+      + "SUPERVISOR role", example = "Luftseilbahn Wengen - Maennlichen")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String cablewayName;

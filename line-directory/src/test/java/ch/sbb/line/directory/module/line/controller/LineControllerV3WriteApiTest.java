@@ -164,10 +164,10 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldCreateCablewayLineWithMeanOfTransportCableRailway() throws Exception {
+  void shouldCreateCablewayLineWithCablewayMeanOfTransport() throws Exception {
     // Given
     CreateLineVersionModelV3 model = orderlyLineModel("90.100")
-        .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
+        .meansOfTransport(Set.of(LineMeanOfTransport.AERIAL_TRAMWAY))
         .cablewayNumber("3521")
         .cablewayType("Pendelbahn")
         .cablewayName("Luftseilbahn Wengen - Maennlichen")
@@ -183,7 +183,7 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateCablewayFieldsWithoutMeanOfTransportCableRailway() throws Exception {
+  void shouldNotCreateCablewayFieldsWithoutCablewayMeanOfTransport() throws Exception {
     // Given
     CreateLineVersionModelV3 model = orderlyLineModel("90.100")
         .meansOfTransport(Set.of(LineMeanOfTransport.BUS))
@@ -203,7 +203,7 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateMemberWithCablewayFieldsWithoutMeanOfTransportCableRailway() throws Exception {
+  void shouldNotCreateMemberWithCablewayFieldsWithoutCablewayMeanOfTransport() throws Exception {
     // Given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
     CreateLineVersionModelV3 model = memberModel(LineType.TECHNICAL).cablewayName("Sektion 2").build();
@@ -218,7 +218,7 @@ class LineControllerV3WriteApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotUpdateMeanOfTransportAwayFromCableRailwayWhileKeepingCablewayFields() throws Exception {
+  void shouldNotUpdateMeanOfTransportAwayFromCablewayWhileKeepingCablewayFields() throws Exception {
     // Given
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.cableway());
     UpdateLineVersionModelV3 model = updateModelOf(saved).meansOfTransport(Set.of(LineMeanOfTransport.BUS)).build();

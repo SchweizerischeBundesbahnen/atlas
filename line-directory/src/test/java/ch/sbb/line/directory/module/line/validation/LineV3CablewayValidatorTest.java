@@ -18,20 +18,20 @@ class LineV3CablewayValidatorTest {
 
   private final LineV3CablewayValidator cablewayValidator = new LineV3CablewayValidator();
 
-  @Test
-  void shouldAcceptCablewayFieldsForCableRailway() {
+  @ParameterizedTest
+  @EnumSource(value = LineMeanOfTransport.class, names = {"CABLE_RAILWAY", "AERIAL_TRAMWAY", "GONDOLA_LIFT", "CHAIRLIFT"})
+  void shouldAcceptCablewayFieldsForCablewayMeansOfTransport(LineMeanOfTransport meanOfTransport) {
     // Given
-    LineVersionV3 version = LineVersionV3TestData.cablewayBuilder()
-        .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
-        .build();
+    LineVersionV3 version = LineVersionV3TestData.cablewayBuilder().meansOfTransport(Set.of(meanOfTransport)).build();
 
     // When & Then
     assertThatCode(() -> cablewayValidator.validateCablewayFields(version)).doesNotThrowAnyException();
   }
 
   @ParameterizedTest
-  @EnumSource(value = LineMeanOfTransport.class, mode = Mode.EXCLUDE, names = "CABLE_RAILWAY")
-  void shouldRejectCablewayFieldsForEveryOtherMeanOfTransport(LineMeanOfTransport meanOfTransport) {
+  @EnumSource(value = LineMeanOfTransport.class, mode = Mode.EXCLUDE,
+      names = {"CABLE_RAILWAY", "AERIAL_TRAMWAY", "GONDOLA_LIFT", "CHAIRLIFT"})
+  void shouldRejectCablewayFieldsForNonCablewayMeansOfTransport(LineMeanOfTransport meanOfTransport) {
     // Given
     LineVersionV3 version = LineVersionV3TestData.cablewayBuilder().meansOfTransport(Set.of(meanOfTransport)).build();
 
@@ -45,10 +45,10 @@ class LineV3CablewayValidatorTest {
   }
 
   @Test
-  void shouldAcceptCablewayFieldsWhenCableRailwayIsCombinedWithOtherMeansOfTransport() {
+  void shouldAcceptCablewayFieldsWhenOnlyOneOfSeveralMeansOfTransportIsCableway() {
     // Given
     LineVersionV3 version = LineVersionV3TestData.cablewayBuilder()
-        .meansOfTransport(Set.of(LineMeanOfTransport.BUS, LineMeanOfTransport.CABLE_RAILWAY))
+        .meansOfTransport(Set.of(LineMeanOfTransport.BUS, LineMeanOfTransport.GONDOLA_LIFT))
         .build();
 
     // When & Then

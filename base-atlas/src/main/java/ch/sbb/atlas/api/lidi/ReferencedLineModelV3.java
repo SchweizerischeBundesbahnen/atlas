@@ -24,10 +24,6 @@ public class ReferencedLineModelV3 {
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String number;
 
-  @Schema(description = "LineNumber of the referenced line", accessMode = AccessMode.READ_ONLY, example = "90.583")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  private String lineNumber;
-
   @Schema(description = "SwissLineNumber of the referenced line", accessMode = AccessMode.READ_ONLY, example = "90.583")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String swissLineNumber;

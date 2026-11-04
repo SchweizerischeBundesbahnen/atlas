@@ -14,14 +14,14 @@ import org.springframework.http.HttpStatus;
 
 /**
  * The cableway fields (Anlagennummer, Anlage-Typ, Anlage-Name) describe a Seilbahn installation. They may only be set on
- * versions whose meansOfTransport contain CABLE_RAILWAY.
+ * versions whose meansOfTransport contain a Seilbahn mean of transport.
  */
 @RequiredArgsConstructor
 @Getter
 public class LineV3CablewayFieldNotAllowedException extends AtlasException {
 
   private static final String ERROR_CODE = "LIDI.LINE.ERROR.CABLEWAY.FIELD_NOT_ALLOWED";
-  private static final String ERROR = "Cableway field not allowed without mean of transport CABLE_RAILWAY";
+  private static final String ERROR = "Cableway field not allowed without a cableway mean of transport";
 
   private final Set<String> fields;
 
@@ -29,7 +29,8 @@ public class LineV3CablewayFieldNotAllowedException extends AtlasException {
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
-        .message("Cableway fields must not be set without mean of transport CABLE_RAILWAY: " + new TreeSet<>(fields))
+        .message("Cableway fields must not be set without one of the cableway means of transport CABLE_RAILWAY, "
+            + "AERIAL_TRAMWAY, GONDOLA_LIFT, CHAIRLIFT: " + new TreeSet<>(fields))
         .error(ERROR)
         .details(new TreeSet<>(getErrorDetails()))
         .build();
@@ -39,7 +40,8 @@ public class LineV3CablewayFieldNotAllowedException extends AtlasException {
     return fields.stream()
         .map(field -> Detail.builder()
             .field(field)
-            .message("Field {0} may only be set if meansOfTransport contains CABLE_RAILWAY")
+            .message("Field {0} may only be set if meansOfTransport contains CABLE_RAILWAY, AERIAL_TRAMWAY, GONDOLA_LIFT "
+                + "or CHAIRLIFT")
             .displayInfo(builder()
                 .code(ERROR_CODE)
                 .with("field", field)

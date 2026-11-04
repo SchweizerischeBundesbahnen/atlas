@@ -106,7 +106,6 @@ public class LineVersionV3Mapper {
     }
     return ReferencedLineModelV3.builder()
         .number(parent.getNumber())
-        .lineNumber(parent.getNumber())
         .swissLineNumber(parent.getSwissLineNumber())
         .offerCategory(parent.getOfferCategory())
         .concessionType(parent.getConcessionType())

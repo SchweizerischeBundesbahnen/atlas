@@ -194,8 +194,8 @@ class LineVersionV3ServiceTest {
     assertThat(result.getFirst().getConcessionType()).isNull();
     assertThat(result.getFirst().getReferencedLine().getConcessionType())
         .isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
-    assertThat(result.getFirst().getReferencedLine()).hasOnlyFields("number", "lineNumber", "swissLineNumber", "lineSlnid",
-        "offerCategory", "concessionType");
+    assertThat(result.getFirst().getReferencedLine()).hasOnlyFields("number", "swissLineNumber", "lineSlnid", "offerCategory",
+        "concessionType");
   }
 
   @Test
