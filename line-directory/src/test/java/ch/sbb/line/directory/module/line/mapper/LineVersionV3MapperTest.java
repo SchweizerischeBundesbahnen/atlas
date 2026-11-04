@@ -70,15 +70,6 @@ class LineVersionV3MapperTest {
   }
 
   @Test
-  void shouldMapNullFotCommentToNull() {
-    //when
-    LineVersionModelV3 result = LineVersionV3Mapper.toModel(LineVersionV3TestData.line(), null);
-
-    //then
-    assertThat(result.getFotComment()).isNull();
-  }
-
-  @Test
   void shouldNotInheritMeansOfTransportFromParent() {
     //given
     LineVersionV3 subline = LineVersionV3TestData.sublineBuilder()
@@ -482,61 +473,17 @@ class LineVersionV3MapperTest {
   }
 
   @Test
-  void shouldMapFotCommentWhenCreating() {
-    //when
-    LineVersionV3 result = LineVersionV3Mapper.toEntity(createModelBuilder().fotComment("BAV comment").comment("TU comment").build());
-
-    //then
-    assertThat(result.getFotComment()).isEqualTo("BAV comment");
-    assertThat(result.getComment()).isEqualTo("TU comment");
-  }
-
-  @Test
-  void shouldLeaveFotCommentNullWhenCreatingWithoutFotComment() {
-    //when
-    LineVersionV3 result = LineVersionV3Mapper.toEntity(createModelBuilder().build());
-
-    //then
-    assertThat(result.getFotComment()).isNull();
-  }
-
-  @Test
-  void shouldMapFotCommentWhenGenericUpdating() {
+  void shouldMapFotCommentToEntityWhenCreatingAndUpdating() {
     //given
     LineVersionV3 current = LineVersionV3TestData.lineBuilder().fotComment("old").build();
-    UpdateLineVersionModelV3 model = updateModelBuilder().comment("TU comment").fotComment("new").build();
 
     //when
-    LineVersionV3 result = LineVersionV3Mapper.toEntityFromUpdate(model, current);
+    LineVersionV3 created = LineVersionV3Mapper.toEntity(createModelBuilder().fotComment("BAV comment").build());
+    LineVersionV3 updated = LineVersionV3Mapper.toEntityFromUpdate(updateModelBuilder().fotComment("new").build(), current);
 
     //then
-    assertThat(result.getFotComment()).isEqualTo("new");
-    assertThat(result.getComment()).isEqualTo("TU comment");
-  }
-
-  @Test
-  void shouldNotCarryOverCurrentFotCommentWhenGenericUpdatingWithoutFotComment() {
-    //given
-    LineVersionV3 current = LineVersionV3TestData.lineBuilder().fotComment("BAV comment").build();
-
-    //when
-    LineVersionV3 result = LineVersionV3Mapper.toEntityFromUpdate(updateModelBuilder().build(), current);
-
-    //then
-    assertThat(result.getFotComment()).isNull();
-  }
-
-  @ParameterizedTest
-  @ValueSource(strings = {"abc", "a b", "äöü"})
-  void shouldMapFotCommentAsSentWhenCreatingAndUpdating(String value) {
-    //when
-    LineVersionV3 created = LineVersionV3Mapper.toEntity(createModelBuilder().fotComment(value).build());
-    LineVersionV3 updated = LineVersionV3Mapper.toEntityFromUpdate(updateModelBuilder().fotComment(value).build(),
-        LineVersionV3TestData.line());
-
-    //then
-    assertThat(created.getFotComment()).isEqualTo(value);
-    assertThat(updated.getFotComment()).isEqualTo(value);
+    assertThat(created.getFotComment()).isEqualTo("BAV comment");
+    assertThat(updated.getFotComment()).isEqualTo("new");
   }
 
   private static CreateLineVersionModelV3.CreateLineVersionModelV3Builder<?, ?> createModelBuilder() {

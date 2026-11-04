@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.module.line.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -8,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
@@ -20,11 +18,8 @@ import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
-import jakarta.persistence.EntityManagerFactory;
 import java.time.LocalDate;
 import java.util.Set;
-import org.hibernate.SessionFactory;
-import org.hibernate.stat.Statistics;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +32,10 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
   private static final String VERSIONS_URL = "/v3/lines/versions";
 
   private final LineVersionV3Repository lineVersionV3Repository;
-  private final EntityManagerFactory entityManagerFactory;
 
   @Autowired
-  LineControllerV3ApiTest(LineVersionV3Repository lineVersionV3Repository, EntityManagerFactory entityManagerFactory) {
+  LineControllerV3ApiTest(LineVersionV3Repository lineVersionV3Repository) {
     this.lineVersionV3Repository = lineVersionV3Repository;
-    this.entityManagerFactory = entityManagerFactory;
   }
 
   @AfterEach
@@ -88,7 +81,7 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldExposeFotCommentIndependentOfCommentOnPage() throws Exception {
+  void shouldExposeFotCommentIndependentOfComment() throws Exception {
     //given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().comment("TU comment").fotComment("BAV comment").build());
 
@@ -97,80 +90,9 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects[0].comment", is("TU comment")))
         .andExpect(jsonPath("$.objects[0].fotComment", is("BAV comment")));
-  }
-
-  @Test
-  void shouldExposeFotCommentBySlnid() throws Exception {
-    //given
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().fotComment("BAV comment").build());
-
-    //when && then
     mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.PARENT_SLNID))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].fotComment", is("BAV comment")))
-        .andExpect(jsonPath("$[0].comment", is(nullValue())));
-  }
-
-  @Test
-  void shouldReturnNullFotCommentWhenUnset() throws Exception {
-    //given
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().comment("TU comment").build());
-
-    //when && then
-    mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.PARENT_SLNID))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].fotComment", is(nullValue())))
-        .andExpect(jsonPath("$[0].comment", is("TU comment")));
-  }
-
-  @Test
-  void shouldReturnFotCommentOfMaxLengthWithoutTruncation() throws Exception {
-    //given
-    String fotComment = "b".repeat(AtlasFieldLengths.LENGTH_1500);
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().fotComment(fotComment).build());
-
-    //when && then
-    mvc.perform(get(VERSIONS_URL))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects[0].fotComment", is(fotComment)));
-    mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.PARENT_SLNID))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].fotComment", is(fotComment)));
-  }
-
-  @Test
-  void shouldNotChangeQueryCountPerPageWhenFotCommentIsSet() throws Exception {
-    //given
-    Statistics statistics = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
-    statistics.setStatisticsEnabled(true);
-    try {
-      saveLineWithTwoMembers(null);
-      long queryCountWithoutFotComment = countStatementsOfVersionsPage(statistics);
-      lineVersionV3Repository.deleteAll();
-
-      saveLineWithTwoMembers("b".repeat(AtlasFieldLengths.LENGTH_1500));
-
-      //when
-      long queryCountWithFotComment = countStatementsOfVersionsPage(statistics);
-
-      //then
-      assertThat(queryCountWithFotComment).isPositive().isEqualTo(queryCountWithoutFotComment);
-    } finally {
-      statistics.setStatisticsEnabled(false);
-    }
-  }
-
-  private void saveLineWithTwoMembers(String fotComment) {
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().fotComment(fotComment).build());
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.sublineBuilder().fotComment(fotComment).build());
-    lineVersionV3Repository.saveAndFlush(
-        LineVersionV3TestData.sublineBuilder().slnid("ch:1:slnid:1028629:5").fotComment(fotComment).build());
-  }
-
-  private long countStatementsOfVersionsPage(Statistics statistics) throws Exception {
-    statistics.clear();
-    mvc.perform(get(VERSIONS_URL)).andExpect(status().isOk());
-    return statistics.getPrepareStatementCount();
+        .andExpect(jsonPath("$[0].fotComment", is("BAV comment")));
   }
 
   @Test

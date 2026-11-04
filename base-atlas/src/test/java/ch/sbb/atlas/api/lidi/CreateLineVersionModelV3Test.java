@@ -2,12 +2,16 @@ package ch.sbb.atlas.api.lidi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.atlas.model.BaseValidatorTest;
 import jakarta.validation.ConstraintViolation;
 import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CreateLineVersionModelV3Test extends BaseValidatorTest {
 
@@ -97,5 +101,27 @@ class CreateLineVersionModelV3Test extends BaseValidatorTest {
 
     // When / Then
     assertThat(properties(model)).containsExactlyInAnyOrder("slnid", "etagVersion");
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"BAV comment", "a b"})
+  void shouldAcceptTrimmedFotComment(String fotComment) {
+    // When / Then
+    assertThat(validator.validate(valid().fotComment(fotComment).build())).isEmpty();
+  }
+
+  @ParameterizedTest
+  @EmptySource
+  @ValueSource(strings = {" ", " test", "test "})
+  void shouldRejectBlankOrUntrimmedFotComment(String fotComment) {
+    // When / Then
+    assertThat(properties(valid().fotComment(fotComment).build())).containsExactly("fotComment");
+  }
+
+  @Test
+  void shouldRejectTooLongFotComment() {
+    // When / Then
+    assertThat(properties(valid().fotComment("a".repeat(AtlasFieldLengths.LENGTH_1500 + 1)).build()))
+        .containsExactly("fotComment");
   }
 }

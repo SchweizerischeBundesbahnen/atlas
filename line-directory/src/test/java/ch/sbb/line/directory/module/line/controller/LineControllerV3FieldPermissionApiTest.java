@@ -28,18 +28,15 @@ import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 /**
  * Covers the fields reserved for supervisors (financing, cableway fields, fotComment) by the {@code @PreAuthorize} expressions
- * and the supervisor check on {@code LineVersionV3Service}. Runs as a standard internal user instead of the default admin; the
- * user administration service is mocked to simulate the different combinations of write permission on the business
- * organisation and supervisor role.
+ * on {@code LineVersionV3Service}. Runs as a standard internal user instead of the default admin; the user administration
+ * service is mocked to simulate the different combinations of write permission on the business organisation and supervisor
+ * role.
  */
 @MockitoBean(types = SharedBusinessOrganisationService.class)
 @WithMockJwtAuthentication(role = MockRole.STANDARD)
@@ -100,6 +97,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
           assertThat(version.getCablewayNumber()).isNull();
           assertThat(version.getCablewayType()).isNull();
           assertThat(version.getCablewayName()).isNull();
+          assertThat(version.getFotComment()).isNull();
         });
   }
 
@@ -121,7 +119,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateOtherFieldsWhileResendingTheUnchangedRestrictedFieldsAsWriter() throws Exception {
     // Given
-    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    LineVersionV3 saved = savedLineWithFotComment();
     UpdateLineVersionModelV3 model = updateModelOf(saved).description("Updated description").build();
 
     // When
@@ -129,8 +127,9 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
     // Then
     result.andExpect(status().isOk());
-    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getDescription())
-        .isEqualTo("Updated description");
+    LineVersionV3 reloaded = lineVersionV3Repository.findById(saved.getId()).orElseThrow();
+    assertThat(reloaded.getDescription()).isEqualTo("Updated description");
+    assertThat(reloaded.getFotComment()).isEqualTo(STORED_FOT_COMMENT);
   }
 
   /**
@@ -182,6 +181,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
         .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
         .financing(Financing.RPV)
         .cablewayNumber("3521")
+        .fotComment(STORED_FOT_COMMENT)
         .build();
 
     // When
@@ -193,6 +193,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
         .satisfies(version -> {
           assertThat(version.getFinancing()).isEqualTo(Financing.RPV);
           assertThat(version.getCablewayNumber()).isEqualTo("3521");
+          assertThat(version.getFotComment()).isEqualTo(STORED_FOT_COMMENT);
         });
   }
 
@@ -201,14 +202,16 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
     // Given
     when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
-    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
+    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).fotComment(STORED_FOT_COMMENT).build();
 
     // When
     ResultActions result = update(saved.getId(), model);
 
     // Then
     result.andExpect(status().isOk());
-    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getFinancing()).isEqualTo(Financing.RPV);
+    LineVersionV3 reloaded = lineVersionV3Repository.findById(saved.getId()).orElseThrow();
+    assertThat(reloaded.getFinancing()).isEqualTo(Financing.RPV);
+    assertThat(reloaded.getFotComment()).isEqualTo(STORED_FOT_COMMENT);
   }
 
   @Test
@@ -229,86 +232,6 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
     // When & Then
     update(saved.getId(), model).andExpect(status().isForbidden());
-    assertThat(storedFotComment(saved.getId())).isEqualTo(STORED_FOT_COMMENT);
-  }
-
-  @Test
-  void shouldNotClearStoredFotCommentAsWriter() throws Exception {
-    // Given
-    LineVersionV3 saved = savedLineWithFotComment();
-    UpdateLineVersionModelV3 model = updateModelOf(saved).fotComment(null).build();
-
-    // When & Then
-    update(saved.getId(), model).andExpect(status().isForbidden());
-    assertThat(storedFotComment(saved.getId())).isEqualTo(STORED_FOT_COMMENT);
-  }
-
-  @Test
-  void shouldUpdateOtherFieldsWhileResendingTheUnchangedFotCommentAsWriter() throws Exception {
-    // Given
-    LineVersionV3 saved = savedLineWithFotComment();
-    UpdateLineVersionModelV3 model = updateModelOf(saved).description("Updated description").build();
-
-    // When
-    ResultActions result = update(saved.getId(), model);
-
-    // Then
-    result.andExpect(status().isOk());
-    LineVersionV3 reloaded = lineVersionV3Repository.findById(saved.getId()).orElseThrow();
-    assertThat(reloaded.getDescription()).isEqualTo("Updated description");
-    assertThat(reloaded.getFotComment()).isEqualTo(STORED_FOT_COMMENT);
-  }
-
-  @Test
-  void shouldCreateLineWithFotCommentAsSupervisor() throws Exception {
-    // Given
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
-    CreateLineVersionModelV3 model = lineModel().fotComment(STORED_FOT_COMMENT).build();
-
-    // When
-    ResultActions result = create(model);
-
-    // Then
-    result.andExpect(status().isCreated());
-    assertThat(lineVersionV3Repository.findAll()).singleElement()
-        .satisfies(version -> assertThat(version.getFotComment()).isEqualTo(STORED_FOT_COMMENT));
-  }
-
-  @Test
-  void shouldUpdateFotCommentAsSupervisor() throws Exception {
-    // Given
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
-    LineVersionV3 saved = savedLineWithFotComment();
-    UpdateLineVersionModelV3 model = updateModelOf(saved).fotComment("Changed").build();
-
-    // When & Then
-    update(saved.getId(), model).andExpect(status().isOk());
-    assertThat(storedFotComment(saved.getId())).isEqualTo("Changed");
-  }
-
-  @Test
-  void shouldClearFotCommentAsSupervisor() throws Exception {
-    // Given
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
-    LineVersionV3 saved = savedLineWithFotComment();
-    UpdateLineVersionModelV3 model = updateModelOf(saved).fotComment(null).build();
-
-    // When & Then
-    update(saved.getId(), model).andExpect(status().isOk());
-    assertThat(storedFotComment(saved.getId())).isNull();
-  }
-
-  @ParameterizedTest
-  @EmptySource
-  @ValueSource(strings = {"   "})
-  void shouldRejectBlankFotCommentAsSupervisor(String blank) throws Exception {
-    // Given
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
-    LineVersionV3 saved = savedLineWithFotComment();
-    UpdateLineVersionModelV3 model = updateModelOf(saved).fotComment(blank).build();
-
-    // When & Then
-    update(saved.getId(), model).andExpect(status().isBadRequest());
     assertThat(storedFotComment(saved.getId())).isEqualTo(STORED_FOT_COMMENT);
   }
 

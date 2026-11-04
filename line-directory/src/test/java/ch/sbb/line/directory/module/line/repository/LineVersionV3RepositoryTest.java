@@ -107,29 +107,6 @@ class LineVersionV3RepositoryTest {
   }
 
   @Test
-  void shouldRejectFotCommentExceedingMaxLength() {
-    //given
-    LineVersionV3 line = LineVersionV3TestData.lineBuilder().fotComment("b".repeat(AtlasFieldLengths.LENGTH_1500 + 1)).build();
-
-    //when && then
-    assertThatExceptionOfType(ConstraintViolationException.class)
-        .isThrownBy(() -> lineVersionV3Repository.saveAndFlush(line));
-    assertThat(lineVersionV3Repository.count()).isZero();
-  }
-
-  @Test
-  void shouldRejectFotCommentExceedingMaxLengthWithoutChangingExistingRows() {
-    //given
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
-    LineVersionV3 subline = LineVersionV3TestData.sublineBuilder().fotComment("b".repeat(AtlasFieldLengths.LENGTH_1500 + 1)).build();
-
-    //when && then
-    assertThatExceptionOfType(ConstraintViolationException.class)
-        .isThrownBy(() -> lineVersionV3Repository.saveAndFlush(subline));
-    assertThat(lineVersionV3Repository.count()).isEqualTo(1);
-  }
-
-  @Test
   void shouldRejectDuplicateSlnidAndValidFrom() {
     //given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder()

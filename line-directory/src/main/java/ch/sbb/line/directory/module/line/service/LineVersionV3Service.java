@@ -1,11 +1,9 @@
 package ch.sbb.line.directory.module.line.service;
 
 import ch.sbb.atlas.api.lidi.LineVersionModelV3;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
-import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
@@ -20,17 +18,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LineVersionV3Service {
@@ -39,7 +34,6 @@ public class LineVersionV3Service {
   private final VersionableService versionableService;
   private final LineVersionV3ValidationService lineVersionV3ValidationService;
   private final LineV3ShorteningService lineV3ShorteningService;
-  private final BusinessOrganisationBasedUserAdministrationService userAdministrationService;
 
   public Page<LineVersionModelV3> findAll(LineVersionV3SearchRestrictions searchRestrictions) {
     Page<LineVersionV3> versions = lineVersionV3Repository.findAll(searchRestrictions.getSpecification(),
@@ -66,7 +60,6 @@ public class LineVersionV3Service {
       + ".kafka.model.user.admin.ApplicationType).LIDI) "
       + "and @lineV3RestrictedFieldService.areRestrictedFieldsEmpty(#newVersion))")
   public LineVersionV3 create(LineVersionV3 newVersion) {
-    validateFotCommentChangeAllowed(null, newVersion);
     LineVersionV3 savedVersion = save(newVersion);
     lineVersionV3ValidationService.validateValidityConstraints(findLineVersions(savedVersion.getSlnid()));
     return savedVersion;
@@ -83,7 +76,6 @@ public class LineVersionV3Service {
       + "and @lineV3RestrictedFieldService.areRestrictedFieldsUnchanged(#currentVersion, #editedVersion))")
   public List<LineVersionV3> update(LineVersionV3 currentVersion, LineVersionV3 editedVersion,
       List<LineVersionV3> currentVersions) {
-    validateFotCommentChangeAllowed(currentVersion, editedVersion);
     lineVersionV3ValidationService.validateNotRevoked(currentVersion);
     lineVersionV3ValidationService.validateUpdate(currentVersion, editedVersion);
 
@@ -99,16 +91,6 @@ public class LineVersionV3Service {
       lineVersionV3ValidationService.validateMembersWithinParentValidity(versionsAfterVersioning);
     }
     return versionsAfterVersioning;
-  }
-
-  private void validateFotCommentChangeAllowed(LineVersionV3 currentVersion, LineVersionV3 editedVersion) {
-    String currentFotComment = currentVersion == null ? null : currentVersion.getFotComment();
-    if (!Objects.equals(currentFotComment, editedVersion.getFotComment())
-        && !userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)) {
-      log.info("User is not allowed to change the fotComment of line {}",
-          currentVersion == null ? "(new)" : currentVersion.getSlnid());
-      throw new AccessDeniedException("Only a Supervisor is allowed to change the field fotComment.");
-    }
   }
 
   private void shortenMembers(LineVersionV3 currentVersion, LineVersionV3 editedVersion) {
