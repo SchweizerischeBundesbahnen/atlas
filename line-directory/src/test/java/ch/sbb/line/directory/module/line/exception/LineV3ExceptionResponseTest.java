@@ -26,7 +26,6 @@ class LineV3ExceptionResponseTest {
         .isEqualTo(400);
     assertThat(new LineV3MemberFieldNotAllowedException(Set.of("number")).getErrorResponse().getStatus()).isEqualTo(400);
     assertThat(new LineV3MandatoryFieldException(Set.of("offerCategory")).getErrorResponse().getStatus()).isEqualTo(400);
-    assertThat(new LineV3FieldPermissionException(Set.of("financing")).getErrorResponse().getStatus()).isEqualTo(403);
     assertThat(new LineV3FieldNotUpdatableException("x", "swissLineNumber", LineType.TEMPORARY).getErrorResponse().getStatus())
         .isEqualTo(409);
   }

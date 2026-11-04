@@ -13,7 +13,6 @@ public class LineVersionV3ValidationService {
   private final LineV3TypeValidator typeValidator;
   private final LineV3ValidityValidator validityValidator;
   private final LineV3UpdateValidator updateValidator;
-  private final LineV3FieldPermissionValidator fieldPermissionValidator;
   private final LineV3CablewayValidator cablewayValidator;
   private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
@@ -46,11 +45,6 @@ public class LineVersionV3ValidationService {
 
   public void validateUpdate(LineVersionV3 current, LineVersionV3 edited) {
     updateValidator.validateConcessionFieldsUpdatable(current, edited);
-    fieldPermissionValidator.validateUpdate(current, edited);
-  }
-
-  public void validateFieldPermissionsOnCreate(LineVersionV3 newVersion) {
-    fieldPermissionValidator.validateCreate(newVersion);
   }
 
   private static boolean isMember(LineVersionV3 version) {

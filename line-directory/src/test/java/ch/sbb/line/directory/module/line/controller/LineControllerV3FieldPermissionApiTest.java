@@ -1,13 +1,10 @@
 package ch.sbb.line.directory.module.line.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.lidi.CreateLineVersionModelV3;
@@ -34,9 +31,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 /**
- * Covers the fields restricted by a {@link ch.sbb.line.directory.module.line.security.FieldPermission} end to end. The user
+ * Covers the fields reserved for supervisors by the {@code @PreAuthorize} expressions on {@code LineVersionV3Service}. The user
  * administration service is mocked to simulate the different combinations of write permission on the business organisation and
- * field permission.
+ * supervisor role.
  */
 @MockitoBean(types = SharedBusinessOrganisationService.class)
 class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
@@ -75,9 +72,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
     ResultActions result = create(model);
 
     // Then
-    result.andExpect(status().isForbidden())
-        .andExpect(jsonPath("$.details[*].field", containsInAnyOrder("financing", "cablewayNumber")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.LINE.ERROR.FIELD_PERMISSION")));
+    result.andExpect(status().isForbidden());
     assertThat(lineVersionV3Repository.findAll()).isEmpty();
   }
 
@@ -104,8 +99,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
     ResultActions result = update(saved.getId(), model);
 
     // Then
-    result.andExpect(status().isForbidden())
-        .andExpect(jsonPath("$.details[*].field", containsInAnyOrder("financing")));
+    result.andExpect(status().isForbidden());
     assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getFinancing())
         .isEqualTo(Financing.SELF_FINANCED);
   }
@@ -125,40 +119,42 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
         .isEqualTo("Updated description");
   }
 
+  /**
+   * The restricted cableway fields are strings, so this verifies that an unchanged value is recognised by equality and not by
+   * identity, which would reject every update carrying a restricted string field.
+   */
   @Test
-  void shouldDenyUpdateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
+  void shouldUpdateOtherFieldsWhileResendingTheUnchangedCablewayStringsAsWriter() throws Exception {
     // Given
-    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(false);
-    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
-    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
-
-    // When & Then
-    update(saved.getId(), model).andExpect(status().isForbidden());
-  }
-
-  @Test
-  void shouldAllowRestrictedFieldOnlyUpdateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
-    // Given
-    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(false);
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
-    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
-    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
+    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.cableway());
+    UpdateLineVersionModelV3 model = updateModelOf(saved).description("Updated description").build();
 
     // When
     ResultActions result = update(saved.getId(), model);
 
     // Then
     result.andExpect(status().isOk());
-    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getFinancing()).isEqualTo(Financing.RPV);
+    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getCablewayNumber()).isEqualTo("3521");
   }
 
   @Test
-  void shouldDenyUpdateWithoutWritePermissionOnBusinessOrganisationWhenAnUnrestrictedFieldChanged() throws Exception {
+  void shouldNotUpdateCablewayFieldAsWriter() throws Exception {
+    // Given
+    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.cableway());
+    UpdateLineVersionModelV3 model = updateModelOf(saved).cablewayName("Renamed cableway").build();
+
+    // When & Then
+    update(saved.getId(), model).andExpect(status().isForbidden());
+    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getCablewayName())
+        .isEqualTo("Luftseilbahn Wengen - Maennlichen");
+  }
+
+  @Test
+  void shouldDenyUpdateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
     // Given
     when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(false);
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
-    UpdateLineVersionModelV3 model = updateModelOf(saved).description("Updated description").build();
+    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
 
     // When & Then
     update(saved.getId(), model).andExpect(status().isForbidden());
@@ -189,6 +185,9 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
         .description(version.getDescription())
         .businessOrganisation(version.getBusinessOrganisation())
         .financing(version.getFinancing())
+        .cablewayNumber(version.getCablewayNumber())
+        .cablewayType(version.getCablewayType())
+        .cablewayName(version.getCablewayName())
         .meansOfTransport(version.getMeansOfTransport())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo());

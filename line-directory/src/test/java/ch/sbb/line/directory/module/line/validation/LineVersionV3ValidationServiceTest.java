@@ -30,9 +30,6 @@ class LineVersionV3ValidationServiceTest {
   private LineV3UpdateValidator updateValidator;
 
   @Mock
-  private LineV3FieldPermissionValidator fieldPermissionValidator;
-
-  @Mock
   private LineV3CablewayValidator cablewayValidator;
 
   @Mock
@@ -145,7 +142,7 @@ class LineVersionV3ValidationServiceTest {
   }
 
   @Test
-  void shouldApplyConcessionFieldAndFieldPermissionRulesOnUpdate() {
+  void shouldApplyConcessionFieldRulesOnUpdate() {
     // Given
     LineVersionV3 current = LineVersionV3TestData.line();
     LineVersionV3 edited = current.toBuilder().description("changed").build();
@@ -155,21 +152,7 @@ class LineVersionV3ValidationServiceTest {
 
     // Then
     verify(updateValidator).validateConcessionFieldsUpdatable(current, edited);
-    verify(fieldPermissionValidator).validateUpdate(current, edited);
     verifyNoInteractions(typeValidator, validityValidator);
-  }
-
-  @Test
-  void shouldApplyFieldPermissionRuleOnCreate() {
-    // Given
-    LineVersionV3 line = LineVersionV3TestData.line();
-
-    // When
-    validationService.validateFieldPermissionsOnCreate(line);
-
-    // Then
-    verify(fieldPermissionValidator).validateCreate(line);
-    verifyNoInteractions(typeValidator, validityValidator, updateValidator);
   }
 
 }
