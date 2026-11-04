@@ -29,7 +29,6 @@ public class LineVersionV3TestData {
         .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
         .number("90.583")
         .swissLineNumber("90.583")
-        .shortNumber("583")
         .offerCategory(OfferCategory.B)
         .longName("Savognin - Pensa")
         .description("Val-Surses-Bus")
@@ -49,7 +48,6 @@ public class LineVersionV3TestData {
         .description("Savognin - Cre digl Lai")
         .longName("Savognin, posta - Cre digl Lai")
         .linienId("583d")
-        .offerCategory(OfferCategory.B)
         .businessOrganisation("ch:1:sboid:1100048")
         .financing(Financing.WBV)
         .meansOfTransport(Set.of(LineMeanOfTransport.BUS))
@@ -67,9 +65,8 @@ public class LineVersionV3TestData {
         .lineType(LineType.ORDERLY)
         .number("LSMS")
         .swissLineNumber("LSMS")
-        .shortNumber(null)
         .description("Luftseilbahn Wengen - Maennlichen")
-        .meansOfTransport(Set.of(LineMeanOfTransport.AERIAL_TRAMWAY))
+        .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
         .cablewayNumber("3521")
         .cablewayType("Pendelbahn")
         .cablewayName("Luftseilbahn Wengen - Maennlichen");
@@ -86,10 +83,7 @@ public class LineVersionV3TestData {
   public static LineVersionV3Builder<?, ?> concessionMemberBuilder() {
     return sublineBuilder()
         .slnid(CONCESSION_MEMBER_SLNID)
-        .lineType(LineType.CONCESSION)
-        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
-        .swissLineNumber("90.583.1")
-        .offerCategory(null);
+        .lineType(LineType.CONCESSION);
   }
 
 }

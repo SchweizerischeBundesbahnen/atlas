@@ -38,26 +38,24 @@ public abstract class BaseLineVersionModelV3 implements DatesValidator {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String longName;
 
-  @Schema(description = "Number - ignored for sublines, resolved from the referenced line", example = "L1")
+  @Schema(description = "Number - mandatory for lines, forbidden for sublines. Sublines inherit it from the referenced line "
+      + "and expose it in referencedLine", example = "L1")
   @Size(max = AtlasFieldLengths.LENGTH_8)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String number;
 
-  @Schema(description = "ShortNumber - ignored for sublines, resolved from the referenced line", example = "61")
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String shortNumber;
-
-  @Schema(description = "OfferCategory - ignored for sublines, resolved from the referenced line")
+  @Schema(description = "OfferCategory - mandatory for lines, forbidden for sublines. Sublines inherit it from the referenced "
+      + "line and expose it in referencedLine")
   private OfferCategory offerCategory;
 
-  @Schema(description = "SwissLineNumber", example = "b1.L1")
+  @Schema(description = "SwissLineNumber - forbidden for sublines. Sublines inherit it from the referenced line and expose it "
+      + "in referencedLine", example = "b1.L1")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String swissLineNumber;
 
-  @Schema(description = "ConcessionType - required for ORDERLY lines and CONCESSION sublines; ignored for other sublines, "
-      + "resolved from the referenced line")
+  @Schema(description = "ConcessionType - mandatory for ORDERLY lines, forbidden for sublines. Sublines inherit it from the "
+      + "referenced line and expose it in referencedLine")
   private ConcessionType concessionType;
 
   @Schema(description = "LinienID / LineRef - Only available temporarily until SLNID Migration is complete", example = "583d")
@@ -74,18 +72,25 @@ public abstract class BaseLineVersionModelV3 implements DatesValidator {
   @Schema(description = "MeansOfTransport of this version - never inherited from the referenced line")
   private Set<LineMeanOfTransport> meansOfTransport;
 
-  @Schema(description = "Financing of this version - never inherited from the referenced line")
+  @Schema(description = "Financing of this version - never inherited from the referenced line. May only be set or changed by "
+      + "users with at least SUPERVISOR role")
   private Financing financing;
 
-  @Schema(description = "Anlagennummer - only for cableway means of transport", example = "3521")
+  @Schema(description = "Anlagennummer - only allowed if meansOfTransport contains a cableway mean of transport "
+      + "(CABLE_RAILWAY, AERIAL_TRAMWAY, GONDOLA_LIFT, CHAIRLIFT). May only be set or changed by users with at least "
+      + "SUPERVISOR role", example = "3521")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String cablewayNumber;
 
-  @Schema(description = "Anlage-Typ - only for cableway means of transport", example = "Pendelbahn")
+  @Schema(description = "Anlage-Typ - only allowed if meansOfTransport contains a cableway mean of transport "
+      + "(CABLE_RAILWAY, AERIAL_TRAMWAY, GONDOLA_LIFT, CHAIRLIFT). May only be set or changed by users with at least "
+      + "SUPERVISOR role", example = "Pendelbahn")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String cablewayType;
 
-  @Schema(description = "Anlage-Name - only for cableway means of transport", example = "Luftseilbahn Wengen - Maennlichen")
+  @Schema(description = "Anlage-Name - only allowed if meansOfTransport contains a cableway mean of transport "
+      + "(CABLE_RAILWAY, AERIAL_TRAMWAY, GONDOLA_LIFT, CHAIRLIFT). May only be set or changed by users with at least "
+      + "SUPERVISOR role", example = "Luftseilbahn Wengen - Maennlichen")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String cablewayName;

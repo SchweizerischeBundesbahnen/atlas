@@ -80,8 +80,8 @@ class LineVersionV3ServiceWriteIntegrationTest {
     assertThat(member.getSlnid()).matches("ch:1:slnid:\\d+").isNotEqualTo(parent.getSlnid());
     assertThat(stored)
         .extracting(LineVersionV3::getReferencedLineSlnid, LineVersionV3::getStatus, LineVersionV3::getNumber,
-            LineVersionV3::getShortNumber, LineVersionV3::getOfferCategory)
-        .containsExactly(tuple(parent.getSlnid(), Status.VALIDATED, null, null, null));
+            LineVersionV3::getSwissLineNumber, LineVersionV3::getOfferCategory, LineVersionV3::getConcessionType)
+        .containsExactly(tuple(parent.getSlnid(), Status.VALIDATED, null, null, null, null));
   }
 
   @Test
@@ -296,7 +296,6 @@ class LineVersionV3ServiceWriteIntegrationTest {
         .status(null)
         .referencedLineSlnid(parentSlnid)
         .number(null)
-        .shortNumber(null)
         .offerCategory(null)
         .validFrom(VALID_FROM)
         .validTo(VALID_TO)

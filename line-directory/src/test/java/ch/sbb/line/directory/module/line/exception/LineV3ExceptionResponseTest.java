@@ -11,6 +11,7 @@ import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class LineV3ExceptionResponseTest {
@@ -23,8 +24,8 @@ class LineV3ExceptionResponseTest {
     assertThat(new LineV3TypeOrderlyException(LineType.ORDERLY).getErrorResponse().getStatus()).isEqualTo(400);
     assertThat(new LineV3MemberTypeMismatchException(LineType.TEMPORARY, LineType.ORDERLY).getErrorResponse().getStatus())
         .isEqualTo(400);
-    assertThat(LineV3MemberConcessionException.concessionType().getErrorResponse().getStatus()).isEqualTo(400);
-    assertThat(LineV3MemberConcessionException.swissLineNumber().getErrorResponse().getStatus()).isEqualTo(400);
+    assertThat(new LineV3MemberFieldNotAllowedException(Set.of("number")).getErrorResponse().getStatus()).isEqualTo(400);
+    assertThat(new LineV3MandatoryFieldException(Set.of("offerCategory")).getErrorResponse().getStatus()).isEqualTo(400);
     assertThat(new LineV3FieldNotUpdatableException("x", "swissLineNumber", LineType.TEMPORARY).getErrorResponse().getStatus())
         .isEqualTo(409);
   }

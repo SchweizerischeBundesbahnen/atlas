@@ -552,7 +552,6 @@ class LineV3ShorteningServiceTest {
         .concessionType(ConcessionType.RIGHT_FREE_LINE)
         .number("number")
         .swissLineNumber("swissLineNumber")
-        .shortNumber("shortNumber")
         .offerCategory(OfferCategory.IC)
         .longName("longName")
         .description("description")

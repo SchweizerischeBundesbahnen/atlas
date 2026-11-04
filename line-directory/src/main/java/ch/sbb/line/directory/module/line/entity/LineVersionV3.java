@@ -84,10 +84,6 @@ public class LineVersionV3 extends BaseVersion implements BusinessOrganisationAs
   @AtlasVersionableProperty
   private String swissLineNumber;
 
-  @Size(max = AtlasFieldLengths.LENGTH_10)
-  @AtlasVersionableProperty
-  private String shortNumber;
-
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private OfferCategory offerCategory;

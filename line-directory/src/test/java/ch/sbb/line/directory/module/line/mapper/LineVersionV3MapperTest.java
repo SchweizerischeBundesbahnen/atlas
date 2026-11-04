@@ -16,9 +16,6 @@ import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.EnumSource.Mode;
 
 class LineVersionV3MapperTest {
 
@@ -116,12 +113,11 @@ class LineVersionV3MapperTest {
     assertThat(result.getNumber()).isNull();
     assertThat(result.getSwissLineNumber()).isNull();
     assertThat(result.getReferencedLine().getNumber()).isEqualTo("90.583");
-    assertThat(result.getReferencedLine().getLineNumber()).isEqualTo("90.583");
     assertThat(result.getReferencedLine().getSwissLineNumber()).isEqualTo("90.583");
   }
 
   @Test
-  void shouldInheritConcessionTypeFromReferencedLineWhenSublineHoldsNoTransportRight() {
+  void shouldNotResolveParentConcessionTypeIntoTheTopLevelOfASubline() {
     //given
     LineVersionV3 subline = LineVersionV3TestData.subline();
     LineVersionV3 parent = LineVersionV3TestData.line();
@@ -131,78 +127,47 @@ class LineVersionV3MapperTest {
 
     //then
     assertThat(subline.getLineType()).isEqualTo(LineType.TECHNICAL);
-    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
+    assertThat(result.getConcessionType()).isNull();
+    assertThat(result.getOfferCategory()).isNull();
+    assertThat(result.getReferencedLine().getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
+    assertThat(result.getReferencedLine().getOfferCategory()).isEqualTo(OfferCategory.B);
   }
 
-  @ParameterizedTest
-  @EnumSource(value = LineType.class, names = {"ORDERLY", "ZONE", "CONCESSION"})
-  void shouldKeepOwnConcessionTypeWhenSublineHoldsATransportRight(LineType lineType) {
+  @Test
+  void shouldExposeOwnConcessionTypeOfALine() {
     //given
-    LineVersionV3 subline = LineVersionV3TestData.sublineBuilder()
-        .lineType(lineType)
-        .concessionType(ConcessionType.STATE_TREATY)
-        .build();
-    LineVersionV3 parent = LineVersionV3TestData.line();
+    LineVersionV3 line = LineVersionV3TestData.lineBuilder().concessionType(ConcessionType.STATE_TREATY).build();
 
     //when
-    LineVersionModelV3 result = LineVersionV3Mapper.toModel(subline, parent);
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(line, null);
 
     //then
     assertThat(result.getConcessionType()).isEqualTo(ConcessionType.STATE_TREATY);
   }
 
   @Test
-  void shouldExposeOwnConcessionTypeOfConcessionMemberEvenIfParentHoldsAnotherOne() {
-    // Given
-    LineVersionV3 concessionMember = LineVersionV3TestData.concessionMemberBuilder()
-        .concessionType(ConcessionType.FEDERALLY_LICENSED_LINE)
-        .build();
-    LineVersionV3 parent = LineVersionV3TestData.lineBuilder()
-        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
-        .build();
-
-    // When
-    LineVersionModelV3 result = LineVersionV3Mapper.toModel(concessionMember, parent);
-
-    // Then
-    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
-  }
-
-  @ParameterizedTest
-  @EnumSource(value = LineType.class, names = {"ORDERLY", "ZONE", "CONCESSION"}, mode = Mode.EXCLUDE)
-  void shouldOverrideOwnConcessionTypeWithTheOneOfTheReferencedLine(LineType lineType) {
+  void shouldKeepReferencedLineFieldsNullWhenParentHoldsNone() {
     //given
-    LineVersionV3 subline = LineVersionV3TestData.sublineBuilder()
-        .lineType(lineType)
-        .concessionType(ConcessionType.STATE_TREATY)
-        .build();
-    LineVersionV3 parent = LineVersionV3TestData.line();
+    LineVersionV3 subline = LineVersionV3TestData.subline();
+    LineVersionV3 parent = LineVersionV3TestData.lineBuilder().concessionType(null).offerCategory(null).build();
 
     //when
     LineVersionModelV3 result = LineVersionV3Mapper.toModel(subline, parent);
 
     //then
-    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
+    assertThat(result.getReferencedLine().getConcessionType()).isNull();
+    assertThat(result.getReferencedLine().getOfferCategory()).isNull();
+    assertThat(LineVersionV3Mapper.toModel(subline, null).getReferencedLine()).isNull();
   }
 
   @Test
-  void shouldKeepConcessionTypeNullableWhenNeitherSideHoldsOne() {
-    //given
-    LineVersionV3 subline = LineVersionV3TestData.subline();
-    LineVersionV3 parent = LineVersionV3TestData.lineBuilder().concessionType(null).build();
-
-    //when && then
-    assertThat(LineVersionV3Mapper.toModel(subline, parent).getConcessionType()).isNull();
-    assertThat(LineVersionV3Mapper.toModel(subline, null).getConcessionType()).isNull();
-  }
-
-  @Test
-  void shouldNotExposeConcessionTypeInsideReferencedLine() {
+  void shouldExposeAllParentResolvedFieldsInsideReferencedLine() {
     //when
     LineVersionModelV3 result = LineVersionV3Mapper.toModel(LineVersionV3TestData.subline(), LineVersionV3TestData.line());
 
     //then
-    assertThat(result.getReferencedLine()).hasOnlyFields("number", "lineNumber", "swissLineNumber", "lineSlnid");
+    assertThat(result.getReferencedLine()).hasOnlyFields("number", "swissLineNumber", "offerCategory", "concessionType",
+        "lineSlnid");
   }
 
   @Test
@@ -219,7 +184,8 @@ class LineVersionV3MapperTest {
 
     //then
     assertThat(result.getReferencedLine().getLineSlnid()).isEqualTo(LineVersionV3TestData.CHILD_SLNID);
-    assertThat(result.getReferencedLine()).hasNoNullFieldsOrPropertiesExcept("number", "lineNumber", "swissLineNumber");
+    assertThat(result.getReferencedLine()).hasNoNullFieldsOrPropertiesExcept("number", "swissLineNumber", "offerCategory",
+        "concessionType");
   }
 
   @Test
@@ -297,7 +263,6 @@ class LineVersionV3MapperTest {
         .lineType(LineType.ORDERLY)
         .concessionType(ConcessionType.STATE_TREATY)
         .number("90.583")
-        .shortNumber("61")
         .offerCategory(OfferCategory.RE)
         .swissLineNumber("b1.L1")
         .linienId("583d")
@@ -321,7 +286,6 @@ class LineVersionV3MapperTest {
     assertThat(result.getLineType()).isEqualTo(LineType.ORDERLY);
     assertThat(result.getConcessionType()).isEqualTo(ConcessionType.STATE_TREATY);
     assertThat(result.getNumber()).isEqualTo("90.583");
-    assertThat(result.getShortNumber()).isEqualTo("61");
     assertThat(result.getOfferCategory()).isEqualTo(OfferCategory.RE);
     assertThat(result.getSwissLineNumber()).isEqualTo("b1.L1");
     assertThat(result.getLinienId()).isEqualTo("583d");
@@ -350,14 +314,15 @@ class LineVersionV3MapperTest {
   }
 
   @Test
-  void shouldStoreParentResolvedFieldsAsNullWhenCreatingSubline() {
+  void shouldPassParentResolvedFieldsOfASublineThroughUnchangedSoThatValidationCanRejectThem() {
     //given
     CreateLineVersionModelV3 model = createModelBuilder()
         .lineType(LineType.TECHNICAL)
         .referencedLineSlnid(LineVersionV3TestData.PARENT_SLNID)
         .number("90.583")
-        .shortNumber("61")
+        .swissLineNumber("90.583.1")
         .offerCategory(OfferCategory.RE)
+        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
         .build();
 
     //when
@@ -365,44 +330,10 @@ class LineVersionV3MapperTest {
 
     //then
     assertThat(result.getReferencedLineSlnid()).isEqualTo(LineVersionV3TestData.PARENT_SLNID);
-    assertThat(result.getNumber()).isNull();
-    assertThat(result.getShortNumber()).isNull();
-    assertThat(result.getOfferCategory()).isNull();
-  }
-
-  @ParameterizedTest
-  @EnumSource(value = LineType.class, names = {"TECHNICAL", "DISPOSITION", "TEMPORARY", "OPERATIONAL"})
-  void shouldIgnoreInheritedConcessionTypeWhenCreatingNonConcessionMember(LineType lineType) {
-    // Given
-    CreateLineVersionModelV3 model = createModelBuilder()
-        .lineType(lineType)
-        .referencedLineSlnid(LineVersionV3TestData.PARENT_SLNID)
-        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
-        .build();
-
-    // When
-    LineVersionV3 result = LineVersionV3Mapper.toEntity(model);
-
-    // Then
-    assertThat(result.getConcessionType()).isNull();
-  }
-
-  @Test
-  void shouldKeepOwnConcessionTypeWhenCreatingConcessionMember() {
-    // Given
-    CreateLineVersionModelV3 model = createModelBuilder()
-        .lineType(LineType.CONCESSION)
-        .referencedLineSlnid(LineVersionV3TestData.PARENT_SLNID)
-        .concessionType(ConcessionType.FEDERALLY_LICENSED_LINE)
-        .swissLineNumber("90.583.1")
-        .build();
-
-    // When
-    LineVersionV3 result = LineVersionV3Mapper.toEntity(model);
-
-    // Then
-    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
+    assertThat(result.getNumber()).isEqualTo("90.583");
     assertThat(result.getSwissLineNumber()).isEqualTo("90.583.1");
+    assertThat(result.getOfferCategory()).isEqualTo(OfferCategory.RE);
+    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
   }
 
   @Test
@@ -411,7 +342,6 @@ class LineVersionV3MapperTest {
     CreateLineVersionModelV3 model = createModelBuilder()
         .lineType(LineType.ORDERLY)
         .number("90.583")
-        .shortNumber("61")
         .offerCategory(OfferCategory.RE)
         .build();
 
@@ -420,7 +350,6 @@ class LineVersionV3MapperTest {
 
     //then
     assertThat(result.getNumber()).isEqualTo("90.583");
-    assertThat(result.getShortNumber()).isEqualTo("61");
     assertThat(result.getOfferCategory()).isEqualTo(OfferCategory.RE);
   }
 
@@ -476,54 +405,24 @@ class LineVersionV3MapperTest {
   }
 
   @Test
-  void shouldNullParentResolvedFieldsWhenUpdatingMember() {
+  void shouldPassParentResolvedFieldsOfASublineThroughUnchangedWhenUpdating() {
     //given
     LineVersionV3 current = LineVersionV3TestData.subline();
     UpdateLineVersionModelV3 model = updateModelBuilder()
         .number("90.583")
-        .shortNumber("61")
+        .swissLineNumber("90.583.1")
         .offerCategory(OfferCategory.RE)
+        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
         .build();
 
     //when
     LineVersionV3 result = LineVersionV3Mapper.toEntityFromUpdate(model, current);
 
     //then
-    assertThat(result.getNumber()).isNull();
-    assertThat(result.getShortNumber()).isNull();
-    assertThat(result.getOfferCategory()).isNull();
-  }
-
-  @ParameterizedTest
-  @EnumSource(value = LineType.class, names = {"TECHNICAL", "DISPOSITION", "TEMPORARY", "OPERATIONAL"})
-  void shouldIgnoreInheritedConcessionTypeWhenUpdatingNonConcessionMember(LineType lineType) {
-    // Given
-    LineVersionV3 current = LineVersionV3TestData.sublineBuilder().lineType(lineType).build();
-    UpdateLineVersionModelV3 model = updateModelBuilder()
-        .concessionType(ConcessionType.CANTONALLY_APPROVED_LINE)
-        .build();
-
-    // When
-    LineVersionV3 result = LineVersionV3Mapper.toEntityFromUpdate(model, current);
-
-    // Then
-    assertThat(result.getConcessionType()).isNull();
-  }
-
-  @Test
-  void shouldKeepOwnConcessionTypeWhenUpdatingConcessionMember() {
-    // Given
-    LineVersionV3 current = LineVersionV3TestData.concessionMemberBuilder().build();
-    UpdateLineVersionModelV3 model = updateModelBuilder()
-        .concessionType(ConcessionType.FEDERALLY_LICENSED_LINE)
-        .swissLineNumber("90.583.1")
-        .build();
-
-    // When
-    LineVersionV3 result = LineVersionV3Mapper.toEntityFromUpdate(model, current);
-
-    // Then
-    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.FEDERALLY_LICENSED_LINE);
+    assertThat(result.getNumber()).isEqualTo("90.583");
+    assertThat(result.getSwissLineNumber()).isEqualTo("90.583.1");
+    assertThat(result.getOfferCategory()).isEqualTo(OfferCategory.RE);
+    assertThat(result.getConcessionType()).isEqualTo(ConcessionType.CANTONALLY_APPROVED_LINE);
   }
 
   @Test
@@ -547,7 +446,6 @@ class LineVersionV3MapperTest {
     LineVersionV3 current = LineVersionV3TestData.line();
     UpdateLineVersionModelV3 model = updateModelBuilder()
         .number("90.584")
-        .shortNumber("62")
         .offerCategory(OfferCategory.RE)
         .build();
 
@@ -556,7 +454,6 @@ class LineVersionV3MapperTest {
 
     //then
     assertThat(result.getNumber()).isEqualTo("90.584");
-    assertThat(result.getShortNumber()).isEqualTo("62");
     assertThat(result.getOfferCategory()).isEqualTo(OfferCategory.RE);
   }
 

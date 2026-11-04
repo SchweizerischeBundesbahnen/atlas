@@ -54,8 +54,11 @@ public class LineVersionV3Service {
   }
 
   @Transactional
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#newVersion, T(ch.sbb.atlas"
-      + ".kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).LIDI) "
+      + "or (@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#newVersion, T(ch.sbb.atlas"
+      + ".kafka.model.user.admin.ApplicationType).LIDI) "
+      + "and @lineV3RestrictedFieldService.areRestrictedFieldsEmpty(#newVersion))")
   public LineVersionV3 create(LineVersionV3 newVersion) {
     LineVersionV3 savedVersion = save(newVersion);
     lineVersionV3ValidationService.validateValidityConstraints(findLineVersions(savedVersion.getSlnid()));
@@ -66,8 +69,11 @@ public class LineVersionV3Service {
    * @return all versions of the slnid after versioning, ordered by validFrom
    */
   @Transactional
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, "
-      + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).LIDI) "
+      + "or (@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, "
+      + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI) "
+      + "and @lineV3RestrictedFieldService.areRestrictedFieldsUnchanged(#currentVersion, #editedVersion))")
   public List<LineVersionV3> update(LineVersionV3 currentVersion, LineVersionV3 editedVersion,
       List<LineVersionV3> currentVersions) {
     lineVersionV3ValidationService.validateNotRevoked(currentVersion);

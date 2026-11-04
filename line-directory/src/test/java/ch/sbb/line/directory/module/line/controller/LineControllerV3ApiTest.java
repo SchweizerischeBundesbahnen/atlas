@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineObjectType;
@@ -223,7 +224,7 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldExposeConcessionTypeOfReferencedLineAtTopLevel() throws Exception {
+  void shouldExposeConcessionTypeOfReferencedLineOnlyInsideReferencedLine() throws Exception {
     //given
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
     lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.subline());
@@ -231,15 +232,16 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
     //when && then
     mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.CHILD_SLNID))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].concessionType", is(ConcessionType.CANTONALLY_APPROVED_LINE.name())))
-        .andExpect(jsonPath("$[0].referencedLine.concessionType").doesNotExist())
-        .andExpect(jsonPath("$[0].referencedLine.lineConcessionType").doesNotExist());
+        .andExpect(jsonPath("$[0].concessionType").doesNotExist())
+        .andExpect(jsonPath("$[0].offerCategory").doesNotExist())
+        .andExpect(jsonPath("$[0].referencedLine.concessionType", is(ConcessionType.CANTONALLY_APPROVED_LINE.name())))
+        .andExpect(jsonPath("$[0].referencedLine.offerCategory", is(OfferCategory.B.name())));
   }
 
   @Test
-  void shouldNotExposeWorkflowsNorTopLevelShortNumber() throws Exception {
+  void shouldNotExposeWorkflowsNorShortNumber() throws Exception {
     //given
-    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().shortNumber("583").build());
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
 
     //when && then
     mvc.perform(get(VERSIONS_URL))
