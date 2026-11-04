@@ -37,9 +37,9 @@ class LineV3RestrictedFieldServiceTest {
     LineVersionV3 current = LineVersionV3TestData.cableway();
     LineVersionV3 edited = current.toBuilder()
         .description("Neue Beschreibung")
-        .cablewayNumber(new String(current.getCablewayNumber()))
-        .cablewayType(new String(current.getCablewayType()))
-        .cablewayName(new String(current.getCablewayName()))
+        .cablewayNumber(distinctInstanceOf(current.getCablewayNumber()))
+        .cablewayType(distinctInstanceOf(current.getCablewayType()))
+        .cablewayName(distinctInstanceOf(current.getCablewayName()))
         .build();
 
     assertThat(restrictedFieldService.areRestrictedFieldsUnchanged(current, edited)).isTrue();
@@ -67,6 +67,13 @@ class LineV3RestrictedFieldServiceTest {
     LineVersionV3 edited = current.toBuilder().cablewayType("Pendelbahn").build();
 
     assertThat(restrictedFieldService.areRestrictedFieldsUnchanged(current, edited)).isFalse();
+  }
+
+  /**
+   * Returns an equal but non-identical String instance to ensure the comparison is value-based, not reference-based.
+   */
+  private static String distinctInstanceOf(String value) {
+    return String.copyValueOf(value.toCharArray());
   }
 
 }

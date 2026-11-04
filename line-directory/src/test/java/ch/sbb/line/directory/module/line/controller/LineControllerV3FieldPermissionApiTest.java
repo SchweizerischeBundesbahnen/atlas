@@ -86,7 +86,13 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
     // Then
     result.andExpect(status().isCreated());
-    assertThat(lineVersionV3Repository.findAll()).hasSize(1);
+    assertThat(lineVersionV3Repository.findAll()).singleElement()
+        .satisfies(version -> {
+          assertThat(version.getFinancing()).isNull();
+          assertThat(version.getCablewayNumber()).isNull();
+          assertThat(version.getCablewayType()).isNull();
+          assertThat(version.getCablewayName()).isNull();
+        });
   }
 
   @Test
@@ -158,6 +164,43 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
     // When & Then
     update(saved.getId(), model).andExpect(status().isForbidden());
+  }
+
+  @Test
+  void shouldCreateLineWithRestrictedFieldsAsSupervisor() throws Exception {
+    // Given
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    CreateLineVersionModelV3 model = lineModel()
+        .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
+        .financing(Financing.RPV)
+        .cablewayNumber("3521")
+        .build();
+
+    // When
+    ResultActions result = create(model);
+
+    // Then
+    result.andExpect(status().isCreated());
+    assertThat(lineVersionV3Repository.findAll()).singleElement()
+        .satisfies(version -> {
+          assertThat(version.getFinancing()).isEqualTo(Financing.RPV);
+          assertThat(version.getCablewayNumber()).isEqualTo("3521");
+        });
+  }
+
+  @Test
+  void shouldUpdateRestrictedFieldAsSupervisor() throws Exception {
+    // Given
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
+
+    // When
+    ResultActions result = update(saved.getId(), model);
+
+    // Then
+    result.andExpect(status().isOk());
+    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getFinancing()).isEqualTo(Financing.RPV);
   }
 
   private CreateLineVersionModelV3.CreateLineVersionModelV3Builder<?, ?> lineModel() {
