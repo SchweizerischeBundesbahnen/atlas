@@ -17,9 +17,6 @@ import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.EnumSource.Mode;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class LineVersionV3MapperTest {
@@ -530,24 +527,8 @@ class LineVersionV3MapperTest {
   }
 
   @ParameterizedTest
-  @NullAndEmptySource
-  @ValueSource(strings = {" ", "   ", "\t\n"})
-  void shouldNormalizeBlankFotCommentToNullWhenCreatingAndUpdating(String blank) {
-    //given
-    LineVersionV3 current = LineVersionV3TestData.lineBuilder().fotComment("X").build();
-
-    //when
-    LineVersionV3 created = LineVersionV3Mapper.toEntity(createModelBuilder().fotComment(blank).build());
-    LineVersionV3 updated = LineVersionV3Mapper.toEntityFromUpdate(updateModelBuilder().fotComment(blank).build(), current);
-
-    //then
-    assertThat(created.getFotComment()).isNull();
-    assertThat(updated.getFotComment()).isNull();
-  }
-
-  @ParameterizedTest
-  @ValueSource(strings = {"abc", " abc ", "a b"})
-  void shouldKeepNonBlankFotCommentAsSentWithoutTrimWhenCreatingAndUpdating(String value) {
+  @ValueSource(strings = {"abc", "a b", "äöü"})
+  void shouldMapFotCommentAsSentWhenCreatingAndUpdating(String value) {
     //when
     LineVersionV3 created = LineVersionV3Mapper.toEntity(createModelBuilder().fotComment(value).build());
     LineVersionV3 updated = LineVersionV3Mapper.toEntityFromUpdate(updateModelBuilder().fotComment(value).build(),

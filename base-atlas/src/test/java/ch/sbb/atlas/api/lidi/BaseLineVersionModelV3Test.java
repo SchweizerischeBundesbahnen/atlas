@@ -12,7 +12,8 @@ import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class BaseLineVersionModelV3Test extends BaseValidatorTest {
@@ -47,9 +48,9 @@ class BaseLineVersionModelV3Test extends BaseValidatorTest {
   }
 
   @ParameterizedTest
-  @NullAndEmptySource
-  @ValueSource(strings = {"BAV comment", "   ", "äöü ÄÖÜ é"})
-  void shouldAcceptFotCommentOnCreateAndUpdate(String fotComment) {
+  @NullSource
+  @ValueSource(strings = {"BAV comment", "test", "äöü ÄÖÜ é", "a b"})
+  void shouldAcceptNullOrTrimmedFotCommentOnCreateAndUpdate(String fotComment) {
     // When
     Set<ConstraintViolation<CreateLineVersionModelV3>> createViolations = validator.validate(
         createModel().fotComment(fotComment).build());
@@ -59,6 +60,17 @@ class BaseLineVersionModelV3Test extends BaseValidatorTest {
     // Then
     assertThat(createViolations).isEmpty();
     assertThat(updateViolations).isEmpty();
+  }
+
+  @ParameterizedTest
+  @EmptySource
+  @ValueSource(strings = {" ", "   ", "\t\n", " test", "test ", " test "})
+  void shouldRejectBlankOrUntrimmedFotCommentOnCreateAndUpdate(String fotComment) {
+    // When / Then
+    assertThat(validator.validate(createModel().fotComment(fotComment).build())).extracting(this::property)
+        .containsExactly(BaseLineVersionModelV3.Fields.fotComment);
+    assertThat(validator.validate(updateModel().fotComment(fotComment).build())).extracting(this::property)
+        .containsExactly(BaseLineVersionModelV3.Fields.fotComment);
   }
 
   @Test

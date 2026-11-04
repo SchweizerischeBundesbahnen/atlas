@@ -111,7 +111,8 @@ public class LineVersionModelV3 extends BaseVersionModel {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 
-  @Schema(description = "Comment of the Federal Office of Transport (BAV)", accessMode = AccessMode.READ_ONLY, example = "Konzession bis 2030 verlaengert.")
+  @Schema(description = "Comment of the Federal Office of Transport (BAV)", accessMode = AccessMode.READ_ONLY, example =
+      "Konzession bis 2030 verlängert.")
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String fotComment;
