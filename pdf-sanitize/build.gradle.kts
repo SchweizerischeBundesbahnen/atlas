@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.1633.0"
+version = "2.1634.0"
 
 dependencies {
     // Libraries
