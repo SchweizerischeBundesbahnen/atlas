@@ -11,7 +11,6 @@ import ch.sbb.line.directory.module.line.LineTestData;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
-import jakarta.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;

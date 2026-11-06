@@ -16,8 +16,6 @@ import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 class LineVersionV3MapperTest {
 
