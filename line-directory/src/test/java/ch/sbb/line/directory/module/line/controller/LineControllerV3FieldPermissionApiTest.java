@@ -1,8 +1,6 @@
 package ch.sbb.line.directory.module.line.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,11 +13,15 @@ import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
-import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
+import ch.sbb.atlas.user.administration.security.entity.Permission;
+import ch.sbb.atlas.user.administration.security.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
@@ -34,9 +36,9 @@ import org.springframework.test.web.servlet.ResultActions;
 
 /**
  * Covers the fields reserved for supervisors (financing, cableway fields, fotComment) by the {@code @PreAuthorize} expressions
- * on {@code LineVersionV3Service}. Runs as a standard internal user instead of the default admin; the user administration
- * service is mocked to simulate the different combinations of write permission on the business organisation and supervisor
- * role.
+ * on {@code LineVersionV3Service}. Runs as a standard internal user instead of the default admin; authorisation is expressed
+ * exclusively through the LIDI permission stored for that user, so every test acts either as writer on the business
+ * organisation, as writer without permission on it, or as supervisor.
  */
 @MockitoBean(types = SharedBusinessOrganisationService.class)
 @WithMockJwtAuthentication(role = MockRole.STANDARD)
@@ -44,28 +46,28 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
   private static final String VERSIONS_URL = "/v3/lines/internal/versions";
   private static final String SBOID = "ch:1:sboid:1100048";
+  private static final String OTHER_SBOID = "ch:1:sboid:1100049";
   private static final String STORED_FOT_COMMENT = "BAV comment";
 
   private final LineVersionV3Repository lineVersionV3Repository;
-
-  @MockitoBean
-  private BusinessOrganisationBasedUserAdministrationService userAdministrationService;
+  private final PermissionRepository permissionRepository;
 
   @Autowired
-  LineControllerV3FieldPermissionApiTest(LineVersionV3Repository lineVersionV3Repository) {
+  LineControllerV3FieldPermissionApiTest(LineVersionV3Repository lineVersionV3Repository,
+      PermissionRepository permissionRepository) {
     this.lineVersionV3Repository = lineVersionV3Repository;
+    this.permissionRepository = permissionRepository;
   }
 
   @BeforeEach
-  void mockWriterWithoutSupervisorRole() {
-    when(userAdministrationService.hasUserPermissionsToCreate(any(), any())).thenReturn(true);
-    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(true);
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
+  void grantWriterPermissionOnBusinessOrganisation() {
+    saveLidiPermission(ApplicationRole.WRITER, SBOID);
   }
 
   @AfterEach
   void tearDown() {
     lineVersionV3Repository.deleteAll();
+    permissionRepository.deleteAll();
   }
 
   @Test
@@ -165,7 +167,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   @Test
   void shouldDenyUpdateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
     // Given
-    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(false);
+    grantWriterPermissionOnOtherBusinessOrganisation();
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
     UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
 
@@ -176,7 +178,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   @Test
   void shouldCreateLineWithRestrictedFieldsAsSupervisor() throws Exception {
     // Given
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    grantSupervisorPermission();
     CreateLineVersionModelV3 model = lineModel()
         .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
         .financing(Financing.RPV)
@@ -200,7 +202,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateRestrictedFieldAsSupervisor() throws Exception {
     // Given
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    grantSupervisorPermission();
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
     UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).fotComment(STORED_FOT_COMMENT).build();
 
@@ -238,11 +240,37 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   @Test
   void shouldDenyCreateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
     // Given
-    when(userAdministrationService.hasUserPermissionsToCreate(any(), any())).thenReturn(false);
+    grantWriterPermissionOnOtherBusinessOrganisation();
 
     // When & Then
     create(lineModel().build()).andExpect(status().isForbidden());
     assertThat(lineVersionV3Repository.findAll()).isEmpty();
+  }
+
+  private void grantWriterPermissionOnOtherBusinessOrganisation() {
+    permissionRepository.deleteAll();
+    saveLidiPermission(ApplicationRole.WRITER, OTHER_SBOID);
+  }
+
+  private void grantSupervisorPermission() {
+    permissionRepository.deleteAll();
+    saveLidiPermission(ApplicationRole.SUPERVISOR, null);
+  }
+
+  private void saveLidiPermission(ApplicationRole role, String restrictedSboid) {
+    Permission permission = Permission.builder()
+        .identifier(WithMockJwtAuthentication.MOCKUSER_SBB_UID)
+        .application(ApplicationType.LIDI)
+        .role(role)
+        .build();
+    if (restrictedSboid != null) {
+      permission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .permission(permission)
+          .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+          .restriction(restrictedSboid)
+          .build()));
+    }
+    permissionRepository.saveAndFlush(permission);
   }
 
   private CreateLineVersionModelV3.CreateLineVersionModelV3Builder<?, ?> lineModel() {
