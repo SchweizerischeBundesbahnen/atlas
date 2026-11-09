@@ -55,6 +55,19 @@ class LineVersionV3MapperTest {
   }
 
   @Test
+  void shouldMapFotCommentIndependentOfComment() {
+    //given
+    LineVersionV3 line = LineVersionV3TestData.lineBuilder().comment("TU comment").fotComment("BAV comment").build();
+
+    //when
+    LineVersionModelV3 result = LineVersionV3Mapper.toModel(line, null);
+
+    //then
+    assertThat(result.getComment()).isEqualTo("TU comment");
+    assertThat(result.getFotComment()).isEqualTo("BAV comment");
+  }
+
+  @Test
   void shouldNotInheritMeansOfTransportFromParent() {
     //given
     LineVersionV3 subline = LineVersionV3TestData.sublineBuilder()
@@ -455,6 +468,20 @@ class LineVersionV3MapperTest {
     //then
     assertThat(result.getNumber()).isEqualTo("90.584");
     assertThat(result.getOfferCategory()).isEqualTo(OfferCategory.RE);
+  }
+
+  @Test
+  void shouldMapFotCommentToEntityWhenCreatingAndUpdating() {
+    //given
+    LineVersionV3 current = LineVersionV3TestData.lineBuilder().fotComment("old").build();
+
+    //when
+    LineVersionV3 created = LineVersionV3Mapper.toEntity(createModelBuilder().fotComment("BAV comment").build());
+    LineVersionV3 updated = LineVersionV3Mapper.toEntityFromUpdate(updateModelBuilder().fotComment("new").build(), current);
+
+    //then
+    assertThat(created.getFotComment()).isEqualTo("BAV comment");
+    assertThat(updated.getFotComment()).isEqualTo("new");
   }
 
   private static CreateLineVersionModelV3.CreateLineVersionModelV3Builder<?, ?> createModelBuilder() {

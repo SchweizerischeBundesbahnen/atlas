@@ -489,6 +489,20 @@ class LineV3ShorteningServiceTest {
   }
 
   @Test
+  void shouldNotDetectOnlyValidityChangedWhenFotCommentChanged() {
+    // Given
+    LineVersionV3 current = parent(1000L, date(2000, 1, 1), date(2010, 12, 31), "desc");
+    LineVersionV3 edited = parent(1000L, date(2000, 1, 1), date(2009, 12, 31), "desc");
+    edited.setFotComment("BAV comment");
+
+    // When
+    boolean result = lineV3ShorteningService.isOnlyValidityChanged(current, edited);
+
+    // Then
+    assertThat(result).isFalse();
+  }
+
+  @Test
   void shouldNotDetectOnlyValidityChangedWhenMeansOfTransportChanged() {
     // Given
     LineVersionV3 current = parent(1000L, date(2000, 1, 1), date(2010, 12, 31), "desc");

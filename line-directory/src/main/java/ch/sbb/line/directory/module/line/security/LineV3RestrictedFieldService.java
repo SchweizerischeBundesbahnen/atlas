@@ -20,6 +20,7 @@ public class LineV3RestrictedFieldService {
   private static List<Object> restrictedFieldsOf(LineVersionV3 version) {
     return Arrays.asList(
         version.getFinancing(),
+        version.getFotComment(),
         version.getCablewayNumber(),
         version.getCablewayType(),
         version.getCablewayName());

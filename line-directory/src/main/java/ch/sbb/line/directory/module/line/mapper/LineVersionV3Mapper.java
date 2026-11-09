@@ -31,6 +31,7 @@ public class LineVersionV3Mapper {
         .cablewayType(version.getCablewayType())
         .cablewayName(version.getCablewayName())
         .comment(version.getComment())
+        .fotComment(version.getFotComment())
         .referencedLine(toReferencedLine(parent))
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
@@ -61,6 +62,7 @@ public class LineVersionV3Mapper {
         .cablewayType(model.getCablewayType())
         .cablewayName(model.getCablewayName())
         .comment(model.getComment())
+        .fotComment(model.getFotComment())
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .build();
@@ -86,6 +88,7 @@ public class LineVersionV3Mapper {
         .cablewayType(model.getCablewayType())
         .cablewayName(model.getCablewayName())
         .comment(model.getComment())
+        .fotComment(model.getFotComment())
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .version(model.getEtagVersion())

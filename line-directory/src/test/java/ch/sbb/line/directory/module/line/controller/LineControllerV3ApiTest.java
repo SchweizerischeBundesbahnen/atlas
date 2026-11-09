@@ -81,6 +81,21 @@ class LineControllerV3ApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldExposeFotCommentIndependentOfComment() throws Exception {
+    //given
+    lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().comment("TU comment").fotComment("BAV comment").build());
+
+    //when && then
+    mvc.perform(get(VERSIONS_URL))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects[0].comment", is("TU comment")))
+        .andExpect(jsonPath("$.objects[0].fotComment", is("BAV comment")));
+    mvc.perform(get(VERSIONS_URL + "/" + LineVersionV3TestData.PARENT_SLNID))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].fotComment", is("BAV comment")));
+  }
+
+  @Test
   void shouldReturnEmptyContainerWhenTableIsEmpty() throws Exception {
     mvc.perform(get(VERSIONS_URL))
         .andExpect(status().isOk())

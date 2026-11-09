@@ -7,6 +7,7 @@ import ch.sbb.atlas.api.lidi.enumaration.v3.ConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.atlas.validation.TrimmedNotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -99,6 +100,13 @@ public abstract class BaseLineVersionModelV3 implements DatesValidator {
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
+
+  @Schema(description = "Comment of the Federal Office of Transport (BAV) - only a Supervisor may set or change it. Either "
+      + "null or a trimmed, non-blank value", example = "Kommentar des BAV zur Linie.")
+  @TrimmedNotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String fotComment;
 
   @Schema(description = "Valid from")
   @NotNull

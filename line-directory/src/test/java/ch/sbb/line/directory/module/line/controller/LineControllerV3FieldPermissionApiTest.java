@@ -1,8 +1,6 @@
 package ch.sbb.line.directory.module.line.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,9 +13,15 @@ import ch.sbb.atlas.api.lidi.enumaration.v3.Financing;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineMeanOfTransport;
 import ch.sbb.atlas.api.lidi.enumaration.v3.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockRole;
+import ch.sbb.atlas.user.administration.security.entity.Permission;
+import ch.sbb.atlas.user.administration.security.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import ch.sbb.line.directory.module.line.LineVersionV3TestData;
 import ch.sbb.line.directory.module.line.entity.LineVersionV3;
 import ch.sbb.line.directory.module.line.repository.LineVersionV3Repository;
@@ -30,40 +34,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
-/**
- * Covers the fields reserved for supervisors by the {@code @PreAuthorize} expressions on {@code LineVersionV3Service}. The user
- * administration service is mocked to simulate the different combinations of write permission on the business organisation and
- * supervisor role.
- */
 @MockitoBean(types = SharedBusinessOrganisationService.class)
+@WithMockJwtAuthentication(role = MockRole.STANDARD)
 class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
-  private static final String VERSIONS_URL = "/v3/lines/internal/versions";
+  private static final String VERSIONS_URL = "/v3/lines/versions";
   private static final String SBOID = "ch:1:sboid:1100048";
+  private static final String OTHER_SBOID = "ch:1:sboid:1100049";
+  private static final String STORED_FOT_COMMENT = "BAV comment";
+
+  private static final String WRITER_UID = "u100001";
+  private static final String OTHER_SBOID_WRITER_UID = "u100002";
+  private static final String SUPERVISOR_UID = "u100003";
 
   private final LineVersionV3Repository lineVersionV3Repository;
-
-  @MockitoBean
-  private BusinessOrganisationBasedUserAdministrationService userAdministrationService;
+  private final PermissionRepository permissionRepository;
 
   @Autowired
-  LineControllerV3FieldPermissionApiTest(LineVersionV3Repository lineVersionV3Repository) {
+  LineControllerV3FieldPermissionApiTest(LineVersionV3Repository lineVersionV3Repository,
+      PermissionRepository permissionRepository) {
     this.lineVersionV3Repository = lineVersionV3Repository;
+    this.permissionRepository = permissionRepository;
   }
 
   @BeforeEach
-  void mockWriterWithoutSupervisorRole() {
-    when(userAdministrationService.hasUserPermissionsToCreate(any(), any())).thenReturn(true);
-    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(true);
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
+  void grantLidiPermissions() {
+    saveLidiPermission(WRITER_UID, ApplicationRole.WRITER, SBOID);
+    saveLidiPermission(OTHER_SBOID_WRITER_UID, ApplicationRole.WRITER, OTHER_SBOID);
+    saveLidiPermission(SUPERVISOR_UID, ApplicationRole.SUPERVISOR, null);
   }
 
   @AfterEach
   void tearDown() {
     lineVersionV3Repository.deleteAll();
+    permissionRepository.deleteAll();
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = WRITER_UID)
   void shouldNotCreateLineWithRestrictedFieldsAsWriter() throws Exception {
     // Given
     CreateLineVersionModelV3 model = lineModel().financing(Financing.RPV).cablewayNumber("3521").build();
@@ -77,6 +85,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = WRITER_UID)
   void shouldCreateLineWithoutRestrictedFieldsAsWriter() throws Exception {
     // Given
     CreateLineVersionModelV3 model = lineModel().build();
@@ -92,10 +101,12 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
           assertThat(version.getCablewayNumber()).isNull();
           assertThat(version.getCablewayType()).isNull();
           assertThat(version.getCablewayName()).isNull();
+          assertThat(version.getFotComment()).isNull();
         });
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = WRITER_UID)
   void shouldNotUpdateRestrictedFieldAsWriter() throws Exception {
     // Given
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
@@ -111,9 +122,10 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = WRITER_UID)
   void shouldUpdateOtherFieldsWhileResendingTheUnchangedRestrictedFieldsAsWriter() throws Exception {
     // Given
-    LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
+    LineVersionV3 saved = savedLineWithFotComment();
     UpdateLineVersionModelV3 model = updateModelOf(saved).description("Updated description").build();
 
     // When
@@ -121,8 +133,9 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
 
     // Then
     result.andExpect(status().isOk());
-    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getDescription())
-        .isEqualTo("Updated description");
+    LineVersionV3 reloaded = lineVersionV3Repository.findById(saved.getId()).orElseThrow();
+    assertThat(reloaded.getDescription()).isEqualTo("Updated description");
+    assertThat(reloaded.getFotComment()).isEqualTo(STORED_FOT_COMMENT);
   }
 
   /**
@@ -130,6 +143,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
    * identity, which would reject every update carrying a restricted string field.
    */
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = WRITER_UID)
   void shouldUpdateOtherFieldsWhileResendingTheUnchangedCablewayStringsAsWriter() throws Exception {
     // Given
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.cableway());
@@ -144,6 +158,7 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = WRITER_UID)
   void shouldNotUpdateCablewayFieldAsWriter() throws Exception {
     // Given
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.cableway());
@@ -156,9 +171,9 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = OTHER_SBOID_WRITER_UID)
   void shouldDenyUpdateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
     // Given
-    when(userAdministrationService.hasUserPermissionsToUpdate(any(), any(), any())).thenReturn(false);
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
     UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
 
@@ -167,13 +182,14 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = SUPERVISOR_UID)
   void shouldCreateLineWithRestrictedFieldsAsSupervisor() throws Exception {
     // Given
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
     CreateLineVersionModelV3 model = lineModel()
         .meansOfTransport(Set.of(LineMeanOfTransport.CABLE_RAILWAY))
         .financing(Financing.RPV)
         .cablewayNumber("3521")
+        .fotComment(STORED_FOT_COMMENT)
         .build();
 
     // When
@@ -185,22 +201,72 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
         .satisfies(version -> {
           assertThat(version.getFinancing()).isEqualTo(Financing.RPV);
           assertThat(version.getCablewayNumber()).isEqualTo("3521");
+          assertThat(version.getFotComment()).isEqualTo(STORED_FOT_COMMENT);
         });
   }
 
   @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = SUPERVISOR_UID)
   void shouldUpdateRestrictedFieldAsSupervisor() throws Exception {
     // Given
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
     LineVersionV3 saved = lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.line());
-    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).build();
+    UpdateLineVersionModelV3 model = updateModelOf(saved).financing(Financing.RPV).fotComment(STORED_FOT_COMMENT).build();
 
     // When
     ResultActions result = update(saved.getId(), model);
 
     // Then
     result.andExpect(status().isOk());
-    assertThat(lineVersionV3Repository.findById(saved.getId()).orElseThrow().getFinancing()).isEqualTo(Financing.RPV);
+    LineVersionV3 reloaded = lineVersionV3Repository.findById(saved.getId()).orElseThrow();
+    assertThat(reloaded.getFinancing()).isEqualTo(Financing.RPV);
+    assertThat(reloaded.getFotComment()).isEqualTo(STORED_FOT_COMMENT);
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = WRITER_UID)
+  void shouldNotCreateLineWithFotCommentAsWriter() throws Exception {
+    // Given
+    CreateLineVersionModelV3 model = lineModel().fotComment(STORED_FOT_COMMENT).build();
+
+    // When & Then
+    create(model).andExpect(status().isForbidden());
+    assertThat(lineVersionV3Repository.findAll()).isEmpty();
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = WRITER_UID)
+  void shouldNotUpdateFotCommentAsWriter() throws Exception {
+    // Given
+    LineVersionV3 saved = savedLineWithFotComment();
+    UpdateLineVersionModelV3 model = updateModelOf(saved).fotComment("Changed").build();
+
+    // When & Then
+    update(saved.getId(), model).andExpect(status().isForbidden());
+    assertThat(storedFotComment(saved.getId())).isEqualTo(STORED_FOT_COMMENT);
+  }
+
+  @Test
+  @WithMockJwtAuthentication(role = MockRole.STANDARD, sbbuid = OTHER_SBOID_WRITER_UID)
+  void shouldDenyCreateWithoutWritePermissionOnBusinessOrganisation() throws Exception {
+    // When & Then
+    create(lineModel().build()).andExpect(status().isForbidden());
+    assertThat(lineVersionV3Repository.findAll()).isEmpty();
+  }
+
+  private void saveLidiPermission(String sbbUid, ApplicationRole role, String restrictedSboid) {
+    Permission permission = Permission.builder()
+        .identifier(sbbUid)
+        .application(ApplicationType.LIDI)
+        .role(role)
+        .build();
+    if (restrictedSboid != null) {
+      permission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+          .permission(permission)
+          .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+          .restriction(restrictedSboid)
+          .build()));
+    }
+    permissionRepository.saveAndFlush(permission);
   }
 
   private CreateLineVersionModelV3.CreateLineVersionModelV3Builder<?, ?> lineModel() {
@@ -231,9 +297,18 @@ class LineControllerV3FieldPermissionApiTest extends BaseControllerApiTest {
         .cablewayNumber(version.getCablewayNumber())
         .cablewayType(version.getCablewayType())
         .cablewayName(version.getCablewayName())
+        .fotComment(version.getFotComment())
         .meansOfTransport(version.getMeansOfTransport())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo());
+  }
+
+  private LineVersionV3 savedLineWithFotComment() {
+    return lineVersionV3Repository.saveAndFlush(LineVersionV3TestData.lineBuilder().fotComment(STORED_FOT_COMMENT).build());
+  }
+
+  private String storedFotComment(Long id) {
+    return lineVersionV3Repository.findById(id).orElseThrow().getFotComment();
   }
 
   private ResultActions create(CreateLineVersionModelV3 model) throws Exception {
