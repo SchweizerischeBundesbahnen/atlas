@@ -40,6 +40,28 @@ class DecisionModelTest extends BaseValidatorTest {
     assertThat(constraintViolations).hasSize(1);
   }
 
+  @Test
+  void shouldFailToValidateWithBlankFirstName() {
+    DecisionModel decision = getDecisionBuilder()
+        .judgement(JudgementType.YES)
+        .firstName("   ")
+        .build();
+    Set<ConstraintViolation<DecisionModel>> constraintViolations = validator.validate(decision);
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("firstName");
+  }
+
+  @Test
+  void shouldFailToValidateWithBlankLastName() {
+    DecisionModel decision = getDecisionBuilder()
+        .judgement(JudgementType.YES)
+        .lastName("   ")
+        .build();
+    Set<ConstraintViolation<DecisionModel>> constraintViolations = validator.validate(decision);
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("lastName");
+  }
+
   private static DecisionModelBuilder<?, ?> getDecisionBuilder() {
     return DecisionModel.builder()
         .firstName("Uwe")

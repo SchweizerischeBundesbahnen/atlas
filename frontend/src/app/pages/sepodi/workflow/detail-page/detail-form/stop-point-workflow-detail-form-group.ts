@@ -51,8 +51,8 @@ export class StopPointWorkflowDetailFormGroupBuilder {
   static buildExaminantFormGroup(examinant?: StopPointPerson): FormGroup<ExaminantFormGroup> {
     const formGroup = new FormGroup<ExaminantFormGroup>({
       id: new FormControl(examinant?.id),
-      firstName: new FormControl(examinant?.firstName),
-      lastName: new FormControl(examinant?.lastName),
+      firstName: new FormControl(examinant?.firstName, [WhitespaceValidator.blankOrEmptySpaceSurrounding]),
+      lastName: new FormControl(examinant?.lastName, [WhitespaceValidator.blankOrEmptySpaceSurrounding]),
       organisation: new FormControl(examinant?.organisation, [
         Validators.required,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,

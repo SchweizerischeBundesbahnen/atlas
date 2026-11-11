@@ -54,4 +54,26 @@ describe('StopPointWorkflowDetailFormGroupBuilder', () => {
     expect(formGroup.controls.examinants.at(0).controls.judgement.value).toBe(JudgementType.Yes);
     expect(formGroup.controls.examinants.at(0).controls.judgementIcon.value).toBe('bi-check-lg');
   });
+
+  it('should allow a missing firstName/lastName on an examinant', () => {
+    const examinant = StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup({
+      mail: 'test@mail.ch',
+      organisation: 'test',
+    });
+
+    expect(examinant.controls.firstName.valid).toBe(true);
+    expect(examinant.controls.lastName.valid).toBe(true);
+  });
+
+  it('should reject a blank (whitespace-only) firstName/lastName on an examinant', () => {
+    const examinant = StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup({
+      firstName: '   ',
+      lastName: '   ',
+      mail: 'test@mail.ch',
+      organisation: 'test',
+    });
+
+    expect(examinant.controls.firstName.valid).toBe(false);
+    expect(examinant.controls.lastName.valid).toBe(false);
+  });
 });

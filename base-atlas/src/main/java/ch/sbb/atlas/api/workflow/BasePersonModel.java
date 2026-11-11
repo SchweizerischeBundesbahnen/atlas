@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.workflow;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.redact.Redacted;
+import ch.sbb.atlas.validation.TrimmedNotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Pattern;
@@ -21,13 +22,15 @@ public abstract class BasePersonModel {
 
   @Schema(description = "Firstname", example = "John")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @TrimmedNotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @Redacted
   private String firstName;
 
   @Schema(description = "Second", example = "Doe")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @TrimmedNotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @Redacted
   private String lastName;
 

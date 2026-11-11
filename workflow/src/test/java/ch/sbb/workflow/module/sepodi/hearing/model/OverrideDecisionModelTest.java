@@ -40,6 +40,28 @@ class OverrideDecisionModelTest extends BaseValidatorTest {
     assertThat(constraintViolations).hasSize(1);
   }
 
+  @Test
+  void shouldFailToValidateWithBlankFirstName() {
+    OverrideDecisionModel decision = getOverrideDecisionBuilder()
+        .fotJudgement(JudgementType.YES)
+        .firstName("   ")
+        .build();
+    Set<ConstraintViolation<OverrideDecisionModel>> constraintViolations = validator.validate(decision);
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("firstName");
+  }
+
+  @Test
+  void shouldFailToValidateWithBlankLastName() {
+    OverrideDecisionModel decision = getOverrideDecisionBuilder()
+        .fotJudgement(JudgementType.YES)
+        .lastName("   ")
+        .build();
+    Set<ConstraintViolation<OverrideDecisionModel>> constraintViolations = validator.validate(decision);
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("lastName");
+  }
+
   private static OverrideDecisionModelBuilder<?, ?> getOverrideDecisionBuilder() {
     return OverrideDecisionModel.builder()
         .firstName("Uwe")

@@ -2,6 +2,7 @@ import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from
 import { JudgementType, ReadDecision } from '../../../../../../api';
 import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 
 export interface DecisionFormGroup {
   firstName: FormControl<string | null | undefined>;
@@ -23,11 +24,13 @@ export class DecisionFormGroupBuilder {
           Validators.required,
           AtlasFieldLengthValidator.length_50,
           AtlasCharsetsValidator.iso88591,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
         ]),
         lastName: new FormControl(existingDecision?.examinant?.lastName, [
           Validators.required,
           AtlasFieldLengthValidator.length_50,
           AtlasCharsetsValidator.iso88591,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
         ]),
         organisation: new FormControl(existingDecision?.examinant?.organisation, [
           Validators.required,
