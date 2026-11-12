@@ -33,7 +33,7 @@ public class StopPointClientPersonModel {
   @Redacted
   private String firstName;
 
-  @Schema(description = "Second", example = "Doe")
+  @Schema(description = "Lastname", example = "Doe")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @Redacted
