@@ -27,7 +27,7 @@ public abstract class BasePersonModel {
   @Redacted
   private String firstName;
 
-  @Schema(description = "Second", example = "Doe")
+  @Schema(description = "Lastname", example = "Doe")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @TrimmedNotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
