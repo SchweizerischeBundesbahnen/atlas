@@ -2,6 +2,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { StopPointRejectWorkflow } from '../../../../api';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
+import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 
 export interface StopPointRejectWorkflowFormGroup {
   firstName: FormControl<string | null | undefined>;
@@ -14,8 +15,18 @@ export interface StopPointRejectWorkflowFormGroup {
 export class StopPointRejectWorkflowFormGroupBuilder {
   static initFormGroup(): FormGroup<StopPointRejectWorkflowFormGroup> {
     return new FormGroup<StopPointRejectWorkflowFormGroup>({
-      firstName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
+      firstName: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50),
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50),
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
       organisation: new FormControl('', [
         Validators.required,
         Validators.maxLength(255),
