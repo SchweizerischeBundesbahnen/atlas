@@ -7,6 +7,7 @@ import {
   input,
   OnDestroy,
   OnInit,
+  Signal,
   ViewChild,
 } from '@angular/core';
 import { LngLatLike, Map } from 'maplibre-gl';
@@ -148,6 +149,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapService.applyMeansOfTransportFilter(result.meansOfTransport);
         }
       });
+  }
+
+  /** Whether the map has finished showing what it was asked to show — see {@link MapService.mapSettled}. */
+  get mapSettled(): Signal<boolean> {
+    return this.mapService.mapSettled;
   }
 
   filterActive(): boolean {
