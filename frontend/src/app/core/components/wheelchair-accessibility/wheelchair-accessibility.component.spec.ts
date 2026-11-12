@@ -89,6 +89,27 @@ describe('WheelchairAccessibilityComponent', () => {
       component.closeOverlay();
       expect(component.isOverlayOpen).toBe(false);
     });
+
+    it('should reload accessibility when sloid changes', () => {
+      expect(wheelchairAccessibilityInternalService.getStopPointAccessibilityToday).toHaveBeenCalledWith(
+        'ch:1:sloid:90064'
+      );
+      component.toggleOverlay();
+      expect(component.wheelchairAccessibility.length).toBe(1);
+
+      wheelchairAccessibilityInternalService.getStopPointAccessibilityToday.mockReturnValueOnce(
+        of({ state: WheelchairAccessibilityState.NoInfo })
+      );
+      fixture.componentRef.setInput('sloid', 'ch:1:sloid:12345');
+      fixture.detectChanges();
+
+      expect(wheelchairAccessibilityInternalService.getStopPointAccessibilityToday).toHaveBeenLastCalledWith(
+        'ch:1:sloid:12345'
+      );
+      expect(component.wheelchairAccessibilityToday).toBe(WheelchairAccessibilityState.NoInfo);
+      expect(component.isOverlayOpen).toBe(false);
+      expect(component.wheelchairAccessibility.length).toBe(0);
+    });
   });
 
   describe('for platform', () => {
