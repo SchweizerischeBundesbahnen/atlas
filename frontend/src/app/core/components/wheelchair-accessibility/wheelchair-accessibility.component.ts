@@ -100,7 +100,6 @@ export class WheelchairAccessibilityComponent {
 
   private reloadForSloid(sloid: string, objectType: AccessibilityType) {
     this.closeOverlay();
-    this.wheelchairAccessibilityToday = undefined;
     this.wheelchairAccessibility = [];
     this.loadWheelchairAccessibilityToday(sloid, objectType);
   }
@@ -126,10 +125,16 @@ export class WheelchairAccessibilityComponent {
         accessibilityTodayRequest = this.wheelchairAccessibilityService.getPlatformAccessibilityToday(sloid);
         break;
     }
+    const isCurrent = () => this.sloid() === sloid && this.objectType() === objectType;
     accessibilityTodayRequest.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
-        if (this.sloid() === sloid && this.objectType() === objectType) {
+        if (isCurrent()) {
           this.wheelchairAccessibilityToday = response.state;
+        }
+      },
+      error: () => {
+        if (isCurrent()) {
+          this.wheelchairAccessibilityToday = undefined;
         }
       },
     });

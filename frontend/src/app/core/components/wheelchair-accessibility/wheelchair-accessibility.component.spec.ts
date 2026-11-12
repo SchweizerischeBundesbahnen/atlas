@@ -5,9 +5,10 @@ import { WheelchairAccessibilityComponent } from './wheelchair-accessibility.com
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { WheelchairAccessibilityInternalService } from '../../../api/service/prm/wheelchair-accessibility/wheelchair-accessibility-internal.service';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { mock, mockClear } from 'vitest-mock-extended';
 import { WheelchairAccessibilityState } from '../../../api/model/wheelchairAccessibilityState';
+import { ReadWheelchairAccessibility } from '../../../api/model/readWheelchairAccessibility';
 
 const wheelchairAccessibilityInternalService = mock<WheelchairAccessibilityInternalService>();
 wheelchairAccessibilityInternalService.getPlatformAccessibilityToday.mockReturnValue(of({}));
@@ -88,6 +89,18 @@ describe('WheelchairAccessibilityComponent', () => {
 
       component.closeOverlay();
       expect(component.isOverlayOpen).toBe(false);
+    });
+
+    it('should keep previous state while new sloid is loading', () => {
+      const pending = new Subject<ReadWheelchairAccessibility>();
+      wheelchairAccessibilityInternalService.getStopPointAccessibilityToday.mockReturnValueOnce(pending);
+      fixture.componentRef.setInput('sloid', 'ch:1:sloid:12345');
+      fixture.detectChanges();
+
+      expect(component.wheelchairAccessibilityToday).toBe(WheelchairAccessibilityState.Autonomy);
+
+      pending.next({ state: WheelchairAccessibilityState.NoInfo });
+      expect(component.wheelchairAccessibilityToday).toBe(WheelchairAccessibilityState.NoInfo);
     });
 
     it('should reload accessibility when sloid changes', () => {
