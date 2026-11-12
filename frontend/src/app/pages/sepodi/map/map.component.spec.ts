@@ -142,17 +142,13 @@ describe('MapComponent', () => {
   });
 
   describe('map readiness', () => {
-    function setMapSettled(settled: boolean) {
-      (mapServiceSpy as unknown as { mapSettled: () => boolean }).mapSettled = () => settled;
-    }
-
     function mapContainer(): HTMLElement {
       return fixture.debugElement.query(By.css('[data-cy="sepodi-map"]')).nativeElement as HTMLElement;
     }
 
     it('should mark the map as not settled while it is still rendering', () => {
       // Given
-      setMapSettled(false);
+      mapServiceSpy.mapSettled.mockReturnValue(false);
 
       // When
       fixture.detectChanges();
@@ -163,7 +159,7 @@ describe('MapComponent', () => {
 
     it('should mark the map as settled once it has nothing left to render', () => {
       // Given
-      setMapSettled(true);
+      mapServiceSpy.mapSettled.mockReturnValue(true);
 
       // When
       fixture.detectChanges();
