@@ -66,6 +66,65 @@ describe('MapService', () => {
     expect(map).toBeTruthy();
   });
 
+  describe('settled state', () => {
+    const bern = { north: 46.96096807883433, east: 7.448919722210154, spatialReference: SpatialReference.Wgs84 };
+
+    /** Initialises a map and returns the listener maplibre calls once the map has nothing left to render. */
+    function givenInitialisedMap(): () => void {
+      vi.spyOn(service, 'createMap').mockReturnValue(mapMock);
+      vi.spyOn(service, 'deselectServicePoint').mockImplementation(() => {});
+      mapMock.on.mockClear();
+
+      service.initMap(document.createElement('div'));
+
+      const idleListener = mapMock.on.mock.calls.find((call) => call[0] === 'idle')![1];
+      return idleListener as () => void;
+    }
+
+    it('should not be settled while the map is still building', () => {
+      // When
+      givenInitialisedMap();
+
+      // Then
+      expect(service.mapSettled()).toBe(false);
+    });
+
+    it('should be settled once the map has nothing left to render', () => {
+      // Given
+      const mapIsIdle = givenInitialisedMap();
+
+      // When
+      mapIsIdle();
+
+      // Then
+      expect(service.mapSettled()).toBe(true);
+    });
+
+    it('should not be settled while a selected service point is not centred yet', () => {
+      // Given
+      const mapIsIdle = givenInitialisedMap();
+      mapIsIdle();
+
+      // When
+      service.selectServicePoint(bern);
+
+      // Then
+      expect(service.mapSettled()).toBe(false);
+    });
+
+    it('should not report the readiness of a map that was destroyed', () => {
+      // Given
+      const mapIsIdle = givenInitialisedMap();
+      mapIsIdle();
+
+      // When
+      service.removeMap();
+
+      // Then
+      expect(service.mapSettled()).toBe(false);
+    });
+  });
+
   it('should fly to coordinates on map', () => {
     service.map = mapMock;
 

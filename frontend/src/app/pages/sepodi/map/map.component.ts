@@ -150,6 +150,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  /** Whether the map has finished showing what it was asked to show — see {@link MapService.mapSettled}. */
+  mapSettled(): boolean {
+    return this.mapService.mapSettled();
+  }
+
   filterActive(): boolean {
     return this.mapService.boFilterActive() || this.mapService.meansOfTransportFilterActive();
   }

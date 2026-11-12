@@ -71,11 +71,20 @@ export class MapService {
   });
   private _keepPopup = false;
 
+  /**
+   * Whether the map has finished showing what it was asked to show: no camera transition is running
+   * and every requested tile is loaded.
+   */
+  private readonly _mapSettled = signal(false);
+  readonly mapSettled = this._mapSettled.asReadonly();
+
   initMap(mapContainer: HTMLElement) {
+    this._mapSettled.set(false);
     this.map = this.createMap(mapContainer);
     MapIconsService.addTrafficPointIconToMap(this.map);
     MapIconsService.addSectorIconToMap(this.map);
     this.initMapEvents();
+    this.map.on('idle', () => this._mapSettled.set(true));
     this.map.resize();
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disableRotation();
@@ -131,6 +140,7 @@ export class MapService {
   }
 
   selectServicePoint(coordinates?: CoordinatePair) {
+    this._mapSettled.set(false);
     this.mapInitialized
       .pipe(
         filter((initialized) => initialized),
@@ -148,6 +158,7 @@ export class MapService {
 
   removeMap() {
     this.map.remove();
+    this._mapSettled.set(false);
     this._boFilter.set([]);
     this._meansOfTransportFilter.set([]);
   }

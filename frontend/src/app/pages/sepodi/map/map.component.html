@@ -1,5 +1,5 @@
 <div class="map-wrapper d-flex position-relative">
-  <div class="map" #map data-cy="sepodi-map"></div>
+  <div class="map" #map data-cy="sepodi-map" [attr.data-map-settled]="mapSettled()"></div>
 
   @if (!servicePointsShown) {
     <div
