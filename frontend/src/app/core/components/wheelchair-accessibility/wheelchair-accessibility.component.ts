@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, input, untracked } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { AtlasInfoIconComponent, AtlasInfoLinkDirective } from '@atlas/form';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -34,8 +34,9 @@ export type AccessibilityType = 'STOP_POINT' | 'PLATFORM';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./wheelchair-accessibility.component.scss'],
 })
-export class WheelchairAccessibilityComponent implements OnInit {
+export class WheelchairAccessibilityComponent {
   private readonly wheelchairAccessibilityService = inject(WheelchairAccessibilityInternalService);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly dateInputForm = new FormGroup({
     startingFrom: new FormControl(moment(), [Validators.required]),
@@ -85,14 +86,22 @@ export class WheelchairAccessibilityComponent implements OnInit {
         this.closeOverlay();
       }
     });
+
+    effect(() => {
+      const sloid = this.sloid();
+      const objectType = this.objectType();
+      untracked(() => this.reloadForSloid(sloid, objectType));
+    });
   }
 
   isOverlayOpen = false;
   wheelchairAccessibilityToday?: WheelchairAccessibilityState;
   wheelchairAccessibility: AccessibilityRow[] = [];
 
-  ngOnInit(): void {
-    this.loadWheelchairAccessibilityToday();
+  private reloadForSloid(sloid: string, objectType: AccessibilityType) {
+    this.closeOverlay();
+    this.wheelchairAccessibility = [];
+    this.loadWheelchairAccessibilityToday(sloid, objectType);
   }
 
   toggleOverlay() {
@@ -106,18 +115,28 @@ export class WheelchairAccessibilityComponent implements OnInit {
     this.isOverlayOpen = false;
   }
 
-  private loadWheelchairAccessibilityToday() {
+  private loadWheelchairAccessibilityToday(sloid: string, objectType: AccessibilityType) {
     let accessibilityTodayRequest;
-    switch (this.objectType()) {
+    switch (objectType) {
       case 'STOP_POINT':
-        accessibilityTodayRequest = this.wheelchairAccessibilityService.getStopPointAccessibilityToday(this.sloid());
+        accessibilityTodayRequest = this.wheelchairAccessibilityService.getStopPointAccessibilityToday(sloid);
         break;
       case 'PLATFORM':
-        accessibilityTodayRequest = this.wheelchairAccessibilityService.getPlatformAccessibilityToday(this.sloid());
+        accessibilityTodayRequest = this.wheelchairAccessibilityService.getPlatformAccessibilityToday(sloid);
         break;
     }
-    accessibilityTodayRequest.subscribe({
-      next: (response) => (this.wheelchairAccessibilityToday = response.state),
+    const isCurrent = () => this.sloid() === sloid && this.objectType() === objectType;
+    accessibilityTodayRequest.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (response) => {
+        if (isCurrent()) {
+          this.wheelchairAccessibilityToday = response.state;
+        }
+      },
+      error: () => {
+        if (isCurrent()) {
+          this.wheelchairAccessibilityToday = undefined;
+        }
+      },
     });
   }
 
@@ -140,8 +159,13 @@ export class WheelchairAccessibilityComponent implements OnInit {
           );
           break;
       }
+      const sloid = this.sloid();
       accessibilityRequest.subscribe({
-        next: (response) => (this.wheelchairAccessibility = response.rows),
+        next: (response) => {
+          if (this.sloid() === sloid) {
+            this.wheelchairAccessibility = response.rows;
+          }
+        },
       });
     }
   }
